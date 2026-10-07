@@ -318,7 +318,12 @@ InferenceResult PtBackend::infer(const QImage &image, const QString &source)
     QImageWriter writer(&buffer, "PNG");
     // Qt 6.8 maps [0,100] to zlib levels [0,9]; 11 selects fast, lossless level 1.
     writer.setCompression(11);
-    if (!writer.write(image))
+    // The Qt preview and ONNX path both reduce source pixels through RGB888.
+    // A 16-bit PNG decoded by OpenCV IMREAD_COLOR instead truncates its high
+    // byte, which can disagree by one intensity with Qt's 16-to-8 rounding.
+    // Send the same 8-bit RGB pixels while retaining the original result image.
+    const QImage modelImage = image.convertToFormat(QImage::Format_RGB888);
+    if (modelImage.isNull() || !writer.write(modelImage))
         fail(QStringLiteral("无法编码图像并发送给 PyTorch。"));
     if (m_cancellationCheck && m_cancellationCheck())
         processFailure(QStringLiteral("PyTorch 推理已取消。"));
@@ -344,7 +349,8 @@ InferenceResult PtBackend::infer(const QImage &image, const QString &source)
     if (predictions.size() > (m_config.task == ModelTask::Classification ? 5 : 300))
         processFailure(QStringLiteral("PyTorch 返回了过多预测结果。"));
     InferenceResult result;
-    result.image = image;
+    result.image = inputPreviewImage(image, m_config.colorMode);
+    result.originalImage = image;
     result.source = source;
     result.modelName = QFileInfo(m_config.modelPath).fileName();
     result.task = m_config.task;

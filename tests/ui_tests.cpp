@@ -49,6 +49,12 @@ QPushButton *findButton(QWidget *parent, const QString &text)
     return nullptr;
 }
 
+ImageCanvas *workbenchCanvas(QWidget *parent)
+{
+    auto *page = parent->findChild<QWidget *>(QStringLiteral("workbenchPage"));
+    return page ? page->findChild<ImageCanvas *>() : nullptr;
+}
+
 QTableWidget *predictionTable(QWidget *parent)
 {
     for (auto *table : parent->findChildren<QTableWidget *>())
@@ -123,9 +129,8 @@ bool activateModel(MainWindow *window, const QString &fileName)
     return false;
 }
 
-bool selectVideo(MainWindow *window, const QString &path)
+bool chooseDialogFile(QPushButton *button, const QString &path)
 {
-    auto *button = findButton(window, QStringLiteral("视频"));
     if (!button)
         return false;
     bool selected = false;
@@ -134,7 +139,7 @@ bool selectVideo(MainWindow *window, const QString &path)
     QElapsedTimer elapsed;
     elapsed.start();
     QTimer selection;
-    QObject::connect(&selection, &QTimer::timeout, window,
+    QObject::connect(&selection, &QTimer::timeout, button,
                      [&]
                      {
                          auto *dialog = qobject_cast<QFileDialog *>(QApplication::activeModalWidget());
@@ -174,6 +179,11 @@ bool selectVideo(MainWindow *window, const QString &path)
     selection.start(50);
     QTest::mouseClick(button, Qt::LeftButton);
     return selected;
+}
+
+bool selectVideo(MainWindow *window, const QString &path)
+{
+    return chooseDialogFile(findButton(window, QStringLiteral("视频")), path);
 }
 
 QJsonObject exportedMetadata(const QString &home)
@@ -265,7 +275,7 @@ class UiTests final : public QObject
 
     void realInferenceSelectionAndNavigation()
     {
-        auto *canvas = window_->findChild<ImageCanvas *>();
+        auto *canvas = workbenchCanvas(window_.get());
         auto *table = predictionTable(window_.get());
         auto *exportButton = findButton(window_.get(), QStringLiteral("导出结果"));
         QVERIFY(canvas);
@@ -312,13 +322,23 @@ class UiTests final : public QObject
         QCOMPARE(selected.last().at(0).toInt(), -1);
         QVERIFY(table->selectedItems().isEmpty());
 
-        auto *pages = window_->findChild<QStackedWidget *>();
+        auto *pages = window_->findChild<QStackedWidget *>(QStringLiteral("workspacePages"));
         auto *title = window_->findChild<QLabel *>(QStringLiteral("pageTitle"));
+        auto *demoButton = findButton(window_.get(), QStringLiteral("运行示例"));
         QVERIFY(pages);
         QVERIFY(title);
+        QVERIFY(demoButton);
+        QCOMPARE(pages->count(), 6);
+        QCOMPARE(pages->widget(0)->objectName(), QStringLiteral("workbenchPage"));
+        QCOMPARE(pages->widget(5)->objectName(), QStringLiteral("morePage"));
+        QVERIFY(pages->widget(5)->isAncestorOf(demoButton));
+        QVERIFY(pages->widget(5)->isAncestorOf(exportButton));
+        QVERIFY(!demoButton->isVisible());
+        QVERIFY(!exportButton->isVisible());
         for (const auto &route :
              {qMakePair(QStringLiteral("模型库"), 1), qMakePair(QStringLiteral("运行记录"), 2),
-              qMakePair(QStringLiteral("使用指南"), 3), qMakePair(QStringLiteral("检测工作台"), 0)})
+              qMakePair(QStringLiteral("使用指南"), 3), qMakePair(QStringLiteral("录制视频"), 4),
+              qMakePair(QStringLiteral("更多"), 5), qMakePair(QStringLiteral("检测工作台"), 0)})
         {
             auto *nav = findButton(window_.get(), route.first);
             QVERIFY(nav);
@@ -326,11 +346,14 @@ class UiTests final : public QObject
             QCOMPARE(pages->currentIndex(), route.second);
             QCOMPARE(title->text(), route.first);
             QVERIFY(nav->isChecked());
+            QCOMPARE(demoButton->isVisible(), route.second == 5);
+            QCOMPARE(exportButton->isVisible(), route.second == 5);
+            if (route.second == 5) window_->saveScreenshot(QStringLiteral(VISION_PROJECT_DIR) + QStringLiteral("/output/test-screenshots/1.3-more.png"));
         }
         QCOMPARE(window_->size(), QSize(1260, 820));
         const QRect canvasBounds(canvas->mapTo(window_.get(), QPoint()), canvas->size());
         QVERIFY(window_->rect().contains(canvasBounds));
-        QVERIFY(canvas->width() >= 300 && canvas->height() >= 330);
+        QVERIFY(canvas->width() >= 300 && canvas->height() >= 280);
         QVERIFY(findButton(window_.get(), QStringLiteral("开始检测"))->isVisible());
         const QString screenshot = qEnvironmentVariable("VISION_UI_TEST_SCREENSHOT");
         if (!screenshot.isEmpty())
@@ -339,7 +362,7 @@ class UiTests final : public QObject
 
     void shortcutsCancelAndRestartFromFocusedControls()
     {
-        auto *canvas = window_->findChild<ImageCanvas *>();
+        auto *canvas = workbenchCanvas(window_.get());
         auto *stop = findButton(window_.get(), QStringLiteral("停止运行"));
         auto *run = findButton(window_.get(), QStringLiteral("开始检测"));
         auto *exportButton = findButton(window_.get(), QStringLiteral("导出结果"));
@@ -376,7 +399,7 @@ class UiTests final : public QObject
 
     void directPtInferenceReadsNamesAndExportsNativeBackend()
     {
-        auto *canvas = window_->findChild<ImageCanvas *>();
+        auto *canvas = workbenchCanvas(window_.get());
         auto *table = predictionTable(window_.get());
         auto *exportButton = findButton(window_.get(), QStringLiteral("导出结果"));
         QCheckBox *autoExport = nullptr;
@@ -436,7 +459,7 @@ class UiTests final : public QObject
 
     void queueChangeAndClearInvalidateOldResults()
     {
-        auto *canvas = window_->findChild<ImageCanvas *>();
+        auto *canvas = workbenchCanvas(window_.get());
         auto *table = predictionTable(window_.get());
         auto *queue = inputQueue(window_.get());
         auto *exportButton = findButton(window_.get(), QStringLiteral("导出结果"));
@@ -475,6 +498,61 @@ class UiTests final : public QObject
         QVERIFY(!exportButton->isEnabled());
         for (auto *metric : metrics)
             QCOMPARE(metric->text(), QStringLiteral("—"));
+    }
+
+    void grayscalePreviewAndColorSwitchInvalidatePredictions()
+    {
+        auto *canvas = workbenchCanvas(window_.get());
+        auto *table = predictionTable(window_.get());
+        auto *color = window_->findChild<QComboBox *>(QStringLiteral("inputColorMode"));
+        auto *run = findButton(window_.get(), QStringLiteral("开始检测"));
+        auto *exportButton = findButton(window_.get(), QStringLiteral("导出结果"));
+        auto *autoExport = autoExportControl(window_.get());
+        QVERIFY(canvas && table && color && run && exportButton && autoExport);
+        autoExport->setChecked(false);
+        window_->runDemo();
+        QTRY_VERIFY_WITH_TIMEOUT(!unexpectedDialog_.isEmpty() ||
+                                     (exportButton->isEnabled() && !canvas->result().predictions.isEmpty()),
+                                 45000);
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+        QVERIFY(!canvas->result().image.isGrayscale());
+
+        color->setCurrentIndex(color->findData(QStringLiteral("grayscale")));
+        QVERIFY(canvas->result().predictions.isEmpty());
+        QCOMPARE(table->rowCount(), 0);
+        QVERIFY(!exportButton->isEnabled());
+        autoExport->setChecked(true);
+        QTest::mouseClick(run, Qt::LeftButton);
+        QTRY_VERIFY_WITH_TIMEOUT(!unexpectedDialog_.isEmpty() ||
+                                     (exportButton->isEnabled() && !canvas->result().predictions.isEmpty()),
+                                 45000);
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+        const vision::InferenceResult grayResult = canvas->result();
+        QCOMPARE(grayResult.image.format(), QImage::Format_Grayscale8);
+        QVERIFY(grayResult.image.isGrayscale());
+        QVERIFY(!grayResult.originalImage.isGrayscale());
+        QCOMPARE(grayResult.image.size(), grayResult.originalImage.size());
+        QCOMPARE(table->rowCount(), grayResult.predictions.size());
+        const QJsonObject metadata = exportedMetadata(fixture_->path());
+        QCOMPARE(metadata.value(QStringLiteral("config"))
+                     .toObject()
+                     .value(QStringLiteral("color_mode"))
+                     .toString(),
+                 QStringLiteral("grayscale"));
+
+        color->setCurrentIndex(color->findData(QStringLiteral("rgb")));
+        QCOMPARE(canvas->result().image.convertToFormat(QImage::Format_RGB888),
+                 grayResult.originalImage.convertToFormat(QImage::Format_RGB888));
+        QVERIFY(!canvas->result().image.isGrayscale());
+        QVERIFY(canvas->result().predictions.isEmpty());
+        QCOMPARE(table->rowCount(), 0);
+        QVERIFY(!exportButton->isEnabled());
+        QTest::mouseClick(run, Qt::LeftButton);
+        QTRY_VERIFY_WITH_TIMEOUT(!unexpectedDialog_.isEmpty() ||
+                                     (exportButton->isEnabled() && !canvas->result().predictions.isEmpty()),
+                                 45000);
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+        QVERIFY(!canvas->result().image.isGrayscale());
     }
 
     void legacyColorPreferenceMigration_data()
@@ -541,7 +619,7 @@ class UiTests final : public QObject
         }
         const QString screenshot = qEnvironmentVariable(
             "VISION_UI_CAMERA_SCREENSHOT",
-            QStringLiteral(VISION_PROJECT_DIR) + QStringLiteral("/output/test-screenshots/1.2-camera.png"));
+            QStringLiteral(VISION_PROJECT_DIR) + QStringLiteral("/output/test-screenshots/1.3-camera.png"));
         window_->saveScreenshot(screenshot);
         QCOMPARE(QImage(screenshot).size(), window_->size());
         QCOMPARE(starts.size(), 0); // Configuring a camera must not connect to a device.
@@ -592,7 +670,7 @@ class UiTests final : public QObject
         writer.write(frame);
         writer.release();
 
-        auto *canvas = window_->findChild<ImageCanvas *>();
+        auto *canvas = workbenchCanvas(window_.get());
         auto *color = window_->findChild<QComboBox *>(QStringLiteral("inputColorMode"));
         auto *stereo = window_->findChild<QComboBox *>(QStringLiteral("stereoView"));
         auto *meanR = window_->findChild<QDoubleSpinBox *>(QStringLiteral("meanR"));
@@ -629,7 +707,11 @@ class UiTests final : public QObject
         QCOMPARE(canvas->result().sourceFrameSize, QSize(320, 96));
         QCOMPARE(canvas->result().image.size(), QSize(160, 96));
         const QColor pixel = canvas->result().image.pixelColor(80, 48);
-        QVERIFY(pixel.red() > pixel.blue() + 100); // The preview stays in its original color.
+        QCOMPARE(pixel.red(), pixel.green());
+        QCOMPARE(pixel.green(), pixel.blue());
+        QCOMPARE(canvas->result().originalImage.size(), QSize(160, 96));
+        const QColor originalPixel = canvas->result().originalImage.pixelColor(80, 48);
+        QVERIFY(originalPixel.red() > originalPixel.blue() + 100);
         auto *modelMeta = window_->findChild<QLabel *>(QStringLiteral("modelMetadata"));
         QVERIFY(modelMeta && modelMeta->text().contains(QStringLiteral("输入 3 通道")));
         const QJsonObject metadata = exportedMetadata(fixture_->path());
@@ -674,6 +756,142 @@ class UiTests final : public QObject
         QCOMPARE(canvas->result().stereoView, vision::StereoView::Full);
         QCOMPARE(canvas->result().image.size(),
                  QImage(fixture_->path() + QStringLiteral("/assets/bus.jpg")).size());
+    }
+
+    void recordingStartStopListsAndPlaysSelectedGrayscaleVideo()
+    {
+        const QString video = fixture_->path() + QStringLiteral("/assets/record-source.avi");
+        cv::VideoWriter writer(video.toStdString(), cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 10,
+                               cv::Size(320, 96));
+        QVERIFY2(writer.isOpened(), "The local MJPEG encoder is required for recording UI integration.");
+        cv::Mat frame(96, 320, CV_8UC3);
+        frame(cv::Rect(0, 0, 160, 96)).setTo(cv::Scalar(0, 0, 200));
+        frame(cv::Rect(160, 0, 160, 96)).setTo(cv::Scalar(220, 0, 0));
+        for (int i = 0; i < 30; ++i)
+            writer.write(frame);
+        writer.release();
+
+        auto *canvas = workbenchCanvas(window_.get());
+        auto *color = window_->findChild<QComboBox *>(QStringLiteral("inputColorMode"));
+        auto *stereo = window_->findChild<QComboBox *>(QStringLiteral("stereoView"));
+        auto *run = findButton(window_.get(), QStringLiteral("开始检测"));
+        auto *record = window_->findChild<QPushButton *>(QStringLiteral("recordButton"));
+        auto *recordings = window_->findChild<QTableWidget *>(QStringLiteral("recordingsTable"));
+        auto *play = window_->findChild<QPushButton *>(QStringLiteral("recordingPlayButton"));
+        auto *recordingCanvas = window_->findChild<ImageCanvas *>(QStringLiteral("recordingCanvas"));
+        QVERIFY(canvas && color && stereo && run && record && recordings && play && recordingCanvas);
+        QVERIFY(!record->isEnabled()); // Image batches cannot be recorded.
+        QVERIFY(selectVideo(window_.get(), video));
+        stereo->setCurrentIndex(stereo->findData(QStringLiteral("left")));
+        color->setCurrentIndex(color->findData(QStringLiteral("grayscale")));
+        QVERIFY(!record->isEnabled()); // Start the inference stream before recording.
+        QTest::mouseClick(run, Qt::LeftButton);
+        QTRY_VERIFY_WITH_TIMEOUT(!unexpectedDialog_.isEmpty() || record->isEnabled(), 45000);
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+        QTest::mouseClick(record, Qt::LeftButton);
+        QTRY_COMPARE_WITH_TIMEOUT(record->text(), QStringLiteral("结束录制"), 5000);
+        QTRY_VERIFY_WITH_TIMEOUT(!unexpectedDialog_.isEmpty() || canvas->result().frameNumber >= 4,
+                                 20000);
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+        QTest::mouseClick(record, Qt::LeftButton);
+
+        const QDir directory(fixture_->path() + QStringLiteral("/output/recordings"));
+        QTRY_COMPARE_WITH_TIMEOUT(directory.entryList({QStringLiteral("*.avi")}, QDir::Files).size(), 1,
+                                  20000);
+        QTRY_COMPARE_WITH_TIMEOUT(directory.entryList({QStringLiteral("*.json")}, QDir::Files).size(), 1,
+                                  20000);
+        QTRY_COMPARE_WITH_TIMEOUT(record->text(), QStringLiteral("开始录制"), 20000);
+        const QString fileName = directory.entryList({QStringLiteral("*.avi")}, QDir::Files).first();
+        const QString path = directory.filePath(fileName);
+        cv::VideoCapture capture(path.toStdString());
+        QVERIFY(capture.isOpened());
+        cv::Mat recorded;
+        QVERIFY(capture.read(recorded));
+        QCOMPARE(recorded.cols, 160);
+        QCOMPARE(recorded.rows, 96);
+        QCOMPARE(recorded.channels(), 3);
+        // MJPEG encodes grayscale as BGR. Most of the known flat image must remain
+        // neutral; colored prediction overlays may occupy a small part of it.
+        int neutralPixels = 0;
+        for (int y = 0; y < recorded.rows; ++y)
+            for (int x = 0; x < recorded.cols; ++x)
+            {
+                const auto pixel = recorded.at<cv::Vec3b>(y, x);
+                if (std::abs(int(pixel[0]) - int(pixel[1])) <= 4 &&
+                    std::abs(int(pixel[1]) - int(pixel[2])) <= 4)
+                    ++neutralPixels;
+            }
+        QVERIFY(neutralPixels > recorded.cols * recorded.rows / 2);
+        QFile sidecar(directory.filePath(QFileInfo(fileName).completeBaseName() + QStringLiteral(".json")));
+        QVERIFY(sidecar.open(QIODevice::ReadOnly));
+        const QByteArray originalMetadata = sidecar.readAll();
+        const QJsonObject metadata = QJsonDocument::fromJson(originalMetadata).object();
+        QVERIFY(metadata.value(QStringLiteral("frames")).toInt() > 0);
+        QVERIFY(metadata.value(QStringLiteral("fps")).toDouble() > 0);
+        QVERIFY(metadata.value(QStringLiteral("duration_seconds")).toDouble() > 0);
+        QCOMPARE(metadata.value(QStringLiteral("content_width")).toInt(), 160);
+        QCOMPARE(metadata.value(QStringLiteral("content_height")).toInt(), 96);
+        QCOMPARE(metadata.value(QStringLiteral("color_mode")).toString(), QStringLiteral("grayscale"));
+        QCOMPARE(metadata.value(QStringLiteral("stereo_view")).toString(), QStringLiteral("left"));
+        QVERIFY(directory.entryList({QStringLiteral("*.partial.avi")}, QDir::Files | QDir::Hidden).isEmpty());
+
+        auto *nav = findButton(window_.get(), QStringLiteral("录制视频"));
+        QVERIFY(nav);
+        QTest::mouseClick(nav, Qt::LeftButton);
+        QTRY_COMPARE_WITH_TIMEOUT(recordings->rowCount(), 1, 5000);
+        bool listed = false;
+        for (int column = 0; column < recordings->columnCount(); ++column)
+            if (auto *item = recordings->item(0, column))
+                listed |= item->text().contains(QFileInfo(fileName).completeBaseName()) ||
+                          item->toolTip().contains(path) || item->data(Qt::UserRole).toString() == path;
+        QVERIFY(listed);
+        recordings->setCurrentCell(0, 0);
+        recordings->selectRow(0);
+        QVERIFY(play->isEnabled());
+        QTest::mouseClick(play, Qt::LeftButton);
+        QTRY_VERIFY_WITH_TIMEOUT(!recordingCanvas->result().image.isNull(), 5000);
+        const QImage preview = recordingCanvas->result().image;
+        QCOMPARE(preview.size(), QSize(160, 96));
+        int neutralPreviewPixels = 0;
+        for (int y = 0; y < preview.height(); ++y)
+            for (int x = 0; x < preview.width(); ++x)
+            {
+                const QColor pixel = preview.pixelColor(x, y);
+                if (std::abs(pixel.red() - pixel.green()) <= 4 &&
+                    std::abs(pixel.green() - pixel.blue()) <= 4)
+                    ++neutralPreviewPixels;
+            }
+        QVERIFY(neutralPreviewPixels > preview.width() * preview.height() / 2);
+        window_->saveScreenshot(QStringLiteral(VISION_PROJECT_DIR) + QStringLiteral("/output/test-screenshots/1.3-recordings.png"));
+        if (play->text() == QStringLiteral("暂停播放"))
+            QTest::mouseClick(play, Qt::LeftButton);
+
+        auto *exportRecording = window_->findChild<QPushButton *>(QStringLiteral("exportRecordingButton"));
+        QVERIFY(exportRecording && exportRecording->isEnabled());
+        const QString exportedDirectory = fixture_->path() + QStringLiteral("/exported-recording");
+        QVERIFY(QDir().mkpath(exportedDirectory));
+        const QString exportedVideo = exportedDirectory + QStringLiteral("/recording-copy.avi");
+        QVERIFY(chooseDialogFile(exportRecording, exportedVideo));
+        QFile originalVideo(path);
+        QFile copiedVideo(exportedVideo);
+        QVERIFY(originalVideo.open(QIODevice::ReadOnly));
+        QVERIFY(copiedVideo.open(QIODevice::ReadOnly));
+        const QByteArray originalBytes = originalVideo.readAll();
+        QCOMPARE(copiedVideo.readAll(), originalBytes);
+        QFile copiedMetadata(exportedDirectory + QStringLiteral("/recording-copy.json"));
+        QVERIFY(copiedMetadata.open(QIODevice::ReadOnly));
+        QCOMPARE(copiedMetadata.readAll(), originalMetadata);
+
+        const QString invalidDestination = exportedDirectory + QStringLiteral("/invalid.json");
+        QVERIFY(chooseDialogFile(exportRecording, invalidDestination));
+        QVERIFY(!QFileInfo::exists(invalidDestination));
+        QVERIFY(!QFileInfo::exists(invalidDestination + QStringLiteral(".avi")));
+        QCOMPARE(QDir(exportedDirectory).entryList(QDir::Files).size(), 2);
+        QVERIFY(originalVideo.seek(0));
+        QCOMPARE(originalVideo.readAll(), originalBytes);
+        QVERIFY(sidecar.seek(0));
+        QCOMPARE(sidecar.readAll(), originalMetadata);
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
     }
 
   private:

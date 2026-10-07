@@ -9,7 +9,7 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
     app.setApplicationName("Vision Studio");
     app.setOrganizationName("VisionStudio");
-    app.setApplicationVersion("1.2.0");
+    app.setApplicationVersion("1.3.0");
     app.setWindowIcon(QIcon(":/app-icon.svg"));
     app.setStyle("Fusion");
     app.setFont(QFont("Noto Sans CJK SC", 10));

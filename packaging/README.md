@@ -7,7 +7,7 @@
 ## 安装与启动
 
 ```sh
-sudo apt install ./vision-studio_1.2.0-1_amd64.deb
+sudo apt install ./vision-studio_1.3.0-1_amd64.deb
 vision-studio
 ```
 
@@ -25,7 +25,7 @@ python3 packaging/build_deb.py \
   --runtime build/release-runtime
 ```
 
-默认产物在 `output/releases/`，staging 在 `output/deb-stage/1.2.0-1/`。已存在的 staging 和 `.deb` 会被拒绝覆盖；需要重打包时指定新的 `--stage` 和 `--output`。`--install-root` 可改变应用安装目录，默认 `/opt/VisionStudio`；编译时的生产资源根也应使用相同路径。`--compression zstd` 提供另一种 Ubuntu 支持的压缩方式，默认使用 xz。
+默认产物在 `output/releases/`，staging 在 `output/deb-stage/1.3.0-1/`。已存在的 staging 和 `.deb` 会被拒绝覆盖；需要重打包时指定新的 `--stage` 和 `--output`。`--install-root` 可改变应用安装目录，默认 `/opt/VisionStudio`；编译时的生产资源根也应使用相同路径。`--compression zstd` 提供另一种 Ubuntu 支持的压缩方式，默认使用 xz。
 
 构建脚本保留 ELF 依赖闭包需要的 Qt 运行库与图片、X11、Wayland、输入法及桌面文件对话框插件，重写为 `$ORIGIN` 相对 RUNPATH，去除 staging 内应用和 Qt 的调试符号。WebP/TIFF 等补充插件通过 `--extra-qt-plugins` 加入，必须匹配 Qt 6.8.3。
 
@@ -38,8 +38,8 @@ Python 包包含运行所需模块与授权资料，删除 pip、旧环境的 co
 包旁生成 SHA256 和 JSON manifest。发布前应运行 `packaging/verify_deb.py`，检查 ownership、RUNPATH、依赖与路径，再在解压树内以普通用户运行真实 ONNX、现代 `.pt`、旧版 YOLOv5 `.pt` 推理。安装到 `/opt` 后应用目录应保持不可写，导出结果必须写入用户目录。
 
 ```sh
-dpkg-deb --info output/releases/vision-studio_1.2.0-1_amd64.deb
-sha256sum -c output/releases/vision-studio_1.2.0-1_amd64.deb.sha256
+dpkg-deb --info output/releases/vision-studio_1.3.0-1_amd64.deb
+sha256sum -c output/releases/vision-studio_1.3.0-1_amd64.deb.sha256
 ```
 
 运行环境只读取选定的本地 `.pt`，不会根据文件名下载或替换权重。可用 `VISION_STUDIO_PYTHON` 指定另一个兼容的本地环境，用 `VISION_STUDIO_DATA_DIR` 指定测试或导出数据目录。`VISION_STUDIO_QT_HOME` 可选择自行构建的兼容 Qt 6.8.3 prefix（须包含 `lib/` 与 `plugins/`）；该环境的运行库优先于包内 Qt 加载，便于修改和替换动态链接库。发布授权、模型来源及第三方许可见包内 `/usr/share/doc/vision-studio/copyright` 和 `licenses/`，以及 `docs/release/`。发布时应同时提供相应的应用和 Qt 源码资料。

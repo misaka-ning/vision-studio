@@ -8,6 +8,7 @@
 #include <QComboBox>
 #include <QDateTime>
 #include <QDebug>
+#include <QDesktopServices>
 #include <QDir>
 #include <QDoubleSpinBox>
 #include <QFileDialog>
@@ -42,7 +43,11 @@
 #include <QThread>
 #include <QTimer>
 #include <QVBoxLayout>
+#include <QUrl>
 #include <algorithm>
+#include <cmath>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/videoio.hpp>
 
 namespace
 {
@@ -200,21 +205,24 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     header->addSpacing(12);
     demoButton_ = button("运行示例", "play");
     demoButton_->setToolTip("选择 ONNX 或 PT 示例，使用真实模型检测示例图片");
-    header->addWidget(demoButton_);
+    demoButton_->setObjectName("demoButton");
     auto *demoMenu = new QMenu(demoButton_);
     demoMenu->addAction("ONNX · YOLOv5 Nano", this, &MainWindow::runDemo);
     demoMenu->addAction("PT · YOLOv8 Nano", this, &MainWindow::runPtDemo);
     demoButton_->setMenu(demoMenu);
     exportButton_ = button("导出结果", "export");
     exportButton_->setEnabled(false);
-    header->addWidget(exportButton_);
+    exportButton_->setObjectName("exportResultButton");
     connect(exportButton_, &QPushButton::clicked, this, &MainWindow::exportResult);
     w->addLayout(header);
     pages_ = new QStackedWidget;
+    pages_->setObjectName("workspacePages");
     pages_->addWidget(buildWorkbench());
     pages_->addWidget(buildModels());
     pages_->addWidget(buildHistory());
     pages_->addWidget(buildGuide());
+    pages_->addWidget(buildRecordings());
+    pages_->addWidget(buildMore());
     w->addWidget(pages_, 1);
     auto *footer = new QFrame;
     footer->setObjectName("footer");
@@ -296,6 +304,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     }
     refreshModelLibrary();
     refreshHistory();
+    refreshRecordings();
     selectRoute(0);
     updateTaskUi();
     auto shortcut = [this](const QKeySequence &keys, auto action)
@@ -337,6 +346,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 }
 MainWindow::~MainWindow()
 {
+    stopRecordingPlayback();
     worker_->requestStop();
     workerThread_->quit();
     workerThread_->wait();
@@ -432,14 +442,14 @@ QWidget *MainWindow::buildSidebar()
     brand->addWidget(text("Vision", "brand"));
     brand->addStretch();
     l->addLayout(brand);
-    auto *cap = text("STUDIO  /  V1.2", "brandCaption");
+    auto *cap = text("STUDIO  /  V1.3", "brandCaption");
     cap->setContentsMargins(4, 4, 0, 0);
     l->addWidget(cap);
     l->addSpacing(38);
     l->addWidget(text("工作空间", "eyebrow"));
     l->addSpacing(5);
-    const QStringList titles = {"检测工作台", "模型库", "运行记录", "使用指南"};
-    const QStringList icons = {"work", "model", "history", "help"};
+    const QStringList titles = {"检测工作台", "模型库", "运行记录", "使用指南", "录制视频", "更多"};
+    const QStringList icons = {"work", "model", "history", "help", "video", "more"};
     for (int i = 0; i < titles.size(); ++i)
     {
         auto *b = button(titles[i], icons[i], "nav");
@@ -467,6 +477,7 @@ QWidget *MainWindow::buildSidebar()
 QWidget *MainWindow::buildWorkbench()
 {
     auto *page = new QWidget;
+    page->setObjectName("workbenchPage");
     auto *all = new QVBoxLayout(page);
     all->setContentsMargins(0, 0, 0, 0);
     all->setSpacing(16);
@@ -555,7 +566,7 @@ QWidget *MainWindow::buildWorkbench()
     inputColorMode_->addItem("灰度 · 明度", "grayscale");
     inputColorMode_->setAccessibleName("输入颜色");
     inputColorMode_->setToolTip("选择模型实际接收的颜色。灰度会转换为明度：单通道模型直接使用，三通道模型复制"
-                                "为三个相同通道。原图预览保持原始颜色。");
+                                "为三个相同通道。预览同步显示所选颜色模式。");
     sourceOptions->addRow("输入颜色", inputColorMode_);
     stereoView_ = new QComboBox;
     stereoView_->setObjectName("stereoView");
@@ -724,8 +735,23 @@ QWidget *MainWindow::buildWorkbench()
     actual->setToolTip("原始像素大小");
     tl->addWidget(actual);
     cf->addWidget(toolbar);
+    auto *recordingRow = new QHBoxLayout;
+    recordingRow->setContentsMargins(14, 7, 12, 7);
+    recordingStatus_ = text("视频 / 摄像头检测时可录制", "tiny");
+    recordingStatus_->setObjectName("recordingStatus");
+    recordingRow->addWidget(recordingStatus_, 1);
+    recordButton_ = button("开始录制", "record");
+    recordButton_->setObjectName("recordButton");
+    recordButton_->setEnabled(false);
+    recordButton_->setToolTip("先开始视频或摄像头检测，再点击录制。再次点击结束并保存到录制视频页。");
+    recordingRow->addWidget(recordButton_);
+    cf->addLayout(recordingRow);
+    connect(recordButton_, &QPushButton::clicked, this, &MainWindow::toggleRecording);
+    recordingClock_ = new QTimer(this);
+    recordingClock_->setInterval(250);
+    connect(recordingClock_, &QTimer::timeout, this, &MainWindow::updateRecordingUi);
     canvas_ = new ImageCanvas;
-    canvas_->setMinimumHeight(330);
+    canvas_->setMinimumHeight(280);
     cf->addWidget(canvas_, 1);
     auto *cb = new QHBoxLayout;
     cb->setContentsMargins(14, 9, 14, 9);
@@ -790,7 +816,8 @@ QWidget *MainWindow::buildWorkbench()
                 {
                     vision::InferenceResult r;
                     r.source = files_[row];
-                    r.image = readImage(r.source);
+                    r.originalImage = readImage(r.source);
+                    r.image = vision::inputPreviewImage(r.originalImage, currentConfig().colorMode);
                     if (!r.image.isNull())
                     {
                         lastResult_ = {};
@@ -856,6 +883,7 @@ QWidget *MainWindow::buildWorkbench()
             [this]
             {
                 updateTaskUi();
+                updateInputPreview();
                 persist();
             });
     connect(stereoView_, &QComboBox::currentIndexChanged, this,
@@ -1008,6 +1036,367 @@ QWidget *MainWindow::buildHistory()
     l->addWidget(historyHint);
     return page;
 }
+QWidget *MainWindow::buildMore()
+{
+    auto *page = new QWidget;
+    page->setObjectName("morePage");
+    auto *layout = new QVBoxLayout(page);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(16);
+    auto *examples = card();
+    auto *exampleLayout = new QVBoxLayout(examples);
+    exampleLayout->setContentsMargins(24, 22, 24, 22);
+    exampleLayout->setSpacing(12);
+    exampleLayout->addWidget(text("运行示例", "modelName"));
+    auto *exampleHint = text("选择本地 ONNX 或 PT 示例，体验真实 YOLO 检测。运行后自动返回检测工作台。", "muted");
+    exampleHint->setWordWrap(true);
+    exampleLayout->addWidget(exampleHint);
+    exampleLayout->addWidget(demoButton_, 0, Qt::AlignLeft);
+    layout->addWidget(examples);
+    auto *exports = card();
+    auto *exportLayout = new QVBoxLayout(exports);
+    exportLayout->setContentsMargins(24, 22, 24, 22);
+    exportLayout->setSpacing(12);
+    exportLayout->addWidget(text("导出检测结果", "modelName"));
+    auto *exportHint = text("将当前检测结果保存为标注 PNG、JSON 和 CSV。请先在工作台完成检测；也可使用 Ctrl + E。", "muted");
+    exportHint->setWordWrap(true);
+    exportLayout->addWidget(exportHint);
+    exportLayout->addWidget(exportButton_, 0, Qt::AlignLeft);
+    layout->addWidget(exports);
+    layout->addStretch();
+    return page;
+}
+
+QWidget *MainWindow::buildRecordings()
+{
+    auto *page = new QWidget;
+    page->setObjectName("recordingsPage");
+    auto *layout = new QVBoxLayout(page);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(14);
+    auto *actions = new QHBoxLayout;
+    recordingsCount_ = text("本地录像 · 0 个文件", "sectionTitle");
+    actions->addWidget(recordingsCount_, 1);
+    auto *refresh = button("刷新", "history");
+    refresh->setObjectName("refreshRecordingsButton");
+    connect(refresh, &QPushButton::clicked, this, &MainWindow::refreshRecordings);
+    actions->addWidget(refresh);
+    auto *folder = button("打开文件夹", "folder");
+    folder->setObjectName("openRecordingsFolderButton");
+    connect(folder, &QPushButton::clicked, this, [this]
+            {
+                const QString directory = dataRoot_ + "/recordings";
+                if (!QDir().mkpath(directory) || !QDesktopServices::openUrl(QUrl::fromLocalFile(directory)))
+                    showNotice("无法打开录像文件夹：" + directory, true);
+            });
+    actions->addWidget(folder);
+    layout->addLayout(actions);
+    auto *split = new QSplitter(Qt::Horizontal);
+    auto *list = card();
+    auto *listLayout = new QVBoxLayout(list);
+    listLayout->setContentsMargins(12, 12, 12, 12);
+    recordingsTable_ = new QTableWidget(0, 4);
+    recordingsTable_->setObjectName("recordingsTable");
+    recordingsTable_->setHorizontalHeaderLabels({"录像 / 时间", "时长", "分辨率", "大小"});
+    tableStyle(recordingsTable_);
+    recordingsTable_->setWordWrap(false);
+    recordingsTable_->verticalHeader()->setDefaultSectionSize(58);
+    recordingsTable_->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    recordingsTable_->setColumnWidth(1, 72);
+    recordingsTable_->setColumnWidth(2, 96);
+    recordingsTable_->setColumnWidth(3, 72);
+    listLayout->addWidget(recordingsTable_);
+    connect(recordingsTable_, &QTableWidget::itemSelectionChanged, this, &MainWindow::selectRecording);
+    split->addWidget(list);
+    auto *viewer = card();
+    auto *viewerLayout = new QVBoxLayout(viewer);
+    viewerLayout->setContentsMargins(12, 12, 12, 12);
+    viewerLayout->setSpacing(12);
+    viewerLayout->addWidget(text("录像预览", "sectionTitle"));
+    recordingCanvas_ = new ImageCanvas;
+    recordingCanvas_->setObjectName("recordingCanvas");
+    recordingCanvas_->setAcceptDrops(false);
+    recordingCanvas_->setBoxesVisible(false);
+    recordingCanvas_->setLabelsVisible(false);
+    viewerLayout->addWidget(recordingCanvas_, 1);
+    recordingDetails_ = text("在工作台开始视频或摄像头检测，再点击「开始录制」。", "muted");
+    recordingDetails_->setWordWrap(true);
+    viewerLayout->addWidget(recordingDetails_);
+    auto *playActions = new QHBoxLayout;
+    recordingPlayButton_ = button("播放录像", "play");
+    recordingPlayButton_->setObjectName("recordingPlayButton");
+    recordingPlayButton_->setEnabled(false);
+    connect(recordingPlayButton_, &QPushButton::clicked, this, &MainWindow::toggleRecordingPlayback);
+    playActions->addWidget(recordingPlayButton_);
+    exportRecordingButton_ = button("导出录像", "export");
+    exportRecordingButton_->setObjectName("exportRecordingButton");
+    exportRecordingButton_->setEnabled(false);
+    connect(exportRecordingButton_, &QPushButton::clicked, this, &MainWindow::exportRecording);
+    playActions->addWidget(exportRecordingButton_);
+    playActions->addStretch();
+    viewerLayout->addLayout(playActions);
+    split->addWidget(viewer);
+    split->setStretchFactor(0, 1);
+    split->setStretchFactor(1, 1);
+    layout->addWidget(split, 1);
+    auto *hint = text("录像保存为 MJPEG AVI，包含所选画面和检测标注。停止录制或结束检测后自动保存。", "tiny");
+    hint->setWordWrap(true);
+    hint->setToolTip(dataRoot_ + "/recordings");
+    layout->addWidget(hint);
+    playbackTimer_ = new QTimer(this);
+    connect(playbackTimer_, &QTimer::timeout, this, &MainWindow::readRecordingFrame);
+    return page;
+}
+
+void MainWindow::updateInputPreview()
+{
+    if (busy_ || !canvas_)
+        return;
+    const auto mode = currentConfig().colorMode;
+    for (int index = 0; index < queue_->count(); ++index)
+    {
+        auto *item = queue_->item(index);
+        const QImage thumbnail = item->data(Qt::UserRole + 1).value<QImage>();
+        if (!thumbnail.isNull())
+            item->setIcon(QIcon(QPixmap::fromImage(vision::inputPreviewImage(thumbnail, mode))));
+    }
+    auto preview = canvas_->result();
+    if (preview.image.isNull())
+        return;
+    if (preview.originalImage.isNull())
+        preview.originalImage = preview.image;
+    preview.image = vision::inputPreviewImage(preview.originalImage, mode);
+    preview.predictions.clear();
+    lastResult_ = {};
+    canvas_->setResult(preview);
+    predictionTable_->setRowCount(0);
+    emptyResults_->show();
+    exportButton_->setEnabled(false);
+    countMetric_->setText("—");
+    latencyMetric_->setText("—");
+    classMetric_->setText("—");
+    resultInfo_->setText(mode == vision::InputColorMode::Grayscale ? "灰度预览已就绪，点击开始检测。"
+                                                                 : "彩色预览已就绪，点击开始检测。");
+}
+
+void MainWindow::toggleRecording()
+{
+    if (!busy_ || sourceKind_ == vision::SourceKind::Images || recordingStopping_ || inferenceStopping_ || failed_)
+        return;
+    if (recordingRequested_ || recordingActive_)
+    {
+        recordingRequested_ = false;
+        recordingStopping_ = recordingActive_;
+        worker_->requestStopRecording();
+    }
+    else
+    {
+        recordingRequested_ = true;
+        worker_->requestStartRecording();
+    }
+    updateRecordingUi();
+}
+
+void MainWindow::updateRecordingUi()
+{
+    if (!recordButton_)
+        return;
+    const bool recording = recordingRequested_ || recordingActive_;
+    recordButton_->setText(recordingStopping_ ? "正在保存…" : (recording ? "结束录制" : "开始录制"));
+    recordButton_->setIcon(ui::icon(recording ? "stop" : "record", recording ? QColor("#ffb0b0") : QColor("#a9bccc")));
+    recordButton_->setEnabled(busy_ && sourceKind_ != vision::SourceKind::Images && !recordingStopping_ && !inferenceStopping_ && !failed_);
+    recordButton_->setStyleSheet(recording ? "background:#432831; border-color:#8b4855; color:#ffb7b7;" : "");
+    recordingStatus_->setStyleSheet(recording ? "color:#ffacb0; font-size:11px;" : "");
+    if (recordingStopping_)
+        recordingStatus_->setText("正在完成录像文件…");
+    else if (recordingActive_)
+    {
+        const qint64 seconds = recordingElapsed_.elapsed() / 1000;
+        recordingStatus_->setText(QString("● REC  %1:%2").arg(seconds / 60, 2, 10, QChar('0')).arg(seconds % 60, 2, 10, QChar('0')));
+    }
+    else if (recordingRequested_)
+        recordingStatus_->setText("等待下一帧开始录制…");
+    else
+        recordingStatus_->setText(busy_ && sourceKind_ != vision::SourceKind::Images ? "可录制当前检测画面"
+                                                                                  : "视频 / 摄像头检测时可录制");
+}
+
+void MainWindow::refreshRecordings()
+{
+    if (!recordingsTable_)
+        return;
+    const QString selected = playbackPath_;
+    const QDir directory(dataRoot_ + "/recordings");
+    const auto files = directory.entryInfoList({"*.avi"}, QDir::Files, QDir::Time);
+    const QSignalBlocker blocker(recordingsTable_);
+    recordingsTable_->setRowCount(files.size());
+    int selection = files.isEmpty() ? -1 : 0;
+    for (int row = 0; row < files.size(); ++row)
+    {
+        const auto &file = files[row];
+        QFile meta(file.absolutePath() + "/" + file.completeBaseName() + ".json");
+        QJsonObject metadata;
+        if (meta.open(QIODevice::ReadOnly))
+            metadata = QJsonDocument::fromJson(meta.readAll()).object();
+        const double fps = metadata.value("fps").toDouble();
+        const double duration = metadata.value("duration_seconds").toDouble(fps > 0 ? metadata.value("frames").toDouble() / fps : 0);
+        const int width = metadata.value("content_width").toInt(metadata.value("width").toInt());
+        const int height = metadata.value("content_height").toInt(metadata.value("height").toInt());
+        const QStringList values = {
+            file.lastModified().toString("yyyy-MM-dd HH:mm:ss") + "\n" + file.fileName(),
+            duration > 0 ? QString::number(duration, 'f', 1) + " s" : "—",
+            width > 0 && height > 0 ? QString("%1×%2").arg(width).arg(height) : "—",
+            QString::number(file.size() / 1048576.0, 'f', 1) + " MB"};
+        for (int column = 0; column < values.size(); ++column)
+        {
+            auto *item = new QTableWidgetItem(values[column]);
+            item->setData(Qt::UserRole, file.absoluteFilePath());
+            item->setToolTip(file.absoluteFilePath());
+            recordingsTable_->setItem(row, column, item);
+        }
+        if (file.absoluteFilePath() == selected)
+            selection = row;
+    }
+    recordingsCount_->setText(QString("本地录像 · %1 个文件").arg(files.size()));
+    if (selection >= 0)
+        recordingsTable_->setCurrentCell(selection, 0);
+    // Signals are blocked while rebuilding rows; load the final selection once.
+    selectRecording();
+}
+
+void MainWindow::selectRecording()
+{
+    stopRecordingPlayback();
+    const int row = recordingsTable_->currentRow();
+    if (row < 0 || !recordingsTable_->item(row, 0))
+    {
+        playbackPath_.clear();
+        recordingCanvas_->clear();
+        recordingPlayButton_->setEnabled(false);
+        exportRecordingButton_->setEnabled(false);
+        recordingDetails_->setText("还没有录像。在工作台检测视频或摄像头时，点击「开始录制」。");
+        return;
+    }
+    playbackPath_ = recordingsTable_->item(row, 0)->data(Qt::UserRole).toString();
+    QFile file(QFileInfo(playbackPath_).absolutePath() + "/" + QFileInfo(playbackPath_).completeBaseName() + ".json");
+    QJsonObject metadata;
+    if (file.open(QIODevice::ReadOnly))
+        metadata = QJsonDocument::fromJson(file.readAll()).object();
+    playbackContentSize_ = QSize(metadata.value("content_width").toInt(metadata.value("width").toInt()),
+                                 metadata.value("content_height").toInt(metadata.value("height").toInt()));
+    playbackCapture_ = std::make_unique<cv::VideoCapture>(QFile::encodeName(playbackPath_).constData());
+    const bool opened = playbackCapture_->isOpened();
+    recordingPlayButton_->setEnabled(opened);
+    exportRecordingButton_->setEnabled(QFileInfo(playbackPath_).isFile());
+    if (!opened)
+    {
+        recordingCanvas_->clear();
+        recordingDetails_->setText("无法解码此录像，请检查文件是否完整。");
+        return;
+    }
+    const QString color = metadata.value("color_mode").toString() == "grayscale" ? "灰度" : "彩色";
+    recordingDetails_->setText(QString("%1 · %2 · %3 fps\n%4")
+                                  .arg(stereoName(stereoMode(metadata.value("stereo_view").toString())))
+                                  .arg(color)
+                                  .arg(playbackCapture_->get(cv::CAP_PROP_FPS), 0, 'f', 1)
+                                  .arg(QFileInfo(playbackPath_).fileName()));
+    readRecordingFrame();
+}
+
+void MainWindow::toggleRecordingPlayback()
+{
+    if (playbackTimer_->isActive())
+    {
+        playbackTimer_->stop();
+        recordingPlayButton_->setText("播放录像");
+        return;
+    }
+    if (playbackPath_.isEmpty())
+        return;
+    if (!playbackCapture_ || !playbackCapture_->isOpened())
+        playbackCapture_ = std::make_unique<cv::VideoCapture>(QFile::encodeName(playbackPath_).constData());
+    if (!playbackCapture_->isOpened())
+        return;
+    const double rawFps = playbackCapture_->get(cv::CAP_PROP_FPS);
+    const double fps = std::isfinite(rawFps) && rawFps >= .001 ? rawFps : 25;
+    playbackTimer_->start(std::max(1, int(std::round(1000 / std::min(fps, 1000.0)))));
+    recordingPlayButton_->setText("暂停播放");
+}
+
+void MainWindow::readRecordingFrame()
+{
+    if (!playbackCapture_ || !playbackCapture_->isOpened())
+        return;
+    cv::Mat frame;
+    if (!playbackCapture_->read(frame) || frame.empty())
+    {
+        playbackCapture_->set(cv::CAP_PROP_POS_FRAMES, 0);
+        playbackTimer_->stop();
+        recordingPlayButton_->setText("播放录像");
+        return;
+    }
+    cv::Mat rgb;
+    cv::cvtColor(frame, rgb, cv::COLOR_BGR2RGB);
+    QImage image = QImage(rgb.data, rgb.cols, rgb.rows, qsizetype(rgb.step), QImage::Format_RGB888).copy();
+    if (playbackContentSize_.isValid() && playbackContentSize_.width() <= image.width() && playbackContentSize_.height() <= image.height())
+        image = image.copy(QRect(QPoint(), playbackContentSize_));
+    vision::InferenceResult preview;
+    preview.source = playbackPath_;
+    preview.image = image;
+    recordingCanvas_->setResult(preview);
+}
+
+void MainWindow::stopRecordingPlayback()
+{
+    if (playbackTimer_)
+        playbackTimer_->stop();
+    if (playbackCapture_)
+        playbackCapture_->release();
+    if (recordingPlayButton_)
+        recordingPlayButton_->setText("播放录像");
+}
+
+void MainWindow::exportRecording()
+{
+    if (!QFileInfo(playbackPath_).isFile())
+        return;
+    const QString destination = QFileDialog::getSaveFileName(this, "导出录像", QDir::homePath() + "/" + QFileInfo(playbackPath_).fileName(), "AVI 视频 (*.avi)");
+    if (destination.isEmpty() || QFileInfo(destination).canonicalFilePath() == QFileInfo(playbackPath_).canonicalFilePath())
+        return;
+    if (QFileInfo(destination).suffix().compare("avi", Qt::CaseInsensitive) != 0)
+    {
+        showNotice("请将录像保存为 .avi 文件。", true);
+        return;
+    }
+    QFile source(playbackPath_);
+    QSaveFile target(destination);
+    if (!source.open(QIODevice::ReadOnly) || !target.open(QIODevice::WriteOnly))
+    {
+        showNotice("无法导出录像，请检查保存位置。", true);
+        return;
+    }
+    while (!source.atEnd())
+    {
+        const QByteArray block = source.read(1024 * 1024);
+        if (block.isEmpty() || target.write(block) != block.size())
+        {
+            showNotice("录像写入失败，文件未提交。", true);
+            return;
+        }
+    }
+    if (!target.commit())
+    {
+        showNotice("录像保存失败：" + target.errorString(), true);
+        return;
+    }
+    QFile meta(QFileInfo(playbackPath_).absolutePath() + "/" + QFileInfo(playbackPath_).completeBaseName() + ".json");
+    QString error;
+    if (meta.open(QIODevice::ReadOnly) && !atomicWrite(QFileInfo(destination).absolutePath() + "/" + QFileInfo(destination).completeBaseName() + ".json", meta.readAll(), &error))
+        showNotice("录像已导出，元数据未保存：" + error, true);
+    else
+        showNotice("录像已导出：" + destination);
+}
+
 QWidget *MainWindow::buildGuide()
 {
     auto *f = card();
@@ -1018,13 +1407,13 @@ QWidget *MainWindow::buildGuide()
     html->setHtml(R"(
     <style>h1{color:#e3f3f1;font-size:24px}h2{color:#56d8bd;font-size:16px;margin-top:26px}p,li{line-height:1.7;color:#a5bacb;font-size:13px}code{color:#c9e4dd}a{color:#56d8bd}</style>
     <h1>让你的视觉模型，真正运行起来。</h1><p>Vision Studio 是一个原生 C++ / Qt 桌面工作台。模型加载、图像处理与推理均在本机完成。</p>
-    <h2>01 / 开始你的第一次检测</h2><p>右上角“运行示例”可选择 ONNX / PT 示例。使用自己的模型时，导入 ONNX 或 PT，然后选择图片、文件夹、视频或摄像头，点击“开始检测”。PT 使用本机独立 PyTorch 环境直接推理，无需手动导出。</p>
+    <h2>01 / 开始你的第一次检测</h2><p>“更多”页的“运行示例”可选择 ONNX / PT 示例。使用自己的模型时，导入 ONNX 或 PT，然后选择图片、文件夹、视频或摄像头，点击“开始检测”。PT 使用本机独立 PyTorch 环境直接推理，无需手动导出。</p>
     <h2>PT 模型</h2><p>Ultralytics YOLO 的 PT 检查点会自动读取任务和类别名称，预处理由原生后端执行。支持的旧版 YOLOv5 权重使用随附的本地兼容模块。只包含 state_dict 的任意 PT 文件无法单独重建网络，需要原始模型架构。分割、姿态和旋转框输出暂不支持。</p>
     <h2>02 / 正确匹配模型</h2><p>YOLOv5：原始输出 <code>[1,N,5+C]</code>，包含 objectness。YOLOv8 / YOLO11：原始输出 <code>[1,4+C,N]</code>。模型应为 batch=1、固定正方形输入、FP32、不包含 NMS。输入尺寸必须与导出模型一致。分割、姿态、旋转框和端到端输出暂不支持。</p>
     <p>默认 640 px、RGB、1/255 缩放、零均值，适合常见 YOLO 模型。自定义检测模型必须导入数量匹配的 UTF-8 标签文本，每行一个名称，并保持训练时类别顺序。未导入标签时按 COCO 80 类解释检测输出。分类模型未配置标签时显示数字类别。</p>
     <h2>03 / 调整结果与预处理</h2><p>置信度越高，保留的目标越少；NMS IoU 控制同类重叠框的抑制。不同类别独立执行 NMS。检测输入使用 letterbox 保持比例，并将框映射回原图。分类使用正方形缩放和 top-5 输出，可在“预处理设置”调整缩放和均值；本版不提供逐通道标准差除法。</p>
-    <p>输入源区域可直接选择 RGB、BGR 或灰度。灰度转换为图像明度：单通道模型直接接收灰度，三通道模型接收三个相同的灰度通道。ONNX 灰度输入统一使用“灰度均值”，G/B 均值不再分别参与计算；PT 可选 RGB 或灰度，归一化和零均值由原生后端执行。原图预览保持原始颜色，模型载入后会显示实际输入通道数。</p>
-    <h2>04 / 批量、视频与摄像头</h2><p>文件夹模式扫描当前目录内的常见图片格式，逐张推理。视频与摄像头连续处理每帧；CPU 性能决定速度，界面预览限流。点击“停止运行”结束任务。视频导出保存当前帧，完整标注视频录制不在本版范围内。</p>
+    <p>输入源区域可直接选择 RGB、BGR 或灰度。灰度转换为图像明度：单通道模型直接接收灰度，三通道模型接收三个相同的灰度通道。ONNX 灰度输入统一使用“灰度均值”，G/B 均值不再分别参与计算；PT 可选 RGB 或灰度，归一化和零均值由原生后端执行。灰度模式同步显示灰度预览，模型载入后会显示实际输入通道数。</p>
+    <h2>04 / 批量、视频与摄像头</h2><p>文件夹模式扫描当前目录内的常见图片格式，逐张推理。视频与摄像头连续处理每帧；CPU 性能决定速度，界面预览限流。点击“停止运行”结束任务。“更多”页可导出当前帧。视频或摄像头检测时可点击“开始录制”，再次点击结束；“录制视频”页可查看、播放及导出带检测标注的录像。</p>
     <p>单设备左右并排（SBS）的双目摄像头或视频可选“完整画面”“双目左目”“双目右目”。选择单目时，沿水平中线裁出所选眼，再执行预览、推理和导出；结果坐标以该单目图像为基准，JSON 同时记录原始双目画面尺寸。普通图片始终使用完整图像。运行中画面选择锁定，停止后可切换。</p>
     <h2>05 / 保存你的洞察</h2><p>导出结果会生成标注 PNG、包含原始像素坐标的 JSON，以及可用于表格分析的 CSV。启用自动保存后，批量任务为每张图片保存结果，流式任务在结束时保存最后一帧。设置和运行记录自动保存在用户数据目录。</p>
     <h2>键盘与画布</h2><p><code>Ctrl+O</code> 添加图片　<code>Ctrl+M</code> 导入模型　<code>Ctrl+R</code> 开始　<code>Ctrl+E</code> 导出　<code>Esc</code> 停止<br>滚轮缩放，拖动画布平移，双击适应画布，点击检测框或结果列表定位目标。</p>
@@ -1084,6 +1473,34 @@ void MainWindow::connectWorker()
                     QMessageBox::warning(this, "推理未完成", s);
             });
     connect(worker_, &vision::InferenceWorker::finished, this, &MainWindow::onFinished);
+    connect(worker_, &vision::InferenceWorker::recordingStarted, this, [this](const QString &)
+            {
+                recordingActive_ = true;
+                recordingElapsed_.restart();
+                recordingClock_->start();
+                if (!recordingRequested_)
+                {
+                    recordingStopping_ = true;
+                    worker_->requestStopRecording();
+                }
+                updateRecordingUi();
+            });
+    connect(worker_, &vision::InferenceWorker::recordingFinished, this,
+            [this](const QString &path, qint64 frames, double)
+            {
+                recordingRequested_ = recordingActive_ = recordingStopping_ = false;
+                recordingClock_->stop();
+                refreshRecordings();
+                updateRecordingUi();
+                showNotice(QString("录制已保存 · %1 帧 · %2").arg(frames).arg(QFileInfo(path).fileName()));
+            });
+    connect(worker_, &vision::InferenceWorker::recordingFailed, this, [this](const QString &error)
+            {
+                recordingRequested_ = recordingActive_ = recordingStopping_ = false;
+                recordingClock_->stop();
+                updateRecordingUi();
+                showNotice("录制未保存：" + error, true);
+            });
     workerThread_->start();
 }
 
@@ -1137,6 +1554,7 @@ void MainWindow::chooseVideo()
     emptyResults_->show();
     exportButton_->setEnabled(false);
     updateSourceUi();
+    updateRecordingUi();
 }
 void MainWindow::chooseCamera()
 {
@@ -1175,6 +1593,7 @@ void MainWindow::updateSourceUi()
             sizeMetric_->setText("—");
         resultInfo_->setText("输入已就绪，点击开始检测。");
     }
+    updateRecordingUi();
 }
 
 void MainWindow::addFiles(const QStringList &input)
@@ -1200,9 +1619,10 @@ void MainWindow::addFiles(const QStringList &input)
         if (first < 0)
             first = files_.size();
         files_.append(absolute);
-        auto *item = new QListWidgetItem(
-            QIcon(QPixmap::fromImage(img.scaled(64, 46, Qt::KeepAspectRatio, Qt::SmoothTransformation))),
-            QFileInfo(p).fileName());
+        const QImage thumbnail = img.scaled(64, 46, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        auto *item = new QListWidgetItem(QIcon(QPixmap::fromImage(
+            vision::inputPreviewImage(thumbnail, currentConfig().colorMode))), QFileInfo(p).fileName());
+        item->setData(Qt::UserRole + 1, thumbnail);
         item->setToolTip(absolute);
         queue_->addItem(item);
     }
@@ -1341,6 +1761,7 @@ void MainWindow::startInference()
     req.cameraIndex = cameraIndex_->value();
     req.files = sourceKind_ == vision::SourceKind::Video ? QStringList{streamPath_} : files_;
     failed_ = false;
+    inferenceStopping_ = false;
     lastError_.clear();
     completed_ = 0;
     lastResult_ = {};
@@ -1356,6 +1777,7 @@ void MainWindow::startInference()
     classMetric_->setText("—");
     setBusy(true);
     persist();
+    worker_->prepareRecording(dataRoot_ + "/recordings");
     worker_->prepare();
     emit startRequested(req);
 }
@@ -1363,13 +1785,19 @@ void MainWindow::stopInference()
 {
     if (!busy_)
         return;
+    inferenceStopping_ = true;
+    recordingRequested_ = false;
+    recordingStopping_ = recordingActive_;
     worker_->requestStop();
+    updateRecordingUi();
     stopButton_->setEnabled(false);
     showNotice("正在停止，请等待当前帧处理完成…");
 }
 void MainWindow::setBusy(bool busy)
 {
     busy_ = busy;
+    if (!busy)
+        inferenceStopping_ = false;
     for (auto *c : lockedControls_)
         c->setEnabled(!busy);
     demoButton_->setEnabled(!busy);
@@ -1381,6 +1809,7 @@ void MainWindow::setBusy(bool busy)
     stereoView_->setEnabled(!busy && sourceKind_ != vision::SourceKind::Images);
     progress_->setVisible(busy);
     updateTaskUi();
+    updateRecordingUi();
     if (busy)
     {
         progress_->setRange(0, 0);
@@ -1522,6 +1951,8 @@ void MainWindow::onResult(const vision::InferenceResult &r)
 }
 void MainWindow::onFinished(bool cancelled)
 {
+    recordingRequested_ = recordingActive_ = recordingStopping_ = false;
+    recordingClock_->stop();
     if (sourceKind_ != vision::SourceKind::Images && !lastResult_.image.isNull())
     {
         recordResult(lastResult_);
@@ -1711,7 +2142,7 @@ bool MainWindow::writeResult(const vision::InferenceResult &r, const QString &di
                              {"preprocess", preprocess}};
     QJsonObject root{
         {"application", "Vision Studio"},
-        {"version", "1.2.0"},
+        {"version", "1.3.0"},
         {"timestamp", QDateTime::currentDateTime().toString(Qt::ISODateWithMs)},
         {"source", r.source},
         {"model", r.modelName},
@@ -1830,20 +2261,23 @@ void MainWindow::selectRoute(int index)
     if (!pages_ || index < 0 || index >= pages_->count())
         return;
     pages_->setCurrentIndex(index);
+    if (index != 4)
+        stopRecordingPlayback();
+    else
+        refreshRecordings();
     for (int i = 0; i < navButtons_.size(); ++i)
     {
         navButtons_[i]->setChecked(i == index);
-        navButtons_[i]->setIcon(ui::icon(QStringList{"work", "model", "history", "help"}[i],
+        navButtons_[i]->setIcon(ui::icon(QStringList{"work", "model", "history", "help", "video", "more"}[i],
                                          QColor(i == index ? "#50d9bf" : "#8297aa")));
     }
-    const QStringList titles = {"检测工作台", "模型库", "运行记录", "使用指南"};
+    const QStringList titles = {"检测工作台", "模型库", "运行记录", "使用指南", "录制视频", "更多"};
     const QStringList descriptions = {
         "从输入到洞察，让每一次视觉推理清晰可见。", "管理本地模型，让每一个实验都有清晰的起点。",
-        "回看每一次推理，沉淀可追溯的运行数据。", "从模型配置到结果导出，掌握完整的工作流程。"};
+        "回看每一次推理，沉淀可追溯的运行数据。", "从模型配置到结果导出，掌握完整的工作流程。",
+        "查看、播放和导出已保存的检测录像。", "示例体验与检测结果导出，集中在这里。"};
     pageTitle_->setText(titles[index]);
     pageSubtitle_->setText(descriptions[index]);
-    exportButton_->setVisible(index == 0);
-    demoButton_->setVisible(index == 0);
 }
 void MainWindow::showNotice(const QString &s, bool error)
 {

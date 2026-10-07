@@ -117,6 +117,7 @@ class PtBackendTests final : public QObject
     void verifyDetection(const vision::InferenceResult &result, const QSize &size)
     {
         QCOMPARE(result.image.size(), size);
+        QCOMPARE(result.originalImage.size(), size);
         QVERIFY(!result.demonstration);
         QVERIFY(result.inferenceMs > 0);
         QVERIFY(result.totalMs >= result.inferenceMs);
@@ -196,17 +197,21 @@ class PtBackendTests final : public QObject
         QCOMPARE(engine.config().colorMode, vision::InputColorMode::Color);
         const QImage original(imagePath);
         const auto first = engine.infer(original, "first-pt-request");
+        QCOMPARE(first.image, original);
+        QCOMPARE(first.originalImage, original);
         verifyDetection(first, original.size());
         QCOMPARE(first.source, QString("first-pt-request"));
         const QImage secondImage =
             original.scaledToWidth(640, Qt::SmoothTransformation).convertToFormat(QImage::Format_RGBA8888);
         const auto second = engine.infer(secondImage, "second-pt-request");
+        QCOMPARE(second.image, secondImage);
+        QCOMPARE(second.originalImage, secondImage);
         verifyDetection(second, secondImage.size());
         QCOMPARE(second.source, QString("second-pt-request"));
         QVERIFY(engine.loaded());
     }
 
-    void realModernAndLegacyModelsAcceptGrayscaleWithoutChangingPreview()
+    void realModernAndLegacyGrayscalePreviewPreservesOriginalPixels()
     {
         const QImage original(imagePath);
         for (const QString &path : {modelPath, project + "/models/yolov5n.pt"})
@@ -219,11 +224,14 @@ class PtBackendTests final : public QObject
             QCOMPARE(engine.config().colorMode, vision::InputColorMode::Grayscale);
             const auto result = engine.infer(original, "real-grayscale");
             verifyDetection(result, original.size());
-            QCOMPARE(result.image, original);
+            QCOMPARE(result.originalImage, original);
+            QCOMPARE(result.image, vision::inputPreviewImage(original, vision::InputColorMode::Grayscale));
+            QVERIFY(result.image != original);
             const QImage resized = original.scaledToWidth(640, Qt::SmoothTransformation);
             const auto second = engine.infer(resized, "resized-grayscale");
             verifyDetection(second, resized.size());
-            QCOMPARE(second.image, resized);
+            QCOMPARE(second.originalImage, resized);
+            QCOMPARE(second.image, vision::inputPreviewImage(resized, vision::InputColorMode::Grayscale));
         }
     }
 
@@ -238,6 +246,8 @@ class PtBackendTests final : public QObject
         engine.load(value);
         QCOMPARE(engine.config().inputChannels, 3);
         const auto color = engine.infer(original);
+        QCOMPARE(color.image, original);
+        QCOMPARE(color.originalImage, original);
         QCOMPARE(color.predictions[0].classId, 0);
         QVERIFY(classConfidence(color, 0) > classConfidence(color, 1));
         QVERIFY(classConfidence(color, 1) > classConfidence(color, 2));
@@ -245,7 +255,9 @@ class PtBackendTests final : public QObject
         value.swapRB = false; // Gray planes are equal; channel exchange has no effect.
         engine.load(value);
         const auto gray = engine.infer(original);
-        QCOMPARE(gray.image, original);
+        QCOMPARE(gray.originalImage, original);
+        QCOMPARE(gray.image.pixelColor(0, 0), QColor(121, 121, 121));
+        QCOMPARE(gray.image.size(), original.size());
         for (int classId = 0; classId < 3; ++classId)
             QVERIFY(std::abs(classConfidence(gray, classId) - 1.0f / 3) < .0001f);
     }
@@ -265,7 +277,9 @@ class PtBackendTests final : public QObject
         engine.load(value);
         QCOMPARE(engine.config().inputChannels, 1);
         const auto result = engine.infer(original);
-        QCOMPARE(result.image, original);
+        QCOMPARE(result.originalImage, original);
+        QCOMPARE(result.image.pixelColor(0, 0), QColor(121, 121, 121));
+        QCOMPARE(result.image.size(), original.size());
         QCOMPARE(result.predictions[0].classId, 1);
         // OpenCV rounds BGR2GRAY(20,80,240) to 121 before normalization.
         const double activation = 6.0 * 121 / 255;
@@ -302,7 +316,9 @@ class PtBackendTests final : public QObject
             QCOMPARE(engine.config().inputChannels, pair.second);
             QCOMPARE(engine.config().task, vision::ModelTask::Classification);
             const auto result = engine.infer(image);
-            QCOMPARE(result.image, image);
+            QCOMPARE(result.originalImage, image);
+            QCOMPARE(result.image.pixelColor(0, 0), QColor(121, 121, 121));
+            QCOMPARE(result.image.size(), image.size());
             QCOMPARE(result.predictions.size(), 3);
             double sum = 0;
             for (const auto &prediction : result.predictions)
@@ -328,12 +344,104 @@ class PtBackendTests final : public QObject
             engine.load(value);
             QCOMPARE(engine.config().inputChannels, channels);
             const auto result = engine.infer(original);
-            QCOMPARE(result.image, original);
+            QCOMPARE(result.originalImage, original);
+            QCOMPARE(result.image.pixelColor(0, 0), QColor(121, 121, 121));
+            QCOMPARE(result.image.pixelColor(127, 63), QColor(121, 121, 121));
+            QCOMPARE(result.image.size(), original.size());
             QCOMPARE(result.predictions.size(), 1);
             const auto &prediction = result.predictions[0];
             QCOMPARE(prediction.classId, 0);
             QVERIFY(std::abs(prediction.confidence - (121.0 + 114) / (2 * 255)) < .0001);
             QCOMPARE(prediction.box, QRectF(32, 16, 64, 32));
+        }
+    }
+
+    void grayscalePreviewMatchesActualPtInputLuminance_data()
+    {
+        QTest::addColumn<QColor>("color");
+        QTest::addColumn<int>("luminance");
+        QTest::newRow("red") << QColor(255, 0, 0) << 76;
+        QTest::newRow("green") << QColor(0, 255, 0) << 150;
+        QTest::newRow("blue") << QColor(0, 0, 255) << 29;
+    }
+
+    void grayscalePreviewMatchesActualPtInputLuminance()
+    {
+        QFETCH(QColor, color);
+        QFETCH(int, luminance);
+        QImage original(64, 64, QImage::Format_RGB888);
+        original.fill(color);
+        QImage previous;
+        for (int channels : {1, 3})
+        {
+            auto value = config(channelFixture(channels, true));
+            value.inputSize = 64;
+            value.confidence = .01f;
+            value.colorMode = vision::InputColorMode::Grayscale;
+            vision::VisionEngine engine;
+            engine.load(value);
+            const auto result = engine.infer(original, "pixel-sensitive-gray");
+            QCOMPARE(result.originalImage, original);
+            QCOMPARE(result.image.size(), original.size());
+            QCOMPARE(result.image.format(), QImage::Format_Grayscale8);
+            QCOMPARE(result.image.pixelColor(0, 0), QColor(luminance, luminance, luminance));
+            QCOMPARE(result.image.pixelColor(63, 63), QColor(luminance, luminance, luminance));
+            QCOMPARE(result.predictions.size(), 1);
+            // The model's actual Conv input mean must match the displayed byte.
+            QVERIFY(std::abs(result.predictions[0].confidence - luminance / 255.0) < .0001);
+            QCOMPARE(result.predictions[0].box, QRectF(16, 24, 32, 16));
+            if (!previous.isNull())
+                QCOMPARE(result.image, previous);
+            previous = result.image;
+        }
+    }
+
+    void sixteenBitGrayscalePreviewMatchesActualPtInput_data()
+    {
+        QTest::addColumn<bool>("rgba");
+        QTest::addColumn<int>("luminance");
+        QTest::newRow("rgba64") << true << 176;
+        QTest::newRow("grayscale16") << false << 199;
+    }
+
+    void sixteenBitGrayscalePreviewMatchesActualPtInput()
+    {
+        QFETCH(bool, rgba);
+        QFETCH(int, luminance);
+        QImage original(64, 64, rgba ? QImage::Format_RGBA64 : QImage::Format_Grayscale16);
+        for (int y = 0; y < original.height(); ++y)
+        {
+            if (rgba)
+            {
+                auto *pixels = reinterpret_cast<QRgba64 *>(original.scanLine(y));
+                for (int x = 0; x < original.width(); ++x)
+                    pixels[x] = QRgba64::fromRgba64(51200, 51200, 0, 65535);
+            }
+            else
+            {
+                auto *pixels = reinterpret_cast<quint16 *>(original.scanLine(y));
+                for (int x = 0; x < original.width(); ++x)
+                    pixels[x] = 51200;
+            }
+        }
+        for (int channels : {1, 3})
+        {
+            auto value = config(channelFixture(channels, true));
+            value.inputSize = 64;
+            value.colorMode = vision::InputColorMode::Grayscale;
+            vision::VisionEngine engine;
+            engine.load(value);
+            const auto result = engine.infer(original, "sixteen-bit-gray");
+            QCOMPARE(result.originalImage, original);
+            QCOMPARE(result.originalImage.format(), original.format());
+            QCOMPARE(result.image.format(), QImage::Format_Grayscale8);
+            QCOMPARE(result.image.pixelColor(0, 0), QColor(luminance, luminance, luminance));
+            QCOMPARE(result.image.pixelColor(63, 63), QColor(luminance, luminance, luminance));
+            QCOMPARE(result.predictions.size(), 1);
+            // Without the explicit Qt RGB888 conversion, a 16-bit PNG is
+            // truncated by Python/OpenCV and produces respectively 177/200.
+            QVERIFY(std::abs(result.predictions[0].confidence - luminance / 255.0) < .0001);
+            QCOMPARE(result.predictions[0].box, QRectF(16, 24, 32, 16));
         }
     }
 
@@ -385,7 +493,9 @@ class PtBackendTests final : public QObject
             QCOMPARE(single.config().inputChannels, 1);
             const auto actual = single.infer(image);
             verifyDetection(actual, image.size());
-            QCOMPARE(actual.image, image);
+            QCOMPARE(actual.originalImage, image);
+            QCOMPARE(actual.image, expected.image);
+            QCOMPARE(actual.image, vision::inputPreviewImage(image, vision::InputColorMode::Grayscale));
             QCOMPARE(actual.predictions.size(), expected.predictions.size());
             for (qsizetype index = 0; index < actual.predictions.size(); ++index)
             {

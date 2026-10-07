@@ -263,6 +263,8 @@ class CoreTests : public QObject
         verifyDetection(result, .95f);
         QCOMPARE(result.source, QString("rectangular-image"));
         QCOMPARE(result.image.size(), QSize(128, 64));
+        QCOMPARE(result.image, image());
+        QCOMPARE(result.originalImage, image());
         QVERIFY(!result.demonstration);
     }
     void yoloV5UsesObjectnessAndClassScores()
@@ -341,6 +343,41 @@ class CoreTests : public QObject
         const double expected = std::exp(3.0) / (std::exp(1.0) + std::exp(2.0) + std::exp(3.0));
         QVERIFY(std::abs(result.predictions[0].confidence - expected) < .002);
     }
+    void inputPreviewUsesModelLuminanceAndPreservesColor_data()
+    {
+        QTest::addColumn<int>("format");
+        QTest::newRow("rgb888-padded-scanlines") << int(QImage::Format_RGB888);
+        QTest::newRow("rgba8888") << int(QImage::Format_RGBA8888);
+        QTest::newRow("rgb32") << int(QImage::Format_RGB32);
+    }
+    void inputPreviewUsesModelLuminanceAndPreservesColor()
+    {
+        QFETCH(int, format);
+        QImage input(3, 2, QImage::Format(format));
+        for (int y = 0; y < input.height(); ++y)
+        {
+            input.setPixelColor(0, y, QColor(255, 0, 0));
+            input.setPixelColor(1, y, QColor(0, 255, 0));
+            input.setPixelColor(2, y, QColor(0, 0, 255));
+        }
+        input.setDevicePixelRatio(2);
+        QCOMPARE(vision::inputPreviewImage(input, vision::InputColorMode::Color), input);
+        const auto gray = vision::inputPreviewImage(input, vision::InputColorMode::Grayscale);
+        QCOMPARE(gray.size(), input.size());
+        QCOMPARE(gray.devicePixelRatio(), input.devicePixelRatio());
+        QCOMPARE(gray.format(), QImage::Format_Grayscale8);
+        for (int y = 0; y < gray.height(); ++y)
+        {
+            QCOMPARE(gray.pixelColor(0, y), QColor(76, 76, 76));
+            QCOMPARE(gray.pixelColor(1, y), QColor(150, 150, 150));
+            QCOMPARE(gray.pixelColor(2, y), QColor(29, 29, 29));
+        }
+        // The preview owns its pixels after either the source or conversion
+        // temporaries are gone; rendering must never reference an OpenCV buffer.
+        input.fill(Qt::black);
+        QCOMPARE(gray.pixelColor(0, 1), QColor(76, 76, 76));
+        QVERIFY(vision::inputPreviewImage({}, vision::InputColorMode::Grayscale).isNull());
+    }
     void grayscaleSingleChannelUsesLuminance_data()
     {
         QTest::addColumn<QColor>("color");
@@ -373,6 +410,11 @@ class CoreTests : public QObject
             engine.load(cfg);
             QCOMPARE(engine.config().inputChannels, 1);
             const auto result = engine.infer(input, "gray-c1");
+            QCOMPARE(result.originalImage, input);
+            QCOMPARE(result.image.size(), input.size());
+            QCOMPARE(result.image.format(), QImage::Format_Grayscale8);
+            QCOMPARE(result.image.pixelColor(0, 0), QColor(luminance, luminance, luminance));
+            QCOMPARE(result.image.pixelColor(63, 63), QColor(luminance, luminance, luminance));
             QCOMPARE(result.predictions.size(), 3);
             QVERIFY(std::abs(classConfidence(result, 0) - expected) < .0002);
         }
@@ -399,6 +441,9 @@ class CoreTests : public QObject
             engine.load(cfg);
             QCOMPARE(engine.config().inputChannels, 3);
             const auto result = engine.infer(input, "gray-c3");
+            QCOMPARE(result.originalImage, input);
+            QCOMPARE(result.image.size(), input.size());
+            QCOMPARE(result.image.pixelColor(0, 0), QColor(76, 76, 76));
             QCOMPARE(result.predictions.size(), 4);
             for (int channel = 0; channel < 3; ++channel)
                 QVERIFY(std::abs(classConfidence(result, channel) - expected) < .0002);
@@ -430,6 +475,10 @@ class CoreTests : public QObject
         vision::VisionEngine engine;
         engine.load(cfg);
         const auto result = engine.infer(input, "gray-letterbox");
+        QCOMPARE(result.originalImage, input);
+        QCOMPARE(result.image.size(), input.size());
+        QCOMPARE(result.image.pixelColor(0, 0), QColor(76, 76, 76));
+        QCOMPARE(result.image.pixelColor(127, 63), QColor(76, 76, 76));
         QCOMPARE(result.predictions.size(), 1);
         // The 128x64 image occupies half of the 64x64 model input; the remaining
         // half is gray padding 114. This also detects padding applied after scale.
@@ -501,6 +550,8 @@ class CoreTests : public QObject
         engine.load(cfg);
         QCOMPARE(engine.config().inputChannels, 1);
         const auto result = engine.infer(input, "legacy-initializer-inputs");
+        QCOMPARE(result.originalImage, input);
+        QCOMPARE(result.image.pixelColor(0, 0), QColor(150, 150, 150));
         const double value = 150.0 / 255.0;
         const double expected = std::exp(value) / (std::exp(value) + 1.0 + std::exp(-2.0));
         QVERIFY(std::abs(classConfidence(result, 0) - expected) < .0002);

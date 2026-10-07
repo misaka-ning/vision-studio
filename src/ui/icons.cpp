@@ -25,6 +25,18 @@ QIcon icon(const QString &name, QColor color, int size)
         a.drawPolyline(QPolygonF{{3, 12}, {12, 17}, {21, 12}});
         a.drawPolyline(QPolygonF{{3, 17}, {12, 22}, {21, 17}});
     }
+    else if (name == "more")
+    {
+        a.setBrush(color);
+        for (int x : {5, 12, 19})
+            a.drawEllipse(QPointF(x, 12), 1.5, 1.5);
+    }
+    else if (name == "record")
+    {
+        a.drawEllipse(QPointF(12, 12), 9, 9);
+        a.setBrush(color);
+        a.drawEllipse(QPointF(12, 12), 4, 4);
+    }
     else if (name == "history")
     {
         a.drawArc(QRectF(4, 4, 16, 16), -45 * 16, 290 * 16);

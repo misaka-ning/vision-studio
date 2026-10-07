@@ -1,0 +1,194 @@
+[OUTPUT] 
+Internal ctest changing into directory: /home/misaka/文档/ChatGPT/yolo/build
+
+[HANDLER_VERBOSE_OUTPUT] 
+UpdateCTestConfiguration  from :/home/misaka/文档/ChatGPT/yolo/build/DartConfiguration.tcl
+
+Parse Config file:/home/misaka/文档/ChatGPT/yolo/build/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/文档/ChatGPT/yolo/build/DartConfiguration.tcl
+Parse Config file:/home/misaka/文档/ChatGPT/yolo/build/DartConfiguration.tcl
+[HANDLER_OUTPUT] 
+Test project /home/misaka/文档/ChatGPT/yolo/build
+
+[HANDLER_VERBOSE_OUTPUT] 
+Constructing a list of tests
+
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 4
+[HANDLER_OUTPUT] 
+    Start 4: vision-ui-tests
+
+[HANDLER_VERBOSE_OUTPUT] 
+
+4: Test command: /home/misaka/文档/ChatGPT/yolo/build/vision-ui-tests
+
+4: Environment variables: 
+4:  QT_QPA_PLATFORM=offscreen
+4: Test timeout computed to be: 120
+test 3
+[HANDLER_OUTPUT] 
+    Start 3: vision-pt-tests
+
+[HANDLER_VERBOSE_OUTPUT] 
+
+3: Test command: /home/misaka/文档/ChatGPT/yolo/build/vision-pt-tests
+
+3: Environment variables: 
+3:  QT_QPA_PLATFORM=offscreen
+3: Test timeout computed to be: 180
+3: ********* Start testing of PtBackendTests *********
+3: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+3: PASS   : PtBackendTests::initTestCase()
+4: ********* Start testing of UiTests *********
+4: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+4: PASS   : UiTests::initTestCase()
+4: PASS   : UiTests::realInferenceSelectionAndNavigation()
+4: PASS   : UiTests::shortcutsCancelAndRestartFromFocusedControls()
+3: PASS   : PtBackendTests::realCheckpointLoadsNamesAndProcessesConsecutiveImages()
+4: PASS   : UiTests::directPtInferenceReadsNamesAndExportsNativeBackend()
+4: PASS   : UiTests::queueChangeAndClearInvalidateOldResults()
+4: PASS   : UiTests::grayscalePreviewAndColorSwitchInvalidatePredictions()
+4: PASS   : UiTests::legacyColorPreferenceMigration(legacy-rgb)
+4: PASS   : UiTests::legacyColorPreferenceMigration(legacy-bgr)
+4: PASS   : UiTests::grayscaleAndStereoPreferencesSurviveRestartAndPtSwitch()
+4: QWARN  : UiTests::stereoVideoRequestExportAndImageIsolation() This plugin does not support propagateSizeHints()
+4: PASS   : UiTests::stereoVideoRequestExportAndImageIsolation()
+4: QWARN  : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() This plugin does not support propagateSizeHints()
+4: QWARN  : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() This plugin does not support propagateSizeHints()
+4: QWARN  : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() This plugin does not support propagateSizeHints()
+4: PASS   : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo()
+4: PASS   : UiTests::cleanupTestCase()
+4: Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 9225ms
+4: ********* Finished testing of UiTests *********
+[HANDLER_OUTPUT] 
+1/4 Test #4: vision-ui-tests ..................
+   Passed    9.29 sec
+[HANDLER_VERBOSE_OUTPUT] 
+test 2
+
+[HANDLER_OUTPUT] 
+    Start 2: vision-recording-tests
+
+[HANDLER_VERBOSE_OUTPUT] 
+
+2: Test command: /home/misaka/文档/ChatGPT/yolo/build/vision-recording-tests
+
+2: Environment variables: 
+2:  QT_QPA_PLATFORM=offscreen
+2: Test timeout computed to be: 90
+2: ********* Start testing of RecordingTests *********
+2: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+2: PASS   : RecordingTests::initTestCase()
+2: PASS   : RecordingTests::videoIsAnnotatedPlayableAndPublishedOnlyAtFinish()
+2: PASS   : RecordingTests::grayscaleOddEyePreservesContentAndAddsOnlyEdgePadding()
+2: PASS   : RecordingTests::cameraTimingUsesMeasuredDurationAndDecodesAllFrames()
+2: PASS   : RecordingTests::emptyDiscardAndInvalidDirectoryNeverPublishBrokenClips()
+2: PASS   : RecordingTests::changedResolutionEndsClipWithoutLosingItsPreviousFrames()
+2: PASS   : RecordingTests::workerRecordsEveryFrameAndFinishesAtEof()
+2: PASS   : RecordingTests::workerStartAfterFirstPreviewAndCancelClosesOnlyRecordedFrames()
+2: PASS   : RecordingTests::recordingFailureDoesNotInterruptInference()
+3: PASS   : PtBackendTests::realModernAndLegacyGrayscalePreviewPreservesOriginalPixels()
+2: PASS   : RecordingTests::manualStopKeepsInferenceRunningAndRestartCreatesANewClip()
+2: PASS   : RecordingTests::stoppingDuringOnnxForwardRecordsTheLastCompletedFrame()
+2: PASS   : RecordingTests::stoppingWithPendingRecordingNeverOpensANewClip()
+2: PASS   : RecordingTests::cleanupTestCase()
+2: Totals: 13 passed, 0 failed, 0 skipped, 0 blacklisted, 2051ms
+2: ********* Finished testing of RecordingTests *********
+[HANDLER_OUTPUT] 
+2/4 Test #2: vision-recording-tests ...........
+   Passed    2.11 sec
+[HANDLER_VERBOSE_OUTPUT] 
+test 1
+
+[HANDLER_OUTPUT] 
+    Start 1: vision-core-tests
+
+[HANDLER_VERBOSE_OUTPUT] 
+
+1: Test command: /home/misaka/文档/ChatGPT/yolo/build/vision-core-tests
+
+1: Environment variables: 
+1:  QT_QPA_PLATFORM=offscreen
+1: Test timeout computed to be: 1500
+1: ********* Start testing of CoreTests *********
+1: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+1: PASS   : CoreTests::initTestCase()
+1: PASS   : CoreTests::yoloV8LetterboxClippingAndNms()
+1: PASS   : CoreTests::yoloV5UsesObjectnessAndClassScores()
+1: PASS   : CoreTests::classificationLogitsBecomeProbabilities()
+1: PASS   : CoreTests::classificationProbabilitiesRemainUnchanged()
+1: PASS   : CoreTests::preprocessingRespectsColorChannels()
+1: PASS   : CoreTests::preprocessingSubtractsMeanBeforeScaling()
+1: PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgb888-padded-scanlines)
+1: PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgba8888)
+1: PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgb32)
+1: PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(red)
+1: PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(green)
+1: PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(blue)
+1: PASS   : CoreTests::grayscaleThreeChannelsReplicateOneIntensity()
+1: PASS   : CoreTests::grayscaleDetectionPaddingUses114(single-channel)
+1: PASS   : CoreTests::grayscaleDetectionPaddingUses114(replicated-three-channel)
+1: PASS   : CoreTests::colorInputRejectsSingleChannelModel()
+1: PASS   : CoreTests::unsupportedONNXInputChannels(four-channels)
+1: PASS   : CoreTests::unsupportedONNXInputChannels(symbolic-channel-axis)
+1: PASS   : CoreTests::initializerGraphInputsRemainCompatible()
+1: PASS   : CoreTests::missingModelReportsFailure()
+1: PASS   : CoreTests::unsupportedDetectionOutputReportsFailure()
+1: PASS   : CoreTests::emptyImageReportsFailure()
+1: PASS   : CoreTests::workerProcessesEveryImageInBatch()
+1: PASS   : CoreTests::workerStopsBatchAndCanRunAgain()
+1: PASS   : CoreTests::workerDeliversVideoLastFrameAtEndOfFile()
+1: PASS   : CoreTests::workerReportsUnreadableInputAndFinishes()
+1: PASS   : CoreTests::stereoOddWidthSelectionAndInference()
+1: PASS   : CoreTests::stereoSelectionRejectsEmptyAndTooNarrowFrames()
+1: PASS   : CoreTests::workerSelectsSideBySideVideoView(full-frame)
+1: PASS   : CoreTests::workerSelectsSideBySideVideoView(left-eye)
+1: PASS   : CoreTests::workerSelectsSideBySideVideoView(right-eye)
+1: PASS   : CoreTests::workerKeepsImagesWholeWhenStereoViewSelected()
+1: PASS   : CoreTests::cleanupTestCase()
+1: Totals: 34 passed, 0 failed, 0 skipped, 0 blacklisted, 450ms
+1: ********* Finished testing of CoreTests *********
+[HANDLER_OUTPUT] 
+3/4 Test #1: vision-core-tests ................
+   Passed    0.50 sec
+[HANDLER_VERBOSE_OUTPUT] 
+3: PASS   : PtBackendTests::grayscaleThreeChannelsAreEqualAndUseBgrToGrayWeights()
+
+3: PASS   : PtBackendTests::grayscaleSingleChannelIsInferredFromTorchScriptConv()
+3: PASS   : PtBackendTests::nativeClassificationSupportsOneAndThreeGrayChannels()
+3: PASS   : PtBackendTests::grayscaleTorchScriptDetectionRestoresLetterboxCoordinates()
+3: PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(red)
+3: PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(green)
+3: PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(blue)
+3: PASS   : PtBackendTests::sixteenBitGrayscalePreviewMatchesActualPtInput(rgba64)
+3: PASS   : PtBackendTests::sixteenBitGrayscalePreviewMatchesActualPtInput(grayscale16)
+3: PASS   : PtBackendTests::realYoloSingleChannelStemsPreserveGrayscalePredictions()
+3: PASS   : PtBackendTests::invalidTorchScriptChannelMetadataIsRejected()
+3: PASS   : PtBackendTests::detectionInputSizeMustBeMultipleOf32AtLoad()
+3: PASS   : PtBackendTests::torchScriptWithoutInputConstraintsRequiresActionableMetadata()
+3: PASS   : PtBackendTests::processHandshakeCannotGuessMissingOrInvalidInputChannels()
+3: PASS   : PtBackendTests::missingExplicitPythonReportsFailure()
+3: PASS   : PtBackendTests::officialLegacyYoloV5CheckpointRunsWithBundledFramework()
+3: PASS   : PtBackendTests::invalidCheckpointCannotLeavePreviousModelLoaded()
+3: PASS   : PtBackendTests::bareStateDictionaryReportsMissingArchitecture()
+3: PASS   : PtBackendTests::metadataBearingTorchScriptClassificationUsesTopK()
+3: PASS   : PtBackendTests::customOnnxPreprocessingCannotSilentlyChangePtInference()
+3: PASS   : PtBackendTests::cancellationInterruptsBlockedModelInitialization()
+3: PASS   : PtBackendTests::cancellationInterruptsBlockedInference()
+3: PASS   : PtBackendTests::invalidProcessProtocolResetsBackend()
+3: PASS   : PtBackendTests::substitutedModelHandshakeIsRejected()
+3: PASS   : PtBackendTests::shortenedInitializationDeadlineStopsBackend()
+3: PASS   : PtBackendTests::cleanupTestCase()
+3: Totals: 29 passed, 0 failed, 0 skipped, 0 blacklisted, 141231ms
+3: ********* Finished testing of PtBackendTests *********
+[HANDLER_OUTPUT] 
+4/4 Test #3: vision-pt-tests ..................
+   Passed  141.25 sec
+
+100% tests passed, 0 tests failed out of 4
+
+Total Test time (real) = 141.25 sec

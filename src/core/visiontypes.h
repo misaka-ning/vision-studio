@@ -54,7 +54,10 @@ struct Prediction
 };
 struct InferenceResult
 {
+    // Display/export/recording pixels follow the input color mode.
     QImage image;
+    // Preserve the original selected source ROI for switching preview modes.
+    QImage originalImage;
     QVector<Prediction> predictions;
     QString source;
     QString modelName;
@@ -76,6 +79,7 @@ struct JobRequest
     StereoView stereoView = StereoView::Full;
 };
 QStringList cocoLabels();
+QImage inputPreviewImage(const QImage &image, InputColorMode mode);
 } // namespace vision
 Q_DECLARE_METATYPE(vision::InferenceResult)
 Q_DECLARE_METATYPE(vision::JobRequest)

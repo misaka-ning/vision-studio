@@ -551,7 +551,7 @@ def main() -> int:
                         help="Additional Qt 6.8.3 plugins directory, e.g. a supplemental QtImageFormats install.")
     parser.add_argument("--runtime", type=Path, required=True)
     parser.add_argument("--install-root", default=DEFAULT_ROOT)
-    parser.add_argument("--version", default="1.2.0-1")
+    parser.add_argument("--version", default="1.3.0-1")
     parser.add_argument("--stage", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--copyright", type=Path)

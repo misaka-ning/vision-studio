@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 import tarfile
 
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 SOURCE_ITEMS = ("src", "tests", "scripts", "packaging", "docs", "assets", "models", "vendor",
                 "CMakeLists.txt", "resources.qrc", "run.sh", "VisionStudio.desktop", "README.md",
                 "LICENSE", "requirements-pt.txt", "requirements-pt.lock.txt", "runtime-info.json",

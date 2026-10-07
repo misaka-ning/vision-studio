@@ -1,9 +1,11 @@
 #include "inferenceworker.h"
+#include "videorecorder.h"
 #include "visionengine.h"
 
 #include <QElapsedTimer>
 #include <QFile>
 #include <QImageReader>
+#include <QMutexLocker>
 #include <QThread>
 #include <algorithm>
 #include <cmath>
@@ -45,8 +47,61 @@ QImage selectStereoView(const QImage &image, StereoView view)
                                     : image.copy(leftWidth, 0, image.width() - leftWidth, image.height());
 }
 
+void InferenceWorker::prepareRecording(const QString &directory)
+{
+    const QMutexLocker locker(&m_recordMutex);
+    m_recordDirectory = directory;
+}
+
 void InferenceWorker::run(vision::JobRequest request)
 {
+    VideoRecorder recorder;
+    auto finishRecording = [this, &recorder]
+    {
+        if (!recorder.active())
+            return;
+        RecordingSummary summary;
+        QString error;
+        if (recorder.finish(&summary, &error))
+            emit recordingFinished(summary.path, summary.frames, summary.fps);
+        else
+            emit recordingFailed(error);
+    };
+    auto recordFrame = [this, &recorder, &finishRecording](const InferenceResult &result, double fps,
+                                                           bool camera, const ModelConfig &config)
+    {
+        if (!m_recordRequested.load(std::memory_order_acquire))
+        {
+            finishRecording();
+            return;
+        }
+        QString error;
+        if (!recorder.active())
+        {
+            // A stop may arrive while infer() is producing this valid frame.
+            // Retain it in an existing clip, but never open a new clip afterwards.
+            if (stopping())
+                return;
+            QString directory;
+            {
+                const QMutexLocker locker(&m_recordMutex);
+                directory = m_recordDirectory;
+            }
+            if (!recorder.start(directory, result, camera ? 30 : fps, camera, config, &error))
+            {
+                m_recordRequested.store(false, std::memory_order_release);
+                emit recordingFailed(error);
+                return;
+            }
+            emit recordingStarted(recorder.path());
+        }
+        if (!recorder.append(result, &error))
+        {
+            m_recordRequested.store(false, std::memory_order_release);
+            finishRecording();
+            emit recordingFailed(error);
+        }
+    };
     try
     {
         if (stopping())
@@ -67,6 +122,8 @@ void InferenceWorker::run(vision::JobRequest request)
         emit status(QStringLiteral("模型已加载 · %1 / CPU").arg(engine.backendName()));
         if (request.sourceKind == SourceKind::Images)
         {
+            if (m_recordRequested.exchange(false, std::memory_order_acq_rel))
+                emit recordingFailed(QStringLiteral("视频录制仅适用于视频或摄像头输入。"));
             if (request.files.isEmpty())
                 throw std::runtime_error("请添加至少一张图像。");
             const int total = int(request.files.size());
@@ -118,11 +175,11 @@ void InferenceWorker::run(vision::JobRequest request)
             const double rawFps = capture.get(cv::CAP_PROP_FPS);
             const double fps = std::isfinite(rawFps) && rawFps > 0.1 && rawFps < 1000 ? rawFps : 25;
             emit progress(0, total);
-            const QString eye = request.stereoView == StereoView::Left
-                                    ? QStringLiteral(" · 左目")
-                                    : request.stereoView == StereoView::Right ? QStringLiteral(" · 右目") : QString();
-            emit status((camera ? QStringLiteral("摄像头实时推理中") : QStringLiteral("视频逐帧推理中")) + eye +
-                        QStringLiteral("…"));
+            const QString eye = request.stereoView == StereoView::Left    ? QStringLiteral(" · 左目")
+                                : request.stereoView == StereoView::Right ? QStringLiteral(" · 右目")
+                                                                          : QString();
+            emit status((camera ? QStringLiteral("摄像头实时推理中") : QStringLiteral("视频逐帧推理中")) +
+                        eye + QStringLiteral("…"));
             qint64 frameNumber = 0;
             qint64 lastDeliveredNumber = 0;
             std::optional<InferenceResult> lastResult;
@@ -150,6 +207,8 @@ void InferenceWorker::run(vision::JobRequest request)
                 result.stereoView = request.stereoView;
                 result.sourceFrameSize = sourceImage.size();
                 lastResult = std::move(result);
+                // Record every inferred frame before UI delivery is throttled.
+                recordFrame(*lastResult, fps, camera, engine.config());
                 if (stopping())
                     break;
                 // Always process every video frame. Only UI delivery is throttled.
@@ -175,12 +234,16 @@ void InferenceWorker::run(vision::JobRequest request)
                 emit resultReady(*lastResult);
             emit progress(int(std::min(frameNumber, qint64(std::numeric_limits<int>::max()))), total);
             capture.release();
+            finishRecording();
         }
+        m_recordRequested.store(false, std::memory_order_release);
         emit status(stopping() ? QStringLiteral("推理已停止") : QStringLiteral("推理完成"));
         emit finished(stopping());
     }
     catch (const cv::Exception &error)
     {
+        finishRecording();
+        m_recordRequested.store(false, std::memory_order_release);
         if (!stopping())
             emit failed(QStringLiteral("视频或摄像头处理失败：%1").arg(QString::fromUtf8(error.what())));
         else
@@ -189,6 +252,8 @@ void InferenceWorker::run(vision::JobRequest request)
     }
     catch (const std::exception &error)
     {
+        finishRecording();
+        m_recordRequested.store(false, std::memory_order_release);
         if (!stopping())
             emit failed(QString::fromUtf8(error.what()));
         else

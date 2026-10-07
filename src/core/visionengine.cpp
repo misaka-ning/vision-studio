@@ -370,6 +370,25 @@ QVector<Prediction> decodeDetection(const cv::Mat &output, const ModelConfig &co
 
 } // namespace
 
+QImage inputPreviewImage(const QImage &image, InputColorMode mode)
+{
+    if (mode == InputColorMode::Color || image.isNull())
+        return image;
+    const QImage rgb = image.convertToFormat(QImage::Format_RGB888);
+    QImage preview(image.size(), QImage::Format_Grayscale8);
+    if (rgb.isNull() || preview.isNull())
+        fail(QStringLiteral("无法分配灰度预览图像，请缩小图像后重试。"));
+    preview.fill(0);
+    const cv::Mat rgbPixels(rgb.height(), rgb.width(), CV_8UC3,
+                            const_cast<uchar *>(rgb.constBits()), size_t(rgb.bytesPerLine()));
+    cv::Mat grayPixels(preview.height(), preview.width(), CV_8UC1, preview.bits(),
+                        size_t(preview.bytesPerLine()));
+    // OpenCV's 8-bit BT.601 rounding also feeds ONNX and the Python PT worker.
+    cv::cvtColor(rgbPixels, grayPixels, cv::COLOR_RGB2GRAY);
+    preview.setDevicePixelRatio(image.devicePixelRatio());
+    return preview;
+}
+
 VisionEngine::VisionEngine() = default;
 VisionEngine::~VisionEngine() = default;
 
@@ -463,19 +482,24 @@ InferenceResult VisionEngine::infer(const QImage &image, const QString &source)
     totalTimer.start();
     try
     {
-        const QImage rgb = image.convertToFormat(QImage::Format_RGB888);
-        const cv::Mat rgbMat(rgb.height(), rgb.width(), CV_8UC3, const_cast<uchar *>(rgb.constBits()),
-                             size_t(rgb.bytesPerLine()));
+        const QImage preview = inputPreviewImage(image, m_config.colorMode);
         cv::Mat bgr;
-        cv::cvtColor(rgbMat, bgr, cv::COLOR_RGB2BGR);
+        QImage rgb;
         if (m_config.colorMode == InputColorMode::Grayscale)
         {
-            cv::Mat gray;
-            cv::cvtColor(bgr, gray, cv::COLOR_BGR2GRAY);
+            const cv::Mat gray(preview.height(), preview.width(), CV_8UC1,
+                               const_cast<uchar *>(preview.constBits()), size_t(preview.bytesPerLine()));
             if (m_config.inputChannels == 1)
                 bgr = gray;
             else
                 cv::cvtColor(gray, bgr, cv::COLOR_GRAY2BGR);
+        }
+        else
+        {
+            rgb = image.convertToFormat(QImage::Format_RGB888);
+            const cv::Mat rgbMat(rgb.height(), rgb.width(), CV_8UC3, const_cast<uchar *>(rgb.constBits()),
+                                 size_t(rgb.bytesPerLine()));
+            cv::cvtColor(rgbMat, bgr, cv::COLOR_RGB2BGR);
         }
         Letterbox letterbox;
         if (m_config.task == ModelTask::Classification)
@@ -527,7 +551,8 @@ InferenceResult VisionEngine::infer(const QImage &image, const QString &source)
         else
             output = primary->isContinuous() ? *primary : primary->clone();
         InferenceResult result;
-        result.image = image;
+        result.image = preview;
+        result.originalImage = image;
         result.source = source;
         result.modelName = QFileInfo(m_config.modelPath).fileName();
         result.task = m_config.task;

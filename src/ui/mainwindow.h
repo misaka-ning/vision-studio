@@ -2,6 +2,8 @@
 #include "core/visiontypes.h"
 #include <QJsonArray>
 #include <QMainWindow>
+#include <QElapsedTimer>
+#include <memory>
 class QComboBox;
 class QDoubleSpinBox;
 class QSpinBox;
@@ -14,7 +16,9 @@ class QStackedWidget;
 class QProgressBar;
 class QThread;
 class QSettings;
+class QTimer;
 class ImageCanvas;
+namespace cv { class VideoCapture; }
 namespace vision
 {
 class InferenceWorker;
@@ -43,6 +47,17 @@ class MainWindow : public QMainWindow
     QWidget *buildModels();
     QWidget *buildHistory();
     QWidget *buildGuide();
+    QWidget *buildRecordings();
+    QWidget *buildMore();
+    void updateInputPreview();
+    void toggleRecording();
+    void updateRecordingUi();
+    void refreshRecordings();
+    void selectRecording();
+    void toggleRecordingPlayback();
+    void readRecordingFrame();
+    void stopRecordingPlayback();
+    void exportRecording();
     void setupStyle();
     void connectWorker();
     void chooseImages();
@@ -80,6 +95,13 @@ class MainWindow : public QMainWindow
     QString lastError_;
     QJsonArray history_;
     bool busy_ = false, closing_ = false, failed_ = false;
+    bool recordingRequested_ = false, recordingActive_ = false, recordingStopping_ = false;
+    bool inferenceStopping_ = false;
+    QElapsedTimer recordingElapsed_;
+    QTimer *recordingClock_ = nullptr, *playbackTimer_ = nullptr;
+    std::unique_ptr<cv::VideoCapture> playbackCapture_;
+    QString playbackPath_;
+    QSize playbackContentSize_;
     int completed_ = 0, modelInputChannels_ = 0;
     QSettings *settings_ = nullptr;
     QThread *workerThread_ = nullptr;
@@ -95,8 +117,11 @@ class MainWindow : public QMainWindow
     QLabel *preprocessHint_ = nullptr, *meanRLabel_ = nullptr, *stereoLabel_ = nullptr;
     QPushButton *runButton_ = nullptr, *stopButton_ = nullptr, *exportButton_ = nullptr,
                 *demoButton_ = nullptr, *modelButton_ = nullptr, *labelButton_ = nullptr;
+    QPushButton *recordButton_ = nullptr, *recordingPlayButton_ = nullptr, *exportRecordingButton_ = nullptr;
+    QLabel *recordingStatus_ = nullptr, *recordingsCount_ = nullptr, *recordingDetails_ = nullptr;
     QListWidget *queue_ = nullptr, *modelList_ = nullptr;
     QTableWidget *predictionTable_ = nullptr, *historyTable_ = nullptr;
+    QTableWidget *recordingsTable_ = nullptr;
     QComboBox *taskBox_ = nullptr, *inputColorMode_ = nullptr, *stereoView_ = nullptr;
     QSpinBox *inputSize_ = nullptr, *cameraIndex_ = nullptr;
     QDoubleSpinBox *confidence_ = nullptr, *iou_ = nullptr, *scale_ = nullptr, *meanR_ = nullptr,
@@ -104,5 +129,6 @@ class MainWindow : public QMainWindow
     QCheckBox *autoExport_ = nullptr, *showBoxes_ = nullptr, *showLabels_ = nullptr;
     QProgressBar *progress_ = nullptr;
     ImageCanvas *canvas_ = nullptr;
+    ImageCanvas *recordingCanvas_ = nullptr;
     QList<QWidget *> lockedControls_;
 };
