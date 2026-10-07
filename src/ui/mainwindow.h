@@ -1,8 +1,9 @@
 #pragma once
 #include "core/visiontypes.h"
-#include <QJsonArray>
-#include <QMainWindow>
 #include <QElapsedTimer>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QMainWindow>
 #include <memory>
 class QComboBox;
 class QDoubleSpinBox;
@@ -17,9 +18,14 @@ class QProgressBar;
 class QThread;
 class QSettings;
 class QTimer;
+class QProcess;
+class QPlainTextEdit;
 class ImageCanvas;
 class ModelViewer;
-namespace cv { class VideoCapture; }
+namespace cv
+{
+class VideoCapture;
+}
 namespace vision
 {
 class InferenceWorker;
@@ -37,6 +43,7 @@ class MainWindow : public QMainWindow
     void runPtSmoke(const QString &outputDir);
     void runModelSmoke(const QString &outputDir, const QString &model = {});
     void showModelStructure(const QString &model = {});
+    void setComputeDevice(vision::ComputeDevice device, int index = 0);
   signals:
     void startRequested(vision::JobRequest request);
 
@@ -88,6 +95,13 @@ class MainWindow : public QMainWindow
     void selectRoute(int index);
     void updateSourceUi();
     void updateTaskUi();
+    void updateDeviceUi();
+    void checkGpuEnvironment();
+    void prepareGpuEnvironment();
+    void cancelGpuPreparation();
+    void readGpuSetupOutput();
+    void appendGpuLog(const QString &message);
+    QString gpuLauncherPython() const;
     void updateModelMeta(const QString &state);
     void displayModelStructure();
     vision::ModelConfig currentConfig() const;
@@ -98,6 +112,14 @@ class MainWindow : public QMainWindow
     vision::InferenceResult lastResult_;
     vision::ModelConfig lastConfig_;
     QString lastError_;
+    QString actualBackend_, actualDeviceName_, actualDeviceNotice_;
+    vision::ComputeDevice actualDevice_ = vision::ComputeDevice::CPU;
+    bool actualDeviceKnown_ = false;
+    int actualDeviceIndex_ = -1;
+    QJsonObject gpuEnvironment_;
+    QByteArray gpuProbeOutput_, gpuProbeErrors_, gpuSetupOutput_;
+    bool gpuProbeKnown_ = false, gpuSetupCancelling_ = false;
+    QProcess *gpuProbeProcess_ = nullptr, *gpuSetupProcess_ = nullptr;
     QJsonArray history_;
     bool busy_ = false, closing_ = false, failed_ = false;
     bool recordingRequested_ = false, recordingActive_ = false, recordingStopping_ = false;
@@ -119,6 +141,10 @@ class MainWindow : public QMainWindow
            *sizeMetric_ = nullptr, *canvasTitle_ = nullptr, *zoomLabel_ = nullptr, *resultInfo_ = nullptr,
            *emptyResults_ = nullptr, *modelCount_ = nullptr;
     QLabel *backendBadge_ = nullptr, *backendFooter_ = nullptr;
+    QLabel *deviceHint_ = nullptr, *gpuEnvironmentStatus_ = nullptr;
+    QPushButton *gpuCheckButton_ = nullptr, *gpuPrepareButton_ = nullptr, *gpuCancelButton_ = nullptr;
+    QPlainTextEdit *gpuLog_ = nullptr;
+    QProgressBar *gpuSetupProgress_ = nullptr;
     QLabel *preprocessHint_ = nullptr, *meanRLabel_ = nullptr, *stereoLabel_ = nullptr;
     QPushButton *runButton_ = nullptr, *stopButton_ = nullptr, *exportButton_ = nullptr,
                 *demoButton_ = nullptr, *modelButton_ = nullptr, *labelButton_ = nullptr;
@@ -128,6 +154,8 @@ class MainWindow : public QMainWindow
     QTableWidget *predictionTable_ = nullptr, *historyTable_ = nullptr;
     QTableWidget *recordingsTable_ = nullptr;
     QComboBox *taskBox_ = nullptr, *inputColorMode_ = nullptr, *stereoView_ = nullptr;
+    QComboBox *computeDevice_ = nullptr, *gpuDeviceIndex_ = nullptr;
+    QLabel *gpuDeviceLabel_ = nullptr;
     QSpinBox *inputSize_ = nullptr, *cameraIndex_ = nullptr;
     QDoubleSpinBox *confidence_ = nullptr, *iou_ = nullptr, *scale_ = nullptr, *meanR_ = nullptr,
                    *meanG_ = nullptr, *meanB_ = nullptr;

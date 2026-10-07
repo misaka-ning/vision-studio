@@ -37,6 +37,7 @@ class PtBackend final
     }
 
   private:
+    void loadOnDevice(const ModelConfig &config, bool cuda);
     void reset() noexcept;
     void collectOutput();
     QJsonObject receive(int timeoutMs);

@@ -44,6 +44,11 @@ def fixture(project, version="1.5.0"):
         report = {"success": True, "version": version,
                   "details": {"deb_sha256": checksum(data[deb])}}
         (root / name).write_text(json.dumps(report))
+    if release.version_key(version) >= (1, 6, 0):
+        report = {"schema_version": 1, "success": True, "version": version,
+                  "details": {"deb_sha256": checksum(data[deb])},
+                  "checks": {key: True for key in release.GPU_CHECKS}}
+        (root / "gpu-qa.json").write_text(json.dumps(report))
     return root
 
 
@@ -162,6 +167,36 @@ class ReleaseTests(unittest.TestCase):
         (self.root / "vision-studio_1.5.0-1_amd64.deb").write_bytes(b"changed")
         with self.assertRaisesRegex(release.ReleaseError, "Checksum mismatch"):
             release.validate_bundle(self.root, "1.5.0")
+
+    def test_gpu_release_requires_real_gpu_report(self):
+        root = fixture(self.project, "1.6.0")
+        (root / "gpu-qa.json").unlink()
+        with self.assertRaisesRegex(release.ReleaseError, "gpu-qa"):
+            release.validate_bundle(root, "1.6.0")
+
+    def test_gpu_release_rejects_unverified_packaged_cuda(self):
+        root = fixture(self.project, "1.6.0")
+        path = root / "gpu-qa.json"
+        original = json.loads(path.read_text())
+        for check in release.GPU_CHECKS:
+            report = {**original, "checks": {**original["checks"], check: False}}
+            path.write_text(json.dumps(report))
+            with self.subTest(check=check), self.assertRaisesRegex(release.ReleaseError, "GPU QA"):
+                release.validate_bundle(root, "1.6.0")
+
+    def test_gpu_report_must_match_deb_and_version(self):
+        root = fixture(self.project, "1.6.0")
+        path = root / "gpu-qa.json"
+        original = json.loads(path.read_text())
+        for report in ({**original, "version": "1.5.0"},
+                       {**original, "details": {"deb_sha256": "wrong"}}):
+            path.write_text(json.dumps(report))
+            with self.assertRaises(release.ReleaseError):
+                release.validate_bundle(root, "1.6.0")
+
+    def test_verified_gpu_release_still_has_three_manual_assets(self):
+        root = fixture(self.project, "1.6.0")
+        self.assertEqual(len(release.validate_bundle(root, "1.6.0")), 3)
 
     def test_duplicate_manifest_path_rejected(self):
         path = self.root / "SHA256SUMS"

@@ -1,0 +1,15 @@
+Internal ctest changing into directory: /home/misaka/文档/ChatGPT/yolo/build
+Test project /home/misaka/文档/ChatGPT/yolo/build
+    Start 2: vision-recording-tests
+1/3 Test #2: vision-recording-tests ...........   Passed    2.94 sec
+    Start 4: vision-gpu-tests
+2/3 Test #4: vision-gpu-tests .................   Passed   58.46 sec
+    Start 8: vision-gpu-runtime-tests
+3/3 Test #8: vision-gpu-runtime-tests .........   Passed    1.13 sec
+
+100% tests passed, 0 tests failed out of 3
+
+Label Time Summary:
+gpu    =  58.46 sec*proc (1 test)
+
+Total Test time (real) =  62.52 sec

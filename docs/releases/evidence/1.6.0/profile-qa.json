@@ -1,0 +1,22 @@
+{
+  "success": true,
+  "version": "1.6.0",
+  "profile": "node-trace_2026-10-07_17-24-05.json",
+  "sha256": "6d99914f2fe7262ab751fe6a79c9e58fb4a7570339d2a57774516f513950ec4f",
+  "providers": {
+    "CUDAExecutionProvider": 364
+  },
+  "actual_auto_smoke": {
+    "actual_device": "cuda",
+    "backend": "ONNX Runtime / CUDA",
+    "device_index": 0,
+    "device_name": "NVIDIA GeForce RTX 4060",
+    "device_notice": "",
+    "error": "",
+    "inference_ms": 11.037454,
+    "predictions": 5,
+    "qt": "6.8.3",
+    "requested_device": "auto",
+    "success": true
+  }
+}

@@ -381,6 +381,21 @@ def audit_python_runtime(app, docs, audit):
 
 def audit_extracted(root, control, closure, audit):
     app = root / str(PREFIX)
+    version = tuple(int(value) for value in re.findall(r"\d+", control.get("Version", "0"))[:3])
+    if version >= (1, 6, 0):
+        for relative in ("scripts/gpu_setup.py", "scripts/gpu_probe.py", "scripts/setup_gpu.sh",
+                         "requirements-gpu.txt", "requirements-gpu.lock.txt"):
+            audit.require((app / relative).is_file(), "GPU support configuration file missing: " + relative)
+        audit.require("python3.10-venv" in control.get("Depends", ""), "Optional GPU setup requires python3.10-venv")
+        audit.require(not (app / "gpu-runtime").exists(), "User GPU runtime must not be bundled in the CPU DEB")
+        gpu_lock = app / "requirements-gpu.lock.txt"
+        if gpu_lock.is_file():
+            text = gpu_lock.read_text(encoding="utf-8")
+            for pin in ("torch==2.9.1+cu128", "torchvision==0.24.1+cu128", "onnxruntime-gpu==1.23.2"):
+                audit.require(pin in text, "GPU dependency pin missing: " + pin)
+            audit.require("--hash=sha256:" in text, "GPU dependencies lack publisher wheel hashes")
+        audit.details["optional_gpu"] = {"bundled": False, "setup": "per-user explicit request",
+                                          "torch": "2.9.1+cu128", "onnxruntime": "1.23.2"}
     desktop_files = list((root / "usr/share/applications").glob("*.desktop"))
     audit.require(bool(desktop_files), "No system desktop entry provided")
     for desktop in desktop_files:

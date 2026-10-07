@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "version": "1.6.0",
+  "registered_suites": 8,
+  "distinct_passed_suites": 8,
+  "phases": [
+    {
+      "name": "CPU regression",
+      "ctest_exit_code": 0,
+      "passed_suites": 7,
+      "elapsed_seconds": 118.22,
+      "runtime": "build/release-runtime/bin/python",
+      "log": "cpu-ctest-release-runtime.log",
+      "detail_log": "cpu-ctest-release-runtime-detail.log",
+      "gpu_recording_deferred": true
+    },
+    {
+      "name": "Real NVIDIA GPU and updated setup tests",
+      "ctest_exit_code": 0,
+      "passed_suites": 3,
+      "elapsed_seconds": 62.52,
+      "gpu_tests_enabled": true,
+      "runtime": "build/release-runtime/bin/python",
+      "log": "gpu-ctest.log",
+      "detail_log": "gpu-ctest-detail.log",
+      "failed_cases": 0,
+      "skipped_cases": 0
+    }
+  ],
+  "note": "Two phases cover all eight registered CTest suites. GPU recording was deferred in the CPU phase and passed with real CUDA in the GPU phase."
+}

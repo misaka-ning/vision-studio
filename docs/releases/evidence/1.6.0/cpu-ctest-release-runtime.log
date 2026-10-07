@@ -1,0 +1,20 @@
+Internal ctest changing into directory: /home/misaka/文档/ChatGPT/yolo/build
+Test project /home/misaka/文档/ChatGPT/yolo/build
+    Start 1: vision-core-tests
+1/7 Test #1: vision-core-tests ................   Passed    0.47 sec
+    Start 2: vision-recording-tests
+2/7 Test #2: vision-recording-tests ...........   Passed    1.99 sec
+    Start 3: vision-pt-tests
+3/7 Test #3: vision-pt-tests ..................   Passed   82.31 sec
+    Start 4: vision-ui-tests
+4/7 Test #4: vision-ui-tests ..................   Passed   15.39 sec
+    Start 5: vision-modelviewer-tests
+5/7 Test #5: vision-modelviewer-tests .........   Passed   12.78 sec
+    Start 6: vision-netron-server-tests
+6/7 Test #6: vision-netron-server-tests .......   Passed    4.14 sec
+    Start 7: vision-gpu-runtime-tests
+7/7 Test #7: vision-gpu-runtime-tests .........   Passed    1.13 sec
+
+100% tests passed, 0 tests failed out of 7
+
+Total Test time (real) = 118.22 sec

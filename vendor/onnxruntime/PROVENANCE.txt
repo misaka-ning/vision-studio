@@ -1,0 +1,17 @@
+ONNX Runtime 1.23.2 C API headers
+Official source tag: https://github.com/microsoft/onnxruntime/tree/v1.23.2
+Downloaded unmodified from the fixed upstream tag. MIT license in LICENSE.
+These headers are used with an optional dynamically loaded runtime, not a vendored binary.
+
+onnxruntime_c_api.h
+Source: https://raw.githubusercontent.com/microsoft/onnxruntime/v1.23.2/include/onnxruntime/core/session/onnxruntime_c_api.h
+SHA256: 71125e66180a991d65c9bdbad4aa20daaa1f7a48c7a5c0fa5f18f250ac839a02
+
+onnxruntime_ep_c_api.h
+Source: https://raw.githubusercontent.com/microsoft/onnxruntime/v1.23.2/include/onnxruntime/core/session/onnxruntime_ep_c_api.h
+SHA256: b92778f50c36ecdf53d0344e0129a78b306afed653f81bba8a9597e3e6e9546f
+
+LICENSE
+Source: https://raw.githubusercontent.com/microsoft/onnxruntime/v1.23.2/LICENSE
+SHA256: 2f07c72751aed99790b8a4869cf2311df85a860b22ded05fa22803587a48922c
+

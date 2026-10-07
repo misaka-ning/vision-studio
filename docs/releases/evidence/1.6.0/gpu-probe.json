@@ -1,0 +1,1 @@
+{"ok": true, "prepared": true, "cuda_available": true, "reason": "", "devices": [{"index": 0, "name": "NVIDIA GeForce RTX 4060", "total_memory_mb": 7805}], "torch_version": "2.9.1+cu128", "torch_cuda": "12.8", "ort_version": "1.23.2", "driver_version": "595.91.07"}

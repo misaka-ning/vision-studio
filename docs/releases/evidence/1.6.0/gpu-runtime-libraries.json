@@ -1,0 +1,126 @@
+{
+  "ort": "/home/misaka/.local/share/vision-studio/gpu-runtime/lib/python3.10/site-packages/onnxruntime/capi/libonnxruntime.so.1.23.2",
+  "cudnn_libraries": [
+    {
+      "file": "/home/misaka/.local/share/vision-studio/gpu-runtime/lib/python3.10/site-packages/nvidia/cudnn/lib/libcudnn.so.9",
+      "dynamic": "\nDynamic section at offset 0x1dd50 contains 36 entries:\n  \u6807\u8bb0        \u7c7b\u578b                         \u540d\u79f0/\u503c\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libdl.so.2]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[librt.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libpthread.so.0]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libstdc++.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libm.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libgcc_s.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libc.so.6]\n 0x000000000000000e (SONAME)             Library soname: [libcudnn.so.9]\n 0x0000000000000010 (SYMBOLIC)           0x0\n 0x000000000000001d (RUNPATH)            Library runpath: [$ORIGIN]\n 0x000000000000000c (INIT)               0x4118\n 0x000000000000000d (FINI)               0x14490\n 0x0000000000000019 (INIT_ARRAY)         0x21dd38\n 0x000000000000001b (INIT_ARRAYSZ)       8 (bytes)\n 0x000000000000001a (FINI_ARRAY)         0x21dd40\n 0x000000000000001c (FINI_ARRAYSZ)       8 (bytes)\n 0x000000006ffffef5 (GNU_HASH)           0x1f0\n 0x0000000000000005 (STRTAB)             0x20a8\n 0x0000000000000006 (SYMTAB)             0x998\n 0x000000000000000a (STRSZ)              7007 (bytes)\n 0x000000000000000b (SYMENT)             24 (bytes)\n 0x0000000000000003 (PLTGOT)             0x21e000\n 0x0000000000000002 (PLTRELSZ)           336 (bytes)\n 0x0000000000000014 (PLTREL)             RELA\n 0x0000000000000017 (JMPREL)             0x3fc8\n 0x0000000000000007 (RELA)               0x3ed8\n 0x0000000000000008 (RELASZ)             240 (bytes)\n 0x0000000000000009 (RELAENT)            24 (bytes)\n 0x000000006ffffffc (VERDEF)             0x3df8\n 0x000000006ffffffd (VERDEFNUM)          2\n 0x000000000000001e (FLAGS)              SYMBOLIC\n 0x000000006ffffffe (VERNEED)            0x3e28\n 0x000000006fffffff (VERNEEDNUM)         5\n 0x000000006ffffff0 (VERSYM)             0x3c08\n 0x000000006ffffff9 (RELACOUNT)          3\n 0x0000000000000000 (NULL)               0x0\n"
+    },
+    {
+      "file": "/home/misaka/.local/share/vision-studio/gpu-runtime/lib/python3.10/site-packages/nvidia/cudnn/lib/libcudnn_adv.so.9",
+      "dynamic": "\nDynamic section at offset 0x10df5d80 contains 40 entries:\n  \u6807\u8bb0        \u7c7b\u578b                         \u540d\u79f0/\u503c\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libcudnn_ops.so.9]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libcudnn_graph.so.9]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libdl.so.2]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libz.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[librt.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libpthread.so.0]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libstdc++.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libm.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libgcc_s.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libc.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[ld-linux-x86-64.so.2]\n 0x000000000000000e (SONAME)             Library soname: [libcudnn_adv.so.9]\n 0x0000000000000010 (SYMBOLIC)           0x0\n 0x000000000000001d (RUNPATH)            Library runpath: [$ORIGIN:$ORIGIN/../../cublas/lib:$ORIGIN/../../nvrtc/lib]\n 0x000000000000000c (INIT)               0x16f28\n 0x000000000000000d (FINI)               0x4360e4\n 0x0000000000000019 (INIT_ARRAY)         0x10ff2000\n 0x000000000000001b (INIT_ARRAYSZ)       288 (bytes)\n 0x000000000000001a (FINI_ARRAY)         0x10ff2120\n 0x000000000000001c (FINI_ARRAYSZ)       16 (bytes)\n 0x000000006ffffef5 (GNU_HASH)           0x11403240\n 0x0000000000000005 (STRTAB)             0x11400000\n 0x0000000000000006 (SYMTAB)             0x660\n 0x000000000000000a (STRSZ)              12863 (bytes)\n 0x000000000000000b (SYMENT)             24 (bytes)\n 0x0000000000000003 (PLTGOT)             0x10ff8000\n 0x0000000000000002 (PLTRELSZ)           5136 (bytes)\n 0x0000000000000014 (PLTREL)             RELA\n 0x0000000000000017 (JMPREL)             0x15b18\n 0x0000000000000007 (RELA)               0x5f30\n 0x0000000000000008 (RELASZ)             64488 (bytes)\n 0x0000000000000009 (RELAENT)            24 (bytes)\n 0x000000006ffffffc (VERDEF)             0x5d10\n 0x000000006ffffffd (VERDEFNUM)          2\n 0x000000000000001e (FLAGS)              SYMBOLIC\n 0x000000006ffffffe (VERNEED)            0x5d40\n 0x000000006fffffff (VERNEEDNUM)         9\n 0x000000006ffffff0 (VERSYM)             0x5a3e\n 0x000000006ffffff9 (RELACOUNT)          2642\n 0x0000000000000000 (NULL)               0x0\n"
+    },
+    {
+      "file": "/home/misaka/.local/share/vision-studio/gpu-runtime/lib/python3.10/site-packages/nvidia/cudnn/lib/libcudnn_cnn.so.9",
+      "dynamic": "\nDynamic section at offset 0x51d0e0 contains 40 entries:\n  \u6807\u8bb0        \u7c7b\u578b                         \u540d\u79f0/\u503c\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libcudnn_ops.so.9]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libcudnn_graph.so.9]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libdl.so.2]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libz.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[librt.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libpthread.so.0]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libstdc++.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libm.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libgcc_s.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libc.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[ld-linux-x86-64.so.2]\n 0x000000000000000e (SONAME)             Library soname: [libcudnn_cnn.so.9]\n 0x0000000000000010 (SYMBOLIC)           0x0\n 0x000000000000001d (RUNPATH)            Library runpath: [$ORIGIN:$ORIGIN/../../cublas/lib:$ORIGIN/../../nvrtc/lib]\n 0x000000000000000c (INIT)               0xff80\n 0x000000000000000d (FINI)               0x12b394\n 0x0000000000000019 (INIT_ARRAY)         0x719000\n 0x000000000000001b (INIT_ARRAYSZ)       208 (bytes)\n 0x000000000000001a (FINI_ARRAY)         0x7190d0\n 0x000000000000001c (FINI_ARRAYSZ)       16 (bytes)\n 0x000000006ffffef5 (GNU_HASH)           0x8023d0\n 0x0000000000000005 (STRTAB)             0x800000\n 0x0000000000000006 (SYMTAB)             0x3d8\n 0x000000000000000a (STRSZ)              9164 (bytes)\n 0x000000000000000b (SYMENT)             24 (bytes)\n 0x0000000000000003 (PLTGOT)             0x71e000\n 0x0000000000000002 (PLTRELSZ)           5808 (bytes)\n 0x0000000000000014 (PLTREL)             RELA\n 0x0000000000000017 (JMPREL)             0xe8d0\n 0x0000000000000007 (RELA)               0x4c70\n 0x0000000000000008 (RELASZ)             40032 (bytes)\n 0x0000000000000009 (RELAENT)            24 (bytes)\n 0x000000006ffffffc (VERDEF)             0x4a60\n 0x000000006ffffffd (VERDEFNUM)          2\n 0x000000000000001e (FLAGS)              SYMBOLIC\n 0x000000006ffffffe (VERNEED)            0x4a90\n 0x000000006fffffff (VERNEEDNUM)         10\n 0x000000006ffffff0 (VERSYM)             0x47ac\n 0x000000006ffffff9 (RELACOUNT)          1591\n 0x0000000000000000 (NULL)               0x0\n"
+    },
+    {
+      "file": "/home/misaka/.local/share/vision-studio/gpu-runtime/lib/python3.10/site-packages/nvidia/cudnn/lib/libcudnn_engines_precompiled.so.9",
+      "dynamic": "\nDynamic section at offset 0x20830580 contains 39 entries:\n  \u6807\u8bb0        \u7c7b\u578b                         \u540d\u79f0/\u503c\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libcudnn_graph.so.9]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libz.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libdl.so.2]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[librt.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libpthread.so.0]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libstdc++.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libm.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libgcc_s.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libc.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[ld-linux-x86-64.so.2]\n 0x000000000000000e (SONAME)             Library soname: [libcudnn_engines_precompiled.so.9]\n 0x0000000000000010 (SYMBOLIC)           0x0\n 0x000000000000001d (RUNPATH)            Library runpath: [$ORIGIN:$ORIGIN/../../cublas/lib:$ORIGIN/../../nvrtc/lib]\n 0x000000000000000c (INIT)               0x312c98\n 0x000000000000000d (FINI)               0x3248b04\n 0x0000000000000019 (INIT_ARRAY)         0x208f6000\n 0x000000000000001b (INIT_ARRAYSZ)       24504 (bytes)\n 0x000000000000001a (FINI_ARRAY)         0x208fbfb8\n 0x000000000000001c (FINI_ARRAYSZ)       16 (bytes)\n 0x000000006ffffef5 (GNU_HASH)           0x210066e8\n 0x0000000000000005 (STRTAB)             0x21000000\n 0x0000000000000006 (SYMTAB)             0x21003b08\n 0x000000000000000a (STRSZ)              15108 (bytes)\n 0x000000000000000b (SYMENT)             24 (bytes)\n 0x0000000000000003 (PLTGOT)             0x20a35000\n 0x0000000000000002 (PLTRELSZ)           8088 (bytes)\n 0x0000000000000014 (PLTREL)             RELA\n 0x0000000000000017 (JMPREL)             0x310d00\n 0x0000000000000007 (RELA)               0x6f80\n 0x0000000000000008 (RELASZ)             3186048 (bytes)\n 0x0000000000000009 (RELAENT)            24 (bytes)\n 0x000000006ffffffc (VERDEF)             0x6ce0\n 0x000000006ffffffd (VERDEFNUM)          2\n 0x000000000000001e (FLAGS)              SYMBOLIC\n 0x000000006ffffffe (VERNEED)            0x6d10\n 0x000000006fffffff (VERNEEDNUM)         9\n 0x000000006ffffff0 (VERSYM)             0x6934\n 0x000000006ffffff9 (RELACOUNT)          125012\n 0x0000000000000000 (NULL)               0x0\n"
+    },
+    {
+      "file": "/home/misaka/.local/share/vision-studio/gpu-runtime/lib/python3.10/site-packages/nvidia/cudnn/lib/libcudnn_engines_runtime_compiled.so.9",
+      "dynamic": "\nDynamic section at offset 0xdb82e0 contains 39 entries:\n  \u6807\u8bb0        \u7c7b\u578b                         \u540d\u79f0/\u503c\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libcudnn_graph.so.9]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libdl.so.2]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libz.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[librt.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libpthread.so.0]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libstdc++.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libm.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libgcc_s.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libc.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[ld-linux-x86-64.so.2]\n 0x000000000000000e (SONAME)             Library soname: [libcudnn_engines_runtime_compiled.so.9]\n 0x0000000000000010 (SYMBOLIC)           0x0\n 0x000000000000001d (RUNPATH)            Library runpath: [$ORIGIN:$ORIGIN/../../cublas/lib:$ORIGIN/../../nvrtc/lib]\n 0x000000000000000c (INIT)               0x37fe8\n 0x000000000000000d (FINI)               0x729624\n 0x0000000000000019 (INIT_ARRAY)         0xfa6000\n 0x000000000000001b (INIT_ARRAYSZ)       2112 (bytes)\n 0x000000000000001a (FINI_ARRAY)         0xfa6840\n 0x000000000000001c (FINI_ARRAYSZ)       16 (bytes)\n 0x000000006ffffef5 (GNU_HASH)           0x1c063e0\n 0x0000000000000005 (STRTAB)             0x1c00000\n 0x0000000000000006 (SYMTAB)             0x1c03b48\n 0x000000000000000a (STRSZ)              15175 (bytes)\n 0x000000000000000b (SYMENT)             24 (bytes)\n 0x0000000000000003 (PLTGOT)             0xfb9000\n 0x0000000000000002 (PLTRELSZ)           7704 (bytes)\n 0x0000000000000014 (PLTREL)             RELA\n 0x0000000000000017 (JMPREL)             0x361d0\n 0x0000000000000007 (RELA)               0x6c50\n 0x0000000000000008 (RELASZ)             193920 (bytes)\n 0x0000000000000009 (RELAENT)            24 (bytes)\n 0x000000006ffffffc (VERDEF)             0x69d0\n 0x000000006ffffffd (VERDEFNUM)          2\n 0x000000000000001e (FLAGS)              SYMBOLIC\n 0x000000006ffffffe (VERNEED)            0x6a00\n 0x000000006fffffff (VERNEEDNUM)         9\n 0x000000006ffffff0 (VERSYM)             0x666e\n 0x000000006ffffff9 (RELACOUNT)          7691\n 0x0000000000000000 (NULL)               0x0\n"
+    },
+    {
+      "file": "/home/misaka/.local/share/vision-studio/gpu-runtime/lib/python3.10/site-packages/nvidia/cudnn/lib/libcudnn_graph.so.9",
+      "dynamic": "\nDynamic section at offset 0x376140 contains 38 entries:\n  \u6807\u8bb0        \u7c7b\u578b                         \u540d\u79f0/\u503c\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libdl.so.2]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libz.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[librt.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libpthread.so.0]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libstdc++.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libm.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libgcc_s.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libc.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[ld-linux-x86-64.so.2]\n 0x000000000000000e (SONAME)             Library soname: [libcudnn_graph.so.9]\n 0x0000000000000010 (SYMBOLIC)           0x0\n 0x000000000000001d (RUNPATH)            Library runpath: [$ORIGIN:$ORIGIN/../../cublas/lib:$ORIGIN/../../nvrtc/lib]\n 0x000000000000000c (INIT)               0x63f60\n 0x000000000000000d (FINI)               0x2eaf64\n 0x0000000000000019 (INIT_ARRAY)         0x56e000\n 0x000000000000001b (INIT_ARRAYSZ)       168 (bytes)\n 0x000000000000001a (FINI_ARRAY)         0x56e0a8\n 0x000000000000001c (FINI_ARRAYSZ)       16 (bytes)\n 0x000000006ffffef5 (GNU_HASH)           0x636e18\n 0x0000000000000005 (STRTAB)             0x600000\n 0x0000000000000006 (SYMTAB)             0x5350\n 0x000000000000000a (STRSZ)              224789 (bytes)\n 0x000000000000000b (SYMENT)             24 (bytes)\n 0x0000000000000003 (PLTGOT)             0x577000\n 0x0000000000000002 (PLTRELSZ)           6168 (bytes)\n 0x0000000000000014 (PLTREL)             RELA\n 0x0000000000000017 (JMPREL)             0x62748\n 0x0000000000000007 (RELA)               0x4ede0\n 0x0000000000000008 (RELASZ)             80232 (bytes)\n 0x0000000000000009 (RELAENT)            24 (bytes)\n 0x000000006ffffffc (VERDEF)             0x4ebb0\n 0x000000006ffffffd (VERDEFNUM)          2\n 0x000000000000001e (FLAGS)              SYMBOLIC\n 0x000000006ffffffe (VERNEED)            0x4ebe0\n 0x000000006fffffff (VERNEEDNUM)         8\n 0x000000006ffffff0 (VERSYM)             0x4d4b4\n 0x000000006ffffff9 (RELACOUNT)          3034\n 0x0000000000000000 (NULL)               0x0\n"
+    },
+    {
+      "file": "/home/misaka/.local/share/vision-studio/gpu-runtime/lib/python3.10/site-packages/nvidia/cudnn/lib/libcudnn_heuristic.so.9",
+      "dynamic": "\nDynamic section at offset 0x432bd0 contains 39 entries:\n  \u6807\u8bb0        \u7c7b\u578b                         \u540d\u79f0/\u503c\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libcudnn_graph.so.9]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libdl.so.2]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libz.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[librt.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libpthread.so.0]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libstdc++.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libm.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libgcc_s.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libc.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[ld-linux-x86-64.so.2]\n 0x000000000000000e (SONAME)             Library soname: [libcudnn_heuristic.so.9]\n 0x0000000000000010 (SYMBOLIC)           0x0\n 0x000000000000001d (RUNPATH)            Library runpath: [$ORIGIN:$ORIGIN/../../cublas/lib:$ORIGIN/../../nvrtc/lib]\n 0x000000000000000c (INIT)               0x30078\n 0x000000000000000d (FINI)               0x2a7948\n 0x0000000000000019 (INIT_ARRAY)         0x626858\n 0x000000000000001b (INIT_ARRAYSZ)       512 (bytes)\n 0x000000000000001a (FINI_ARRAY)         0x626a58\n 0x000000000000001c (FINI_ARRAYSZ)       8 (bytes)\n 0x000000006ffffef5 (GNU_HASH)           0x3e018e8\n 0x0000000000000005 (STRTAB)             0x3e00000\n 0x0000000000000006 (SYMTAB)             0x3e00f88\n 0x000000000000000a (STRSZ)              3972 (bytes)\n 0x000000000000000b (SYMENT)             24 (bytes)\n 0x0000000000000003 (PLTGOT)             0x633000\n 0x0000000000000002 (PLTRELSZ)           1248 (bytes)\n 0x0000000000000014 (PLTREL)             RELA\n 0x0000000000000017 (JMPREL)             0x2fb98\n 0x0000000000000007 (RELA)               0x1d70\n 0x0000000000000008 (RELASZ)             187944 (bytes)\n 0x0000000000000009 (RELAENT)            24 (bytes)\n 0x000000006ffffffc (VERDEF)             0x1c00\n 0x000000006ffffffd (VERDEFNUM)          2\n 0x000000000000001e (FLAGS)              SYMBOLIC\n 0x000000006ffffffe (VERNEED)            0x1c30\n 0x000000006fffffff (VERNEEDNUM)         7\n 0x000000006ffffff0 (VERSYM)             0x1b34\n 0x000000006ffffff9 (RELACOUNT)          7775\n 0x0000000000000000 (NULL)               0x0\n"
+    },
+    {
+      "file": "/home/misaka/.local/share/vision-studio/gpu-runtime/lib/python3.10/site-packages/nvidia/cudnn/lib/libcudnn_ops.so.9",
+      "dynamic": "\nDynamic section at offset 0x79be4a0 contains 39 entries:\n  \u6807\u8bb0        \u7c7b\u578b                         \u540d\u79f0/\u503c\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libcudnn_graph.so.9]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libdl.so.2]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libz.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[librt.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libpthread.so.0]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libstdc++.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libm.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libgcc_s.so.1]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[libc.so.6]\n 0x0000000000000001 (NEEDED)             \u5171\u4eab\u5e93\uff1a[ld-linux-x86-64.so.2]\n 0x000000000000000e (SONAME)             Library soname: [libcudnn_ops.so.9]\n 0x0000000000000010 (SYMBOLIC)           0x0\n 0x000000000000001d (RUNPATH)            Library runpath: [$ORIGIN:$ORIGIN/../../cublas/lib:$ORIGIN/../../nvrtc/lib]\n 0x000000000000000c (INIT)               0x1fe38\n 0x000000000000000d (FINI)               0x2a5624\n 0x0000000000000019 (INIT_ARRAY)         0x7bba000\n 0x000000000000001b (INIT_ARRAYSZ)       200 (bytes)\n 0x000000000000001a (FINI_ARRAY)         0x7bba0c8\n 0x000000000000001c (FINI_ARRAYSZ)       16 (bytes)\n 0x000000006ffffef5 (GNU_HASH)           0x7e02170\n 0x0000000000000005 (STRTAB)             0x7e00000\n 0x0000000000000006 (SYMTAB)             0x6e0\n 0x000000000000000a (STRSZ)              8556 (bytes)\n 0x000000000000000b (SYMENT)             24 (bytes)\n 0x0000000000000003 (PLTGOT)             0x7bc0000\n 0x0000000000000002 (PLTRELSZ)           4848 (bytes)\n 0x0000000000000014 (PLTREL)             RELA\n 0x0000000000000017 (JMPREL)             0x1eb48\n 0x0000000000000007 (RELA)               0x4e80\n 0x0000000000000008 (RELASZ)             105672 (bytes)\n 0x0000000000000009 (RELAENT)            24 (bytes)\n 0x000000006ffffffc (VERDEF)             0x4c90\n 0x000000006ffffffd (VERDEFNUM)          2\n 0x000000000000001e (FLAGS)              SYMBOLIC\n 0x000000006ffffffe (VERNEED)            0x4cc0\n 0x000000006fffffff (VERNEEDNUM)         9\n 0x000000006ffffff0 (VERSYM)             0x49bc\n 0x000000006ffffff9 (RELACOUNT)          4380\n 0x0000000000000000 (NULL)               0x0\n"
+    }
+  ],
+  "runtime_bytes": 8146332522,
+  "packages": 78,
+  "ready": {
+    "schema": 1,
+    "installer": "vision-studio-gpu",
+    "torch_version": "2.9.1+cu128",
+    "torch_cuda": "12.8",
+    "ort_version": "1.23.2",
+    "pins": {
+      "asttokens": "3.0.2",
+      "certifi": "2026.7.22",
+      "charset-normalizer": "3.5.2",
+      "coloredlogs": "15.0.1",
+      "contourpy": "1.3.2",
+      "cycler": "0.12.1",
+      "decorator": "5.3.1",
+      "exceptiongroup": "1.3.1",
+      "executing": "2.2.1",
+      "filelock": "3.32.3",
+      "flatbuffers": "25.9.23",
+      "fonttools": "4.65.0",
+      "fsspec": "2026.7.0",
+      "humanfriendly": "10.0",
+      "idna": "3.20",
+      "ipython": "8.39.0",
+      "jedi": "0.20.0",
+      "Jinja2": "3.1.6",
+      "kiwisolver": "1.5.1",
+      "MarkupSafe": "3.0.3",
+      "matplotlib": "3.10.9",
+      "matplotlib-inline": "0.2.2",
+      "mpmath": "1.3.0",
+      "networkx": "3.4.2",
+      "numpy": "2.2.6",
+      "nvidia-cublas-cu12": "12.8.4.1",
+      "nvidia-cuda-cupti-cu12": "12.8.90",
+      "nvidia-cuda-nvrtc-cu12": "12.8.93",
+      "nvidia-cuda-runtime-cu12": "12.8.90",
+      "nvidia-cudnn-cu12": "9.10.2.21",
+      "nvidia-cufft-cu12": "11.3.3.83",
+      "nvidia-cufile-cu12": "1.13.1.3",
+      "nvidia-curand-cu12": "10.3.9.90",
+      "nvidia-cusolver-cu12": "11.7.3.90",
+      "nvidia-cusparse-cu12": "12.5.8.93",
+      "nvidia-cusparselt-cu12": "0.7.1",
+      "nvidia-ml-py": "13.615.71",
+      "nvidia-nccl-cu12": "2.27.5",
+      "nvidia-nvjitlink-cu12": "12.8.93",
+      "nvidia-nvshmem-cu12": "3.3.20",
+      "nvidia-nvtx-cu12": "12.8.90",
+      "onnxruntime-gpu": "1.23.2",
+      "opencv-python-headless": "4.11.0.86",
+      "packaging": "26.3",
+      "pandas": "2.3.3",
+      "parso": "0.8.7",
+      "pexpect": "4.9.0",
+      "pillow": "12.3.0",
+      "polars": "1.44.2",
+      "polars-runtime-32": "1.44.2",
+      "prompt_toolkit": "3.0.53",
+      "protobuf": "6.33.0",
+      "psutil": "7.2.2",
+      "ptyprocess": "0.7.0",
+      "pure_eval": "0.2.4",
+      "Pygments": "2.21.0",
+      "pyparsing": "3.3.3",
+      "python-dateutil": "2.9.0.post0",
+      "pytz": "2026.5",
+      "PyYAML": "6.0.3",
+      "requests": "2.34.2",
+      "seaborn": "0.13.2",
+      "setuptools": "59.6.0",
+      "six": "1.17.0",
+      "stack-data": "0.6.3",
+      "sympy": "1.14.0",
+      "torch": "2.9.1+cu128",
+      "torchvision": "0.24.1+cu128",
+      "tqdm": "4.70.1",
+      "traitlets": "5.16.1",
+      "triton": "3.5.1",
+      "typing_extensions": "4.16.0",
+      "tzdata": "2026.5",
+      "ultralytics": "8.4.173",
+      "ultralytics-thop": "2.2.2",
+      "urllib3": "2.8.0",
+      "wcwidth": "0.9.2",
+      "pip": "26.2.1"
+    }
+  }
+}

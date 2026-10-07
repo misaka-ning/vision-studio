@@ -435,7 +435,7 @@ def dependencies(arguments: argparse.Namespace, app: Path, native_files: list[Pa
         native = matches[0]
         if "libopencv-core4.5d" not in native or "libopencv-dnn4.5d" not in native:
             raise RuntimeError("Native dependency analysis did not include OpenCV 4.5.")
-        return native + ", python3 (>= 3.10), python3 (<< 3.11), python3.10, fontconfig, fonts-noto-cjk"
+        return native + ", python3 (>= 3.10), python3 (<< 3.11), python3.10, python3.10-venv, fontconfig, fonts-noto-cjk"
 
 
 def normalize_permissions(stage: Path) -> None:
@@ -462,6 +462,10 @@ def stage_payload(arguments: argparse.Namespace) -> tuple[Path, dict[str, str]]:
     (app / "scripts").mkdir()
     shutil.copy2(arguments.source_root / "scripts/pt_worker.py", app / "scripts/pt_worker.py")
     shutil.copy2(arguments.source_root / "scripts/netron_server.py", app / "scripts/netron_server.py")
+    for name in ("gpu_setup.py", "gpu_probe.py", "setup_gpu.sh"):
+        shutil.copy2(arguments.source_root / "scripts" / name, app / "scripts" / name)
+    for name in ("requirements-gpu.txt", "requirements-gpu.lock.txt"):
+        shutil.copy2(arguments.source_root / name, app / name)
     packages = arguments.runtime_metadata["distributions"]
     locked = "\n".join(f"{name}=={version}" for name, version in sorted(packages.items(), key=lambda item: item[0].lower()))
     write(app / "requirements-pt.lock.txt", "# Actual distributions bundled in this release (pip excluded).\n" + locked + "\n")
@@ -540,6 +544,7 @@ def build(arguments: argparse.Namespace) -> None:
                "Description: Professional local YOLO vision model workspace\n"
                " C++ and Qt 6.8.3 desktop application with bundled CPU PyTorch runtime.\n"
                " Includes a local Netron model structure viewer embedded in Qt WebEngine.\n"
+               " Optional NVIDIA CUDA support is prepared separately per user on request.\n"
                " Supports YOLO .pt and ONNX image, video, camera inference and result exports.\n"
                " Grayscale input adapts to one or three model channels; side-by-side streams\n"
                " can preview and infer the left or right eye independently.\n"
@@ -583,7 +588,7 @@ def main() -> int:
                         help="Additional Qt 6.8.3 plugins directory, e.g. a supplemental QtImageFormats install.")
     parser.add_argument("--runtime", type=Path, required=True)
     parser.add_argument("--install-root", default=DEFAULT_ROOT)
-    parser.add_argument("--version", default="1.5.0-1")
+    parser.add_argument("--version", default="1.6.0-1")
     parser.add_argument("--stage", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--copyright", type=Path)
@@ -598,7 +603,7 @@ def main() -> int:
     arguments.extra_qt_plugins = [path.resolve() for path in arguments.extra_qt_plugins]
     arguments.copyright = (arguments.copyright or arguments.source_root / "packaging/copyright").resolve()
     arguments.stage = (arguments.stage or arguments.source_root / "output/deb-stage" / arguments.version).resolve()
-    arguments.output = (arguments.output or arguments.source_root / "output/releases/1.5.0"
+    arguments.output = (arguments.output or arguments.source_root / "output/releases" / arguments.version.split("-", 1)[0]
                         / f"{PACKAGE}_{arguments.version}_amd64.deb").resolve()
     if not 0 <= arguments.compression_level <= 9:
         parser.error("--compression-level must be between 0 and 9")

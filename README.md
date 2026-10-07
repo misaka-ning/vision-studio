@@ -4,9 +4,9 @@
 
 [下载发行版](https://github.com/misaka-ning/vision-studio/releases) · [更新日志](CHANGELOG.md) · [使用指南](docs/使用指南.md) · [报告问题](https://github.com/misaka-ning/vision-studio/issues)
 
-当前应用版本：**1.5.0**。正式发行平台：**Ubuntu 22.04 LTS amd64**。应用代码采用 **AGPL-3.0-only**。
+当前版本：**1.6.0**；发行文件见 [Releases](https://github.com/misaka-ning/vision-studio/releases)。正式发行平台：**Ubuntu 22.04 LTS amd64**。应用代码采用 **AGPL-3.0-only**。
 
-![V1.5 检测工作台：ONNX 模型检测示例](docs/preview.png)
+![V1.6 NVIDIA GPU YOLO 检测工作台：RTX 4060 实际 CUDA 推理](docs/preview.png)
 
 ## 功能
 
@@ -16,8 +16,9 @@
 - **灰度与双目输入**：灰度按模型的 1 / 3 通道适配；单设备水平左右拼接视频或摄像头可只处理左目或右目。预览和导出显示实际所选画面与颜色模式。
 - **标注与录制**：检测框、类别、置信度、缩放和平移；保存 PNG / JSON / CSV。视频和摄像头可开始／结束录制，在「录制视频」页浏览、播放和导出。
 - **运行记录与更多**：保留处理记录、模型和耗时；「更多」集中提供运行示例与手动导出。
+- **计算设备**：工作台可选自动、CPU 或 NVIDIA GPU；「更多」检查并准备独立 GPU 环境。自动模式在 GPU 不可用时显示原因并使用 CPU，显式 GPU 失败时报告错误；结果记录实际设备。
 
-![V1.5 ONNX 模型结构图：Netron 节点与运算连接](docs/model-hierarchy.png)
+![V1.6 ONNX 模型结构图：Netron 节点与运算连接](docs/model-hierarchy.png)
 
 普通 PT 的层级树表示文件可解析的模块包含关系，裸权重按名称分组；参数表列出权重、常量和缓冲，不能直接作为可训练参数总量。ONNX 更适合查看完整运算连接。不支持或损坏的模型会显示文字说明。详细范围见 [模型说明](docs/模型说明.md)。
 
@@ -29,7 +30,7 @@
 
 ```bash
 sha256sum -c SHA256SUMS
-sudo apt install ./vision-studio_1.5.0-1_amd64.deb
+sudo apt install ./vision-studio_1.6.0-1_amd64.deb
 vision-studio
 ```
 
@@ -39,18 +40,23 @@ vision-studio
 
 正式 DEB 包含 Qt 6.8.3 / WebEngine、独立 CPU PyTorch 环境、Netron 9.3.1 与本地示例模型，模型准备完成后可以离线使用；APT 可能需要安装包声明的系统共享库。Git checkout 与便携打包脚本生成的目录需要自行准备 runtime，不能直接当作完整 DEB 安装环境。
 
+V1.6 的 NVIDIA GPU 支持首次需在「更多」点击「准备 GPU 支持」，从官方源下载约 4–5 GB 锁定依赖，建议预留至少 20 GB 空间。配置写入个人数据目录的 `gpu-runtime/`，可以取消；只有实际 CUDA 自检成功才发布环境，失败保留原来的 CPU／GPU 环境。不安装或修改显卡驱动，不在 APT／DPKG 安装过程中下载 CUDA。GPU 准备完成后模型推理可离线执行。
+
 ## 推理架构与兼容范围
 
 | 用途 | 实现 | 当前设备 |
 | --- | --- | --- |
 | 界面、输入、结果显示、录制与导出 | C++17 / Qt 6.8.3 | 本机 |
-| ONNX 推理 | C++ / OpenCV DNN 4.5.4 | CPU |
-| PT 推理 | 常驻本地 Python / PyTorch 2.9.1+cpu / Ultralytics 8.4.173 | CPU |
+| ONNX CPU 推理 | C++ / OpenCV DNN 4.5.4 | CPU |
+| ONNX GPU 推理 | C++ / ONNX Runtime 1.23.2 CUDA Execution Provider | NVIDIA GPU，可选环境 |
+| PT 推理 | 常驻本地 Python / PyTorch 2.9.1 / Ultralytics 8.4.173 | CPU；可选 CUDA 12.8 |
 | 模型结构显示 | Qt WebEngine / Netron 9.3.1，本机回环服务 | 本机 |
 
-当前正式版本尚未提供 CUDA / TensorRT 后端。模型可视化不参与检测推理，结构查看不会执行 `torch.load`；PT 推理加载检查点可能执行其 Python 代码，请使用自己训练或可信来源的模型。
+V1.6 增加 NVIDIA CUDA 后端，TensorRT、AMD 与 Intel GPU 尚未提供。GPU 环境固定为 Python 3.10／3.11、PyTorch `2.9.1+cu128`、Torchvision `0.24.1+cu128`、CUDA 12.8、cuDNN 9.10.2 与 ONNX Runtime 1.23.2；推荐 Linux NVIDIA 驱动 ≥ 570.26。`nvidia-smi` 的 CUDA Version 表示驱动支持上限，不代表已安装 CUDA Toolkit。应用使用官方运行库 wheel，无需全局 Toolkit。[PyTorch 版本](https://pytorch.org/get-started/previous-versions/)、[ORT CUDA 兼容](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html)、[CUDA 12.8 驱动要求](https://docs.nvidia.com/cuda/archive/12.8.0/cuda-toolkit-release-notes/index.html)。
 
-ONNX 支持 OpenCV 能导入并符合本项目输出约定的 YOLOv5、YOLOv8 / YOLO11 原始检测输出与单标签分类。图像输入需为 NCHW，固定 1 或 3 通道；灰度直接输入 C1 或复制到 C3，彩色要求 C3。带内置 NMS、多输入、分割、姿态、旋转框和量化专用预处理不在当前兼容范围。
+模型可视化不参与检测推理，结构查看不会执行 `torch.load`；PT 推理加载检查点可能执行其 Python 代码，请使用自己训练或可信来源的模型。
+
+ONNX 支持符合本项目输入输出约定的 YOLOv5、YOLOv8 / YOLO11 原始检测输出与单标签分类；CPU 与 GPU 的模型算子分别以 OpenCV DNN、ONNX Runtime CUDA 支持范围为准。图像输入需为 NCHW，固定 1 或 3 通道；灰度直接输入 C1 或复制到 C3，彩色要求 C3。带内置 NMS、多输入、分割、姿态、旋转框和量化专用预处理不在当前兼容范围。
 
 PT 支持兼容的 Ultralytics YOLOv8 / YOLO11 完整检查点、随附 YOLOv5 v7.0 框架可加载的旧版完整检查点，以及带必要任务、类别和通道元数据的标准 TorchScript。裸 `state_dict` 可显示静态信息，但还需要网络架构才能推理。具体预处理、灰度、左右目和输出约定请阅读 [模型说明](docs/模型说明.md) 和 [使用指南](docs/使用指南.md)。
 
@@ -81,9 +87,18 @@ ctest --test-dir build --output-on-failure
 
 源码开发的 PT / Netron 依赖由 `requirements-pt.txt` 和 `requirements-pt.lock.txt` 约束；正式 DEB 使用的 headless OpenCV runtime 另有 [发行依赖锁](docs/release/requirements-release.lock.txt)。`VISION_STUDIO_BASE_PYTHON` 可指定建立 runtime 的 Python，`VISION_STUDIO_PYTHON` 可指定运行时解释器的绝对路径。
 
+GPU 依赖使用独立的 `requirements-gpu.txt`／`requirements-gpu.lock.txt`；完整锁包含版本与官方 wheel 的 SHA256，按 `--no-deps --require-hashes` 安装，避免 Ultralytics 额外装入 GUI OpenCV。源码开发也可执行：
+
+```bash
+./scripts/setup_gpu.sh
+/usr/bin/python3.10 scripts/gpu_probe.py
+```
+
+默认解释器明确使用 `/usr/bin/python3.10`，不跟随 PATH 中的 Conda。可用 `--base-python /绝对路径/python3.11`、`--runtime-dir /用户专用目录/gpu-runtime` 指定配置位置，并用 `VISION_STUDIO_GPU_RUNTIME_DIR` 在应用中选择同一目录。Netron 继续使用独立 CPU 环境。
+
 ## 验证与发行
 
-测试覆盖真实 OpenCV forward、PT 后台协议和模型、灰度 C1 / C3、左右目、录像、UI、模型显示及本机 HTTP 服务。V1.5 的六组 CTest 全部通过，正式包也完成普通用户、只读安装树、离线安装／推理／卸载验收；具体边界和报告见 [V1.5 验收证据](docs/releases/evidence/1.5.0)。每版证据保存在 `docs/releases/evidence/X.Y.Z`，不作为零散 Release 附件上传。摄像头硬件需要实际设备验证。
+V1.6 已在 CPU／GPU 两阶段实际执行并通过 8 组 CTest，覆盖真实 ONNX／三类 PT 模型、彩色及灰度 C1 / C3、左右目、录像、取消与恢复、UI、模型显示及本机 HTTP 服务。GPU 环境保护、原子发布、取消与原始许可收集的 21 项测试通过；RTX 4060 上的 ONNX CUDA 节点、PT CUDA 和右目灰度标注录像也已验证。候选安装包完成普通用户运行、模型三视图缓存复用、断网安装／卸载，以及包内 CUDA／CPU 四轮推理检查。具体范围见 [本版发布说明](docs/releases/1.6.0.md)；正式附件对应的最终报告与原始日志见 [本版验收证据](docs/releases/evidence/1.6.0)。每版证据随仓库保存，不零散上传 Release。物理摄像头仍需按实际设备验证。
 
 ```bash
 ./build/bin/vision-studio --smoke /tmp/vision-studio-onnx-smoke

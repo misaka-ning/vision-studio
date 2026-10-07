@@ -8,6 +8,7 @@
 namespace vision
 {
 class PtBackend;
+class OnnxCudaBackend;
 
 // Instances belong to one inference thread; cv::dnn::Net is not shared with the UI.
 class VisionEngine final
@@ -31,6 +32,7 @@ class VisionEngine final
   private:
     cv::dnn::Net m_net;
     std::unique_ptr<PtBackend> m_pt;
+    std::unique_ptr<OnnxCudaBackend> m_cuda;
     ModelConfig m_config;
     std::function<bool()> m_cancellationCheck;
 };

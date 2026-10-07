@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "success": true,
+  "version": "1.6.0",
+  "errors": [],
+  "details": {
+    "deb_sha256": "5bac1313f4ea630b6fb883e4ff7b9a36754662f188c9d4289366e99f51056a7b",
+    "hardware": [
+      {
+        "index": 0,
+        "name": "NVIDIA GeForce RTX 4060",
+        "total_memory_mb": 7805
+      }
+    ],
+    "driver": "595.91.07",
+    "torch": "2.9.1+cu128",
+    "cuda": "12.8",
+    "onnxruntime": "1.23.2",
+    "cuda_node_events": 364,
+    "all_registered_ctest_suites_passed": 8,
+    "backend_tests": {
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0
+    },
+    "recording": {
+      "source_frames_encoded": 8,
+      "source_size": [
+        320,
+        96
+      ],
+      "right_eye_size": [
+        160,
+        96
+      ],
+      "color_mode": "grayscale"
+    },
+    "physical_camera_tested": false
+  },
+  "checks": {
+    "onnx_cuda_nodes": true,
+    "pt_cuda": true,
+    "packaged_onnx_cuda": true,
+    "packaged_pt_cuda": true,
+    "cpu_regression": true,
+    "grayscale_c1_c3": true,
+    "stereo_recording": true
+  },
+  "evidence": [
+    {
+      "file": "gpu-install-qa.json",
+      "bytes": 20554,
+      "sha256": "88b4026a9dee6127e0bd0edef0b87216b538c0bfef9592d48fb28b428ca1590b"
+    },
+    {
+      "file": "ctest-qa.json",
+      "bytes": 966,
+      "sha256": "5011b3c58eb1bd3b236a0251e5b579e22737ea4cca2ee92a8a08dc012c813c16"
+    },
+    {
+      "file": "gpu-backend-tests.log",
+      "bytes": 983,
+      "sha256": "2d1f9c88824505f17840600aee925d84feb488c98ce79b6f17e845fd2d891f9b"
+    },
+    {
+      "file": "gpu-recording-tests.log",
+      "bytes": 489,
+      "sha256": "50059938b2acd15719548a9d1366d21e183923e77684cc4c9fcf394d2f1e2149"
+    },
+    {
+      "file": "gpu-ctest.log",
+      "bytes": 578,
+      "sha256": "3eeea861a964fbdd9789576a592898c3fce0e925de8213db0a2fb2e0a2ab81a7"
+    },
+    {
+      "file": "gpu-ctest-detail.log",
+      "bytes": 4347,
+      "sha256": "46a5d5959ec97fe7d653a57c2fe976d2e0aa6ab9ba7426f9cd37b94de9e00c39"
+    },
+    {
+      "file": "profile-qa.json",
+      "bytes": 563,
+      "sha256": "82b66ba4ca4dfcd4b36ec4554a74bb4a71549af80b14cb21819dbe99b9fb6af1"
+    },
+    {
+      "file": "node-trace_2026-10-07_17-24-05.json",
+      "bytes": 287599,
+      "sha256": "6d99914f2fe7262ab751fe6a79c9e58fb4a7570339d2a57774516f513950ec4f"
+    },
+    {
+      "file": "gpu-probe.json",
+      "bytes": 266,
+      "sha256": "098bd7ddf81854a42bee192c174e5bb7192cebbf52de82b4cabfac64a216dcb4"
+    }
+  ],
+  "limits": [
+    "Actual GPU acceptance used NVIDIA RTX 4060 on Ubuntu 22.04 amd64. Stereo input was a horizontally joined test video; a physical camera was not tested.",
+    "Netron uses the independent bundled CPU environment. GPU dependencies are installed per user; no driver changes were made."
+  ]
+}

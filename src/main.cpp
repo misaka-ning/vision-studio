@@ -1,4 +1,5 @@
 #include "ui/mainwindow.h"
+#include "core/gpuruntime.h"
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDir>
@@ -10,7 +11,7 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
     app.setApplicationName("Vision Studio");
     app.setOrganizationName("VisionStudio");
-    app.setApplicationVersion("1.5.0");
+    app.setApplicationVersion("1.6.0");
     app.setWindowIcon(QIcon(":/app-icon.svg"));
     app.setStyle("Fusion");
     app.setFont(QFont("Noto Sans CJK SC", 10));
@@ -25,8 +26,24 @@ int main(int argc, char **argv)
     parser.addOption({"smoke-pt", "执行真实 .pt 推理、导出和 UI 自检后退出", "directory"});
     parser.addOption({"smoke-model", "执行真实模型解析、三种视图与缓存自检后退出", "directory"});
     parser.addOption({"display-model", "指定结构显示的模型文件", "path"});
+    parser.addOption({"device", "推理设备：auto、cpu 或 cuda", "mode"});
+    parser.addOption({"gpu-index", "NVIDIA GPU 索引（默认 0）", "index", "0"});
     parser.process(app);
+    const QString device = parser.value("device").toLower();
+    bool validIndex = false;
+    const int gpuIndex = parser.value("gpu-index").toInt(&validIndex);
+    if (!validIndex || gpuIndex < 0 || gpuIndex > 63 ||
+        (parser.isSet("device") && device != "auto" && device != "cpu" && device != "cuda"))
+    {
+        qCritical("Invalid device: use --device auto|cpu|cuda and --gpu-index 0..63");
+        return 2;
+    }
     MainWindow window;
+    if (parser.isSet("device"))
+        window.setComputeDevice(device == "cuda" ? vision::ComputeDevice::CUDA
+                               : device == "cpu" ? vision::ComputeDevice::CPU
+                                                 : vision::ComputeDevice::Auto,
+                                gpuIndex);
     window.show();
     if (parser.isSet("screenshot"))
         QTimer::singleShot(300, &window,
