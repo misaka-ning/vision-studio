@@ -454,9 +454,28 @@ def prune(args: argparse.Namespace, github: GitHub) -> dict:
     root = cleanup_root(args.releases_root)
     kept, candidates = cleanup_candidates(root)
     plan = {"success": True, "dry_run": not args.execute, "root": str(root),
-            "kept": [str(path) for path in kept], "verified_candidates": []}
+            "kept": [str(path) for path in kept], "verified_kept": [],
+            "verified_candidates": []}
     # Preflight the entire plan before any deletion. Any failure protects all.
     identities = {}
+    verified_commits = {}
+    # A draft, absent release, or incomplete upload must never displace a fully
+    # published version in the two-version retention policy. Fail closed rather
+    # than guessing which locally present versions are safe to count.
+    for retained in kept:
+        directory = canonical_directory(retained)
+        if directory.parent != root:
+            raise ReleaseError("Retained version escaped its parent")
+        assets = validate_bundle(directory, directory.name, require_qa=False)
+        release = github.release(f"v{directory.name}")
+        if (release is None or release.get("draft") or release.get("prerelease")
+                or not release.get("published_at")):
+            raise ReleaseError(f"Retained version is not durably published: {directory.name}")
+        commit = verify_published_tag(github, args.project_dir.resolve(), directory.name)
+        verified = github.verify_assets(release, assets)
+        verified_commits[directory] = commit
+        plan["verified_kept"].append({"path": str(directory), "url": release["html_url"],
+                                      "commit": commit, "assets": verified})
     for candidate in candidates:
         directory = canonical_directory(candidate)
         if directory.parent != root:
@@ -469,6 +488,7 @@ def prune(args: argparse.Namespace, github: GitHub) -> dict:
             raise ReleaseError(f"Version is not durably published: {directory.name}")
         commit = verify_published_tag(github, args.project_dir.resolve(), directory.name)
         verified = github.verify_assets(release, assets)
+        verified_commits[directory] = commit
         plan["verified_candidates"].append({"path": str(directory),
                                             "url": release["html_url"], "commit": commit,
                                             "assets": verified})
@@ -482,8 +502,11 @@ def prune(args: argparse.Namespace, github: GitHub) -> dict:
         for path, identity in identities.items():
             if inspect_cleanup_tree(path) != identity or path.parent != root:
                 raise ReleaseError("Candidate identity changed during verification")
-            # Recheck tags immediately before deleting any local snapshots.
-            verify_published_tag(github, args.project_dir.resolve(), path.name)
+        # Both the retained releases and candidates must still use the exact
+        # tags verified in preflight before any local snapshot is deleted.
+        for path, expected_commit in verified_commits.items():
+            if verify_published_tag(github, args.project_dir.resolve(), path.name) != expected_commit:
+                raise ReleaseError("Version tag changed during cleanup verification")
         removed = []
         for path in identities:
             shutil.rmtree(path)

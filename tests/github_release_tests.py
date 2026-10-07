@@ -57,14 +57,17 @@ class FakeGitHub:
                        "html_url": "https://github.com/misaka-ning/vision-studio/releases/test"}
                       if existing else None)
         self.rows = []
+        self.other_releases = {}
         self.commands = []
         self.next_id = 1
 
     def release(self, tag):
-        return self.value
+        if tag == f"v{self.root.name}":
+            return self.value
+        return self.other_releases.get(tag)
 
     def assets(self, value):
-        return self.rows
+        return value.get("_assets", self.rows)
 
     def remote_commit(self, tag):
         return "a" * 40
@@ -80,6 +83,18 @@ class FakeGitHub:
                           "state": "uploaded", "size": path.stat().st_size,
                           "digest": "sha256:" + release.sha256(path)})
         self.next_id += 1
+
+    def add_published_version(self, directory):
+        value = {"id": 1000 + len(self.other_releases), "tag_name": f"v{directory.name}",
+                 "draft": False, "prerelease": False, "published_at": "today",
+                 "html_url": f"https://github.com/misaka-ning/vision-studio/releases/v{directory.name}",
+                 "_assets": []}
+        for asset in release.validate_bundle(directory, directory.name, require_qa=False):
+            value["_assets"].append({"id": self.next_id, "name": asset.name, "state": "uploaded",
+                                     "size": asset.size, "digest": "sha256:" + asset.sha256})
+            self.next_id += 1
+        self.other_releases[value["tag_name"]] = value
+        return value
 
     def command(self, argv, cwd=None):
         self.commands.append(argv)
@@ -119,6 +134,17 @@ class ReleaseTests(unittest.TestCase):
         with patch.object(release, "verify_tag", return_value="a" * 40), \
                 patch.object(release, "command", side_effect=github.command):
             return release.publish(self.args, github)
+
+    def prune_github(self, old, existing=True):
+        github = FakeGitHub(old, existing=existing)
+        for directory in self.root.parent.iterdir():
+            if (directory.is_dir() and directory != old
+                    and release.VERSION_RE.fullmatch(directory.name)):
+                github.add_published_version(directory)
+        if existing:
+            for asset in release.validate_bundle(old, old.name, require_qa=False):
+                github.add_asset(asset.path)
+        return github
 
     def test_versions_use_numeric_order_and_reject_nonstable(self):
         self.assertGreater(release.version_key("1.10.0"), release.version_key("1.9.9"))
@@ -244,12 +270,11 @@ class ReleaseTests(unittest.TestCase):
         (root / "legacy.deb").write_bytes(b"legacy")
         (root / "99.0.0").write_text("A file must not count as a retained version")
         (root / "notes").mkdir()
-        github = FakeGitHub(old, existing=True)
-        for asset in release.validate_bundle(old, "1.3.0", require_qa=False):
-            github.add_asset(asset.path)
+        github = self.prune_github(old)
         args = argparse.Namespace(releases_root=root, execute=False, project_dir=self.project)
         plan = release.prune(args, github)
         self.assertEqual([Path(path).name for path in plan["kept"]], ["1.10.0", "1.5.0"])
+        self.assertEqual(len(plan["verified_kept"]), 2)
         self.assertTrue(old.exists())
         args.execute = True
         result = release.prune(args, github)
@@ -263,7 +288,7 @@ class ReleaseTests(unittest.TestCase):
         old = fixture(self.project, "1.3.0")
         fixture(self.project, "1.4.0")
         args = argparse.Namespace(releases_root=self.root.parent, execute=True, project_dir=self.project)
-        github = FakeGitHub(old)
+        github = self.prune_github(old, existing=False)
         with self.assertRaisesRegex(release.ReleaseError, "not durably published"):
             release.prune(args, github)
         github.value = {"id": 42, "draft": False, "prerelease": False, "published_at": "today", "html_url": "url"}
@@ -306,14 +331,54 @@ class ReleaseTests(unittest.TestCase):
     def test_prune_remote_tag_change_protects_snapshot(self):
         old = fixture(self.project, "1.3.0")
         fixture(self.project, "1.4.0")
-        github = FakeGitHub(old, existing=True)
-        for asset in release.validate_bundle(old, "1.3.0", require_qa=False):
-            github.add_asset(asset.path)
+        github = self.prune_github(old)
         args = argparse.Namespace(releases_root=self.root.parent, execute=True, project_dir=self.project)
-        self.published_tag_check.side_effect = ["a" * 40, release.ReleaseError("Tag moved")]
+        self.published_tag_check.side_effect = ["a" * 40] * 3 + [release.ReleaseError("Tag moved")]
         with self.assertRaisesRegex(release.ReleaseError, "Tag moved"):
             release.prune(args, github)
         self.assertTrue(old.is_dir())
+
+    def test_prune_retained_draft_missing_or_prerelease_protects_all_old_versions(self):
+        old = fixture(self.project, "1.3.0")
+        fixture(self.project, "1.4.0")
+        args = argparse.Namespace(releases_root=self.root.parent, execute=True, project_dir=self.project)
+        for version in ("1.5.0", "1.4.0"):
+            for state in ("draft", "missing", "prerelease"):
+                with self.subTest(version=version, state=state):
+                    github = self.prune_github(old)
+                    value = github.other_releases[f"v{version}"]
+                    if state == "missing":
+                        del github.other_releases[f"v{version}"]
+                    else:
+                        value[state] = True
+                    with self.assertRaisesRegex(release.ReleaseError, "Retained version is not durably published"):
+                        release.prune(args, github)
+                    self.assertTrue(old.is_dir())
+                    self.assertTrue(self.root.is_dir())
+                    self.assertTrue((self.root.parent / "1.4.0").is_dir())
+
+    def test_prune_retained_release_missing_or_corrupt_asset_protects_all_old_versions(self):
+        old = fixture(self.project, "1.3.0")
+        fixture(self.project, "1.4.0")
+        args = argparse.Namespace(releases_root=self.root.parent, execute=True, project_dir=self.project)
+        for version in ("1.5.0", "1.4.0"):
+            for failure in ("missing", "size", "digest", "starter"):
+                with self.subTest(version=version, failure=failure):
+                    github = self.prune_github(old)
+                    assets = github.other_releases[f"v{version}"]["_assets"]
+                    if failure == "missing":
+                        assets.pop()
+                    elif failure == "size":
+                        assets[0]["size"] = 0
+                    elif failure == "digest":
+                        assets[0]["digest"] = "sha256:" + "b" * 64
+                    else:
+                        assets[0]["state"] = "starter"
+                    with self.assertRaises(release.ReleaseError):
+                        release.prune(args, github)
+                    self.assertTrue(old.is_dir())
+                    self.assertTrue(self.root.is_dir())
+                    self.assertTrue((self.root.parent / "1.4.0").is_dir())
 
 
 class GitHubReadTests(unittest.TestCase):
