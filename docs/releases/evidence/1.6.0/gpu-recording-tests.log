@@ -1,0 +1,7 @@
+********* Start testing of RecordingTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : RecordingTests::initTestCase()
+PASS   : RecordingTests::gpuRightEyeGrayscaleRecordingPreservesActualDevice()
+PASS   : RecordingTests::cleanupTestCase()
+Totals: 3 passed, 0 failed, 0 skipped, 0 blacklisted, 820ms
+********* Finished testing of RecordingTests *********

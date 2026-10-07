@@ -48,8 +48,10 @@ CHECKSUM_RE = re.compile(r"([0-9a-fA-F]{64}) [ *](.+)\Z")
 PROTECTED = {".git", "runtime", "output", "recordings", "preferences.ini", "history.json"}
 OPTIONAL_REPORTS = (
     "desktop-qa.json", "metadata-boundary-qa.json", "home-qa.json",
-    "source-bundle-qa.json", "source-qa.json", "ctest-qa.json",
+    "source-bundle-qa.json", "source-qa.json", "ctest-qa.json", "gpu-qa.json",
 )
+GPU_CHECKS = ("onnx_cuda_nodes", "pt_cuda", "packaged_onnx_cuda", "packaged_pt_cuda",
+              "cpu_regression", "grayscale_c1_c3", "stereo_recording")
 
 
 class ReleaseError(RuntimeError):
@@ -170,6 +172,8 @@ def validate_bundle(directory: Path, version: str, require_qa: bool = True) -> l
     assets = [make_asset(root, name) for name in (debs[0], companion, "SHA256SUMS")]
     if require_qa:
         required_reports = ["qa-report.json", "install-qa.json", "ctest-qa.json"]
+        if version_key(version) >= (1, 6, 0):
+            required_reports.append("gpu-qa.json")
         source_report = next((name for name in ("source-bundle-qa.json", "source-qa.json")
                               if (root / name).is_file()), None)
         if source_report is None:
@@ -183,9 +187,14 @@ def validate_bundle(directory: Path, version: str, require_qa: bool = True) -> l
                 raise ReleaseError(f"Release QA is not passing: {name}")
             if "version" in report and report["version"] != version:
                 raise ReleaseError(f"QA report version mismatch: {name}")
-            if name in ("qa-report.json", "install-qa.json"):
+            if name in ("qa-report.json", "install-qa.json", "gpu-qa.json"):
                 if report.get("details", {}).get("deb_sha256") != all_checksums[debs[0]]:
                     raise ReleaseError(f"QA report is for a different DEB: {name}")
+            if name == "gpu-qa.json":
+                checks = report.get("checks", {})
+                if (report.get("schema_version") != 1 or not isinstance(checks, dict) or
+                        any(checks.get(check) is not True for check in GPU_CHECKS)):
+                    raise ReleaseError("GPU QA must prove actual and packaged CUDA inference, CPU regression, grayscale and stereo recording")
             # QA remains mandatory even though reports are archived in the Git
             # repository under docs/releases/evidence rather than as assets.
             make_asset(root, name)

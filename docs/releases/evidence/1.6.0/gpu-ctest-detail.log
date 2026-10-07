@@ -1,0 +1,88 @@
+Start testing: Oct 07 17:23 HKT
+----------------------------------------------------------
+2/8 Testing: vision-recording-tests
+2/8 Test: vision-recording-tests
+Command: "/home/misaka/文档/ChatGPT/yolo/build/vision-recording-tests"
+Directory: /home/misaka/文档/ChatGPT/yolo/build
+"vision-recording-tests" start time: Oct 07 17:23 HKT
+Output:
+----------------------------------------------------------
+********* Start testing of RecordingTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : RecordingTests::initTestCase()
+PASS   : RecordingTests::videoIsAnnotatedPlayableAndPublishedOnlyAtFinish()
+PASS   : RecordingTests::grayscaleOddEyePreservesContentAndAddsOnlyEdgePadding()
+PASS   : RecordingTests::cameraTimingUsesMeasuredDurationAndDecodesAllFrames()
+PASS   : RecordingTests::emptyDiscardAndInvalidDirectoryNeverPublishBrokenClips()
+PASS   : RecordingTests::changedResolutionEndsClipWithoutLosingItsPreviousFrames()
+PASS   : RecordingTests::workerRecordsEveryFrameAndFinishesAtEof()
+PASS   : RecordingTests::gpuRightEyeGrayscaleRecordingPreservesActualDevice()
+PASS   : RecordingTests::workerStartAfterFirstPreviewAndCancelClosesOnlyRecordedFrames()
+PASS   : RecordingTests::recordingFailureDoesNotInterruptInference()
+PASS   : RecordingTests::manualStopKeepsInferenceRunningAndRestartCreatesANewClip()
+PASS   : RecordingTests::stoppingDuringOnnxForwardRecordsTheLastCompletedFrame()
+PASS   : RecordingTests::stoppingWithPendingRecordingNeverOpensANewClip()
+PASS   : RecordingTests::cleanupTestCase()
+Totals: 14 passed, 0 failed, 0 skipped, 0 blacklisted, 2759ms
+********* Finished testing of RecordingTests *********
+<end of output>
+Test time =   2.94 sec
+----------------------------------------------------------
+Test Passed.
+"vision-recording-tests" end time: Oct 07 17:23 HKT
+"vision-recording-tests" time elapsed: 00:00:02
+----------------------------------------------------------
+
+4/8 Testing: vision-gpu-tests
+4/8 Test: vision-gpu-tests
+Command: "/home/misaka/文档/ChatGPT/yolo/build/vision-gpu-tests"
+Directory: /home/misaka/文档/ChatGPT/yolo/build
+"vision-gpu-tests" start time: Oct 07 17:23 HKT
+Output:
+----------------------------------------------------------
+********* Start testing of GpuBackendTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : GpuBackendTests::initTestCase()
+PASS   : GpuBackendTests::realModernAndLegacyPtColorAndGrayscale()
+PASS   : GpuBackendTests::torchScriptC1AndC3GrayscaleDetectionAndClassification()
+PASS   : GpuBackendTests::nativeGrayC1C3Classification()
+PASS   : GpuBackendTests::modernAndLegacyRealSingleChannelStems()
+PASS   : GpuBackendTests::realOnnxCudaMatchesCpuAndExecutesCudaNodes()
+PASS   : GpuBackendTests::onnxC1AndC3GrayPixelsMatchModelInput()
+PASS   : GpuBackendTests::onnxCudaCancellationTerminatesRunAndSessionCanRecover()
+PASS   : GpuBackendTests::ptCudaCancellationStopsChildAndCudaReloadWorks()
+PASS   : GpuBackendTests::cleanupTestCase()
+Totals: 10 passed, 0 failed, 0 skipped, 0 blacklisted, 58323ms
+********* Finished testing of GpuBackendTests *********
+<end of output>
+Test time =  58.46 sec
+----------------------------------------------------------
+Test Passed.
+"vision-gpu-tests" end time: Oct 07 17:24 HKT
+"vision-gpu-tests" time elapsed: 00:00:58
+----------------------------------------------------------
+
+8/8 Testing: vision-gpu-runtime-tests
+8/8 Test: vision-gpu-runtime-tests
+Command: "/usr/bin/python3" "/home/misaka/文档/ChatGPT/yolo/tests/gpu_runtime_tests.py"
+Directory: /home/misaka/文档/ChatGPT/yolo/build
+"vision-gpu-runtime-tests" start time: Oct 07 17:24 HKT
+Output:
+----------------------------------------------------------
+.....................
+----------------------------------------------------------------------
+Ran 21 tests in 1.081s
+
+OK
+<end of output>
+Test time =   1.13 sec
+----------------------------------------------------------
+Test Passed.
+"vision-gpu-runtime-tests" end time: Oct 07 17:24 HKT
+"vision-gpu-runtime-tests" time elapsed: 00:00:01
+----------------------------------------------------------
+
+End testing: Oct 07 17:24 HKT
+
+gpu =  58.46 sec*proc
+

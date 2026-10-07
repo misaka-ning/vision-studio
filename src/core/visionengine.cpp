@@ -1,5 +1,6 @@
 #include "visionengine.h"
 #include "ptbackend.h"
+#include "onnxcudabackend.h"
 
 #include <QElapsedTimer>
 #include <QByteArrayView>
@@ -394,12 +395,13 @@ VisionEngine::~VisionEngine() = default;
 
 bool VisionEngine::loaded() const noexcept
 {
-    return m_pt ? m_pt->loaded() : !m_net.empty();
+    return m_pt ? m_pt->loaded() : m_cuda ? m_cuda->loaded() : !m_net.empty();
 }
 
 QString VisionEngine::backendName() const
 {
-    return m_pt ? m_pt->backendName() : QStringLiteral("OpenCV DNN / CPU");
+    return m_pt ? m_pt->backendName() : m_cuda ? QStringLiteral("ONNX Runtime / CUDA")
+                                             : QStringLiteral("OpenCV DNN / CPU");
 }
 
 void VisionEngine::setCancellationCheck(std::function<bool()> check)
@@ -407,11 +409,14 @@ void VisionEngine::setCancellationCheck(std::function<bool()> check)
     m_cancellationCheck = std::move(check);
     if (m_pt)
         m_pt->setCancellationCheck(m_cancellationCheck);
+    if (m_cuda)
+        m_cuda->setCancellationCheck(m_cancellationCheck);
 }
 
 void VisionEngine::unload()
 {
     m_pt.reset();
+    m_cuda.reset();
     m_net = {};
     m_config = {};
 }
@@ -420,6 +425,14 @@ void VisionEngine::load(const ModelConfig &requestedConfig)
 {
     ModelConfig config = requestedConfig;
     unload();
+    if (config.device != ComputeDevice::Auto && config.device != ComputeDevice::CPU &&
+        config.device != ComputeDevice::CUDA)
+        fail(QStringLiteral("计算设备设置无效。"));
+    if (config.deviceIndex < 0 || config.deviceIndex > 255)
+        fail(QStringLiteral("CUDA 设备编号应在 0 到 255 之间。"));
+    config.resolvedDevice = ComputeDevice::CPU;
+    config.deviceName = QStringLiteral("CPU");
+    config.deviceNotice.clear();
     if (config.inputSize < 16 || config.inputSize > 4096)
         fail(QStringLiteral("输入尺寸应在 16 到 4096 像素之间。"));
     if (!std::isfinite(config.confidence) || config.confidence < 0 || config.confidence > 1 ||
@@ -453,6 +466,28 @@ void VisionEngine::load(const ModelConfig &requestedConfig)
         fail(QStringLiteral("此模型需要 1 通道输入，请将输入通道模式切换为「灰度」。"));
     if (config.colorMode == InputColorMode::Grayscale)
         config.meanG = config.meanB = config.meanR;
+    if (config.device != ComputeDevice::CPU)
+    {
+        try
+        {
+            auto cuda = std::make_unique<OnnxCudaBackend>();
+            cuda->setCancellationCheck(m_cancellationCheck);
+            cuda->load(config, modelBytes);
+            config.resolvedDevice = ComputeDevice::CUDA;
+            config.deviceName = cuda->deviceName();
+            m_config = config;
+            m_cuda = std::move(cuda);
+            return;
+        }
+        catch (const std::exception &error)
+        {
+            if (config.device == ComputeDevice::CUDA ||
+                (m_cancellationCheck && m_cancellationCheck()))
+                throw;
+            config.deviceNotice = QStringLiteral("CUDA 初始化失败，已自动使用 CPU：%1")
+                                      .arg(QString::fromUtf8(error.what()).left(1500));
+        }
+    }
     try
     {
         cv::dnn::Net net = cv::dnn::readNetFromONNX(modelBytes.constData(), size_t(modelBytes.size()));
@@ -519,11 +554,15 @@ InferenceResult VisionEngine::infer(const QImage &image, const QString &source)
         const cv::Mat blob = cv::dnn::blobFromImage(letterbox.image, m_config.scale,
                                                     cv::Size(m_config.inputSize, m_config.inputSize), mean,
                                                     !grayInput && m_config.swapRB, false, CV_32F);
-        m_net.setInput(blob);
+        if (!m_cuda)
+            m_net.setInput(blob);
         QElapsedTimer inferenceTimer;
         inferenceTimer.start();
         std::vector<cv::Mat> outputs;
-        m_net.forward(outputs, m_net.getUnconnectedOutLayersNames());
+        if (m_cuda)
+            outputs = m_cuda->infer(blob);
+        else
+            m_net.forward(outputs, m_net.getUnconnectedOutLayersNames());
         const double inferenceMs = inferenceTimer.nsecsElapsed() / 1e6;
         if (outputs.empty())
             fail(QStringLiteral("模型没有输出张量。"));
@@ -556,6 +595,12 @@ InferenceResult VisionEngine::infer(const QImage &image, const QString &source)
         result.source = source;
         result.modelName = QFileInfo(m_config.modelPath).fileName();
         result.task = m_config.task;
+        result.backend = backendName();
+        result.requestedDevice = m_config.device;
+        result.device = m_config.resolvedDevice;
+        result.deviceIndex = m_config.resolvedDevice == ComputeDevice::CUDA ? m_config.deviceIndex : -1;
+        result.deviceName = m_config.deviceName;
+        result.deviceNotice = m_config.deviceNotice;
         result.inferenceMs = inferenceMs;
         result.predictions = m_config.task == ModelTask::Classification
                                  ? decodeClassification(output, m_config)

@@ -8,10 +8,11 @@ import os
 from pathlib import Path
 import tarfile
 
-VERSION = "1.5.0"
+VERSION = "1.6.0"
 SOURCE_ITEMS = ("src", "tests", "scripts", "packaging", "docs", "assets", "models", "vendor",
                 "CMakeLists.txt", "resources.qrc", "run.sh", "VisionStudio.desktop", "README.md",
-                "LICENSE", "requirements-pt.txt", "requirements-pt.lock.txt", "runtime-info.json",
+                "LICENSE", "requirements-pt.txt", "requirements-pt.lock.txt", "requirements-gpu.txt",
+                "requirements-gpu.lock.txt", "runtime-info.json",
                 ".clang-format", ".gitignore", ".gitattributes", ".github", "AGENTS.md",
                 "CHANGELOG.md", "CONTRIBUTING.md")
 SKIP = {".git", "__pycache__", ".pytest_cache", ".cache"}
@@ -68,7 +69,16 @@ def inventory(project, release):
             "ffmpeg_build": "packaging/licenses/FFMPEG-BUILD.json",
             "model_provenance": ["models/yolov8n.provenance.json", "models/yolov5n-pt.provenance.json",
                                  "models/MODEL-PROVENANCE.json"],
+            "optional_gpu_runtime": {
+                "bundled_in_deb": False,
+                "setup": "scripts/setup_gpu.sh",
+                "versions_and_publisher_hashes": "requirements-gpu.lock.txt",
+                "api_headers_and_original_notice": "vendor/onnxruntime/PROVENANCE.txt",
+                "license_inventory": "Generated in the user's GPU runtime after preparation"
+            },
             "notes": "Application archive includes full project and vendored YOLOv5 source. "
+                     "Optional GPU setup, dependency hash lock and original ONNX Runtime API notices are included; "
+                     "CUDA libraries are prepared separately per user and retain upstream licenses. "
                      "Complete companion includes that archive and all listed original upstream archives. "
                      "System-provided Python and shared libraries are Debian dependencies."}
     write_json(project / "docs/release/SOURCE-INVENTORY.json", data)
@@ -124,7 +134,7 @@ def make_archive(destination, entries, prefix, overwrite, preset=3):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-root", type=Path, default=Path("."))
-    parser.add_argument("--release-directory", type=Path, default=Path("output/releases/1.5.0"))
+    parser.add_argument("--release-directory", type=Path, default=Path("output/releases/1.6.0"))
     parser.add_argument("--inventory-only", action="store_true")
     parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Persistent CPU PyTorch inference worker for the Qt application.
+"""Persistent FP32 PyTorch inference worker for the Qt application.
 
 stdin/stdout are a JSON-lines protocol. Imported framework logs, including
 native stdout writes, are redirected to stderr before importing PyTorch.
@@ -193,6 +193,39 @@ def prepared_image(image, color_mode, channels):
     return gray[:, :, None] if channels == 1 else cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
 
 
+def synchronize(device):
+    if device.type == "cuda":
+        torch.cuda.synchronize(device)
+
+
+def forward_timed(model, tensor, device):
+    # CUDA enqueues work asynchronously; measure completed model work, rather
+    # than only Python dispatch. Tensor transfer remains in total request time.
+    synchronize(device)
+    start = time.perf_counter()
+    with torch.inference_mode():
+        output = model(tensor)
+    synchronize(device)
+    return output, (time.perf_counter() - start) * 1000
+
+
+def checked_device(requested, index):
+    if requested == "cpu":
+        return torch.device("cpu")
+    if index < 0 or index > 255:
+        raise ValueError("CUDA 设备编号应在 0 到 255 之间。")
+    if torch.version.cuda is None:
+        raise ValueError("所选 Python 环境是 CPU 版 PyTorch，不能进行 CUDA 推理。")
+    if not torch.cuda.is_available() or index >= torch.cuda.device_count():
+        raise ValueError(f"CUDA 设备 {index} 不可用；请检查 NVIDIA 驱动和 GPU 运行环境。")
+    device = torch.device("cuda", index)
+    # Availability alone is not proof that kernels can execute on the driver.
+    torch.zeros(1, device=device).sum().item()
+    torch.backends.cuda.matmul.allow_tf32 = False
+    torch.backends.cudnn.allow_tf32 = False
+    return device
+
+
 def classification_tensor(image, size, color_mode, channels):
     from PIL import Image
     from ultralytics.data.augment import classify_transforms
@@ -292,7 +325,7 @@ def classification_predictions(output, labels):
 
 
 class NativeYolo:
-    def __init__(self, path, model, checkpoint, color_mode):
+    def __init__(self, path, model, checkpoint, color_mode, device):
         from ultralytics import YOLO
         from ultralytics.engine.model import Model as UltralyticsModel
 
@@ -316,7 +349,10 @@ class NativeYolo:
         if self.task not in ("detect", "classify"):
             raise ValueError(f"此 .pt 模型是 {self.task} 任务；当前支持目标检测与分类，尚不支持分割/姿态/旋转框。")
         self.labels = labels_list(self.model.names)
-        self.backend = "PyTorch / Ultralytics / CPU"
+        self.device = device
+        self.model.to(device)
+        self.model.model.float().eval()
+        self.backend = "PyTorch / Ultralytics / " + ("CUDA" if device.type == "cuda" else "CPU")
         self.layout = "v8"
         self.source_path = path
         self.color_mode = color_mode
@@ -327,24 +363,24 @@ class NativeYolo:
         source = image
         if self.color_mode == "grayscale":
             if self.task == "classify":
-                source = classification_tensor(image, size, self.color_mode, self.input_channels)
-                start = time.perf_counter()
-                with torch.inference_mode():
-                    output = self.model.model(source)
-                inference_ms = (time.perf_counter() - start) * 1000
+                source = classification_tensor(image, size, self.color_mode, self.input_channels).to(self.device)
+                output, inference_ms = forward_timed(self.model.model, source, self.device)
                 return classification_predictions(output, self.labels), inference_ms
             else:
                 source, geometry = letterbox(image, size, self.color_mode, self.input_channels)
+                source = source.to(self.device)
+        synchronize(self.device)
         start = time.perf_counter()
         # Tensor sources bypass the framework's image loader and preserve C=1.
         # Its Results coordinates then refer to our padded tensor; invert the
         # exact resize below instead of treating them as original-image pixels.
         results = self.model.predict(source=source, imgsz=size, conf=confidence, iou=iou,
-                                     device="cpu", max_det=300, rect=False, agnostic_nms=False,
+                                     device=str(self.device), half=False, max_det=300, rect=False, agnostic_nms=False,
                                      verbose=False, save=False, show=False, stream=False)
         if len(results) != 1:
             raise ValueError("模型没有返回单张图像的预测结果。")
         result = results[0]
+        synchronize(self.device)
         predictions = []
         if self.task == "classify":
             if result.probs is None:
@@ -374,7 +410,8 @@ class NativeYolo:
 
 
 class LegacyYolo:
-    def __init__(self, path, existing_model=None, color_mode="color"):
+    def __init__(self, path, existing_model=None, color_mode="color", device=None):
+        self.device = device if device is not None else torch.device("cpu")
         if existing_model is None:
             if not install_legacy_path():
                 raise ValueError("旧版 YOLOv5 .pt 需要随应用提供的 vendor/yolov5 框架。请保留完整项目目录。")
@@ -388,7 +425,7 @@ class LegacyYolo:
             raise ValueError("此 .pt 不是完整的 YOLOv5 检查点；仅有 state_dict 的权重还需要对应的网络架构。")
         if getattr(existing_model, "task", "detect") != "detect":
             raise ValueError("旧版 YOLOv5 当前支持目标检测；此检查点的分类或分割任务尚不受支持。")
-        self.model = existing_model.to("cpu").float().eval()
+        self.model = existing_model.to(self.device).float().eval()
         if hasattr(self.model, "fuse"):
             self.model = self.model.fuse().eval()
         from models.yolo import Detect
@@ -397,14 +434,14 @@ class LegacyYolo:
                 module.inplace = True
                 if hasattr(module, "anchor_grid") and not isinstance(module.anchor_grid, list):
                     delattr(module, "anchor_grid")
-                    module.anchor_grid = [torch.zeros(1)] * module.nl
+                    module.anchor_grid = [torch.zeros(1, device=self.device)] * module.nl
                 if not hasattr(module, "grid") or not isinstance(module.grid, list):
-                    module.grid = [torch.zeros(1)] * module.nl
+                    module.grid = [torch.zeros(1, device=self.device)] * module.nl
             if isinstance(module, torch.nn.Upsample) and not hasattr(module, "recompute_scale_factor"):
                 module.recompute_scale_factor = None
         self.labels = labels_list(self.model.names)
         self.task = "detect"
-        self.backend = "PyTorch / YOLOv5 / CPU"
+        self.backend = "PyTorch / YOLOv5 / " + ("CUDA" if self.device.type == "cuda" else "CPU")
         self.layout = "v5"
         self.source_path = path
         self.color_mode = color_mode
@@ -412,17 +449,16 @@ class LegacyYolo:
 
     def infer(self, image, size, confidence, iou):
         tensor, geometry = letterbox(image, size, self.color_mode, self.input_channels)
-        start = time.perf_counter()
-        with torch.inference_mode():
-            output = self.model(tensor)
-        inference_ms = (time.perf_counter() - start) * 1000
+        tensor = tensor.to(self.device)
+        output, inference_ms = forward_timed(self.model, tensor, self.device)
         return raw_predictions(output, image, geometry, self.labels, "v5", confidence, iou), inference_ms
 
 
 class TorchScriptYolo:
-    def __init__(self, path, task, size, supplied_labels, color_mode):
+    def __init__(self, path, task, size, supplied_labels, color_mode, device):
+        self.device = device
         extra = {"config.txt": ""}
-        self.model = torch.jit.load(str(path), map_location="cpu", _extra_files=extra).float().eval()
+        self.model = torch.jit.load(str(path), map_location="cpu", _extra_files=extra).to(device).float().eval()
         metadata = {}
         if extra["config.txt"]:
             metadata = json.loads(extra["config.txt"])
@@ -436,7 +472,7 @@ class TorchScriptYolo:
         self.color_mode = color_mode
         self.input_channels = script_input_channels(self.model, metadata, color_mode)
         with torch.inference_mode():
-            output = primary_tensor(self.model(torch.zeros(1, self.input_channels, size, size)))
+            output = primary_tensor(self.model(torch.zeros(1, self.input_channels, size, size, device=device)))
         if self.task == "detect":
             if output.ndim != 3 or output.shape[0] != 1:
                 raise ValueError("TorchScript 检测模型没有标准原始 YOLO 输出。")
@@ -448,7 +484,7 @@ class TorchScriptYolo:
                 raise ValueError("TorchScript 检测输出与类别元数据不匹配。")
         elif output.numel() != len(self.labels):
             raise ValueError("TorchScript 分类输出与类别元数据不匹配。")
-        self.backend = "PyTorch / TorchScript / CPU"
+        self.backend = "PyTorch / TorchScript / " + ("CUDA" if device.type == "cuda" else "CPU")
         self.source_path = path
 
     def infer(self, image, size, confidence, iou):
@@ -457,16 +493,14 @@ class TorchScriptYolo:
             geometry = None
         else:
             tensor, geometry = letterbox(image, size, self.color_mode, self.input_channels)
-        start = time.perf_counter()
-        with torch.inference_mode():
-            output = self.model(tensor)
-        inference_ms = (time.perf_counter() - start) * 1000
+        tensor = tensor.to(self.device)
+        output, inference_ms = forward_timed(self.model, tensor, self.device)
         predictions = classification_predictions(output, self.labels) if self.task == "classify" \
             else raw_predictions(output, image, geometry, self.labels, self.layout, confidence, iou)
         return predictions, inference_ms
 
 
-def load_model(arguments):
+def load_model(arguments, device):
     path = Path(arguments.model).resolve()
     if not path.is_file():
         raise ValueError("找不到 .pt 模型文件。")
@@ -474,7 +508,7 @@ def load_model(arguments):
         raise ValueError(".pt 模型文件为空。")
     labels = json.loads(arguments.labels)
     if is_torchscript(path):
-        return TorchScriptYolo(path, arguments.task, arguments.size, labels, arguments.color_mode)
+        return TorchScriptYolo(path, arguments.task, arguments.size, labels, arguments.color_mode, device)
     install_legacy_path()
     try:
         model, checkpoint = local_checkpoint_loader(path)(str(path), device=torch.device("cpu"))
@@ -482,9 +516,9 @@ def load_model(arguments):
             raise ValueError("模型框架没有加载所选的本地文件，已拒绝继续推理。")
         module_namespace = model.__class__.__module__
         if module_namespace.startswith("models."):
-            return LegacyYolo(path, model, arguments.color_mode)
+            return LegacyYolo(path, model, arguments.color_mode, device)
         if module_namespace.startswith("ultralytics."):
-            return NativeYolo(path, model, checkpoint, arguments.color_mode)
+            return NativeYolo(path, model, checkpoint, arguments.color_mode, device)
         raise ValueError("此 .pt 的网络架构不属于支持的 YOLO 框架。")
     except ValueError:
         raise
@@ -501,6 +535,8 @@ def main():
     parser.add_argument("--size", type=int, default=640)
     parser.add_argument("--labels", default="[]")
     parser.add_argument("--color-mode", choices=("color", "grayscale"), default="color")
+    parser.add_argument("--device", choices=("cpu", "cuda"), default="cpu")
+    parser.add_argument("--device-index", type=int, default=0)
     arguments = parser.parse_args()
     config_directory = os.environ.get("YOLO_CONFIG_DIR")
     if config_directory:
@@ -520,15 +556,27 @@ def main():
     try:
         if not 16 <= arguments.size <= 4096:
             raise ValueError("模型输入尺寸必须在 16 至 4096 之间。")
-        backend = load_model(arguments)
+        device = checked_device(arguments.device, arguments.device_index)
+        backend = load_model(arguments, device)
         if backend.task == "detect" and arguments.size % 32:
             raise ValueError(".pt 检测模型输入尺寸必须是 32 的倍数；请调整输入尺寸后重新加载。")
+        if device.type == "cuda":
+            # Verify this model's CUDA/cuDNN kernels before announcing ready.
+            # Auto mode can then fall back during initialization, rather than
+            # silently switching devices halfway through processing a source.
+            backend.infer(np.zeros((arguments.size, arguments.size, 3), dtype=np.uint8),
+                          arguments.size, 1.0, .45)
+            synchronize(device)
         reply({"ok": True, "event": "ready", "protocol": 1, "task": backend.task,
                "layout": backend.layout,
                "input_channels": backend.input_channels,
                "model_path": str(backend.source_path),
                "labels": backend.labels, "backend": backend.backend,
-               "versions": {"torch": torch.__version__, "python": sys.version.split()[0]}})
+               "device": device.type,
+               "device_index": device.index if device.type == "cuda" else -1,
+               "device_name": torch.cuda.get_device_name(device) if device.type == "cuda" else "CPU",
+               "versions": {"torch": torch.__version__, "python": sys.version.split()[0],
+                            "cuda": torch.version.cuda}})
     except Exception as error:
         traceback.print_exc(file=sys.stderr)
         reply({"ok": False, "error": str(error), "detail": ""})

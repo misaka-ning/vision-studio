@@ -24,6 +24,16 @@ License: GPL-3.0
  GNU General Public License version 3. License texts and provenance are preserved
  in models/YOLOv5-LICENSE.txt, vendor/yolov5/LICENSE and the source archives.
 
+Files: vendor/onnxruntime/*
+Copyright: Microsoft Corporation and ONNX Runtime contributors.
+License: MIT
+ The unmodified ONNX Runtime 1.23.2 C API headers retain their upstream
+ MIT license in vendor/onnxruntime/LICENSE. Fixed-tag source URLs and SHA256
+ checksums are recorded in vendor/onnxruntime/PROVENANCE.txt.
+Comment: The optional GPU runtime is prepared separately in the user's data
+ directory. Its actual dependency versions and original notices are preserved
+ there; NVIDIA libraries retain their upstream license terms.
+
 Files: lib/qt/libQt6* plugins/* libexec/QtWebEngineProcess resources/*
  translations/*
 Copyright: The Qt Company Ltd. and other contributors; see actual SDK SPDX records.

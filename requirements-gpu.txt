@@ -1,0 +1,5 @@
+# NVIDIA GPU runtime: Linux x86_64 / Python 3.10 or 3.11.
+# Official wheel metadata SHA256; full closed set, installed with --no-deps.
+# Netron remains in the separate CPU/viewer runtime; GPU uses headless OpenCV.
+--index-url https://pypi.org/simple
+-r requirements-gpu.lock.txt

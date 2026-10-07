@@ -1,4 +1,5 @@
 #include "ptbackend.h"
+#include "gpuruntime.h"
 
 #include <QBuffer>
 #include <QCoreApplication>
@@ -201,6 +202,33 @@ void PtBackend::send(const QJsonObject &message)
 void PtBackend::load(const ModelConfig &config)
 {
     reset();
+    if (config.deviceIndex < 0 || config.deviceIndex > 255)
+        fail(QStringLiteral("CUDA 设备编号应在 0 到 255 之间。"));
+    if (config.device != ComputeDevice::CPU)
+    {
+        try
+        {
+            loadOnDevice(config, true);
+            return;
+        }
+        catch (const std::exception &error)
+        {
+            reset();
+            if (config.device == ComputeDevice::CUDA ||
+                (m_cancellationCheck && m_cancellationCheck()))
+                throw;
+            const QString notice = QStringLiteral("CUDA 初始化失败，已自动使用 CPU：%1")
+                                       .arg(QString::fromUtf8(error.what()).left(1500));
+            loadOnDevice(config, false);
+            m_config.deviceNotice = notice;
+            return;
+        }
+    }
+    loadOnDevice(config, false);
+}
+
+void PtBackend::loadOnDevice(const ModelConfig &config, bool cuda)
+{
     // The UI's spin box rounds the default 1/255 value to eight decimal places.
     if ((config.colorMode == InputColorMode::Color && !config.swapRB) ||
         std::abs(config.scale - 1.0 / 255.0) > 1e-8 || config.meanR != 0 ||
@@ -208,7 +236,16 @@ void PtBackend::load(const ModelConfig &config)
         fail(QStringLiteral(".pt 支持 RGB 彩色或灰度输入。彩色模式请使用 RGB；灰度模式忽略通道交换。"
                             "缩放系数应为 1/255、三通道均值应为 0。"));
     const QString script = helperPath();
-    const QString python = interpreterPath(script);
+    QString python;
+    if (cuda)
+    {
+        const auto runtime = gpuRuntimePaths();
+        if (!runtime.prepared)
+            fail(QStringLiteral("GPU 运行环境尚未准备完成：%1").arg(runtime.error));
+        python = runtime.python;
+    }
+    else
+        python = interpreterPath(script);
     auto process = std::make_unique<QProcess>();
     process->setProcessChannelMode(QProcess::SeparateChannels);
     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
@@ -230,7 +267,8 @@ void PtBackend::load(const ModelConfig &config)
          QString::number(config.inputSize), "--labels",
          QString::fromUtf8(
              QJsonDocument(QJsonArray::fromStringList(config.labels)).toJson(QJsonDocument::Compact)),
-         "--color-mode", config.colorMode == InputColorMode::Grayscale ? "grayscale" : "color"});
+         "--color-mode", config.colorMode == InputColorMode::Grayscale ? "grayscale" : "color",
+         "--device", cuda ? "cuda" : "cpu", "--device-index", QString::number(config.deviceIndex)});
     m_process = std::move(process);
     if (m_cancellationCheck && m_cancellationCheck())
         processFailure(QStringLiteral("PyTorch 推理已取消。"));
@@ -282,6 +320,22 @@ void PtBackend::load(const ModelConfig &config)
                      .arg(config.labels.size())
                      .arg(labels.size()));
         m_config = config;
+        const QString actualDevice = ready.value("device").toString(cuda ? QString() : "cpu");
+        if (actualDevice != (cuda ? "cuda" : "cpu"))
+            fail(QStringLiteral("PyTorch 返回的实际设备与请求不一致，已拒绝继续推理。"));
+        const QJsonValue deviceIndex = ready.value("device_index");
+        const QJsonObject versions = ready.value("versions").toObject();
+        if (!cuda && !deviceIndex.isUndefined() &&
+            (!finiteNumber(deviceIndex) || deviceIndex.toDouble() != -1))
+            fail(QStringLiteral("PyTorch CPU 设备元数据无效，已拒绝继续推理。"));
+        if (cuda && (!finiteNumber(deviceIndex) || deviceIndex.toDouble() != config.deviceIndex ||
+                     ready.value("device_name").toString().trimmed().isEmpty() ||
+                     versions.value("cuda").toString() != "12.8" ||
+                     versions.value("torch").toString() != "2.9.1+cu128"))
+            fail(QStringLiteral("PyTorch CUDA 设备元数据无效，已拒绝继续推理。"));
+        m_config.resolvedDevice = cuda ? ComputeDevice::CUDA : ComputeDevice::CPU;
+        m_config.deviceName = cuda ? ready.value("device_name").toString().left(256) : QStringLiteral("CPU");
+        m_config.deviceNotice.clear();
         m_config.inputChannels = channels.toInt();
         const QString layout = ready.value("layout").toString("v8");
         if (detectedTask == "detect" && layout != "v5" && layout != "v8")
@@ -355,6 +409,11 @@ InferenceResult PtBackend::infer(const QImage &image, const QString &source)
     result.modelName = QFileInfo(m_config.modelPath).fileName();
     result.task = m_config.task;
     result.backend = m_backendName;
+    result.requestedDevice = m_config.device;
+    result.device = m_config.resolvedDevice;
+    result.deviceIndex = m_config.resolvedDevice == ComputeDevice::CUDA ? m_config.deviceIndex : -1;
+    result.deviceName = m_config.deviceName;
+    result.deviceNotice = m_config.deviceNotice;
     result.inferenceMs = response.value("inference_ms").toDouble();
     const QRectF imageBounds(0, 0, image.width(), image.height());
     for (const QJsonValue &value : predictions)

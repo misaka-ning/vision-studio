@@ -1,0 +1,211 @@
+{
+  "schema": 1,
+  "version": "1.6.0",
+  "generated_at": "2026-10-07T09:37:09.239607+00:00",
+  "purpose": "SHA-256 inventory of preserved real CUDA, CPU regression and packaged inference evidence; not a substitute for the release gate or GitHub verification.",
+  "final_deb": {
+    "path": "output/releases/1.6.0/vision-studio_1.6.0-1_amd64.deb",
+    "sha256": "5bac1313f4ea630b6fb883e4ff7b9a36754662f188c9d4289366e99f51056a7b",
+    "bytes": 377212204
+  },
+  "gpu_package_acceptance": {
+    "report": "output/releases/1.6.0/gpu-install-qa.json",
+    "success": true,
+    "device_index": 0,
+    "device_name": "NVIDIA GeForce RTX 4060",
+    "checks": {
+      "packaged_onnx_cuda": true,
+      "packaged_pt_cuda": true,
+      "cpu_regression": true
+    }
+  },
+  "onnx_profile": {
+    "providers": {
+      "CUDAExecutionProvider": 364
+    },
+    "sha256": "6d99914f2fe7262ab751fe6a79c9e58fb4a7570339d2a57774516f513950ec4f"
+  },
+  "coverage_notes": [
+    "Final package QA ran four separate installed-launcher cases: CUDA ONNX, CUDA PT, CPU ONNX and CPU PT. Every case exported actual-device JSON, PNG and CSV; untruncated raw stdout/stderr are embedded in gpu-install-qa.json.",
+    "Real GPU tests cover native Ultralytics, legacy YOLOv5, TorchScript, grayscale C1/C3, classification and CUDA cancellation/recovery.",
+    "The dedicated GPU recording case proves the right eye of side-by-side stereo in grayscale. Existing CPU worker/core suites cover left/right cropping; no separate left-eye GPU recording result is claimed.",
+    "The candidate package SHA is explicitly separate from the final DEB SHA. Final CPU installation/source acceptance and remote release verification are managed by the parent release workflow."
+  ],
+  "entries": [
+    {
+      "path": "output/releases/1.6.0/gpu-install-qa.json",
+      "sha256": "88b4026a9dee6127e0bd0edef0b87216b538c0bfef9592d48fb28b428ca1590b",
+      "bytes": 20554,
+      "scope": "final_package",
+      "proves": [
+        "packaged_onnx_cuda",
+        "packaged_pt_cuda",
+        "cpu_regression",
+        "readonly_extracted_application",
+        "isolated_user_state",
+        "actual_export_device_metadata"
+      ]
+    },
+    {
+      "path": "output/v1.6-development/final-gpu-install.log",
+      "sha256": "56c18d01c92af81551e9b761afb3d7c8e21b4bf685139169c08efec3faf3de6d",
+      "bytes": 230,
+      "scope": "final_package",
+      "proves": [
+        "final_gpu_verifier_exit0_summary"
+      ]
+    },
+    {
+      "path": "output/v1.6-development/gpu-backend-tests.log",
+      "sha256": "2d1f9c88824505f17840600aee925d84feb488c98ce79b6f17e845fd2d891f9b",
+      "bytes": 983,
+      "scope": "backend",
+      "proves": [
+        "pt_cuda",
+        "three_pt_model_families",
+        "onnx_cuda_nodes",
+        "cuda_cpu_result_comparison",
+        "grayscale_c1_c3",
+        "onnx_cuda_cancellation_and_recovery",
+        "pt_cuda_cancellation_and_reload"
+      ]
+    },
+    {
+      "path": "output/v1.6-development/gpu-recording-tests.log",
+      "sha256": "50059938b2acd15719548a9d1366d21e183923e77684cc4c9fcf394d2f1e2149",
+      "bytes": 489,
+      "scope": "recording",
+      "proves": [
+        "stereo_recording",
+        "gpu_right_eye_grayscale_recording",
+        "recorded_actual_cuda_metadata"
+      ]
+    },
+    {
+      "path": "output/v1.6-development/ctest-qa.json",
+      "sha256": "5011b3c58eb1bd3b236a0251e5b579e22737ea4cca2ee92a8a08dc012c813c16",
+      "bytes": 966,
+      "scope": "regression",
+      "proves": [
+        "all_8_registered_ctest_suites",
+        "cpu_and_real_gpu_two_phase_acceptance"
+      ]
+    },
+    {
+      "path": "output/v1.6-development/cpu-ctest-qa.json",
+      "sha256": "f55435a323ad18c8e27d39bbcb8e139b236d1fa06930f00145af4bff56e60530",
+      "bytes": 404,
+      "scope": "cpu_regression",
+      "proves": [
+        "cpu_regression_release_runtime"
+      ]
+    },
+    {
+      "path": "output/v1.6-development/cpu-ctest-release-runtime.log",
+      "sha256": "852eacaa442d98c93cc5dd314de9d52ea0e21ef166d8ab6d662a647cd5206607",
+      "bytes": 936,
+      "scope": "cpu_regression",
+      "proves": [
+        "cpu_regression_ctest_exit0"
+      ]
+    },
+    {
+      "path": "output/v1.6-development/cpu-ctest-release-runtime-detail.log",
+      "sha256": "511bf262cd59e61405fa3ea052e083675d5b95710696a105523a24f4d5a59b68",
+      "bytes": 26583,
+      "scope": "cpu_regression",
+      "proves": [
+        "cpu_regression_case_results"
+      ]
+    },
+    {
+      "path": "output/v1.6-development/gpu-ctest.log",
+      "sha256": "3eeea861a964fbdd9789576a592898c3fce0e925de8213db0a2fb2e0a2ab81a7",
+      "bytes": 578,
+      "scope": "gpu_regression",
+      "proves": [
+        "gpu_ctest_exit0"
+      ]
+    },
+    {
+      "path": "output/v1.6-development/gpu-ctest-detail.log",
+      "sha256": "46a5d5959ec97fe7d653a57c2fe976d2e0aa6ab9ba7426f9cd37b94de9e00c39",
+      "bytes": 4347,
+      "scope": "gpu_regression",
+      "proves": [
+        "gpu_backend_recording_setup_case_results"
+      ]
+    },
+    {
+      "path": "output/v1.6-development/onnx-profile/profile-qa.json",
+      "sha256": "82b66ba4ca4dfcd4b36ec4554a74bb4a71549af80b14cb21819dbe99b9fb6af1",
+      "bytes": 563,
+      "scope": "profiling",
+      "proves": [
+        "onnx_cuda_nodes",
+        "auto_resolves_cuda"
+      ]
+    },
+    {
+      "path": "output/v1.6-development/onnx-profile/node-trace_2026-10-07_17-24-05.json",
+      "sha256": "6d99914f2fe7262ab751fe6a79c9e58fb4a7570339d2a57774516f513950ec4f",
+      "bytes": 287599,
+      "scope": "profiling",
+      "proves": [
+        "364_cuda_execution_provider_nodes"
+      ]
+    },
+    {
+      "path": "output/v1.6-development/onnx-profile/smoke.log",
+      "sha256": "7f4f9f669efc99be3e0ceebbcb79a6845a88e289ed440d5201ca603030d15e63",
+      "bytes": 239,
+      "scope": "profiling",
+      "proves": [
+        "actual_onnx_auto_cuda_smoke"
+      ]
+    },
+    {
+      "path": "output/gpu-development/gpu-probe.json",
+      "sha256": "098bd7ddf81854a42bee192c174e5bb7192cebbf52de82b4cabfac64a216dcb4",
+      "bytes": 266,
+      "scope": "runtime",
+      "proves": [
+        "prepared_runtime_cuda_available",
+        "cuda_driver_device_and_pinned_versions"
+      ]
+    },
+    {
+      "path": "output/gpu-development/gpu-runtime-libraries.json",
+      "sha256": "7dda2962ac86c9811e42106b079bf3523e881a504df000aea94bfe3b7091bf29",
+      "bytes": 24127,
+      "scope": "runtime",
+      "proves": [
+        "actual_elf_cuda_library_dependency_inventory"
+      ]
+    },
+    {
+      "path": "output/v1.6-development/candidate-package/gpu-install-qa.json",
+      "sha256": "04af52e7b773976a4fe0e7b8b779d22857b181c515bdd053fa10b42af879fb22",
+      "bytes": 20569,
+      "scope": "candidate_package_only",
+      "proves": [
+        "candidate_packaged_onnx_cuda",
+        "candidate_packaged_pt_cuda",
+        "candidate_cpu_regression"
+      ],
+      "package_sha256": "a312d9531299ffbd3b5d185ef7e7d680eeac7bad10dda4ba2f3650aa1a61225e",
+      "note": "Superseded candidate; cannot establish final DEB acceptance."
+    },
+    {
+      "path": "output/v1.6-development/candidate-package/gpu-install.log",
+      "sha256": "1abfbfd4bfcda14f3a4d98816be7434917cc961e7f698750253223e8de72d513",
+      "bytes": 250,
+      "scope": "candidate_package_only",
+      "proves": [
+        "candidate_gpu_verifier_exit0_summary"
+      ],
+      "package_sha256": "a312d9531299ffbd3b5d185ef7e7d680eeac7bad10dda4ba2f3650aa1a61225e",
+      "note": "Superseded candidate; cannot establish final DEB acceptance."
+    }
+  ]
+}

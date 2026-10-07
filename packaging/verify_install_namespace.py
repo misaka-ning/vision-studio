@@ -15,6 +15,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import tarfile
@@ -217,6 +218,21 @@ def verify(args, workspace, audit):
                        "elapsed_seconds": elapsed, "report": report,
                        "rendering_flags": "--disable-gpu", "sandbox_disabled_by_test": False}
     audit.details["inference"] = smoke
+    version = tuple(int(value) for value in re.findall(r"\d+", control.get("Version", "0"))[:3])
+    if version >= (1, 6, 0):
+        # This namespace has no network/GPU devices. The missing-runtime probe
+        # must report unprepared without downloading or changing the CPU tree.
+        runtime = MOUNT + "/user/data/vision-studio/gpu-runtime"
+        result, elapsed = namespace.run(["/usr/bin/python3.10", "/opt/VisionStudio/scripts/gpu_probe.py",
+                                         "--runtime-dir", runtime], "gpu-unprepared-probe", readonly=True)
+        try:
+            report = json.loads(result.stdout)
+        except ValueError:
+            report = {}
+        passed = result.returncode == 1 and report.get("prepared") is False and report.get("cuda_available") is False
+        audit.require(passed, "Missing optional GPU runtime did not report safely: " + result.stderr[-1200:])
+        audit.require(not (workspace / "user/data/vision-studio/gpu-runtime").exists(), "Read-only GPU probe created a runtime")
+        audit.details["optional_gpu_unprepared"] = {"success": passed, "elapsed_seconds": elapsed, "report": report}
     audit.require(bool(list((workspace / "user").rglob("preferences.ini"))), "Installed application did not persist isolated preferences")
     audit.require(bool(list((workspace / "user").rglob("history.json"))), "Installed application did not persist isolated history")
     snapshot = {str(path.relative_to(workspace / "user")): sha256(path)

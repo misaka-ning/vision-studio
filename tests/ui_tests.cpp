@@ -2,8 +2,8 @@
 #include "ui/mainwindow.h"
 #include "ui/modelviewer.h"
 
-#include <QApplication>
 #include <QAbstractButton>
+#include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDir>
@@ -23,23 +23,26 @@
 #include <QMessageBox>
 #include <QMimeData>
 #include <QPixmap>
+#include <QPlainTextEdit>
 #include <QPointer>
 #include <QProcess>
-#include <QWebEngineView>
-#include <QWebEnginePage>
+#include <QProcessEnvironment>
+#include <QProgressBar>
 #include <QPushButton>
 #include <QSettings>
 #include <QSignalSpy>
 #include <QSpinBox>
 #include <QStackedWidget>
 #include <QStandardItemModel>
-#include <QTableWidget>
 #include <QTableView>
+#include <QTableWidget>
 #include <QTemporaryDir>
 #include <QTest>
 #include <QTimer>
 #include <QTreeView>
 #include <QUrl>
+#include <QWebEnginePage>
+#include <QWebEngineView>
 #include <algorithm>
 #include <limits>
 #include <memory>
@@ -216,6 +219,10 @@ class UiTests final : public QObject
         hadHome_ = qEnvironmentVariableIsSet("VISION_STUDIO_HOME");
         originalData_ = qgetenv("VISION_STUDIO_DATA_DIR");
         hadData_ = qEnvironmentVariableIsSet("VISION_STUDIO_DATA_DIR");
+        originalPython_ = qgetenv("VISION_STUDIO_PYTHON");
+        hadPython_ = qEnvironmentVariableIsSet("VISION_STUDIO_PYTHON");
+        originalGpuRuntime_ = qgetenv("VISION_STUDIO_GPU_RUNTIME_DIR");
+        hadGpuRuntime_ = qEnvironmentVariableIsSet("VISION_STUDIO_GPU_RUNTIME_DIR");
         QApplication::setStyle(QStringLiteral("Fusion"));
         QApplication::setFont(QFont(QStringLiteral("Noto Sans CJK SC"), 10));
         QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
@@ -243,6 +250,14 @@ class UiTests final : public QObject
                             fixture_->path() + QStringLiteral("/scripts/netron_server.py")));
         qputenv("VISION_STUDIO_HOME", fixture_->path().toUtf8());
         qputenv("VISION_STUDIO_DATA_DIR", (fixture_->path() + QStringLiteral("/output")).toUtf8());
+        qputenv("VISION_STUDIO_GPU_RUNTIME_DIR",
+                (fixture_->path() + QStringLiteral("/output/gpu-runtime")).toUtf8());
+        prepareGpuUiFixtures();
+        QVERIFY(QDir().mkpath(fixture_->path() + QStringLiteral("/output")));
+        QSettings settings(fixture_->path() + QStringLiteral("/output/preferences.ini"),
+                           QSettings::IniFormat);
+        settings.setValue(QStringLiteral("computeDevice"), QStringLiteral("cpu"));
+        settings.sync();
         unexpectedDialog_.clear();
         dialogGuard_ = std::make_unique<QTimer>();
         connect(dialogGuard_.get(), &QTimer::timeout, this,
@@ -280,10 +295,22 @@ class UiTests final : public QObject
             qputenv("VISION_STUDIO_DATA_DIR", originalData_);
         else
             qunsetenv("VISION_STUDIO_DATA_DIR");
+        if (hadPython_)
+            qputenv("VISION_STUDIO_PYTHON", originalPython_);
+        else
+            qunsetenv("VISION_STUDIO_PYTHON");
+        if (hadGpuRuntime_)
+            qputenv("VISION_STUDIO_GPU_RUNTIME_DIR", originalGpuRuntime_);
+        else
+            qunsetenv("VISION_STUDIO_GPU_RUNTIME_DIR");
     }
 
     void realInferenceSelectionAndNavigation()
     {
+        auto *device = window_->findChild<QComboBox *>(QStringLiteral("computeDevice"));
+        QVERIFY(device);
+        QCOMPARE(device->currentData().toString(), QStringLiteral("cpu"));
+        QSignalSpy starts(window_.get(), &MainWindow::startRequested);
         auto *canvas = workbenchCanvas(window_.get());
         auto *table = predictionTable(window_.get());
         auto *exportButton = findButton(window_.get(), QStringLiteral("导出结果"));
@@ -297,6 +324,21 @@ class UiTests final : public QObject
         QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
         QVERIFY(!canvas->result().demonstration);
         QVERIFY(canvas->result().inferenceMs > 0);
+        QCOMPARE(starts.size(), 1);
+        QCOMPARE(qvariant_cast<vision::JobRequest>(starts.first().at(0)).config.device,
+                 vision::ComputeDevice::CPU);
+        QCOMPARE(canvas->result().requestedDevice, vision::ComputeDevice::CPU);
+        QCOMPARE(canvas->result().device, vision::ComputeDevice::CPU);
+        QCOMPARE(canvas->result().deviceIndex, -1);
+        auto *actual = window_->findChild<QLabel *>(QStringLiteral("actualDeviceBadge"));
+        QVERIFY(actual);
+        QVERIFY(actual->text().contains(QStringLiteral("CPU")));
+        QVERIFY(actual->text().contains(QStringLiteral("OpenCV")));
+        auto *footer = window_->findChild<QLabel *>(QStringLiteral("actualDeviceFooter"));
+        QVERIFY(footer && footer->isVisible());
+        QVERIFY(footer->height() >= footer->fontMetrics().height());
+        QVERIFY(footer->text().contains(QStringLiteral("OpenCV")));
+        QVERIFY(window_->rect().contains(QRect(footer->mapTo(window_.get(), QPoint()), footer->size())));
         QCOMPARE(canvas->result().image.size(),
                  QImage(fixture_->path() + QStringLiteral("/assets/bus.jpg")).size());
         QCOMPARE(table->rowCount(), canvas->result().predictions.size());
@@ -346,9 +388,10 @@ class UiTests final : public QObject
         QVERIFY(!demoButton->isVisible());
         QVERIFY(!exportButton->isVisible());
         for (const auto &route :
-             {qMakePair(QStringLiteral("模型库"), 1), qMakePair(QStringLiteral("模型显示"), 2), qMakePair(QStringLiteral("运行记录"), 3),
-              qMakePair(QStringLiteral("使用指南"), 4), qMakePair(QStringLiteral("录制视频"), 5),
-              qMakePair(QStringLiteral("更多"), 6), qMakePair(QStringLiteral("检测工作台"), 0)})
+             {qMakePair(QStringLiteral("模型库"), 1), qMakePair(QStringLiteral("模型显示"), 2),
+              qMakePair(QStringLiteral("运行记录"), 3), qMakePair(QStringLiteral("使用指南"), 4),
+              qMakePair(QStringLiteral("录制视频"), 5), qMakePair(QStringLiteral("更多"), 6),
+              qMakePair(QStringLiteral("检测工作台"), 0)})
         {
             auto *nav = findButton(window_.get(), route.first);
             QVERIFY(nav);
@@ -358,7 +401,9 @@ class UiTests final : public QObject
             QVERIFY(nav->isChecked());
             QCOMPARE(demoButton->isVisible(), route.second == 6);
             QCOMPARE(exportButton->isVisible(), route.second == 6);
-            if (route.second == 6) window_->saveScreenshot(QStringLiteral(VISION_PROJECT_DIR) + QStringLiteral("/output/test-screenshots/1.4-more.png"));
+            if (route.second == 6)
+                window_->saveScreenshot(QStringLiteral(VISION_PROJECT_DIR) +
+                                        QStringLiteral("/output/test-screenshots/1.4-more.png"));
         }
         QCOMPARE(window_->size(), QSize(1260, 820));
         const QRect canvasBounds(canvas->mapTo(window_.get(), QPoint()), canvas->size());
@@ -403,7 +448,8 @@ class UiTests final : public QObject
         QCOMPARE(name->text(), QStringLiteral("yolov8n.pt"));
         QCOMPARE(active->text(), name->text());
         QSettings settings(fixture_->path() + "/output/preferences.ini", QSettings::IniFormat);
-        QCOMPARE(QFileInfo(settings.value("activeModel").toString()).fileName(), QStringLiteral("yolov8n.pt"));
+        QCOMPARE(QFileInfo(settings.value("activeModel").toString()).fileName(),
+                 QStringLiteral("yolov8n.pt"));
         QTRY_VERIFY_WITH_TIMEOUT(viewer->state() != ModelViewer::State::Loading, 30000);
         QVERIFY2(viewer->state() == ModelViewer::State::Ready, qPrintable(viewer->errorString()));
         QVERIFY(viewer->graphNodeCount() > 0);
@@ -420,10 +466,11 @@ class UiTests final : public QObject
         auto *parameters = viewer->findChild<QTableView *>(QStringLiteral("modelParameterTable"));
         auto *search = viewer->findChild<QLineEdit *>(QStringLiteral("modelStructureSearch"));
         QVERIFY(tree && parameters && search);
-        for (const auto &choice : {qMakePair(ModelViewer::DisplayMode::Hierarchy, "modelHierarchyModeButton"),
-                                   qMakePair(ModelViewer::DisplayMode::Parameters, "modelParametersModeButton"),
-                                   qMakePair(ModelViewer::DisplayMode::Graph, "modelGraphModeButton"),
-                                   qMakePair(ModelViewer::DisplayMode::Parameters, "modelParametersModeButton")})
+        for (const auto &choice :
+             {qMakePair(ModelViewer::DisplayMode::Hierarchy, "modelHierarchyModeButton"),
+              qMakePair(ModelViewer::DisplayMode::Parameters, "modelParametersModeButton"),
+              qMakePair(ModelViewer::DisplayMode::Graph, "modelGraphModeButton"),
+              qMakePair(ModelViewer::DisplayMode::Parameters, "modelParametersModeButton")})
         {
             auto *button = viewer->findChild<QAbstractButton *>(choice.second);
             QVERIFY(button && button->isVisible());
@@ -436,7 +483,8 @@ class UiTests final : public QObject
         QTest::keyClicks(search, "model.0.conv.weight");
         QTRY_COMPARE_WITH_TIMEOUT(parameters->model()->rowCount(), 1, 3000);
         const QModelIndex firstWeight = parameters->model()->index(0, 0);
-        QVERIFY(firstWeight.data(Qt::UserRole + 1).toString().contains(QStringLiteral("model.0.conv.weight")));
+        QVERIFY(
+            firstWeight.data(Qt::UserRole + 1).toString().contains(QStringLiteral("model.0.conv.weight")));
         QCOMPARE(firstWeight.data(Qt::UserRole + 3).toString(), QStringLiteral("[16,3,3,3]"));
         for (const QString &route : {QStringLiteral("检测工作台"), QStringLiteral("模型显示")})
             QTest::mouseClick(findButton(window_.get(), route), Qt::LeftButton);
@@ -563,6 +611,11 @@ class UiTests final : public QObject
         QVERIFY(json.open(QIODevice::ReadOnly));
         const QJsonObject metadata = QJsonDocument::fromJson(json.readAll()).object();
         QVERIFY(metadata.value(QStringLiteral("backend")).toString().contains(QStringLiteral("PyTorch")));
+        QCOMPARE(metadata.value(QStringLiteral("requested_device")).toString(), QStringLiteral("cpu"));
+        QCOMPARE(metadata.value(QStringLiteral("actual_device")).toString(), QStringLiteral("cpu"));
+        QCOMPARE(metadata.value(QStringLiteral("device_index")).toInt(), -1);
+        QVERIFY(metadata.contains(QStringLiteral("device_name")) &&
+                metadata.contains(QStringLiteral("device_notice")));
         QCOMPARE(metadata.value(QStringLiteral("model")).toString(), QStringLiteral("yolov8n.pt"));
         QCOMPARE(metadata.value(QStringLiteral("predictions")).toArray().size(), result.predictions.size());
         const QJsonObject config = metadata.value(QStringLiteral("config")).toObject();
@@ -814,6 +867,7 @@ class UiTests final : public QObject
         QCOMPARE(videoRequest.sourceKind, vision::SourceKind::Video);
         QCOMPARE(videoRequest.stereoView, vision::StereoView::Left);
         QCOMPARE(videoRequest.config.colorMode, vision::InputColorMode::Grayscale);
+        QCOMPARE(videoRequest.config.device, vision::ComputeDevice::CPU);
         QCOMPARE(videoRequest.config.meanR, 9.0);
         QCOMPARE(videoRequest.config.meanG, 9.0);
         QCOMPARE(videoRequest.config.meanB, 9.0);
@@ -909,8 +963,7 @@ class UiTests final : public QObject
         QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
         QTest::mouseClick(record, Qt::LeftButton);
         QTRY_COMPARE_WITH_TIMEOUT(record->text(), QStringLiteral("结束录制"), 5000);
-        QTRY_VERIFY_WITH_TIMEOUT(!unexpectedDialog_.isEmpty() || canvas->result().frameNumber >= 4,
-                                 20000);
+        QTRY_VERIFY_WITH_TIMEOUT(!unexpectedDialog_.isEmpty() || canvas->result().frameNumber >= 4, 20000);
         QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
         QTest::mouseClick(record, Qt::LeftButton);
 
@@ -976,12 +1029,12 @@ class UiTests final : public QObject
             for (int x = 0; x < preview.width(); ++x)
             {
                 const QColor pixel = preview.pixelColor(x, y);
-                if (std::abs(pixel.red() - pixel.green()) <= 4 &&
-                    std::abs(pixel.green() - pixel.blue()) <= 4)
+                if (std::abs(pixel.red() - pixel.green()) <= 4 && std::abs(pixel.green() - pixel.blue()) <= 4)
                     ++neutralPreviewPixels;
             }
         QVERIFY(neutralPreviewPixels > preview.width() * preview.height() / 2);
-        window_->saveScreenshot(QStringLiteral(VISION_PROJECT_DIR) + QStringLiteral("/output/test-screenshots/1.4-recordings.png"));
+        window_->saveScreenshot(QStringLiteral(VISION_PROJECT_DIR) +
+                                QStringLiteral("/output/test-screenshots/1.4-recordings.png"));
         if (play->text() == QStringLiteral("暂停播放"))
             QTest::mouseClick(play, Qt::LeftButton);
 
@@ -1013,7 +1066,202 @@ class UiTests final : public QObject
         QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
     }
 
+    void explicitCudaSmokeFailureDoesNotClaimCpuInference()
+    {
+        const QDir executableDirectory(QCoreApplication::applicationDirPath());
+        QString executable = executableDirectory.filePath("bin/vision-studio");
+        if (!QFileInfo(executable).isExecutable())
+            executable = executableDirectory.filePath("vision-studio");
+        QVERIFY2(QFileInfo(executable).isExecutable(),
+                 "The application must be built for the CLI integration test.");
+        const QString smokeDirectory = fixture_->path() + "/cuda-failure-smoke";
+        const QString childDataDirectory = fixture_->path() + "/cuda-failure-data";
+        QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+        environment.insert("VISION_STUDIO_DATA_DIR", childDataDirectory);
+        environment.insert("VISION_STUDIO_GPU_RUNTIME_DIR", fixture_->path() + "/missing-gpu-runtime");
+        environment.insert("QT_QPA_PLATFORM", "offscreen");
+        QProcess smoke;
+        smoke.setProcessEnvironment(environment);
+        smoke.start(executable, {"--device", "cuda", "--gpu-index", "2", "--smoke", smokeDirectory});
+        QVERIFY(smoke.waitForStarted(3000));
+        QTRY_VERIFY_WITH_TIMEOUT(smoke.state() == QProcess::NotRunning, 20000);
+        QCOMPARE(smoke.exitStatus(), QProcess::NormalExit);
+        QCOMPARE(smoke.exitCode(), 2);
+        QFile reportFile(smokeDirectory + "/smoke-report.json");
+        QVERIFY2(reportFile.open(QIODevice::ReadOnly), smoke.readAllStandardError().constData());
+        const QJsonObject report = QJsonDocument::fromJson(reportFile.readAll()).object();
+        QVERIFY(!report.value("success").toBool());
+        QCOMPARE(report.value("requested_device").toString(), QStringLiteral("cuda"));
+        QVERIFY(report.value("actual_device").isNull());
+        QCOMPARE(report.value("device_index").toInt(), -1);
+        QVERIFY(report.value("device_name").toString().isEmpty());
+        QVERIFY(report.value("backend").toString().isEmpty());
+        QVERIFY(!report.value("error").toString().isEmpty());
+        QFile historyFile(childDataDirectory + "/history.json");
+        if (historyFile.open(QIODevice::ReadOnly))
+            QVERIFY(QJsonDocument::fromJson(historyFile.readAll()).array().isEmpty());
+        QVERIFY(QDir(smokeDirectory).entryList({"*.csv", "*.json"}, QDir::Files).size() == 1);
+    }
+
+    void automaticDeviceDefaultAndPreferencesPreserveInputModes()
+    {
+        window_->close();
+        window_.reset();
+        {
+            QSettings settings(fixture_->path() + "/output/preferences.ini", QSettings::IniFormat);
+            settings.remove("computeDevice");
+            settings.remove("deviceIndex");
+            settings.sync();
+        }
+        showNewWindow();
+        auto *device = window_->findChild<QComboBox *>("computeDevice");
+        auto *index = window_->findChild<QComboBox *>("gpuDeviceIndex");
+        auto *color = window_->findChild<QComboBox *>("inputColorMode");
+        auto *stereo = window_->findChild<QComboBox *>("stereoView");
+        auto *actual = window_->findChild<QLabel *>("actualDeviceBadge");
+        QVERIFY(device && index && color && stereo && actual);
+        QCOMPARE(device->currentData().toString(), QStringLiteral("auto"));
+        QVERIFY(device->isVisible());
+        QVERIFY(actual->text().contains(QStringLiteral("待运行")));
+        window_->setComputeDevice(vision::ComputeDevice::CUDA, 2);
+        color->setCurrentIndex(color->findData("grayscale"));
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("摄像头")), Qt::LeftButton);
+        stereo->setCurrentIndex(stereo->findData("left"));
+        QCOMPARE(index->currentData().toInt(), 2);
+        QVERIFY(index->isVisible());
+        QCOMPARE(window_->size(), QSize(1260, 820));
+        QVERIFY(window_->rect().contains(QRect(device->mapTo(window_.get(), QPoint()), device->size())));
+        QVERIFY(window_->rect().contains(QRect(index->mapTo(window_.get(), QPoint()), index->size())));
+        window_->saveScreenshot(QStringLiteral(VISION_PROJECT_DIR) +
+                                "/output/test-screenshots/1.6-device-camera.png");
+        window_->close();
+        window_.reset();
+        showNewWindow();
+        device = window_->findChild<QComboBox *>("computeDevice");
+        index = window_->findChild<QComboBox *>("gpuDeviceIndex");
+        color = window_->findChild<QComboBox *>("inputColorMode");
+        stereo = window_->findChild<QComboBox *>("stereoView");
+        QCOMPARE(device->currentData().toString(), QStringLiteral("cuda"));
+        QCOMPARE(index->currentData().toInt(), 2);
+        QCOMPARE(color->currentData().toString(), QStringLiteral("grayscale"));
+        QCOMPARE(stereo->currentData().toString(), QStringLiteral("left"));
+        QVERIFY(activateModel(window_.get(), QStringLiteral("yolov8n.pt")));
+        QCOMPARE(device->currentData().toString(), QStringLiteral("cuda"));
+        QCOMPARE(color->currentData().toString(), QStringLiteral("grayscale"));
+        window_->setComputeDevice(vision::ComputeDevice::CPU);
+        QCOMPARE(color->currentData().toString(), QStringLiteral("grayscale"));
+        QVERIFY(!index->isVisible());
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+    }
+
+    void gpuPreparationReportsProgressCancelsAndRefreshesWithoutBlocking()
+    {
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("更多")), Qt::LeftButton);
+        auto *check = window_->findChild<QPushButton *>("gpuCheckButton");
+        auto *prepare = window_->findChild<QPushButton *>("gpuPrepareButton");
+        auto *cancel = window_->findChild<QPushButton *>("gpuCancelButton");
+        auto *status = window_->findChild<QLabel *>("gpuEnvironmentStatus");
+        auto *log = window_->findChild<QPlainTextEdit *>("gpuSetupLog");
+        auto *progress = window_->findChild<QProgressBar *>("gpuSetupProgress");
+        auto *device = window_->findChild<QComboBox *>("computeDevice");
+        QVERIFY(check && prepare && cancel && status && log && progress && device);
+        QTRY_VERIFY_WITH_TIMEOUT(check->isEnabled(), 5000);
+        QVERIFY(status->text().contains(QStringLiteral("尚未就绪")));
+        QVERIFY(status->text().contains(QStringLiteral("测试 NVIDIA GPU")));
+        QFile mode(fixture_->path() + "/scripts/setup-mode.txt");
+        QVERIFY(mode.open(QIODevice::WriteOnly));
+        QCOMPARE(mode.write("wait"), qint64(4));
+        mode.close();
+        QTest::mouseClick(prepare, Qt::LeftButton);
+        QTRY_VERIFY_WITH_TIMEOUT(cancel->isVisible() && progress->isVisible(), 3000);
+        QVERIFY(!prepare->isEnabled() && !check->isEnabled());
+        QVERIFY(!device->isEnabled());
+        QVERIFY(!findButton(window_.get(), QStringLiteral("开始检测"))->isEnabled());
+        int ticks = 0;
+        QTimer heartbeat;
+        connect(&heartbeat, &QTimer::timeout, this, [&ticks] { ++ticks; });
+        heartbeat.start(20);
+        QTest::qWait(200);
+        QVERIFY(ticks >= 3);
+        QTRY_VERIFY_WITH_TIMEOUT(log->toPlainText().contains(QStringLiteral("正在准备测试环境")), 3000);
+        QCOMPARE(progress->value(), 17);
+        QPointer<QProcess> setup = window_->findChild<QProcess *>("gpuSetupProcess");
+        QVERIFY(setup && setup->state() != QProcess::NotRunning);
+        QTest::mouseClick(cancel, Qt::LeftButton);
+        QTRY_VERIFY_WITH_TIMEOUT(!cancel->isVisible() && prepare->isEnabled(), 5000);
+        QTRY_VERIFY_WITH_TIMEOUT(setup.isNull(), 3000);
+        QVERIFY(status->text().contains(QStringLiteral("已取消")));
+        QVERIFY(!QFileInfo::exists(fixture_->path() + "/output/gpu-runtime/mock-ready"));
+        QVERIFY(device->isEnabled());
+        QVERIFY(QFile::remove(mode.fileName()));
+        QTest::mouseClick(prepare, Qt::LeftButton);
+        QTRY_VERIFY_WITH_TIMEOUT(status->text().contains(QStringLiteral("已就绪")) && check->isEnabled(),
+                                 5000);
+        QVERIFY(QFileInfo::exists(fixture_->path() + "/output/gpu-runtime/mock-ready"));
+        QCOMPARE(device->currentData().toString(), QStringLiteral("cpu"));
+        QVERIFY(window_->findChild<QLabel *>("actualDeviceBadge")->text().contains(QStringLiteral("待运行")));
+        window_->saveScreenshot(QStringLiteral(VISION_PROJECT_DIR) +
+                                "/output/test-screenshots/1.6-gpu-more.png");
+        QCOMPARE(window_->size(), QSize(1260, 820));
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+    }
+
   private:
+    void prepareGpuUiFixtures()
+    {
+        const QString scripts = fixture_->path() + QStringLiteral("/scripts");
+        auto write = [](const QString &path, const QByteArray &data)
+        {
+            QFile file(path);
+            QVERIFY(file.open(QIODevice::WriteOnly));
+            QCOMPARE(file.write(data), data.size());
+        };
+        write(scripts + "/gpu_probe.py", R"PY(import argparse,json
+from pathlib import Path
+p=argparse.ArgumentParser();p.add_argument('--runtime-dir',required=True);a=p.parse_args()
+root=Path(a.runtime_dir);ready=(root/'mock-ready').is_file()
+print(json.dumps({'ok':True,'prepared':ready,'cuda_available':ready,'reason':'' if ready else '测试环境未准备','devices':[{'index':0,'name':'测试 NVIDIA GPU','total_memory_mb':8192}],'torch_version':'mock','torch_cuda':'mock','ort_version':'mock','driver_version':'mock'}))
+)PY");
+        write(scripts + "/gpu_setup.py", R"PY(import argparse,json,time
+from pathlib import Path
+p=argparse.ArgumentParser();p.add_argument('--runtime-dir',required=True);a=p.parse_args()
+root=Path(a.runtime_dir);root.mkdir(parents=True,exist_ok=True)
+print(json.dumps({'event':'progress','message':'开始测试准备','progress':11}),flush=True)
+print(json.dumps({'event':'progress','message':'正在准备测试环境','percent':17}),flush=True)
+mode=Path(__file__).with_name('setup-mode.txt')
+if mode.is_file() and mode.read_text().strip()=='wait':time.sleep(30)
+else:time.sleep(.25)
+(root/'mock-ready').write_text('UI test fixture; no real GPU dependencies')
+print(json.dumps({'event':'ready','runtime_dir':str(root),'message':'测试环境准备完成','progress':100}),flush=True)
+)PY");
+        QString realPython = QString::fromUtf8(originalPython_);
+        if (!QFileInfo(realPython).isExecutable())
+        {
+            realPython = QStringLiteral(VISION_PROJECT_DIR) + "/runtime/bin/python";
+            if (!QFileInfo(realPython).isExecutable())
+                realPython = QStringLiteral(VISION_PROJECT_DIR) + "/build/release-runtime/bin/python";
+            if (!QFileInfo(realPython).isExecutable())
+                realPython = QDir::homePath() + "/VisionStudio/runtime/bin/python";
+        }
+        QVERIFY(QFileInfo(realPython).isExecutable());
+        const QString launcher = scripts + "/ui-python";
+        const QByteArray wrapper =
+            "#!/usr/bin/python3.10\nimport os,sys\nfrom pathlib import Path\n"
+            "args=sys.argv[1:]\nprobe=args[1:] if args and args[0]=='-u' else args\n"
+            "name=Path(probe[0]).name if probe else ''\n"
+            "if name in ('gpu_probe.py','gpu_setup.py'):\n"
+            " os.execv('/usr/bin/python3.10',['/usr/bin/"
+            "python3.10','-u',str(Path(__file__).with_name(name)),*probe[1:]])\n"
+            "else:\n real=" +
+            QJsonDocument(QJsonArray{realPython}).toJson(QJsonDocument::Compact).trimmed() +
+            "[0]\n os.execv(real,[real,*args])\n";
+        write(launcher, wrapper);
+        QVERIFY(QFile::setPermissions(launcher, QFileDevice::ReadOwner | QFileDevice::WriteOwner |
+                                                    QFileDevice::ExeOwner | QFileDevice::ReadGroup |
+                                                    QFileDevice::ExeGroup));
+        qputenv("VISION_STUDIO_PYTHON", launcher.toUtf8());
+    }
+
     void showNewWindow()
     {
         window_ = std::make_unique<MainWindow>();
@@ -1025,8 +1273,10 @@ class UiTests final : public QObject
 
     QByteArray originalHome_;
     QByteArray originalData_;
+    QByteArray originalPython_, originalGpuRuntime_;
     bool hadHome_ = false;
     bool hadData_ = false;
+    bool hadPython_ = false, hadGpuRuntime_ = false;
     QString unexpectedDialog_;
     std::unique_ptr<QTemporaryDir> fixture_;
     std::unique_ptr<QTimer> dialogGuard_;

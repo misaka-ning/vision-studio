@@ -25,9 +25,11 @@ jobs:
         with:
           persist-credentials: false
       - name: Check Python syntax
-        run: python3 -m py_compile scripts/*.py packaging/*.py docs/release/build_source_archive.py tests/github_release_tests.py
+        run: python3 -m py_compile scripts/*.py packaging/*.py docs/release/build_source_archive.py tests/*.py
       - name: Test publish and retention safety with mocked GitHub
         run: python3 -m unittest discover -s tests -p github_release_tests.py -v
+      - name: Test GPU environment protection and cancellation without hardware
+        run: python3 -m unittest discover -s tests -p gpu_runtime_tests.py -v
       - name: Validate version tags
         if: startsWith(github.ref, 'refs/tags/')
         env:
@@ -53,8 +55,10 @@ jobs:
       - name: Explain local package publishing
         run: |
           cat >> "$GITHUB_STEP_SUMMARY" <<'SUMMARY'
-          This workflow validates source syntax, release tooling safety, and tag metadata.
+          This workflow validates source syntax, release tooling safety, GPU setup safety, and tag metadata.
           The Qt 6.8.3 DEB and full upstream source companion are built and tested locally.
+          Actual CUDA acceptance uses a local NVIDIA GPU and a report bound to the final DEB;
+          this hardware-free workflow does not claim that GPU inference has passed.
           `scripts/github_release.py publish` uploads validated local artifacts to a draft,
           verifies each asset, and publishes it. GitHub supplies source ZIP/TAR links for tags.
           SUMMARY

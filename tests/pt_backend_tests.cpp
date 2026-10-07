@@ -144,7 +144,8 @@ class PtBackendTests final : public QObject
         QVERIFY(temporary.isValid());
         project = QStringLiteral(VISION_PROJECT_DIR);
         for (const char *key : {"VISION_STUDIO_HOME", "VISION_STUDIO_PYTHON", "VISION_STUDIO_PT_WORKER",
-                                "VISION_STUDIO_PT_LOAD_TIMEOUT_MS", "VISION_STUDIO_PT_INFER_TIMEOUT_MS"})
+                                "VISION_STUDIO_PT_LOAD_TIMEOUT_MS", "VISION_STUDIO_PT_INFER_TIMEOUT_MS",
+                                "VISION_STUDIO_GPU_RUNTIME_DIR"})
             savedEnvironment.append({QByteArray(key), qgetenv(key), qEnvironmentVariableIsSet(key)});
         qputenv("VISION_STUDIO_HOME", project.toUtf8());
         qunsetenv("VISION_STUDIO_PT_WORKER");
@@ -201,6 +202,11 @@ class PtBackendTests final : public QObject
         QCOMPARE(first.originalImage, original);
         verifyDetection(first, original.size());
         QCOMPARE(first.source, QString("first-pt-request"));
+        QCOMPARE(first.requestedDevice, vision::ComputeDevice::CPU);
+        QCOMPARE(first.device, vision::ComputeDevice::CPU);
+        QCOMPARE(first.deviceIndex, -1);
+        QCOMPARE(first.deviceName, QString("CPU"));
+        QVERIFY(first.deviceNotice.isEmpty());
         const QImage secondImage =
             original.scaledToWidth(640, Qt::SmoothTransformation).convertToFormat(QImage::Format_RGBA8888);
         const auto second = engine.infer(secondImage, "second-pt-request");
@@ -209,6 +215,49 @@ class PtBackendTests final : public QObject
         verifyDetection(second, secondImage.size());
         QCOMPARE(second.source, QString("second-pt-request"));
         QVERIFY(engine.loaded());
+    }
+
+    void unavailableCudaIsExplicitAndAutoFallbackIsRecorded()
+    {
+        const QByteArray saved = qgetenv("VISION_STUDIO_GPU_RUNTIME_DIR");
+        const bool existed = qEnvironmentVariableIsSet("VISION_STUDIO_GPU_RUNTIME_DIR");
+        qputenv("VISION_STUDIO_GPU_RUNTIME_DIR", (temporary.path() + "/missing-gpu").toUtf8());
+        auto value = config();
+        value.device = vision::ComputeDevice::CUDA;
+        vision::VisionEngine engine;
+        const QString error = failureMessage(engine, value);
+        QVERIFY2(error.contains("GPU") && !engine.loaded(), qPrintable(error));
+        value.device = vision::ComputeDevice::Auto;
+        engine.load(value);
+        QCOMPARE(engine.config().device, vision::ComputeDevice::Auto);
+        QCOMPARE(engine.config().resolvedDevice, vision::ComputeDevice::CPU);
+        QVERIFY(engine.config().deviceNotice.contains("CPU"));
+        const QImage image(imagePath);
+        const auto result = engine.infer(image);
+        verifyDetection(result, image.size());
+        QCOMPARE(result.requestedDevice, vision::ComputeDevice::Auto);
+        QCOMPARE(result.device, vision::ComputeDevice::CPU);
+        QCOMPARE(result.deviceNotice, engine.config().deviceNotice);
+        if (existed)
+            qputenv("VISION_STUDIO_GPU_RUNTIME_DIR", saved);
+        else
+            qunsetenv("VISION_STUDIO_GPU_RUNTIME_DIR");
+    }
+
+    void cpuRequestRejectsUnexpectedCudaHandshake()
+    {
+        const QString path = helper(
+            "wrong-device",
+            "import sys,os,json,time\n"
+            "selected=os.path.realpath(sys.argv[sys.argv.index('--model')+1])\n"
+            "print(json.dumps({'ok':True,'event':'ready','protocol':1,'task':'detect','layout':'v8',"
+            "'labels':['probe'],'backend':'PyTorch fixture','model_path':selected,'input_channels':3,"
+            "'device':'cuda','device_index':0,'device_name':'unexpected GPU'}),flush=True)\n"
+            "time.sleep(30)\n");
+        qputenv("VISION_STUDIO_PT_WORKER", path.toUtf8());
+        vision::VisionEngine engine;
+        const QString error = failureMessage(engine, config());
+        QVERIFY2(error.contains("设备") && !engine.loaded(), qPrintable(error));
     }
 
     void realModernAndLegacyGrayscalePreviewPreservesOriginalPixels()

@@ -30,6 +30,12 @@ enum class StereoView
     Left,
     Right
 };
+enum class ComputeDevice
+{
+    Auto,
+    CPU,
+    CUDA
+};
 struct ModelConfig
 {
     QString modelPath;
@@ -44,6 +50,12 @@ struct ModelConfig
     int inputChannels = 0;
     double scale = 1.0 / 255.0;
     double meanR = 0, meanG = 0, meanB = 0;
+    ComputeDevice device = ComputeDevice::CPU;
+    int deviceIndex = 0;
+    // Filled by the loaded backend; the preference alone never implies CUDA is active.
+    ComputeDevice resolvedDevice = ComputeDevice::CPU;
+    QString deviceName;
+    QString deviceNotice;
 };
 struct Prediction
 {
@@ -69,6 +81,11 @@ struct InferenceResult
     StereoView stereoView = StereoView::Full;
     QSize sourceFrameSize;
     bool demonstration = false;
+    ComputeDevice requestedDevice = ComputeDevice::CPU;
+    ComputeDevice device = ComputeDevice::CPU;
+    int deviceIndex = -1;
+    QString deviceName;
+    QString deviceNotice;
 };
 struct JobRequest
 {
@@ -84,3 +101,4 @@ QImage inputPreviewImage(const QImage &image, InputColorMode mode);
 Q_DECLARE_METATYPE(vision::InferenceResult)
 Q_DECLARE_METATYPE(vision::JobRequest)
 Q_DECLARE_METATYPE(vision::ModelConfig)
+Q_DECLARE_METATYPE(vision::ComputeDevice)

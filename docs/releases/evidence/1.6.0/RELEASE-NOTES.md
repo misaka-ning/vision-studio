@@ -1,0 +1,43 @@
+# Vision Studio 1.6.0
+
+本版加入 NVIDIA GPU 推理与独立用户环境，同时保留离线 CPU 使用。功能验收已在 Ubuntu 22.04 amd64、NVIDIA RTX 4060／驱动 595.91.07 上完成。
+
+## NVIDIA GPU 与 CPU
+
+- 工作台新增「自动 · 优先 NVIDIA GPU」「CPU」「NVIDIA GPU」及 GPU 编号选择。自动模式无法使用 GPU 时说明原因并回退 CPU，显式 GPU 失败时报告错误。
+- PT 的 Ultralytics、兼容 YOLOv5 和 TorchScript 使用独立的 PyTorch CUDA 环境；ONNX GPU 使用 C++ ONNX Runtime CUDA，CPU 保留 OpenCV DNN。
+- 运行状态、导出和历史记录保存实际设备、GPU 名称／编号及自动回退原因；切换设备保留颜色通道与左右目设置。
+- 「更多」新增 GPU 检查、准备、进度／日志及取消。环境在用户目录按完整版本与官方 wheel SHA256 配置，实际 CUDA 自检成功后原子发布；未知目录不会覆盖，取消／失败保留原环境。
+
+GPU 环境固定 Python 3.10／3.11、PyTorch `2.9.1+cu128`、Torchvision `0.24.1+cu128`、CUDA 12.8、cuDNN 9.10.2.21、ONNX Runtime 1.23.2。首次下载约 4–5 GB，建议预留至少 20 GB；准备完成后可离线推理。推荐 Linux NVIDIA 驱动 ≥ 570.26；应用不安装或修改驱动，不要求全局 CUDA Toolkit。TensorRT、AMD 与 Intel GPU 尚未支持。Netron 模型显示仍使用独立 CPU 环境。
+
+## 验收记录
+
+- 8 组注册 CTest 在两阶段实际执行并通过：CPU 发行 runtime 下 7 组共 118.22 秒；GPU 阶段的录像、GPU 后端、GPU 配置 3 组共 62.52 秒，0 失败、0 跳过。
+- GPU 配置安全与许可测试 21 项通过，覆盖未知目录、符号链接、版本记录、原子替换／不覆盖、取消安装和探针的子进程清理、入口修正、缓存复用及 ORT 原始第三方通知收集。
+- 78 项依赖按官方 wheel SHA256 锁配置；候选环境和原子发布后的最终自检通过 PyTorch CUDA 矩阵计算、ONNX Runtime CUDA MatMul，独立探针确认精确版本及实际 CUDA 可用。用户环境约 7.59 GiB。
+- 真实 GPU 后端 QtTest 报告 10 passed（57.4 秒），验证 ONNX 实际 CUDA 节点、Ultralytics／YOLOv5／TorchScript 三类 PT、彩色及灰度 C1／C3、取消与恢复。
+- GPU 右目灰度录像的 8 个已处理源帧全部编码且可播放；所选内容为 160 × 96，原左右拼接源为 320 × 96，元数据记录实际 CUDA 设备。README 工作台截图来自实际 RTX 4060 ONNX 检测，包含 5 个目标；该次 forward 为 10.2 ms，此单次结果不代表所有模型的速度。
+- 最终 DEB 已通过普通用户 CPU／模型三视图及缓存检查、断网命名空间安装／卸载，以及包内 ONNX CUDA、PT CUDA、ONNX CPU、PT CPU 四轮真实启动器检查。
+
+正式附件已使用最终 DEB SHA256 绑定安装、源码与 `gpu-qa.json`。GPU 报告包含实际 ONNX CUDA 节点、PT CUDA、包内 ONNX／PT CUDA、CPU 回归、灰度 C1／C3、左右目与录像的真实结果；所有正式验收均绑定最终 DEB SHA256，报告已通过。最终报告与原始日志见 [本版验收证据](https://github.com/misaka-ning/vision-studio/tree/main/docs/releases/evidence/1.6.0)，随仓库提交，不另外增加 Release 附件。物理摄像头仍需按实际设备验证。
+
+## 安装与源码
+
+Ubuntu 22.04 amd64，安装至 `/opt/VisionStudio`。DEB 包含完整离线 CPU／Netron 环境，GPU 依赖仅在用户主动准备时下载到个人数据目录的 `gpu-runtime/`。APT／DPKG 安装过程不会联网下载 CUDA。
+
+本页继续仅有 **3 个手动附件**：
+
+- `vision-studio_1.6.0-1_amd64.deb`。
+- `vision-studio-1.6.0-complete-source.tar.xz`。
+- `SHA256SUMS`。
+
+```bash
+sha256sum -c SHA256SUMS
+sudo apt install ./vision-studio_1.6.0-1_amd64.deb
+vision-studio
+```
+
+GitHub 另外自动显示 **Source code (zip)** 与 **Source code (tar.gz)** 两个入口，不能移除，也不能代替完整对应源码包。完整包包含应用拆分归档、SOURCE 清单、对应上游源码、GPU 配置脚本／版本与哈希锁及原始通知。QA 保存在仓库，不零散上传 Release。
+
+应用代码采用 AGPL-3.0-only；第三方组件保留各自许可。用户配置的 CUDA／cuDNN 组件保持 NVIDIA 原始许可，GPU 环境内 `GPU-THIRD-PARTY-NOTICES.md` 与 `gpu-license-inventory.json` 记录实际依赖和原始许可材料；不把 NVIDIA 组件声明为 AGPL 源码。

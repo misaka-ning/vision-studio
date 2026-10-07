@@ -1,4 +1,5 @@
 #include "videorecorder.h"
+#include "gpuruntime.h"
 
 #include <QDir>
 #include <QFile>
@@ -363,6 +364,12 @@ bool VideoRecorder::finish(RecordingSummary *summary, QString *error)
             {"source", m_firstFrame.source},
             {"model", m_firstFrame.modelName},
             {"model_file", m_config.modelPath},
+            {"backend", m_firstFrame.backend},
+            {"requested_device", computeDeviceKey(m_firstFrame.requestedDevice)},
+            {"actual_device", computeDeviceKey(m_firstFrame.device)},
+            {"device_index", m_firstFrame.deviceIndex},
+            {"device_name", m_firstFrame.deviceName},
+            {"device_notice", m_firstFrame.deviceNotice},
             {"source_frame_size", QJsonObject{{"width", m_firstFrame.sourceFrameSize.width()},
                                               {"height", m_firstFrame.sourceFrameSize.height()}}},
             {"first_source_frame", double(m_firstFrame.frameNumber)},

@@ -6,6 +6,7 @@
 /releases/
 /dist/
 /runtime/
+/runtime-gpu/
 /runtime-info.json
 /VisionStudio
 /.venv/

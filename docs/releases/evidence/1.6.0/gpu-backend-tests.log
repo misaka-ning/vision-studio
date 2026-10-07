@@ -1,0 +1,14 @@
+********* Start testing of GpuBackendTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : GpuBackendTests::initTestCase()
+PASS   : GpuBackendTests::realModernAndLegacyPtColorAndGrayscale()
+PASS   : GpuBackendTests::torchScriptC1AndC3GrayscaleDetectionAndClassification()
+PASS   : GpuBackendTests::nativeGrayC1C3Classification()
+PASS   : GpuBackendTests::modernAndLegacyRealSingleChannelStems()
+PASS   : GpuBackendTests::realOnnxCudaMatchesCpuAndExecutesCudaNodes()
+PASS   : GpuBackendTests::onnxC1AndC3GrayPixelsMatchModelInput()
+PASS   : GpuBackendTests::onnxCudaCancellationTerminatesRunAndSessionCanRecover()
+PASS   : GpuBackendTests::ptCudaCancellationStopsChildAndCudaReloadWorks()
+PASS   : GpuBackendTests::cleanupTestCase()
+Totals: 10 passed, 0 failed, 0 skipped, 0 blacklisted, 57431ms
+********* Finished testing of GpuBackendTests *********

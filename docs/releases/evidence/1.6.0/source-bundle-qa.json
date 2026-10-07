@@ -1,0 +1,33 @@
+{
+  "success": true,
+  "version": "1.6.0",
+  "errors": [],
+  "embedded_source_files_sha256_verified": 18,
+  "frozen_application_sources_byte_equal": 2951,
+  "application_source": {
+    "file": "vision-studio-1.6.0-sources.tar.xz",
+    "bytes": 38973880,
+    "sha256": "5c99790f9ed54cb8589030d97a7fd809846c32485344671701d079e7c44879d2"
+  },
+  "complete_source": {
+    "file": "vision-studio-1.6.0-complete-source.tar.xz",
+    "bytes": 809216880,
+    "sha256": "8f42f29e870ba56ec3179c23f076493cbbecfcc731a05d6ba57600e168f31071"
+  },
+  "deb_sha256_confirmed": "5bac1313f4ea630b6fb883e4ff7b9a36754662f188c9d4289366e99f51056a7b",
+  "required_gpu_source_files_verified": [
+    "packaging/verify_gpu_deb.py",
+    "requirements-gpu.lock.txt",
+    "requirements-gpu.txt",
+    "scripts/gpu_probe.py",
+    "scripts/gpu_setup.py",
+    "scripts/setup_gpu.sh",
+    "src/core/gpuruntime.cpp",
+    "src/core/onnxcudabackend.cpp",
+    "tests/gpu_backend_tests.cpp",
+    "tests/gpu_runtime_tests.py",
+    "vendor/onnxruntime/LICENSE",
+    "vendor/onnxruntime/onnxruntime_c_api.h"
+  ],
+  "note": "All application archive files match frozen source inputs byte for byte. Final package/source verification reports are added to Git after archive creation to avoid recursive self-hashing; product/build sources remain identical."
+}

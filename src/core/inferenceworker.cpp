@@ -119,7 +119,9 @@ void InferenceWorker::run(vision::JobRequest request)
             return;
         }
         emit modelReady(engine.backendName(), engine.config());
-        emit status(QStringLiteral("模型已加载 · %1 / CPU").arg(engine.backendName()));
+        emit status(QStringLiteral("模型已加载 · %1").arg(engine.backendName()));
+        if (!engine.config().deviceNotice.isEmpty())
+            emit status(engine.config().deviceNotice);
         if (request.sourceKind == SourceKind::Images)
         {
             if (m_recordRequested.exchange(false, std::memory_order_acq_rel))

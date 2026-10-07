@@ -141,6 +141,9 @@ class RecordingTests final : public QObject
         QVERIFY(changed > 150);
         const auto json = metadata(summary.metadataPath);
         QCOMPARE(json.value("schema_version").toInt(), 1);
+        QCOMPARE(json.value("requested_device").toString(), QStringLiteral("cpu"));
+        QCOMPARE(json.value("actual_device").toString(), QStringLiteral("cpu"));
+        QCOMPARE(json.value("device_index").toInt(), -1);
         QCOMPARE(json.value("frames").toInt(), 5);
         QCOMPARE(json.value("first_source_frame").toInt(), 7);
         QCOMPARE(json.value("last_source_frame").toInt(), 11);
@@ -290,6 +293,87 @@ class RecordingTests final : public QObject
         QCOMPARE(recordings.first().at(1).toLongLong(), qint64(8));
         QVERIFY(std::abs(recordings.first().at(2).toDouble() - 50) < .001);
         QCOMPARE(decodedFrames(path), 8);
+    }
+
+    void gpuRightEyeGrayscaleRecordingPreservesActualDevice()
+    {
+        if (qEnvironmentVariable("VISION_STUDIO_GPU_TESTS") != "1")
+            QSKIP("Real GPU recording requires VISION_STUDIO_GPU_TESTS=1.");
+        QTemporaryDir directory;
+        QVERIFY(directory.isValid());
+        const QString input = directory.path() + QStringLiteral("/stereo.avi");
+        cv::VideoWriter writer(QFile::encodeName(input).constData(), cv::CAP_FFMPEG,
+                               cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 25, cv::Size(320, 96));
+        QVERIFY(writer.isOpened());
+        for (int i = 0; i < 8; ++i)
+        {
+            cv::Mat frame(96, 320, CV_8UC3, cv::Scalar::all(12));
+            frame(cv::Rect(160, 0, 160, 96)).setTo(cv::Scalar(70 + 4 * i, 130, 190));
+            writer.write(frame);
+        }
+        writer.release();
+        auto request = videoRequest(input);
+        request.config.device = vision::ComputeDevice::CUDA;
+        request.config.colorMode = vision::InputColorMode::Grayscale;
+        request.stereoView = vision::StereoView::Right;
+        vision::InferenceWorker worker;
+        worker.prepareRecording(directory.path() + QStringLiteral("/recordings"));
+        worker.prepare();
+        connect(&worker, &vision::InferenceWorker::modelReady, &worker,
+                [&](const QString &, const vision::ModelConfig &) { worker.requestStartRecording(); });
+        QSignalSpy results(&worker, &vision::InferenceWorker::resultReady);
+        QSignalSpy recordings(&worker, &vision::InferenceWorker::recordingFinished);
+        QSignalSpy errors(&worker, &vision::InferenceWorker::failed);
+        QSignalSpy recordingErrors(&worker, &vision::InferenceWorker::recordingFailed);
+        worker.run(request);
+        QVERIFY2(errors.isEmpty(), errors.isEmpty() ? "" : qPrintable(errors.first().first().toString()));
+        QCOMPARE(recordingErrors.size(), 0);
+        // UI previews are throttled independently of the recording stream.
+        // Fast CUDA inference must still record every source frame.
+        QVERIFY(results.size() >= 2 && results.size() <= 8);
+        QCOMPARE(qvariant_cast<vision::InferenceResult>(results.first().first()).frameNumber, qint64(1));
+        QCOMPARE(qvariant_cast<vision::InferenceResult>(results.last().first()).frameNumber, qint64(8));
+        QCOMPARE(recordings.size(), 1);
+        QCOMPARE(recordings.first().at(1).toLongLong(), qint64(8));
+        for (const auto &arguments : results)
+        {
+            const auto result = qvariant_cast<vision::InferenceResult>(arguments.first());
+            QCOMPARE(result.requestedDevice, vision::ComputeDevice::CUDA);
+            QCOMPARE(result.device, vision::ComputeDevice::CUDA);
+            QCOMPARE(result.deviceIndex, 0);
+            QVERIFY(!result.deviceName.isEmpty());
+            QCOMPARE(result.stereoView, vision::StereoView::Right);
+            QCOMPARE(result.sourceFrameSize, QSize(320, 96));
+            QCOMPARE(result.image.size(), QSize(160, 96));
+            QCOMPARE(result.originalImage.size(), QSize(160, 96));
+            QCOMPARE(result.image.format(), QImage::Format_Grayscale8);
+            const QColor pixel = result.image.pixelColor(80, 48);
+            QVERIFY(pixel.red() > 100);
+            QCOMPARE(pixel.red(), pixel.green());
+            QCOMPARE(pixel.green(), pixel.blue());
+        }
+        const QString output = recordings.first().first().toString();
+        QVector<cv::Mat> decoded;
+        QCOMPARE(decodedFrames(output, &decoded), 8);
+        for (const auto &frame : decoded)
+        {
+            QCOMPARE(frame.cols, 160);
+            QCOMPARE(frame.rows, 96);
+            const auto pixel = frame.at<cv::Vec3b>(48, 80);
+            QVERIFY(pixel[0] > 100);
+            QVERIFY(std::abs(int(pixel[0]) - int(pixel[1])) <= 2);
+            QVERIFY(std::abs(int(pixel[1]) - int(pixel[2])) <= 2);
+        }
+        const auto json = metadata(output.left(output.size() - 4) + QStringLiteral(".json"));
+        QCOMPARE(json.value("frames").toInt(), 8);
+        QCOMPARE(json.value("requested_device").toString(), QStringLiteral("cuda"));
+        QCOMPARE(json.value("actual_device").toString(), QStringLiteral("cuda"));
+        QCOMPARE(json.value("device_index").toInt(), 0);
+        QVERIFY(!json.value("device_name").toString().isEmpty());
+        QCOMPARE(json.value("color_mode").toString(), QStringLiteral("grayscale"));
+        QCOMPARE(json.value("stereo_view").toString(), QStringLiteral("right"));
+        QCOMPARE(json.value("width").toInt(), 160);
+        QCOMPARE(json.value("height").toInt(), 96);
     }
 
     void workerStartAfterFirstPreviewAndCancelClosesOnlyRecordedFrames()
