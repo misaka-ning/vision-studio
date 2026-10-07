@@ -1,0 +1,157 @@
+{
+  "version": "1.6.0",
+  "source": "Final ordinary-user read-only DEB smoke",
+  "files": [
+    {
+      "file": "onnx-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "onnx-stderr.log",
+      "bytes": 595,
+      "sha256": "58fa3d8f0a706687d96d7583df82d31d259926d26b08667c598def7b9c0c791b"
+    },
+    {
+      "file": "pt-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "pt-stderr.log",
+      "bytes": 614,
+      "sha256": "52135255f35fe66446b9a6341ed70c8e78dd320d4a366691ed8ec044ebcc00f0"
+    },
+    {
+      "file": "model_display-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "model_display-stderr.log",
+      "bytes": 644,
+      "sha256": "41179cc4448261edd83838d7898083b88675b679de2cdaa954399618d0ec138f"
+    },
+    {
+      "file": "model_display_pt-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "model_display_pt-stderr.log",
+      "bytes": 639,
+      "sha256": "7a43957ad0f2844ddd9303680c82d3bb554c4af6318c22a51f8cbbc7987c576f"
+    },
+    {
+      "file": "legacy-stderr.log",
+      "bytes": 80,
+      "sha256": "4fa2e3f1beb42698e532de4b8540d923b084fb5ba244370830a2d521ffc83b25"
+    },
+    {
+      "file": "onnx/bus-20261007-173829-221-f1.csv",
+      "bytes": 275,
+      "sha256": "426f57f2267770893a707ae7695412f519d30aaad53af2e7faf19112d2c09717"
+    },
+    {
+      "file": "onnx/bus-20261007-173829-221-f1.json",
+      "bytes": 2750,
+      "sha256": "e4fa56e316b50b38f8f9e41a12ab27c24c35976730b080d8f9a87e3018510959"
+    },
+    {
+      "file": "onnx/bus-20261007-173829-221-f1.png",
+      "bytes": 1725082,
+      "sha256": "5df5329269482502e12936b202debe5f6ad51e4a34509b96ced0184868038b53"
+    },
+    {
+      "file": "onnx/smoke-report.json",
+      "bytes": 448,
+      "sha256": "6fcc5cf3008cc6704c602a0003654619ea48d4cbce4fa2d18cb3f86df6db0924"
+    },
+    {
+      "file": "onnx/workbench.png",
+      "bytes": 358197,
+      "sha256": "0f11702e331c0d873814e3212839ebe0df68d77fa870494ee1951f2ef941c038"
+    },
+    {
+      "file": "pt/bus-20261007-173833-476-f1.csv",
+      "bytes": 275,
+      "sha256": "cff8fa072279ce6e3808e2a8ae987cdec4554f9b76b40e462c3e2f96bd57aa3f"
+    },
+    {
+      "file": "pt/bus-20261007-173833-476-f1.json",
+      "bytes": 2798,
+      "sha256": "32dd35d7ce2048f103d61130c9ad4ec3f4d69ce810ff2287753cf0ed47adf60a"
+    },
+    {
+      "file": "pt/bus-20261007-173833-476-f1.png",
+      "bytes": 1723924,
+      "sha256": "0966bf1afe48602bda47ae09688ed7c0192752cad5531973714e8fc915315de0"
+    },
+    {
+      "file": "pt/smoke-report.json",
+      "bytes": 467,
+      "sha256": "d83f485508e2617218fd02000b94e331e1717fbf89a8aeccfe3e16320732f53b"
+    },
+    {
+      "file": "pt/workbench.png",
+      "bytes": 359944,
+      "sha256": "8e0de3519c7ec86ce210306a42b4f4969b5b7b78a9ea67e2a0f79ee15d2d1979"
+    },
+    {
+      "file": "model_display/model-display-report.json",
+      "bytes": 550,
+      "sha256": "e4cd7d3dee63d41744c7855fd4df9414508266136ff9e4f4b8be083588579b58"
+    },
+    {
+      "file": "model_display/model-display.png",
+      "bytes": 119102,
+      "sha256": "077809be7b82e7c7e28a64a6ec243930f3c697be022e3ec93078da53cf78fae6"
+    },
+    {
+      "file": "model_display/model-hierarchy.png",
+      "bytes": 155064,
+      "sha256": "a492613e10276f38c98efa1d395f490ff74a2d4208c9d0d3bd6750744f509452"
+    },
+    {
+      "file": "model_display/model-parameters.png",
+      "bytes": 229526,
+      "sha256": "e06d611637a7933eef567407ac99b06778bc59872955723fafc17880650c1a96"
+    },
+    {
+      "file": "model_display_pt/model-display-report.json",
+      "bytes": 545,
+      "sha256": "84853133c58684733417ea4f4787dc0f961c9076ac2f732a04b1c7cd9c6bb4dc"
+    },
+    {
+      "file": "model_display_pt/model-display.png",
+      "bytes": 134962,
+      "sha256": "3dc19ff72261124d173b663934fc067da62f7c167d338caacce1121ed705d7ea"
+    },
+    {
+      "file": "model_display_pt/model-hierarchy.png",
+      "bytes": 169518,
+      "sha256": "d73f831f0cec8627d6271df8982c4389b254a5b7a2ec96fa2909067cb4a8ddbd"
+    },
+    {
+      "file": "model_display_pt/model-parameters.png",
+      "bytes": 221508,
+      "sha256": "b0067c3ad80e4459d07bae27897b74c20202973d879ad12964940000345551c4"
+    }
+  ],
+  "local_complete_image_archive": {
+    "file": "output/v1.6-development/QA-ARTIFACTS-full.zip",
+    "bytes": 5151123,
+    "sha256": "dd6d585328da5a19485f8b2e19c366dabedb5eb3a8bfa81ebefbd9c347e2fe3f"
+  },
+  "public_evidence": [
+    "qa-report.json",
+    "gpu-install-qa.json",
+    "install-qa.json",
+    "ctest-qa.json",
+    "gpu-qa.json",
+    "source-bundle-qa.json",
+    "final-verify-deb.log",
+    "RELEASE-NOTES.md"
+  ],
+  "note": "All original smoke stdout/stderr and model/inference reports are embedded in the public QA reports. Exact full-resolution exported and UI images remain in the verified local evidence copy; README screenshots are committed separately. The image archive is not a required or manual Release asset."
+}
