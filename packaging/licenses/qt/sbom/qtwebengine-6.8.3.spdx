@@ -1,0 +1,712 @@
+SPDXVersion: SPDX-2.3
+DataLicense: CC0-1.0
+SPDXID: SPDXRef-DOCUMENT
+DocumentName: qtwebengine-6.8.3
+DocumentNamespace: https://qt.io/spdxdocs/qtwebengine-b586c4e+HEAD
+Creator: Organization: TheQtCompany
+Creator: Tool: Qt Build System
+CreatorComment: <text>This SPDX document was created from CMake 3.30.5, using the qt
+build system from https://code.qt.io/cgit/qt/qtbase.git/tree/cmake/QtPublicSbomHelpers.cmake</text>
+Created: 2025-03-19T07:56:49Z
+ExternalDocumentRef: DocumentRef-qtbase https://qt.io/spdxdocs/qtbase-c07c2d5a+HEAD SHA1: d09a293d8ad1110dcfb0e62ccafbbfc101b9080a
+ExternalDocumentRef: DocumentRef-qtdeclarative https://qt.io/spdxdocs/qtdeclarative-2ec235a2+HEAD SHA1: 81cfb83f162fcf521b9186522d42f53a4695e269
+ExternalDocumentRef: DocumentRef-qtwebchannel https://qt.io/spdxdocs/qtwebchannel-6.8.3 SHA1: 03d5ba9d83e5f8bef018e538939b5914f9f10159
+ExternalDocumentRef: DocumentRef-qtpositioning https://qt.io/spdxdocs/qtpositioning-6.8.3 SHA1: 7cad770dcfe57b5b462ecc62b7a3ce3e90752b08
+ExternalDocumentRef: DocumentRef-qttools https://qt.io/spdxdocs/qttools-2649ea1+HEAD SHA1: 00b24479052302ef9558238dd424ed6128d8409c
+
+PackageName: GNU
+SPDXID: SPDXRef-compiler
+PackageVersion: 10.3.1
+PackageDownloadLocation: NOASSERTION
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: NOASSERTION
+PackageSupplier: Organization: Anonymous
+FilesAnalyzed: false
+PackageSummary: <text>The compiler as identified by CMake, running on Linux (x86_64)</text>
+PrimaryPackagePurpose: APPLICATION
+Relationship: SPDXRef-compiler BUILD_DEPENDENCY_OF SPDXRef-Package-qtwebengine
+RelationshipComment: <text>SPDXRef-Package-qtwebengine is built by compiler GNU version 10.3.1</text>
+
+PackageName: qtwebengine
+SPDXID: SPDXRef-Package-qtwebengine
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*
+ExternalRef: PACKAGE-MANAGER purl pkg:generic/TheQtCompany/qtwebengine@b586c4e+HEAD
+PackageVersion: b586c4e+HEAD
+PackageSupplier: Organization: TheQtCompany
+PackageDownloadLocation: git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da
+PackageLicenseConcluded: NOASSERTION
+PackageLicenseDeclared: NOASSERTION
+PackageCopyrightText: Copyright (C) The Qt Company Ltd. and other contributors.
+PackageHomePage: https://qt.io
+PackageComment: <text>Built by CMake 3.30.5 with RelWithDebInfo configuration for Linux (x86_64)
+qtwebengine was configured with:
+    qt-configure-module <sources>/qtwebengine  -- -DFFMPEG_DIR=/usr/local/FFmpeg-n7.1 -DQT_DEPLOY_FFMPEG=TRUE -DINPUT_headersclean=ON -DQT_GENERATE_SBOM=ON -DQT_GENERATE_SOURCE_SBOM=ON -DQT_SBOM_PYTHON_INTERP= -DQT_SBOM_PYTHON_APPS_PATH= -DQT_LINT_SOURCE_SBOM=ON -DQT_INTERNAL_SBOM_DEFAULT_CHECKS=ON -DQT_INTERNAL_SBOM_AUDIT=ON -DQT_INTERNAL_SBOM_AUDIT_NO_ERROR=ON -DQT_BUILD_TESTS=OFF -DCMAKE_AUTOGEN_VERBOSE=ON -DCMAKE_MESSAGE_LOG_LEVEL=STATUS -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
+</text>
+PackageVerificationCode: 0b57939e103712c574bffdcde3f8c578e6a5c52e
+BuiltDate: 2025-03-19T07:56:49Z
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-Package-qtwebengine
+
+PackageName: WebEngineCore
+SPDXID: SPDXRef-Package-qtwebengine-qt-module-WebEngineCore
+PackageDownloadLocation: git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da
+PackageVersion: 6.8.3
+PackageSupplier: Organization: TheQtCompany
+PackageLicenseConcluded: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+PackageLicenseDeclared: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+ExternalRef: PACKAGE-MANAGER purl pkg:github/qt/qtwebengine@b586c4e?library_name=WebEngineCore#src/core/api
+ExternalRef: PACKAGE-MANAGER purl pkg:generic/TheQtCompany/qtwebengine-WebEngineCore@b586c4e?vcs_url=https://code.qt.io/qt/qtwebengine.git@b586c4e&library_name=WebEngineCore#src/core/api
+FilesAnalyzed: true
+PackageCopyrightText: <text>Copyright (C) The Qt Company Ltd. and other contributors.</text>
+PrimaryPackagePurpose: LIBRARY
+PackageComment: <text>
+Note: This package was marked as not listing all of its consumed 3rd party dependencies.
+Thus the licensing and copyright information might be incomplete.
+CMake target name: WebEngineCore
+CMake exported target name: Qt6::WebEngineCore
+Contained in CMake package: Qt6WebEngineCore
+</text>
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qtwebengine:6.8.3:*:*:*:*:*:*:*
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineCore DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineCore DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Gui
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineCore DEPENDS_ON DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Quick
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineCore DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformModuleInternal
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineCore DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Network
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineCore DEPENDS_ON DocumentRef-qtwebchannel:SPDXRef-Package-qtwebchannel-qt-module-WebChannel
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineCore DEPENDS_ON DocumentRef-qtpositioning:SPDXRef-Package-qtpositioning-qt-module-Positioning
+Relationship: SPDXRef-Package-qtwebengine CONTAINS SPDXRef-Package-qtwebengine-qt-module-WebEngineCore
+
+FileName: ./lib/libQt6WebEngineCore.so.6.8.3
+SPDXID: SPDXRef-PackagedFile-qt-module-WebEngineCore
+FileType: BINARY
+FileChecksum: SHA1: fbdc7aaf8cc756ccad0d9ecc85077d9a9788c33c
+LicenseConcluded: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+FileCopyrightText: <text>Copyright (C) The Qt Company Ltd. and other contributors.</text>
+LicenseInfoInFile: NOASSERTION
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineCore CONTAINS SPDXRef-PackagedFile-qt-module-WebEngineCore
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qtwebenginecoreglobal.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qtwebenginecoreglobal.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qtwebenginecoreglobal_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginecertificateerror.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginecertificateerror.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineclientcertificateselection.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineclientcertificateselection.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineclientcertificatestore.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineclientcertificatestore.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineclienthints.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineclienthints.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginecontextmenurequest.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginecontextmenurequest.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginecontextmenurequest_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginecookiestore.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginecookiestore.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginecookiestore_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginedesktopmediarequest.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginedesktopmediarequest.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginedesktopmediarequest_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginedownloadrequest.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginedownloadrequest.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginedownloadrequest_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginefilesystemaccessrequest.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginefilesystemaccessrequest.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginefindtextresult.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginefindtextresult.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineframe.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineframe.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginefullscreenrequest.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginefullscreenrequest.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginehistory.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginehistory.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginehistory_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginehttprequest.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginehttprequest.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineloadinginfo.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineloadinginfo.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginemessagepumpscheduler.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginemessagepumpscheduler_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginenavigationrequest.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginenavigationrequest.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginenewwindowrequest.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginenewwindowrequest.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginenewwindowrequest_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginenotification.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginenotification.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginepage.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginepage.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginepage_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginepermission.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginepermission.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginepermission_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineprofile.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineprofile.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineprofile_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginequotarequest.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginequotarequest.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineregisterprotocolhandlerrequest.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineregisterprotocolhandlerrequest.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginescript.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginescript.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginescriptcollection.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginescriptcollection.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginescriptcollection_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginesettings.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginesettings.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineurlrequestinfo.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineurlrequestinfo.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineurlrequestinfo_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineurlrequestinterceptor.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineurlrequestinterceptor.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineurlrequestjob.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineurlrequestjob.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineurlscheme.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineurlscheme.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineurlschemehandler.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineurlschemehandler.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineglobalsettings.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineglobalsettings.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebengineglobalsettings_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginewebauthuxrequest.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginewebauthuxrequest.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/api/qwebenginewebauthuxrequest_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/core/api/qtwebenginecore-config.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineCore GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/core/api/qtwebenginecore-config_p.h
+
+PackageName: qwebengine_convert_dict
+SPDXID: SPDXRef-Package-qtwebengine-qt-tool-qwebengine-convert-dict
+PackageDownloadLocation: git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da
+PackageVersion: 6.8.3
+PackageSupplier: Organization: TheQtCompany
+PackageLicenseConcluded: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
+PackageLicenseDeclared: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
+ExternalRef: PACKAGE-MANAGER purl pkg:github/qt/qtwebengine@b586c4e?library_name=qwebengine_convert_dict#src/core/tools/qwebengine_convert_dict
+ExternalRef: PACKAGE-MANAGER purl pkg:generic/TheQtCompany/qtwebengine-qwebengine_convert_dict@b586c4e?vcs_url=https://code.qt.io/qt/qtwebengine.git@b586c4e&library_name=qwebengine_convert_dict#src/core/tools/qwebengine_convert_dict
+FilesAnalyzed: true
+PackageCopyrightText: <text>Copyright (C) The Qt Company Ltd. and other contributors.</text>
+PrimaryPackagePurpose: APPLICATION
+PackageComment: <text>
+CMake target name: qwebengine_convert_dict
+</text>
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qtwebengine:6.8.3:*:*:*:*:*:*:*
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*
+Relationship: SPDXRef-Package-qtwebengine-qt-tool-qwebengine-convert-dict DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformToolInternal
+Relationship: SPDXRef-Package-qtwebengine-qt-tool-qwebengine-convert-dict DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformCommonInternal
+Relationship: SPDXRef-Package-qtwebengine-qt-tool-qwebengine-convert-dict DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core
+Relationship: SPDXRef-Package-qtwebengine CONTAINS SPDXRef-Package-qtwebengine-qt-tool-qwebengine-convert-dict
+
+FileName: ./libexec/qwebengine_convert_dict
+SPDXID: SPDXRef-PackagedFile-qt-tool-qwebengine-convert-dict
+FileType: BINARY
+FileChecksum: SHA1: 19fd0f1fc68cd742eb0ec1e9ad6cdc9a33f6b58e
+LicenseConcluded: LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0
+FileCopyrightText: <text>Copyright (C) The Qt Company Ltd. and other contributors.</text>
+LicenseInfoInFile: NOASSERTION
+Relationship: SPDXRef-Package-qtwebengine-qt-tool-qwebengine-convert-dict CONTAINS SPDXRef-PackagedFile-qt-tool-qwebengine-convert-dict
+Relationship: SPDXRef-PackagedFile-qt-tool-qwebengine-convert-dict GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/core/tools/qwebengine_convert_dict/main.cpp
+
+PackageName: QWebEngineViewPlugin
+SPDXID: SPDXRef-Package-qtwebengine-qt-plugin-QWebEngineViewPlugin
+PackageDownloadLocation: git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da
+PackageVersion: 6.8.3
+PackageSupplier: Organization: TheQtCompany
+PackageLicenseConcluded: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+PackageLicenseDeclared: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+ExternalRef: PACKAGE-MANAGER purl pkg:github/qt/qtwebengine@b586c4e?library_name=QWebEngineViewPlugin#src/webenginewidgets/plugins/qwebengineview
+ExternalRef: PACKAGE-MANAGER purl pkg:generic/TheQtCompany/qtwebengine-QWebEngineViewPlugin@b586c4e?vcs_url=https://code.qt.io/qt/qtwebengine.git@b586c4e&library_name=QWebEngineViewPlugin#src/webenginewidgets/plugins/qwebengineview
+FilesAnalyzed: true
+PackageCopyrightText: <text>Copyright (C) The Qt Company Ltd. and other contributors.</text>
+PrimaryPackagePurpose: LIBRARY
+PackageComment: <text>
+CMake target name: QWebEngineViewPlugin
+</text>
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qtwebengine:6.8.3:*:*:*:*:*:*:*
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*
+Relationship: SPDXRef-Package-qtwebengine-qt-plugin-QWebEngineViewPlugin DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core
+Relationship: SPDXRef-Package-qtwebengine-qt-plugin-QWebEngineViewPlugin DEPENDS_ON DocumentRef-qttools:SPDXRef-Package-qttools-qt-module-Designer
+Relationship: SPDXRef-Package-qtwebengine-qt-plugin-QWebEngineViewPlugin DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Gui
+Relationship: SPDXRef-Package-qtwebengine-qt-plugin-QWebEngineViewPlugin DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformPluginInternal
+Relationship: SPDXRef-Package-qtwebengine CONTAINS SPDXRef-Package-qtwebengine-qt-plugin-QWebEngineViewPlugin
+
+FileName: ./plugins/designer/libqwebengineview.so
+SPDXID: SPDXRef-PackagedFile-qt-plugin-QWebEngineViewPlugin
+FileType: BINARY
+FileChecksum: SHA1: 99219e8a9f1d91839a6029b9e82ca6a9cade97c7
+LicenseConcluded: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+FileCopyrightText: <text>Copyright (C) The Qt Company Ltd. and other contributors.</text>
+LicenseInfoInFile: NOASSERTION
+Relationship: SPDXRef-Package-qtwebengine-qt-plugin-QWebEngineViewPlugin CONTAINS SPDXRef-PackagedFile-qt-plugin-QWebEngineViewPlugin
+Relationship: SPDXRef-PackagedFile-qt-plugin-QWebEngineViewPlugin GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/plugins/qwebengineview/qwebengineview_plugin.cpp
+Relationship: SPDXRef-PackagedFile-qt-plugin-QWebEngineViewPlugin GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/plugins/qwebengineview/qwebengineview_plugin.h
+Relationship: SPDXRef-PackagedFile-qt-plugin-QWebEngineViewPlugin GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginewidgets/plugins/qwebengineview/.qt/rcc/qrc_qwebengineview_plugin.cpp
+Relationship: SPDXRef-PackagedFile-qt-plugin-QWebEngineViewPlugin GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginewidgets/plugins/qwebengineview/.qt/rcc/qwebengineview_plugin.qrc
+Relationship: SPDXRef-PackagedFile-qt-plugin-QWebEngineViewPlugin GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/plugins/qwebengineview/images/qwebengineview.png
+
+PackageName: WebEngineWidgets
+SPDXID: SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets
+PackageDownloadLocation: git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da
+PackageVersion: 6.8.3
+PackageSupplier: Organization: TheQtCompany
+PackageLicenseConcluded: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+PackageLicenseDeclared: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+ExternalRef: PACKAGE-MANAGER purl pkg:github/qt/qtwebengine@b586c4e?library_name=WebEngineWidgets#src/webenginewidgets
+ExternalRef: PACKAGE-MANAGER purl pkg:generic/TheQtCompany/qtwebengine-WebEngineWidgets@b586c4e?vcs_url=https://code.qt.io/qt/qtwebengine.git@b586c4e&library_name=WebEngineWidgets#src/webenginewidgets
+FilesAnalyzed: true
+PackageCopyrightText: <text>Copyright (C) The Qt Company Ltd. and other contributors.</text>
+PrimaryPackagePurpose: LIBRARY
+PackageComment: <text>
+CMake target name: WebEngineWidgets
+CMake exported target name: Qt6::WebEngineWidgets
+Contained in CMake package: Qt6WebEngineWidgets
+</text>
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qtwebengine:6.8.3:*:*:*:*:*:*:*
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Gui
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets DEPENDS_ON DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-QuickWidgets
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Widgets
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets DEPENDS_ON DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Quick
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformModuleInternal
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PrintSupport
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets DEPENDS_ON SPDXRef-Package-qtwebengine-qt-module-WebEngineCore
+Relationship: SPDXRef-Package-qtwebengine CONTAINS SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets
+
+FileName: ./lib/libQt6WebEngineWidgets.so.6.8.3
+SPDXID: SPDXRef-PackagedFile-qt-module-WebEngineWidgets
+FileType: BINARY
+FileChecksum: SHA1: 7ee51852c87d5a59ac8c5330ca6ddb22f010cd60
+LicenseConcluded: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+FileCopyrightText: <text>Copyright (C) The Qt Company Ltd. and other contributors.</text>
+LicenseInfoInFile: NOASSERTION
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets CONTAINS SPDXRef-PackagedFile-qt-module-WebEngineWidgets
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineWidgets GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/api/qtwebenginewidgetsglobal.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineWidgets GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/api/qwebenginenotificationpresenter.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineWidgets GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/api/qwebenginenotificationpresenter_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineWidgets GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/api/qwebengineview.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineWidgets GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/api/qwebengineview.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineWidgets GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/api/qwebengineview_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineWidgets GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/ui/autofillpopupwidget.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineWidgets GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/ui/autofillpopupwidget_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineWidgets GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/ui/touchhandlewidget.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineWidgets GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/ui/touchhandlewidget_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineWidgets GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/ui/touchselectionmenuwidget.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineWidgets GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/ui/touchselectionmenuwidget_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineWidgets GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/qwebengine_accessible.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineWidgets GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginewidgets/qwebengine_accessible_p.h
+
+PackageName: WebEngineQuickDelegatesQml
+SPDXID: SPDXRef-Package-qtwebengine-qt-module-WebEngineQuickDelegatesQml
+PackageDownloadLocation: git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da
+PackageVersion: 6.8.3
+PackageSupplier: Organization: TheQtCompany
+PackageLicenseConcluded: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+PackageLicenseDeclared: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+ExternalRef: PACKAGE-MANAGER purl pkg:github/qt/qtwebengine@b586c4e?library_name=WebEngineQuickDelegatesQml#src/webenginequick/ui
+ExternalRef: PACKAGE-MANAGER purl pkg:generic/TheQtCompany/qtwebengine-WebEngineQuickDelegatesQml@b586c4e?vcs_url=https://code.qt.io/qt/qtwebengine.git@b586c4e&library_name=WebEngineQuickDelegatesQml#src/webenginequick/ui
+FilesAnalyzed: true
+PackageCopyrightText: <text>Copyright (C) The Qt Company Ltd. and other contributors.</text>
+PrimaryPackagePurpose: LIBRARY
+PackageComment: <text>
+CMake target name: WebEngineQuickDelegatesQml
+CMake exported target name: Qt6::WebEngineQuickDelegatesQml
+Contained in CMake package: Qt6WebEngineQuickDelegatesQml
+</text>
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qtwebengine:6.8.3:*:*:*:*:*:*:*
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineQuickDelegatesQml DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformModuleInternal
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineQuickDelegatesQml DEPENDS_ON DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Qml
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineQuickDelegatesQml DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core
+Relationship: SPDXRef-Package-qtwebengine CONTAINS SPDXRef-Package-qtwebengine-qt-module-WebEngineQuickDelegatesQml
+
+FileName: ./lib/libQt6WebEngineQuickDelegatesQml.so.6.8.3
+SPDXID: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml
+FileType: BINARY
+FileChecksum: SHA1: 4fe99d6ae93ba505021daf9373a07f70c9568fa5
+LicenseConcluded: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+FileCopyrightText: <text>Copyright (C) The Qt Company Ltd. and other contributors.</text>
+LicenseInfoInFile: NOASSERTION
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineQuickDelegatesQml CONTAINS SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/webenginequickdelegatesqml_qmltyperegistrations.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.qt/rcc/qrc_qmake_QtWebEngine_ControlsDelegates.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/ui/AlertDialog.qml
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_qmlcache_loader.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_AlertDialog_qml.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/ui/AuthenticationDialog.qml
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_AuthenticationDialog_qml.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/ui/AutofillPopup.qml
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_AutofillPopup_qml.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/ui/ConfirmDialog.qml
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_ConfirmDialog_qml.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/ui/DirectoryPicker.qml
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_DirectoryPicker_qml.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/ui/FilePicker.qml
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_FilePicker_qml.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/ui/Menu.qml
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_Menu_qml.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/ui/MenuItem.qml
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_MenuItem_qml.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/ui/MenuSeparator.qml
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_MenuSeparator_qml.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/ui/PromptDialog.qml
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_PromptDialog_qml.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/ui/ToolTip.qml
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_ToolTip_qml.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/ui/TouchHandle.qml
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_TouchHandle_qml.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/ui/TouchSelectionMenu.qml
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_TouchSelectionMenu_qml.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/ui/ColorDialog.qml
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_ColorDialog_qml.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.qt/rcc/qrc_WebEngineQuickDelegatesQml_raw_qml_0.cpp
+
+PackageName: qtwebenginequickdelegatesplugin
+SPDXID: SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickdelegatesplugin
+PackageDownloadLocation: git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da
+PackageVersion: 6.8.3
+PackageSupplier: Organization: TheQtCompany
+PackageLicenseConcluded: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+PackageLicenseDeclared: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+ExternalRef: PACKAGE-MANAGER purl pkg:github/qt/qtwebengine@b586c4e?library_name=qtwebenginequickdelegatesplugin#src/webenginequick/ui
+ExternalRef: PACKAGE-MANAGER purl pkg:generic/TheQtCompany/qtwebengine-qtwebenginequickdelegatesplugin@b586c4e?vcs_url=https://code.qt.io/qt/qtwebengine.git@b586c4e&library_name=qtwebenginequickdelegatesplugin#src/webenginequick/ui
+FilesAnalyzed: true
+PackageCopyrightText: <text>Copyright (C) The Qt Company Ltd. and other contributors.</text>
+PrimaryPackagePurpose: LIBRARY
+PackageComment: <text>
+CMake target name: qtwebenginequickdelegatesplugin
+</text>
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qtwebengine:6.8.3:*:*:*:*:*:*:*
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*
+Relationship: SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickdelegatesplugin DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformPluginInternal
+Relationship: SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickdelegatesplugin DEPENDS_ON DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Qml
+Relationship: SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickdelegatesplugin DEPENDS_ON SPDXRef-Package-qtwebengine-qt-module-WebEngineQuickDelegatesQml
+Relationship: SPDXRef-Package-qtwebengine CONTAINS SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickdelegatesplugin
+
+FileName: ./qml/QtWebEngine/ControlsDelegates/libqtwebenginequickdelegatesplugin.so
+SPDXID: SPDXRef-PackagedFile-qt-plugin-qtwebenginequickdelegatesplugin
+FileType: BINARY
+FileChecksum: SHA1: 5f4a827dd91733c1035653d9f6aed14b5325fa32
+LicenseConcluded: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+FileCopyrightText: <text>Copyright (C) The Qt Company Ltd. and other contributors.</text>
+LicenseInfoInFile: NOASSERTION
+Relationship: SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickdelegatesplugin CONTAINS SPDXRef-PackagedFile-qt-plugin-qtwebenginequickdelegatesplugin
+Relationship: SPDXRef-PackagedFile-qt-plugin-qtwebenginequickdelegatesplugin GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/qtwebenginequickdelegatesplugin_QtWebEngine_ControlsDelegatesPlugin.cpp
+Relationship: SPDXRef-PackagedFile-qt-plugin-qtwebenginequickdelegatesplugin GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/ui/.qt/rcc/qrc_qtwebenginequickdelegatesplugin.cpp
+
+PackageName: WebEngineQuick
+SPDXID: SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick
+PackageDownloadLocation: git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da
+PackageVersion: 6.8.3
+PackageSupplier: Organization: TheQtCompany
+PackageLicenseConcluded: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+PackageLicenseDeclared: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+ExternalRef: PACKAGE-MANAGER purl pkg:github/qt/qtwebengine@b586c4e?library_name=WebEngineQuick#src/webenginequick
+ExternalRef: PACKAGE-MANAGER purl pkg:generic/TheQtCompany/qtwebengine-WebEngineQuick@b586c4e?vcs_url=https://code.qt.io/qt/qtwebengine.git@b586c4e&library_name=WebEngineQuick#src/webenginequick
+FilesAnalyzed: true
+PackageCopyrightText: <text>Copyright (C) The Qt Company Ltd. and other contributors.</text>
+PrimaryPackagePurpose: LIBRARY
+PackageComment: <text>
+CMake target name: WebEngineQuick
+CMake exported target name: Qt6::WebEngineQuick
+Contained in CMake package: Qt6WebEngineQuick
+</text>
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qtwebengine:6.8.3:*:*:*:*:*:*:*
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Gui
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick DEPENDS_ON DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Quick
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformModuleInternal
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick DEPENDS_ON DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Qml
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick DEPENDS_ON DocumentRef-qtwebchannel:SPDXRef-Package-qtwebchannel-qt-module-WebChannelQuick
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick DEPENDS_ON SPDXRef-Package-qtwebengine-qt-module-WebEngineCore
+Relationship: SPDXRef-Package-qtwebengine CONTAINS SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick
+
+FileName: ./lib/libQt6WebEngineQuick.so.6.8.3
+SPDXID: SPDXRef-PackagedFile-qt-module-WebEngineQuick
+FileType: BINARY
+FileChecksum: SHA1: 6e7d26bc4bbc2c15dcb1c63df33d38b1eaf8cac5
+LicenseConcluded: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+FileCopyrightText: <text>Copyright (C) The Qt Company Ltd. and other contributors.</text>
+LicenseInfoInFile: NOASSERTION
+Relationship: SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick CONTAINS SPDXRef-PackagedFile-qt-module-WebEngineQuick
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebengineaction.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebengineaction_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebengineaction_p_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebengineclientcertificateselection.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebengineclientcertificateselection_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginedialogrequests.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginedialogrequests_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginedownloadrequest.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginedownloadrequest.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginefaviconprovider.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginefaviconprovider_p_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginenewwindowrequest.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginenewwindowrequest_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebengineprofile.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebengineprofile.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebengineprofile_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginescriptcollection.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginescriptcollection_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginescriptcollection_p_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginesettings.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginesettings_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginesingleton.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginesingleton_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginetouchhandleprovider.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginetouchhandleprovider_p_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginetouchhandle.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginetouchhandle_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginetouchselectionmenurequest.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginetouchselectionmenurequest_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebenginetouchselectionmenurequest_p_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebengineview.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebengineview_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebengineview_p_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qquickwebengineforeigntypes_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qtwebenginequickglobal.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qtwebenginequickglobal.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/api/qtwebenginequickglobal_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/render_widget_host_view_qt_delegate_quickwindow.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/render_widget_host_view_qt_delegate_quickwindow_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/ui_delegates_manager.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/ui_delegates_manager_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/qtwebenginequick-config.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/qtwebenginequick-config_p.h
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/webenginequick_qmltyperegistrations.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /build_dir/qtwebengine/src/webenginequick/.qt/rcc/qrc_qmake_QtWebEngine.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/qquickwebengine_accessible.cpp
+Relationship: SPDXRef-PackagedFile-qt-module-WebEngineQuick GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/qquickwebengine_accessible_p.h
+
+PackageName: qtwebenginequickplugin
+SPDXID: SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickplugin
+PackageDownloadLocation: git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da
+PackageVersion: 6.8.3
+PackageSupplier: Organization: TheQtCompany
+PackageLicenseConcluded: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+PackageLicenseDeclared: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+ExternalRef: PACKAGE-MANAGER purl pkg:github/qt/qtwebengine@b586c4e?library_name=qtwebenginequickplugin#src/webenginequick
+ExternalRef: PACKAGE-MANAGER purl pkg:generic/TheQtCompany/qtwebengine-qtwebenginequickplugin@b586c4e?vcs_url=https://code.qt.io/qt/qtwebengine.git@b586c4e&library_name=qtwebenginequickplugin#src/webenginequick
+FilesAnalyzed: true
+PackageCopyrightText: <text>Copyright (C) The Qt Company Ltd. and other contributors.</text>
+PrimaryPackagePurpose: LIBRARY
+PackageComment: <text>
+CMake target name: qtwebenginequickplugin
+</text>
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qtwebengine:6.8.3:*:*:*:*:*:*:*
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*
+Relationship: SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickplugin DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformPluginInternal
+Relationship: SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickplugin DEPENDS_ON DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core
+Relationship: SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickplugin DEPENDS_ON DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Qml
+Relationship: SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickplugin DEPENDS_ON SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick
+Relationship: SPDXRef-Package-qtwebengine CONTAINS SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickplugin
+
+FileName: ./qml/QtWebEngine/libqtwebenginequickplugin.so
+SPDXID: SPDXRef-PackagedFile-qt-plugin-qtwebenginequickplugin
+FileType: BINARY
+FileChecksum: SHA1: 74e84e64260ab9eb498ee3f1d3c588cdf7ddc2d1
+LicenseConcluded: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+FileCopyrightText: <text>Copyright (C) The Qt Company Ltd. and other contributors.</text>
+LicenseInfoInFile: NOASSERTION
+Relationship: SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickplugin CONTAINS SPDXRef-PackagedFile-qt-plugin-qtwebenginequickplugin
+Relationship: SPDXRef-PackagedFile-qt-plugin-qtwebenginequickplugin GENERATED_FROM NOASSERTION
+RelationshipComment: /src_dir/qtwebengine/src/webenginequick/plugin.cpp
+
+LicenseID: LicenseRef-Qt-Commercial
+ExtractedText: <text>Licensees holding valid commercial Qt licenses may use this software in
+accordance with the the terms contained in a written agreement between
+you and The Qt Company. Alternatively, the terms and conditions that were
+accepted by the licensee when buying and/or downloading the
+software do apply.
+
+For the latest licensing terms and conditions, see https://www.qt.io/terms-conditions.
+For further information use the contact form at https://www.qt.io/contact-us.
+</text>
+
+LicenseID: LicenseRef-Tango-Icons-Public-Domain
+ExtractedText: <text>The icons in this repository are herefore released into the Public Domain.
+</text>

@@ -18,6 +18,7 @@ class QThread;
 class QSettings;
 class QTimer;
 class ImageCanvas;
+class ModelViewer;
 namespace cv { class VideoCapture; }
 namespace vision
 {
@@ -34,6 +35,8 @@ class MainWindow : public QMainWindow
     void runDemo();
     void runPtDemo();
     void runPtSmoke(const QString &outputDir);
+    void runModelSmoke(const QString &outputDir, const QString &model = {});
+    void showModelStructure(const QString &model = {});
   signals:
     void startRequested(vision::JobRequest request);
 
@@ -45,6 +48,7 @@ class MainWindow : public QMainWindow
     QWidget *buildSidebar();
     QWidget *buildWorkbench();
     QWidget *buildModels();
+    QWidget *buildModelDisplay();
     QWidget *buildHistory();
     QWidget *buildGuide();
     QWidget *buildRecordings();
@@ -85,6 +89,7 @@ class MainWindow : public QMainWindow
     void updateSourceUi();
     void updateTaskUi();
     void updateModelMeta(const QString &state);
+    void displayModelStructure();
     vision::ModelConfig currentConfig() const;
     QString projectRoot_, dataRoot_, modelPath_, labelsPath_, streamPath_, exportDir_, smokeDir_;
     QStringList files_, labels_, models_;
@@ -130,5 +135,8 @@ class MainWindow : public QMainWindow
     QProgressBar *progress_ = nullptr;
     ImageCanvas *canvas_ = nullptr;
     ImageCanvas *recordingCanvas_ = nullptr;
+    ModelViewer *modelViewer_ = nullptr;
+    QLabel *structureModelName_ = nullptr, *structureModelMeta_ = nullptr, *structureHint_ = nullptr,
+           *structureStatus_ = nullptr;
     QList<QWidget *> lockedControls_;
 };

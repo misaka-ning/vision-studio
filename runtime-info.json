@@ -30,7 +30,8 @@
         "torch_cpu_wheels": "https://download.pytorch.org/whl/cpu",
         "torch_version_matrix": "https://pytorch.org/get-started/previous-versions/",
         "ultralytics": "https://pypi.org/project/ultralytics/8.4.173/",
-        "checkpoint": "https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8n.pt"
+        "checkpoint": "https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8n.pt",
+        "netron": "https://github.com/lutzroeder/netron/tree/v9.3.1"
     },
     "verified_fixture": {
         "model": "models/yolov8n.pt",
@@ -58,5 +59,8 @@
         "report": "output/pt-verification/installed-smoke/installed-check.json",
         "predictions": 5,
         "user_preferences_preserved": true
-    }
+    },
+    "model_viewer": "Netron",
+    "netron": "9.3.1",
+    "qt_webengine": "6.8.3"
 }

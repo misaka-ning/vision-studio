@@ -2,6 +2,7 @@
 #include "core/inferenceworker.h"
 #include "icons.h"
 #include "imagecanvas.h"
+#include "modelviewer.h"
 #include <QApplication>
 #include <QCheckBox>
 #include <QCloseEvent>
@@ -219,6 +220,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     pages_->setObjectName("workspacePages");
     pages_->addWidget(buildWorkbench());
     pages_->addWidget(buildModels());
+    pages_->addWidget(buildModelDisplay());
     pages_->addWidget(buildHistory());
     pages_->addWidget(buildGuide());
     pages_->addWidget(buildRecordings());
@@ -346,6 +348,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 }
 MainWindow::~MainWindow()
 {
+    if (modelViewer_)
+        modelViewer_->stop();
     stopRecordingPlayback();
     worker_->requestStop();
     workerThread_->quit();
@@ -442,14 +446,14 @@ QWidget *MainWindow::buildSidebar()
     brand->addWidget(text("Vision", "brand"));
     brand->addStretch();
     l->addLayout(brand);
-    auto *cap = text("STUDIO  /  V1.3", "brandCaption");
+    auto *cap = text("STUDIO  /  V1.4", "brandCaption");
     cap->setContentsMargins(4, 4, 0, 0);
     l->addWidget(cap);
     l->addSpacing(38);
     l->addWidget(text("工作空间", "eyebrow"));
     l->addSpacing(5);
-    const QStringList titles = {"检测工作台", "模型库", "运行记录", "使用指南", "录制视频", "更多"};
-    const QStringList icons = {"work", "model", "history", "help", "video", "more"};
+    const QStringList titles = {"检测工作台", "模型库", "模型显示", "运行记录", "使用指南", "录制视频", "更多"};
+    const QStringList icons = {"work", "model", "graph", "history", "help", "video", "more"};
     for (int i = 0; i < titles.size(); ++i)
     {
         auto *b = button(titles[i], icons[i], "nav");
@@ -590,6 +594,7 @@ QWidget *MainWindow::buildWorkbench()
     fields->addSpacing(7);
     fields->addWidget(section("检测模型", "02"));
     modelName_ = text("选择视觉模型", "modelName");
+    modelName_->setObjectName("activeModelName");
     modelName_->setWordWrap(true);
     fields->addWidget(modelName_);
     modelMeta_ = text("支持 ONNX / PT 检测模型", "tiny");
@@ -934,38 +939,34 @@ QWidget *MainWindow::buildModels()
     fl->setSpacing(12);
     fl->addWidget(text("集中管理你的模型", "modelName"));
     fl->addWidget(
-        text("支持 ONNX 和 PT。PT 自动读取模型任务与类别，ONNX 可手动配置输出格式和标签。", "muted"));
+        text("点击模型即全局选用：检测工作台与模型显示同步，模型结构会在后台预加载。", "muted"));
     modelList_ = new QListWidget;
+    modelList_->setObjectName("globalModelList");
+    lockedControls_.append(modelList_);
     modelList_->setIconSize(QSize(34, 34));
     fl->addWidget(modelList_, 1);
     auto *actions = new QHBoxLayout;
-    auto *activate = button("在工作台使用", "arrow", "primary");
+    auto *activate = button("前往检测工作台", "arrow", "primary");
+    auto *structure = button("查看模型结构", "graph");
+    structure->setObjectName("showModelStructureButton");
     auto *remove = button("从列表移除", "cross");
     lockedControls_.append(activate);
     lockedControls_.append(remove);
     actions->addWidget(activate);
+    actions->addWidget(structure);
     actions->addWidget(remove);
     actions->addStretch();
     fl->addLayout(actions);
-    connect(activate, &QPushButton::clicked, this,
-            [this]
+    connect(structure, &QPushButton::clicked, this, [this] { selectRoute(2); });
+    connect(activate, &QPushButton::clicked, this, [this] { selectRoute(0); });
+    connect(modelList_, &QListWidget::currentItemChanged, this,
+            [this](QListWidgetItem *item)
             {
-                auto *item = modelList_->currentItem();
-                if (item)
-                {
+                if (item && !busy_)
                     setModel(item->data(Qt::UserRole).toString());
-                    selectRoute(0);
-                }
             });
     connect(modelList_, &QListWidget::itemDoubleClicked, this,
-            [this](QListWidgetItem *i)
-            {
-                if (!busy_)
-                {
-                    setModel(i->data(Qt::UserRole).toString());
-                    selectRoute(0);
-                }
-            });
+            [this](QListWidgetItem *) { selectRoute(0); });
     connect(remove, &QPushButton::clicked, this,
             [this]
             {
@@ -974,8 +975,19 @@ QWidget *MainWindow::buildModels()
                 {
                     const QString p = i->data(Qt::UserRole).toString();
                     models_.removeAll(p);
-                    persist();
                     refreshModelLibrary();
+                    if (p == modelPath_)
+                    {
+                        QString next;
+                        for (const QString &candidate : models_)
+                            if (QFileInfo(candidate).isFile())
+                            {
+                                next = candidate;
+                                break;
+                            }
+                        setModel(next);
+                    }
+                    persist();
                     showNotice("已从模型库移除，原始模型文件保留。");
                 }
             });
@@ -993,6 +1005,79 @@ QWidget *MainWindow::buildModels()
     l->addWidget(notes);
     return page;
 }
+QWidget *MainWindow::buildModelDisplay()
+{
+    auto *page = new QWidget;
+    page->setObjectName("modelDisplayPage");
+    auto *layout = new QVBoxLayout(page);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(14);
+    auto *controls = card();
+    auto *controlLayout = new QVBoxLayout(controls);
+    controlLayout->setContentsMargins(18, 16, 18, 16);
+    controlLayout->setSpacing(10);
+    auto *heading = new QHBoxLayout;
+    structureModelName_ = text("在模型库中选择模型", "structureModelName");
+    structureModelName_->setStyleSheet("font-size:15px; font-weight:700; color:#e9f4f4;");
+    heading->addWidget(structureModelName_, 1);
+    structureStatus_ = text("等待模型", "chip");
+    structureStatus_->setObjectName("structureLoadStatus");
+    heading->addWidget(structureStatus_);
+    heading->addWidget(text("Netron 9.3.1 · 本地查看", "chip"));
+    controlLayout->addLayout(heading);
+    structureModelMeta_ = text("支持 ONNX、PyTorch、TorchScript 等模型格式。", "structureModelMeta");
+    structureModelMeta_->setStyleSheet("font-size:11px; color:#8ca4b8;");
+    controlLayout->addWidget(structureModelMeta_);
+    structureHint_ = text("想看完整结构，建使用导出的 ONNX。", "structureOnnxHint");
+    structureHint_->setStyleSheet("font-size:11px; color:#8194a5;");
+    structureHint_->hide();
+    controlLayout->addWidget(structureHint_);
+    layout->addWidget(controls);
+    modelViewer_ = new ModelViewer;
+    modelViewer_->setObjectName("modelStructureViewer");
+    layout->addWidget(modelViewer_, 1);
+    connect(modelViewer_, &ModelViewer::stateChanged, this,
+            [this](ModelViewer::State state)
+            {
+                structureStatus_->setText(state == ModelViewer::State::Loading ? "后台加载中…"
+                                          : state == ModelViewer::State::Ready
+                                              ? QString("已缓存 · %1 个节点").arg(modelViewer_->graphNodeCount())
+                                          : state == ModelViewer::State::Error ? "无法显示"
+                                                                             : "等待模型");
+            });
+    connect(modelViewer_, &ModelViewer::modelLoaded, this,
+            [this](const QString &path)
+            {
+                if (!busy_ && (pages_->currentIndex() == 1 || pages_->currentIndex() == 2))
+                    showNotice(QString("模型结构已缓存 · %1 · %2 个节点")
+                                   .arg(QFileInfo(path).fileName()).arg(modelViewer_->graphNodeCount()));
+            });
+    connect(modelViewer_, &ModelViewer::loadFailed, this,
+            [this](const QString &error)
+            {
+                if (pages_->currentIndex() == 2)
+                    showNotice(error, true);
+            });
+    auto *note = text("使用模型库中全局选中的模型，结构在后台加载并缓存。滚轮缩放，拖动平移，点击节点查看参数。", "tiny");
+    note->setWordWrap(true);
+    layout->addWidget(note);
+    return page;
+}
+
+void MainWindow::displayModelStructure()
+{
+    const QString &path = modelPath_;
+    structureModelName_->setText(path.isEmpty() ? "在模型库中选择模型" : QFileInfo(path).fileName());
+    structureModelName_->setToolTip(path);
+    structureModelMeta_->setText(path.isEmpty() ? "检测工作台与模型显示使用同一个全局模型。"
+                                               : QFileInfo(path).suffix().toUpper() + " · " + path);
+    structureModelMeta_->setToolTip(path);
+    structureModelMeta_->setWordWrap(true);
+    structureHint_->setVisible(!path.isEmpty() && QFileInfo(path).suffix().compare("onnx", Qt::CaseInsensitive) != 0);
+    if (modelViewer_->modelPath() != path || modelViewer_->state() == ModelViewer::State::Empty)
+        modelViewer_->openModel(path);
+}
+
 QWidget *MainWindow::buildHistory()
 {
     auto *page = new QWidget;
@@ -1408,6 +1493,7 @@ QWidget *MainWindow::buildGuide()
     <style>h1{color:#e3f3f1;font-size:24px}h2{color:#56d8bd;font-size:16px;margin-top:26px}p,li{line-height:1.7;color:#a5bacb;font-size:13px}code{color:#c9e4dd}a{color:#56d8bd}</style>
     <h1>让你的视觉模型，真正运行起来。</h1><p>Vision Studio 是一个原生 C++ / Qt 桌面工作台。模型加载、图像处理与推理均在本机完成。</p>
     <h2>01 / 开始你的第一次检测</h2><p>“更多”页的“运行示例”可选择 ONNX / PT 示例。使用自己的模型时，导入 ONNX 或 PT，然后选择图片、文件夹、视频或摄像头，点击“开始检测”。PT 使用本机独立 PyTorch 环境直接推理，无需手动导出。</p>
+    <h2>模型库与结构显示</h2><p>在“模型库”点击模型即可全局选用，工作台检测与模型显示使用同一模型。选择后在后台预加载结构，完成后保留图形缓存；进入或离开页面不重复加载。模型显示可以缩放、平移并点击节点查看输入输出及参数。无法解析的文件显示文字说明，可点击“重试加载”。非 ONNX 文件显示：想看完整结构，建使用导出的 ONNX。</p>
     <h2>PT 模型</h2><p>Ultralytics YOLO 的 PT 检查点会自动读取任务和类别名称，预处理由原生后端执行。支持的旧版 YOLOv5 权重使用随附的本地兼容模块。只包含 state_dict 的任意 PT 文件无法单独重建网络，需要原始模型架构。分割、姿态和旋转框输出暂不支持。</p>
     <h2>02 / 正确匹配模型</h2><p>YOLOv5：原始输出 <code>[1,N,5+C]</code>，包含 objectness。YOLOv8 / YOLO11：原始输出 <code>[1,4+C,N]</code>。模型应为 batch=1、固定正方形输入、FP32、不包含 NMS。输入尺寸必须与导出模型一致。分割、姿态、旋转框和端到端输出暂不支持。</p>
     <p>默认 640 px、RGB、1/255 缩放、零均值，适合常见 YOLO 模型。自定义检测模型必须导入数量匹配的 UTF-8 标签文本，每行一个名称，并保持训练时类别顺序。未导入标签时按 COCO 80 类解释检测输出。分类模型未配置标签时显示数字类别。</p>
@@ -1417,7 +1503,7 @@ QWidget *MainWindow::buildGuide()
     <p>单设备左右并排（SBS）的双目摄像头或视频可选“完整画面”“双目左目”“双目右目”。选择单目时，沿水平中线裁出所选眼，再执行预览、推理和导出；结果坐标以该单目图像为基准，JSON 同时记录原始双目画面尺寸。普通图片始终使用完整图像。运行中画面选择锁定，停止后可切换。</p>
     <h2>05 / 保存你的洞察</h2><p>导出结果会生成标注 PNG、包含原始像素坐标的 JSON，以及可用于表格分析的 CSV。启用自动保存后，批量任务为每张图片保存结果，流式任务在结束时保存最后一帧。设置和运行记录自动保存在用户数据目录。</p>
     <h2>键盘与画布</h2><p><code>Ctrl+O</code> 添加图片　<code>Ctrl+M</code> 导入模型　<code>Ctrl+R</code> 开始　<code>Ctrl+E</code> 导出　<code>Esc</code> 停止<br>滚轮缩放，拖动画布平移，双击适应画布，点击检测框或结果列表定位目标。</p>
-    <h2>运行环境与兼容性</h2><p>界面为本机 C++ / Qt 6.8.3。ONNX 使用 OpenCV 4.5.4 DNN；PT 使用项目独立 Python / PyTorch 环境，CPU 执行。ONNX 算子兼容性取决于本机 OpenCV。PT 环境位于 runtime，缺失时可运行 scripts/setup_pt.sh。安装完成后无需联网运行模型。</p>
+    <h2>运行环境与兼容性</h2><p>界面为本机 C++ / Qt 6.8.3。ONNX 使用 OpenCV 4.5.4 DNN；PT 使用项目独立 Python / PyTorch 环境，CPU 执行。ONNX 算子兼容性取决于本机 OpenCV。PT 与 Netron 环境位于 runtime，缺失时可运行 scripts/setup_pt.sh。结构显示使用内嵌 Qt WebEngine 与本机 Netron，安装完成后无需联网运行模型。</p>
     <p><a href="https://github.com/ultralytics/yolov5">YOLOv5 官方项目</a>　<a href="https://docs.ultralytics.com/modes/export/">Ultralytics ONNX 导出文档</a></p>
     <h2>开源许可</h2><p>Copyright © 2026 misaka_ning。Vision Studio 应用代码按 GNU AGPL v3 发布，您可以依据许可证复制、修改和再分发。程序不提供任何担保。完整许可证、第三方许可和对应源码资料随发行版本提供。</p>
     <p><a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL v3 完整许可证</a>　联系维护者：1468549029@qq.com</p>
@@ -1642,12 +1728,28 @@ void MainWindow::setModel(const QString &path)
 {
     if (busy_)
         return;
+    if (path.isEmpty())
+    {
+        modelPath_.clear();
+        modelInputChannels_ = 0;
+        nativeLabels_.clear();
+        modelName_->setText("尚未选择模型");
+        modelMeta_->setText("请在模型库中选择一个模型。");
+        modelName_->setToolTip({});
+        updateTaskUi();
+        updateInputPreview();
+        displayModelStructure();
+        persist();
+        return;
+    }
     QFileInfo f(path);
     if (!f.isFile())
     {
         showNotice("模型文件不存在：" + path, true);
         return;
     }
+    if (modelPath_ == f.absoluteFilePath())
+        return;
     const bool convertedBgr =
         isPtModel(f.absoluteFilePath()) && inputColorMode_->currentData().toString() == "bgr";
     modelPath_ = f.absoluteFilePath();
@@ -1664,10 +1766,23 @@ void MainWindow::setModel(const QString &path)
     else if (n.contains("yolov8") || n.contains("yolo11"))
         taskBox_->setCurrentIndex(1);
     updateTaskUi();
+    updateInputPreview();
     persist();
-    refreshModelLibrary();
+    if (modelList_->count() != models_.size())
+        refreshModelLibrary();
+    else
+    {
+        const QSignalBlocker blocker(modelList_);
+        for (int row = 0; row < modelList_->count(); ++row)
+            if (modelList_->item(row)->data(Qt::UserRole).toString() == modelPath_)
+            {
+                modelList_->setCurrentRow(row);
+                break;
+            }
+    }
+    displayModelStructure();
     showNotice(convertedBgr ? "PT 的彩色输入使用 RGB，已从 BGR 切换为 RGB；也可选择灰度。"
-                            : "模型已选择，开始检测时将载入并验证。");
+                            : "模型已全局选用，结构正在后台加载；开始检测时验证推理模型。");
 }
 void MainWindow::importLabels()
 {
@@ -2067,6 +2182,57 @@ void MainWindow::runPtSmoke(const QString &dir)
     QDir().mkpath(smokeDir_);
     runPtDemo();
 }
+void MainWindow::showModelStructure(const QString &model)
+{
+    if (!model.isEmpty())
+        setModel(model);
+    selectRoute(2);
+}
+
+void MainWindow::runModelSmoke(const QString &dir, const QString &model)
+{
+    const QString output = QFileInfo(dir).absoluteFilePath();
+    if (!QDir().mkpath(output))
+    {
+        qCritical().noquote() << "无法创建模型显示自检目录：" << output;
+        QApplication::exit(2);
+        return;
+    }
+    const auto completed = std::make_shared<bool>(false);
+    const auto writeReport = [this, output, completed](bool success, const QString &error)
+    {
+        if (*completed)
+            return;
+        *completed = true;
+        saveScreenshot(output + "/model-display.png");
+        const QJsonObject report{
+            {"success", success}, {"error", error}, {"application", "Vision Studio"},
+            {"version", "1.4.0"}, {"qt", qVersion()}, {"netron", "9.3.1"},
+            {"model", modelViewer_->modelPath()}, {"nodes", modelViewer_->graphNodeCount()},
+            {"onnx_hint_visible", structureHint_->isVisible()},
+            {"onnx_hint", structureHint_->text()}};
+        QString writeError;
+        const bool saved = atomicWrite(output + "/model-display-report.json", QJsonDocument(report).toJson(), &writeError);
+        qInfo().noquote() << QJsonDocument(report).toJson(QJsonDocument::Compact);
+        QApplication::exit(success && saved ? 0 : 2);
+    };
+    connect(modelViewer_, &ModelViewer::modelLoaded, this,
+            [this, writeReport](const QString &)
+            {
+                QTimer::singleShot(400, this, [this, writeReport]
+                                   {
+                                       const bool ready = modelViewer_->state() == ModelViewer::State::Ready && modelViewer_->graphNodeCount() > 0;
+                                       writeReport(ready, ready ? QString() : "模型没有生成可显示的结构。");
+                                   });
+            }, Qt::SingleShotConnection);
+    connect(modelViewer_, &ModelViewer::loadFailed, this,
+            [writeReport](const QString &error) { writeReport(false, error); }, Qt::SingleShotConnection);
+    showModelStructure(model);
+    if (modelViewer_->state() == ModelViewer::State::Ready)
+        QTimer::singleShot(400, this, [writeReport] { writeReport(true, {}); });
+    else if (modelViewer_->state() == ModelViewer::State::Error)
+        QTimer::singleShot(0, this, [this, writeReport] { writeReport(false, modelViewer_->errorString()); });
+}
 void MainWindow::saveScreenshot(const QString &p)
 {
     QDir().mkpath(QFileInfo(p).absolutePath());
@@ -2142,7 +2308,7 @@ bool MainWindow::writeResult(const vision::InferenceResult &r, const QString &di
                              {"preprocess", preprocess}};
     QJsonObject root{
         {"application", "Vision Studio"},
-        {"version", "1.3.0"},
+        {"version", "1.4.0"},
         {"timestamp", QDateTime::currentDateTime().toString(Qt::ISODateWithMs)},
         {"source", r.source},
         {"model", r.modelName},
@@ -2237,6 +2403,7 @@ void MainWindow::refreshModelLibrary()
 {
     if (!modelList_)
         return;
+    const QSignalBlocker blocker(modelList_);
     modelList_->clear();
     for (const QString &p : models_)
     {
@@ -2261,19 +2428,22 @@ void MainWindow::selectRoute(int index)
     if (!pages_ || index < 0 || index >= pages_->count())
         return;
     pages_->setCurrentIndex(index);
-    if (index != 4)
+    if (index != 5)
         stopRecordingPlayback();
     else
         refreshRecordings();
+    if (index == 2)
+        displayModelStructure();
     for (int i = 0; i < navButtons_.size(); ++i)
     {
         navButtons_[i]->setChecked(i == index);
-        navButtons_[i]->setIcon(ui::icon(QStringList{"work", "model", "history", "help", "video", "more"}[i],
+        navButtons_[i]->setIcon(ui::icon(QStringList{"work", "model", "graph", "history", "help", "video", "more"}[i],
                                          QColor(i == index ? "#50d9bf" : "#8297aa")));
     }
-    const QStringList titles = {"检测工作台", "模型库", "运行记录", "使用指南", "录制视频", "更多"};
+    const QStringList titles = {"检测工作台", "模型库", "模型显示", "运行记录", "使用指南", "录制视频", "更多"};
     const QStringList descriptions = {
         "从输入到洞察，让每一次视觉推理清晰可见。", "管理本地模型，让每一个实验都有清晰的起点。",
+        "查看网络结构、输入输出与层参数。",
         "回看每一次推理，沉淀可追溯的运行数据。", "从模型配置到结果导出，掌握完整的工作流程。",
         "查看、播放和导出已保存的检测录像。", "示例体验与检测结果导出，集中在这里。"};
     pageTitle_->setText(titles[index]);

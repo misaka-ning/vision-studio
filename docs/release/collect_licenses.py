@@ -27,7 +27,7 @@ def license_name(name):
                ("license", "licence", "copying", "notice", "authors", "copyright"))
 
 
-def python_licenses(runtime, output, excluded, display_runtime):
+def python_licenses(runtime, output, excluded, display_runtime, netron_source=None):
     candidates = list((runtime / "lib").glob("python*/site-packages"))
     if len(candidates) != 1:
         raise RuntimeError("The runtime must contain one Python site-packages directory")
@@ -78,6 +78,37 @@ def python_licenses(runtime, output, excluded, display_runtime):
                 raise RuntimeError("NVML source has no identifiable license header")
             (target / "pynvml.py-license-header.txt").write_bytes(data)
             files["pynvml.py-license-header.txt"] = digest(data)
+        if name.lower() == "netron":
+            if version != "9.3.1" or netron_source is None:
+                raise RuntimeError("Netron 9.3.1 requires its exact upstream release-tag source archive")
+            with tarfile.open(netron_source, "r:gz") as archive:
+                prefix = "netron-9.3.1/"
+                metadata_source = json.loads(archive.extractfile(prefix + "package.json").read())
+                if metadata_source.get("version") != version or metadata_source.get("license") != "MIT":
+                    raise RuntimeError("Netron source version/license does not match the installed wheel")
+                license_data = archive.extractfile(prefix + "LICENSE").read()
+                (target / "LICENSE-upstream.txt").write_bytes(license_data)
+                files["LICENSE-upstream.txt"] = digest(license_data)
+                notice_root = output / "netron"
+                notice_root.mkdir(parents=True, exist_ok=True)
+                for relative in ("LICENSE", "package.json", "package-lock.json"):
+                    (notice_root / relative).write_bytes(archive.extractfile(prefix + relative).read())
+                # The pip frontend ships source/dagre.js, derived from the
+                # explicitly named Dagre and Graphlib projects. Electron and
+                # the Node development dependency tree are not shipped.
+                original_dagre = archive.extractfile(prefix + "source/dagre.js").read()
+                installed_dagre = (site / "netron/dagre.js").read_bytes()
+                if original_dagre != installed_dagre:
+                    raise RuntimeError("Deployed Netron Dagre frontend differs from the matching source tag")
+                (notice_root / "dagre-upstream-reference.txt").write_text(
+                    "Netron 9.3.1 source/dagre.js identifies these upstream projects:\n"
+                    "https://github.com/dagrejs/dagre\nhttps://github.com/dagrejs/graphlib\n"
+                    "Their preserved original MIT license notices are adjacent.\n"
+                    "Electron/electron-updater and Node build tools in package-lock.json\n"
+                    "are build-only metadata and are absent from this pip-based runtime.\n")
+                for notice in ("dagre-LICENSE.txt", "graphlib-LICENSE.txt", "THIRD-PARTY-PROVENANCE.json"):
+                    if not (notice_root / notice).is_file():
+                        raise RuntimeError("Missing Netron frontend third-party notice: " + notice)
         if not files:
             raise RuntimeError(f"No preserved license for {name} {version}")
         metadata = distribution.metadata
@@ -97,12 +128,77 @@ def python_licenses(runtime, output, excluded, display_runtime):
     return rows
 
 
+def qt_source_notices(archive, qt):
+    """Read large Chromium sources sequentially rather than seeking in XZ."""
+    originals = {}
+    references = set()
+    with tarfile.open(archive, "r|xz") as stream:
+        for member in stream:
+            if not member.isfile():
+                continue
+            name = member.name
+            basename = PurePosixPath(name).name
+            selected = (license_name(basename) or "/LICENSES/" in name
+                        or basename in {"README.chromium", "README.qt", "qt_attribution.json"})
+            protocol = name.endswith(".xml") and "protocol" in name
+            if not selected and not protocol:
+                continue
+            if PurePosixPath(name).is_absolute() or ".." in PurePosixPath(name).parts:
+                raise RuntimeError("Unsafe license member path in official source archive")
+            data = stream.extractfile(member).read()
+            if selected:
+                originals[name] = data
+            if basename == "README.chromium":
+                match = re.search(r"^License File:\s*(.+)$", data.decode("utf-8", "replace"),
+                                  flags=re.MULTILINE)
+                if match:
+                    for value in match.group(1).split(","):
+                        references.add(posixpath.normpath((PurePosixPath(name).parent / value.strip()).as_posix()))
+            if basename == "qt_attribution.json":
+                try:
+                    attribution = json.loads(data, strict=False)
+                except (json.JSONDecodeError, UnicodeDecodeError):
+                    # Attribution scanner fixtures include invalid JSON; keep
+                    # the original without inferring a nonexistent license.
+                    attribution = []
+                for item in attribution if isinstance(attribution, list) else [attribution]:
+                    if isinstance(item, dict) and item.get("LicenseFile"):
+                        references.add(posixpath.normpath(
+                            (PurePosixPath(name).parent / item["LicenseFile"]).as_posix()))
+            if protocol:
+                try:
+                    document = ET.fromstring(data)
+                except ET.ParseError:
+                    continue
+                copyright_element = document.find("copyright")
+                if copyright_element is not None and copyright_element.text:
+                    destination = qt / "protocol-notices" / (name + ".txt")
+                    destination.parent.mkdir(parents=True, exist_ok=True)
+                    destination.write_text(copyright_element.text.strip() + "\n")
+    remaining = references - originals.keys()
+    if remaining:
+        with tarfile.open(archive, "r|xz") as stream:
+            for member in stream:
+                if member.isfile() and member.name in remaining:
+                    originals[member.name] = stream.extractfile(member).read()
+    collected = {}
+    for name, data in sorted(originals.items()):
+        if PurePosixPath(name).is_absolute() or ".." in PurePosixPath(name).parts:
+            raise RuntimeError("Unsafe license member path in official source archive")
+        destination = qt / "source-notices" / name
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(data)
+        collected[name] = digest(data)
+    return collected
+
+
 def qt_licenses(sdk, sources, output, imageformats_prefix=None):
     qt = output / "qt"
     (qt / "sbom").mkdir(parents=True, exist_ok=True)
     (qt / "extracted").mkdir(parents=True, exist_ok=True)
     records = []
-    for module in ("qtbase", "qtsvg", "qtwayland", "qtimageformats"):
+    for module in ("qtbase", "qtsvg", "qtwayland", "qtimageformats", "qtdeclarative",
+                   "qtwebchannel", "qtpositioning", "qtwebengine"):
         original = sdk / "sbom" / f"{module}-6.8.3.spdx.json"
         if original.is_file():
             for candidate in (sdk / "sbom").glob(f"{module}-6.8.3*spdx*"):
@@ -131,51 +227,9 @@ def qt_licenses(sdk, sources, output, imageformats_prefix=None):
         if sources is None:
             continue
         archive = sources / f"{module}-everywhere-src-6.8.3.tar.xz"
-        collected = {}
-        with tarfile.open(archive, "r:xz") as tar:
-            members = {member.name: member for member in tar.getmembers() if member.isfile()}
-            selected = {name for name in members
-                        if license_name(PurePosixPath(name).name) or "/LICENSES/" in name}
-            for name in members:
-                if PurePosixPath(name).name != "qt_attribution.json":
-                    continue
-                selected.add(name)
-                try:
-                    attribution = json.loads(tar.extractfile(members[name]).read(), strict=False)
-                except (json.JSONDecodeError, UnicodeDecodeError):
-                    # Qt's attribution scanner test fixtures include deliberately
-                    # malformed JSON. Keep the original fixture; no linked license
-                    # can be inferred from invalid data.
-                    continue
-                for item in attribution if isinstance(attribution, list) else [attribution]:
-                    if not isinstance(item, dict):
-                        continue
-                    license_file = item.get("LicenseFile")
-                    if license_file:
-                        candidate = posixpath.normpath((PurePosixPath(name).parent / license_file).as_posix())
-                        if candidate in members:
-                            selected.add(candidate)
-            for name in sorted(selected):
-                if ".." in PurePosixPath(name).parts:
-                    raise RuntimeError("Unsafe member path in official source archive")
-                data = tar.extractfile(members[name]).read()
-                destination = qt / "source-notices" / name
-                destination.parent.mkdir(parents=True, exist_ok=True)
-                destination.write_bytes(data)
-                collected[name] = digest(data)
-            for name, member in members.items():
-                if not name.endswith(".xml") or "protocol" not in name:
-                    continue
-                try:
-                    document = ET.fromstring(tar.extractfile(member).read())
-                except ET.ParseError:
-                    continue
-                copyright_element = document.find("copyright")
-                if copyright_element is not None and copyright_element.text:
-                    text = copyright_element.text.strip() + "\n"
-                    destination = qt / "protocol-notices" / (name + ".txt")
-                    destination.parent.mkdir(parents=True, exist_ok=True)
-                    destination.write_text(text)
+        # SDK SPDX does not enumerate the complete embedded Chromium tree.
+        # Preserve its own per-component notices and the paired full source.
+        collected = qt_source_notices(archive, qt)
         records[-1]["source_archive"] = archive.name
         records[-1]["source_notice_files"] = collected
     write_json(output / "QT-SDK-PACKAGES.json", records)
@@ -188,10 +242,13 @@ def main():
     parser.add_argument("--qt-sdk", type=Path, default=Path.home() / "Qt/6.8.3/gcc_64")
     parser.add_argument("--qt-sources", type=Path)
     parser.add_argument("--qt-imageformats-prefix", type=Path)
+    parser.add_argument("--netron-source", type=Path,
+                        help="The unmodified official Netron v9.3.1 release-tag source archive")
     parser.add_argument("--display-runtime", default="/opt/VisionStudio/runtime")
     parser.add_argument("--exclude", action="append", default=["pip"])
     args = parser.parse_args()
-    rows = python_licenses(args.runtime, args.output, {x.lower() for x in args.exclude}, args.display_runtime)
+    rows = python_licenses(args.runtime, args.output, {x.lower() for x in args.exclude},
+                           args.display_runtime, args.netron_source)
     qt_licenses(args.qt_sdk, args.qt_sources, args.output, args.qt_imageformats_prefix)
     print(f"Preserved {len(rows)} shipped Python distributions and Qt license notices")
 

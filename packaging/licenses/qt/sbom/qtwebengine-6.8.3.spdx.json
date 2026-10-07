@@ -1,0 +1,1993 @@
+{
+    "SPDXID": "SPDXRef-DOCUMENT",
+    "creationInfo": {
+        "created": "2025-03-19T07:56:49Z",
+        "creators": [
+            "Organization: TheQtCompany",
+            "Tool: Qt Build System"
+        ],
+        "comment": "This SPDX document was created from CMake 3.30.5, using the qt\nbuild system from https://code.qt.io/cgit/qt/qtbase.git/tree/cmake/QtPublicSbomHelpers.cmake"
+    },
+    "dataLicense": "CC0-1.0",
+    "externalDocumentRefs": [
+        {
+            "externalDocumentId": "DocumentRef-qtbase",
+            "spdxDocument": "https://qt.io/spdxdocs/qtbase-c07c2d5a+HEAD",
+            "checksum": {
+                "algorithm": "SHA1",
+                "checksumValue": "d09a293d8ad1110dcfb0e62ccafbbfc101b9080a"
+            }
+        },
+        {
+            "externalDocumentId": "DocumentRef-qtdeclarative",
+            "spdxDocument": "https://qt.io/spdxdocs/qtdeclarative-2ec235a2+HEAD",
+            "checksum": {
+                "algorithm": "SHA1",
+                "checksumValue": "81cfb83f162fcf521b9186522d42f53a4695e269"
+            }
+        },
+        {
+            "externalDocumentId": "DocumentRef-qtwebchannel",
+            "spdxDocument": "https://qt.io/spdxdocs/qtwebchannel-6.8.3",
+            "checksum": {
+                "algorithm": "SHA1",
+                "checksumValue": "03d5ba9d83e5f8bef018e538939b5914f9f10159"
+            }
+        },
+        {
+            "externalDocumentId": "DocumentRef-qtpositioning",
+            "spdxDocument": "https://qt.io/spdxdocs/qtpositioning-6.8.3",
+            "checksum": {
+                "algorithm": "SHA1",
+                "checksumValue": "7cad770dcfe57b5b462ecc62b7a3ce3e90752b08"
+            }
+        },
+        {
+            "externalDocumentId": "DocumentRef-qttools",
+            "spdxDocument": "https://qt.io/spdxdocs/qttools-2649ea1+HEAD",
+            "checksum": {
+                "algorithm": "SHA1",
+                "checksumValue": "00b24479052302ef9558238dd424ed6128d8409c"
+            }
+        }
+    ],
+    "hasExtractedLicensingInfos": [
+        {
+            "extractedText": "Licensees holding valid commercial Qt licenses may use this software in\naccordance with the the terms contained in a written agreement between\nyou and The Qt Company. Alternatively, the terms and conditions that were\naccepted by the licensee when buying and/or downloading the\nsoftware do apply.\n\nFor the latest licensing terms and conditions, see https://www.qt.io/terms-conditions.\nFor further information use the contact form at https://www.qt.io/contact-us.\n",
+            "licenseId": "LicenseRef-Qt-Commercial"
+        },
+        {
+            "extractedText": "The icons in this repository are herefore released into the Public Domain.\n",
+            "licenseId": "LicenseRef-Tango-Icons-Public-Domain"
+        }
+    ],
+    "name": "qtwebengine-6.8.3",
+    "spdxVersion": "SPDX-2.3",
+    "documentNamespace": "https://qt.io/spdxdocs/qtwebengine-b586c4e+HEAD",
+    "packages": [
+        {
+            "SPDXID": "SPDXRef-compiler",
+            "copyrightText": "NOASSERTION",
+            "downloadLocation": "NOASSERTION",
+            "filesAnalyzed": false,
+            "licenseConcluded": "NOASSERTION",
+            "licenseDeclared": "NOASSERTION",
+            "name": "GNU",
+            "primaryPackagePurpose": "APPLICATION",
+            "summary": "The compiler as identified by CMake, running on Linux (x86_64)",
+            "supplier": "Organization: Anonymous",
+            "versionInfo": "10.3.1"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtwebengine",
+            "builtDate": "2025-03-19T07:56:49Z",
+            "comment": "Built by CMake 3.30.5 with RelWithDebInfo configuration for Linux (x86_64)\nqtwebengine was configured with:\n    qt-configure-module <sources>/qtwebengine  -- -DFFMPEG_DIR=/usr/local/FFmpeg-n7.1 -DQT_DEPLOY_FFMPEG=TRUE -DINPUT_headersclean=ON -DQT_GENERATE_SBOM=ON -DQT_GENERATE_SOURCE_SBOM=ON -DQT_SBOM_PYTHON_INTERP= -DQT_SBOM_PYTHON_APPS_PATH= -DQT_LINT_SOURCE_SBOM=ON -DQT_INTERNAL_SBOM_DEFAULT_CHECKS=ON -DQT_INTERNAL_SBOM_AUDIT=ON -DQT_INTERNAL_SBOM_AUDIT_NO_ERROR=ON -DQT_BUILD_TESTS=OFF -DCMAKE_AUTOGEN_VERBOSE=ON -DCMAKE_MESSAGE_LOG_LEVEL=STATUS -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache\n",
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "downloadLocation": "git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da",
+            "externalRefs": [
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtwebengine@b586c4e+HEAD",
+                    "referenceType": "purl"
+                }
+            ],
+            "filesAnalyzed": true,
+            "homepage": "https://qt.io",
+            "licenseConcluded": "NOASSERTION",
+            "licenseDeclared": "NOASSERTION",
+            "name": "qtwebengine",
+            "packageVerificationCode": {
+                "packageVerificationCodeValue": "0b57939e103712c574bffdcde3f8c578e6a5c52e"
+            },
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "b586c4e+HEAD"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtwebengine-qt-module-WebEngineCore",
+            "comment": "\nNote: This package was marked as not listing all of its consumed 3rd party dependencies.\nThus the licensing and copyright information might be incomplete.\nCMake target name: WebEngineCore\nCMake exported target name: Qt6::WebEngineCore\nContained in CMake package: Qt6WebEngineCore\n",
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "downloadLocation": "git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtwebengine@b586c4e?library_name=WebEngineCore#src/core/api",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtwebengine-WebEngineCore@b586c4e?vcs_url=https://code.qt.io/qt/qtwebengine.git@b586c4e&library_name=WebEngineCore#src/core/api",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtwebengine:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "name": "WebEngineCore",
+            "primaryPackagePurpose": "LIBRARY",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "6.8.3"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtwebengine-qt-tool-qwebengine-convert-dict",
+            "comment": "\nCMake target name: qwebengine_convert_dict\n",
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "downloadLocation": "git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtwebengine@b586c4e?library_name=qwebengine_convert_dict#src/core/tools/qwebengine_convert_dict",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtwebengine-qwebengine_convert_dict@b586c4e?vcs_url=https://code.qt.io/qt/qtwebengine.git@b586c4e&library_name=qwebengine_convert_dict#src/core/tools/qwebengine_convert_dict",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtwebengine:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+            "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+            "name": "qwebengine_convert_dict",
+            "primaryPackagePurpose": "APPLICATION",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "6.8.3"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtwebengine-qt-plugin-QWebEngineViewPlugin",
+            "comment": "\nCMake target name: QWebEngineViewPlugin\n",
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "downloadLocation": "git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtwebengine@b586c4e?library_name=QWebEngineViewPlugin#src/webenginewidgets/plugins/qwebengineview",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtwebengine-QWebEngineViewPlugin@b586c4e?vcs_url=https://code.qt.io/qt/qtwebengine.git@b586c4e&library_name=QWebEngineViewPlugin#src/webenginewidgets/plugins/qwebengineview",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtwebengine:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "name": "QWebEngineViewPlugin",
+            "primaryPackagePurpose": "LIBRARY",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "6.8.3"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets",
+            "comment": "\nCMake target name: WebEngineWidgets\nCMake exported target name: Qt6::WebEngineWidgets\nContained in CMake package: Qt6WebEngineWidgets\n",
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "downloadLocation": "git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtwebengine@b586c4e?library_name=WebEngineWidgets#src/webenginewidgets",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtwebengine-WebEngineWidgets@b586c4e?vcs_url=https://code.qt.io/qt/qtwebengine.git@b586c4e&library_name=WebEngineWidgets#src/webenginewidgets",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtwebengine:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "name": "WebEngineWidgets",
+            "primaryPackagePurpose": "LIBRARY",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "6.8.3"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "\nCMake target name: WebEngineQuickDelegatesQml\nCMake exported target name: Qt6::WebEngineQuickDelegatesQml\nContained in CMake package: Qt6WebEngineQuickDelegatesQml\n",
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "downloadLocation": "git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtwebengine@b586c4e?library_name=WebEngineQuickDelegatesQml#src/webenginequick/ui",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtwebengine-WebEngineQuickDelegatesQml@b586c4e?vcs_url=https://code.qt.io/qt/qtwebengine.git@b586c4e&library_name=WebEngineQuickDelegatesQml#src/webenginequick/ui",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtwebengine:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "name": "WebEngineQuickDelegatesQml",
+            "primaryPackagePurpose": "LIBRARY",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "6.8.3"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickdelegatesplugin",
+            "comment": "\nCMake target name: qtwebenginequickdelegatesplugin\n",
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "downloadLocation": "git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtwebengine@b586c4e?library_name=qtwebenginequickdelegatesplugin#src/webenginequick/ui",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtwebengine-qtwebenginequickdelegatesplugin@b586c4e?vcs_url=https://code.qt.io/qt/qtwebengine.git@b586c4e&library_name=qtwebenginequickdelegatesplugin#src/webenginequick/ui",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtwebengine:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "name": "qtwebenginequickdelegatesplugin",
+            "primaryPackagePurpose": "LIBRARY",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "6.8.3"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick",
+            "comment": "\nCMake target name: WebEngineQuick\nCMake exported target name: Qt6::WebEngineQuick\nContained in CMake package: Qt6WebEngineQuick\n",
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "downloadLocation": "git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtwebengine@b586c4e?library_name=WebEngineQuick#src/webenginequick",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtwebengine-WebEngineQuick@b586c4e?vcs_url=https://code.qt.io/qt/qtwebengine.git@b586c4e&library_name=WebEngineQuick#src/webenginequick",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtwebengine:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "name": "WebEngineQuick",
+            "primaryPackagePurpose": "LIBRARY",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "6.8.3"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickplugin",
+            "comment": "\nCMake target name: qtwebenginequickplugin\n",
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "downloadLocation": "git://code.qt.io/qt/qtwebengine.git@b586c4eb65d8e46ab2c255e1a141676043a650da",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtwebengine@b586c4e?library_name=qtwebenginequickplugin#src/webenginequick",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtwebengine-qtwebenginequickplugin@b586c4e?vcs_url=https://code.qt.io/qt/qtwebengine.git@b586c4e&library_name=qtwebenginequickplugin#src/webenginequick",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtwebengine:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "name": "qtwebenginequickplugin",
+            "primaryPackagePurpose": "LIBRARY",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "6.8.3"
+        }
+    ],
+    "files": [
+        {
+            "SPDXID": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "checksums": [
+                {
+                    "algorithm": "SHA1",
+                    "checksumValue": "fbdc7aaf8cc756ccad0d9ecc85077d9a9788c33c"
+                }
+            ],
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "fileName": "./lib/libQt6WebEngineCore.so.6.8.3",
+            "fileTypes": [
+                "BINARY"
+            ],
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseInfoInFiles": [
+                "NOASSERTION"
+            ]
+        },
+        {
+            "SPDXID": "SPDXRef-PackagedFile-qt-tool-qwebengine-convert-dict",
+            "checksums": [
+                {
+                    "algorithm": "SHA1",
+                    "checksumValue": "19fd0f1fc68cd742eb0ec1e9ad6cdc9a33f6b58e"
+                }
+            ],
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "fileName": "./libexec/qwebengine_convert_dict",
+            "fileTypes": [
+                "BINARY"
+            ],
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+            "licenseInfoInFiles": [
+                "NOASSERTION"
+            ]
+        },
+        {
+            "SPDXID": "SPDXRef-PackagedFile-qt-plugin-QWebEngineViewPlugin",
+            "checksums": [
+                {
+                    "algorithm": "SHA1",
+                    "checksumValue": "99219e8a9f1d91839a6029b9e82ca6a9cade97c7"
+                }
+            ],
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "fileName": "./plugins/designer/libqwebengineview.so",
+            "fileTypes": [
+                "BINARY"
+            ],
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseInfoInFiles": [
+                "NOASSERTION"
+            ]
+        },
+        {
+            "SPDXID": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "checksums": [
+                {
+                    "algorithm": "SHA1",
+                    "checksumValue": "7ee51852c87d5a59ac8c5330ca6ddb22f010cd60"
+                }
+            ],
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "fileName": "./lib/libQt6WebEngineWidgets.so.6.8.3",
+            "fileTypes": [
+                "BINARY"
+            ],
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseInfoInFiles": [
+                "NOASSERTION"
+            ]
+        },
+        {
+            "SPDXID": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "checksums": [
+                {
+                    "algorithm": "SHA1",
+                    "checksumValue": "4fe99d6ae93ba505021daf9373a07f70c9568fa5"
+                }
+            ],
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "fileName": "./lib/libQt6WebEngineQuickDelegatesQml.so.6.8.3",
+            "fileTypes": [
+                "BINARY"
+            ],
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseInfoInFiles": [
+                "NOASSERTION"
+            ]
+        },
+        {
+            "SPDXID": "SPDXRef-PackagedFile-qt-plugin-qtwebenginequickdelegatesplugin",
+            "checksums": [
+                {
+                    "algorithm": "SHA1",
+                    "checksumValue": "5f4a827dd91733c1035653d9f6aed14b5325fa32"
+                }
+            ],
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "fileName": "./qml/QtWebEngine/ControlsDelegates/libqtwebenginequickdelegatesplugin.so",
+            "fileTypes": [
+                "BINARY"
+            ],
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseInfoInFiles": [
+                "NOASSERTION"
+            ]
+        },
+        {
+            "SPDXID": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "checksums": [
+                {
+                    "algorithm": "SHA1",
+                    "checksumValue": "6e7d26bc4bbc2c15dcb1c63df33d38b1eaf8cac5"
+                }
+            ],
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "fileName": "./lib/libQt6WebEngineQuick.so.6.8.3",
+            "fileTypes": [
+                "BINARY"
+            ],
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseInfoInFiles": [
+                "NOASSERTION"
+            ]
+        },
+        {
+            "SPDXID": "SPDXRef-PackagedFile-qt-plugin-qtwebenginequickplugin",
+            "checksums": [
+                {
+                    "algorithm": "SHA1",
+                    "checksumValue": "74e84e64260ab9eb498ee3f1d3c588cdf7ddc2d1"
+                }
+            ],
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "fileName": "./qml/QtWebEngine/libqtwebenginequickplugin.so",
+            "fileTypes": [
+                "BINARY"
+            ],
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseInfoInFiles": [
+                "NOASSERTION"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "spdxElementId": "SPDXRef-compiler",
+            "comment": "SPDXRef-Package-qtwebengine is built by compiler GNU version 10.3.1",
+            "relatedSpdxElement": "SPDXRef-Package-qtwebengine",
+            "relationshipType": "BUILD_DEPENDENCY_OF"
+        },
+        {
+            "spdxElementId": "SPDXRef-DOCUMENT",
+            "relatedSpdxElement": "SPDXRef-Package-qtwebengine",
+            "relationshipType": "DESCRIBES"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineCore",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineCore",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Gui",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineCore",
+            "relatedSpdxElement": "DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Quick",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineCore",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformModuleInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineCore",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Network",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineCore",
+            "relatedSpdxElement": "DocumentRef-qtwebchannel:SPDXRef-Package-qtwebchannel-qt-module-WebChannel",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineCore",
+            "relatedSpdxElement": "DocumentRef-qtpositioning:SPDXRef-Package-qtpositioning-qt-module-Positioning",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine",
+            "relatedSpdxElement": "SPDXRef-Package-qtwebengine-qt-module-WebEngineCore",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineCore",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineCore",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qtwebenginecoreglobal.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qtwebenginecoreglobal.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qtwebenginecoreglobal_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginecertificateerror.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginecertificateerror.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineclientcertificateselection.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineclientcertificateselection.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineclientcertificatestore.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineclientcertificatestore.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineclienthints.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineclienthints.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginecontextmenurequest.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginecontextmenurequest.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginecontextmenurequest_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginecookiestore.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginecookiestore.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginecookiestore_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginedesktopmediarequest.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginedesktopmediarequest.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginedesktopmediarequest_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginedownloadrequest.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginedownloadrequest.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginedownloadrequest_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginefilesystemaccessrequest.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginefilesystemaccessrequest.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginefindtextresult.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginefindtextresult.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineframe.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineframe.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginefullscreenrequest.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginefullscreenrequest.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginehistory.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginehistory.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginehistory_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginehttprequest.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginehttprequest.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineloadinginfo.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineloadinginfo.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginemessagepumpscheduler.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginemessagepumpscheduler_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginenavigationrequest.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginenavigationrequest.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginenewwindowrequest.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginenewwindowrequest.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginenewwindowrequest_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginenotification.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginenotification.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginepage.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginepage.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginepage_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginepermission.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginepermission.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginepermission_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineprofile.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineprofile.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineprofile_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginequotarequest.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginequotarequest.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineregisterprotocolhandlerrequest.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineregisterprotocolhandlerrequest.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginescript.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginescript.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginescriptcollection.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginescriptcollection.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginescriptcollection_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginesettings.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginesettings.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineurlrequestinfo.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineurlrequestinfo.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineurlrequestinfo_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineurlrequestinterceptor.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineurlrequestinterceptor.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineurlrequestjob.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineurlrequestjob.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineurlscheme.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineurlscheme.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineurlschemehandler.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineurlschemehandler.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineglobalsettings.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineglobalsettings.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebengineglobalsettings_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginewebauthuxrequest.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginewebauthuxrequest.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/src_dir/qtwebengine/src/core/api/qwebenginewebauthuxrequest_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/build_dir/qtwebengine/src/core/api/qtwebenginecore-config.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineCore",
+            "comment": "/build_dir/qtwebengine/src/core/api/qtwebenginecore-config_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-tool-qwebengine-convert-dict",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformToolInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-tool-qwebengine-convert-dict",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformCommonInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-tool-qwebengine-convert-dict",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine",
+            "relatedSpdxElement": "SPDXRef-Package-qtwebengine-qt-tool-qwebengine-convert-dict",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-tool-qwebengine-convert-dict",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-tool-qwebengine-convert-dict",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-tool-qwebengine-convert-dict",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-tool-qwebengine-convert-dict",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-tool-qwebengine-convert-dict",
+            "comment": "/src_dir/qtwebengine/src/core/tools/qwebengine_convert_dict/main.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-QWebEngineViewPlugin",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-QWebEngineViewPlugin",
+            "relatedSpdxElement": "DocumentRef-qttools:SPDXRef-Package-qttools-qt-module-Designer",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-QWebEngineViewPlugin",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Gui",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-QWebEngineViewPlugin",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformPluginInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine",
+            "relatedSpdxElement": "SPDXRef-Package-qtwebengine-qt-plugin-QWebEngineViewPlugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-QWebEngineViewPlugin",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-plugin-QWebEngineViewPlugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-QWebEngineViewPlugin",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-plugin-QWebEngineViewPlugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QWebEngineViewPlugin",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/plugins/qwebengineview/qwebengineview_plugin.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QWebEngineViewPlugin",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/plugins/qwebengineview/qwebengineview_plugin.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QWebEngineViewPlugin",
+            "comment": "/build_dir/qtwebengine/src/webenginewidgets/plugins/qwebengineview/.qt/rcc/qrc_qwebengineview_plugin.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QWebEngineViewPlugin",
+            "comment": "/build_dir/qtwebengine/src/webenginewidgets/plugins/qwebengineview/.qt/rcc/qwebengineview_plugin.qrc",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QWebEngineViewPlugin",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/plugins/qwebengineview/images/qwebengineview.png",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Gui",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets",
+            "relatedSpdxElement": "DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-QuickWidgets",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Widgets",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets",
+            "relatedSpdxElement": "DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Quick",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformModuleInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PrintSupport",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets",
+            "relatedSpdxElement": "SPDXRef-Package-qtwebengine-qt-module-WebEngineCore",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine",
+            "relatedSpdxElement": "SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineWidgets",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/api/qtwebenginewidgetsglobal.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/api/qwebenginenotificationpresenter.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/api/qwebenginenotificationpresenter_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/api/qwebengineview.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/api/qwebengineview.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/api/qwebengineview_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/ui/autofillpopupwidget.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/ui/autofillpopupwidget_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/ui/touchhandlewidget.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/ui/touchhandlewidget_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/ui/touchselectionmenuwidget.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/ui/touchselectionmenuwidget_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/qwebengine_accessible.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineWidgets",
+            "comment": "/src_dir/qtwebengine/src/webenginewidgets/qwebengine_accessible_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuickDelegatesQml",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformModuleInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuickDelegatesQml",
+            "relatedSpdxElement": "DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Qml",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuickDelegatesQml",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine",
+            "relatedSpdxElement": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuickDelegatesQml",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuickDelegatesQml",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuickDelegatesQml",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/webenginequickdelegatesqml_qmltyperegistrations.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.qt/rcc/qrc_qmake_QtWebEngine_ControlsDelegates.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/ui/AlertDialog.qml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_qmlcache_loader.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_AlertDialog_qml.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/ui/AuthenticationDialog.qml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_AuthenticationDialog_qml.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/ui/AutofillPopup.qml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_AutofillPopup_qml.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/ui/ConfirmDialog.qml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_ConfirmDialog_qml.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/ui/DirectoryPicker.qml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_DirectoryPicker_qml.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/ui/FilePicker.qml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_FilePicker_qml.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/ui/Menu.qml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_Menu_qml.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/ui/MenuItem.qml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_MenuItem_qml.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/ui/MenuSeparator.qml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_MenuSeparator_qml.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/ui/PromptDialog.qml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_PromptDialog_qml.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/ui/ToolTip.qml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_ToolTip_qml.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/ui/TouchHandle.qml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_TouchHandle_qml.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/ui/TouchSelectionMenu.qml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_TouchSelectionMenu_qml.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/ui/ColorDialog.qml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.rcc/qmlcache/WebEngineQuickDelegatesQml_ColorDialog_qml.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuickDelegatesQml",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.qt/rcc/qrc_WebEngineQuickDelegatesQml_raw_qml_0.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickdelegatesplugin",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformPluginInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickdelegatesplugin",
+            "relatedSpdxElement": "DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Qml",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickdelegatesplugin",
+            "relatedSpdxElement": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuickDelegatesQml",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine",
+            "relatedSpdxElement": "SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickdelegatesplugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickdelegatesplugin",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-plugin-qtwebenginequickdelegatesplugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickdelegatesplugin",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-plugin-qtwebenginequickdelegatesplugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-qtwebenginequickdelegatesplugin",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/qtwebenginequickdelegatesplugin_QtWebEngine_ControlsDelegatesPlugin.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-qtwebenginequickdelegatesplugin",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/ui/.qt/rcc/qrc_qtwebenginequickdelegatesplugin.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Gui",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick",
+            "relatedSpdxElement": "DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Quick",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformModuleInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick",
+            "relatedSpdxElement": "DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Qml",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick",
+            "relatedSpdxElement": "DocumentRef-qtwebchannel:SPDXRef-Package-qtwebchannel-qt-module-WebChannelQuick",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick",
+            "relatedSpdxElement": "SPDXRef-Package-qtwebengine-qt-module-WebEngineCore",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine",
+            "relatedSpdxElement": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebengineaction.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebengineaction_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebengineaction_p_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebengineclientcertificateselection.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebengineclientcertificateselection_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginedialogrequests.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginedialogrequests_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginedownloadrequest.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginedownloadrequest.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginefaviconprovider.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginefaviconprovider_p_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginenewwindowrequest.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginenewwindowrequest_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebengineprofile.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebengineprofile.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebengineprofile_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginescriptcollection.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginescriptcollection_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginescriptcollection_p_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginesettings.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginesettings_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginesingleton.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginesingleton_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginetouchhandleprovider.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginetouchhandleprovider_p_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginetouchhandle.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginetouchhandle_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginetouchselectionmenurequest.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginetouchselectionmenurequest_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebenginetouchselectionmenurequest_p_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebengineview.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebengineview_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebengineview_p_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qquickwebengineforeigntypes_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qtwebenginequickglobal.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qtwebenginequickglobal.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/api/qtwebenginequickglobal_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/render_widget_host_view_qt_delegate_quickwindow.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/render_widget_host_view_qt_delegate_quickwindow_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/ui_delegates_manager.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/ui_delegates_manager_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/qtwebenginequick-config.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/qtwebenginequick-config_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/webenginequick_qmltyperegistrations.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/build_dir/qtwebengine/src/webenginequick/.qt/rcc/qrc_qmake_QtWebEngine.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/qquickwebengine_accessible.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-WebEngineQuick",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/qquickwebengine_accessible_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickplugin",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformPluginInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickplugin",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickplugin",
+            "relatedSpdxElement": "DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Qml",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickplugin",
+            "relatedSpdxElement": "SPDXRef-Package-qtwebengine-qt-module-WebEngineQuick",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine",
+            "relatedSpdxElement": "SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickplugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickplugin",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-plugin-qtwebenginequickplugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtwebengine-qt-plugin-qtwebenginequickplugin",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-plugin-qtwebenginequickplugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-qtwebenginequickplugin",
+            "comment": "/src_dir/qtwebengine/src/webenginequick/plugin.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        }
+    ]
+}

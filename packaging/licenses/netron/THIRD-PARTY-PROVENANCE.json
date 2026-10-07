@@ -1,0 +1,20 @@
+[
+  {
+    "project": "dagrejs/dagre",
+    "commit": "32e7f30f97f029fbfc89ce50e072d4fc16145838",
+    "url": "https://github.com/dagrejs/dagre/blob/32e7f30f97f029fbfc89ce50e072d4fc16145838/LICENSE",
+    "download_url": "https://raw.githubusercontent.com/dagrejs/dagre/32e7f30f97f029fbfc89ce50e072d4fc16145838/LICENSE",
+    "file": "dagre-LICENSE.txt",
+    "sha256": "6a349742a6cb219d5a2fc8d0844f6d89a6efc62e20c664450d884fc7ff2d6015",
+    "scope": "original license notice for project explicitly named by Netron source/dagre.js"
+  },
+  {
+    "project": "dagrejs/graphlib",
+    "commit": "d649cb32a827619da09959c89d8973aaf2370b4e",
+    "url": "https://github.com/dagrejs/graphlib/blob/d649cb32a827619da09959c89d8973aaf2370b4e/LICENSE",
+    "download_url": "https://raw.githubusercontent.com/dagrejs/graphlib/d649cb32a827619da09959c89d8973aaf2370b4e/LICENSE",
+    "file": "graphlib-LICENSE.txt",
+    "sha256": "6a349742a6cb219d5a2fc8d0844f6d89a6efc62e20c664450d884fc7ff2d6015",
+    "scope": "original license notice for project explicitly named by Netron source/dagre.js"
+  }
+]

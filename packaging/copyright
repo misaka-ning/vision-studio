@@ -24,15 +24,20 @@ License: GPL-3.0
  GNU General Public License version 3. License texts and provenance are preserved
  in models/YOLOv5-LICENSE.txt, vendor/yolov5/LICENSE and the source archives.
 
-Files: lib/qt/libQt6* plugins/*
+Files: lib/qt/libQt6* plugins/* libexec/QtWebEngineProcess resources/*
+ translations/*
 Copyright: The Qt Company Ltd. and other contributors; see actual SDK SPDX records.
 License: LGPL-3.0-only and other-upstream-licenses
  The shared Qt 6.8.3 runtime uses the LGPLv3 option for Qt code. Its embedded
  third-party components retain the licenses and copyright notices recorded in
  licenses/qt/. LGPLv3 and GPLv3 texts are included in licenses/texts/.
- Complete corresponding qtbase, qtsvg, qtwayland and qtimageformats 6.8.3 sources
+ Complete corresponding qtbase, qtsvg, qtwayland, qtimageformats,
+ qtdeclarative, qtwebchannel, qtpositioning and qtwebengine 6.8.3 sources
  accompany this release. Actual SDK/build SPDX documents, source notices and
  the embedded libwebp license are preserved in licenses/qt/.
+ Qt WebEngine includes Chromium and its embedded third-party components.
+ Their original notices and license texts are preserved in licenses/qt/;
+ the complete original QtWebEngine archive includes matching Chromium source.
  Users may replace the shared libraries and run a compatible modified Qt build;
  see docs/release/对应源码与重建.md for the actual launcher interface.
 
@@ -41,9 +46,16 @@ Copyright: Various upstream authors; see licenses/PYTHON-DISTRIBUTIONS.json,
  the preserved licenses/python/ files, package metadata and source headers.
 License: other-upstream-licenses
  Each bundled Python distribution and embedded component retains its own
- license. The 56 distribution records and original license/notice files are
+ license. The actual distribution records and original license/notice files are
  included in licenses/python/ and licenses/PYTHON-DISTRIBUTIONS.json.
  This statement does not replace or modify any upstream license.
+
+Files: runtime/lib/python3.10/site-packages/netron/*
+Copyright: Lutz Roeder and the respective embedded component authors.
+License: MIT and other-upstream-licenses
+ Netron 9.3.1 retains its upstream MIT license. The matching release-tag source
+ and its original license and frontend third-party notices accompany this
+ release. Copies are preserved in licenses/python/netron-9.3.1/ and licenses/netron/.
 
 Files: models/yolov8n.pt runtime/lib/python3.10/site-packages/ultralytics/*
  runtime/lib/python3.10/site-packages/thop/*

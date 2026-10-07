@@ -7,6 +7,8 @@
 torch==2.9.1+cpu
 torchvision==0.24.1+cpu
 ultralytics==8.4.173
+# Local model structure viewer; bundled with release runtime.
+netron==9.3.1
 # Legacy YOLOv5 v7.0 checkpoint modules use pkg_resources plus these libraries.
 setuptools==59.6.0
 pandas==2.3.3

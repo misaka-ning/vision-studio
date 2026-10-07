@@ -1,5 +1,6 @@
 #include "ui/imagecanvas.h"
 #include "ui/mainwindow.h"
+#include "ui/modelviewer.h"
 
 #include <QApplication>
 #include <QCheckBox>
@@ -22,6 +23,9 @@
 #include <QMimeData>
 #include <QPixmap>
 #include <QPointer>
+#include <QProcess>
+#include <QWebEngineView>
+#include <QWebEnginePage>
 #include <QPushButton>
 #include <QSettings>
 #include <QSignalSpy>
@@ -114,7 +118,7 @@ QCheckBox *autoExportControl(QWidget *parent)
 bool activateModel(MainWindow *window, const QString &fileName)
 {
     auto *nav = findButton(window, QStringLiteral("模型库"));
-    auto *activate = findButton(window, QStringLiteral("在工作台使用"));
+    auto *activate = findButton(window, QStringLiteral("前往检测工作台"));
     if (!nav || !activate)
         return false;
     QTest::mouseClick(nav, Qt::LeftButton);
@@ -232,6 +236,8 @@ class UiTests final : public QObject
                  "The official YOLOv8n checkpoint is required for PT GUI integration.");
         QVERIFY(QFile::copy(project + QStringLiteral("/scripts/pt_worker.py"),
                             fixture_->path() + QStringLiteral("/scripts/pt_worker.py")));
+        QVERIFY(QFile::copy(project + QStringLiteral("/scripts/netron_server.py"),
+                            fixture_->path() + QStringLiteral("/scripts/netron_server.py")));
         qputenv("VISION_STUDIO_HOME", fixture_->path().toUtf8());
         qputenv("VISION_STUDIO_DATA_DIR", (fixture_->path() + QStringLiteral("/output")).toUtf8());
         unexpectedDialog_.clear();
@@ -328,17 +334,18 @@ class UiTests final : public QObject
         QVERIFY(pages);
         QVERIFY(title);
         QVERIFY(demoButton);
-        QCOMPARE(pages->count(), 6);
+        QCOMPARE(pages->count(), 7);
         QCOMPARE(pages->widget(0)->objectName(), QStringLiteral("workbenchPage"));
-        QCOMPARE(pages->widget(5)->objectName(), QStringLiteral("morePage"));
-        QVERIFY(pages->widget(5)->isAncestorOf(demoButton));
-        QVERIFY(pages->widget(5)->isAncestorOf(exportButton));
+        QCOMPARE(pages->widget(2)->objectName(), QStringLiteral("modelDisplayPage"));
+        QCOMPARE(pages->widget(6)->objectName(), QStringLiteral("morePage"));
+        QVERIFY(pages->widget(6)->isAncestorOf(demoButton));
+        QVERIFY(pages->widget(6)->isAncestorOf(exportButton));
         QVERIFY(!demoButton->isVisible());
         QVERIFY(!exportButton->isVisible());
         for (const auto &route :
-             {qMakePair(QStringLiteral("模型库"), 1), qMakePair(QStringLiteral("运行记录"), 2),
-              qMakePair(QStringLiteral("使用指南"), 3), qMakePair(QStringLiteral("录制视频"), 4),
-              qMakePair(QStringLiteral("更多"), 5), qMakePair(QStringLiteral("检测工作台"), 0)})
+             {qMakePair(QStringLiteral("模型库"), 1), qMakePair(QStringLiteral("模型显示"), 2), qMakePair(QStringLiteral("运行记录"), 3),
+              qMakePair(QStringLiteral("使用指南"), 4), qMakePair(QStringLiteral("录制视频"), 5),
+              qMakePair(QStringLiteral("更多"), 6), qMakePair(QStringLiteral("检测工作台"), 0)})
         {
             auto *nav = findButton(window_.get(), route.first);
             QVERIFY(nav);
@@ -346,9 +353,9 @@ class UiTests final : public QObject
             QCOMPARE(pages->currentIndex(), route.second);
             QCOMPARE(title->text(), route.first);
             QVERIFY(nav->isChecked());
-            QCOMPARE(demoButton->isVisible(), route.second == 5);
-            QCOMPARE(exportButton->isVisible(), route.second == 5);
-            if (route.second == 5) window_->saveScreenshot(QStringLiteral(VISION_PROJECT_DIR) + QStringLiteral("/output/test-screenshots/1.3-more.png"));
+            QCOMPARE(demoButton->isVisible(), route.second == 6);
+            QCOMPARE(exportButton->isVisible(), route.second == 6);
+            if (route.second == 6) window_->saveScreenshot(QStringLiteral(VISION_PROJECT_DIR) + QStringLiteral("/output/test-screenshots/1.4-more.png"));
         }
         QCOMPARE(window_->size(), QSize(1260, 820));
         const QRect canvasBounds(canvas->mapTo(window_.get(), QPoint()), canvas->size());
@@ -358,6 +365,57 @@ class UiTests final : public QObject
         const QString screenshot = qEnvironmentVariable("VISION_UI_TEST_SCREENSHOT");
         if (!screenshot.isEmpty())
             window_->saveScreenshot(screenshot);
+    }
+
+    void globalModelSelectionPreloadsAndCachesStructure()
+    {
+        auto *pages = window_->findChild<QStackedWidget *>(QStringLiteral("workspacePages"));
+        auto *hint = window_->findChild<QLabel *>(QStringLiteral("structureOnnxHint"));
+        auto *models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
+        auto *name = window_->findChild<QLabel *>(QStringLiteral("structureModelName"));
+        auto *active = window_->findChild<QLabel *>(QStringLiteral("activeModelName"));
+        auto *viewer = window_->findChild<ModelViewer *>(QStringLiteral("modelStructureViewer"));
+        QVERIFY(pages && hint && models && name && active && viewer);
+        QVERIFY(!window_->findChild<QComboBox *>(QStringLiteral("structureModelCombo")));
+        QVERIFY(!window_->findChild<QPushButton *>(QStringLiteral("chooseStructureModelButton")));
+        QCOMPARE(hint->text(), QStringLiteral("想看完整结构，建使用导出的 ONNX。"));
+        QCOMPARE(pages->currentIndex(), 0);
+        QVERIFY(!viewer->isVisible());
+        QTRY_VERIFY_WITH_TIMEOUT(viewer->state() != ModelViewer::State::Loading, 30000);
+        QVERIFY2(viewer->state() == ModelViewer::State::Ready, qPrintable(viewer->errorString()));
+        QCOMPARE(QFileInfo(viewer->modelPath()).fileName(), QStringLiteral("yolov5n.onnx"));
+
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型库")), Qt::LeftButton);
+        int ptRow = -1;
+        for (int row = 0; row < models->count(); ++row)
+            if (QFileInfo(models->item(row)->data(Qt::UserRole).toString()).fileName() == "yolov8n.pt")
+                ptRow = row;
+        QVERIFY(ptRow >= 0);
+        QSignalSpy loaded(viewer, &ModelViewer::modelLoaded);
+        models->setCurrentRow(ptRow);
+        QCOMPARE(pages->currentIndex(), 1);
+        QCOMPARE(name->text(), QStringLiteral("yolov8n.pt"));
+        QCOMPARE(active->text(), name->text());
+        QSettings settings(fixture_->path() + "/output/preferences.ini", QSettings::IniFormat);
+        QCOMPARE(QFileInfo(settings.value("activeModel").toString()).fileName(), QStringLiteral("yolov8n.pt"));
+        QTRY_VERIFY_WITH_TIMEOUT(viewer->state() != ModelViewer::State::Loading, 30000);
+        QVERIFY2(viewer->state() == ModelViewer::State::Ready, qPrintable(viewer->errorString()));
+        QVERIFY(viewer->graphNodeCount() > 0);
+        QCOMPARE(loaded.count(), 1);
+        auto *browser = viewer->findChild<QWebEngineView *>(QStringLiteral("netronWebView"));
+        auto *service = viewer->findChild<QProcess *>();
+        QVERIFY(browser && service);
+        const qint64 pid = service->processId();
+        QSignalSpy pageLoads(browser->page(), &QWebEnginePage::loadStarted);
+        for (const QString &route : {QStringLiteral("模型显示"), QStringLiteral("检测工作台"), QStringLiteral("模型显示")})
+            QTest::mouseClick(findButton(window_.get(), route), Qt::LeftButton);
+        QTest::qWait(150);
+        QCOMPARE(viewer->findChild<QWebEngineView *>(QStringLiteral("netronWebView")), browser);
+        QCOMPARE(service->processId(), pid);
+        QCOMPARE(pageLoads.count(), 0);
+        QCOMPARE(loaded.count(), 1);
+        QVERIFY(hint->isVisible());
+        QCOMPARE(window_->size(), QSize(1260, 820));
     }
 
     void shortcutsCancelAndRestartFromFocusedControls()
@@ -619,7 +677,7 @@ class UiTests final : public QObject
         }
         const QString screenshot = qEnvironmentVariable(
             "VISION_UI_CAMERA_SCREENSHOT",
-            QStringLiteral(VISION_PROJECT_DIR) + QStringLiteral("/output/test-screenshots/1.3-camera.png"));
+            QStringLiteral(VISION_PROJECT_DIR) + QStringLiteral("/output/test-screenshots/1.4-camera.png"));
         window_->saveScreenshot(screenshot);
         QCOMPARE(QImage(screenshot).size(), window_->size());
         QCOMPARE(starts.size(), 0); // Configuring a camera must not connect to a device.
@@ -862,7 +920,7 @@ class UiTests final : public QObject
                     ++neutralPreviewPixels;
             }
         QVERIFY(neutralPreviewPixels > preview.width() * preview.height() / 2);
-        window_->saveScreenshot(QStringLiteral(VISION_PROJECT_DIR) + QStringLiteral("/output/test-screenshots/1.3-recordings.png"));
+        window_->saveScreenshot(QStringLiteral(VISION_PROJECT_DIR) + QStringLiteral("/output/test-screenshots/1.4-recordings.png"));
         if (play->text() == QStringLiteral("暂停播放"))
             QTest::mouseClick(play, Qt::LeftButton);
 
@@ -914,5 +972,11 @@ class UiTests final : public QObject
     std::unique_ptr<MainWindow> window_;
 };
 
-QTEST_MAIN(UiTests)
+int main(int argc, char **argv)
+{
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+    QApplication application(argc, argv);
+    UiTests tests;
+    return QTest::qExec(&tests, argc, argv);
+}
 #include "ui_tests.moc"

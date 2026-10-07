@@ -35,6 +35,19 @@ REQUIRED = (
     "opt/VisionStudio/run-installed.sh",
     "opt/VisionStudio/runtime/bin/python",
     "opt/VisionStudio/scripts/pt_worker.py",
+    "opt/VisionStudio/scripts/netron_server.py",
+    "opt/VisionStudio/libexec/QtWebEngineProcess",
+    "opt/VisionStudio/libexec/qt.conf",
+    "opt/VisionStudio/lib/qt/libQt6WebEngineCore.so.6",
+    "opt/VisionStudio/lib/qt/libQt6WebEngineWidgets.so.6",
+    "opt/VisionStudio/lib/qt/libQt6WebChannel.so.6",
+    "opt/VisionStudio/resources/qtwebengine_resources.pak",
+    "opt/VisionStudio/resources/qtwebengine_devtools_resources.pak",
+    "opt/VisionStudio/resources/qtwebengine_resources_100p.pak",
+    "opt/VisionStudio/resources/qtwebengine_resources_200p.pak",
+    "opt/VisionStudio/resources/icudtl.dat",
+    "opt/VisionStudio/resources/v8_context_snapshot.bin",
+    "opt/VisionStudio/translations/qtwebengine_locales/en-US.pak",
     "opt/VisionStudio/models/yolov5n.onnx",
     "opt/VisionStudio/models/yolov8n.pt",
     "opt/VisionStudio/models/yolov5n.pt",
@@ -311,8 +324,9 @@ def audit_python_runtime(app, docs, audit):
         audit.require(bool(key) and bool(version) and key not in packages,
                       f"Missing/duplicate Python distribution metadata: {metadata.relative_to(app)}")
         packages[key] = version
-    for name in ("torch", "torchvision", "ultralytics", "numpy", "opencv-python-headless", "pandas", "seaborn", "tqdm"):
+    for name in ("torch", "torchvision", "ultralytics", "numpy", "opencv-python-headless", "pandas", "seaborn", "tqdm", "netron"):
         audit.require(name in packages, f"Required runtime Python distribution missing: {name}")
+    audit.require(packages.get("netron") == "9.3.1", "The deployed Netron viewer version differs from pinned 9.3.1")
     audit.require("opencv-python" not in packages and "opencv-contrib-python" not in packages,
                   "Graphical OpenCV wheel is present instead of the intended headless runtime")
     audit.require(all("+cpu" in packages.get(name, "") for name in ("torch", "torchvision")),
@@ -393,7 +407,7 @@ def audit_extracted(root, control, closure, audit):
         audit.require("/opt/VisionStudio/run-installed.sh" in content, "System wrapper does not start the installed application")
         audit.require(not HOME_REFERENCE.search(content), "System wrapper contains a developer home path")
         command(["sh", "-n", str(wrapper)])
-    for relative in ("run-installed.sh", "build/bin/vision-studio"):
+    for relative in ("run-installed.sh", "build/bin/vision-studio", "libexec/QtWebEngineProcess"):
         path = app / relative
         audit.require(path.exists() and os.access(path, os.X_OK), f"Installed launcher/binary is not executable: {relative}")
     application_binary = app / "build/bin/vision-studio"
@@ -419,7 +433,14 @@ def audit_extracted(root, control, closure, audit):
     qt_config.read(app / "build/bin/qt.conf")
     qt_paths = qt_config["Paths"] if qt_config.has_section("Paths") else {}
     audit.require(qt_paths.get("Prefix") == "../.." and qt_paths.get("Libraries") == "lib/qt"
-                  and qt_paths.get("Plugins") == "plugins", "qt.conf does not use the installed relative layout")
+                  and qt_paths.get("Plugins") == "plugins" and qt_paths.get("LibraryExecutables") == "libexec"
+                  and qt_paths.get("Data") == "." and qt_paths.get("Translations") == "translations",
+                  "qt.conf does not use the installed WebEngine relative layout")
+    launcher = (app / "run-installed.sh").read_text(encoding="utf-8")
+    for key in ("QTWEBENGINEPROCESS_PATH", "QTWEBENGINE_RESOURCES_PATH", "QTWEBENGINE_LOCALES_PATH"):
+        audit.require(key in launcher, "Launcher has no explicit deployed WebEngine path: " + key)
+    audit.require("QTWEBENGINE_DISABLE_SANDBOX" not in launcher and "--no-sandbox" not in launcher,
+                  "The normal application launcher disables Chromium sandboxing")
     docs = root / "usr/share/doc" / control.get("Package", "vision-studio")
     audit.require((docs / "copyright").is_file(), "No Debian copyright/third-party notices file")
     audit.require((app / "docs/使用指南.md").is_file(), "Installed user manual missing")
@@ -428,6 +449,15 @@ def audit_extracted(root, control, closure, audit):
     for module in ("qtbase", "qtsvg", "qtwayland", "qtimageformats"):
         audit.require(bool(list((docs / "licenses/qt/sbom").glob(f"{module}-6.8.3.spdx*"))),
                       f"Bundled Qt6.8.3 license/SBOM inventory missing: {module}")
+    qt_manifest = docs / "licenses/QT-SDK-PACKAGES.json"
+    if audit.require(qt_manifest.is_file(), "Qt module/third-party source notice manifest is missing"):
+        qt_records = {row["module"]: row for row in json.loads(qt_manifest.read_text())}
+        for module in ("qtdeclarative", "qtwebchannel", "qtpositioning", "qtwebengine"):
+            record = qt_records.get(module, {})
+            audit.require(record.get("version") == "6.8.3" and bool(record.get("source_notice_files")),
+                          "New Qt module lacks matching complete source notices: " + module)
+    for name in ("LICENSE", "dagre-LICENSE.txt", "graphlib-LICENSE.txt", "THIRD-PARTY-PROVENANCE.json"):
+        audit.require((docs / "licenses/netron" / name).is_file(), "Netron/frontend upstream notice missing: " + name)
     audit_python_runtime(app, docs, audit)
     elf_paths = []
     rpaths = {}
@@ -449,6 +479,8 @@ def audit_extracted(root, control, closure, audit):
                 audit.require(not re.search(r"/(?:tmp|var/tmp)/", value), f"ELF runtime path refers to a staging directory: {relative}: {value}")
     audit.require(any("$ORIGIN/../../lib/qt" in value for value in rpaths.get("build/bin/vision-studio", [])),
                   "Application has no relative RUNPATH to its bundled Qt libraries")
+    audit.require(any("$ORIGIN/../lib/qt" in value for value in rpaths.get("libexec/QtWebEngineProcess", [])),
+                  "QtWebEngineProcess has no relative RUNPATH to its bundled Qt libraries")
     audit.details["elf"] = {"count": len(elf_paths), "runtime_paths": rpaths}
     audit_native_dependencies(app, elf_paths, closure, audit)
     return app
@@ -483,7 +515,10 @@ def smoke_tests(app, workspace, audit):
            "XDG_STATE_HOME": str(state / "state"), "XDG_RUNTIME_DIR": str(state / "runtime"),
            "YOLO_CONFIG_DIR": str(state / "ultralytics"), "YOLOV5_CONFIG_DIR": str(state / "yolov5"),
            "MPLCONFIGDIR": str(state / "matplotlib"), "PYTHONDONTWRITEBYTECODE": "1",
-           "PYTHONNOUSERSITE": "1", "QT_QPA_PLATFORM": "offscreen"}
+           "PYTHONNOUSERSITE": "1", "QT_QPA_PLATFORM": "offscreen",
+           # These two flags choose software rendering for this headless QA.
+           # Chromium sandboxing remains enabled in both QA and the launcher.
+           "QTWEBENGINE_CHROMIUM_FLAGS": "--disable-gpu", "QT_QUICK_BACKEND": "software"}
     for key in ("HOME", "XDG_CONFIG_HOME", "XDG_DATA_HOME", "XDG_CACHE_HOME", "XDG_STATE_HOME",
                 "XDG_RUNTIME_DIR", "YOLO_CONFIG_DIR", "YOLOV5_CONFIG_DIR", "MPLCONFIGDIR"):
         Path(env[key]).mkdir(parents=True, mode=0o700)
@@ -508,6 +543,24 @@ def smoke_tests(app, workspace, audit):
         audit.require(passed, f"Extracted read-only {name} smoke failed (exit{process.returncode}): {process.stderr[-1200:]}")
         results[name] = {"success": passed, "exit_code": process.returncode,
                          "elapsed_seconds": round(time.monotonic() - started, 2), "report": report}
+    output = state / "model-display"
+    started = time.monotonic()
+    process = command([str(app / "run-installed.sh"), "--smoke-model", str(output)],
+                      env=env, timeout=180, check=False)
+    (state / "model-display-stdout.log").write_text(process.stdout, encoding="utf-8")
+    (state / "model-display-stderr.log").write_text(process.stderr, encoding="utf-8")
+    report_file = output / "model-display-report.json"
+    report = json.loads(report_file.read_text()) if report_file.is_file() else {}
+    screenshot = output / "model-display.png"
+    nodes = report.get("nodes", 0)
+    passed = (process.returncode == 0 and report.get("success") is True
+              and isinstance(nodes, int) and not isinstance(nodes, bool) and nodes > 0
+              and screenshot.is_file() and screenshot.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"))
+    audit.require(passed, "Read-only non-root Qt WebEngine/Netron graph smoke failed: " + process.stderr[-1800:])
+    results["model_display"] = {"success": passed, "exit_code": process.returncode,
+                                 "elapsed_seconds": round(time.monotonic() - started, 2), "report": report,
+                                 "rendering_flags": env["QTWEBENGINE_CHROMIUM_FLAGS"],
+                                 "sandbox_disabled_by_test": False}
     image = base64.b64encode((app / "assets/bus.jpg").read_bytes()).decode("ascii")
     request = {"id": 1, "command": "infer", "image": image, "input_size": 640, "confidence": 0.25, "iou": 0.45}
     helper_env = dict(env)
@@ -587,7 +640,11 @@ def audit_source_bundle(directory, deb, audit):
     archives = [directory / name for name in checksums if name.endswith((".tar.gz", ".tar.xz", ".tgz"))]
     expected = {"qtbase": "src/corelib/global/qglobal.cpp", "qtsvg": "src/svg/qsvgrenderer.cpp",
                 "qtwayland": "src/client/qwaylanddisplay.cpp",
-                "qtimageformats": "src/plugins/imageformats/webp/qwebphandler.cpp"}
+                "qtimageformats": "src/plugins/imageformats/webp/qwebphandler.cpp",
+                "qtdeclarative": "src/qml/qml/qqmlengine.cpp",
+                "qtwebchannel": "src/webchannel/qwebchannel.cpp",
+                "qtpositioning": "src/positioning/qgeocoordinate.cpp",
+                "qtwebengine": "src/core/web_engine_context.cpp"}
     sources = {}
     for module, required in expected.items():
         matching = [archive for archive in archives if module in archive.name and "6.8.3" in archive.name]
@@ -604,10 +661,21 @@ def audit_source_bundle(directory, deb, audit):
     if audit.require(bool(matching), "Corresponding Vision Studio application source archive missing"):
         with tarfile.open(matching[0], mode="r|*") as stream:
             names = [member.name for member in stream if member.isfile()]
-        for required in ("src/main.cpp", "src/core/visionengine.cpp", "scripts/pt_worker.py", "CMakeLists.txt", "LICENSE"):
+        for required in ("src/main.cpp", "src/core/visionengine.cpp", "scripts/pt_worker.py",
+                         "scripts/netron_server.py", "CMakeLists.txt", "LICENSE"):
             audit.require(any(name == required or name.endswith("/" + required) for name in names),
                           "Application source archive lacks corresponding source/build file: " + required)
         sources["application"] = matching[0].name
+    matching = [archive for archive in archives if archive.name == "netron-9.3.1-source.tar.gz"]
+    if audit.require(bool(matching), "Corresponding Netron 9.3.1 upstream source archive missing"):
+        with tarfile.open(matching[0], mode="r:gz") as stream:
+            package = json.loads(stream.extractfile("netron-9.3.1/package.json").read())
+            license_text = stream.extractfile("netron-9.3.1/LICENSE").read()
+            dagre = stream.extractfile("netron-9.3.1/source/dagre.js").read()
+        audit.require(package.get("version") == "9.3.1" and package.get("license") == "MIT"
+                      and b"Copyright (c) Lutz Roeder" in license_text and b"dagrejs/graphlib" in dagre,
+                      "Netron source tag/license/frontend provenance is invalid")
+        sources["netron"] = matching[0].name
     audit.details["source_bundle"] = {"directory": str(directory.resolve()), "checked_files": checksums,
                                        "checksum_manifests": [path.name for path in checksum_files],
                                        "corresponding_source_archives": sources}

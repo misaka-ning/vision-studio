@@ -1,0 +1,1469 @@
+{
+    "SPDXID": "SPDXRef-DOCUMENT",
+    "creationInfo": {
+        "created": "2025-03-19T07:47:09Z",
+        "creators": [
+            "Organization: TheQtCompany",
+            "Tool: Qt Build System"
+        ],
+        "comment": "This SPDX document was created from CMake 3.30.5, using the qt\nbuild system from https://code.qt.io/cgit/qt/qtbase.git/tree/cmake/QtPublicSbomHelpers.cmake"
+    },
+    "dataLicense": "CC0-1.0",
+    "externalDocumentRefs": [
+        {
+            "externalDocumentId": "DocumentRef-qtbase",
+            "spdxDocument": "https://qt.io/spdxdocs/qtbase-c07c2d5a+HEAD",
+            "checksum": {
+                "algorithm": "SHA1",
+                "checksumValue": "d09a293d8ad1110dcfb0e62ccafbbfc101b9080a"
+            }
+        },
+        {
+            "externalDocumentId": "DocumentRef-qtserialport",
+            "spdxDocument": "https://qt.io/spdxdocs/qtserialport-6.8.3",
+            "checksum": {
+                "algorithm": "SHA1",
+                "checksumValue": "7fd595c125773a035b837d4db1c2acc10342e916"
+            }
+        },
+        {
+            "externalDocumentId": "DocumentRef-qtdeclarative",
+            "spdxDocument": "https://qt.io/spdxdocs/qtdeclarative-2ec235a2+HEAD",
+            "checksum": {
+                "algorithm": "SHA1",
+                "checksumValue": "81cfb83f162fcf521b9186522d42f53a4695e269"
+            }
+        }
+    ],
+    "hasExtractedLicensingInfos": [
+        {
+            "extractedText": "Licensees holding valid commercial Qt licenses may use this software in\naccordance with the the terms contained in a written agreement between\nyou and The Qt Company. Alternatively, the terms and conditions that were\naccepted by the licensee when buying and/or downloading the\nsoftware do apply.\n\nFor the latest licensing terms and conditions, see https://www.qt.io/terms-conditions.\nFor further information use the contact form at https://www.qt.io/contact-us.\n",
+            "licenseId": "LicenseRef-Qt-Commercial"
+        }
+    ],
+    "name": "qtpositioning-6.8.3",
+    "spdxVersion": "SPDX-2.3",
+    "documentNamespace": "https://qt.io/spdxdocs/qtpositioning-6.8.3",
+    "packages": [
+        {
+            "SPDXID": "SPDXRef-compiler",
+            "copyrightText": "NOASSERTION",
+            "downloadLocation": "NOASSERTION",
+            "filesAnalyzed": false,
+            "licenseConcluded": "NOASSERTION",
+            "licenseDeclared": "NOASSERTION",
+            "name": "GNU",
+            "primaryPackagePurpose": "APPLICATION",
+            "summary": "The compiler as identified by CMake, running on Linux (x86_64)",
+            "supplier": "Organization: Anonymous",
+            "versionInfo": "10.3.1"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtpositioning",
+            "builtDate": "2025-03-19T07:47:09Z",
+            "comment": "Built by CMake 3.30.5 with RelWithDebInfo configuration for Linux (x86_64)\nqtpositioning was configured with:\n    qt-configure-module <sources>/qtpositioning  -- -DFFMPEG_DIR=/usr/local/FFmpeg-n7.1 -DQT_DEPLOY_FFMPEG=TRUE -DINPUT_headersclean=ON -DQT_GENERATE_SBOM=ON -DQT_GENERATE_SOURCE_SBOM=ON -DQT_SBOM_PYTHON_INTERP= -DQT_SBOM_PYTHON_APPS_PATH= -DQT_LINT_SOURCE_SBOM=ON -DQT_INTERNAL_SBOM_DEFAULT_CHECKS=ON -DQT_INTERNAL_SBOM_AUDIT=ON -DQT_INTERNAL_SBOM_AUDIT_NO_ERROR=ON -DQT_BUILD_TESTS=OFF -DCMAKE_AUTOGEN_VERBOSE=ON -DCMAKE_MESSAGE_LOG_LEVEL=STATUS -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache\n",
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "downloadLocation": "git://code.qt.io/qt/qtpositioning.git",
+            "externalRefs": [
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtpositioning@6.8.3",
+                    "referenceType": "purl"
+                }
+            ],
+            "filesAnalyzed": true,
+            "homepage": "https://qt.io",
+            "licenseConcluded": "NOASSERTION",
+            "licenseDeclared": "NOASSERTION",
+            "name": "qtpositioning",
+            "packageVerificationCode": {
+                "packageVerificationCodeValue": "09e67517950ff3926c6ac58e2f1cde5a0e809822"
+            },
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "6.8.3"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtpositioning-qt-bundled-3rdparty-module-Bundled-Poly2Tri",
+            "comment": "\nCMake target name: Bundled_Poly2Tri\nCMake exported target name: Qt6::Bundled_Poly2Tri\nContained in CMake package: Qt6Bundled_Poly2Tri\n    Information extracted from:\n     /src_dir/qtpositioning/src/3rdparty/poly2tri/qt_attribution.json\n    Entry index: 0\n    Id: poly2tri\n    Name: Poly2Tri Polygon Triangulation Library\n    Description: Poly2Tri is a sweepline constrained Delaunay Polygon Triangulation Library.\n    Qt usage: Used in the QML plugin of Qt Location and in Qt Positioning.\n    License: BSD 3-clause \"New\" or \"Revised\" License\n    License file: LICENSE\n",
+            "copyrightText": "Poly2Tri Copyright (c) 2009-2010, Poly2Tri Contributors",
+            "downloadLocation": "https://github.com/greenm01/poly2tri",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtpositioning?library_name=Bundled_Poly2Tri#src/3rdparty/poly2tri",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtpositioning-Bundled_Poly2Tri?vcs_url=https://code.qt.io/qt/qtpositioning.git&library_name=Bundled_Poly2Tri#src/3rdparty/poly2tri",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtpositioning:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "BSD-3-Clause",
+            "licenseDeclared": "NOASSERTION",
+            "name": "Bundled_Poly2Tri",
+            "primaryPackagePurpose": "LIBRARY",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "commit a922022da4c0d3a55b1d6b6d634219caea653053"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtpositioning-qt-bundled-3rdparty-module-Bundled-Clipper",
+            "comment": "\nCMake target name: Bundled_Clipper\nCMake exported target name: Qt6::Bundled_Clipper\nContained in CMake package: Qt6Bundled_Clipper\n    Information extracted from:\n     /src_dir/qtpositioning/src/3rdparty/clipper/qt_attribution.json\n    Entry index: 0\n    Id: clipper\n    Name: Clipper Polygon Clipping Library\n    Description: The Clipper library performs line & polygon clipping - intersection, union, difference & exclusive-or, and line & polygon offsetting.\n    Qt usage: Used in the QML plugin of Qt Location and in Qt Positioning.\n    License: Boost Software License 1.0\n    License file: LICENSE\n",
+            "copyrightText": "Copyright Angus Johnson 2010-2017",
+            "downloadLocation": "https://sourceforge.net/projects/polyclipping/",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtpositioning?library_name=Bundled_Clipper#src/3rdparty/clipper",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtpositioning-Bundled_Clipper?vcs_url=https://code.qt.io/qt/qtpositioning.git&library_name=Bundled_Clipper#src/3rdparty/clipper",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtpositioning:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "BSL-1.0",
+            "licenseDeclared": "NOASSERTION",
+            "name": "Bundled_Clipper",
+            "primaryPackagePurpose": "LIBRARY",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "6.4.2"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtpositioning-qt-bundled-3rdparty-module-Bundled-Clip2Tri",
+            "comment": "\nCMake target name: Bundled_Clip2Tri\nCMake exported target name: Qt6::Bundled_Clip2Tri\nContained in CMake package: Qt6Bundled_Clip2Tri\n    Information extracted from:\n     /src_dir/qtpositioning/src/3rdparty/clip2tri/qt_attribution.json\n    Entry index: 0\n    Id: clip2tri\n    Name: Clip2Tri Polygon Triangulation Library\n    Description: Clip2Tri can be used together with Clipper for robust triangulation.\n    Qt usage: Used in the QML plugin of Qt Location and in Qt Positioning.\n    License: MIT License\n    License file: LICENSE\n",
+            "copyrightText": "Copyright (c) 2014 Bitfighter developers",
+            "downloadLocation": "https://github.com/raptor/clip2tri",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtpositioning?library_name=Bundled_Clip2Tri#src/3rdparty/clip2tri",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtpositioning-Bundled_Clip2Tri?vcs_url=https://code.qt.io/qt/qtpositioning.git&library_name=Bundled_Clip2Tri#src/3rdparty/clip2tri",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtpositioning:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "MIT",
+            "licenseDeclared": "NOASSERTION",
+            "name": "Bundled_Clip2Tri",
+            "primaryPackagePurpose": "LIBRARY",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "unknown"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtpositioning-qt-module-Positioning",
+            "comment": "\nCMake target name: Positioning\nCMake exported target name: Qt6::Positioning\nContained in CMake package: Qt6Positioning\n",
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "downloadLocation": "git://code.qt.io/qt/qtpositioning.git",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtpositioning?library_name=Positioning#src/positioning",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtpositioning-Positioning?vcs_url=https://code.qt.io/qt/qtpositioning.git&library_name=Positioning#src/positioning",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtpositioning:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "name": "Positioning",
+            "primaryPackagePurpose": "LIBRARY",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "6.8.3"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryPollPlugin",
+            "comment": "\nCMake target name: QGeoPositionInfoSourceFactoryPollPlugin\n",
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "downloadLocation": "git://code.qt.io/qt/qtpositioning.git",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtpositioning?library_name=QGeoPositionInfoSourceFactoryPollPlugin#src/plugins/position/positionpoll",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtpositioning-QGeoPositionInfoSourceFactoryPollPlugin?vcs_url=https://code.qt.io/qt/qtpositioning.git&library_name=QGeoPositionInfoSourceFactoryPollPlugin#src/plugins/position/positionpoll",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtpositioning:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "name": "QGeoPositionInfoSourceFactoryPollPlugin",
+            "primaryPackagePurpose": "LIBRARY",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "6.8.3"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "comment": "\nCMake target name: QGeoPositionInfoSourceFactoryGeoclue2Plugin\n",
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "downloadLocation": "git://code.qt.io/qt/qtpositioning.git",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtpositioning?library_name=QGeoPositionInfoSourceFactoryGeoclue2Plugin#src/plugins/position/geoclue2",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtpositioning-QGeoPositionInfoSourceFactoryGeoclue2Plugin?vcs_url=https://code.qt.io/qt/qtpositioning.git&library_name=QGeoPositionInfoSourceFactoryGeoclue2Plugin#src/plugins/position/geoclue2",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtpositioning:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "name": "QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "primaryPackagePurpose": "LIBRARY",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "6.8.3"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "comment": "\nCMake target name: QGeoPositionInfoSourceFactoryNmeaPlugin\n",
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "downloadLocation": "git://code.qt.io/qt/qtpositioning.git",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtpositioning?library_name=QGeoPositionInfoSourceFactoryNmeaPlugin#src/plugins/position/nmea",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtpositioning-QGeoPositionInfoSourceFactoryNmeaPlugin?vcs_url=https://code.qt.io/qt/qtpositioning.git&library_name=QGeoPositionInfoSourceFactoryNmeaPlugin#src/plugins/position/nmea",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtpositioning:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "name": "QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "primaryPackagePurpose": "LIBRARY",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "6.8.3"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtpositioning-qt-module-PositioningQuick",
+            "comment": "\nCMake target name: PositioningQuick\nCMake exported target name: Qt6::PositioningQuick\nContained in CMake package: Qt6PositioningQuick\n",
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "downloadLocation": "git://code.qt.io/qt/qtpositioning.git",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtpositioning?library_name=PositioningQuick#src/positioningquick",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtpositioning-PositioningQuick?vcs_url=https://code.qt.io/qt/qtpositioning.git&library_name=PositioningQuick#src/positioningquick",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtpositioning:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "name": "PositioningQuick",
+            "primaryPackagePurpose": "LIBRARY",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "6.8.3"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-qtpositioning-qt-plugin-positioningquickplugin",
+            "comment": "\nCMake target name: positioningquickplugin\n",
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "downloadLocation": "git://code.qt.io/qt/qtpositioning.git",
+            "externalRefs": [
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:github/qt/qtpositioning?library_name=positioningquickplugin#src/positioningquick",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "PACKAGE_MANAGER",
+                    "referenceLocator": "pkg:generic/TheQtCompany/qtpositioning-positioningquickplugin?vcs_url=https://code.qt.io/qt/qtpositioning.git&library_name=positioningquickplugin#src/positioningquick",
+                    "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qtpositioning:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceLocator": "cpe:2.3:a:qt:qt:6.8.3:*:*:*:*:*:*:*",
+                    "referenceType": "cpe23Type"
+                }
+            ],
+            "filesAnalyzed": true,
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "name": "positioningquickplugin",
+            "primaryPackagePurpose": "LIBRARY",
+            "supplier": "Organization: TheQtCompany",
+            "versionInfo": "6.8.3"
+        }
+    ],
+    "files": [
+        {
+            "SPDXID": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "checksums": [
+                {
+                    "algorithm": "SHA1",
+                    "checksumValue": "d6bd93244bc1472404e7440c280f3b06d4381c38"
+                }
+            ],
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "fileName": "./lib/libQt6Positioning.so.6.8.3",
+            "fileTypes": [
+                "BINARY"
+            ],
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseInfoInFiles": [
+                "NOASSERTION"
+            ]
+        },
+        {
+            "SPDXID": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryPollPlugin",
+            "checksums": [
+                {
+                    "algorithm": "SHA1",
+                    "checksumValue": "c8eeac194f642d340d8ea577a8d1004713cddcec"
+                }
+            ],
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "fileName": "./plugins/position/libqtposition_positionpoll.so",
+            "fileTypes": [
+                "BINARY"
+            ],
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseInfoInFiles": [
+                "NOASSERTION"
+            ]
+        },
+        {
+            "SPDXID": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "checksums": [
+                {
+                    "algorithm": "SHA1",
+                    "checksumValue": "559c1d6d71b3a8f90c07c417718a98aac5d1a06a"
+                }
+            ],
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "fileName": "./plugins/position/libqtposition_geoclue2.so",
+            "fileTypes": [
+                "BINARY"
+            ],
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseInfoInFiles": [
+                "NOASSERTION"
+            ]
+        },
+        {
+            "SPDXID": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "checksums": [
+                {
+                    "algorithm": "SHA1",
+                    "checksumValue": "fd13bd51593225a00f15a8dc8ec373bded5ec6c7"
+                }
+            ],
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "fileName": "./plugins/position/libqtposition_nmea.so",
+            "fileTypes": [
+                "BINARY"
+            ],
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseInfoInFiles": [
+                "NOASSERTION"
+            ]
+        },
+        {
+            "SPDXID": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "checksums": [
+                {
+                    "algorithm": "SHA1",
+                    "checksumValue": "0b49e609e719819f398b5b879ab507c2e21a6ca3"
+                }
+            ],
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "fileName": "./lib/libQt6PositioningQuick.so.6.8.3",
+            "fileTypes": [
+                "BINARY"
+            ],
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseInfoInFiles": [
+                "NOASSERTION"
+            ]
+        },
+        {
+            "SPDXID": "SPDXRef-PackagedFile-qt-plugin-positioningquickplugin",
+            "checksums": [
+                {
+                    "algorithm": "SHA1",
+                    "checksumValue": "1cb7c11e1829c539ae3c297a1b992887eedaba20"
+                }
+            ],
+            "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+            "fileName": "./qml/QtPositioning/libpositioningquickplugin.so",
+            "fileTypes": [
+                "BINARY"
+            ],
+            "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+            "licenseInfoInFiles": [
+                "NOASSERTION"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "spdxElementId": "SPDXRef-compiler",
+            "comment": "SPDXRef-Package-qtpositioning is built by compiler GNU version 10.3.1",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning",
+            "relationshipType": "BUILD_DEPENDENCY_OF"
+        },
+        {
+            "spdxElementId": "SPDXRef-DOCUMENT",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning",
+            "relationshipType": "DESCRIBES"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-bundled-3rdparty-module-Bundled-Poly2Tri",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformModuleInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-bundled-3rdparty-module-Bundled-Poly2Tri",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-bundled-3rdparty-module-Bundled-Clipper",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformModuleInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-bundled-3rdparty-module-Bundled-Clipper",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-bundled-3rdparty-module-Bundled-Clip2Tri",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformModuleInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-bundled-3rdparty-module-Bundled-Clip2Tri",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-bundled-3rdparty-module-Bundled-Clipper",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-bundled-3rdparty-module-Bundled-Clip2Tri",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-bundled-3rdparty-module-Bundled-Poly2Tri",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-bundled-3rdparty-module-Bundled-Clip2Tri",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-module-Positioning",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-module-Positioning",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformModuleInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-module-Positioning",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-bundled-3rdparty-module-Bundled-Clip2Tri",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-module-Positioning",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-module-Positioning",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-module-Positioning",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/build_dir/qtpositioning/include/QtPositioning/qtpositioningexports.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qclipperutils.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qclipperutils_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qdoublematrix4x4.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qdoublematrix4x4_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qdoublevector2d.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qdoublevector2d_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qdoublevector3d.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qdoublevector3d_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeoaddress.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeoaddress.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeoaddress_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeoareamonitorinfo.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeoareamonitorinfo.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeoareamonitorsource.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeoareamonitorsource.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeocircle.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeocircle.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeocircle_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeocoordinate.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeocoordinate.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeocoordinate_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeocoordinateobject.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeocoordinateobject_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeolocation.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeolocation.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeolocation_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeopath.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeopath.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeopath_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeopolygon.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeopolygon.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeopolygon_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeopositioninfo.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeopositioninfo.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeopositioninfo_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeopositioninfosource.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeopositioninfosource.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeopositioninfosource_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeopositioninfosourcefactory.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeopositioninfosourcefactory.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeorectangle.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeorectangle.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeorectangle_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeosatelliteinfo.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeosatelliteinfo.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeosatelliteinfo_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeosatelliteinfosource.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeosatelliteinfosource.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeosatelliteinfosource_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeoshape.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeoshape.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qgeoshape_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qlocationutils.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qlocationutils_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qnmeapositioninfosource.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qnmeapositioninfosource.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qnmeapositioninfosource_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qnmeasatelliteinfosource.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qnmeasatelliteinfosource.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qnmeasatelliteinfosource_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qpositioningglobal.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qpositioningglobal_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qwebmercator.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/src_dir/qtpositioning/src/positioning/qwebmercator_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/build_dir/qtpositioning/src/positioning/qtpositioning-config.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-Positioning",
+            "comment": "/build_dir/qtpositioning/src/positioning/qtpositioning-config_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryPollPlugin",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryPollPlugin",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformPluginInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryPollPlugin",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-module-Positioning",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryPollPlugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryPollPlugin",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryPollPlugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryPollPlugin",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryPollPlugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryPollPlugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/positionpoll/positionpollfactory.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryPollPlugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/positionpoll/positionpollfactory.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryPollPlugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/positionpoll/qgeoareamonitor_polling.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryPollPlugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/positionpoll/qgeoareamonitor_polling.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-DBus",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformPluginInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-module-Positioning",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "comment": "/build_dir/qtpositioning/src/plugins/position/geoclue2/client_interface.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "comment": "/build_dir/qtpositioning/src/plugins/position/geoclue2/client_interface.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "comment": "/build_dir/qtpositioning/src/plugins/position/geoclue2/location_interface.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "comment": "/build_dir/qtpositioning/src/plugins/position/geoclue2/location_interface.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "comment": "/build_dir/qtpositioning/src/plugins/position/geoclue2/manager_interface.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "comment": "/build_dir/qtpositioning/src/plugins/position/geoclue2/manager_interface.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/geoclue2/geocluetypes.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/geoclue2/geocluetypes.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/geoclue2/qgeopositioninfosource_geoclue2.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/geoclue2/qgeopositioninfosource_geoclue2_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/geoclue2/qgeopositioninfosourcefactory_geoclue2.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/geoclue2/qgeopositioninfosourcefactory_geoclue2.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/geoclue2/org.freedesktop.GeoClue2.Client.xml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/geoclue2/org.freedesktop.GeoClue2.Location.xml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryGeoclue2Plugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/geoclue2/org.freedesktop.GeoClue2.Manager.xml",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Network",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformPluginInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "relatedSpdxElement": "DocumentRef-qtserialport:SPDXRef-Package-qtserialport-qt-module-SerialPort",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-module-Positioning",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/nmea/qgeopositioninfosourcefactory_nmea.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/nmea/qgeopositioninfosourcefactory_nmea.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/nmea/qiopipe.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-QGeoPositionInfoSourceFactoryNmeaPlugin",
+            "comment": "/src_dir/qtpositioning/src/plugins/position/nmea/qiopipe_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-module-PositioningQuick",
+            "relatedSpdxElement": "DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Quick",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-module-PositioningQuick",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformModuleInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-module-PositioningQuick",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-Core",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-module-PositioningQuick",
+            "relatedSpdxElement": "DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Qml",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-module-PositioningQuick",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-module-Positioning",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-module-PositioningQuick",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-module-PositioningQuick",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-module-PositioningQuick",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/build_dir/qtpositioning/include/QtPositioningQuick/qtpositioningquickexports.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qdeclarativegeoaddress_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qdeclarativegeoaddress.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qdeclarativegeolocation_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qdeclarativegeolocation.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qdeclarativepluginparameter_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qdeclarativepluginparameter.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qdeclarativeposition_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qdeclarativeposition.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qdeclarativepositionsource_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qdeclarativepositionsource.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qdeclarativesatellitesource_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qdeclarativesatellitesource.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qquickgeocoordinateanimation_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qquickgeocoordinateanimation.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/locationsingleton_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/locationsingleton.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qquickgeocoordinateanimation_p_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qpositioningquickglobal.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qpositioningquickglobal_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qpositioningquickmodule_p.h",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/qpositioningquickmodule.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/build_dir/qtpositioning/src/positioningquick/positioningquick_qmltyperegistrations.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-module-PositioningQuick",
+            "comment": "/build_dir/qtpositioning/src/positioningquick/.qt/rcc/qrc_qmake_QtPositioning.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-positioningquickplugin",
+            "relatedSpdxElement": "DocumentRef-qtbase:SPDXRef-Package-qtbase-qt-module-PlatformPluginInternal",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-positioningquickplugin",
+            "relatedSpdxElement": "DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Quick",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-positioningquickplugin",
+            "relatedSpdxElement": "DocumentRef-qtdeclarative:SPDXRef-Package-qtdeclarative-qt-module-Qml",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-positioningquickplugin",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-module-PositioningQuick",
+            "relationshipType": "DEPENDS_ON"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning",
+            "relatedSpdxElement": "SPDXRef-Package-qtpositioning-qt-plugin-positioningquickplugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-positioningquickplugin",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-plugin-positioningquickplugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package-qtpositioning-qt-plugin-positioningquickplugin",
+            "relatedSpdxElement": "SPDXRef-PackagedFile-qt-plugin-positioningquickplugin",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-PackagedFile-qt-plugin-positioningquickplugin",
+            "comment": "/src_dir/qtpositioning/src/positioningquick/positioningplugin.cpp",
+            "relatedSpdxElement": "NOASSERTION",
+            "relationshipType": "GENERATED_FROM"
+        }
+    ]
+}

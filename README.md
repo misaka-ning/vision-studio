@@ -1,13 +1,13 @@
 # Vision Studio
 
-使用本机 **C++17 / Qt 6.8.3** 构建的桌面视觉推理工作台。ONNX 由 C++ / OpenCV DNN 执行，`.pt` 由常驻的本地 PyTorch 进程执行，均使用 CPU。支持目标检测、单标签图像分类、图片批量处理、视频与摄像头输入。
+使用本机 **C++17 / Qt 6.8.3** 构建的桌面视觉推理工作台。ONNX 由 C++ / OpenCV DNN 执行，`.pt` 由常驻的本地 PyTorch 进程执行，均使用 CPU。支持目标检测、单标签图像分类、图片批量处理、视频与摄像头输入，并通过内嵌 Qt WebEngine 查看 Netron 模型结构。
 
 ## 启动
 
-正式发行包面向 **Ubuntu 22.04 amd64**，包含 Qt 6.8.3、独立 CPU PyTorch 环境和本地示例模型。安装后从应用菜单启动 **Vision Studio**，也可运行 `vision-studio`：
+正式发行包面向 **Ubuntu 22.04 amd64**，包含 Qt 6.8.3 / WebEngine、独立 CPU PyTorch 环境、Netron 9.3.1 和本地示例模型。安装后从应用菜单启动 **Vision Studio**，也可运行 `vision-studio`：
 
 ```bash
-sudo apt install ./vision-studio_1.3.0-1_amd64.deb
+sudo apt install ./vision-studio_1.4.0-1_amd64.deb
 vision-studio
 ```
 
@@ -15,7 +15,7 @@ vision-studio
 
 家目录中的便携版可通过 `VisionStudio`、`VisionStudio.desktop` 或 `run.sh` 启动。首次使用可打开 **更多 → 运行示例**，查看真实 YOLO 模型的推理结果，再导入自己的模型。正式 DEB 与早期 `scripts/package.sh` 生成的便携目录不同：DEB 已携带 CPU runtime，便携打包脚本需要另行安装该环境。
 
-发行说明见 [发行说明](docs/release/发行说明.md)。发布时将 DEB 与 `vision-studio-1.3.0-complete-source.tar.xz` 一同提供，并附校验这两个主文件的 `SHA256SUMS`。完整源码包包含本项目源码归档、`sources/` 下的上游源码和校验内部文件的 `SOURCE-SHA256SUMS`。重建方法和 Qt 替换接口见 [对应源码与重建](docs/release/对应源码与重建.md)。
+发行说明见 [发行说明](docs/release/发行说明.md)。发布时将 DEB 与 `vision-studio-1.4.0-complete-source.tar.xz` 一同提供，并附校验这两个主文件的 `SHA256SUMS`。完整源码包包含本项目源码归档、`sources/` 下的上游源码和校验内部文件的 `SOURCE-SHA256SUMS`。重建方法和 Qt 替换接口见 [对应源码与重建](docs/release/对应源码与重建.md)。
 
 完整操作说明见 [使用指南](docs/使用指南.md)，界面设计说明见 [UI 设计](docs/UI设计.md)，早期版本的验证记录见 [验证报告](docs/验证报告.md)。本版结果以发行目录内的验收报告与对应 CTest 日志为准。
 
@@ -26,13 +26,26 @@ vision-studio
 - **推理工作台**：模型和标签配置、图片队列、视频与摄像头输入、置信度与 NMS 阈值调节。
 - **视觉结果**：检测框、类别和置信度叠加，缩放、平移、适应视图，目标表与性能数据。
 - **模型库**：导入本地 `.onnx` 或 `.pt`；现代 Ultralytics YOLO `.pt` 自动读取类别名称，配置保存到用户设置。
+- **模型显示**：在内嵌 Netron 中查看当前全局模型的节点、张量及连接；在模型库选择模型后后台预加载，完成后显示缓存。
 - **结果导出**：保存标注 PNG、结构化 JSON 和 CSV；图片批量任务可逐张自动导出，视频与摄像头任务在结束后保存最后一帧。
 - **运行记录**：查看处理来源、模型、目标数量、推理耗时和执行时间。
 - **后台任务**：推理在工作线程中运行，可中止任务，界面保持可操作。
-- **灰度输入**：模型库与工作台可选择彩色或灰度；ONNX 自动识别固定的 1 / 3 输入通道，单通道直接输入灰度，三通道复制同一灰度值。
+- **灰度输入**：工作台可选择彩色或灰度；ONNX 自动识别固定的 1 / 3 输入通道，单通道直接输入灰度，三通道复制同一灰度值。
 - **左右拼接输入**：单设备摄像头和视频可选择完整画面、左目或右目；推理及导出使用所选画面，图片队列保持完整。
 - **视频录制**：推理视频或摄像头时可开始 / 结束录制，保存所选画面、实际颜色模式与检测标注；录制视频页可浏览和播放本地录像。
 - **更多**：集中提供运行示例和手动导出结果，保留原有快捷键。
+
+七页导航依次为：检测工作台、模型库、模型显示、运行记录、使用指南、录制视频、更多。
+
+## 模型显示
+
+在「模型库」选择模型后，它同时用于工作台检测与模型显示。应用在后台异步预加载结构；完成后进入「模型显示」直接查看缓存的图，切换页面不重复加载。预加载尚未完成时页面显示当前加载状态。模型库可前往检测或模型显示，页面导航本身不切换模型。
+
+Netron 9.3.1 通过随包 Python 环境在本机回环地址的随机端口提供页面，由 Qt WebEngine 内嵌显示；模型文件留在本机，不上传远程服务，查看结构不执行 `torch.load`。模型是否能被 Netron 解析，与它能否用于本应用推理分别判定。模型显示页保留元信息和运算图；格式不识别、文件损坏或没有可显示运算图时，界面显示中文说明并提供重试入口。
+
+`.pt` 等文件可能只保存权重、模块或部分静态信息，完整结构通常需要导出 ONNX。选择任何非 ONNX 文件时，页面显示以下提示：
+
+想看完整结构，建使用导出的 ONNX。
 
 ## 模型兼容范围
 
@@ -50,7 +63,7 @@ ONNX 后端使用 **OpenCV 4.5.4 DNN / CPU**，支持能被该版本 OpenCV 导�
 
 ONNX 图像输入需为 NCHW，通道数固定为 1 或 3。**彩色模式**要求 3 通道，并使用原有 RGB / BGR 设置；**灰度模式**按亮度转换，1 通道模型接收单通道，3 通道模型接收三份相同灰度。灰度使用统一均值，G / B 均值不参与，检测补边仍为 114。灰度预览和 PNG 标注底图也显示实际灰度；切回彩色恢复原色并清除旧预测，需要重新运行。固定 4 通道、动态通道、非 NCHW 四维图像输入及多个运行时输入目前不支持；形状为动态宽高的模型仍需满足 OpenCV 兼容要求。
 
-1.3.0 保留旧版本默认彩色设置；已有 3 通道模型无需更改。载入 1 通道模型时须明确选择灰度，程序不会静默改变输入模式。灰度转换必须与训练预处理一致，把普通 RGB 模型切为灰度也可能影响识别结果。
+1.4.0 保留旧版本默认彩色设置；已有 3 通道模型无需更改。载入 1 通道模型时须明确选择灰度，程序不会静默改变输入模式。灰度转换必须与训练预处理一致，把普通 RGB 模型切为灰度也可能影响识别结果。
 
 对单设备输出的水平左右拼接视频，在摄像头或视频输入中选择「完整画面」「左目」或「右目」。完整画面使用原帧；左目取前 `floor(宽度 / 2)` 列，右目取其余列，奇数宽度时右目多一列。摄像头保留设备默认分辨率。检测坐标和 PNG 导出相对所选画面，JSON 同时记录原始帧尺寸。图片输入继续完整处理，不受所选左右目影响。
 
@@ -72,9 +85,9 @@ ONNX 图像输入需为 NCHW，通道数固定为 1 或 3。**彩色模式**要�
 
 ## 从源代码构建
 
-依赖：CMake ≥ 3.21、C++17 编译器、Qt 6.8 Core / Gui / Widgets / Svg / Test、OpenCV Core / Imgproc / Imgcodecs / Videoio / DNN。
+依赖：CMake ≥ 3.21、C++17 编译器、Qt 6.8.3 Core / Gui / Widgets / Svg / Network / WebChannel / WebEngineWidgets / Test、OpenCV Core / Imgproc / Imgcodecs / Videoio / DNN。Qt WebEngine 同时需要 SDK 中兼容的 Quick / Qml / Positioning 模块及辅助进程、资源和语言文件。
 
-直接 `.pt` 后端还需要本地 Python、CPU PyTorch、Torchvision 和 Ultralytics；它们在独立 runtime 中，与 C++ 编译过程分开。
+直接 `.pt` 后端还需要本地 Python、CPU PyTorch、Torchvision 和 Ultralytics；模型显示需要同一环境中的 Netron 9.3.1。它们在独立 runtime 中，与 C++ 编译过程分开。正式 DEB 已捆绑这些依赖，源码与便携目录需要自行准备；实际发行锁为 `docs/release/requirements-release.lock.txt`。
 
 ```bash
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \
@@ -87,25 +100,26 @@ ctest --test-dir build --output-on-failure
 
 本机主文件夹中的安装已准备 `.pt` runtime。单独生成的交付包不携带约 1.5 GB 的 Python 环境；需要直接运行 `.pt` 时，准备 Python 3.10 或 3.11，在该交付目录执行 `./scripts/setup_pt.sh` 安装独立 CPU runtime。安装按 `requirements-pt.lock.txt` 约束依赖版本，需要下载依赖；完成后图片、视频和模型推理均可离线执行。
 
-GUI 自检使用本地示例模型执行推理并导出结果，`--smoke` 使用 ONNX，`--smoke-pt` 使用 PyTorch 检查点：
+GUI 自检使用本地示例模型执行推理并导出结果，`--smoke` 使用 ONNX，`--smoke-pt` 使用 PyTorch 检查点，`--smoke-model` 等待 Netron 真正解析图节点后保存截图和报告：
 
 ```bash
 ./build/bin/vision-studio --smoke /tmp/vision-studio-smoke
 ./build/bin/vision-studio --smoke-pt /tmp/vision-studio-pt-smoke
+./build/bin/vision-studio --smoke-model /tmp/vision-studio-model-smoke
 ./build/bin/vision-studio --screenshot /tmp/vision-studio.png
 ```
 
-无显示器环境可设置 `QT_QPA_PLATFORM=offscreen`。桌面环境应直接启动应用以获得正常字体和窗口尺寸。
+无显示器环境可设置 `QT_QPA_PLATFORM=offscreen`，WebEngine 自检可另用 `QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu` 选择软件渲染。正常启动器保留 Chromium sandbox。桌面环境应直接启动应用以获得正常字体和窗口尺寸。
 
 ## 验证方法
 
 `tests/core_tests.cpp` 在临时目录生成小型 ONNX 网络，通过真实 OpenCV DNN forward 验证检测坐标映射、越界裁剪、同类 NMS、异类保留、YOLOv5 objectness、分类概率、RGB/BGR 及均值/缩放预处理与错误报告。工作线程测试覆盖批量输入、取消与重新运行、短视频 EOF 最后一帧以及输入错误，不依赖 Python 或在线服务。真实示例模型的 GUI 自检覆盖模型载入、图片推理、界面更新与导出。摄像头硬件需在实际设备上验证。
 
-灰度测试使用对输入像素敏感的真实小网络：红、绿、蓝像素分别验证灰度亮度，检查单通道、三通道复制、统一均值、114 补边和通道错误，并保留旧 ONNX initializer 同时列为 graph inputs 的兼容性。左右拼接测试通过实际视频与推理验证两眼不同信息、奇数宽度、所选图像尺寸及坐标，并检查图片保持完整。核心套件本次已运行通过；新版本完整测试和发行包执行结果以对应版本验证报告为准。
+灰度测试使用对输入像素敏感的真实小网络：红、绿、蓝像素分别验证灰度亮度，检查单通道、三通道复制、统一均值、114 补边和通道错误，并保留旧 ONNX initializer 同时列为 graph inputs 的兼容性。左右拼接测试通过实际视频与推理验证两眼不同信息、奇数宽度、所选图像尺寸及坐标，并检查图片保持完整。新版本完整测试和发行包执行结果以对应版本验证报告为准。
 
 `tests/pt_backend_tests.cpp` 使用官方 YOLOv8n 与 YOLOv5n `.pt` 验证直接加载、自动类别名称和连续图片请求；旧版模型另覆盖改名与同目录其他权重的干扰。同时验证带元数据的 TorchScript 分类，以及解释器缺失、无效检查点、裸权重字典和不兼容预处理的错误。后台进程协议测试覆盖载入取消、推理取消、非法响应、模型身份不一致和载入超时。这些 `.pt` 测试需要已准备的本地 runtime。
 
-`tests/ui_tests.cpp` 覆盖真实 `.pt` 工作台推理、自动类别与后端信息、PNG / JSON / CSV 自动导出，以及六页导航和「更多」入口。灰度用例检查实际灰度显示、原色恢复和清除旧检测；录制用例使用本地短视频，检查开始 / 结束录制、AVI / JSON 文件、录像列表及播放预览。
+`tests/ui_tests.cpp` 覆盖真实 `.pt` 工作台推理、自动类别与后端信息、PNG / JSON / CSV 自动导出，以及七页导航和「更多」入口。灰度用例检查实际灰度显示、原色恢复和清除旧检测；录制用例使用本地短视频，检查开始 / 结束录制、AVI / JSON 文件、录像列表及播放预览。
 
 内置示例模型与图片的来源、授权和预处理方式记录在 [模型说明](docs/模型说明.md)。
 

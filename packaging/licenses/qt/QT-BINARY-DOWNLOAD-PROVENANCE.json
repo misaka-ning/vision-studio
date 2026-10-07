@@ -1,0 +1,29 @@
+[
+  {
+    "module": "qtpositioning",
+    "file": "6.8.3-0-202503201345qtpositioning-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z",
+    "url": "https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtpositioning.linux_gcc_64/6.8.3-0-202503201345qtpositioning-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z",
+    "bytes": 393202,
+    "sha256": "d476e66deac70527886a8a3ab18b69cc71e1004853253a931268b7737f774e37",
+    "official_sha1": "e312b782c87bdd44c3b091e76c843af477410444",
+    "official_checksum_url": "https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtpositioning.linux_gcc_64/6.8.3-0-202503201345qtpositioning-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z.sha1"
+  },
+  {
+    "module": "qtwebchannel",
+    "file": "6.8.3-0-202503201345qtwebchannel-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z",
+    "url": "https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtwebchannel.linux_gcc_64/6.8.3-0-202503201345qtwebchannel-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z",
+    "bytes": 119765,
+    "sha256": "63baf38a2041a11aec1b71ad6f67cafb03d300394d729d18aca154de9f58b3e9",
+    "official_sha1": "3b8e7c67ec132068a15718d32d015336248f4b6c",
+    "official_checksum_url": "https://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtwebchannel.linux_gcc_64/6.8.3-0-202503201345qtwebchannel-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z.sha1"
+  },
+  {
+    "module": "qtwebengine",
+    "file": "6.8.3-0-202503201424qtwebengine-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z",
+    "url": "https://download.qt.io/online/qtsdkrepository/linux_x64/extensions/qtwebengine/683/x86_64/extensions.qtwebengine.683.linux_gcc_64/6.8.3-0-202503201424qtwebengine-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z",
+    "bytes": 118707008,
+    "sha256": "b957a38255cbfd325ead3291a0495b1e6b6fc813ca2187f76e2ccc4c61df4a9c",
+    "official_sha1": "f809c5a43439bf112f727d103981fe4deb20f21d",
+    "official_checksum_url": "https://download.qt.io/online/qtsdkrepository/linux_x64/extensions/qtwebengine/683/x86_64/extensions.qtwebengine.683.linux_gcc_64/6.8.3-0-202503201424qtwebengine-Linux-RHEL_8_10-GCC-Linux-RHEL_8_10-X86_64.7z.sha1"
+  }
+]

@@ -95,6 +95,8 @@ class Namespace:
             "XDG_RUNTIME_DIR": MOUNT + "/user/runtime", "YOLO_CONFIG_DIR": MOUNT + "/user/ultralytics",
             "YOLOV5_CONFIG_DIR": MOUNT + "/user/yolov5", "MPLCONFIGDIR": MOUNT + "/user/matplotlib",
             "PYTHONDONTWRITEBYTECODE": "1", "PYTHONNOUSERSITE": "1", "QT_QPA_PLATFORM": "offscreen",
+            # Headless software rendering only; preserve the browser sandbox.
+            "QTWEBENGINE_CHROMIUM_FLAGS": "--disable-gpu", "QT_QUICK_BACKEND": "software",
         }.items():
             command.extend(["--setenv", key, value])
         command.extend(["--chdir", MOUNT, "--", *arguments])
@@ -202,6 +204,20 @@ def verify(args, workspace, audit):
         passed = result.returncode == 0 and report.get("success") is True and report.get("predictions", 0) > 0
         audit.require(passed, f"Installed {name} inference failed as non-root: " + result.stderr[-1500:])
         smoke[name] = {"success": passed, "exit_code": result.returncode, "elapsed_seconds": elapsed, "report": report}
+    result, elapsed = namespace.run(["/usr/bin/vision-studio", "--smoke-model", MOUNT + "/user/model-display"],
+                                    "model-display", readonly=True, timeout=180)
+    display_root = workspace / "user/model-display"
+    path = display_root / "model-display-report.json"
+    report = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {}
+    nodes = report.get("nodes", 0)
+    screenshot = display_root / "model-display.png"
+    passed = (result.returncode == 0 and report.get("success") is True
+              and isinstance(nodes, int) and not isinstance(nodes, bool) and nodes > 0
+              and screenshot.is_file() and screenshot.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"))
+    audit.require(passed, "Installed offline non-root model structure viewer failed: " + result.stderr[-1800:])
+    smoke["model_display"] = {"success": passed, "exit_code": result.returncode,
+                               "elapsed_seconds": elapsed, "report": report,
+                               "rendering_flags": "--disable-gpu", "sandbox_disabled_by_test": False}
     audit.details["inference"] = smoke
     audit.require(bool(list((workspace / "user").rglob("preferences.ini"))), "Installed application did not persist isolated preferences")
     audit.require(bool(list((workspace / "user").rglob("history.json"))), "Installed application did not persist isolated history")

@@ -1,0 +1,6 @@
+Netron 9.3.1 source/dagre.js identifies these upstream projects:
+https://github.com/dagrejs/dagre
+https://github.com/dagrejs/graphlib
+Their preserved original MIT license notices are adjacent.
+Electron/electron-updater and Node build tools in package-lock.json
+are build-only metadata and are absent from this pip-based runtime.

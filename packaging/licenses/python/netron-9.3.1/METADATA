@@ -1,0 +1,27 @@
+Metadata-Version: 2.4
+Name: netron
+Version: 9.3.1
+Summary: Viewer for neural network, deep learning and machine learning models.
+Author-email: Lutz Roeder <lutzroeder@users.noreply.github.com>
+License: MIT
+Project-URL: homepage, https://github.com/lutzroeder/netron
+Keywords: onnx,keras,tensorflow,tflite,coreml,mxnet,caffe,caffe2,torchscript,pytorch,ncnn,mnn,openvino,darknet,paddlepaddle,chainer,artificial intelligence,machine learning,deep learning,neural network,visualizer,viewer
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Description-Content-Type: text/markdown
+
+Netron is a viewer for neural network, deep learning and machine learning models.
+
+Netron supports ONNX, TensorFlow Lite, PyTorch, torch.export, ExecuTorch, TorchScript, TensorFlow, Core ML, OpenVINO, Keras, Caffe, Darknet, Safetensors and NumPy.
+
+Netron has experimental support for MLIR, JAX, GGUF, RKNN, ncnn, MNN, PaddlePaddle and scikit-learn.

@@ -8,16 +8,18 @@ import os
 from pathlib import Path
 import tarfile
 
-VERSION = "1.3.0"
+VERSION = "1.4.0"
 SOURCE_ITEMS = ("src", "tests", "scripts", "packaging", "docs", "assets", "models", "vendor",
                 "CMakeLists.txt", "resources.qrc", "run.sh", "VisionStudio.desktop", "README.md",
                 "LICENSE", "requirements-pt.txt", "requirements-pt.lock.txt", "runtime-info.json",
                 ".clang-format", ".gitignore")
 SKIP = {".git", "__pycache__", ".pytest_cache", ".cache"}
-QT_MODULES = ("qtbase", "qtsvg", "qtwayland", "qtimageformats")
+QT_MODULES = ("qtbase", "qtsvg", "qtwayland", "qtimageformats", "qtdeclarative",
+              "qtwebchannel", "qtpositioning", "qtwebengine")
 REQUIRED_OTHER = ("ultralytics-8.4.173.tar.gz", "ultralytics_thop-2.2.2.tar.gz",
                   "opencv-python-headless-4.11.0.86.tar.gz", "opencv-python-86.tar.gz",
-                  "opencv-python-86-Dockerfile_x86_64", "ffmpeg-5.1.6.tar.xz")
+                  "opencv-python-86-Dockerfile_x86_64", "ffmpeg-5.1.6.tar.xz",
+                  "netron-9.3.1-source.tar.gz")
 
 
 def sha256(path):
@@ -99,7 +101,7 @@ def make_archive(destination, entries, prefix, overwrite, preset=3):
     if destination.exists() and not overwrite:
         raise RuntimeError(f"Source archive already exists: {destination}; use --overwrite to rebuild")
     temporary = destination.with_suffix(destination.suffix + ".tmp")
-    epoch = int(os.environ.get("SOURCE_DATE_EPOCH", "1791244800"))
+    epoch = int(os.environ.get("SOURCE_DATE_EPOCH", "1791331200"))
     try:
         with tarfile.open(temporary, "w:xz", preset=preset) as archive:
             for path, relative in entries:
@@ -121,7 +123,7 @@ def make_archive(destination, entries, prefix, overwrite, preset=3):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-root", type=Path, default=Path("."))
-    parser.add_argument("--release-directory", type=Path, default=Path("output/releases"))
+    parser.add_argument("--release-directory", type=Path, default=Path("output/releases/1.4.0"))
     parser.add_argument("--inventory-only", action="store_true")
     parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()

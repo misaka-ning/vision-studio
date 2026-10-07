@@ -1,0 +1,260 @@
+Start testing: Oct 07 11:05 HKT
+----------------------------------------------------------
+6/6 Testing: vision-netron-server-tests
+6/6 Test: vision-netron-server-tests
+Command: "/usr/bin/python3" "/home/misaka/文档/ChatGPT/yolo/tests/netron_server_tests.py"
+Directory: /home/misaka/文档/ChatGPT/yolo/build
+"vision-netron-server-tests" start time: Oct 07 11:05 HKT
+Output:
+----------------------------------------------------------
+test_concurrent_sessions_have_different_ephemeral_ports (__main__.NetronServerTests) ... ok
+test_eof_and_sigterm_close_session (__main__.NetronServerTests) ... ok
+test_external_data_stays_within_model_directory (__main__.NetronServerTests) ... ok
+test_invalid_command_releases_port (__main__.NetronServerTests) ... ok
+test_invalid_path_directory_and_arguments_emit_errors (__main__.NetronServerTests) ... ok
+test_missing_module_and_wrong_version_are_clear_errors (__main__.NetronServerTests) ... ok
+test_pickle_payload_is_never_deserialized_or_framework_imported (__main__.NetronServerTests) ... ok
+test_real_onnx_static_assets_model_bytes_and_json_quit (__main__.NetronServerTests) ... ok
+test_real_pt_raw_bytes_and_plain_quit (__main__.NetronServerTests) ... ok
+test_slow_http_client_does_not_block_quit (__main__.NetronServerTests) ... ok
+test_unknown_suffix_and_corrupt_bytes_are_served_without_parsing (__main__.NetronServerTests) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 4.153s
+
+OK
+<end of output>
+Test time =   4.20 sec
+----------------------------------------------------------
+Test Passed.
+"vision-netron-server-tests" end time: Oct 07 11:05 HKT
+"vision-netron-server-tests" time elapsed: 00:00:04
+----------------------------------------------------------
+
+2/6 Testing: vision-recording-tests
+2/6 Test: vision-recording-tests
+Command: "/home/misaka/文档/ChatGPT/yolo/build/vision-recording-tests"
+Directory: /home/misaka/文档/ChatGPT/yolo/build
+"vision-recording-tests" start time: Oct 07 11:05 HKT
+Output:
+----------------------------------------------------------
+********* Start testing of RecordingTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : RecordingTests::initTestCase()
+PASS   : RecordingTests::videoIsAnnotatedPlayableAndPublishedOnlyAtFinish()
+PASS   : RecordingTests::grayscaleOddEyePreservesContentAndAddsOnlyEdgePadding()
+PASS   : RecordingTests::cameraTimingUsesMeasuredDurationAndDecodesAllFrames()
+PASS   : RecordingTests::emptyDiscardAndInvalidDirectoryNeverPublishBrokenClips()
+PASS   : RecordingTests::changedResolutionEndsClipWithoutLosingItsPreviousFrames()
+PASS   : RecordingTests::workerRecordsEveryFrameAndFinishesAtEof()
+PASS   : RecordingTests::workerStartAfterFirstPreviewAndCancelClosesOnlyRecordedFrames()
+PASS   : RecordingTests::recordingFailureDoesNotInterruptInference()
+PASS   : RecordingTests::manualStopKeepsInferenceRunningAndRestartCreatesANewClip()
+PASS   : RecordingTests::stoppingDuringOnnxForwardRecordsTheLastCompletedFrame()
+PASS   : RecordingTests::stoppingWithPendingRecordingNeverOpensANewClip()
+PASS   : RecordingTests::cleanupTestCase()
+Totals: 13 passed, 0 failed, 0 skipped, 0 blacklisted, 2008ms
+********* Finished testing of RecordingTests *********
+<end of output>
+Test time =   2.06 sec
+----------------------------------------------------------
+Test Passed.
+"vision-recording-tests" end time: Oct 07 11:05 HKT
+"vision-recording-tests" time elapsed: 00:00:02
+----------------------------------------------------------
+
+4/6 Testing: vision-ui-tests
+4/6 Test: vision-ui-tests
+Command: "/home/misaka/文档/ChatGPT/yolo/build/vision-ui-tests"
+Directory: /home/misaka/文档/ChatGPT/yolo/build
+"vision-ui-tests" start time: Oct 07 11:05 HKT
+Output:
+----------------------------------------------------------
+********* Start testing of UiTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : UiTests::initTestCase()
+QDEBUG : UiTests::realInferenceSelectionAndNavigation() Compositor returned null texture
+QDEBUG : UiTests::realInferenceSelectionAndNavigation() Compositor returned null texture
+PASS   : UiTests::realInferenceSelectionAndNavigation()
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+PASS   : UiTests::globalModelSelectionPreloadsAndCachesStructure()
+PASS   : UiTests::shortcutsCancelAndRestartFromFocusedControls()
+PASS   : UiTests::directPtInferenceReadsNamesAndExportsNativeBackend()
+PASS   : UiTests::queueChangeAndClearInvalidateOldResults()
+PASS   : UiTests::grayscalePreviewAndColorSwitchInvalidatePredictions()
+PASS   : UiTests::legacyColorPreferenceMigration(legacy-rgb)
+PASS   : UiTests::legacyColorPreferenceMigration(legacy-bgr)
+QDEBUG : UiTests::grayscaleAndStereoPreferencesSurviveRestartAndPtSwitch() Compositor returned null texture
+PASS   : UiTests::grayscaleAndStereoPreferencesSurviveRestartAndPtSwitch()
+QWARN  : UiTests::stereoVideoRequestExportAndImageIsolation() This plugin does not support propagateSizeHints()
+PASS   : UiTests::stereoVideoRequestExportAndImageIsolation()
+QWARN  : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() This plugin does not support propagateSizeHints()
+QDEBUG : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() Compositor returned null texture
+QWARN  : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() This plugin does not support propagateSizeHints()
+PASS   : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo()
+PASS   : UiTests::cleanupTestCase()
+Totals: 13 passed, 0 failed, 0 skipped, 0 blacklisted, 13190ms
+********* Finished testing of UiTests *********
+<end of output>
+Test time =  13.41 sec
+----------------------------------------------------------
+Test Passed.
+"vision-ui-tests" end time: Oct 07 11:05 HKT
+"vision-ui-tests" time elapsed: 00:00:13
+----------------------------------------------------------
+
+1/6 Testing: vision-core-tests
+1/6 Test: vision-core-tests
+Command: "/home/misaka/文档/ChatGPT/yolo/build/vision-core-tests"
+Directory: /home/misaka/文档/ChatGPT/yolo/build
+"vision-core-tests" start time: Oct 07 11:05 HKT
+Output:
+----------------------------------------------------------
+********* Start testing of CoreTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : CoreTests::initTestCase()
+PASS   : CoreTests::yoloV8LetterboxClippingAndNms()
+PASS   : CoreTests::yoloV5UsesObjectnessAndClassScores()
+PASS   : CoreTests::classificationLogitsBecomeProbabilities()
+PASS   : CoreTests::classificationProbabilitiesRemainUnchanged()
+PASS   : CoreTests::preprocessingRespectsColorChannels()
+PASS   : CoreTests::preprocessingSubtractsMeanBeforeScaling()
+PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgb888-padded-scanlines)
+PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgba8888)
+PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgb32)
+PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(red)
+PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(green)
+PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(blue)
+PASS   : CoreTests::grayscaleThreeChannelsReplicateOneIntensity()
+PASS   : CoreTests::grayscaleDetectionPaddingUses114(single-channel)
+PASS   : CoreTests::grayscaleDetectionPaddingUses114(replicated-three-channel)
+PASS   : CoreTests::colorInputRejectsSingleChannelModel()
+PASS   : CoreTests::unsupportedONNXInputChannels(four-channels)
+PASS   : CoreTests::unsupportedONNXInputChannels(symbolic-channel-axis)
+PASS   : CoreTests::initializerGraphInputsRemainCompatible()
+PASS   : CoreTests::missingModelReportsFailure()
+PASS   : CoreTests::unsupportedDetectionOutputReportsFailure()
+PASS   : CoreTests::emptyImageReportsFailure()
+PASS   : CoreTests::workerProcessesEveryImageInBatch()
+PASS   : CoreTests::workerStopsBatchAndCanRunAgain()
+PASS   : CoreTests::workerDeliversVideoLastFrameAtEndOfFile()
+PASS   : CoreTests::workerReportsUnreadableInputAndFinishes()
+PASS   : CoreTests::stereoOddWidthSelectionAndInference()
+PASS   : CoreTests::stereoSelectionRejectsEmptyAndTooNarrowFrames()
+PASS   : CoreTests::workerSelectsSideBySideVideoView(full-frame)
+PASS   : CoreTests::workerSelectsSideBySideVideoView(left-eye)
+PASS   : CoreTests::workerSelectsSideBySideVideoView(right-eye)
+PASS   : CoreTests::workerKeepsImagesWholeWhenStereoViewSelected()
+PASS   : CoreTests::cleanupTestCase()
+Totals: 34 passed, 0 failed, 0 skipped, 0 blacklisted, 422ms
+********* Finished testing of CoreTests *********
+<end of output>
+Test time =   0.48 sec
+----------------------------------------------------------
+Test Passed.
+"vision-core-tests" end time: Oct 07 11:05 HKT
+"vision-core-tests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/6 Testing: vision-modelviewer-tests
+5/6 Test: vision-modelviewer-tests
+Command: "/home/misaka/文档/ChatGPT/yolo/build/vision-modelviewer-tests"
+Directory: /home/misaka/文档/ChatGPT/yolo/build
+"vision-modelviewer-tests" start time: Oct 07 11:05 HKT
+Output:
+----------------------------------------------------------
+********* Start testing of ModelViewerTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : ModelViewerTests::initTestCase()
+QWARN  : ModelViewerTests::realModelsRenderGraphs(onnx-structure) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::realModelsRenderGraphs(onnx-structure) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::realModelsRenderGraphs(onnx-structure) This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::realModelsRenderGraphs(onnx-structure)
+QWARN  : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy) This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy)
+QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(unknown-format) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(unknown-format) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(unknown-format) This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::browserParsingFailuresAreChinese(unknown-format)
+QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(corrupt-onnx) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(corrupt-onnx) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(corrupt-onnx) This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::browserParsingFailuresAreChinese(corrupt-onnx)
+QWARN  : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel() This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel()
+QWARN  : ModelViewerTests::hiddenStackedPagePreloadsAndKeepsCachedGraph() This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::hiddenStackedPagePreloadsAndKeepsCachedGraph()
+QWARN  : ModelViewerTests::stopDuringLoadingReleasesStartedBrowserAndService() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::stopDuringLoadingReleasesStartedBrowserAndService() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::stopDuringLoadingReleasesStartedBrowserAndService() This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::stopDuringLoadingReleasesStartedBrowserAndService()
+PASS   : ModelViewerTests::missingHelperOrRuntimeHasActionableChineseError()
+PASS   : ModelViewerTests::cleanupTestCase()
+Totals: 10 passed, 0 failed, 0 skipped, 0 blacklisted, 6175ms
+********* Finished testing of ModelViewerTests *********
+<end of output>
+Test time =   6.26 sec
+----------------------------------------------------------
+Test Passed.
+"vision-modelviewer-tests" end time: Oct 07 11:05 HKT
+"vision-modelviewer-tests" time elapsed: 00:00:06
+----------------------------------------------------------
+
+3/6 Testing: vision-pt-tests
+3/6 Test: vision-pt-tests
+Command: "/home/misaka/文档/ChatGPT/yolo/build/vision-pt-tests"
+Directory: /home/misaka/文档/ChatGPT/yolo/build
+"vision-pt-tests" start time: Oct 07 11:05 HKT
+Output:
+----------------------------------------------------------
+********* Start testing of PtBackendTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : PtBackendTests::initTestCase()
+PASS   : PtBackendTests::realCheckpointLoadsNamesAndProcessesConsecutiveImages()
+PASS   : PtBackendTests::realModernAndLegacyGrayscalePreviewPreservesOriginalPixels()
+PASS   : PtBackendTests::grayscaleThreeChannelsAreEqualAndUseBgrToGrayWeights()
+PASS   : PtBackendTests::grayscaleSingleChannelIsInferredFromTorchScriptConv()
+PASS   : PtBackendTests::nativeClassificationSupportsOneAndThreeGrayChannels()
+PASS   : PtBackendTests::grayscaleTorchScriptDetectionRestoresLetterboxCoordinates()
+PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(red)
+PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(green)
+PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(blue)
+PASS   : PtBackendTests::sixteenBitGrayscalePreviewMatchesActualPtInput(rgba64)
+PASS   : PtBackendTests::sixteenBitGrayscalePreviewMatchesActualPtInput(grayscale16)
+PASS   : PtBackendTests::realYoloSingleChannelStemsPreserveGrayscalePredictions()
+PASS   : PtBackendTests::invalidTorchScriptChannelMetadataIsRejected()
+PASS   : PtBackendTests::detectionInputSizeMustBeMultipleOf32AtLoad()
+PASS   : PtBackendTests::torchScriptWithoutInputConstraintsRequiresActionableMetadata()
+PASS   : PtBackendTests::processHandshakeCannotGuessMissingOrInvalidInputChannels()
+PASS   : PtBackendTests::missingExplicitPythonReportsFailure()
+PASS   : PtBackendTests::officialLegacyYoloV5CheckpointRunsWithBundledFramework()
+PASS   : PtBackendTests::invalidCheckpointCannotLeavePreviousModelLoaded()
+PASS   : PtBackendTests::bareStateDictionaryReportsMissingArchitecture()
+PASS   : PtBackendTests::metadataBearingTorchScriptClassificationUsesTopK()
+PASS   : PtBackendTests::customOnnxPreprocessingCannotSilentlyChangePtInference()
+PASS   : PtBackendTests::cancellationInterruptsBlockedModelInitialization()
+PASS   : PtBackendTests::cancellationInterruptsBlockedInference()
+PASS   : PtBackendTests::invalidProcessProtocolResetsBackend()
+PASS   : PtBackendTests::substitutedModelHandshakeIsRejected()
+PASS   : PtBackendTests::shortenedInitializationDeadlineStopsBackend()
+PASS   : PtBackendTests::cleanupTestCase()
+Totals: 29 passed, 0 failed, 0 skipped, 0 blacklisted, 131192ms
+********* Finished testing of PtBackendTests *********
+<end of output>
+Test time = 131.22 sec
+----------------------------------------------------------
+Test Passed.
+"vision-pt-tests" end time: Oct 07 11:07 HKT
+"vision-pt-tests" time elapsed: 00:02:11
+----------------------------------------------------------
+
+End testing: Oct 07 11:07 HKT

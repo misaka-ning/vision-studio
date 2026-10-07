@@ -25,6 +25,14 @@ QIcon icon(const QString &name, QColor color, int size)
         a.drawPolyline(QPolygonF{{3, 12}, {12, 17}, {21, 12}});
         a.drawPolyline(QPolygonF{{3, 17}, {12, 22}, {21, 17}});
     }
+    else if (name == "graph")
+    {
+        a.drawLine(7, 7, 17, 12);
+        a.drawLine(7, 17, 17, 12);
+        a.setBrush(color.darker(240));
+        for (const auto &point : {QPointF(5, 6), QPointF(5, 18), QPointF(19, 12)})
+            a.drawRoundedRect(QRectF(point.x() - 3, point.y() - 3, 6, 6), 1, 1);
+    }
     else if (name == "more")
     {
         a.setBrush(color);

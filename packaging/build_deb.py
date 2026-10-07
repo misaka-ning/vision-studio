@@ -22,6 +22,9 @@ import tempfile
 
 PACKAGE = "vision-studio"
 DEFAULT_ROOT = "/opt/VisionStudio"
+WEBENGINE_RESOURCES = ("qtwebengine_resources.pak", "qtwebengine_devtools_resources.pak",
+                       "qtwebengine_resources_100p.pak", "qtwebengine_resources_200p.pak",
+                       "icudtl.dat", "v8_context_snapshot.bin")
 PLUGIN_FILES = {
     "platforms": ("libqxcb.so", "libqoffscreen.so", "libqminimal.so",
                   "libqwayland-generic.so", "libqwayland-egl.so"),
@@ -124,6 +127,10 @@ def check_inputs(arguments: argparse.Namespace) -> None:
         raise RuntimeError("The package requires the tested Python 3.10 CPU PyTorch runtime.")
     if "opencv-python-headless" not in metadata["distributions"] or "opencv-python" in metadata["distributions"]:
         raise RuntimeError("Use the release headless OpenCV runtime; the GUI OpenCV wheel adds an unwanted Qt5 runtime.")
+    if metadata["distributions"].get("netron") != "9.3.1":
+        raise RuntimeError("The model structure viewer requires the pinned Netron 9.3.1 distribution.")
+    if not (arguments.qt_prefix / "libexec/QtWebEngineProcess").is_file():
+        raise RuntimeError("The Qt 6.8.3 SDK must include WebEngine and QtWebEngineProcess.")
     arguments.runtime_metadata = metadata
     if not arguments.copyright.is_file():
         raise RuntimeError("Missing final copyright file; supply --copyright or finish packaging/copyright.")
@@ -146,7 +153,10 @@ def bundle_qt(arguments: argparse.Namespace, app: Path) -> dict[str, str]:
     library_target.mkdir(parents=True)
     environment = os.environ.copy()
     environment["LD_LIBRARY_PATH"] = str(library_root)
-    seeds = [arguments.binary]
+    helper = arguments.qt_prefix / "libexec/QtWebEngineProcess"
+    (app / "libexec").mkdir(parents=True)
+    shutil.copy2(helper, app / "libexec/QtWebEngineProcess")
+    seeds = [arguments.binary, helper]
     copied: dict[str, str] = {}
     for category, names in PLUGIN_FILES.items():
         for name in names:
@@ -189,9 +199,27 @@ def bundle_qt(arguments: argparse.Namespace, app: Path) -> dict[str, str]:
                     link.symlink_to(candidate.name)
             copied[name] = candidate.name
     # QtSvg can otherwise be loaded solely through an image/icon plugin.
-    if "libQt6Core.so.6" not in copied or "libQt6Svg.so.6" not in copied:
+    if not all(name in copied for name in
+               ("libQt6Core.so.6", "libQt6Svg.so.6", "libQt6WebEngineCore.so.6",
+                "libQt6WebEngineWidgets.so.6", "libQt6WebChannel.so.6")):
         raise RuntimeError("Incomplete Qt dependency closure.")
-    write(app / "build/bin/qt.conf", "[Paths]\nPrefix=../..\nLibraries=lib/qt\nPlugins=plugins\n")
+    resources = app / "resources"
+    resources.mkdir()
+    for name in WEBENGINE_RESOURCES:
+        original = arguments.qt_prefix / "resources" / name
+        if not original.is_file():
+            raise RuntimeError("Missing Qt WebEngine deployment resource: " + name)
+        shutil.copy2(original, resources / name)
+    locales = arguments.qt_prefix / "translations/qtwebengine_locales"
+    if not (locales / "en-US.pak").is_file():
+        raise RuntimeError("Missing Qt WebEngine Chromium locale resources.")
+    copy_tree(locales, app / "translations/qtwebengine_locales")
+    for translation in (arguments.qt_prefix / "translations").glob("qtwebengine_*.qm"):
+        shutil.copy2(translation, app / "translations" / translation.name)
+    write(app / "build/bin/qt.conf", "[Paths]\nPrefix=../..\nLibraries=lib/qt\nPlugins=plugins\n"
+          "LibraryExecutables=libexec\nData=.\nTranslations=translations\n")
+    write(app / "libexec/qt.conf", "[Paths]\nPrefix=..\nLibraries=lib/qt\nPlugins=plugins\n"
+          "LibraryExecutables=libexec\nData=.\nTranslations=translations\n")
     return copied
 
 
@@ -367,6 +395,8 @@ def patch_and_strip(arguments: argparse.Namespace, app: Path) -> list[Path]:
             run(["patchelf", "--set-rpath", "$ORIGIN", str(path)])
         elif relative.parts[0] == "plugins":
             run(["patchelf", "--set-rpath", "$ORIGIN/../../lib/qt", str(path)])
+        elif relative == Path("libexec/QtWebEngineProcess"):
+            run(["patchelf", "--set-rpath", "$ORIGIN/../lib/qt", str(path)])
         else:
             old_rpath = run(["patchelf", "--print-rpath", str(path)]).strip()
             if "/home/" in old_rpath:
@@ -431,6 +461,7 @@ def stage_payload(arguments: argparse.Namespace) -> tuple[Path, dict[str, str]]:
         shutil.rmtree(app / "models/source")
     (app / "scripts").mkdir()
     shutil.copy2(arguments.source_root / "scripts/pt_worker.py", app / "scripts/pt_worker.py")
+    shutil.copy2(arguments.source_root / "scripts/netron_server.py", app / "scripts/netron_server.py")
     packages = arguments.runtime_metadata["distributions"]
     locked = "\n".join(f"{name}=={version}" for name, version in sorted(packages.items(), key=lambda item: item[0].lower()))
     write(app / "requirements-pt.lock.txt", "# Actual distributions bundled in this release (pip excluded).\n" + locked + "\n")
@@ -508,6 +539,7 @@ def build(arguments: argparse.Namespace) -> None:
                f"Depends: {depends}\n"
                "Description: Professional local YOLO vision model workspace\n"
                " C++ and Qt 6.8.3 desktop application with bundled CPU PyTorch runtime.\n"
+               " Includes a local Netron model structure viewer embedded in Qt WebEngine.\n"
                " Supports YOLO .pt and ONNX image, video, camera inference and result exports.\n"
                " Grayscale input adapts to one or three model channels; side-by-side streams\n"
                " can preview and infer the left or right eye independently.\n"
@@ -551,7 +583,7 @@ def main() -> int:
                         help="Additional Qt 6.8.3 plugins directory, e.g. a supplemental QtImageFormats install.")
     parser.add_argument("--runtime", type=Path, required=True)
     parser.add_argument("--install-root", default=DEFAULT_ROOT)
-    parser.add_argument("--version", default="1.3.0-1")
+    parser.add_argument("--version", default="1.4.0-1")
     parser.add_argument("--stage", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--copyright", type=Path)
@@ -566,7 +598,7 @@ def main() -> int:
     arguments.extra_qt_plugins = [path.resolve() for path in arguments.extra_qt_plugins]
     arguments.copyright = (arguments.copyright or arguments.source_root / "packaging/copyright").resolve()
     arguments.stage = (arguments.stage or arguments.source_root / "output/deb-stage" / arguments.version).resolve()
-    arguments.output = (arguments.output or arguments.source_root / "output/releases"
+    arguments.output = (arguments.output or arguments.source_root / "output/releases/1.4.0"
                         / f"{PACKAGE}_{arguments.version}_amd64.deb").resolve()
     if not 0 <= arguments.compression_level <= 9:
         parser.error("--compression-level must be between 0 and 9")
