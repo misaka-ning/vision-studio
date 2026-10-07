@@ -21,5 +21,6 @@ CMakeUserPresets.json
 *.tar.gz
 *.tar.xz
 *.zip
+!/docs/releases/evidence/*/QA-ARTIFACTS.zip
 __pycache__/
 *.py[cod]
