@@ -1,0 +1,17 @@
+name: 功能建议
+description: 描述使用场景和期望的改进
+title: '[Feature] '
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 使用场景与问题
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 期望行为
+      description: 说明输入、模型类型和希望软件如何处理。
+    validations:
+      required: true

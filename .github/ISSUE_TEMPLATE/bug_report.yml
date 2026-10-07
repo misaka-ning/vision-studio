@@ -1,0 +1,30 @@
+name: 问题报告
+description: 报告可复现的问题
+title: '[Bug] '
+body:
+  - type: input
+    id: version
+    attributes:
+      label: 应用版本
+      placeholder: '例如 1.5.0'
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: 系统与运行环境
+      placeholder: '例如 Ubuntu 22.04 amd64，DEB 安装，CPU 推理'
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤、预期与实际结果
+      description: 模型问题请注明 ONNX／PT、输入通道、任务和使用的输入源。
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 日志与截图
+      description: 提供有助于复现的错误信息；无需公开私人模型或数据。

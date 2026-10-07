@@ -1,0 +1,486 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: AGPL-3.0-only
+"""Publish locally tested packages, verify GitHub assets, and retain two versions.
+
+Requires an authenticated GitHub CLI; never reads or stores its token. This tool
+does not build packages, create/move tags, overwrite assets, or install software.
+The read-only GitHub Actions workflow validates source/tag metadata separately.
+
+Examples:
+  python3 scripts/github_release.py publish --version 1.6.0 \
+    --release-dir output/releases/1.6.0 --notes-file docs/releases/1.6.0.md --dry-run
+  python3 scripts/github_release.py publish --version 1.6.0 \
+    --release-dir output/releases/1.6.0 --notes-file docs/releases/1.6.0.md
+  python3 scripts/github_release.py verify --version 1.6.0 \
+    --release-dir output/releases/1.6.0
+  python3 scripts/github_release.py prune --releases-root output/releases
+  python3 scripts/github_release.py prune --releases-root output/releases --execute
+
+Interrupted uploads remain drafts. --resume-draft explicitly resumes a matching
+draft without replacing anything. Published releases are always refused by the
+publish command; use verify to audit them. prune is a dry run unless --execute.
+
+Reference: https://cli.github.com/manual/gh_release_create
+Reference: https://docs.github.com/en/rest/releases/assets
+"""
+from __future__ import annotations
+
+import argparse
+from dataclasses import dataclass
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import re
+import shutil
+import stat
+import subprocess
+import sys
+import tempfile
+from urllib.parse import quote
+
+
+DEFAULT_REPOSITORY = "misaka-ning/vision-studio"
+VERSION_RE = re.compile(r"(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)\Z")
+REPOSITORY_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9-]*/[A-Za-z0-9][A-Za-z0-9_.-]*\Z")
+CHECKSUM_RE = re.compile(r"([0-9a-fA-F]{64}) [ *](.+)\Z")
+PROTECTED = {".git", "runtime", "output", "recordings", "preferences.ini", "history.json"}
+OPTIONAL_REPORTS = (
+    "desktop-qa.json", "metadata-boundary-qa.json", "home-qa.json",
+    "source-bundle-qa.json", "source-qa.json", "ctest-qa.json",
+)
+
+
+class ReleaseError(RuntimeError):
+    pass
+
+
+def version_key(version: str) -> tuple[int, int, int]:
+    match = VERSION_RE.fullmatch(version)
+    if not match:
+        raise ReleaseError(f"Expected stable X.Y.Z version, got {version!r}")
+    return tuple(int(part) for part in match.groups())
+
+
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def canonical_directory(path: Path) -> Path:
+    absolute = path.absolute()
+    # Resolve neither a symlink release directory nor any symlink ancestor.
+    for component in (absolute, *absolute.parents):
+        if component.is_symlink():
+            raise ReleaseError(f"Symlink directory is not allowed: {component}")
+    if not absolute.is_dir():
+        raise ReleaseError(f"Directory does not exist: {absolute}")
+    return absolute.resolve()
+
+
+def safe_file(root: Path, name: str) -> Path:
+    relative = PurePosixPath(name)
+    if (relative.is_absolute() or not relative.parts or ".." in relative.parts
+            or "\\" in name or any(ord(c) < 32 for c in name)):
+        raise ReleaseError(f"Unsafe manifest path: {name!r}")
+    path = root.joinpath(*relative.parts)
+    for component in (path, *path.parents):
+        if component == root:
+            break
+        if component.is_symlink():
+            raise ReleaseError(f"Symlink file is not allowed: {component}")
+    if not path.is_file() or not path.resolve().is_relative_to(root):
+        raise ReleaseError(f"Missing regular file: {path}")
+    return path
+
+
+def read_manifest(root: Path, name: str) -> dict[str, str]:
+    entries: dict[str, str] = {}
+    for line in safe_file(root, name).read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        match = CHECKSUM_RE.fullmatch(line)
+        if not match:
+            raise ReleaseError(f"Malformed checksum line in {name}: {line!r}")
+        digest, filename = match.groups()
+        if filename in entries:
+            raise ReleaseError(f"Duplicate checksum path in {name}: {filename}")
+        actual = sha256(safe_file(root, filename))
+        if actual != digest.lower():
+            raise ReleaseError(f"Checksum mismatch: {filename}")
+        entries[filename] = actual
+    if not entries:
+        raise ReleaseError(f"Empty checksum manifest: {name}")
+    return entries
+
+
+@dataclass(frozen=True)
+class Asset:
+    name: str
+    path: Path
+    size: int
+    sha256: str
+
+    def metadata(self) -> dict:
+        return {"name": self.name, "bytes": self.size, "sha256": self.sha256}
+
+
+def make_asset(root: Path, name: str) -> Asset:
+    # GitHub assets have a flat namespace; upstream sources live in the companion.
+    if PurePosixPath(name).name != name or not re.fullmatch(r"[A-Za-z0-9_.-]+", name):
+        raise ReleaseError(f"Unsafe GitHub asset name: {name!r}")
+    path = safe_file(root, name)
+    return Asset(name, path, path.stat().st_size, sha256(path))
+
+
+def validate_bundle(directory: Path, version: str, require_qa: bool = True) -> list[Asset]:
+    version_key(version)
+    root = canonical_directory(directory)
+    if root.name != version:
+        raise ReleaseError("Release directory name must exactly equal X.Y.Z")
+    public = read_manifest(root, "SHA256SUMS")
+    sources = read_manifest(root, "SOURCE-SHA256SUMS")
+    overlap = public.keys() & sources.keys()
+    if any(public[name] != sources[name] for name in overlap):
+        raise ReleaseError("Conflicting checksum manifests")
+    all_checksums = {**sources, **public}
+    app = f"vision-studio-{version}-sources.tar.xz"
+    companion = f"vision-studio-{version}-complete-source.tar.xz"
+    debs = sorted(name for name in public if re.fullmatch(
+        rf"vision-studio_{re.escape(version)}-[1-9]\d*_amd64\.deb", name))
+    if len(debs) != 1:
+        raise ReleaseError("SHA256SUMS must contain exactly one versioned amd64 DEB")
+    for name in (companion, app, "SOURCE-INVENTORY.json"):
+        if name not in all_checksums:
+            raise ReleaseError(f"Required asset is not checksummed: {name}")
+    inventory = json.loads(safe_file(root, "SOURCE-INVENTORY.json").read_text())
+    if (inventory.get("version") != version or inventory.get("application_archive") != app
+            or inventory.get("complete_companion") != companion):
+        raise ReleaseError("SOURCE-INVENTORY.json does not match this version")
+    assets = [make_asset(root, name) for name in (
+        debs[0], companion, app, "SHA256SUMS", "SOURCE-SHA256SUMS", "SOURCE-INVENTORY.json")]
+    if require_qa:
+        required_reports = ["qa-report.json", "install-qa.json", "ctest-qa.json"]
+        source_report = next((name for name in ("source-bundle-qa.json", "source-qa.json")
+                              if (root / name).is_file()), None)
+        if source_report is None:
+            raise ReleaseError("Required passing source companion report is missing")
+        required_reports.append(source_report)
+        reports = list(dict.fromkeys(required_reports + [name for name in OPTIONAL_REPORTS
+                                                         if (root / name).is_file()]))
+        for name in reports:
+            report = json.loads(safe_file(root, name).read_text())
+            if report.get("success") is not True or report.get("errors"):
+                raise ReleaseError(f"Release QA is not passing: {name}")
+            if "version" in report and report["version"] != version:
+                raise ReleaseError(f"QA report version mismatch: {name}")
+            if name in ("qa-report.json", "install-qa.json"):
+                if report.get("details", {}).get("deb_sha256") != all_checksums[debs[0]]:
+                    raise ReleaseError(f"QA report is for a different DEB: {name}")
+            assets.append(make_asset(root, name))
+    return assets
+
+
+def command(arguments: list[str], cwd: Path | None = None) -> str:
+    result = subprocess.run(arguments, cwd=cwd, text=True, stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE, check=False)
+    if result.returncode:
+        raise ReleaseError(f"Command failed ({result.returncode}): {arguments[0]} "
+                           f"{arguments[1] if len(arguments) > 1 else ''}\n{result.stderr.strip()}")
+    return result.stdout
+
+
+class GitHub:
+    def __init__(self, repository: str):
+        if not REPOSITORY_RE.fullmatch(repository) or repository.startswith("-"):
+            raise ReleaseError("Repository must use OWNER/REPO format")
+        self.repository = repository
+
+    def api(self, endpoint: str) -> object:
+        return json.loads(command(["gh", "api", "-H", "Accept: application/vnd.github+json",
+                                   f"repos/{self.repository}/{endpoint}"]))
+
+    def release(self, tag: str) -> dict | None:
+        result = subprocess.run(["gh", "api", f"repos/{self.repository}/releases/tags/{tag}"],
+                                text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                check=False)
+        if result.returncode:
+            if "(HTTP 404)" in result.stderr:
+                return None
+            raise ReleaseError(f"Could not read release {tag}: {result.stderr.strip()}")
+        return json.loads(result.stdout)
+
+    def assets(self, release: dict) -> list[dict]:
+        assets: list[dict] = []
+        for page in range(1, 1001):
+            rows = self.api(f"releases/{release['id']}/assets?per_page=100&page={page}")
+            assets.extend(rows)
+            if len(rows) < 100:
+                return assets
+        raise ReleaseError("Unreasonable number of release assets")
+
+    def remote_commit(self, tag: str) -> str:
+        ref = self.api(f"git/ref/tags/{quote(tag, safe='')}")
+        value = ref["object"]
+        for _ in range(8):
+            if value["type"] == "commit":
+                return value["sha"]
+            if value["type"] != "tag":
+                break
+            value = self.api(f"git/tags/{value['sha']}")["object"]
+        raise ReleaseError("Tag does not resolve to a commit")
+
+    def check_asset(self, expected: Asset, remote: dict) -> dict:
+        if remote.get("state") != "uploaded" or remote.get("size") != expected.size:
+            raise ReleaseError(f"Incomplete asset or size mismatch: {expected.name}")
+        digest = remote.get("digest")
+        if isinstance(digest, str) and digest.startswith("sha256:"):
+            actual = digest[7:].lower()
+            method = "GitHub REST sha256 digest"
+        else:
+            # Older assets may lack digest. Download through gh's authenticated
+            # API into a temporary directory, never trust an arbitrary URL.
+            with tempfile.TemporaryDirectory(prefix="vision-release-verify-") as temp:
+                destination = Path(temp) / "asset"
+                with destination.open("wb") as stream:
+                    result = subprocess.run([
+                        "gh", "api", "-H", "Accept: application/octet-stream",
+                        f"repos/{self.repository}/releases/assets/{remote['id']}"],
+                        stdout=stream, stderr=subprocess.PIPE, check=False)
+                if result.returncode:
+                    raise ReleaseError(f"Asset download failed: {expected.name}")
+                if destination.stat().st_size != expected.size:
+                    raise ReleaseError(f"Downloaded asset size mismatch: {expected.name}")
+                actual = sha256(destination)
+            method = "downloaded sha256"
+        if actual != expected.sha256:
+            raise ReleaseError(f"Remote checksum mismatch: {expected.name}")
+        return {**expected.metadata(), "asset_id": remote["id"], "verification": method}
+
+    def verify_assets(self, release: dict, expected: list[Asset],
+                      allow_missing: bool = False) -> list[dict]:
+        rows = self.assets(release)
+        by_name: dict[str, dict] = {}
+        for row in rows:
+            if row["name"] in by_name:
+                raise ReleaseError(f"Duplicate remote asset: {row['name']}")
+            by_name[row["name"]] = row
+        verified = []
+        for asset in expected:
+            if asset.name not in by_name:
+                if allow_missing:
+                    continue
+                raise ReleaseError(f"Missing remote asset: {asset.name}")
+            verified.append(self.check_asset(asset, by_name[asset.name]))
+        return verified
+
+
+def cmake_version(text: str) -> str:
+    match = re.search(r"project\s*\(\s*VisionStudio\s+VERSION\s+(\d+\.\d+\.\d+)\b", text,
+                      re.IGNORECASE)
+    if not match:
+        raise ReleaseError("Cannot find VisionStudio version in CMakeLists.txt")
+    return match.group(1)
+
+
+def verify_tag(github: GitHub, project: Path, version: str) -> str:
+    tag = f"v{version}"
+    local = command(["git", "rev-parse", f"refs/tags/{tag}^{{commit}}"], project).strip()
+    head = command(["git", "rev-parse", "HEAD"], project).strip()
+    if local != head:
+        raise ReleaseError("Publish from the tagged commit; local tag does not equal HEAD")
+    if command(["git", "status", "--porcelain", "--untracked-files=no"], project).strip():
+        raise ReleaseError("Tracked source changes must be committed before publishing")
+    tagged_cmake = command(["git", "show", f"refs/tags/{tag}:CMakeLists.txt"], project)
+    if cmake_version(tagged_cmake) != version:
+        raise ReleaseError("Tag's CMakeLists.txt version does not match release version")
+    if github.remote_commit(tag) != local:
+        raise ReleaseError("Local and GitHub tag point to different commits")
+    return local
+
+
+def publish(args: argparse.Namespace, github: GitHub) -> dict:
+    assets = validate_bundle(args.release_dir, args.version)
+    notes = args.notes_file.resolve(strict=True)
+    if not notes.is_file() or not notes.read_text(encoding="utf-8").strip():
+        raise ReleaseError("Release notes file is empty")
+    commit = verify_tag(github, args.project_dir.resolve(), args.version)
+    tag = f"v{args.version}"
+    existing = github.release(tag)
+    if existing:
+        if not existing.get("draft") or not args.resume_draft:
+            raise ReleaseError("Release already exists; only --resume-draft may continue a draft")
+        if (existing.get("tag_name") != tag or existing.get("prerelease")
+                or existing.get("body", "").strip() != notes.read_text(encoding="utf-8").strip()):
+            raise ReleaseError("Existing draft has different tag, notes, or release type")
+        allowed_names = {asset.name for asset in assets} | {"RELEASE-ASSETS.json"}
+        if any(row["name"] not in allowed_names for row in github.assets(existing)):
+            raise ReleaseError("Existing draft contains unexpected assets; inspect it manually")
+        github.verify_assets(existing, assets, allow_missing=True)
+    plan = {"success": True, "dry_run": args.dry_run, "repository": github.repository,
+            "tag": tag, "commit": commit, "assets": [item.metadata() for item in assets]}
+    if args.dry_run:
+        return plan
+    # Include a canonical manifest so downloaded assets can be audited together.
+    manifest_data = {"schema": 1, "repository": github.repository, "tag": tag,
+                     "commit": commit, "assets": plan["assets"]}
+    with tempfile.TemporaryDirectory(prefix="vision-release-publish-") as temp:
+        manifest_path = Path(temp) / "RELEASE-ASSETS.json"
+        manifest_path.write_text(json.dumps(manifest_data, ensure_ascii=False, indent=2) + "\n")
+        assets.append(make_asset(Path(temp), manifest_path.name))
+        if existing is None:
+            command(["gh", "release", "create", tag, "--repo", github.repository,
+                     "--verify-tag", "--draft", "--title", f"Vision Studio {tag}",
+                     "--notes-file", str(notes)])
+        release = github.release(tag)
+        if release is None or not release.get("draft"):
+            raise ReleaseError("Expected draft release after creation")
+        verified = github.verify_assets(release, assets, allow_missing=True)
+        present = {row["name"] for row in verified}
+        for asset in assets:
+            if asset.name not in present:
+                command(["gh", "release", "upload", tag, str(asset.path), "--repo",
+                         github.repository])  # Never use --clobber.
+        verified = github.verify_assets(release, assets)
+        # A concurrent tag mutation must not publish mismatched code.
+        if github.remote_commit(tag) != commit:
+            raise ReleaseError("GitHub tag changed during upload; release remains a draft")
+        command(["gh", "release", "edit", tag, "--repo", github.repository,
+                 "--draft=false", "--latest"])
+        release = github.release(tag)
+        if release is None or release.get("draft") or not release.get("published_at"):
+            raise ReleaseError("Release was not published")
+        plan.update({"url": release["html_url"], "verified_assets": verified,
+                     "published": True})
+    return plan
+
+
+def verify(args: argparse.Namespace, github: GitHub) -> dict:
+    assets = validate_bundle(args.release_dir, args.version, require_qa=not args.legacy)
+    tag = f"v{args.version}"
+    release = github.release(tag)
+    if release is None or release.get("draft") or not release.get("published_at"):
+        raise ReleaseError("A published release is required")
+    return {"success": True, "repository": github.repository, "tag": tag,
+            "url": release["html_url"], "verified_assets": github.verify_assets(release, assets)}
+
+
+def cleanup_root(path: Path) -> Path:
+    root = canonical_directory(path)
+    if root.name != "releases":
+        raise ReleaseError("Only a directory named releases can be pruned")
+    if root.parent.name == "output":
+        project = root.parent.parent
+    else:
+        project = root.parent
+    if not (project / "CMakeLists.txt").is_file() or not (project / "src").is_dir():
+        raise ReleaseError("Prune root must be <project>/output/releases or <project>/releases")
+    return root
+
+
+def inspect_cleanup_tree(directory: Path) -> tuple[int, int]:
+    original = directory.stat()
+    for current, directories, files in os.walk(directory, followlinks=False):
+        for name in directories + files:
+            path = Path(current) / name
+            mode = path.lstat().st_mode
+            if name in PROTECTED or stat.S_ISLNK(mode) or not (
+                    stat.S_ISREG(mode) or stat.S_ISDIR(mode)):
+                raise ReleaseError(f"Unsafe or protected cleanup entry: {path}")
+            if path.lstat().st_dev != original.st_dev:
+                raise ReleaseError(f"Cleanup cannot cross a filesystem: {path}")
+    return original.st_dev, original.st_ino
+
+
+def cleanup_candidates(root: Path) -> tuple[list[Path], list[Path]]:
+    directories = []
+    for path in root.iterdir():
+        if VERSION_RE.fullmatch(path.name):
+            if path.is_symlink():
+                raise ReleaseError(f"Symlink version directory is not allowed: {path}")
+            if path.is_dir():
+                directories.append(path)
+    versions = sorted(directories,
+                      key=lambda path: version_key(path.name), reverse=True)
+    # Unknown names, historical root-level files and active builds are untouched.
+    return versions[:2], versions[2:]
+
+
+def prune(args: argparse.Namespace, github: GitHub) -> dict:
+    root = cleanup_root(args.releases_root)
+    kept, candidates = cleanup_candidates(root)
+    plan = {"success": True, "dry_run": not args.execute, "root": str(root),
+            "kept": [str(path) for path in kept], "verified_candidates": []}
+    # Preflight the entire plan before any deletion. Any failure protects all.
+    identities = {}
+    for candidate in candidates:
+        directory = canonical_directory(candidate)
+        if directory.parent != root:
+            raise ReleaseError("Cleanup candidate escaped its parent")
+        identities[directory] = inspect_cleanup_tree(directory)
+        assets = validate_bundle(directory, directory.name, require_qa=False)
+        release = github.release(f"v{directory.name}")
+        if (release is None or release.get("draft") or release.get("prerelease")
+                or not release.get("published_at")):
+            raise ReleaseError(f"Version is not durably published: {directory.name}")
+        verified = github.verify_assets(release, assets)
+        plan["verified_candidates"].append({"path": str(directory),
+                                            "url": release["html_url"], "assets": verified})
+    if args.execute:
+        if not getattr(shutil.rmtree, "avoids_symlink_attacks", False):
+            raise ReleaseError("This platform does not provide safe descriptor-based rmtree")
+        # Re-evaluate protection in case a new version appeared during remote QA.
+        new_kept, new_candidates = cleanup_candidates(root)
+        if kept != new_kept or candidates != new_candidates:
+            raise ReleaseError("Local versions changed during verification; retry cleanup")
+        for path, identity in identities.items():
+            if inspect_cleanup_tree(path) != identity or path.parent != root:
+                raise ReleaseError("Candidate identity changed during verification")
+        removed = []
+        for path in identities:
+            shutil.rmtree(path)
+            removed.append(str(path))
+        plan["removed"] = removed
+    return plan
+
+
+def parser() -> argparse.ArgumentParser:
+    result = argparse.ArgumentParser(description=__doc__,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    sub = result.add_subparsers(dest="operation", required=True)
+    for operation in ("publish", "verify"):
+        item = sub.add_parser(operation)
+        item.add_argument("--repo", default=DEFAULT_REPOSITORY)
+        item.add_argument("--version", required=True)
+        item.add_argument("--release-dir", required=True, type=Path)
+        if operation == "publish":
+            item.add_argument("--notes-file", required=True, type=Path)
+            item.add_argument("--project-dir", type=Path, default=Path(__file__).resolve().parent.parent)
+            item.add_argument("--dry-run", action="store_true", help="Validate locally/remotely; do not publish")
+            item.add_argument("--resume-draft", action="store_true")
+        else:
+            item.add_argument("--legacy", action="store_true", help="Verify critical archives/manifests without newer QA reports")
+    item = sub.add_parser("prune")
+    item.add_argument("--repo", default=DEFAULT_REPOSITORY)
+    item.add_argument("--releases-root", required=True, type=Path)
+    item.add_argument("--execute", action="store_true", help="Remove only remotely verified old version directories")
+    return result
+
+
+def main() -> int:
+    args = parser().parse_args()
+    try:
+        github = GitHub(args.repo)
+        result = {"publish": publish, "verify": verify, "prune": prune}[args.operation](args, github)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return 0
+    except (ReleaseError, OSError, ValueError, KeyError) as error:
+        print(json.dumps({"success": False, "error": str(error)}, ensure_ascii=False), file=sys.stderr)
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

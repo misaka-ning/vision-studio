@@ -1,0 +1,60 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+name: Source and release tooling checks
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: source-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Check Python syntax
+        run: python3 -m py_compile scripts/*.py packaging/*.py docs/release/build_source_archive.py tests/github_release_tests.py
+      - name: Test publish and retention safety with mocked GitHub
+        run: python3 -m unittest discover -s tests -p github_release_tests.py -v
+      - name: Validate version tags
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          python3 - <<'PY'
+          import importlib.util
+          import os
+          from pathlib import Path
+          import sys
+          spec = importlib.util.spec_from_file_location('github_release', 'scripts/github_release.py')
+          module = importlib.util.module_from_spec(spec)
+          sys.modules[spec.name] = module
+          spec.loader.exec_module(module)
+          tag = os.environ['RELEASE_TAG']
+          assert tag.startswith('v'), 'Release tag must start with v'
+          version = tag[1:]
+          module.version_key(version)
+          assert module.cmake_version(Path('CMakeLists.txt').read_text()) == version, 'Tag and CMake version differ'
+          assert Path(f'docs/releases/{version}.md').is_file(), 'Versioned release notes are missing'
+          print(f'{tag}: version metadata is consistent')
+          PY
+      - name: Explain local package publishing
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'SUMMARY'
+          This workflow validates source syntax, release tooling safety, and tag metadata.
+          The Qt 6.8.3 DEB and full upstream source companion are built and tested locally.
+          `scripts/github_release.py publish` uploads validated local artifacts to a draft,
+          verifies each asset, and publishes it. GitHub supplies source ZIP/TAR links for tags.
+          SUMMARY

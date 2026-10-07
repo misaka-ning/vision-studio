@@ -12,7 +12,8 @@ VERSION = "1.5.0"
 SOURCE_ITEMS = ("src", "tests", "scripts", "packaging", "docs", "assets", "models", "vendor",
                 "CMakeLists.txt", "resources.qrc", "run.sh", "VisionStudio.desktop", "README.md",
                 "LICENSE", "requirements-pt.txt", "requirements-pt.lock.txt", "runtime-info.json",
-                ".clang-format", ".gitignore")
+                ".clang-format", ".gitignore", ".gitattributes", ".github", "AGENTS.md",
+                "CHANGELOG.md", "CONTRIBUTING.md")
 SKIP = {".git", "__pycache__", ".pytest_cache", ".cache"}
 QT_MODULES = ("qtbase", "qtsvg", "qtwayland", "qtimageformats", "qtdeclarative",
               "qtwebchannel", "qtpositioning", "qtwebengine")

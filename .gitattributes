@@ -1,0 +1,23 @@
+* text=auto
+*.cpp text eol=lf
+*.h text eol=lf
+*.py text eol=lf
+*.sh text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.txt text eol=lf
+*.cmake text eol=lf
+*.qss text eol=lf
+*.svg text eol=lf
+*.qrc text eol=lf
+*.desktop text eol=lf
+*.pt binary
+*.onnx binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+# Keep vendored upstream files byte-for-byte as distributed.
+vendor/** -text
