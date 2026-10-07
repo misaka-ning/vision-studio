@@ -26,6 +26,8 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QProgressBar>
+#include <QProcess>
+#include <QPointer>
 #include <QPushButton>
 #include <QRegularExpression>
 #include <QSaveFile>
@@ -446,7 +448,7 @@ QWidget *MainWindow::buildSidebar()
     brand->addWidget(text("Vision", "brand"));
     brand->addStretch();
     l->addLayout(brand);
-    auto *cap = text("STUDIO  /  V1.4", "brandCaption");
+    auto *cap = text("STUDIO  /  V1.5", "brandCaption");
     cap->setContentsMargins(4, 4, 0, 0);
     l->addWidget(cap);
     l->addSpacing(38);
@@ -1041,7 +1043,7 @@ QWidget *MainWindow::buildModelDisplay()
             {
                 structureStatus_->setText(state == ModelViewer::State::Loading ? "后台加载中…"
                                           : state == ModelViewer::State::Ready
-                                              ? QString("已缓存 · %1 个节点").arg(modelViewer_->graphNodeCount())
+                                              ? QString("三种视图已缓存")
                                           : state == ModelViewer::State::Error ? "无法显示"
                                                                              : "等待模型");
             });
@@ -1049,8 +1051,8 @@ QWidget *MainWindow::buildModelDisplay()
             [this](const QString &path)
             {
                 if (!busy_ && (pages_->currentIndex() == 1 || pages_->currentIndex() == 2))
-                    showNotice(QString("模型结构已缓存 · %1 · %2 个节点")
-                                   .arg(QFileInfo(path).fileName()).arg(modelViewer_->graphNodeCount()));
+                    showNotice(QString("模型结构、层级树与参数表已缓存 · %1")
+                                   .arg(QFileInfo(path).fileName()));
             });
     connect(modelViewer_, &ModelViewer::loadFailed, this,
             [this](const QString &error)
@@ -1058,7 +1060,7 @@ QWidget *MainWindow::buildModelDisplay()
                 if (pages_->currentIndex() == 2)
                     showNotice(error, true);
             });
-    auto *note = text("使用模型库中全局选中的模型，结构在后台加载并缓存。滚轮缩放，拖动平移，点击节点查看参数。", "tiny");
+    auto *note = text("使用模型库中全局选中的模型，三种视图共用后台解析缓存。结构图可缩放与平移；层级树和参数表支持搜索与详情查看。", "tiny");
     note->setWordWrap(true);
     layout->addWidget(note);
     return page;
@@ -1493,7 +1495,7 @@ QWidget *MainWindow::buildGuide()
     <style>h1{color:#e3f3f1;font-size:24px}h2{color:#56d8bd;font-size:16px;margin-top:26px}p,li{line-height:1.7;color:#a5bacb;font-size:13px}code{color:#c9e4dd}a{color:#56d8bd}</style>
     <h1>让你的视觉模型，真正运行起来。</h1><p>Vision Studio 是一个原生 C++ / Qt 桌面工作台。模型加载、图像处理与推理均在本机完成。</p>
     <h2>01 / 开始你的第一次检测</h2><p>“更多”页的“运行示例”可选择 ONNX / PT 示例。使用自己的模型时，导入 ONNX 或 PT，然后选择图片、文件夹、视频或摄像头，点击“开始检测”。PT 使用本机独立 PyTorch 环境直接推理，无需手动导出。</p>
-    <h2>模型库与结构显示</h2><p>在“模型库”点击模型即可全局选用，工作台检测与模型显示使用同一模型。选择后在后台预加载结构，完成后保留图形缓存；进入或离开页面不重复加载。模型显示可以缩放、平移并点击节点查看输入输出及参数。无法解析的文件显示文字说明，可点击“重试加载”。非 ONNX 文件显示：想看完整结构，建使用导出的 ONNX。</p>
+    <h2>模型库与结构显示</h2><p>在“模型库”点击模型即可全局选用，工作台检测与模型显示使用同一模型。选择后在后台预加载，结构图、层级树、参数表共用一次解析缓存；进入或离开页面、切换展示模式不重复加载。结构图可以缩放、平移并点击节点查看输入输出及参数；层级树可以展开模块，参数表可以查看张量名称、类型与形状，两者支持搜索和详情。普通 PT 的树表示模块包含关系，只有权重的文件按参数名称分组，不补造计算连接。无法解析的文件显示文字说明，可点击“重试加载”。非 ONNX 文件显示：想看完整结构，建使用导出的 ONNX。</p>
     <h2>PT 模型</h2><p>Ultralytics YOLO 的 PT 检查点会自动读取任务和类别名称，预处理由原生后端执行。支持的旧版 YOLOv5 权重使用随附的本地兼容模块。只包含 state_dict 的任意 PT 文件无法单独重建网络，需要原始模型架构。分割、姿态和旋转框输出暂不支持。</p>
     <h2>02 / 正确匹配模型</h2><p>YOLOv5：原始输出 <code>[1,N,5+C]</code>，包含 objectness。YOLOv8 / YOLO11：原始输出 <code>[1,4+C,N]</code>。模型应为 batch=1、固定正方形输入、FP32、不包含 NMS。输入尺寸必须与导出模型一致。分割、姿态、旋转框和端到端输出暂不支持。</p>
     <p>默认 640 px、RGB、1/255 缩放、零均值，适合常见 YOLO 模型。自定义检测模型必须导入数量匹配的 UTF-8 标签文本，每行一个名称，并保持训练时类别顺序。未导入标签时按 COCO 80 类解释检测输出。分类模型未配置标签时显示数字类别。</p>
@@ -2199,16 +2201,23 @@ void MainWindow::runModelSmoke(const QString &dir, const QString &model)
         return;
     }
     const auto completed = std::make_shared<bool>(false);
-    const auto writeReport = [this, output, completed](bool success, const QString &error)
+    const auto capturing = std::make_shared<bool>(false);
+    const auto views = std::make_shared<QJsonObject>();
+    const auto cachePreserved = std::make_shared<bool>(false);
+    const auto writeReport = [this, output, completed, views, cachePreserved](bool success, const QString &error)
     {
         if (*completed)
             return;
         *completed = true;
-        saveScreenshot(output + "/model-display.png");
+        if (!success)
+            saveScreenshot(output + "/model-display.png");
         const QJsonObject report{
             {"success", success}, {"error", error}, {"application", "Vision Studio"},
-            {"version", "1.4.0"}, {"qt", qVersion()}, {"netron", "9.3.1"},
+            {"version", QCoreApplication::applicationVersion()}, {"qt", qVersion()}, {"netron", "9.3.1"},
             {"model", modelViewer_->modelPath()}, {"nodes", modelViewer_->graphNodeCount()},
+            {"hierarchy_items", modelViewer_->hierarchyItemCount()},
+            {"parameter_rows", modelViewer_->parameterCount()}, {"display_modes", *views},
+            {"cache_preserved", *cachePreserved},
             {"onnx_hint_visible", structureHint_->isVisible()},
             {"onnx_hint", structureHint_->text()}};
         QString writeError;
@@ -2216,20 +2225,64 @@ void MainWindow::runModelSmoke(const QString &dir, const QString &model)
         qInfo().noquote() << QJsonDocument(report).toJson(QJsonDocument::Compact);
         QApplication::exit(success && saved ? 0 : 2);
     };
-    connect(modelViewer_, &ModelViewer::modelLoaded, this,
-            [this, writeReport](const QString &)
+    const auto captureViews = [this, output, capturing, views, cachePreserved, writeReport]
+    {
+        if (*capturing)
+            return;
+        *capturing = true;
+        if (modelViewer_->state() != ModelViewer::State::Ready || modelViewer_->graphNodeCount() <= 0)
+        {
+            writeReport(false, "模型没有生成可显示的结构。");
+            return;
+        }
+        const QPointer<QObject> browser = modelViewer_->findChild<QObject *>("netronWebView");
+        const QPointer<QProcess> service = modelViewer_->findChild<QProcess *>();
+        const qint64 processId = service ? service->processId() : 0;
+        const QString path = modelViewer_->modelPath();
+        const int items = modelViewer_->hierarchyItemCount();
+        const int parameters = modelViewer_->parameterCount();
+        modelViewer_->setDisplayMode(ModelViewer::DisplayMode::Graph);
+        QTimer::singleShot(300, this, [this, output, views, cachePreserved, writeReport, browser, service,
+                                     processId, path, items, parameters]
+        {
+            saveScreenshot(output + "/model-display.png");
+            views->insert("graph", modelViewer_->displayMode() == ModelViewer::DisplayMode::Graph);
+            modelViewer_->setDisplayMode(ModelViewer::DisplayMode::Hierarchy);
+            QTimer::singleShot(200, this, [this, output, views, cachePreserved, writeReport, browser, service,
+                                         processId, path, items, parameters]
             {
-                QTimer::singleShot(400, this, [this, writeReport]
-                                   {
-                                       const bool ready = modelViewer_->state() == ModelViewer::State::Ready && modelViewer_->graphNodeCount() > 0;
-                                       writeReport(ready, ready ? QString() : "模型没有生成可显示的结构。");
-                                   });
+                saveScreenshot(output + "/model-hierarchy.png");
+                views->insert("hierarchy", modelViewer_->displayMode() == ModelViewer::DisplayMode::Hierarchy);
+                modelViewer_->setDisplayMode(ModelViewer::DisplayMode::Parameters);
+                QTimer::singleShot(200, this, [this, output, views, cachePreserved, writeReport, browser, service,
+                                             processId, path, items, parameters]
+                {
+                    saveScreenshot(output + "/model-parameters.png");
+                    views->insert("parameters", modelViewer_->displayMode() == ModelViewer::DisplayMode::Parameters);
+                    modelViewer_->setDisplayMode(ModelViewer::DisplayMode::Graph);
+                    *cachePreserved = browser && service && processId > 0 &&
+                        modelViewer_->findChild<QObject *>("netronWebView") == browser &&
+                        modelViewer_->findChild<QProcess *>() == service && service->processId() == processId &&
+                        modelViewer_->state() == ModelViewer::State::Ready && modelViewer_->modelPath() == path &&
+                        modelViewer_->hierarchyItemCount() == items && modelViewer_->parameterCount() == parameters;
+                    const bool success = *cachePreserved && items > 0 &&
+                        views->value("graph").toBool() && views->value("hierarchy").toBool() &&
+                        views->value("parameters").toBool();
+                    writeReport(success, success ? QString() : "模型视图切换或解析缓存自检失败。");
+                });
+            });
+        });
+    };
+    connect(modelViewer_, &ModelViewer::modelLoaded, this,
+            [this, captureViews](const QString &)
+            {
+                QTimer::singleShot(300, this, captureViews);
             }, Qt::SingleShotConnection);
     connect(modelViewer_, &ModelViewer::loadFailed, this,
             [writeReport](const QString &error) { writeReport(false, error); }, Qt::SingleShotConnection);
     showModelStructure(model);
     if (modelViewer_->state() == ModelViewer::State::Ready)
-        QTimer::singleShot(400, this, [writeReport] { writeReport(true, {}); });
+        QTimer::singleShot(300, this, captureViews);
     else if (modelViewer_->state() == ModelViewer::State::Error)
         QTimer::singleShot(0, this, [this, writeReport] { writeReport(false, modelViewer_->errorString()); });
 }
@@ -2308,7 +2361,7 @@ bool MainWindow::writeResult(const vision::InferenceResult &r, const QString &di
                              {"preprocess", preprocess}};
     QJsonObject root{
         {"application", "Vision Studio"},
-        {"version", "1.4.0"},
+        {"version", QCoreApplication::applicationVersion()},
         {"timestamp", QDateTime::currentDateTime().toString(Qt::ISODateWithMs)},
         {"source", r.source},
         {"model", r.modelName},

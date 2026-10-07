@@ -4,17 +4,26 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
+#include <QHBoxLayout>
+#include <QHeaderView>
+#include <QItemSelectionModel>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QLabel>
+#include <QLineEdit>
 #include <QProcess>
 #include <QProcessEnvironment>
 #include <QProgressBar>
 #include <QPushButton>
+#include <QSortFilterProxyModel>
 #include <QStackedLayout>
 #include <QStackedWidget>
+#include <QStandardItemModel>
 #include <QStandardPaths>
+#include <QTableView>
 #include <QTimer>
+#include <QTreeView>
 #include <QVBoxLayout>
 #include <QWebEngineDownloadRequest>
 #include <QWebEnginePage>
@@ -30,6 +39,45 @@ namespace
 {
 constexpr qsizetype outputLimit = 64 * 1024;
 constexpr auto netronVersion = "9.3.1";
+
+class ParameterFilter final : public QSortFilterProxyModel
+{
+  public:
+    using QSortFilterProxyModel::QSortFilterProxyModel;
+
+  protected:
+    bool lessThan(const QModelIndex &left, const QModelIndex &right) const override
+    {
+        if (left.column() != 3 || right.column() != 3)
+            return QSortFilterProxyModel::lessThan(left, right);
+        const QString a = left.data().toString();
+        const QString b = right.data().toString();
+        const auto integer = [](const QString &value)
+        {
+            if (value.isEmpty())
+                return false;
+            for (QChar character : value)
+                if (character < QLatin1Char('0') || character > QLatin1Char('9'))
+                    return false;
+            return true;
+        };
+        const bool aKnown = integer(a), bKnown = integer(b);
+        if (aKnown != bKnown)
+            return sortOrder() == Qt::AscendingOrder ? aKnown : !aKnown;
+        if (!aKnown)
+            return QString::compare(a, b, Qt::CaseSensitive) < 0;
+        const auto significant = [](const QString &value)
+        {
+            int start = 0;
+            while (start < value.size() - 1 && value[start] == QLatin1Char('0'))
+                ++start;
+            return value.mid(start);
+        };
+        const QString first = significant(a), second = significant(b);
+        return first.size() != second.size() ? first.size() < second.size()
+                                             : QString::compare(first, second, Qt::CaseSensitive) < 0;
+    }
+};
 
 QString projectDirectory()
 {
@@ -283,26 +331,238 @@ QString bridgeScript()
                 .toolbar-icon .border { stroke: #0b1420; }
                 .node path, .node line { stroke: #3b5164; }
                 .node-item path { stroke: #3b5164; }
-                .node-item:not(.node-item-type) path { fill: #192a39; }
-                .node-item text { fill: #dce6ef; }
-                .node-item-type text { fill: #fff; }
-                .node-item-type-constant path, .node-item-type-control path, .node-item-function path { fill: #23394b; }
-                .node-item-type-constant text, .node-item-type-control text, .node-item-function text { fill: #e5eef7; }
-                .node-item-type:hover path { fill: #35516a; }
+                .node-item:not(.node-item-type) > path { fill: #192a39; }
+                .node-item text { fill: #e5eef7 !important; }
+                .node-item-type text { fill: #fff !important; }
+                .node-item-type-constant > path, .node-item-type-control > path, .node-item-function > path { fill: #23394b !important; }
+                .node-item-type-constant > text, .node-item-type-control > text, .node-item-function > text { fill: #e5eef7 !important; }
+                .node-item-type:hover > path { fill: #35516a !important; }
                 .node-item-type:hover text { fill: #fff; }
-                .node-item-undefined path { fill: #a4323c !important; }
-                .node-argument > text, .edge-label { fill: #bacbdb; }
-                .node-argument-list > path, .graph-item-input path, .graph-item-output path { fill: #23394b; }
-                .node-block > .node-block-background { fill: #0b1420; }
+                .node-item-undefined > path { fill: #a4323c !important; }
+                .node-argument > text, .edge-label { fill: #d0ddeb !important; }
+                .node-argument-list > path, .node-argument-list:hover > path,
+                .node-item-input > path, .node-item-input:hover > path,
+                .node-item-constant > path, .node-item-constant:hover > path,
+                .node-item-function > path, .node-item-function:hover > path,
+                .graph-item-input > path, .graph-item-input:hover > path,
+                .graph-item-output > path, .graph-item-output:hover > path { fill: #23394b !important; }
+                .node-block > .node-block-background { fill: #0b1420 !important; }
                 .node-block .edge-path { stroke: #8aa2b8; }
                 .edge-path { stroke: #8aa2b8; }
                 .edge-label text { fill: #bacbdb; }
                 #arrowhead, #arrowhead-tunnel { fill: #8aa2b8; }
+                .select > .node.node-border, .select.edge-path, .select.node-argument > rect,
+                .node-block .select.edge-path { stroke: #38c9a7 !important; }
+                #arrowhead-hover, #arrowhead-select { fill: #38c9a7 !important; }
                 #logo-github, #logo-netron { display: none !important; }
             `;
             document.head.appendChild(style);
         }, { once: true });
     })();)JS");
+}
+
+QString structureScript()
+{
+    // Only metadata already decoded by Netron is read. Tensor values/storage and the original
+    // checkpoint are never serialized, evaluated, or loaded by another Python backend.
+    return QString::fromUtf8(R"JS((() => {
+        try {
+            const model = window.__view__ && window.__view__.model;
+            if (!model) return JSON.stringify({ error: 'Model is not parsed.' });
+            const result = { schema: 1, nodes: [], parameters: [], kind: 'graph', notes: [], truncated: false };
+            const maxNodes = 5000, maxParameters = 10000, maxDepth = 48, maxBytes = 4 * 1024 * 1024;
+            let bytes = 0, saturated = false, moduleCount = 0, weightsDetected = false;
+            const reasons = new Set();
+            const seenNodes = new WeakMap(), seenTensors = new WeakMap();
+            const isPyTorch = /PyTorch|TorchScript/.test(String(model.format || ''));
+            const isTorchScript = /TorchScript/.test(String(model.format || ''));
+            const limit = message => { result.truncated = true; reasons.add(message); };
+            const text = (value, maximum = 512) => {
+                if (typeof value !== 'string') return '';
+                if (value.length > maximum) limit('元信息字段过长，已截断');
+                return value.slice(0, maximum);
+            };
+            const append = (array, record) => {
+                // Three bytes per UTF-16 unit conservatively bounds UTF-8, including CJK strings.
+                bytes += JSON.stringify(record).length * 3;
+                if (bytes > maxBytes - 8192) {
+                    limit('结构数据超过 4 MiB 上限'); saturated = true; return false;
+                }
+                array.push(record); return true;
+            };
+            const shape = type => {
+                const source = type && type.shape && type.shape.dimensions;
+                if (!Array.isArray(source)) return { shape: '未知', elements: '—' };
+                if (source.length > 32) {
+                    limit('张量维度超过 32 维'); return { shape: '维度过多', elements: '—' };
+                }
+                let precise = true;
+                const dimensions = source.map(value => {
+                    let dimension = '?';
+                    if (typeof value === 'bigint') dimension = value.toString();
+                    else if (typeof value === 'number' && Number.isFinite(value)) {
+                        dimension = String(value);
+                        if (!Number.isSafeInteger(value) || value < 0) precise = false;
+                    } else if (typeof value === 'string') dimension = value || '?';
+                    else precise = false;
+                    if (dimension.length > 80) {
+                        limit('张量维度文本超过 80 字符，已截断'); precise = false;
+                        return dimension.slice(0, 79) + '…';
+                    }
+                    return dimension;
+                });
+                let elements = '—';
+                if (precise && dimensions.every(value => /^\d+$/.test(value))) {
+                    elements = dimensions.reduce((count, value) => count * BigInt(value), 1n).toString();
+                    if (elements.length > 160) elements = '—';
+                }
+                return { shape: '[' + dimensions.join(',') + ']', elements };
+            };
+            const tensor = (value, owner, argument, fallback) => {
+                if (!value || typeof value !== 'object' || saturated) return;
+                const initializer = value.initializer ||
+                    ((fallback === 'tensor' || fallback === 'tensor[]') && value.type &&
+                     ('values' in value || typeof value.encoding === 'string') ? value : null);
+                if (!initializer || !initializer.type) return;
+                const name = text(initializer.name || value.name || argument);
+                const path = name.includes('.') || name.includes('/') ? name :
+                    (owner ? owner + '.' + (name || argument) : name || argument || 'tensor');
+                const known = seenTensors.get(initializer);
+                if (known) {
+                    if (known.path !== path) known.note = '共享张量；多个引用仅列一次';
+                    return;
+                }
+                if (result.parameters.length >= maxParameters) { limit('张量表超过 10000 行'); return; }
+                const type = initializer.type;
+                const info = shape(type);
+                const record = { path: text(path), type: text(type.dataType, 120) || '未知',
+                    shape: info.shape, elements: info.elements, note: '文件中保存的权重 / 常量 / 缓冲' };
+                if (append(result.parameters, record)) {
+                    seenTensors.set(initializer, record);
+                }
+            };
+            const argumentsOf = node => (Array.isArray(node.inputs) ? node.inputs : [])
+                .concat(Array.isArray(node.attributes) ? node.attributes : []);
+            const scanParameters = (arguments, owner) => {
+                for (const argument of arguments) {
+                    if (!argument || saturated) break;
+                    const values = Array.isArray(argument.value) ? argument.value : [argument.value];
+                    for (const value of values)
+                        tensor(value, owner, text(argument.name, 160), argument.type);
+                }
+            };
+            const addNode = (parent, name, path, type, extra = {}) => {
+                if (saturated) return null;
+                if (result.nodes.length >= maxNodes) { limit('层级树超过 5000 项'); return null; }
+                const record = { id: 'n' + result.nodes.length, parent, name: text(name, 160) || '未命名',
+                    path: text(path), type: text(type, 180) || '未知', shape: '', note: '', ...extra };
+                return append(result.nodes, record) ? record : null;
+            };
+            const walkNode = (node, parent, depth, fallback, scope = '') => {
+                if (!node || typeof node !== 'object' || saturated) return;
+                const type = node.type || {};
+                const identifier = text(type.identifier || type.name, 180) || '未知';
+                const ownPath = node.name || node.identifier || fallback;
+                const path = text(!isPyTorch && scope ? scope + '/' + ownPath : ownPath);
+                if (type.type === 'weights' || identifier === 'Weights') weightsDetected = true;
+                const name = text(node.name || node.identifier, 160).split('.').pop() ||
+                    identifier.split('.').pop() || '未命名';
+                const prior = seenNodes.get(node);
+                const arguments = argumentsOf(node);
+                const before = result.parameters.length;
+                if (!prior && result.nodes.length < maxNodes) scanParameters(arguments, path);
+                const own = result.parameters.slice(before, before + 3);
+                const record = addNode(parent, name, path, identifier,
+                    prior ? { note: '共享对象引用：' + prior.path } :
+                            { shape: text(own.map(parameter => parameter.shape).join(' · ')) });
+                if (!record || prior) return;
+                seenNodes.set(node, record);
+                if (depth >= maxDepth) { limit('层级深度超过 48 层'); record.note = '更深层级已截断'; return; }
+                for (const argument of arguments) {
+                    if (!argument || saturated) break;
+                    if (argument.name === '_modules') moduleCount++;
+                    if (argument.type === 'object' && argument.value)
+                        walkNode(argument.value, record.id, depth + 1, path + '.' + argument.name);
+                    else if (argument.type === 'object[]' && Array.isArray(argument.value))
+                        argument.value.forEach((child, index) => walkNode(child, record.id, depth + 1,
+                            path + '.' + argument.name + '.' + index));
+                    else if (argument.type === 'graph' || argument.type === 'function')
+                        walkGraph(argument.value, record.id, depth + 1, path + '.' + argument.name);
+                }
+                if (Array.isArray(node.nodes))
+                    node.nodes.forEach((child, index) => walkNode(child, record.id, depth + 1, path + '.' + index));
+                if (Array.isArray(type.nodes) && type.nodes.length)
+                    walkGraph(type, record.id, depth + 1, path + '.weights');
+            };
+            const walkGraph = (graph, parent, depth, fallback) => {
+                if (!graph || saturated) return;
+                const graphPath = parent ? fallback + (graph.name ? '[' + graph.name + ']' : '') : graph.name || fallback || '模型';
+                const root = addNode(parent, graph.name || fallback || '模型', graphPath,
+                    graph.type === 'weights' ? '权重分组' : '模型 / 图');
+                if (graph.type === 'weights') weightsDetected = true;
+                if (!root) return;
+                if (depth >= maxDepth) { limit('层级深度超过 48 层'); return; }
+                scanParameters(Array.isArray(graph.inputs) ? graph.inputs : [], text(graphPath));
+                let nodes = Array.isArray(graph.nodes) ? graph.nodes : [];
+                if (isPyTorch && nodes.length === 1) {
+                    const arguments = argumentsOf(nodes[0]);
+                    const checkpoint = ['model', 'ema', 'state_dict', 'model_state_dict']
+                        .map(name => arguments.find(argument => argument.name === name &&
+                            argument.type === 'object' && argument.value)).find(Boolean);
+                    if (checkpoint) {
+                        nodes = [checkpoint.value];
+                        result.notes.push('显示 checkpoint 的 ' + checkpoint.name + ' 分支；训练元数据与重复分支未列入');
+                    }
+                }
+                for (let index = 0; index < nodes.length; index++) {
+                    if (saturated || result.nodes.length >= maxNodes) { limit('层级树超过 5000 项'); break; }
+                    walkNode(nodes[index], root.id, depth + 1, 'node.' + index, graphPath);
+                }
+            };
+            let modules = Array.isArray(model.modules) ? model.modules : [];
+            if (isPyTorch && modules.length > 1) {
+                const primary = modules.find(graph => graph.name === 'model') || modules.find(graph => graph.name === 'ema');
+                if (primary) { modules = [primary]; result.notes.push('仅显示 checkpoint 的主模型分支'); }
+            }
+            modules.forEach((graph, index) => walkGraph(graph, '', 0, graph.name || '模型' + (index ? ' ' + index : '')));
+            result.kind = moduleCount ? 'modules' : isPyTorch && !isTorchScript && weightsDetected && result.parameters.length ? 'parameters' : 'graph';
+            if (result.kind === 'parameters') {
+                // A state_dict does not describe execution order. Build groups from saved names only.
+                result.nodes = []; bytes = JSON.stringify(result.parameters).length * 3; saturated = false;
+                const root = addNode('', '参数名称分组', 'state_dict', '权重字典');
+                const groups = new Map([['', root]]);
+                if (root) for (const parameter of result.parameters) {
+                    if (saturated) break;
+                    const parts = parameter.path.split('.');
+                    let prefix = '', parent = root;
+                    for (let index = 0; index < Math.min(parts.length, maxDepth); index++) {
+                        prefix += (prefix ? '.' : '') + parts[index];
+                        let item = groups.get(prefix);
+                        if (!item) {
+                            const leaf = index === parts.length - 1;
+                            item = addNode(parent.id, parts[index], prefix, leaf ? parameter.type : '参数名称分组',
+                                leaf ? { shape: parameter.shape, note: '按保存的参数名称分组，不代表计算连接' } : {});
+                            if (!item) break;
+                            groups.set(prefix, item);
+                        }
+                        parent = item;
+                    }
+                    if (parts.length > maxDepth) limit('参数名称分组超过 48 层');
+                }
+            }
+            result.notes.push(...reasons);
+            let encoded = JSON.stringify(result);
+            while (new TextEncoder().encode(encoded).length > maxBytes) {
+                result.truncated = true;
+                if (!result.notes.includes('结构数据超过 4 MiB 上限')) result.notes.push('结构数据超过 4 MiB 上限');
+                if (result.nodes.length > 1) result.nodes.splice(Math.max(1, result.nodes.length - 128));
+                else if (result.parameters.length) result.parameters.splice(Math.max(0, result.parameters.length - 128));
+                else break;
+                encoded = JSON.stringify(result);
+            }
+            return encoded;
+        } catch (error) { return JSON.stringify({ error: String(error && error.message || error) }); }
+    })())JS");
 }
 } // namespace
 
@@ -312,6 +572,55 @@ ModelViewer::ModelViewer(QWidget *parent) : QWidget(parent)
     qRegisterMetaType<State>();
     auto *layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(10);
+    auto *toolbar = new QHBoxLayout;
+    toolbar->setSpacing(6);
+    const QStringList names = {QStringLiteral("结构图"), QStringLiteral("层级树"), QStringLiteral("参数表")};
+    const QStringList objects = {"modelGraphModeButton", "modelHierarchyModeButton",
+                                 "modelParametersModeButton"};
+    for (int index = 0; index < names.size(); ++index)
+    {
+        auto *mode = new QPushButton(names[index], this);
+        mode->setObjectName(objects[index]);
+        mode->setCheckable(true);
+        mode->setCursor(Qt::PointingHandCursor);
+        mode->setMinimumHeight(34);
+        mode->setStyleSheet(
+            "QPushButton { background:#162737; color:#a7bdd0; border:1px solid #30475a; "
+            "border-radius:7px; padding:6px 15px; } QPushButton:checked { background:#1c4d47; "
+            "color:#72e4c9; border-color:#38c9a7; } QPushButton:hover { border-color:#4c7d8a; }");
+        toolbar->addWidget(mode);
+        m_modeButtons.append(mode);
+        connect(mode, &QPushButton::clicked, this,
+                [this, index] { setDisplayMode(static_cast<DisplayMode>(index)); });
+    }
+    toolbar->addStretch();
+    m_search = new QLineEdit(this);
+    m_search->setObjectName("modelStructureSearch");
+    m_search->setPlaceholderText(QStringLiteral("搜索名称、类型或路径"));
+    m_search->setClearButtonEnabled(true);
+    m_search->setMinimumWidth(180);
+    m_search->setMaximumWidth(340);
+    m_search->setMinimumHeight(34);
+    m_search->setStyleSheet(
+        "QLineEdit { background:#101e2b; color:#e5eef7; border:1px solid #30475a; "
+        "border-radius:7px; padding:6px 10px; } QLineEdit:focus { border-color:#38c9a7; }");
+    toolbar->addWidget(m_search);
+    layout->addLayout(toolbar);
+    m_summary = new QLabel(this);
+    m_summary->setObjectName("modelStructureSummary");
+    m_summary->setTextFormat(Qt::PlainText);
+    m_summary->setWordWrap(true);
+    m_summary->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    m_summary->setStyleSheet("color:#9bb3c8; font-size:12px;");
+    layout->addWidget(m_summary);
+    m_hint = new QLabel(this);
+    m_hint->setObjectName("modelHierarchyHint");
+    m_hint->setWordWrap(true);
+    m_hint->setTextFormat(Qt::PlainText);
+    m_hint->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    m_hint->setStyleSheet("color:#a9c1d4; font-size:12px;");
+    layout->addWidget(m_hint);
     m_stack = new QStackedWidget(this);
     // Netron measures its SVG after three animation frames. Keep its browser visible beneath
     // the native loading panel so Chromium can deliver those frames before State::Ready.
@@ -352,6 +661,96 @@ ModelViewer::ModelViewer(QWidget *parent) : QWidget(parent)
     statusLayout->addWidget(m_retry, 0, Qt::AlignHCenter);
     statusLayout->addStretch();
     m_stack->addWidget(m_statusPage);
+    m_hierarchyPage = new QWidget(m_stack);
+    auto *treeLayout = new QVBoxLayout(m_hierarchyPage);
+    treeLayout->setContentsMargins(0, 0, 0, 0);
+    m_tree = new QTreeView(m_hierarchyPage);
+    m_tree->setObjectName("modelHierarchyTree");
+    m_treeModel = new QStandardItemModel(this);
+    m_treeFilter = new QSortFilterProxyModel(this);
+    m_treeFilter->setSourceModel(m_treeModel);
+    m_treeFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    m_treeFilter->setFilterKeyColumn(-1);
+    m_treeFilter->setRecursiveFilteringEnabled(true);
+    m_tree->setModel(m_treeFilter);
+    m_tree->setAlternatingRowColors(true);
+    m_tree->setUniformRowHeights(true);
+    m_tree->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    m_tree->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_tree->setSelectionMode(QAbstractItemView::SingleSelection);
+    m_tree->setIndentation(22);
+    treeLayout->addWidget(m_tree);
+    m_stack->addWidget(m_hierarchyPage);
+    m_parametersPage = new QWidget(m_stack);
+    auto *parameterLayout = new QVBoxLayout(m_parametersPage);
+    parameterLayout->setContentsMargins(0, 0, 0, 0);
+    m_parameters = new QTableView(m_parametersPage);
+    m_parameters->setObjectName("modelParameterTable");
+    m_parameterModel = new QStandardItemModel(this);
+    m_parameterFilter = new ParameterFilter(this);
+    m_parameterFilter->setSourceModel(m_parameterModel);
+    m_parameterFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    m_parameterFilter->setFilterKeyColumn(-1);
+    m_parameters->setModel(m_parameterFilter);
+    m_parameters->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    m_parameters->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_parameters->setSelectionMode(QAbstractItemView::SingleSelection);
+    m_parameters->setAlternatingRowColors(true);
+    m_parameters->setSortingEnabled(true);
+    m_parameters->verticalHeader()->hide();
+    m_parameters->verticalHeader()->setDefaultSectionSize(32);
+    parameterLayout->addWidget(m_parameters);
+    m_stack->addWidget(m_parametersPage);
+    const QString viewStyle =
+        "QTreeView, QTableView { background:#0b1420; alternate-background-color:#101f2d; color:#e5eef7; "
+        "border:1px solid #2b4053; border-radius:8px; font-size:12px; gridline-color:#263d50; outline:0; } "
+        "QTreeView::item, QTableView::item { padding:6px; } "
+        "QTreeView::item:selected, QTableView::item:selected { background:#235347; color:#eafff7; } "
+        "QTreeView::item:hover, QTableView::item:hover { background:#20394d; } "
+        "QHeaderView::section { background:#182c3d; color:#bcd0df; border:0; border-bottom:1px solid "
+        "#365065; "
+        "padding:8px; font-weight:600; } QTableView QTableCornerButton::section { background:#182c3d; "
+        "border:0; }";
+    m_tree->setStyleSheet(viewStyle);
+    m_parameters->setStyleSheet(viewStyle);
+    m_details = new QLabel(this);
+    m_details->setObjectName("modelSelectionDetails");
+    m_details->setTextFormat(Qt::PlainText);
+    m_details->setWordWrap(true);
+    m_details->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    m_details->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    m_details->setMinimumHeight(78);
+    m_details->setMaximumHeight(140);
+    m_details->setStyleSheet("background:#142536; color:#c9dfed; border:1px solid #2d475b; "
+                             "border-radius:8px; padding:10px 14px; font-size:12px;");
+    layout->addWidget(m_details);
+    connect(m_search, &QLineEdit::textChanged, this,
+            [this](const QString &query)
+            {
+                m_treeFilter->setFilterFixedString(query);
+                m_parameterFilter->setFilterFixedString(query);
+                if (!query.isEmpty())
+                    m_tree->expandAll();
+                else
+                    m_tree->expandToDepth(2);
+                if (m_mode == DisplayMode::Hierarchy)
+                    updateSelectionDetails(true);
+                else if (m_mode == DisplayMode::Parameters)
+                    updateSelectionDetails(false);
+            });
+    connect(m_tree->selectionModel(), &QItemSelectionModel::currentChanged, this,
+            [this]
+            {
+                if (m_mode == DisplayMode::Hierarchy)
+                    updateSelectionDetails(true);
+            });
+    connect(m_parameters->selectionModel(), &QItemSelectionModel::currentChanged, this,
+            [this]
+            {
+                if (m_mode == DisplayMode::Parameters)
+                    updateSelectionDetails(false);
+            });
+    clearStructure();
     connect(m_retry, &QPushButton::clicked, this, [this] { openModel(m_modelPath); });
     m_deadline = new QTimer(this);
     m_deadline->setSingleShot(true);
@@ -406,6 +805,234 @@ int ModelViewer::graphNodeCount() const
     return m_graphNodeCount;
 }
 
+void ModelViewer::setDisplayMode(DisplayMode mode)
+{
+    if (mode != DisplayMode::Graph && mode != DisplayMode::Hierarchy && mode != DisplayMode::Parameters)
+        return;
+    const bool changed = m_mode != mode;
+    m_mode = mode;
+    updateDisplay();
+    if (changed)
+        emit displayModeChanged(mode);
+}
+
+ModelViewer::DisplayMode ModelViewer::displayMode() const
+{
+    return m_mode;
+}
+
+int ModelViewer::hierarchyItemCount() const
+{
+    return m_hierarchyCount;
+}
+
+int ModelViewer::parameterCount() const
+{
+    return m_parameterCount;
+}
+
+void ModelViewer::clearStructure()
+{
+    m_structurePending = false;
+    m_structureReady = false;
+    m_hierarchyCount = 0;
+    m_parameterCount = 0;
+    m_hierarchyHint.clear();
+    m_search->clear();
+    m_treeModel->clear();
+    m_treeModel->setHorizontalHeaderLabels(
+        {QStringLiteral("模块 / 对象"), QStringLiteral("类型"), QStringLiteral("路径")});
+    m_parameterModel->clear();
+    m_parameterModel->setHorizontalHeaderLabels({QStringLiteral("张量 / 参数路径"),
+                                                 QStringLiteral("数据类型"), QStringLiteral("形状"),
+                                                 QStringLiteral("元素数"), QStringLiteral("备注")});
+    m_summary->clear();
+    m_hint->clear();
+    m_details->clear();
+}
+
+void ModelViewer::updateDisplay()
+{
+    for (int index = 0; index < m_modeButtons.size(); ++index)
+        m_modeButtons[index]->setChecked(index == static_cast<int>(m_mode));
+    const bool ready = m_state == State::Ready && m_structureReady;
+    const bool native = m_mode != DisplayMode::Graph;
+    m_search->setVisible(native);
+    m_search->setEnabled(ready);
+    m_search->setPlaceholderText(m_mode == DisplayMode::Parameters
+                                     ? QStringLiteral("搜索路径、类型、形状或备注")
+                                     : QStringLiteral("搜索名称、类型或路径"));
+    m_summary->setVisible(ready);
+    m_hint->setVisible(ready && native);
+    m_details->setVisible(ready && native);
+    if (ready && m_mode == DisplayMode::Hierarchy)
+    {
+        m_stack->setCurrentWidget(m_hierarchyPage);
+        m_hint->setText(m_hierarchyHint);
+        if (!m_tree->currentIndex().isValid() && m_treeFilter->rowCount())
+            m_tree->setCurrentIndex(m_treeFilter->index(0, 0));
+        updateSelectionDetails(true);
+    }
+    else if (ready && m_mode == DisplayMode::Parameters)
+    {
+        m_stack->setCurrentWidget(m_parametersPage);
+        m_hint->setText(
+            QStringLiteral("只读张量元信息，包含文件中保存的权重、常量与缓冲；元素数未知时显示 —，"
+                           "此表不等同可训练参数总量。"));
+        if (!m_parameters->currentIndex().isValid() && m_parameterFilter->rowCount())
+            m_parameters->setCurrentIndex(m_parameterFilter->index(0, 0));
+        updateSelectionDetails(false);
+    }
+    else
+        m_stack->setCurrentWidget(ready && m_webView ? static_cast<QWidget *>(m_webView) : m_statusPage);
+}
+
+void ModelViewer::updateSelectionDetails(bool hierarchy)
+{
+    const QModelIndex index = (hierarchy ? m_tree->currentIndex() : m_parameters->currentIndex());
+    const QModelIndex first = index.isValid() ? index.siblingAtColumn(0) : QModelIndex();
+    m_details->setText(first.isValid() ? first.data(Qt::UserRole + 4).toString()
+                                       : QStringLiteral("选择一项查看只读元信息。"));
+}
+
+void ModelViewer::applyStructure(const QJsonObject &structure)
+{
+    const QJsonArray nodes = structure.value("nodes").toArray();
+    const QJsonArray parameters = structure.value("parameters").toArray();
+    QHash<QString, QStandardItem *> parents;
+    QModelIndex initialModule;
+    for (const QJsonValue &value : nodes)
+    {
+        const QJsonObject node = value.toObject();
+        const QString path = node.value("path").toString();
+        const QString type = node.value("type").toString();
+        const QString shape = node.value("shape").toString();
+        const QString note = node.value("note").toString();
+        const QString details =
+            QStringLiteral("路径：%1\n类型：%2%3%4")
+                .arg(path, type, shape.isEmpty() ? QString() : QStringLiteral("\n保存的张量形状：") + shape,
+                     note.isEmpty() ? QString() : QStringLiteral("\n") + note);
+        QList<QStandardItem *> row = {new QStandardItem(node.value("name").toString()),
+                                      new QStandardItem(type), new QStandardItem(path)};
+        for (QStandardItem *item : row)
+            item->setEditable(false);
+        row[0]->setData(path, Qt::UserRole + 1);
+        row[0]->setData(type, Qt::UserRole + 2);
+        row[0]->setData(shape, Qt::UserRole + 3);
+        row[0]->setData(details, Qt::UserRole + 4);
+        row[0]->setToolTip(details);
+        QStandardItem *parent =
+            parents.value(node.value("parent").toString(), m_treeModel->invisibleRootItem());
+        parent->appendRow(row);
+        parents.insert(node.value("id").toString(), row[0]);
+        if (!initialModule.isValid() && !node.value("parent").toString().isEmpty() &&
+            type != QStringLiteral("模型 / 图") && type != QStringLiteral("参数名称分组") &&
+            type != QStringLiteral("权重分组") && type != QStringLiteral("builtins.object"))
+            initialModule = row[0]->index();
+    }
+    for (const QJsonValue &value : parameters)
+    {
+        const QJsonObject parameter = value.toObject();
+        const QString path = parameter.value("path").toString();
+        const QString type = parameter.value("type").toString();
+        const QString shape = parameter.value("shape").toString();
+        const QString elements = parameter.value("elements").toString(QStringLiteral("—"));
+        const QString note = parameter.value("note").toString();
+        const QString details =
+            QStringLiteral("路径：%1\n数据类型：%2    形状：%3    元素数：%4\n%5 · 只读元信息")
+                .arg(path, type, shape, elements, note);
+        QList<QStandardItem *> row = {new QStandardItem(path), new QStandardItem(type),
+                                      new QStandardItem(shape), new QStandardItem(elements),
+                                      new QStandardItem(note)};
+        for (QStandardItem *item : row)
+            item->setEditable(false);
+        row[0]->setData(path, Qt::UserRole + 1);
+        row[0]->setData(type, Qt::UserRole + 2);
+        row[0]->setData(shape, Qt::UserRole + 3);
+        row[0]->setData(details, Qt::UserRole + 4);
+        row[0]->setToolTip(details);
+        m_parameterModel->appendRow(row);
+    }
+    m_hierarchyCount = nodes.size();
+    m_parameterCount = parameters.size();
+    m_tree->header()->setStretchLastSection(true);
+    m_tree->setColumnWidth(0, 340);
+    m_tree->setColumnWidth(1, 300);
+    m_parameters->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    for (int column = 1; column < m_parameterModel->columnCount(); ++column)
+        m_parameters->horizontalHeader()->setSectionResizeMode(column, QHeaderView::ResizeToContents);
+    m_parameters->horizontalHeader()->setMaximumSectionSize(400);
+    m_parameters->sortByColumn(0, Qt::AscendingOrder);
+    m_tree->expandToDepth(2);
+    if (initialModule.isValid())
+        m_tree->setCurrentIndex(m_treeFilter->mapFromSource(initialModule));
+    else if (m_treeFilter->rowCount())
+        m_tree->setCurrentIndex(m_treeFilter->index(0, 0));
+    if (m_parameterFilter->rowCount())
+        m_parameters->setCurrentIndex(m_parameterFilter->index(0, 0));
+    const QString kind = structure.value("kind").toString();
+    m_hierarchyHint = kind == "parameters" ? QStringLiteral("按保存的参数名称分组，不代表前向计算连接。")
+                      : kind == "modules"
+                          ? QStringLiteral("层级树显示模块 / 对象的包含关系，不代表前向计算连接。")
+                          : QStringLiteral("层级树显示文件中的包含关系，运算连接请查看结构图。");
+    QStringList notes;
+    for (const QJsonValue &value : structure.value("notes").toArray())
+        if (!value.toString().isEmpty())
+            notes.append(value.toString().left(512));
+    QString summary = QStringLiteral("%1 个图节点 · %2 个层级项 · %3 个张量条目 · 共享一次解析缓存")
+                          .arg(m_graphNodeCount)
+                          .arg(m_hierarchyCount)
+                          .arg(m_parameterCount);
+    if (structure.value("truncated").toBool())
+        summary += QStringLiteral("\n已达到展示上限，部分内容已截断。");
+    if (!notes.isEmpty())
+        summary += QStringLiteral("\n") + notes.join(QStringLiteral("；"));
+    m_summary->setText(summary);
+}
+
+void ModelViewer::extractStructure(quint64 generation)
+{
+    if (!m_webView || m_structurePending || m_structureReady)
+        return;
+    m_structurePending = true;
+    m_status->setText(QStringLiteral("正在整理层级与张量元信息…"));
+    const QPointer<ModelViewer> self(this);
+    const QPointer<QWebEnginePage> page(m_webView->page());
+    page->runJavaScript(structureScript(), QWebEngineScript::MainWorld,
+                        [self, page, generation](const QVariant &result)
+                        {
+                            if (!self || generation != self->m_generation || !page || !self->m_webView ||
+                                self->m_webView->page() != page)
+                                return;
+                            self->m_structurePending = false;
+                            const QByteArray encoded = result.toString().toUtf8();
+                            if (encoded.size() > 4 * 1024 * 1024)
+                            {
+                                self->fail(QStringLiteral("模型结构元信息超过 4 MiB 展示上限。"));
+                                return;
+                            }
+                            const QJsonObject structure = QJsonDocument::fromJson(encoded).object();
+                            if (structure.value("schema").toInt() != 1 ||
+                                !structure.value("nodes").isArray() ||
+                                !structure.value("parameters").isArray() ||
+                                structure.value("nodes").toArray().size() > 5000 ||
+                                structure.value("parameters").toArray().size() > 10000)
+                            {
+                                self->fail(QStringLiteral("模型已解析，但无法整理可显示的结构元信息。\n%1")
+                                               .arg(structure.value("error").toString().left(1500)));
+                                return;
+                            }
+                            self->applyStructure(structure);
+                            self->m_structureReady = true;
+                            self->m_deadline->stop();
+                            self->setState(State::Ready, QStringLiteral("模型结构与只读元信息已缓存。"));
+                            if (!self || generation != self->m_generation || self->m_state != State::Ready)
+                                return;
+                            self->m_poll->setInterval(500);
+                            emit self->modelLoaded(self->m_modelPath);
+                        });
+}
+
 void ModelViewer::setState(State state, const QString &message)
 {
     const bool changed = m_state != state;
@@ -416,8 +1043,7 @@ void ModelViewer::setState(State state, const QString &message)
                                                : QStringLiteral("查看模型结构"));
     m_progress->setVisible(state == State::Loading);
     m_retry->setVisible(state == State::Error && !m_modelPath.isEmpty());
-    m_stack->setCurrentWidget(state == State::Ready && m_webView ? static_cast<QWidget *>(m_webView)
-                                                                 : m_statusPage);
+    updateDisplay();
     if (changed)
         emit stateChanged(state);
 }
@@ -429,6 +1055,7 @@ void ModelViewer::releaseResources()
     m_checkPending = false;
     m_serverReady = false;
     m_graphNodeCount = 0;
+    clearStructure();
     m_poll->setInterval(200);
     if (m_webView)
     {
@@ -747,16 +1374,7 @@ void ModelViewer::checkGraph()
             if (self->m_state == State::Loading && snapshot.value("ready").toBool() &&
                 snapshot.value("hostAdapted").toBool())
             {
-                self->m_deadline->stop();
-                const int nodes = snapshot.value("nodes").toInt();
-                const QString summary = nodes > 0
-                                            ? QStringLiteral("已解析模型结构 · %1 个节点").arg(nodes)
-                                            : QStringLiteral("模型已解析；该文件未提供可视化运算节点。");
-                self->setState(State::Ready, summary);
-                if (!self || generation != self->m_generation || self->m_state != State::Ready)
-                    return;
-                self->m_poll->setInterval(500);
-                emit self->modelLoaded(self->m_modelPath);
+                self->extractStructure(generation);
             }
         });
 }

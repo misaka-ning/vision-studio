@@ -3,6 +3,7 @@
 #include "ui/modelviewer.h"
 
 #include <QApplication>
+#include <QAbstractButton>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDir>
@@ -33,9 +34,11 @@
 #include <QStackedWidget>
 #include <QStandardItemModel>
 #include <QTableWidget>
+#include <QTableView>
 #include <QTemporaryDir>
 #include <QTest>
 #include <QTimer>
+#include <QTreeView>
 #include <QUrl>
 #include <algorithm>
 #include <limits>
@@ -384,6 +387,9 @@ class UiTests final : public QObject
         QTRY_VERIFY_WITH_TIMEOUT(viewer->state() != ModelViewer::State::Loading, 30000);
         QVERIFY2(viewer->state() == ModelViewer::State::Ready, qPrintable(viewer->errorString()));
         QCOMPARE(QFileInfo(viewer->modelPath()).fileName(), QStringLiteral("yolov5n.onnx"));
+        QVERIFY(viewer->hierarchyItemCount() > 0);
+        QVERIFY(viewer->parameterCount() > 0);
+        QVERIFY(hint->isHidden());
 
         QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型库")), Qt::LeftButton);
         int ptRow = -1;
@@ -401,21 +407,76 @@ class UiTests final : public QObject
         QTRY_VERIFY_WITH_TIMEOUT(viewer->state() != ModelViewer::State::Loading, 30000);
         QVERIFY2(viewer->state() == ModelViewer::State::Ready, qPrintable(viewer->errorString()));
         QVERIFY(viewer->graphNodeCount() > 0);
+        QVERIFY(viewer->hierarchyItemCount() > 0);
+        QVERIFY(viewer->parameterCount() > 0);
         QCOMPARE(loaded.count(), 1);
         auto *browser = viewer->findChild<QWebEngineView *>(QStringLiteral("netronWebView"));
         auto *service = viewer->findChild<QProcess *>();
         QVERIFY(browser && service);
         const qint64 pid = service->processId();
         QSignalSpy pageLoads(browser->page(), &QWebEnginePage::loadStarted);
-        for (const QString &route : {QStringLiteral("模型显示"), QStringLiteral("检测工作台"), QStringLiteral("模型显示")})
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型显示")), Qt::LeftButton);
+        auto *tree = viewer->findChild<QTreeView *>(QStringLiteral("modelHierarchyTree"));
+        auto *parameters = viewer->findChild<QTableView *>(QStringLiteral("modelParameterTable"));
+        auto *search = viewer->findChild<QLineEdit *>(QStringLiteral("modelStructureSearch"));
+        QVERIFY(tree && parameters && search);
+        for (const auto &choice : {qMakePair(ModelViewer::DisplayMode::Hierarchy, "modelHierarchyModeButton"),
+                                   qMakePair(ModelViewer::DisplayMode::Parameters, "modelParametersModeButton"),
+                                   qMakePair(ModelViewer::DisplayMode::Graph, "modelGraphModeButton"),
+                                   qMakePair(ModelViewer::DisplayMode::Parameters, "modelParametersModeButton")})
+        {
+            auto *button = viewer->findChild<QAbstractButton *>(choice.second);
+            QVERIFY(button && button->isVisible());
+            QTest::mouseClick(button, Qt::LeftButton);
+            QCOMPARE(viewer->displayMode(), choice.first);
+            QCOMPARE(viewer->state(), ModelViewer::State::Ready);
+        }
+        QVERIFY(parameters->isVisible());
+        search->setFocus();
+        QTest::keyClicks(search, "model.0.conv.weight");
+        QTRY_COMPARE_WITH_TIMEOUT(parameters->model()->rowCount(), 1, 3000);
+        const QModelIndex firstWeight = parameters->model()->index(0, 0);
+        QVERIFY(firstWeight.data(Qt::UserRole + 1).toString().contains(QStringLiteral("model.0.conv.weight")));
+        QCOMPARE(firstWeight.data(Qt::UserRole + 3).toString(), QStringLiteral("[16,3,3,3]"));
+        for (const QString &route : {QStringLiteral("检测工作台"), QStringLiteral("模型显示")})
             QTest::mouseClick(findButton(window_.get(), route), Qt::LeftButton);
         QTest::qWait(150);
+        QCOMPARE(viewer->displayMode(), ModelViewer::DisplayMode::Parameters);
+        QCOMPARE(search->text(), QStringLiteral("model.0.conv.weight"));
+        QCOMPARE(parameters->model()->rowCount(), 1);
         QCOMPARE(viewer->findChild<QWebEngineView *>(QStringLiteral("netronWebView")), browser);
         QCOMPARE(service->processId(), pid);
         QCOMPARE(pageLoads.count(), 0);
         QCOMPARE(loaded.count(), 1);
         QVERIFY(hint->isVisible());
         QCOMPARE(window_->size(), QSize(1260, 820));
+        window_->saveScreenshot(QStringLiteral(VISION_PROJECT_DIR) +
+                                QStringLiteral("/output/test-screenshots/1.5-parameters.png"));
+        // Clear the global selection through the real model-library action.
+        // Removing list entries preserves the original files and empties all
+        // three cached views without retaining the old search or details.
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型库")), Qt::LeftButton);
+        auto *remove = findButton(window_.get(), QStringLiteral("从列表移除"));
+        QVERIFY(remove);
+        while (models->count())
+        {
+            const int before = models->count();
+            models->setCurrentRow(0);
+            QTest::mouseClick(remove, Qt::LeftButton);
+            QCOMPARE(models->count(), before - 1);
+        }
+        QTRY_COMPARE_WITH_TIMEOUT(viewer->state(), ModelViewer::State::Empty, 3000);
+        QVERIFY(viewer->modelPath().isEmpty());
+        QCOMPARE(viewer->graphNodeCount(), 0);
+        QCOMPARE(viewer->hierarchyItemCount(), 0);
+        QCOMPARE(viewer->parameterCount(), 0);
+        QCOMPARE(tree->model()->rowCount(), 0);
+        QCOMPARE(parameters->model()->rowCount(), 0);
+        QVERIFY(search->text().isEmpty());
+        QVERIFY(viewer->findChildren<QWebEngineView *>().isEmpty());
+        QTRY_VERIFY_WITH_TIMEOUT(viewer->findChildren<QProcess *>().isEmpty(), 3000);
+        QVERIFY(QFileInfo(fixture_->path() + "/models/yolov5n.onnx").isFile());
+        QVERIFY(QFileInfo(fixture_->path() + "/models/yolov8n.pt").isFile());
     }
 
     void shortcutsCancelAndRestartFromFocusedControls()

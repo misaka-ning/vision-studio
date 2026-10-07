@@ -504,6 +504,16 @@ def restore_temporary_permissions(tree):
                 path.chmod(path.stat().st_mode | stat.S_IWUSR)
 
 
+def valid_model_display(output, report, exit_code):
+    counts = (report.get("nodes", 0), report.get("hierarchy_items", 0), report.get("parameter_rows", 0))
+    modes = report.get("display_modes", {})
+    screenshots = (output / name for name in ("model-display.png", "model-hierarchy.png", "model-parameters.png"))
+    return (exit_code == 0 and report.get("success") is True and report.get("cache_preserved") is True
+            and all(isinstance(count, int) and not isinstance(count, bool) and count > 0 for count in counts)
+            and isinstance(modes, dict) and all(modes.get(mode) is True for mode in ("graph", "hierarchy", "parameters"))
+            and all(path.is_file() and path.read_bytes().startswith(b"\x89PNG\r\n\x1a\n") for path in screenshots))
+
+
 def smoke_tests(app, workspace, audit):
     if not audit.require(os.geteuid() != 0, "Smoke tests must run as a non-root user"):
         return
@@ -543,24 +553,22 @@ def smoke_tests(app, workspace, audit):
         audit.require(passed, f"Extracted read-only {name} smoke failed (exit{process.returncode}): {process.stderr[-1200:]}")
         results[name] = {"success": passed, "exit_code": process.returncode,
                          "elapsed_seconds": round(time.monotonic() - started, 2), "report": report}
-    output = state / "model-display"
-    started = time.monotonic()
-    process = command([str(app / "run-installed.sh"), "--smoke-model", str(output)],
-                      env=env, timeout=180, check=False)
-    (state / "model-display-stdout.log").write_text(process.stdout, encoding="utf-8")
-    (state / "model-display-stderr.log").write_text(process.stderr, encoding="utf-8")
-    report_file = output / "model-display-report.json"
-    report = json.loads(report_file.read_text()) if report_file.is_file() else {}
-    screenshot = output / "model-display.png"
-    nodes = report.get("nodes", 0)
-    passed = (process.returncode == 0 and report.get("success") is True
-              and isinstance(nodes, int) and not isinstance(nodes, bool) and nodes > 0
-              and screenshot.is_file() and screenshot.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"))
-    audit.require(passed, "Read-only non-root Qt WebEngine/Netron graph smoke failed: " + process.stderr[-1800:])
-    results["model_display"] = {"success": passed, "exit_code": process.returncode,
-                                 "elapsed_seconds": round(time.monotonic() - started, 2), "report": report,
-                                 "rendering_flags": env["QTWEBENGINE_CHROMIUM_FLAGS"],
-                                 "sandbox_disabled_by_test": False}
+    for name, model in (("model_display", "yolov5n.onnx"), ("model_display_pt", "yolov8n.pt")):
+        output = state / name
+        started = time.monotonic()
+        process = command([str(app / "run-installed.sh"), "--smoke-model", str(output),
+                           "--display-model", str(app / "models" / model)],
+                          env=env, timeout=180, check=False)
+        (state / f"{name}-stdout.log").write_text(process.stdout, encoding="utf-8")
+        (state / f"{name}-stderr.log").write_text(process.stderr, encoding="utf-8")
+        report_file = output / "model-display-report.json"
+        report = json.loads(report_file.read_text()) if report_file.is_file() else {}
+        passed = valid_model_display(output, report, process.returncode)
+        audit.require(passed, f"Read-only non-root {model} three-view/cache smoke failed: " + process.stderr[-1800:])
+        results[name] = {"success": passed, "exit_code": process.returncode,
+                         "elapsed_seconds": round(time.monotonic() - started, 2), "report": report,
+                         "rendering_flags": env["QTWEBENGINE_CHROMIUM_FLAGS"],
+                         "sandbox_disabled_by_test": False}
     image = base64.b64encode((app / "assets/bus.jpg").read_bytes()).decode("ascii")
     request = {"id": 1, "command": "infer", "image": image, "input_size": 640, "confidence": 0.25, "iou": 0.45}
     helper_env = dict(env)

@@ -1,0 +1,210 @@
+Start testing: Oct 07 11:52 HKT
+----------------------------------------------------------
+4/6 Testing: vision-ui-tests
+4/6 Test: vision-ui-tests
+Command: "/home/misaka/文档/ChatGPT/yolo/build/vision-ui-tests"
+Directory: /home/misaka/文档/ChatGPT/yolo/build
+"vision-ui-tests" start time: Oct 07 11:52 HKT
+Output:
+----------------------------------------------------------
+********* Start testing of UiTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : UiTests::initTestCase()
+PASS   : UiTests::realInferenceSelectionAndNavigation()
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+PASS   : UiTests::globalModelSelectionPreloadsAndCachesStructure()
+PASS   : UiTests::shortcutsCancelAndRestartFromFocusedControls()
+PASS   : UiTests::directPtInferenceReadsNamesAndExportsNativeBackend()
+PASS   : UiTests::queueChangeAndClearInvalidateOldResults()
+PASS   : UiTests::grayscalePreviewAndColorSwitchInvalidatePredictions()
+PASS   : UiTests::legacyColorPreferenceMigration(legacy-rgb)
+PASS   : UiTests::legacyColorPreferenceMigration(legacy-bgr)
+QDEBUG : UiTests::grayscaleAndStereoPreferencesSurviveRestartAndPtSwitch() Compositor returned null texture
+PASS   : UiTests::grayscaleAndStereoPreferencesSurviveRestartAndPtSwitch()
+QWARN  : UiTests::stereoVideoRequestExportAndImageIsolation() This plugin does not support propagateSizeHints()
+PASS   : UiTests::stereoVideoRequestExportAndImageIsolation()
+QWARN  : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() This plugin does not support propagateSizeHints()
+QDEBUG : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() Compositor returned null texture
+QWARN  : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() This plugin does not support propagateSizeHints()
+PASS   : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo()
+PASS   : UiTests::cleanupTestCase()
+Totals: 13 passed, 0 failed, 0 skipped, 0 blacklisted, 13291ms
+********* Finished testing of UiTests *********
+<end of output>
+Test time =  13.52 sec
+----------------------------------------------------------
+Test Passed.
+"vision-ui-tests" end time: Oct 07 11:52 HKT
+"vision-ui-tests" time elapsed: 00:00:13
+----------------------------------------------------------
+
+5/6 Testing: vision-modelviewer-tests
+5/6 Test: vision-modelviewer-tests
+Command: "/home/misaka/文档/ChatGPT/yolo/build/vision-modelviewer-tests"
+Directory: /home/misaka/文档/ChatGPT/yolo/build
+"vision-modelviewer-tests" start time: Oct 07 11:52 HKT
+Output:
+----------------------------------------------------------
+********* Start testing of ModelViewerTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : ModelViewerTests::initTestCase()
+QWARN  : ModelViewerTests::realModelsRenderGraphs(onnx-structure) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::realModelsRenderGraphs(onnx-structure) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::realModelsRenderGraphs(onnx-structure) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::realModelsRenderGraphs(onnx-structure) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::realModelsRenderGraphs(onnx-structure) This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::realModelsRenderGraphs(onnx-structure)
+QWARN  : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy) This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy)
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx)
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch)
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict)
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward)
+QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::changingOrStoppingModelClearsOldMetadata()
+QWARN  : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate() This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate()
+QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(unknown-format) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(unknown-format) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(unknown-format) This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::browserParsingFailuresAreChinese(unknown-format)
+QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(corrupt-onnx) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(corrupt-onnx) This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(corrupt-onnx) This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::browserParsingFailuresAreChinese(corrupt-onnx)
+QWARN  : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel() This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel()
+QWARN  : ModelViewerTests::hiddenStackedPagePreloadsAndKeepsCachedGraph() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::hiddenStackedPagePreloadsAndKeepsCachedGraph() This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::hiddenStackedPagePreloadsAndKeepsCachedGraph()
+QWARN  : ModelViewerTests::stopDuringLoadingReleasesStartedBrowserAndService() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::stopDuringLoadingReleasesStartedBrowserAndService() This plugin does not support propagateSizeHints()
+QWARN  : ModelViewerTests::stopDuringLoadingReleasesStartedBrowserAndService() This plugin does not support propagateSizeHints()
+PASS   : ModelViewerTests::stopDuringLoadingReleasesStartedBrowserAndService()
+PASS   : ModelViewerTests::missingHelperOrRuntimeHasActionableChineseError()
+PASS   : ModelViewerTests::cleanupTestCase()
+Totals: 16 passed, 0 failed, 0 skipped, 0 blacklisted, 14113ms
+********* Finished testing of ModelViewerTests *********
+<end of output>
+Test time =  14.21 sec
+----------------------------------------------------------
+Test Passed.
+"vision-modelviewer-tests" end time: Oct 07 11:52 HKT
+"vision-modelviewer-tests" time elapsed: 00:00:14
+----------------------------------------------------------
+
+6/6 Testing: vision-netron-server-tests
+6/6 Test: vision-netron-server-tests
+Command: "/usr/bin/python3" "/home/misaka/文档/ChatGPT/yolo/tests/netron_server_tests.py"
+Directory: /home/misaka/文档/ChatGPT/yolo/build
+"vision-netron-server-tests" start time: Oct 07 11:52 HKT
+Output:
+----------------------------------------------------------
+test_concurrent_sessions_have_different_ephemeral_ports (__main__.NetronServerTests) ... ok
+test_eof_and_sigterm_close_session (__main__.NetronServerTests) ... ok
+test_external_data_stays_within_model_directory (__main__.NetronServerTests) ... ok
+test_invalid_command_releases_port (__main__.NetronServerTests) ... ok
+test_invalid_path_directory_and_arguments_emit_errors (__main__.NetronServerTests) ... ok
+test_missing_module_and_wrong_version_are_clear_errors (__main__.NetronServerTests) ... ok
+test_pickle_payload_is_never_deserialized_or_framework_imported (__main__.NetronServerTests) ... ok
+test_real_onnx_static_assets_model_bytes_and_json_quit (__main__.NetronServerTests) ... ok
+test_real_pt_raw_bytes_and_plain_quit (__main__.NetronServerTests) ... ok
+test_slow_http_client_does_not_block_quit (__main__.NetronServerTests) ... ok
+test_unknown_suffix_and_corrupt_bytes_are_served_without_parsing (__main__.NetronServerTests) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 4.787s
+
+OK
+<end of output>
+Test time =   4.84 sec
+----------------------------------------------------------
+Test Passed.
+"vision-netron-server-tests" end time: Oct 07 11:53 HKT
+"vision-netron-server-tests" time elapsed: 00:00:04
+----------------------------------------------------------
+
+End testing: Oct 07 11:53 HKT

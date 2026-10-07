@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 import tarfile
 
-VERSION = "1.4.0"
+VERSION = "1.5.0"
 SOURCE_ITEMS = ("src", "tests", "scripts", "packaging", "docs", "assets", "models", "vendor",
                 "CMakeLists.txt", "resources.qrc", "run.sh", "VisionStudio.desktop", "README.md",
                 "LICENSE", "requirements-pt.txt", "requirements-pt.lock.txt", "runtime-info.json",
@@ -123,7 +123,7 @@ def make_archive(destination, entries, prefix, overwrite, preset=3):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-root", type=Path, default=Path("."))
-    parser.add_argument("--release-directory", type=Path, default=Path("output/releases/1.4.0"))
+    parser.add_argument("--release-directory", type=Path, default=Path("output/releases/1.5.0"))
     parser.add_argument("--inventory-only", action="store_true")
     parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()

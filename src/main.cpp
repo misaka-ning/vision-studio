@@ -10,7 +10,7 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
     app.setApplicationName("Vision Studio");
     app.setOrganizationName("VisionStudio");
-    app.setApplicationVersion("1.4.0");
+    app.setApplicationVersion("1.5.0");
     app.setWindowIcon(QIcon(":/app-icon.svg"));
     app.setStyle("Fusion");
     app.setFont(QFont("Noto Sans CJK SC", 10));
@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     parser.addOption({"demo", "启动后运行内置真实 YOLO 示例"});
     parser.addOption({"pt-demo", "启动后运行 PyTorch YOLOv8n .pt 示例"});
     parser.addOption({"smoke-pt", "执行真实 .pt 推理、导出和 UI 自检后退出", "directory"});
-    parser.addOption({"smoke-model", "执行真实 Netron 模型解析与结构显示自检后退出", "directory"});
+    parser.addOption({"smoke-model", "执行真实模型解析、三种视图与缓存自检后退出", "directory"});
     parser.addOption({"display-model", "指定结构显示的模型文件", "path"});
     parser.process(app);
     MainWindow window;

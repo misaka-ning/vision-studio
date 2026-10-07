@@ -21,7 +21,7 @@ import tarfile
 import tempfile
 import time
 
-from verify_deb import Audit, archive_members, deb_fields
+from verify_deb import Audit, archive_members, deb_fields, valid_model_display
 
 
 MOUNT = "/tmp/vision-install-qa"
@@ -204,20 +204,18 @@ def verify(args, workspace, audit):
         passed = result.returncode == 0 and report.get("success") is True and report.get("predictions", 0) > 0
         audit.require(passed, f"Installed {name} inference failed as non-root: " + result.stderr[-1500:])
         smoke[name] = {"success": passed, "exit_code": result.returncode, "elapsed_seconds": elapsed, "report": report}
-    result, elapsed = namespace.run(["/usr/bin/vision-studio", "--smoke-model", MOUNT + "/user/model-display"],
-                                    "model-display", readonly=True, timeout=180)
-    display_root = workspace / "user/model-display"
-    path = display_root / "model-display-report.json"
-    report = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {}
-    nodes = report.get("nodes", 0)
-    screenshot = display_root / "model-display.png"
-    passed = (result.returncode == 0 and report.get("success") is True
-              and isinstance(nodes, int) and not isinstance(nodes, bool) and nodes > 0
-              and screenshot.is_file() and screenshot.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"))
-    audit.require(passed, "Installed offline non-root model structure viewer failed: " + result.stderr[-1800:])
-    smoke["model_display"] = {"success": passed, "exit_code": result.returncode,
-                               "elapsed_seconds": elapsed, "report": report,
-                               "rendering_flags": "--disable-gpu", "sandbox_disabled_by_test": False}
+    for name, model in (("model_display", "yolov5n.onnx"), ("model_display_pt", "yolov8n.pt")):
+        result, elapsed = namespace.run(["/usr/bin/vision-studio", "--smoke-model", MOUNT + "/user/" + name,
+                                         "--display-model", "/opt/VisionStudio/models/" + model],
+                                        name, readonly=True, timeout=180)
+        display_root = workspace / "user" / name
+        path = display_root / "model-display-report.json"
+        report = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {}
+        passed = valid_model_display(display_root, report, result.returncode)
+        audit.require(passed, f"Installed offline non-root {model} three-view/cache smoke failed: " + result.stderr[-1800:])
+        smoke[name] = {"success": passed, "exit_code": result.returncode,
+                       "elapsed_seconds": elapsed, "report": report,
+                       "rendering_flags": "--disable-gpu", "sandbox_disabled_by_test": False}
     audit.details["inference"] = smoke
     audit.require(bool(list((workspace / "user").rglob("preferences.ini"))), "Installed application did not persist isolated preferences")
     audit.require(bool(list((workspace / "user").rglob("history.json"))), "Installed application did not persist isolated history")

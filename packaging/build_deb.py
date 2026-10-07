@@ -583,7 +583,7 @@ def main() -> int:
                         help="Additional Qt 6.8.3 plugins directory, e.g. a supplemental QtImageFormats install.")
     parser.add_argument("--runtime", type=Path, required=True)
     parser.add_argument("--install-root", default=DEFAULT_ROOT)
-    parser.add_argument("--version", default="1.4.0-1")
+    parser.add_argument("--version", default="1.5.0-1")
     parser.add_argument("--stage", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--copyright", type=Path)
@@ -598,7 +598,7 @@ def main() -> int:
     arguments.extra_qt_plugins = [path.resolve() for path in arguments.extra_qt_plugins]
     arguments.copyright = (arguments.copyright or arguments.source_root / "packaging/copyright").resolve()
     arguments.stage = (arguments.stage or arguments.source_root / "output/deb-stage" / arguments.version).resolve()
-    arguments.output = (arguments.output or arguments.source_root / "output/releases/1.4.0"
+    arguments.output = (arguments.output or arguments.source_root / "output/releases/1.5.0"
                         / f"{PACKAGE}_{arguments.version}_amd64.deb").resolve()
     if not 0 <= arguments.compression_level <= 9:
         parser.error("--compression-level must be between 0 and 9")
