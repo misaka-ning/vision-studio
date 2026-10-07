@@ -111,6 +111,9 @@ class ReleaseTests(unittest.TestCase):
         self.args = argparse.Namespace(version="1.5.0", release_dir=self.root,
                                       notes_file=notes, project_dir=self.project,
                                       dry_run=False, resume_draft=False)
+        self.published_tag_patch = patch.object(release, "verify_published_tag", return_value="a" * 40)
+        self.published_tag_check = self.published_tag_patch.start()
+        self.addCleanup(self.published_tag_patch.stop)
 
     def publish(self, github):
         with patch.object(release, "verify_tag", return_value="a" * 40), \
@@ -244,7 +247,7 @@ class ReleaseTests(unittest.TestCase):
         github = FakeGitHub(old, existing=True)
         for asset in release.validate_bundle(old, "1.3.0", require_qa=False):
             github.add_asset(asset.path)
-        args = argparse.Namespace(releases_root=root, execute=False)
+        args = argparse.Namespace(releases_root=root, execute=False, project_dir=self.project)
         plan = release.prune(args, github)
         self.assertEqual([Path(path).name for path in plan["kept"]], ["1.10.0", "1.5.0"])
         self.assertTrue(old.exists())
@@ -259,7 +262,7 @@ class ReleaseTests(unittest.TestCase):
     def test_prune_unpublished_checksum_bad_or_userdata_cannot_delete(self):
         old = fixture(self.project, "1.3.0")
         fixture(self.project, "1.4.0")
-        args = argparse.Namespace(releases_root=self.root.parent, execute=True)
+        args = argparse.Namespace(releases_root=self.root.parent, execute=True, project_dir=self.project)
         github = FakeGitHub(old)
         with self.assertRaisesRegex(release.ReleaseError, "not durably published"):
             release.prune(args, github)
@@ -275,7 +278,7 @@ class ReleaseTests(unittest.TestCase):
         root = self.root.parent
         fixture(self.project, "1.4.0")
         (root / "1.3.0").symlink_to(self.project, target_is_directory=True)
-        args = argparse.Namespace(releases_root=root, execute=True)
+        args = argparse.Namespace(releases_root=root, execute=True, project_dir=self.project)
         with self.assertRaisesRegex(release.ReleaseError, "Symlink"):
             release.prune(args, FakeGitHub(self.root))
         self.assertTrue((self.project / "CMakeLists.txt").exists())
@@ -291,13 +294,122 @@ class ReleaseTests(unittest.TestCase):
     def test_tag_version_commit_and_dirty_checks(self):
         github = FakeGitHub(self.root)
         expected = "a" * 40
-        base = [expected + "\n", expected + "\n", "", "project(VisionStudio VERSION 1.5.0 LANGUAGES CXX)"]
+        cmake = "project(VisionStudio VERSION 1.5.0 LANGUAGES CXX)"
+        base = [expected + "\n", cmake, expected + "\n", ""]
         with patch.object(release, "command", side_effect=base):
             self.assertEqual(release.verify_tag(github, self.project, "1.5.0"), expected)
-        for responses in ([expected, "b" * 40], [expected, expected, " M src/file.cpp"],
-                          [expected, expected, "", "project(VisionStudio VERSION 1.4.0 LANGUAGES CXX)"]):
+        for responses in ([expected, cmake, "b" * 40], [expected, cmake, expected, " M src/file.cpp"],
+                          [expected, "project(VisionStudio VERSION 1.4.0 LANGUAGES CXX)"]):
             with patch.object(release, "command", side_effect=responses), self.assertRaises(release.ReleaseError):
                 release.verify_tag(github, self.project, "1.5.0")
+
+    def test_prune_remote_tag_change_protects_snapshot(self):
+        old = fixture(self.project, "1.3.0")
+        fixture(self.project, "1.4.0")
+        github = FakeGitHub(old, existing=True)
+        for asset in release.validate_bundle(old, "1.3.0", require_qa=False):
+            github.add_asset(asset.path)
+        args = argparse.Namespace(releases_root=self.root.parent, execute=True, project_dir=self.project)
+        self.published_tag_check.side_effect = ["a" * 40, release.ReleaseError("Tag moved")]
+        with self.assertRaisesRegex(release.ReleaseError, "Tag moved"):
+            release.prune(args, github)
+        self.assertTrue(old.is_dir())
+
+
+class GitHubReadTests(unittest.TestCase):
+    def setUp(self):
+        self.github = release.GitHub("misaka-ning/vision-studio")
+        self.tag = "v1.5.0"
+        self.draft = {"id": 42, "tag_name": self.tag, "draft": True, "published_at": None}
+
+    def test_by_tag_404_finds_draft_through_paginated_list(self):
+        requests = []
+        def read(argv, **kwargs):
+            endpoint = argv[-1]
+            requests.append(endpoint)
+            if "/releases/tags/" in endpoint:
+                return subprocess.CompletedProcess(argv, 1, '{"message":"Not Found"}', "gh: Not Found (HTTP 404)")
+            if endpoint.endswith("page=1"):
+                rows = [{"id": number, "tag_name": f"other-{number}", "draft": False}
+                        for number in range(100)]
+            else:
+                self.assertTrue(endpoint.endswith("page=2"))
+                rows = [self.draft]
+            return subprocess.CompletedProcess(argv, 0, json.dumps(rows), "")
+        with patch.object(release.subprocess, "run", side_effect=read):
+            self.assertEqual(self.github.release(self.tag), self.draft)
+        self.assertEqual(len(requests), 3)
+
+    def test_by_tag_published_does_not_need_list(self):
+        published = {**self.draft, "draft": False, "published_at": "today"}
+        with patch.object(release.subprocess, "run", return_value=
+                          subprocess.CompletedProcess([], 0, json.dumps(published), "")) as run:
+            self.assertEqual(self.github.release(self.tag), published)
+            self.assertEqual(run.call_count, 1)
+
+    def test_duplicate_tag_drafts_across_pages_are_rejected(self):
+        page_one = [self.draft] + [{"id": number, "tag_name": f"other-{number}"}
+                                  for number in range(99)]
+        responses = [subprocess.CompletedProcess([], 1, "{}", "gh: Not Found (HTTP 404)"),
+                     subprocess.CompletedProcess([], 0, json.dumps(page_one), ""),
+                     subprocess.CompletedProcess([], 0, json.dumps([{**self.draft, "id": 43}]), "")]
+        with patch.object(release.subprocess, "run", side_effect=responses), \
+                self.assertRaisesRegex(release.ReleaseError, "Multiple releases"):
+            self.github.release(self.tag)
+
+    def test_auth_network_and_list_permission_errors_do_not_become_missing(self):
+        for message in ("gh: Unauthorized (HTTP 401)", "gh: Forbidden (HTTP 403)", "TLS handshake failed"):
+            with self.subTest(message=message), patch.object(release.subprocess, "run", return_value=
+                    subprocess.CompletedProcess([], 1, "{}", message)) as run:
+                with self.assertRaises(release.ReleaseError):
+                    self.github.release(self.tag)
+                self.assertEqual(run.call_count, 1)
+        results = [subprocess.CompletedProcess([], 1, "{}", "gh: Not Found (HTTP 404)"),
+                   subprocess.CompletedProcess([], 1, "{}", "gh: Forbidden (HTTP 403)")]
+        with patch.object(release.subprocess, "run", side_effect=results), self.assertRaises(release.ReleaseError):
+            self.github.release(self.tag)
+
+    def test_missing_and_malformed_lists_are_distinct(self):
+        for rows, expected_error in (([], False), ({"message": "unexpected"}, True)):
+            responses = [subprocess.CompletedProcess([], 1, "{}", "gh: Not Found (HTTP 404)"),
+                         subprocess.CompletedProcess([], 0, json.dumps(rows), "")]
+            with patch.object(release.subprocess, "run", side_effect=responses):
+                if expected_error:
+                    with self.assertRaisesRegex(release.ReleaseError, "Malformed"):
+                        self.github.release(self.tag)
+                else:
+                    self.assertIsNone(self.github.release(self.tag))
+
+    def test_mutation_reads_retry_only_within_short_bound(self):
+        with patch.object(self.github, "release", side_effect=[None, None, self.draft]) as read, \
+                patch.object(release.time, "sleep") as sleep:
+            self.assertEqual(release.release_after_mutation(self.github, self.tag, draft=True), self.draft)
+            self.assertEqual(read.call_count, 3)
+            self.assertEqual([call.args[0] for call in sleep.call_args_list], [1, 2])
+        with patch.object(self.github, "release", return_value=None) as read, \
+                patch.object(release.time, "sleep") as sleep, self.assertRaises(release.ReleaseError):
+            release.release_after_mutation(self.github, self.tag, draft=True)
+        self.assertEqual(read.call_count, 4)
+        self.assertEqual([call.args[0] for call in sleep.call_args_list], [1, 2, 4])
+
+    def test_mutation_read_auth_error_is_not_retried(self):
+        with patch.object(self.github, "release", side_effect=release.ReleaseError("HTTP 403")) as read, \
+                patch.object(release.time, "sleep") as sleep, self.assertRaises(release.ReleaseError):
+            release.release_after_mutation(self.github, self.tag, draft=True)
+        self.assertEqual(read.call_count, 1)
+        sleep.assert_not_called()
+
+    def test_published_tag_checks_local_commit_and_version_without_head(self):
+        project = Path("/unused")
+        cmake = "project(VisionStudio VERSION 1.5.0 LANGUAGES CXX)"
+        with patch.object(release, "command", side_effect=["a" * 40, cmake]) as command, \
+                patch.object(self.github, "remote_commit", return_value="a" * 40):
+            self.assertEqual(release.verify_published_tag(self.github, project, "1.5.0"), "a" * 40)
+            self.assertEqual(command.call_count, 2)
+        with patch.object(release, "command", side_effect=["a" * 40, cmake]), \
+                patch.object(self.github, "remote_commit", return_value="b" * 40), \
+                self.assertRaisesRegex(release.ReleaseError, "different commits"):
+            release.verify_published_tag(self.github, project, "1.5.0")
 
 
 if __name__ == "__main__":

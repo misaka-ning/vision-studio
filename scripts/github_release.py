@@ -37,6 +37,7 @@ import stat
 import subprocess
 import sys
 import tempfile
+import time
 from urllib.parse import quote
 
 
@@ -204,14 +205,28 @@ class GitHub:
                                    f"repos/{self.repository}/{endpoint}"]))
 
     def release(self, tag: str) -> dict | None:
-        result = subprocess.run(["gh", "api", f"repos/{self.repository}/releases/tags/{tag}"],
+        result = subprocess.run(["gh", "api", f"repos/{self.repository}/releases/tags/{quote(tag, safe='')}"],
                                 text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                 check=False)
         if result.returncode:
-            if "(HTTP 404)" in result.stderr:
-                return None
-            raise ReleaseError(f"Could not read release {tag}: {result.stderr.strip()}")
-        return json.loads(result.stdout)
+            if "(HTTP 404)" not in result.stderr:
+                raise ReleaseError(f"Could not read release {tag}: {result.stderr.strip()}")
+        else:
+            return json.loads(result.stdout)
+        # The by-tag endpoint returns published releases only. Authenticated
+        # users with push access can find drafts through the releases list.
+        # Do not treat permission, network, or malformed list errors as absence.
+        matches = []
+        for page in range(1, 1001):
+            rows = self.api(f"releases?per_page=100&page={page}")
+            if not isinstance(rows, list) or any(not isinstance(row, dict) for row in rows):
+                raise ReleaseError("Malformed GitHub releases list")
+            matches.extend(row for row in rows if row.get("tag_name") == tag)
+            if len(matches) > 1:
+                raise ReleaseError(f"Multiple releases use {tag}; inspect drafts manually")
+            if len(rows) < 100:
+                return matches[0] if matches else None
+        raise ReleaseError("Unreasonable number of releases")
 
     def assets(self, release: dict) -> list[dict]:
         assets: list[dict] = []
@@ -286,20 +301,48 @@ def cmake_version(text: str) -> str:
     return match.group(1)
 
 
-def verify_tag(github: GitHub, project: Path, version: str) -> str:
+def local_tag_commit(project: Path, version: str) -> str:
+    version_key(version)
     tag = f"v{version}"
     local = command(["git", "rev-parse", f"refs/tags/{tag}^{{commit}}"], project).strip()
+    tagged_cmake = command(["git", "show", f"refs/tags/{tag}:CMakeLists.txt"], project)
+    if cmake_version(tagged_cmake) != version:
+        raise ReleaseError("Tag's CMakeLists.txt version does not match release version")
+    return local
+
+
+def verify_published_tag(github: GitHub, project: Path, version: str) -> str:
+    """Verify an archived version without requiring that it is the current HEAD."""
+    local = local_tag_commit(project, version)
+    if github.remote_commit(f"v{version}") != local:
+        raise ReleaseError("Local and GitHub tag point to different commits")
+    return local
+
+
+def verify_tag(github: GitHub, project: Path, version: str) -> str:
+    tag = f"v{version}"
+    local = local_tag_commit(project, version)
     head = command(["git", "rev-parse", "HEAD"], project).strip()
     if local != head:
         raise ReleaseError("Publish from the tagged commit; local tag does not equal HEAD")
     if command(["git", "status", "--porcelain", "--untracked-files=no"], project).strip():
         raise ReleaseError("Tracked source changes must be committed before publishing")
-    tagged_cmake = command(["git", "show", f"refs/tags/{tag}:CMakeLists.txt"], project)
-    if cmake_version(tagged_cmake) != version:
-        raise ReleaseError("Tag's CMakeLists.txt version does not match release version")
     if github.remote_commit(tag) != local:
         raise ReleaseError("Local and GitHub tag point to different commits")
     return local
+
+
+def release_after_mutation(github: GitHub, tag: str, draft: bool) -> dict:
+    """Allow bounded read consistency delays; propagate permissions/network errors."""
+    for attempt in range(4):
+        value = github.release(tag)
+        if (value is not None and value.get("draft") is draft
+                and (draft or value.get("published_at"))):
+            return value
+        if attempt < 3:
+            time.sleep(1 << attempt)
+    state = "draft" if draft else "published"
+    raise ReleaseError(f"Expected {state} release after mutation: {tag}")
 
 
 def publish(args: argparse.Namespace, github: GitHub) -> dict:
@@ -335,9 +378,7 @@ def publish(args: argparse.Namespace, github: GitHub) -> dict:
             command(["gh", "release", "create", tag, "--repo", github.repository,
                      "--verify-tag", "--draft", "--title", f"Vision Studio {tag}",
                      "--notes-file", str(notes)])
-        release = github.release(tag)
-        if release is None or not release.get("draft"):
-            raise ReleaseError("Expected draft release after creation")
+        release = release_after_mutation(github, tag, draft=True)
         verified = github.verify_assets(release, assets, allow_missing=True)
         present = {row["name"] for row in verified}
         for asset in assets:
@@ -350,9 +391,7 @@ def publish(args: argparse.Namespace, github: GitHub) -> dict:
             raise ReleaseError("GitHub tag changed during upload; release remains a draft")
         command(["gh", "release", "edit", tag, "--repo", github.repository,
                  "--draft=false", "--latest"])
-        release = github.release(tag)
-        if release is None or release.get("draft") or not release.get("published_at"):
-            raise ReleaseError("Release was not published")
+        release = release_after_mutation(github, tag, draft=False)
         plan.update({"url": release["html_url"], "verified_assets": verified,
                      "published": True})
     return plan
@@ -364,8 +403,10 @@ def verify(args: argparse.Namespace, github: GitHub) -> dict:
     release = github.release(tag)
     if release is None or release.get("draft") or not release.get("published_at"):
         raise ReleaseError("A published release is required")
+    commit = verify_published_tag(github, args.project_dir.resolve(), args.version)
     return {"success": True, "repository": github.repository, "tag": tag,
-            "url": release["html_url"], "verified_assets": github.verify_assets(release, assets)}
+            "commit": commit, "url": release["html_url"],
+            "verified_assets": github.verify_assets(release, assets)}
 
 
 def cleanup_root(path: Path) -> Path:
@@ -426,9 +467,11 @@ def prune(args: argparse.Namespace, github: GitHub) -> dict:
         if (release is None or release.get("draft") or release.get("prerelease")
                 or not release.get("published_at")):
             raise ReleaseError(f"Version is not durably published: {directory.name}")
+        commit = verify_published_tag(github, args.project_dir.resolve(), directory.name)
         verified = github.verify_assets(release, assets)
         plan["verified_candidates"].append({"path": str(directory),
-                                            "url": release["html_url"], "assets": verified})
+                                            "url": release["html_url"], "commit": commit,
+                                            "assets": verified})
     if args.execute:
         if not getattr(shutil.rmtree, "avoids_symlink_attacks", False):
             raise ReleaseError("This platform does not provide safe descriptor-based rmtree")
@@ -439,6 +482,8 @@ def prune(args: argparse.Namespace, github: GitHub) -> dict:
         for path, identity in identities.items():
             if inspect_cleanup_tree(path) != identity or path.parent != root:
                 raise ReleaseError("Candidate identity changed during verification")
+            # Recheck tags immediately before deleting any local snapshots.
+            verify_published_tag(github, args.project_dir.resolve(), path.name)
         removed = []
         for path in identities:
             shutil.rmtree(path)
@@ -456,9 +501,10 @@ def parser() -> argparse.ArgumentParser:
         item.add_argument("--repo", default=DEFAULT_REPOSITORY)
         item.add_argument("--version", required=True)
         item.add_argument("--release-dir", required=True, type=Path)
+        item.add_argument("--project-dir", type=Path, default=Path(__file__).resolve().parent.parent,
+                          help="Git source checkout containing local version tags")
         if operation == "publish":
             item.add_argument("--notes-file", required=True, type=Path)
-            item.add_argument("--project-dir", type=Path, default=Path(__file__).resolve().parent.parent)
             item.add_argument("--dry-run", action="store_true", help="Validate locally/remotely; do not publish")
             item.add_argument("--resume-draft", action="store_true")
         else:
@@ -466,6 +512,8 @@ def parser() -> argparse.ArgumentParser:
     item = sub.add_parser("prune")
     item.add_argument("--repo", default=DEFAULT_REPOSITORY)
     item.add_argument("--releases-root", required=True, type=Path)
+    item.add_argument("--project-dir", type=Path, default=Path(__file__).resolve().parent.parent,
+                      help="Git source checkout containing local version tags")
     item.add_argument("--execute", action="store_true", help="Remove only remotely verified old version directories")
     return result
 
