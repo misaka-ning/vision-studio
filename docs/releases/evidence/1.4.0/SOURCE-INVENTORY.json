@@ -1,0 +1,127 @@
+{
+  "application": "Vision Studio",
+  "version": "1.4.0",
+  "debian_version": "1.4.0-1",
+  "maintainer": "misaka_ning <1468549029@qq.com>",
+  "application_license": "AGPL-3.0-only",
+  "application_archive": "vision-studio-1.4.0-sources.tar.xz",
+  "complete_companion": "vision-studio-1.4.0-complete-source.tar.xz",
+  "public_checksums": "SHA256SUMS",
+  "source_checksums": "SOURCE-SHA256SUMS",
+  "upstream_archives": [
+    {
+      "file": "sources/qtbase-everywhere-src-6.8.3.tar.xz",
+      "bytes": 48426536,
+      "sha256": "56001b905601bb9023d399f3ba780d7fa940f3e4861e496a7c490331f49e0b80",
+      "url": "https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtbase-everywhere-src-6.8.3.tar.xz",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/qtsvg-everywhere-src-6.8.3.tar.xz",
+      "bytes": 2009072,
+      "sha256": "35eb516460f00f264eb504baa253432384351cf23fb9980a5857190e8deef438",
+      "url": "https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtsvg-everywhere-src-6.8.3.tar.xz",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/qtwayland-everywhere-src-6.8.3.tar.xz",
+      "bytes": 1141132,
+      "sha256": "20fe385887d21190165a3180c17dcfc8b9a0e1da4ec76865b6334bdc709994b0",
+      "url": "https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtwayland-everywhere-src-6.8.3.tar.xz",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/qtimageformats-everywhere-src-6.8.3.tar.xz",
+      "bytes": 2035140,
+      "sha256": "049bfb99845e4801672aca07c3c4fc4c140f932a3a33faa899419579e33ef1c8",
+      "url": "https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtimageformats-everywhere-src-6.8.3.tar.xz",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/qtdeclarative-everywhere-src-6.8.3.tar.xz",
+      "bytes": 36503988,
+      "sha256": "1f03a2b8f5588b4face7da87926e9b2c1372b3a32157c52df07a75067a9db1af",
+      "url": "https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtdeclarative-everywhere-src-6.8.3.tar.xz",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/qtwebchannel-everywhere-src-6.8.3.tar.xz",
+      "bytes": 209372,
+      "sha256": "967046b2650b7fc7b27547522e998e35d62291d795b20d9497e4bcc714831262",
+      "url": "https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtwebchannel-everywhere-src-6.8.3.tar.xz",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/qtpositioning-everywhere-src-6.8.3.tar.xz",
+      "bytes": 663612,
+      "sha256": "6ab69a7e71a7795aab9ca2798eea126e36df55159a771ebd2f37cad3da63e9d3",
+      "url": "https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtpositioning-everywhere-src-6.8.3.tar.xz",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/qtwebengine-everywhere-src-6.8.3.tar.xz",
+      "bytes": 566553436,
+      "sha256": "df4e19ba2b3a540551b6f998d62597377ffa688c1cff564589b7da2e2bf87337",
+      "url": "https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtwebengine-everywhere-src-6.8.3.tar.xz",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/ultralytics-8.4.173.tar.gz",
+      "bytes": 1267669,
+      "sha256": "cfb50c462a9138a187f7e5957ad2c91e3e757f6f0569da0c896574282d553840",
+      "url": "https://files.pythonhosted.org/packages/ce/0e/789436c01f925c2957e5cdb272235294a9f7e669247966f3594a09847899/ultralytics-8.4.173.tar.gz",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/ultralytics_thop-2.2.2.tar.gz",
+      "bytes": 39543,
+      "sha256": "149a89c26c2be35b709fa25951f4644dea13d63017025569a193159a5908e3ed",
+      "url": "https://files.pythonhosted.org/packages/b1/bf/b7b993e3b2411fc9894a26b8679931ca07c0d013f05bb620c63ae1911c5f/ultralytics_thop-2.2.2.tar.gz",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/opencv-python-headless-4.11.0.86.tar.gz",
+      "bytes": 95177929,
+      "sha256": "996eb282ca4b43ec6a3972414de0e2331f5d9cda2b41091a49739c19fb843798",
+      "url": "https://files.pythonhosted.org/packages/36/2f/5b2b3ba52c864848885ba988f24b7f105052f68da9ab0e693cc7c25b0b30/opencv-python-headless-4.11.0.86.tar.gz",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/opencv-python-86.tar.gz",
+      "bytes": 1126800,
+      "sha256": "8f8f21b10e60ecaf22241e39ad04b1ac2766925d471e1c5ddc4ed397f0099e91",
+      "url": "https://codeload.github.com/opencv/opencv-python/tar.gz/refs/tags/86",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/opencv-python-86-Dockerfile_x86_64",
+      "bytes": 6363,
+      "sha256": "19d7609f4beef721d40d526b350d094af791d84fb9b572f2c95d9161943912dc",
+      "url": "https://raw.githubusercontent.com/opencv/opencv-python/86/docker/manylinux2014/Dockerfile_x86_64",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/ffmpeg-5.1.6.tar.xz",
+      "bytes": 10021428,
+      "sha256": "f4fa066278f7a47feab316fef905f4db0d5e9b589451949740f83972b30901bd",
+      "url": "https://ffmpeg.org/releases/ffmpeg-5.1.6.tar.xz",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/netron-9.3.1-source.tar.gz",
+      "bytes": 5176979,
+      "sha256": "612d8a064d0c7e166b47208c41bb8ac2ae7f95d5a5f0d659e3f41d82c3cd5507",
+      "url": "https://codeload.github.com/lutzroeder/netron/tar.gz/refs/tags/v9.3.1",
+      "verification": "checked against preserved download provenance"
+    }
+  ],
+  "python_distributions": "packaging/licenses/PYTHON-DISTRIBUTIONS.json",
+  "qt_license_records": "packaging/licenses/QT-SDK-PACKAGES.json",
+  "ffmpeg_build": "packaging/licenses/FFMPEG-BUILD.json",
+  "model_provenance": [
+    "models/yolov8n.provenance.json",
+    "models/yolov5n-pt.provenance.json",
+    "models/MODEL-PROVENANCE.json"
+  ],
+  "notes": "Application archive includes full project and vendored YOLOv5 source. Complete companion includes that archive and all listed original upstream archives. System-provided Python and shared libraries are Debian dependencies."
+}

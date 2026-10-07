@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "version": "1.4.0",
+  "home": "/home/misaka/VisionStudio",
+  "netron": "9.3.1",
+  "user_preferences_preserved": true,
+  "user_state_checksums": {
+    "/home/misaka/VisionStudio/output/preferences.ini": "af4f952c36c9d442e09aeb9503031ec53fc47724b98622c4707f34567080d3a2",
+    "/home/misaka/VisionStudio/output/history.json": "302c4aa18e47bd7b0e436ea00d211d18a422a3b8340e473dc8b3b6a1a920176f"
+  },
+  "display_smoke": {
+    "application": "Vision Studio",
+    "error": "",
+    "model": "/home/misaka/VisionStudio/models/yolov5n.onnx",
+    "netron": "9.3.1",
+    "nodes": 245,
+    "onnx_hint": "想看完整结构，建使用导出的 ONNX。",
+    "onnx_hint_visible": false,
+    "qt": "6.8.3",
+    "success": true,
+    "version": "1.4.0"
+  }
+}

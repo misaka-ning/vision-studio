@@ -1,0 +1,102 @@
+{
+  "success": true,
+  "version": "1.5.0",
+  "home": "/home/misaka/VisionStudio",
+  "user_preferences_preserved": true,
+  "user_history_preserved": true,
+  "user_state_checksums": {
+    "/home/misaka/VisionStudio/output/preferences.ini": "af4f952c36c9d442e09aeb9503031ec53fc47724b98622c4707f34567080d3a2",
+    "/home/misaka/VisionStudio/output/history.json": "302c4aa18e47bd7b0e436ea00d211d18a422a3b8340e473dc8b3b6a1a920176f"
+  },
+  "model_display_cases": {
+    "onnx": {
+      "passed": true,
+      "exit_code": 0,
+      "report": {
+        "application": "Vision Studio",
+        "cache_preserved": true,
+        "display_modes": {
+          "graph": true,
+          "hierarchy": true,
+          "parameters": true
+        },
+        "error": "",
+        "hierarchy_items": 246,
+        "model": "/home/misaka/VisionStudio/models/yolov5n.onnx",
+        "netron": "9.3.1",
+        "nodes": 245,
+        "onnx_hint": "想看完整结构，建使用导出的 ONNX。",
+        "onnx_hint_visible": false,
+        "parameter_rows": 141,
+        "qt": "6.8.3",
+        "success": true,
+        "version": "1.5.0"
+      }
+    },
+    "pt": {
+      "passed": true,
+      "exit_code": 0,
+      "report": {
+        "application": "Vision Studio",
+        "cache_preserved": true,
+        "display_modes": {
+          "graph": true,
+          "hierarchy": true,
+          "parameters": true
+        },
+        "error": "",
+        "hierarchy_items": 314,
+        "model": "/home/misaka/VisionStudio/models/yolov8n.pt",
+        "netron": "9.3.1",
+        "nodes": 1,
+        "onnx_hint": "想看完整结构，建使用导出的 ONNX。",
+        "onnx_hint_visible": true,
+        "parameter_rows": 359,
+        "qt": "6.8.3",
+        "success": true,
+        "version": "1.5.0"
+      }
+    },
+    "corrupt": {
+      "passed": true,
+      "exit_code": 2,
+      "report": {
+        "application": "Vision Studio",
+        "cache_preserved": false,
+        "display_modes": {},
+        "error": "Netron 无法解析或绘制此模型结构。文件可能损坏，或格式尚不受支持。\n解析器详情：Unsupported file content.",
+        "hierarchy_items": 0,
+        "model": "/home/misaka/文档/ChatGPT/yolo/output/qa-home-1.5-final/fixtures/corrupt.onnx",
+        "netron": "9.3.1",
+        "nodes": 0,
+        "onnx_hint": "想看完整结构，建使用导出的 ONNX。",
+        "onnx_hint_visible": false,
+        "parameter_rows": 0,
+        "qt": "6.8.3",
+        "success": false,
+        "version": "1.5.0"
+      }
+    },
+    "unsupported": {
+      "passed": true,
+      "exit_code": 2,
+      "report": {
+        "application": "Vision Studio",
+        "cache_preserved": false,
+        "display_modes": {},
+        "error": "Netron 无法解析或绘制此模型结构。文件可能损坏，或格式尚不受支持。\n解析器详情：Unsupported file format.",
+        "hierarchy_items": 0,
+        "model": "/home/misaka/文档/ChatGPT/yolo/output/qa-home-1.5-final/fixtures/unsupported.xyz",
+        "netron": "9.3.1",
+        "nodes": 0,
+        "onnx_hint": "想看完整结构，建使用导出的 ONNX。",
+        "onnx_hint_visible": true,
+        "parameter_rows": 0,
+        "qt": "6.8.3",
+        "success": false,
+        "version": "1.5.0"
+      }
+    }
+  },
+  "runtime_netron": "9.3.1"
+}

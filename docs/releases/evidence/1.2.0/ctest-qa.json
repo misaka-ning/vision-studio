@@ -1,0 +1,15 @@
+{
+  "success": true,
+  "qt": "6.8.3",
+  "backend_runtime": "release-runtime Python 3.10 CPU headless OpenCV",
+  "suites": {
+    "core": 31,
+    "pt": 24,
+    "ui": 10
+  },
+  "functional_results": 59,
+  "total_results_with_setup_cleanup": 65,
+  "failed": 0,
+  "skipped": 0,
+  "log": "CTest-2026-10-06.log"
+}

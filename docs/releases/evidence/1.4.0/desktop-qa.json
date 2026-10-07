@@ -1,0 +1,75 @@
+{
+  "success": true,
+  "version": "1.4.0",
+  "platform": "X11/xcb",
+  "qt": "6.8.3",
+  "netron": "9.3.1",
+  "binary_source": "final DEB stage",
+  "sandbox_disabled": false,
+  "models": {
+    "onnx": {
+      "application": "Vision Studio",
+      "error": "",
+      "model": "/home/misaka/文档/ChatGPT/yolo/output/deb-stage/1.4.0-1/opt/VisionStudio/models/yolov5n.onnx",
+      "netron": "9.3.1",
+      "nodes": 245,
+      "onnx_hint": "想看完整结构，建使用导出的 ONNX。",
+      "onnx_hint_visible": false,
+      "qt": "6.8.3",
+      "success": true,
+      "version": "1.4.0"
+    },
+    "pt": {
+      "application": "Vision Studio",
+      "error": "",
+      "model": "/home/misaka/文档/ChatGPT/yolo/output/deb-stage/1.4.0-1/opt/VisionStudio/models/yolov8n.pt",
+      "netron": "9.3.1",
+      "nodes": 1,
+      "onnx_hint": "想看完整结构，建使用导出的 ONNX。",
+      "onnx_hint_visible": true,
+      "qt": "6.8.3",
+      "success": true,
+      "version": "1.4.0"
+    },
+    "corrupt": {
+      "application": "Vision Studio",
+      "error": "Netron 无法解析或绘制此模型结构。文件可能损坏，或格式尚不受支持。\n解析器详情：Unsupported file content.",
+      "model": "/home/misaka/文档/ChatGPT/yolo/output/qa-model-1.4-fixtures/corrupt.onnx",
+      "netron": "9.3.1",
+      "nodes": 0,
+      "onnx_hint": "想看完整结构，建使用导出的 ONNX。",
+      "onnx_hint_visible": false,
+      "qt": "6.8.3",
+      "success": false,
+      "version": "1.4.0"
+    },
+    "unsupported": {
+      "application": "Vision Studio",
+      "error": "Netron 无法解析或绘制此模型结构。文件可能损坏，或格式尚不受支持。\n解析器详情：Unsupported file format.",
+      "model": "/home/misaka/文档/ChatGPT/yolo/output/qa-model-1.4-fixtures/unsupported.xyz",
+      "netron": "9.3.1",
+      "nodes": 0,
+      "onnx_hint": "想看完整结构，建使用导出的 ONNX。",
+      "onnx_hint_visible": true,
+      "qt": "6.8.3",
+      "success": false,
+      "version": "1.4.0"
+    }
+  },
+  "ctest_suites": {
+    "passed": 6,
+    "failed": 0
+  },
+  "home_display": {
+    "application": "Vision Studio",
+    "error": "",
+    "model": "/home/misaka/VisionStudio/models/yolov5n.onnx",
+    "netron": "9.3.1",
+    "nodes": 245,
+    "onnx_hint": "想看完整结构，建使用导出的 ONNX。",
+    "onnx_hint_visible": false,
+    "qt": "6.8.3",
+    "success": true,
+    "version": "1.4.0"
+  }
+}

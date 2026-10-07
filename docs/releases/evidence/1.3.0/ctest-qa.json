@@ -1,0 +1,17 @@
+{
+  "success": true,
+  "suites": {
+    "core": 34,
+    "recording": 13,
+    "pt": 29,
+    "ui": 12
+  },
+  "qt_test_success_results": 88,
+  "functional_results_excluding_init_cleanup": 80,
+  "failures": 0,
+  "skipped": 0,
+  "log": "CTest-2026-10-06.log",
+  "recording_export_validated": true,
+  "sixteen_bit_pt_grayscale_validated": true,
+  "stopping_in_flight_frame_recorded": true
+}

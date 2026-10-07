@@ -154,8 +154,9 @@ class ReleaseTests(unittest.TestCase):
 
     def test_passing_bundle_has_expected_archives_and_qa(self):
         assets = release.validate_bundle(self.root, "1.5.0")
-        self.assertEqual(len(assets), 10)
-        self.assertIn("SOURCE-SHA256SUMS", {asset.name for asset in assets})
+        self.assertEqual({asset.name for asset in assets}, {
+            "vision-studio_1.5.0-1_amd64.deb",
+            "vision-studio-1.5.0-complete-source.tar.xz", "SHA256SUMS"})
 
     def test_missing_and_corrupt_checksums_rejected(self):
         (self.root / "vision-studio_1.5.0-1_amd64.deb").write_bytes(b"changed")
@@ -233,7 +234,11 @@ class ReleaseTests(unittest.TestCase):
         self.assertTrue(result["published"])
         self.assertEqual(github.commands[0][2], "create")
         self.assertEqual(github.commands[-1][2], "edit")
-        self.assertEqual(len(result["verified_assets"]), 11)
+        expected_names = {"vision-studio_1.5.0-1_amd64.deb",
+                          "vision-studio-1.5.0-complete-source.tar.xz", "SHA256SUMS"}
+        self.assertEqual({row["name"] for row in result["verified_assets"]}, expected_names)
+        self.assertEqual({row["name"] for row in github.rows}, expected_names)
+        self.assertEqual(sum(command[2] == "upload" for command in github.commands), 3)
         self.assertFalse(any("--clobber" in command for command in github.commands))
 
     def test_existing_published_release_is_never_modified(self):
@@ -254,7 +259,7 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(sum(row["name"] == "SHA256SUMS" for row in github.rows), 1)
 
     def test_draft_unexpected_asset_or_digest_mismatch_protects_release(self):
-        for name in ("unreviewed.bin", "SHA256SUMS"):
+        for name in ("unreviewed.bin", "SHA256SUMS", "SOURCE-SHA256SUMS", "RELEASE-ASSETS.json"):
             github = FakeGitHub(self.root, existing=True, draft=True)
             github.rows.append({"id": 1, "name": name, "size": 1, "state": "uploaded", "digest": "sha256:a"})
             self.args.resume_draft = True
@@ -262,6 +267,42 @@ class ReleaseTests(unittest.TestCase):
                 self.publish(github)
             self.assertEqual(github.commands, [])
             self.assertTrue(github.value["draft"])
+
+    def test_three_asset_publish_still_checks_unuploaded_source_and_required_qa(self):
+        names = ("vision-studio-1.5.0-sources.tar.xz", "sources/upstream.tar.xz",
+                 "qa-report.json", "install-qa.json", "ctest-qa.json", "source-bundle-qa.json")
+        for name in names:
+            with self.subTest(name=name):
+                path = self.root / name
+                original = path.read_bytes()
+                path.write_bytes(b'{"success": false}' if name.endswith(".json") else b"corrupt source")
+                github = FakeGitHub(self.root)
+                try:
+                    with self.assertRaises(release.ReleaseError):
+                        self.publish(github)
+                    self.assertEqual(github.commands, [])
+                    self.assertIsNone(github.value)
+                finally:
+                    path.write_bytes(original)
+
+    def test_three_asset_verify_rejects_wrong_published_content_without_modification(self):
+        github = FakeGitHub(self.root, existing=True)
+        for asset in release.validate_bundle(self.root, "1.5.0"):
+            github.add_asset(asset.path)
+        github.rows[0]["digest"] = "sha256:" + "b" * 64
+        args = argparse.Namespace(version="1.5.0", release_dir=self.root,
+                                  project_dir=self.project, legacy=False)
+        with self.assertRaisesRegex(release.ReleaseError, "Remote checksum mismatch"):
+            release.verify(args, github)
+        self.assertEqual(github.commands, [])
+        self.assertFalse(github.value["draft"])
+
+    def test_public_checksum_manifest_cannot_require_an_unattached_split_archive(self):
+        manifest = self.root / "SHA256SUMS"
+        split_name = "vision-studio-1.5.0-sources.tar.xz"
+        manifest.write_text(manifest.read_text() + f"{release.sha256(self.root / split_name)}  {split_name}\n")
+        with self.assertRaisesRegex(release.ReleaseError, "exactly the DEB and complete"):
+            release.validate_bundle(self.root, "1.5.0")
 
     def test_prune_numeric_versions_preserves_latest_two_and_unknown_files(self):
         old = fixture(self.project, "1.3.0")

@@ -1,0 +1,45 @@
+{
+  "success": true,
+  "qt": "6.8.3",
+  "display": "X11 :1",
+  "test": "actual staged DEB PT grayscale inference, PNG/JSON/CSV export",
+  "smoke": {
+    "backend": "PyTorch / Ultralytics / CPU",
+    "error": "",
+    "inference_ms": 40.7129559898749,
+    "predictions": 5,
+    "qt": "6.8.3",
+    "success": true
+  },
+  "exports": [
+    {
+      "file": "bus-20261006-175438-790-f1.json",
+      "predictions": 5,
+      "color_mode": "grayscale",
+      "input_channels": 3,
+      "unannotated_top_150_rows_grayscale_fraction": 1.0
+    }
+  ],
+  "sidebar_order": [
+    "检测工作台",
+    "模型库",
+    "运行记录",
+    "使用指南",
+    "录制视频",
+    "更多"
+  ],
+  "camera_hardware_tested": false,
+  "image_formats": {
+    "png": true,
+    "jpeg": true,
+    "webp": true,
+    "tiff": true,
+    "svg_plugin": true
+  },
+  "ui_screenshots": [
+    "ui-preview.png",
+    "ui-camera.png",
+    "ui-more.png",
+    "ui-recordings.png"
+  ]
+}

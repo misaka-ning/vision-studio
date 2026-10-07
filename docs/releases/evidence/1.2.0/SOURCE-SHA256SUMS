@@ -1,0 +1,13 @@
+25b9b658da7719fba1d373d2374e01cb743b689d53af85cdb41a28ec4c881ed3  vision-studio-1.2.0-sources.tar.xz
+bf0cf281f3e76423a1b485a8ebc864b14db265d57d89ac0f1081fe83ef0afe92  SOURCE-INVENTORY.json
+66741c23724546713d8045d6071e34a55d8b91c3b1bb63833815e044512797b5  sources/DOWNLOAD-PROVENANCE.json
+56001b905601bb9023d399f3ba780d7fa940f3e4861e496a7c490331f49e0b80  sources/qtbase-everywhere-src-6.8.3.tar.xz
+35eb516460f00f264eb504baa253432384351cf23fb9980a5857190e8deef438  sources/qtsvg-everywhere-src-6.8.3.tar.xz
+20fe385887d21190165a3180c17dcfc8b9a0e1da4ec76865b6334bdc709994b0  sources/qtwayland-everywhere-src-6.8.3.tar.xz
+049bfb99845e4801672aca07c3c4fc4c140f932a3a33faa899419579e33ef1c8  sources/qtimageformats-everywhere-src-6.8.3.tar.xz
+cfb50c462a9138a187f7e5957ad2c91e3e757f6f0569da0c896574282d553840  sources/ultralytics-8.4.173.tar.gz
+149a89c26c2be35b709fa25951f4644dea13d63017025569a193159a5908e3ed  sources/ultralytics_thop-2.2.2.tar.gz
+996eb282ca4b43ec6a3972414de0e2331f5d9cda2b41091a49739c19fb843798  sources/opencv-python-headless-4.11.0.86.tar.gz
+8f8f21b10e60ecaf22241e39ad04b1ac2766925d471e1c5ddc4ed397f0099e91  sources/opencv-python-86.tar.gz
+19d7609f4beef721d40d526b350d094af791d84fb9b572f2c95d9161943912dc  sources/opencv-python-86-Dockerfile_x86_64
+f4fa066278f7a47feab316fef905f4db0d5e9b589451949740f83972b30901bd  sources/ffmpeg-5.1.6.tar.xz

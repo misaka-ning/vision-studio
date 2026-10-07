@@ -1,0 +1,136 @@
+Start testing: Oct 07 11:45 HKT
+----------------------------------------------------------
+1/6 Testing: vision-core-tests
+1/6 Test: vision-core-tests
+Command: "/home/misaka/文档/ChatGPT/yolo/build/vision-core-tests"
+Directory: /home/misaka/文档/ChatGPT/yolo/build
+"vision-core-tests" start time: Oct 07 11:45 HKT
+Output:
+----------------------------------------------------------
+********* Start testing of CoreTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : CoreTests::initTestCase()
+PASS   : CoreTests::yoloV8LetterboxClippingAndNms()
+PASS   : CoreTests::yoloV5UsesObjectnessAndClassScores()
+PASS   : CoreTests::classificationLogitsBecomeProbabilities()
+PASS   : CoreTests::classificationProbabilitiesRemainUnchanged()
+PASS   : CoreTests::preprocessingRespectsColorChannels()
+PASS   : CoreTests::preprocessingSubtractsMeanBeforeScaling()
+PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgb888-padded-scanlines)
+PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgba8888)
+PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgb32)
+PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(red)
+PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(green)
+PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(blue)
+PASS   : CoreTests::grayscaleThreeChannelsReplicateOneIntensity()
+PASS   : CoreTests::grayscaleDetectionPaddingUses114(single-channel)
+PASS   : CoreTests::grayscaleDetectionPaddingUses114(replicated-three-channel)
+PASS   : CoreTests::colorInputRejectsSingleChannelModel()
+PASS   : CoreTests::unsupportedONNXInputChannels(four-channels)
+PASS   : CoreTests::unsupportedONNXInputChannels(symbolic-channel-axis)
+PASS   : CoreTests::initializerGraphInputsRemainCompatible()
+PASS   : CoreTests::missingModelReportsFailure()
+PASS   : CoreTests::unsupportedDetectionOutputReportsFailure()
+PASS   : CoreTests::emptyImageReportsFailure()
+PASS   : CoreTests::workerProcessesEveryImageInBatch()
+PASS   : CoreTests::workerStopsBatchAndCanRunAgain()
+PASS   : CoreTests::workerDeliversVideoLastFrameAtEndOfFile()
+PASS   : CoreTests::workerReportsUnreadableInputAndFinishes()
+PASS   : CoreTests::stereoOddWidthSelectionAndInference()
+PASS   : CoreTests::stereoSelectionRejectsEmptyAndTooNarrowFrames()
+PASS   : CoreTests::workerSelectsSideBySideVideoView(full-frame)
+PASS   : CoreTests::workerSelectsSideBySideVideoView(left-eye)
+PASS   : CoreTests::workerSelectsSideBySideVideoView(right-eye)
+PASS   : CoreTests::workerKeepsImagesWholeWhenStereoViewSelected()
+PASS   : CoreTests::cleanupTestCase()
+Totals: 34 passed, 0 failed, 0 skipped, 0 blacklisted, 446ms
+********* Finished testing of CoreTests *********
+<end of output>
+Test time =   0.51 sec
+----------------------------------------------------------
+Test Passed.
+"vision-core-tests" end time: Oct 07 11:45 HKT
+"vision-core-tests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/6 Testing: vision-recording-tests
+2/6 Test: vision-recording-tests
+Command: "/home/misaka/文档/ChatGPT/yolo/build/vision-recording-tests"
+Directory: /home/misaka/文档/ChatGPT/yolo/build
+"vision-recording-tests" start time: Oct 07 11:45 HKT
+Output:
+----------------------------------------------------------
+********* Start testing of RecordingTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : RecordingTests::initTestCase()
+PASS   : RecordingTests::videoIsAnnotatedPlayableAndPublishedOnlyAtFinish()
+PASS   : RecordingTests::grayscaleOddEyePreservesContentAndAddsOnlyEdgePadding()
+PASS   : RecordingTests::cameraTimingUsesMeasuredDurationAndDecodesAllFrames()
+PASS   : RecordingTests::emptyDiscardAndInvalidDirectoryNeverPublishBrokenClips()
+PASS   : RecordingTests::changedResolutionEndsClipWithoutLosingItsPreviousFrames()
+PASS   : RecordingTests::workerRecordsEveryFrameAndFinishesAtEof()
+PASS   : RecordingTests::workerStartAfterFirstPreviewAndCancelClosesOnlyRecordedFrames()
+PASS   : RecordingTests::recordingFailureDoesNotInterruptInference()
+PASS   : RecordingTests::manualStopKeepsInferenceRunningAndRestartCreatesANewClip()
+PASS   : RecordingTests::stoppingDuringOnnxForwardRecordsTheLastCompletedFrame()
+PASS   : RecordingTests::stoppingWithPendingRecordingNeverOpensANewClip()
+PASS   : RecordingTests::cleanupTestCase()
+Totals: 13 passed, 0 failed, 0 skipped, 0 blacklisted, 1980ms
+********* Finished testing of RecordingTests *********
+<end of output>
+Test time =   2.04 sec
+----------------------------------------------------------
+Test Passed.
+"vision-recording-tests" end time: Oct 07 11:45 HKT
+"vision-recording-tests" time elapsed: 00:00:02
+----------------------------------------------------------
+
+3/6 Testing: vision-pt-tests
+3/6 Test: vision-pt-tests
+Command: "/home/misaka/文档/ChatGPT/yolo/build/vision-pt-tests"
+Directory: /home/misaka/文档/ChatGPT/yolo/build
+"vision-pt-tests" start time: Oct 07 11:45 HKT
+Output:
+----------------------------------------------------------
+********* Start testing of PtBackendTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : PtBackendTests::initTestCase()
+PASS   : PtBackendTests::realCheckpointLoadsNamesAndProcessesConsecutiveImages()
+PASS   : PtBackendTests::realModernAndLegacyGrayscalePreviewPreservesOriginalPixels()
+PASS   : PtBackendTests::grayscaleThreeChannelsAreEqualAndUseBgrToGrayWeights()
+PASS   : PtBackendTests::grayscaleSingleChannelIsInferredFromTorchScriptConv()
+PASS   : PtBackendTests::nativeClassificationSupportsOneAndThreeGrayChannels()
+PASS   : PtBackendTests::grayscaleTorchScriptDetectionRestoresLetterboxCoordinates()
+PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(red)
+PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(green)
+PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(blue)
+PASS   : PtBackendTests::sixteenBitGrayscalePreviewMatchesActualPtInput(rgba64)
+PASS   : PtBackendTests::sixteenBitGrayscalePreviewMatchesActualPtInput(grayscale16)
+PASS   : PtBackendTests::realYoloSingleChannelStemsPreserveGrayscalePredictions()
+PASS   : PtBackendTests::invalidTorchScriptChannelMetadataIsRejected()
+PASS   : PtBackendTests::detectionInputSizeMustBeMultipleOf32AtLoad()
+PASS   : PtBackendTests::torchScriptWithoutInputConstraintsRequiresActionableMetadata()
+PASS   : PtBackendTests::processHandshakeCannotGuessMissingOrInvalidInputChannels()
+PASS   : PtBackendTests::missingExplicitPythonReportsFailure()
+PASS   : PtBackendTests::officialLegacyYoloV5CheckpointRunsWithBundledFramework()
+PASS   : PtBackendTests::invalidCheckpointCannotLeavePreviousModelLoaded()
+PASS   : PtBackendTests::bareStateDictionaryReportsMissingArchitecture()
+PASS   : PtBackendTests::metadataBearingTorchScriptClassificationUsesTopK()
+PASS   : PtBackendTests::customOnnxPreprocessingCannotSilentlyChangePtInference()
+PASS   : PtBackendTests::cancellationInterruptsBlockedModelInitialization()
+PASS   : PtBackendTests::cancellationInterruptsBlockedInference()
+PASS   : PtBackendTests::invalidProcessProtocolResetsBackend()
+PASS   : PtBackendTests::substitutedModelHandshakeIsRejected()
+PASS   : PtBackendTests::shortenedInitializationDeadlineStopsBackend()
+PASS   : PtBackendTests::cleanupTestCase()
+Totals: 29 passed, 0 failed, 0 skipped, 0 blacklisted, 106326ms
+********* Finished testing of PtBackendTests *********
+<end of output>
+Test time = 106.34 sec
+----------------------------------------------------------
+Test Passed.
+"vision-pt-tests" end time: Oct 07 11:47 HKT
+"vision-pt-tests" time elapsed: 00:01:46
+----------------------------------------------------------
+
+End testing: Oct 07 11:47 HKT

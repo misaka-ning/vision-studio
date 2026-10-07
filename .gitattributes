@@ -20,4 +20,5 @@
 *.jpeg binary
 *.webp binary
 # Keep vendored upstream files byte-for-byte as distributed.
+docs/releases/evidence/** -text -whitespace
 vendor/** -text

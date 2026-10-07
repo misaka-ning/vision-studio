@@ -1,0 +1,12 @@
+{
+    "application": "Vision Studio",
+    "error": "",
+    "model": "/home/misaka/文档/ChatGPT/yolo/output/deb-stage/1.4.0-1/opt/VisionStudio/models/yolov5n.onnx",
+    "netron": "9.3.1",
+    "nodes": 245,
+    "onnx_hint": "想看完整结构，建使用导出的 ONNX。",
+    "onnx_hint_visible": false,
+    "qt": "6.8.3",
+    "success": true,
+    "version": "1.4.0"
+}

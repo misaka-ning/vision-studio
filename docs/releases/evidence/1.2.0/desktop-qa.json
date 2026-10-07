@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "qt": "6.8.3",
+  "display": "X11 :1",
+  "test": "actual staged DEB PT grayscale inference, PNG/JSON/CSV export",
+  "smoke": {
+    "backend": "PyTorch / Ultralytics / CPU",
+    "error": "",
+    "inference_ms": 39.71833101240918,
+    "predictions": 5,
+    "qt": "6.8.3",
+    "success": true
+  },
+  "exports": [
+    {
+      "file": "bus-20261006-102314-215-f1.json",
+      "predictions": 5,
+      "color_mode": "grayscale",
+      "input_channels": 3
+    }
+  ],
+  "camera_ui": "ui-camera.png",
+  "camera_hardware_tested": false,
+  "image_formats": {
+    "png": true,
+    "jpeg": true,
+    "webp": true,
+    "tiff": true,
+    "svg_plugin": true
+  }
+}

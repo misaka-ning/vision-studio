@@ -138,6 +138,7 @@ def make_asset(root: Path, name: str) -> Asset:
 
 
 def validate_bundle(directory: Path, version: str, require_qa: bool = True) -> list[Asset]:
+    """Validate the complete local delivery; return only the three public assets."""
     version_key(version)
     root = canonical_directory(directory)
     if root.name != version:
@@ -154,6 +155,8 @@ def validate_bundle(directory: Path, version: str, require_qa: bool = True) -> l
         rf"vision-studio_{re.escape(version)}-[1-9]\d*_amd64\.deb", name))
     if len(debs) != 1:
         raise ReleaseError("SHA256SUMS must contain exactly one versioned amd64 DEB")
+    if set(public) != {debs[0], companion}:
+        raise ReleaseError("Public SHA256SUMS must list exactly the DEB and complete source companion")
     for name in (companion, app, "SOURCE-INVENTORY.json"):
         if name not in all_checksums:
             raise ReleaseError(f"Required asset is not checksummed: {name}")
@@ -161,8 +164,10 @@ def validate_bundle(directory: Path, version: str, require_qa: bool = True) -> l
     if (inventory.get("version") != version or inventory.get("application_archive") != app
             or inventory.get("complete_companion") != companion):
         raise ReleaseError("SOURCE-INVENTORY.json does not match this version")
-    assets = [make_asset(root, name) for name in (
-        debs[0], companion, app, "SHA256SUMS", "SOURCE-SHA256SUMS", "SOURCE-INVENTORY.json")]
+    # The complete source companion contains the application source archive,
+    # SOURCE-SHA256SUMS, and SOURCE-INVENTORY.json. Keep validating the original
+    # local copies above; they do not need separate Release attachments.
+    assets = [make_asset(root, name) for name in (debs[0], companion, "SHA256SUMS")]
     if require_qa:
         required_reports = ["qa-report.json", "install-qa.json", "ctest-qa.json"]
         source_report = next((name for name in ("source-bundle-qa.json", "source-qa.json")
@@ -181,7 +186,9 @@ def validate_bundle(directory: Path, version: str, require_qa: bool = True) -> l
             if name in ("qa-report.json", "install-qa.json"):
                 if report.get("details", {}).get("deb_sha256") != all_checksums[debs[0]]:
                     raise ReleaseError(f"QA report is for a different DEB: {name}")
-            assets.append(make_asset(root, name))
+            # QA remains mandatory even though reports are archived in the Git
+            # repository under docs/releases/evidence rather than as assets.
+            make_asset(root, name)
     return assets
 
 
@@ -359,7 +366,7 @@ def publish(args: argparse.Namespace, github: GitHub) -> dict:
         if (existing.get("tag_name") != tag or existing.get("prerelease")
                 or existing.get("body", "").strip() != notes.read_text(encoding="utf-8").strip()):
             raise ReleaseError("Existing draft has different tag, notes, or release type")
-        allowed_names = {asset.name for asset in assets} | {"RELEASE-ASSETS.json"}
+        allowed_names = {asset.name for asset in assets}
         if any(row["name"] not in allowed_names for row in github.assets(existing)):
             raise ReleaseError("Existing draft contains unexpected assets; inspect it manually")
         github.verify_assets(existing, assets, allow_missing=True)
@@ -367,33 +374,26 @@ def publish(args: argparse.Namespace, github: GitHub) -> dict:
             "tag": tag, "commit": commit, "assets": [item.metadata() for item in assets]}
     if args.dry_run:
         return plan
-    # Include a canonical manifest so downloaded assets can be audited together.
-    manifest_data = {"schema": 1, "repository": github.repository, "tag": tag,
-                     "commit": commit, "assets": plan["assets"]}
-    with tempfile.TemporaryDirectory(prefix="vision-release-publish-") as temp:
-        manifest_path = Path(temp) / "RELEASE-ASSETS.json"
-        manifest_path.write_text(json.dumps(manifest_data, ensure_ascii=False, indent=2) + "\n")
-        assets.append(make_asset(Path(temp), manifest_path.name))
-        if existing is None:
-            command(["gh", "release", "create", tag, "--repo", github.repository,
-                     "--verify-tag", "--draft", "--title", f"Vision Studio {tag}",
-                     "--notes-file", str(notes)])
-        release = release_after_mutation(github, tag, draft=True)
-        verified = github.verify_assets(release, assets, allow_missing=True)
-        present = {row["name"] for row in verified}
-        for asset in assets:
-            if asset.name not in present:
-                command(["gh", "release", "upload", tag, str(asset.path), "--repo",
-                         github.repository])  # Never use --clobber.
-        verified = github.verify_assets(release, assets)
-        # A concurrent tag mutation must not publish mismatched code.
-        if github.remote_commit(tag) != commit:
-            raise ReleaseError("GitHub tag changed during upload; release remains a draft")
-        command(["gh", "release", "edit", tag, "--repo", github.repository,
-                 "--draft=false", "--latest"])
-        release = release_after_mutation(github, tag, draft=False)
-        plan.update({"url": release["html_url"], "verified_assets": verified,
-                     "published": True})
+    if existing is None:
+        command(["gh", "release", "create", tag, "--repo", github.repository,
+                 "--verify-tag", "--draft", "--title", f"Vision Studio {tag}",
+                 "--notes-file", str(notes)])
+    release = release_after_mutation(github, tag, draft=True)
+    verified = github.verify_assets(release, assets, allow_missing=True)
+    present = {row["name"] for row in verified}
+    for asset in assets:
+        if asset.name not in present:
+            command(["gh", "release", "upload", tag, str(asset.path), "--repo",
+                     github.repository])  # Never use --clobber.
+    verified = github.verify_assets(release, assets)
+    # A concurrent tag mutation must not publish mismatched code.
+    if github.remote_commit(tag) != commit:
+        raise ReleaseError("GitHub tag changed during upload; release remains a draft")
+    command(["gh", "release", "edit", tag, "--repo", github.repository,
+             "--draft=false", "--latest"])
+    release = release_after_mutation(github, tag, draft=False)
+    plan.update({"url": release["html_url"], "verified_assets": verified,
+                 "published": True})
     return plan
 
 

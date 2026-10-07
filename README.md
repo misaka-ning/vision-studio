@@ -23,7 +23,9 @@
 
 ## 下载与安装
 
-从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择版本，下载 DEB、同版本完整源码包和 `SHA256SUMS`，先校验，再安装：
+从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择版本。每版只上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
+
+页面另外显示 GitHub 自动提供的 **Source code (zip)** 和 **Source code (tar.gz)** 两个源码入口，它们由平台生成，不能从 Release 中移除。下载三个手动附件后，先校验，再安装：
 
 ```bash
 sha256sum -c SHA256SUMS
@@ -81,7 +83,7 @@ ctest --test-dir build --output-on-failure
 
 ## 验证与发行
 
-测试覆盖真实 OpenCV forward、PT 后台协议和模型、灰度 C1 / C3、左右目、录像、UI、模型显示及本机 HTTP 服务。V1.5 的六组 CTest 全部通过，正式包也完成普通用户、只读安装树、离线安装／推理／卸载验收；具体边界和证据以同版 Release 的 QA 文件为准。摄像头硬件需要实际设备验证。
+测试覆盖真实 OpenCV forward、PT 后台协议和模型、灰度 C1 / C3、左右目、录像、UI、模型显示及本机 HTTP 服务。V1.5 的六组 CTest 全部通过，正式包也完成普通用户、只读安装树、离线安装／推理／卸载验收；具体边界和报告见 [V1.5 验收证据](docs/releases/evidence/1.5.0)。每版证据保存在 `docs/releases/evidence/X.Y.Z`，不作为零散 Release 附件上传。摄像头硬件需要实际设备验证。
 
 ```bash
 ./build/bin/vision-studio --smoke /tmp/vision-studio-onnx-smoke
@@ -93,7 +95,7 @@ ctest --test-dir build --output-on-failure
 
 模型显示自检生成结构图、层级树、参数表截图及含内容数量、模式和缓存复用状态的报告。无显示器时可以使用 `QT_QPA_PLATFORM=offscreen`；正常桌面启动保留 WebEngine sandbox。
 
-打包、对应源码及上游重建说明见 [打包说明](packaging/README.md) 和 [对应源码与重建](docs/release/对应源码与重建.md)。GitHub 自动生成的 Source code 归档来自 Git 标签；需要完整第三方对应源码时，下载 Release 中的 `vision-studio-X.Y.Z-complete-source.tar.xz`。
+打包、对应源码及上游重建说明见 [打包说明](packaging/README.md) 和 [对应源码与重建](docs/release/对应源码与重建.md)。完整源码包内已有应用源码拆分归档、`SOURCE-SHA256SUMS`、`SOURCE-INVENTORY.json` 及上游源码、许可和原始通知，可解压后获取。GitHub 自动生成的 Source code ZIP／tar.gz 来自 Git 标签，不能替代 Release 中的完整对应源码包。
 
 源码主线为 `main`，发行标签为 `vX.Y.Z`。每个新版必须按 [版本管理](docs/版本管理.md) 完成测试、源码与标签推送，并使用 `scripts/github_release.py` 发布和校验 Release；远端核验后本地只保留最新两版发行／构建副本。历史版本可通过标签和 Release 获取，原归档保持不变。
 

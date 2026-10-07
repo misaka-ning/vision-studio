@@ -1,0 +1,188 @@
+{
+  "success": true,
+  "repository": "misaka-ning/vision-studio",
+  "version": "1.5.0",
+  "tag": "v1.5.0",
+  "commit": "260b9f7e7ca148190ccabd8dcd2ba5f9da83bf1d",
+  "url": "https://github.com/misaka-ning/vision-studio/releases/tag/v1.5.0",
+  "published_at": "2026-10-07T07:24:54Z",
+  "verified_at": "2026-10-07T07:25:06.295043+00:00",
+  "verified_assets": [
+    {
+      "name": "vision-studio_1.5.0-1_amd64.deb",
+      "bytes": 377016656,
+      "sha256": "7b46814f0b27873ac95d389f94732bb8e196960444ce6c41a9c915afe397ffe9",
+      "asset_id": 617894515,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "vision-studio-1.5.0-complete-source.tar.xz",
+      "bytes": 799089648,
+      "sha256": "bec394e0b8a8acebef455127ecb6094f5c14e163a3107bc32b6b99202303a316",
+      "asset_id": 617894542,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "vision-studio-1.5.0-sources.tar.xz",
+      "bytes": 28845456,
+      "sha256": "42461da6d0a4c7027b6d4b74ea9576efef9c527b7ffb289bbcfb830f38e82a84",
+      "asset_id": 617894543,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 207,
+      "sha256": "b744a11cf54f839d406b7f5190f96040347dc83b6939bd056acf67145ab205bc",
+      "asset_id": 617894517,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "SOURCE-SHA256SUMS",
+      "bytes": 1916,
+      "sha256": "9e9fc738e0c6e945f504525cd251889a1391a1519efe01e13cbbec5fa0ce76d0",
+      "asset_id": 617894541,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "SOURCE-INVENTORY.json",
+      "bytes": 6457,
+      "sha256": "4a944319c86b9f0958be27764ac86d4795a1a738e12d01d103c001efb75f506c",
+      "asset_id": 617894628,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "CTest-1.5.0-2026-10-07.log",
+      "bytes": 1221,
+      "sha256": "288104dde780295b57b30e510d0c58d98cd6ad7c42e7daf47462df6a42f4d28a",
+      "asset_id": 617894698,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "CTest-1.5.0-core-2026-10-07.log",
+      "bytes": 545,
+      "sha256": "caaf9eabcc303ac4344af4b38b6b841c327fc758b5e22b91b7ea05a6822f70ea",
+      "asset_id": 617894745,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "CTest-1.5.0-core-details-2026-10-07.log",
+      "bytes": 7989,
+      "sha256": "2753b3e425e1622839c8e3000a96c237116fea18cf5c97fe50b81c83c15b7329",
+      "asset_id": 617894792,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "CTest-1.5.0-views-2026-10-07.log",
+      "bytes": 556,
+      "sha256": "df97b576355f201fda8da822b45f779c1f805738bf7d877fb2e99ce0c043b813",
+      "asset_id": 617894871,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "CTest-1.5.0-views-details-2026-10-07.log",
+      "bytes": 18768,
+      "sha256": "67050afe46ae73ef01000d30f0d7babf81e59a16297893b8421861e98b21be34",
+      "asset_id": 617894952,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "README.md",
+      "bytes": 1568,
+      "sha256": "f950ed450f7cddd8c8b0dffd252fcf8d2aba6787b4f96b2cd68c89631b805140",
+      "asset_id": 617895070,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "ctest-qa.json",
+      "bytes": 754,
+      "sha256": "3e0a4599469ce7d43e38499e2b25e2afe2b8d6e2909b380f7fd1682aef671bf9",
+      "asset_id": 617895123,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "desktop-qa.json",
+      "bytes": 3180,
+      "sha256": "b830ef47a2c5afed3f54ed234ab927129818c035f3b9b0b4f5d4f870d24bba5d",
+      "asset_id": 617895201,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "home-qa.json",
+      "bytes": 3318,
+      "sha256": "d0d6d78eb1549f959b79b1dc65fcf35243d9405f3f99f90937e93c70ebbc6ae5",
+      "asset_id": 617895286,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "install-qa.json",
+      "bytes": 3838,
+      "sha256": "920ad13507725e6ae03aed32372b7e4898b2baa1d927cb5a610f342a13d26a2c",
+      "asset_id": 617895361,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "metadata-boundary-qa.js",
+      "bytes": 20091,
+      "sha256": "95071525d305a4929bcc69fc21dbf4d925aeb3d56645e91ce4a158e5c88ab66c",
+      "asset_id": 617895458,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "metadata-boundary-qa.json",
+      "bytes": 2601,
+      "sha256": "c5300bc7a2af1e16e1f201f17ea079f07c0520749113f78fd2a3f3d9d5b882bb",
+      "asset_id": 617895653,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "qa-report.json",
+      "bytes": 103638,
+      "sha256": "c608c642a86cf36ca002fbc72045b44550f493ad04a29b75e1a000616f94a805",
+      "asset_id": 617895698,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "source-bundle-qa.json",
+      "bytes": 623,
+      "sha256": "9dcb0be15b0eb5cba359907f20a64e2de53742514b759170211cd382172c0388",
+      "asset_id": 617895776,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "vision-studio_1.5.0-1_amd64.deb.manifest.json",
+      "bytes": 5362,
+      "sha256": "e9c9d5eeeae94f4403d3859de1aaa1d13c28a8df85268de1cf8f8bfc88083b45",
+      "asset_id": 617895842,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "vision-studio_1.5.0-1_amd64.deb.sha256",
+      "bytes": 98,
+      "sha256": "2498cd7081fa0c45bff348140c3d4e9fff26fca2c1844c9fe5a6804fea20943e",
+      "asset_id": 617895987,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "QA-ARTIFACTS.zip",
+      "bytes": 2508074,
+      "sha256": "c07c887e0c69ee91c43f9ffd1306c032e8b9a61cbe32fdc3d96b2962cffbed58",
+      "asset_id": 617896037,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "RELEASE-NOTES.md",
+      "bytes": 2191,
+      "sha256": "8a62a8f004d75415bad1246dd21dd8ecadd53018d3bedb76d256cb5aa57d6dcc",
+      "asset_id": 617896114,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "RELEASE-ASSETS.json",
+      "bytes": 3995,
+      "sha256": "c0290f8afc03f6813488e7f63f1ee55355644b37612a68e98a957a0451b8a5b3",
+      "asset_id": 617896248,
+      "verification": "GitHub REST sha256 digest"
+    }
+  ],
+  "all_original_assets_unchanged": true
+}

@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "preferences_and_history_preserved": true,
+  "preserved_hashes": {
+    "output/preferences.ini": "af4f952c36c9d442e09aeb9503031ec53fc47724b98622c4707f34567080d3a2",
+    "output/history.json": "302c4aa18e47bd7b0e436ea00d211d18a422a3b8340e473dc8b3b6a1a920176f"
+  },
+  "native_binary_matches_build": true,
+  "rgb_smoke": {
+    "backend": "PyTorch / Ultralytics / CPU",
+    "error": "",
+    "inference_ms": 54.54818595899269,
+    "predictions": 5,
+    "qt": "6.8.3",
+    "success": true
+  },
+  "grayscale_smoke": {
+    "backend": "PyTorch / Ultralytics / CPU",
+    "error": "",
+    "inference_ms": 40.23912298725918,
+    "predictions": 5,
+    "qt": "6.8.3",
+    "success": true
+  },
+  "runtime_reused": true
+}

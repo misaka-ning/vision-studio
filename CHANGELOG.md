@@ -11,6 +11,7 @@
 - 建立 GitHub 源码与逐版 Release 管理，补录 1.1.0–1.5.0 的历史更新日志。
 - 补充 GitHub README、贡献指南和版本管理规范，约定不可变标签、配套源码交付与远端核验后本地保留最新两版。
 - 增加带草稿续传、远端 SHA256 与标签校验的发布工具、清理安全测试、只读 CI 和问题／PR 模板；启用主线及版本标签保护。
+- 按维护者要求将每版 Release 整理为 DEB、完整源码包、`SHA256SUMS` 三个手动附件，保留 GitHub 自动生成的 Source code (zip) 与 Source code (tar.gz) 两个入口；同版 QA 和原始说明迁入仓库 `docs/releases/evidence/X.Y.Z`，保持冻结安装包、源码包及原始校验值不变。
 
 这些是仓库维护内容，不改变已冻结的 1.5.0 应用或安装包。后续产品变更记录在本段，正式发布时移入对应版本条目。
 
@@ -34,7 +35,7 @@
 - 六组 CTest 全部通过，另有 11 个元数据边界场景通过；正式包完成实际 ONNX／PT 三模式、缓存复用、普通用户离线安装与卸载验收。
 - 继续提供 Ubuntu 22.04 amd64 DEB、完整对应源码包和 SHA256 校验，安装目录为 `/opt/VisionStudio`，已有设置与运行记录保留。
 
-依据：本版源码包中的 `docs/release/发行说明.md`、`CTest-1.5.0-2026-10-07.log`，以及 Release 中的 `ctest-qa.json`、`metadata-boundary-qa.json`、`qa-report.json` 和 `install-qa.json`。
+依据：本版源码包中的 `docs/release/发行说明.md`、`CTest-1.5.0-2026-10-07.log`，以及 [同版验收证据](docs/releases/evidence/1.5.0) 中的 `ctest-qa.json`、`metadata-boundary-qa.json`、`qa-report.json` 和 `install-qa.json`。
 
 ## [1.4.0](https://github.com/misaka-ning/vision-studio/releases/tag/v1.4.0) — 2026-10-07
 
@@ -50,7 +51,7 @@
 - 发行环境加入 Netron、Qt WebEngine 及其辅助进程与资源，完整源码包补充对应的 Qt 模块、Netron 和第三方通知。
 - 保留灰度、左右目、录像与结果导出；完成模型图、HTTP 服务、安装及离线推理验收。
 
-依据：本版源码包中的 `docs/release/发行说明.md`、`CTest-1.4.0-2026-10-07.log` 和 details 日志，以及 Release 中的 `qa-report.json`、`desktop-qa.json`、`install-qa.json` 和 `source-qa.json`。原本独立发行目录缺少 README，本次历史日志根据归档内说明补齐。
+依据：本版源码包中的 `docs/release/发行说明.md`、`CTest-1.4.0-2026-10-07.log` 和 details 日志，以及 [同版验收证据](docs/releases/evidence/1.4.0) 中的 `qa-report.json`、`desktop-qa.json`、`install-qa.json` 和 `source-qa.json`。原本独立发行目录缺少 README，本次历史日志根据归档内说明补齐。
 
 ## [1.3.0](https://github.com/misaka-ning/vision-studio/releases/tag/v1.3.0) — 2026-10-06
 
@@ -69,7 +70,7 @@
 
 - 四组 CTest 通过，包含真实推理、六页导航、录像启停、实际解码、播放与导出；正式包完成离线安装与卸载验收。
 
-依据：本版发行目录的 README、`验收概要.md`、`ctest-qa.json`、`CTest-2026-10-06.log` 和源码包中的发行说明。
+依据：本版原始发行说明、源码包中的说明，以及 [同版验收证据](docs/releases/evidence/1.3.0) 中的验收报告和 `CTest-2026-10-06.log`。
 
 ## [1.2.0](https://github.com/misaka-ning/vision-studio/releases/tag/v1.2.0) — 2026-10-06
 
@@ -84,7 +85,7 @@
 
 - 三组 CTest 通过，覆盖真实灰度像素、单／三通道模型、合成左右目视频、坐标和设置迁移；正式包完成离线推理与安装验收。
 
-依据：本版发行目录的 README、`验收概要.md`、`ctest-qa.json`、`CTest-2026-10-06.log` 和源码包中的发行说明。
+依据：本版原始发行说明、源码包中的说明，以及 [同版验收证据](docs/releases/evidence/1.2.0) 中的验收报告和 `CTest-2026-10-06.log`。
 
 ## [1.1.0](https://github.com/misaka-ning/vision-studio/releases/tag/v1.1.0) — 2026-10-05
 
@@ -101,4 +102,4 @@
 
 - 三组 CTest、真实 YOLO 推理与导出、普通用户离线安装／运行／卸载验收通过，用户数据和宿主系统状态保留。
 
-依据：本版源码包中的 `docs/release/发行说明.md`、`CTest-2026-10-05.log`，以及发行目录的 README、`验收概要.md`、`qa-report.json` 和 `install-qa.json`。
+依据：本版源码包中的 `docs/release/发行说明.md`、`CTest-2026-10-05.log`，以及 [同版验收证据](docs/releases/evidence/1.1.0) 中的 `qa-report.json` 和 `install-qa.json`。

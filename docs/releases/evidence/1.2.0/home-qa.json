@@ -1,0 +1,20 @@
+{
+  "success": true,
+  "preferences_and_history_preserved": true,
+  "rgb_smoke": {
+    "backend": "PyTorch / Ultralytics / CPU",
+    "error": "",
+    "inference_ms": 40.65706999972463,
+    "predictions": 5,
+    "qt": "6.8.3",
+    "success": true
+  },
+  "grayscale_smoke": {
+    "backend": "PyTorch / Ultralytics / CPU",
+    "error": "",
+    "inference_ms": 100.91780498623848,
+    "predictions": 5,
+    "qt": "6.8.3",
+    "success": true
+  }
+}

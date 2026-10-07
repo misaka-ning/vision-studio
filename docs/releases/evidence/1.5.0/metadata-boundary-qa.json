@@ -1,0 +1,105 @@
+{
+  "success": true,
+  "test_kind": "synthetic_metadata_boundary_probe",
+  "scenario_count": 11,
+  "read_only": true,
+  "pt_checkpoint_loaded": false,
+  "model_execution": false,
+  "ctest_results_included": false,
+  "scope": "Production structure extraction on synthetic decoded Netron metadata; no PT checkpoint or original model code is loaded or executed.",
+  "probe_script_sha256": "95071525d305a4929bcc69fc21dbf4d925aeb3d56645e91ce4a158e5c88ab66c",
+  "extract_script_sha256": "c2cff1ce49444cb7f95e4bcdb1eed02fc80668a1b841a6a5df6bfe3b5d5f6785",
+  "timeout_ms_per_scenario": 2000,
+  "generated_at": "2026-10-07T03:53:00.079Z",
+  "node_version": "v24.21.0",
+  "checks": [
+    {
+      "case": "shared tensor identity, no tensor values reads",
+      "nodes": 3,
+      "parameters": 1,
+      "truncated": false,
+      "bytes": 492,
+      "ms": 1.437325
+    },
+    {
+      "case": "distinct same-name branch tensors",
+      "nodes": 6,
+      "parameters": 2,
+      "truncated": false,
+      "bytes": 1028,
+      "ms": 0.53168
+    },
+    {
+      "case": "circular object identity",
+      "nodes": 3,
+      "parameters": 0,
+      "truncated": false,
+      "bytes": 390,
+      "ms": 0.436491
+    },
+    {
+      "case": "deep object truncation",
+      "nodes": 49,
+      "parameters": 0,
+      "truncated": true,
+      "bytes": 4962,
+      "ms": 0.630063
+    },
+    {
+      "case": "6000 operation node bound",
+      "nodes": 5000,
+      "parameters": 0,
+      "truncated": true,
+      "bytes": 501774,
+      "ms": 14.843782
+    },
+    {
+      "case": "10050 tensor row bound",
+      "nodes": 2,
+      "parameters": 10000,
+      "truncated": true,
+      "bytes": 1060293,
+      "ms": 16.595075
+    },
+    {
+      "case": "4MiB JSON budget",
+      "nodes": 368,
+      "parameters": 367,
+      "truncated": true,
+      "bytes": 4021015,
+      "ms": 18.395866
+    },
+    {
+      "case": "abnormal dimensions and bounded BigInt product",
+      "nodes": 2,
+      "parameters": 3,
+      "truncated": true,
+      "bytes": 3852,
+      "ms": 0.831924
+    },
+    {
+      "case": "circular graph references",
+      "nodes": 4,
+      "parameters": 0,
+      "truncated": false,
+      "bytes": 569,
+      "ms": 0.508993
+    },
+    {
+      "case": "long metadata fields and long dimensions surface truncation",
+      "nodes": 2,
+      "parameters": 1,
+      "truncated": true,
+      "bytes": 4502,
+      "ms": 0.533891
+    },
+    {
+      "case": "safe integer, BigInt, zero and scalar element counts",
+      "nodes": 2,
+      "parameters": 5,
+      "truncated": false,
+      "bytes": 1036,
+      "ms": 0.49319
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "success": true,
+  "version": "1.5.0",
+  "suites_passed": 6,
+  "suites_failed": 0,
+  "core_backend_seconds": 108.9,
+  "views_service_seconds": 32.57,
+  "qt_test_records": [
+    {
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "includes_setup_cleanup": true
+    },
+    {
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "includes_setup_cleanup": true
+    },
+    {
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0,
+      "includes_setup_cleanup": true
+    },
+    {
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "includes_setup_cleanup": true
+    },
+    {
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "includes_setup_cleanup": true
+    }
+  ],
+  "python_http_cases": 11
+}

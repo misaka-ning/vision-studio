@@ -1,0 +1,38 @@
+[
+  {
+    "file": "output/releases/sources/ultralytics_thop-2.2.2.tar.gz",
+    "url": "https://files.pythonhosted.org/packages/b1/bf/b7b993e3b2411fc9894a26b8679931ca07c0d013f05bb620c63ae1911c5f/ultralytics_thop-2.2.2.tar.gz",
+    "sha256": "149a89c26c2be35b709fa25951f4644dea13d63017025569a193159a5908e3ed",
+    "bytes": 39543
+  },
+  {
+    "file": "output/releases/sources/opencv-python-86.tar.gz",
+    "url": "https://codeload.github.com/opencv/opencv-python/tar.gz/refs/tags/86",
+    "sha256": "8f8f21b10e60ecaf22241e39ad04b1ac2766925d471e1c5ddc4ed397f0099e91",
+    "bytes": 1126800
+  },
+  {
+    "file": "output/releases/sources/opencv-python-86-Dockerfile_x86_64",
+    "url": "https://raw.githubusercontent.com/opencv/opencv-python/86/docker/manylinux2014/Dockerfile_x86_64",
+    "sha256": "19d7609f4beef721d40d526b350d094af791d84fb9b572f2c95d9161943912dc",
+    "bytes": 6363
+  },
+  {
+    "file": "output/releases/sources/opencv-python-headless-4.11.0.86.tar.gz",
+    "url": "https://files.pythonhosted.org/packages/36/2f/5b2b3ba52c864848885ba988f24b7f105052f68da9ab0e693cc7c25b0b30/opencv-python-headless-4.11.0.86.tar.gz",
+    "sha256": "996eb282ca4b43ec6a3972414de0e2331f5d9cda2b41091a49739c19fb843798",
+    "bytes": 95177929
+  },
+  {
+    "file": "output/releases/sources/ultralytics-8.4.173.tar.gz",
+    "url": "https://files.pythonhosted.org/packages/ce/0e/789436c01f925c2957e5cdb272235294a9f7e669247966f3594a09847899/ultralytics-8.4.173.tar.gz",
+    "sha256": "cfb50c462a9138a187f7e5957ad2c91e3e757f6f0569da0c896574282d553840",
+    "bytes": 1267669
+  },
+  {
+    "file": "output/releases/sources/ffmpeg-5.1.6.tar.xz",
+    "url": "https://ffmpeg.org/releases/ffmpeg-5.1.6.tar.xz",
+    "sha256": "f4fa066278f7a47feab316fef905f4db0d5e9b589451949740f83972b30901bd",
+    "bytes": 10021428
+  }
+]
