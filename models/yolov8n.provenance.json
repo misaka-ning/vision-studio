@@ -1,0 +1,16 @@
+{
+    "file": "yolov8n.pt",
+    "model": "Ultralytics YOLOv8n",
+    "task": "detect",
+    "format": "PyTorch checkpoint",
+    "dataset": "COCO",
+    "source": "https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov8n.pt",
+    "release": "https://github.com/ultralytics/assets/releases/tag/v8.3.0",
+    "documentation": "https://docs.ultralytics.com/models/yolov8",
+    "downloaded_on": "2026-10-05",
+    "bytes": 6549796,
+    "sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+    "license": "AGPL-3.0; Ultralytics also offers an Enterprise license",
+    "license_source": "https://docs.ultralytics.com/models/yolov8#citations-and-acknowledgments",
+    "checkpoint_loading": "Load only trusted checkpoint files. Native YOLO checkpoints contain Python objects; a .pt suffix does not establish file safety or compatibility."
+}

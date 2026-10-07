@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Vision Studio
+Name[zh_CN]=Vision Studio 视觉模型工作台
+Comment=Local YOLO model inference workspace
+Exec="/home/misaka/文档/ChatGPT/yolo/run.sh"
+Icon=/home/misaka/文档/ChatGPT/yolo/assets/app-icon.svg
+Terminal=false
+Categories=Graphics;Science;
+StartupNotify=true

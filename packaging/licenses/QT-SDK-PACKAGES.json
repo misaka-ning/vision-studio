@@ -1,0 +1,2258 @@
+[
+  {
+    "module": "qtbase",
+    "version": "6.8.3",
+    "basis": "installed SDK SPDX",
+    "packages": [
+      {
+        "name": "GNU",
+        "versionInfo": "10.3.1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "qtbase",
+        "versionInfo": "c07c2d5a+HEAD",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "GlobalConfig",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "GlobalConfigPrivate",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "Platform_Attribution_extra-cmake-modules",
+        "versionInfo": "5.84.0",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "BSD-3-Clause",
+        "copyrightText": "Copyright © 2011-2018 The KDE community",
+        "downloadLocation": "https://api.kde.org/ecm/"
+      },
+      {
+        "name": "Platform_Attribution_kwin",
+        "versionInfo": "5.13.4",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "BSD-3-Clause",
+        "copyrightText": "Copyright 2014 Alex Merry <alex.merry@kde.org>\nCopyright 2014 Martin Gräßlin <mgraesslin@kde.org>,\nCopyright (c) 2006,2007 Laurent Montel, <montel@kde.org>",
+        "downloadLocation": "https://www.kde.org/"
+      },
+      {
+        "name": "Platform",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "PlatformCommonInternal",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "PlatformModuleInternal",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "PlatformPluginInternal",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "PlatformAppInternal",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "PlatformToolInternal",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "syncqt",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "Bootstrap_Attribution_pcre2",
+        "versionInfo": "10.45",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "LicenseRef-BSD-3-Clause-with-PCRE2-Binary-Like-Packages-Exception",
+        "copyrightText": "Copyright (c) 1997-2024 University of Cambridge\nCopyright (c) 2010-2024 Zoltan Herczeg",
+        "downloadLocation": "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.45/pcre2-10.45.tar.bz2"
+      },
+      {
+        "name": "Bootstrap_Attribution_pcre2-sljit",
+        "versionInfo": "10.45",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "BSD-2-Clause",
+        "copyrightText": "Copyright (c) 2009-2024 Zoltan Herczeg",
+        "downloadLocation": "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.45/pcre2-10.45.tar.bz2"
+      },
+      {
+        "name": "Bootstrap",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "moc",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "copyrightText": "Copyright (C) 2013 Olivier Goffart <ogoffart@woboq.com>\nCopyright (C) 2014 Olivier Goffart <ogoffart@woboq.org>\nCopyright (C) 2016 Intel Corporation.\nCopyright (C) 2018 Intel Corporation.\nCopyright (C) 2018 The Qt Company Ltd.\nCopyright (C) 2019 Olivier Goffart <ogoffart@woboq.com>\nCopyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "rcc",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "tracepointgen",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "tracegen",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "cmake_automoc_parser",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "BundledPcre2_Attribution_pcre2-sljit",
+        "versionInfo": "10.45",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "BSD-2-Clause",
+        "copyrightText": "Copyright (c) 2009-2024 Zoltan Herczeg",
+        "downloadLocation": "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.45/pcre2-10.45.tar.bz2"
+      },
+      {
+        "name": "BundledPcre2",
+        "versionInfo": "10.45",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "LicenseRef-BSD-3-Clause-with-PCRE2-Binary-Like-Packages-Exception",
+        "copyrightText": "Copyright (c) 1997-2024 University of Cambridge\nCopyright (c) 2010-2024 Zoltan Herczeg",
+        "downloadLocation": "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.45/pcre2-10.45.tar.bz2"
+      },
+      {
+        "name": "Core_Attribution_unicode-character-database",
+        "versionInfo": "34",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "Unicode-3.0",
+        "copyrightText": "Copyright (C) 1991-2022 Unicode, Inc.",
+        "downloadLocation": "https://www.unicode.org/ucd/"
+      },
+      {
+        "name": "Core_Attribution_unicode-cldr",
+        "versionInfo": "v46.1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "Unicode-3.0",
+        "copyrightText": "Copyright (C) 2004-2023 Unicode, Inc.",
+        "downloadLocation": "https://cldr.unicode.org/"
+      },
+      {
+        "name": "Core_Attribution_siphash",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "CC0-1.0",
+        "copyrightText": "Copyright (C) 2012-2014 Jean-Philippe Aumasson\nCopyright (C) 2012-2014 Daniel J. Bernstein <djb@cr.yp.to>\nCopyright (C) 2016 Intel Corporation",
+        "downloadLocation": "https://raw.githubusercontent.com/veorq/SipHash/adcbf09b1684a718f594faa650ffc56bacdb0777/siphash24.c"
+      },
+      {
+        "name": "Core_Attribution_blake2",
+        "versionInfo": "ed1974ea83433eba7b2d95c5dcd9ac33cb847913",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "CC0-1.0 OR Apache-2.0",
+        "copyrightText": "Copyright 2012, Samuel Neves <sneves@dei.uc.pt>",
+        "downloadLocation": "https://github.com/BLAKE2/BLAKE2/tree/ed1974ea83433eba7b2d95c5dcd9ac33cb847913"
+      },
+      {
+        "name": "Core_Attribution_md4",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "CC0-1.0",
+        "copyrightText": "Written by Alexander Peslyak - better known as Solar Designer <solar@openwall.com> - in 2001, and placed in the public domain. There's absolutely no warranty.",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "Core_Attribution_md5",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "CC0-1.0",
+        "copyrightText": "Written by Colin Plumb in 1993, no copyright is claimed. Ian Jackson <ian@chiark.greenend.org.uk>.",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "Core_Attribution_sha1",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "LicenseRef-SHA1-Public-Domain",
+        "copyrightText": "Copyright (C) Dominik Reichl <dominik.reichl@t-online.de>\nCopyright (C) 2016 The Qt Company Ltd",
+        "downloadLocation": "http://www.dominik-reichl.de/projects/csha1/"
+      },
+      {
+        "name": "Core_Attribution_sha3_endian",
+        "versionInfo": "4b9e13ead2c5b5e41ca27c65de4dd69ae0bac228",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "BSD-2-Clause",
+        "copyrightText": "Copyright (c) 1998-2013, Brian Gladman, Worcester, UK. All rights reserved.",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "Core_Attribution_sha3_keccak",
+        "versionInfo": "3.2",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "CC0-1.0",
+        "copyrightText": "Guido Bertoni, Joan Daemen, Michaël Peeters and Gilles Van Assche.\nTo the extent possible under law, the implementers have waived all copyright\nand related or neighboring rights to the source code in this file.",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "Core_Attribution_rfc6234",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "BSD-3-Clause",
+        "copyrightText": "Copyright (c) 2011 IETF Trust and the persons identified as authors of the code.",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "Core_Attribution_tinycbor",
+        "versionInfo": "0.6.1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright (C) 2015-2021 Intel Corporation",
+        "downloadLocation": "https://github.com/intel/tinycbor/archive/v0.6.1/tinycbor-0.6.1.tar.gz"
+      },
+      {
+        "name": "Core_Attribution_doubleconversion",
+        "versionInfo": "3.3.0",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "BSD-3-Clause",
+        "copyrightText": "Copyright 2006-2012, the V8 project authors",
+        "downloadLocation": "https://github.com/google/double-conversion/releases/tag/v3.3.0"
+      },
+      {
+        "name": "Core_Attribution_easing",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "BSD-3-Clause",
+        "copyrightText": "Copyright (c) 2001 Robert Penner",
+        "downloadLocation": "http://robertpenner.com/easing/"
+      },
+      {
+        "name": "Core_Attribution_forkfd",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright (C) 2016 Intel Corporation\nCopyright (C) 2015 Klarälvdalens Datakonsult AB, a KDAB Group company, info@kdab.com",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "Core_Attribution_tika-mimetypes",
+        "versionInfo": "5101bc7fb090ed7deffe56837d7633c9485a1e5d",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "Apache-2.0",
+        "copyrightText": "Copyright 2024 The Apache Software Foundation",
+        "downloadLocation": "https://github.com/apache/tika/blob/5101bc7fb090ed7deffe56837d7633c9485a1e5d/tika-core/src/main/resources/org/apache/tika/mime/tika-mimetypes.xml"
+      },
+      {
+        "name": "Core",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "BundledLibpng",
+        "versionInfo": "1.6.47",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "Libpng AND libpng-2.0",
+        "copyrightText": "Copyright (c) 1995-2025 The PNG Reference Library Authors\nCopyright (c) 2000-2025 Cosmin Truta\nCopyright (c) 1998-2018 Glenn Randers-Pehrson\nCopyright (c) 1996-1997 Andreas Dilger\nCopyright (c) 1995-1996 Guy Eric Schalnat, Group 42, Inc.\nCopyright (c) 2000-2017 Simon-Pierre Cadieux\nCopyright (c) 2000-2017 Eric S. Raymond\nCopyright (c) 2000-2017 Mans Rullgard\nCopyright (c) 2000-2017 Gilles Vollant\nCopyright (c) 2000-2017 James Yu\nCopyright (c) 2000-2017 Mandar Sahastrabuddhe\nCopyright (c) 1998-2000 Tom Lane\nCopyright (c) 1998-2000 Willem van Schaik\nCopyright (c) 1996-1997 John Bowler\nCopyright (c) 1996-1997 Kevin Bracey\nCopyright (c) 1996-1997 Sam Bushell\nCopyright (c) 1996-1997 Magnus Holmgren\nCopyright (c) 1996-1997 Greg Roelofs\nCopyright (c) 1996-1997 Tom Tanner\nCopyright (c) 1995-1996 Dave Martindale\nCopyright (c) 1995-1996 Paul Schmidt\nCopyright (c) 1995-1996 Tim Wegner",
+        "downloadLocation": "https://download.sourceforge.net/libpng/libpng-1.6.47.tar.xz"
+      },
+      {
+        "name": "PngPrivate",
+        "versionInfo": "1.6.47",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "Libpng AND libpng-2.0",
+        "copyrightText": "Copyright (c) 1995-2025 The PNG Reference Library Authors\nCopyright (c) 2000-2025 Cosmin Truta\nCopyright (c) 1998-2018 Glenn Randers-Pehrson\nCopyright (c) 1996-1997 Andreas Dilger\nCopyright (c) 1995-1996 Guy Eric Schalnat, Group 42, Inc.\nCopyright (c) 2000-2017 Simon-Pierre Cadieux\nCopyright (c) 2000-2017 Eric S. Raymond\nCopyright (c) 2000-2017 Mans Rullgard\nCopyright (c) 2000-2017 Gilles Vollant\nCopyright (c) 2000-2017 James Yu\nCopyright (c) 2000-2017 Mandar Sahastrabuddhe\nCopyright (c) 1998-2000 Tom Lane\nCopyright (c) 1998-2000 Willem van Schaik\nCopyright (c) 1996-1997 John Bowler\nCopyright (c) 1996-1997 Kevin Bracey\nCopyright (c) 1996-1997 Sam Bushell\nCopyright (c) 1996-1997 Magnus Holmgren\nCopyright (c) 1996-1997 Greg Roelofs\nCopyright (c) 1996-1997 Tom Tanner\nCopyright (c) 1995-1996 Dave Martindale\nCopyright (c) 1995-1996 Paul Schmidt\nCopyright (c) 1995-1996 Tim Wegner",
+        "downloadLocation": "https://download.sourceforge.net/libpng/libpng-1.6.47.tar.xz"
+      },
+      {
+        "name": "BundledLibjpeg16bits",
+        "versionInfo": "3.1.0",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "IJG AND BSD-3-Clause",
+        "copyrightText": "Copyright (C) 2009-2024 D. R. Commander\nCopyright (C) 2015, 2020 Google, Inc.\nCopyright (C) 2019-2020 Arm Limited\nCopyright (C) 2015-2016, 2018 Matthieu Darbois\nCopyright (C) 2011-2016 Siarhei Siamashka\nCopyright (C) 2015 Intel Corporation\nCopyright (C) 2013-2014 Linaro Limited\nCopyright (C) 2013-2014 MIPS Technologies, Inc.\nCopyright (C) 2009, 2012 Pierre Ossman for Cendio AB\nCopyright (C) 2009-2011 Nokia Corporation and/or its subsidiary(-ies)\nCopyright (C) 1999-2006 MIYASAKA Masaru\nCopyright (C) 1999 Ken Murchison\nCopyright (C) 1991-2020 Thomas G. Lane, Guido Vollbeding\n",
+        "downloadLocation": "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.1.0/libjpeg-turbo-3.1.0.tar.gz"
+      },
+      {
+        "name": "BundledLibjpeg12bits",
+        "versionInfo": "3.1.0",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "IJG AND BSD-3-Clause",
+        "copyrightText": "Copyright (C) 2009-2024 D. R. Commander\nCopyright (C) 2015, 2020 Google, Inc.\nCopyright (C) 2019-2020 Arm Limited\nCopyright (C) 2015-2016, 2018 Matthieu Darbois\nCopyright (C) 2011-2016 Siarhei Siamashka\nCopyright (C) 2015 Intel Corporation\nCopyright (C) 2013-2014 Linaro Limited\nCopyright (C) 2013-2014 MIPS Technologies, Inc.\nCopyright (C) 2009, 2012 Pierre Ossman for Cendio AB\nCopyright (C) 2009-2011 Nokia Corporation and/or its subsidiary(-ies)\nCopyright (C) 1999-2006 MIYASAKA Masaru\nCopyright (C) 1999 Ken Murchison\nCopyright (C) 1991-2020 Thomas G. Lane, Guido Vollbeding\n",
+        "downloadLocation": "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.1.0/libjpeg-turbo-3.1.0.tar.gz"
+      },
+      {
+        "name": "BundledLibjpeg",
+        "versionInfo": "3.1.0",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "IJG AND BSD-3-Clause",
+        "copyrightText": "Copyright (C) 2009-2024 D. R. Commander\nCopyright (C) 2015, 2020 Google, Inc.\nCopyright (C) 2019-2020 Arm Limited\nCopyright (C) 2015-2016, 2018 Matthieu Darbois\nCopyright (C) 2011-2016 Siarhei Siamashka\nCopyright (C) 2015 Intel Corporation\nCopyright (C) 2013-2014 Linaro Limited\nCopyright (C) 2013-2014 MIPS Technologies, Inc.\nCopyright (C) 2009, 2012 Pierre Ossman for Cendio AB\nCopyright (C) 2009-2011 Nokia Corporation and/or its subsidiary(-ies)\nCopyright (C) 1999-2006 MIYASAKA Masaru\nCopyright (C) 1999 Ken Murchison\nCopyright (C) 1991-2020 Thomas G. Lane, Guido Vollbeding\n",
+        "downloadLocation": "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.1.0/libjpeg-turbo-3.1.0.tar.gz"
+      },
+      {
+        "name": "JpegPrivate",
+        "versionInfo": "3.1.0",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "IJG AND BSD-3-Clause",
+        "copyrightText": "Copyright (C) 2009-2024 D. R. Commander\nCopyright (C) 2015, 2020 Google, Inc.\nCopyright (C) 2019-2020 Arm Limited\nCopyright (C) 2015-2016, 2018 Matthieu Darbois\nCopyright (C) 2011-2016 Siarhei Siamashka\nCopyright (C) 2015 Intel Corporation\nCopyright (C) 2013-2014 Linaro Limited\nCopyright (C) 2013-2014 MIPS Technologies, Inc.\nCopyright (C) 2009, 2012 Pierre Ossman for Cendio AB\nCopyright (C) 2009-2011 Nokia Corporation and/or its subsidiary(-ies)\nCopyright (C) 1999-2006 MIYASAKA Masaru\nCopyright (C) 1999 Ken Murchison\nCopyright (C) 1991-2020 Thomas G. Lane, Guido Vollbeding\n",
+        "downloadLocation": "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.1.0/libjpeg-turbo-3.1.0.tar.gz"
+      },
+      {
+        "name": "BundledHarfbuzz",
+        "versionInfo": "10.4.0",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2010-2022  Google, Inc.\nCopyright © 2015-2020  Ebrahim Byagowi\nCopyright © 2019,2020  Facebook, Inc.\nCopyright © 2012,2015  Mozilla Foundation\nCopyright © 2011  Codethink Limited\nCopyright © 2008,2010  Nokia Corporation and/or its subsidiary(-ies)\nCopyright © 2009  Keith Stribley\nCopyright © 2011  Martin Hosken and SIL International\nCopyright © 2007  Chris Wilson\nCopyright © 2005,2006,2020,2021,2022,2023  Behdad Esfahbod\nCopyright © 2004,2007,2008,2009,2010,2013,2021,2022,2023  Red Hat, Inc.\nCopyright © 1998-2005  David Turner and Werner Lemberg\nCopyright © 2016  Igalia S.L.\nCopyright © 2022  Matthias Clasen\nCopyright © 2018,2021  Khaled Hosny\nCopyright © 2018,2019,2020  Adobe, Inc\nCopyright © 2013-2015  Alexei Podtelezhnikov",
+        "downloadLocation": "https://github.com/harfbuzz/harfbuzz/releases/tag/10.4.0"
+      },
+      {
+        "name": "HarfbuzzPrivate",
+        "versionInfo": "10.4.0",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2010-2022  Google, Inc.\nCopyright © 2015-2020  Ebrahim Byagowi\nCopyright © 2019,2020  Facebook, Inc.\nCopyright © 2012,2015  Mozilla Foundation\nCopyright © 2011  Codethink Limited\nCopyright © 2008,2010  Nokia Corporation and/or its subsidiary(-ies)\nCopyright © 2009  Keith Stribley\nCopyright © 2011  Martin Hosken and SIL International\nCopyright © 2007  Chris Wilson\nCopyright © 2005,2006,2020,2021,2022,2023  Behdad Esfahbod\nCopyright © 2004,2007,2008,2009,2010,2013,2021,2022,2023  Red Hat, Inc.\nCopyright © 1998-2005  David Turner and Werner Lemberg\nCopyright © 2016  Igalia S.L.\nCopyright © 2022  Matthias Clasen\nCopyright © 2018,2021  Khaled Hosny\nCopyright © 2018,2019,2020  Adobe, Inc\nCopyright © 2013-2015  Alexei Podtelezhnikov",
+        "downloadLocation": "https://github.com/harfbuzz/harfbuzz/releases/tag/10.4.0"
+      },
+      {
+        "name": "Concurrent",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "Sql",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "Network_Attribution_psl-data",
+        "versionInfo": "47264b57765919188b9f4144de8d95cf77e1b6dc, fetched on 2025-01-22",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MPL-2.0",
+        "copyrightText": "The list was originally provided by Jo Hermans <jo.hermans@gmail.com>.\nIt is now maintained on github (https://github.com/publicsuffix/list).",
+        "downloadLocation": "https://publicsuffix.org/list/public_suffix_list.dat"
+      },
+      {
+        "name": "Network_Attribution_libpsl",
+        "versionInfo": "664f3dc85259ec65e30248a61fa1c45b7b0e4c3f",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "BSD-3-Clause",
+        "copyrightText": "Copyright 2014-2016 The Chromium Authors. All rights reserved.",
+        "downloadLocation": "https://github.com/rockdaboot/libpsl"
+      },
+      {
+        "name": "Network",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "Xml",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "DBus_Attribution_libdbus-1-headers",
+        "versionInfo": "dbus-1.13.12",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "AFL-2.1 OR GPL-2.0-or-later",
+        "copyrightText": "Copyright (C) 2002, 2003 CodeFactory AB\nCopyright (C) 2004, 2005 Red Hat, Inc.",
+        "downloadLocation": "https://www.freedesktop.org/wiki/Software/dbus/"
+      },
+      {
+        "name": "DBus",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "uic",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "qdbuscpp2xml",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "qdbusxml2cpp",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "qlalr",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "qvkgen",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "qtpaths",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "androiddeployqt",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "androidtestrunner",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "Gui_Attribution_rhi-miniengine-d3d12-mipmap",
+        "versionInfo": "0aa79bad78992da0b6a8279ddb9002c1753cb849",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright (c) 2015 Microsoft",
+        "downloadLocation": "https://github.com/microsoft/DirectX-Graphics-Samples"
+      },
+      {
+        "name": "Gui_Attribution_opengl-headers",
+        "versionInfo": "Revision 27684",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright (c) 2013-2014 The Khronos Group Inc.",
+        "downloadLocation": "https://www.khronos.org/"
+      },
+      {
+        "name": "Gui_Attribution_opengl-es2-headers",
+        "versionInfo": "Revision 27673",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright (c) 2013-2014 The Khronos Group Inc.",
+        "downloadLocation": "https://www.khronos.org/"
+      },
+      {
+        "name": "Gui_Attribution_grayraster",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "FTL OR GPL-2.0-only",
+        "copyrightText": "Copyright 2000-2016 by David Turner, Robert Wilhelm, and Werner Lemberg.",
+        "downloadLocation": "http://www.freetype.org"
+      },
+      {
+        "name": "Gui_Attribution_smooth-scaling-algorithm",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "BSD-2-Clause AND Imlib2",
+        "copyrightText": "Copyright (C) 2004, 2005 Daniel M. Duley.\n(C) Carsten Haitzler and various contributors.\n(C) Willem Monsuwe <willem@stack.nl>",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "Gui_Attribution_xserverhelper",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "X11 AND HPND",
+        "copyrightText": "Copyright (c) 1987, 1988 X Consortium\nCopyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.",
+        "downloadLocation": "https://www.x.org/"
+      },
+      {
+        "name": "Gui_Attribution_aglfn",
+        "versionInfo": "1.7",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "BSD-3-Clause",
+        "copyrightText": "Copyright 2002, 2003, 2005, 2006, 2008, 2010, 2015 Adobe Systems",
+        "downloadLocation": "https://github.com/adobe-type-tools/agl-aglfn"
+      },
+      {
+        "name": "Gui_Attribution_vulkanmemoryallocator",
+        "versionInfo": "3.0.1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright (c) 2017-2024 Advanced Micro Devices, Inc. All rights reserved.",
+        "downloadLocation": "https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator"
+      },
+      {
+        "name": "Gui_Attribution_webgradients",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright (c) 2017 itmeo",
+        "downloadLocation": "https://webgradients.com/"
+      },
+      {
+        "name": "Gui_Attribution_icc-srgb-color-profile",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "LicenseRef-ICC-License",
+        "copyrightText": "Copyright International Color Consortium, 2015",
+        "downloadLocation": "http://www.color.org/"
+      },
+      {
+        "name": "Gui_Attribution_md4c",
+        "versionInfo": "0.5.2",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2016-2024 Martin Mitáš",
+        "downloadLocation": "https://github.com/mity/md4c/releases/tag/release-0.5.2"
+      },
+      {
+        "name": "Gui_Attribution_pixman",
+        "versionInfo": "0.17.12",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2009 Nokia Corporation",
+        "downloadLocation": "http://www.pixman.org/"
+      },
+      {
+        "name": "Gui_Attribution_vulkan-xml-spec",
+        "versionInfo": "1.3.223",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "Apache-2.0 OR MIT",
+        "copyrightText": "Copyright (c) 2015-2022 The Khronos Group Inc.",
+        "downloadLocation": "https://www.khronos.org/"
+      },
+      {
+        "name": "Gui",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "ExampleIconsPrivate",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "ExamplesAssetDownloaderPrivate",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "OpenGL",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "Widgets",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "OpenGLWidgets",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "DeviceDiscoverySupportPrivate",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "FbSupportPrivate",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "InputSupportPrivate",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "KmsSupportPrivate",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "TestInternalsPrivate_Attribution_cmake-runcmake-test-modules",
+        "versionInfo": "3.31.5",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "BSD-3-Clause",
+        "copyrightText": "Copyright © 2000-2024 Kitware, Inc. and Contributors",
+        "downloadLocation": "https://cmake.org/"
+      },
+      {
+        "name": "TestInternalsPrivate",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "Test_Attribution_catch2",
+        "versionInfo": "2.13.10",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "BSL-1.0",
+        "copyrightText": "Copyright (c) 2022 Two Blue Cubes Ltd. All rights reserved.",
+        "downloadLocation": "https://github.com/catchorg/Catch2"
+      },
+      {
+        "name": "Test_Attribution_cycle",
+        "versionInfo": "3.3.10",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright (c) 2003, 2007-14 Matteo Frigo\nCopyright (c) 2003, 2007-14 Massachusetts Institute of Technology",
+        "downloadLocation": "http://fftw.org/"
+      },
+      {
+        "name": "Test_Attribution_linuxperf",
+        "versionInfo": "6.13",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "GPL-2.0-only WITH Linux-syscall-note",
+        "copyrightText": "Copyright (C) 2008-2009, Thomas Gleixner <tglx@linutronix.de>\nCopyright (C) 2008-2011, Red Hat, Inc., Ingo Molnar\nCopyright (C) 2008-2011, Red Hat, Inc., Peter Zijlstra",
+        "downloadLocation": "https://www.kernel.org"
+      },
+      {
+        "name": "Test_Attribution_valgrind",
+        "versionInfo": "3.24.0",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "BSD-4-Clause",
+        "copyrightText": "Copyright (C) 2000-2017 Julian Seward\nCopyright (C) 2003-2017 Josef Weidendorfer.",
+        "downloadLocation": "http://valgrind.org/"
+      },
+      {
+        "name": "Test",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "PrintSupport",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QPSQLDriverPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QMYSQLDriverPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QODBCDriverPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QSQLiteDriverPlugin_Attribution_sqlite",
+        "versionInfo": "3.49.1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "blessing",
+        "copyrightText": "The authors disclaim copyright to the source code. However, a license can be obtained if needed.",
+        "downloadLocation": "https://www.sqlite.org/2025/sqlite-amalgamation-3490100.zip"
+      },
+      {
+        "name": "QSQLiteDriverPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QMimerSQLDriverPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QMinimalIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QOffscreenIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QXcbEglIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QXcbGlxIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "XcbQpaPrivate_Attribution_xcb-xinput",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright (C) 2001-2006 Bart Massey, Jamey Sharp, and Josh Triplett.\nCopyright (C) 2006 Peter Hutterer\nCopyright (C) 2013 Daniel Martin",
+        "downloadLocation": "https://xcb.freedesktop.org/"
+      },
+      {
+        "name": "XcbQpaPrivate",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QXcbIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QEglFSX11IntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "EglFsKmsSupportPrivate",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "EglFsKmsGbmSupportPrivate",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QEglFSKmsGbmIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QEglFSKmsEglDeviceIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QEglFSEmulatorIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "EglFSDeviceIntegrationPrivate",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QEglFSIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QMinimalEglIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QLinuxFbIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QVncIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QVkKhrDisplayIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QComposePlatformInputContextPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QIbusPlatformInputContextPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QXdgDesktopPortalThemePlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QGtk3ThemePlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QICOPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QJpegPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QGifPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QEvdevMousePlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QEvdevTouchScreenPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QEvdevKeyboardPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QEvdevTabletPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QTuioTouchPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QCupsPrinterSupportPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QNetworkManagerNetworkInformationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QGlibNetworkInformationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QTlsBackendOpenSSLPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QTlsBackendCertOnlyPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "QtLibraryInfo",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "qmake",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtbase.git@c07c2d5a527a644d36e7853d55132ae38921682f"
+      },
+      {
+        "name": "WrapZSTD",
+        "versionInfo": "1.4.4",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "https://github.com/facebook/zstd"
+      },
+      {
+        "name": "WrapZLIB",
+        "versionInfo": "1.2.11",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "https://github.com/madler/zlib"
+      },
+      {
+        "name": "WrapBacktrace",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "ICU",
+        "versionInfo": "73.2",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "GLIB2",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "LGPL-2.1-or-later",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "https://wiki.gnome.org/Projects/GLib"
+      },
+      {
+        "name": "WrapRt",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "WrapAtomic",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "WrapResolv",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "GSSAPI",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "WrapDBus1",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "EGL",
+        "versionInfo": "1.5",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "https://www.khronos.org/egl/"
+      },
+      {
+        "name": "WrapFreetype",
+        "versionInfo": "2.9.1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "Fontconfig",
+        "versionInfo": "2.13.1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "X11",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "XKB",
+        "versionInfo": "0.9.1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "http://xkbcommon.org"
+      },
+      {
+        "name": "WrapOpenGL",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "Libdrm",
+        "versionInfo": "2.4.115",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "https://wiki.freedesktop.org/dri/"
+      },
+      {
+        "name": "PostgreSQL",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "MySQL",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "https://www.mysql.com"
+      },
+      {
+        "name": "ODBC",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "Mimer",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "XCB",
+        "versionInfo": "1.13.1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "https://xcb.freedesktop.org/"
+      },
+      {
+        "name": "XKB_COMMON_X11",
+        "versionInfo": "0.9.1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "X11_XCB",
+        "versionInfo": "1.6.8",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "http://xorg.freedesktop.org/"
+      },
+      {
+        "name": "gbm",
+        "versionInfo": "21.3.4",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "http://www.mesa3d.org"
+      },
+      {
+        "name": "GTK3",
+        "versionInfo": "3.22.30",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "Cups",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      }
+    ],
+    "source_archive": "qtbase-everywhere-src-6.8.3.tar.xz",
+    "source_notice_files": {
+      "qtbase-everywhere-src-6.8.3/LICENSES/AFL-2.1.txt": "93bb4f7417aa775bab9026cc3d0af28aeb64451fc5a8ec651876785edd8eaf9b",
+      "qtbase-everywhere-src-6.8.3/LICENSES/Apache-2.0.txt": "e3ba223bb1423f0aad8c3dfce0fe3148db48926d41e6fbc3afbbf5ff9e1c89cb",
+      "qtbase-everywhere-src-6.8.3/LICENSES/BSD-2-Clause.txt": "8fda146749ca071ac9cdce2e24d25444676ea48d1f9dccc2b7c15c054b717db8",
+      "qtbase-everywhere-src-6.8.3/LICENSES/BSD-3-Clause.txt": "9f0490f18656c6f2435bd14f603ef0c96434d1825615363dce43abb42ed1dcce",
+      "qtbase-everywhere-src-6.8.3/LICENSES/BSD-4-Clause.txt": "83faa0d205c316ce3efeafee465b6a165914fb29595968c08dc6437021b7b6fd",
+      "qtbase-everywhere-src-6.8.3/LICENSES/BSL-1.0.txt": "3abd6471b9a9a08d65ce771143f8e278bb4c1aeb10c1c2d476935a6b049653f5",
+      "qtbase-everywhere-src-6.8.3/LICENSES/Bitstream-Vera.txt": "7a083b136e64d064794c3419751e5c7dd10d2f64c108fe5ba161eae5e5958a93",
+      "qtbase-everywhere-src-6.8.3/LICENSES/CC0-1.0.txt": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+      "qtbase-everywhere-src-6.8.3/LICENSES/FTL.txt": "08c135755dd589039470f1fdbb400daaabaaa50d0b366d19cebff4d22986baa1",
+      "qtbase-everywhere-src-6.8.3/LICENSES/GFDL-1.3-no-invariants-only.txt": "110535522396708cea37c72a802c5e7e81391139f5f7985631c93ef242b206a4",
+      "qtbase-everywhere-src-6.8.3/LICENSES/GPL-2.0-only.txt": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+      "qtbase-everywhere-src-6.8.3/LICENSES/GPL-2.0-or-later.txt": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+      "qtbase-everywhere-src-6.8.3/LICENSES/GPL-3.0-only.txt": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "qtbase-everywhere-src-6.8.3/LICENSES/HPND.txt": "67ac968431270291f5e9cd3ed76705e1169f57082ee102093b2543b28cef63cf",
+      "qtbase-everywhere-src-6.8.3/LICENSES/IJG.txt": "1cb448f5e2e6d3aca60943f4eee1a04675628dc0266a074a42bc1560ebc28d61",
+      "qtbase-everywhere-src-6.8.3/LICENSES/IPL-1.0.txt": "d5328e672fb1bff47ee18e890784541453380081cf3771bb7b3c06fc19c7d503",
+      "qtbase-everywhere-src-6.8.3/LICENSES/Imlib2.txt": "8846f2baba1a7f4c36f7ca19a923a000d8a21afa37cf0fe006f6ce88a6058a89",
+      "qtbase-everywhere-src-6.8.3/LICENSES/LGPL-3.0-only.txt": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768",
+      "qtbase-everywhere-src-6.8.3/LICENSES/Libpng.txt": "58fe669792f9b4e0740bf75ecfe90b5326128bb2ce7e27e1c342abd9db4d8ea6",
+      "qtbase-everywhere-src-6.8.3/LICENSES/LicenseRef-BSD-3-Clause-with-PCRE2-Binary-Like-Packages-Exception.txt": "0526625fcc746a42d3f19a0ab357d3dc8479fdbe3bfd168825498f50215c7a63",
+      "qtbase-everywhere-src-6.8.3/LICENSES/LicenseRef-ICC-License.txt": "9e34ff47b3a44814e183342e7e198d127a6740e29d20e8381fba7688dafc79dd",
+      "qtbase-everywhere-src-6.8.3/LICENSES/LicenseRef-Lcs-Telegraphics.txt": "c10225ebbd5191bfdd761b0d7752c785f2453ab665d6c454473fb12d254668aa",
+      "qtbase-everywhere-src-6.8.3/LICENSES/LicenseRef-Qt-Commercial.txt": "9b1f50aae6267f9d5e0ceb6775ee86450262c25ec7c0573e151fe5d3f18a4700",
+      "qtbase-everywhere-src-6.8.3/LICENSES/LicenseRef-SHA1-Public-Domain.txt": "65d86b8ec6b1cd8b8f6e64fd8710274ba00d6a3c520e00dfdcd1c3d2071f3305",
+      "qtbase-everywhere-src-6.8.3/LICENSES/Linux-syscall-note.txt": "3f9e477523febab58de8b716ccfbcf02e6ef1c8e7728953905e8558637abe2a9",
+      "qtbase-everywhere-src-6.8.3/LICENSES/MIT-Khronos-old.txt": "3c58021633974f9ed3c3d445a374240a5244fd039628f4d7f6f3e674bc8e6694",
+      "qtbase-everywhere-src-6.8.3/LICENSES/MIT-open-group.txt": "c55d2ab72d8a4f9e9cd8fbd1379268e575e8cfa16874affa5899b75a6d754514",
+      "qtbase-everywhere-src-6.8.3/LICENSES/MIT.txt": "d040359701c01996a017d5c515678929cd1b0625e64cb86db44025fbb6cdf1fc",
+      "qtbase-everywhere-src-6.8.3/LICENSES/MPL-2.0.txt": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04",
+      "qtbase-everywhere-src-6.8.3/LICENSES/Qt-GPL-exception-1.0.txt": "40678d338ce53cd93f8b22b281a2ecbcaa3ee65ce60b25ffb0c462b0530846b2",
+      "qtbase-everywhere-src-6.8.3/LICENSES/SPL-1.0.txt": "f58f2f30909982445f97f1a61667261920a7caeab21ef5bea1b740f5b144d141",
+      "qtbase-everywhere-src-6.8.3/LICENSES/Unicode-3.0.txt": "80bb6294022d8764adb36a9d65ebb6bd94efb1865918a71e31e6c247607d7634",
+      "qtbase-everywhere-src-6.8.3/LICENSES/X11.txt": "e2936c6509784b4f0ec27bac74182393866fad9422b29a70e085ff14aba87193",
+      "qtbase-everywhere-src-6.8.3/LICENSES/Xerox.txt": "b6bc52205d01e10cf43dbb7b8aec06dcaa3b21d1486e7c9c0bec329ee8244d8d",
+      "qtbase-everywhere-src-6.8.3/LICENSES/Zlib.txt": "d7e3139972874dc8abdbbfce27ec1e6f942b28279dd7d27453630a8b4610e080",
+      "qtbase-everywhere-src-6.8.3/LICENSES/blessing.txt": "592db1199aab67aafe4515db9808b420db122083807c5329b2f061951e79acbe",
+      "qtbase-everywhere-src-6.8.3/LICENSES/libpng-2.0.txt": "7317e078e2d3b5d7ba5a6159e650945153262b44b76f6700f8e9edb261c5143e",
+      "qtbase-everywhere-src-6.8.3/cmake/3rdparty/extra-cmake-modules/COPYING-CMAKE-SCRIPTS": "46cde7dc11e64c78d650b4851b88f6704b4665ff60f22a1caf68ceb15e217e5b",
+      "qtbase-everywhere-src-6.8.3/cmake/3rdparty/extra-cmake-modules/qt_attribution.json": "1723ec7150c2181f373795feb78e2c1bcd1ec1d748471e4e02048c2b32489157",
+      "qtbase-everywhere-src-6.8.3/cmake/3rdparty/kwin/COPYING-CMAKE-SCRIPTS": "46cde7dc11e64c78d650b4851b88f6704b4665ff60f22a1caf68ceb15e217e5b",
+      "qtbase-everywhere-src-6.8.3/cmake/3rdparty/kwin/qt_attribution.json": "598cb7392971e68ca71039ce3a8063e4fc4504a170d7ad4b80b73857511376a3",
+      "qtbase-everywhere-src-6.8.3/doc/src/images/licensewizard-example.png": "b58d613534d4c50598862342d5c2f96234ce0fda8972b80c9ba2e3b4b6b282c3",
+      "qtbase-everywhere-src-6.8.3/examples/widgets/dialogs/licensewizard/licensewizard.cpp": "c81cf50625b97a2eabcfe46c8b20ccea123736ec5c6e149a86711ae61af226ec",
+      "qtbase-everywhere-src-6.8.3/examples/widgets/dialogs/licensewizard/licensewizard.h": "1d81a5d9adc3ceba888aa57b77974350fede49082075974504762f1618fdb533",
+      "qtbase-everywhere-src-6.8.3/examples/widgets/dialogs/licensewizard/licensewizard.pro": "42668d006d6ee28ed66ba3910cf1d106480631ddc24ef5aee665b982084ccf8a",
+      "qtbase-everywhere-src-6.8.3/examples/widgets/dialogs/licensewizard/licensewizard.qrc": "7d26a009bc3ad6aa90de263b4bc4b35a54296745629f0a13b35fbd8e1d96d0f3",
+      "qtbase-everywhere-src-6.8.3/examples/widgets/doc/src/licensewizard.qdoc": "6d5346d0f341f0a10bde888140dc646145985236dd1f19c3c6375ac1b94ff276",
+      "qtbase-everywhere-src-6.8.3/licenseRule.json": "9d1d8f3e79f3eb43569031dfcdce04a6f81c8b2201412d4ef08eb628dcc27163",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/D3D12MemoryAllocator/LICENSE.txt": "1b3941c52b26d42c510afbdf205a8b96a6d64f5a7b8ebff0287979fd91dfd52f",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/D3D12MemoryAllocator/qt_attribution.json": "182d7e5ed90dc592b01a50635c85f4039ca6f25f88ec4700b08faf6f07fda09e",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/VulkanMemoryAllocator/LICENSE.txt": "846d97c8b74ccaa92b9ad031140a04363b3b3985f318094552f297b8bda1c68e",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/VulkanMemoryAllocator/qt_attribution.json": "d00a867e3df29e108bd60194dcad6da8d9ea89d185c8afd93a00429628156346",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/android/LICENSE": "4a51cf7f724f51bedb5fa4f9583a2762f1db8d05e43a577e2487c7aab2fdce18",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/android/qt_attribution.json": "120710d661892ceb44a94556c56998795372334674c79710947282e8279ef415",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/blake2/COPYING": "4103f471877ed0bae500752c5fcd7ecca409d4a4a8dc2ad40437daba60f1a2bc",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/blake2/qt_attribution.json": "bab552307bdd03ed9a4cf7f8f1397c3d18d4dbee19ee576033284104785245be",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/double-conversion/LICENSE": "4af93c12062c58058378de2397dc1c92bbff9ddfb1d583a01c84127557ce97ca",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/double-conversion/qt_attribution.json": "b68e633437cce59dec970776f5c4d3b9fc39c5d9edaec03e8894591a6721d1ed",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/easing/LICENSE": "92fac99458f1754b73edf50f9c9983e0efaa06ad96e2afd5e538c79f45b4b191",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/easing/qt_attribution.json": "77d67a1db5882bb0b9a1278b014885bee45a4c059d1da9f835b6da5bc4b9c93d",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/forkfd/LICENSE": "d0d683ae18e78fbef90eb41168fb781920da2d12bf80704490f0882915c18ae0",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/forkfd/qt_attribution.json": "525fd890017a3966f542da42a9ff0ca2a0d71bc45f80a4871de3e0bd0f612612",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/freetype/BDF-LICENSE.txt": "e4e792f29e66750f2e410fd7b50a567652c180f6ee15e1a4dfa0bb5cde524537",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/freetype/LICENSE.txt": "bf543cdda11864477b8d2ca2aa9afc2aaa8f9133461b4d962ed6ec73646256a1",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/freetype/PCF-LICENSE.txt": "6938597bfdeca0db191a8f9ede52eaf2482c2c71a0094c084747a1235f9958fe",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/freetype/ZLIB-LICENSE.txt": "2b1f5d615382a151af3eb71462ad17d89e2efee8fa7664058d35d3d9237ebb19",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/freetype/qt_attribution.json": "3bb2eabc9379310a420ec2461e85a3224396cf8ba15fd53591d770ca16715553",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/gradle/LICENSE": "9536d88ea948603d18e232a13f5958d67807cd80828036b082bff171d2cf0703",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/gradle/qt_attribution.json": "d8950522e452e35c44d3660ddefff2f28f2dd342b500a4acb8fe1b9997627849",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/harfbuzz-ng/AUTHORS": "19bfe8f5ed100636cd24ab0c90a3f71c21d8b02d9ba00719447a0faab364d49f",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/harfbuzz-ng/COPYING": "ba8f810f2455c2f08e2d56bb49b72f37fcf68f1f4fade38977cfd7372050ad64",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/harfbuzz-ng/qt_attribution.json": "c998c9784a4a0021c2f68632a9e8cd5589dbc7f7336feeb156a4240b6b32d718",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/iaccessible2/LICENSE": "603fb8e9a443c95cb56c0e458a0ad17fdcadfc5bbb7e580d2199ee0145882746",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/iaccessible2/qt_attribution.json": "fc3b6c3aceeb15b92302e1375aa8f48a692b39ce5250458e88ae137cef2922c6",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/icc/LICENSE.txt": "9e34ff47b3a44814e183342e7e198d127a6740e29d20e8381fba7688dafc79dd",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/icc/qt_attribution.json": "509da9bd2b3f769c730aa4627b1080d65f39b0ecd4130111c9e1122e13cd35b5",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/libjpeg/COPYRIGHT.txt": "f26a2c0b6c1ab7e40444de31cc5b112a534cc589d6fd9b93620054e9692b81c6",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/libjpeg/LICENSE": "96f5b328adbb78eeaaec6980d73fd558cb1e4d62560ed615646bc3cf5e532430",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/libjpeg/qt_attribution.json": "874587f89655d70e9926048b2c9f4f2c15f8795dc64e4a492f753cee06ed6432",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/libpng/LICENSE": "16d9daaafbf63a31a5bdc91d4600972548fef5aaa1244202393288dbd079c49a",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/libpng/qt_attribution.json": "2970938574023e02b60b5b7c75d21e11b7e4476cdc2c1a5386b01ac5bc678943",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/libpsl/PSL-LICENSE.txt": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/libpsl/qt_attribution.json": "52d2286e673cdc88dd0b02db46352f994dac2c359e4632644dc4d595cf144ce7",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/libpsl/src/LICENSE.chromium": "1d7f52747a9169751cdf2641a8299c0098e9ecdf9429296ffd55bdb14c9ed5b3",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/md4/qt_attribution.json": "34bda63a2fcc23c83f2e5364ccd394553b4baa505b1f79ded9cc2161c56a9b4c",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/md4c/LICENSE.md": "d30937367d5413e7eaa218b1640b8946ff76fd34d97152f6979fd96169d5d0fc",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/md4c/qt_attribution.json": "59098b9262ac268e73495cb1b1603b5c899d5c532db6ca96e69ffac7062445f5",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/md5/qt_attribution.json": "20b0f1b17ccd1bd5e8d763b1cdca4b095b8f0c037644b5ee18154536b7d8425e",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/pcre2/AUTHORS.md": "1bbf636fa9d7e863bd524af8a3d7229d0c8f88ad740b20f866f25cefaca98fb7",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/pcre2/LICENCE-SLJIT": "5f216505c0f6ea3273caec89e766eef93cdeb7bbb0c429f9360116d7c938feeb",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/pcre2/LICENCE.md": "9cf7ac6976099a1d856826d3ef1b093bd6b84489dc6100628ac79e740cf9885a",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/pcre2/qt_attribution.json": "cb7ae8b37a3e8e1d2a20fbe44fc5306ed5cda404035a667fed56f7139636048e",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/pixman/LICENSE": "942c4f2a80394d3f53599b8382e9f27349b95c45d92b69b84f26d404f4dd74a5",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/pixman/qt_attribution.json": "f1dc159b63bf84a4c9c367e8ff79aa748b63f5fc622d5080c0a7ddd98ddc7ac7",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/rfc6234/LICENSE": "7ccebd514aaabc86192f957d773cebf06577c12fe9f25ecd419c6cac5da7a14c",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/rfc6234/qt_attribution.json": "fa24413bdc5015fc7fc84297fa17d4c8a598f8f7c76b9495a6e6b26a77b4a324",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/sha1/qt_attribution.json": "53cab2c771f7f7ffbf6a58ff759e5846b746e91d98dfe467d5145edf8cd7d306",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/sha3/BRG_ENDIAN_LICENSE": "2fed6f252ca4a7e813811de3cd3cd08183edd4138bdee909410ef6eee394e82c",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/sha3/CC0_LICENSE": "1f2786e2c5befeb4dcba6638db6528bf96ef5d2cf24bc85ab5a81ef00abef59d",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/sha3/qt_attribution.json": "c14f8c923bdde00e14d52ac826475f29c690b0615337e641d818d3243eb26a87",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/siphash/qt_attribution.json": "8614947dfc0ca1d21aad2f88b4400598262ab8c08aa87c4f7acc0c2de6e5619e",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/sqlite/qt_attribution.json": "0bb4312dfe1e3896713954accedb0ed50453268f0983a7c10fa5df038d2b7e89",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/tinycbor/LICENSE": "3c6ba0b5bfa7830505301ffb336a17b0748e0d61c4d34216e9dc98f10e40395e",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/tinycbor/qt_attribution.json": "3cd7042c743868aa67d792b85cd1e113b02cfa5273ea727a5a40915c9163b377",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/wasm/DEJAVU-LICENSE": "7a083b136e64d064794c3419751e5c7dd10d2f64c108fe5ba161eae5e5958a93",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/wasm/qt_attribution.json": "2019d37665bfb2ce7d4931d0bdf7427ea178919399cf37c0fef14a229144936b",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/wintab/qt_attribution.json": "b879ea91b719531d45e1cfe33d2241d060a9260200bd91a09ada074b16063f9c",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/xcb/LICENSE": "82775191bc05f85b40404d77bb69b1edeaeb4033f48387e9e5eab4dd67f5d6f1",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/xcb/qt_attribution.json": "8bae8861957bc0168d586d24da6e8e93edceb11796811c5f614d211f4674d437",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/zlib/LICENSE": "d7e3139972874dc8abdbbfce27ec1e6f942b28279dd7d27453630a8b4610e080",
+      "qtbase-everywhere-src-6.8.3/src/3rdparty/zlib/qt_attribution.json": "6a37eaf51d8ebb7bd19e01a9a2334da8557409acb520ef6d1813c6d742771030",
+      "qtbase-everywhere-src-6.8.3/src/corelib/kernel/QEVENTDISPATCHER_CF_LICENSE.txt": "e9e5b9f66d21c0e88a4179525ab39cd8d7eac9af78a8404f322c32b0874783d5",
+      "qtbase-everywhere-src-6.8.3/src/corelib/kernel/qt_attribution.json": "35639d420fb5aac3e5a702269e3cb8e9e18f5145dd36003ea6dee45ed4af4e2d",
+      "qtbase-everywhere-src-6.8.3/src/corelib/mimetypes/3rdparty/qt_attribution.json": "45b454443cc0d5450fde18b76b555700dbff0937b925b8482290950330c9b370",
+      "qtbase-everywhere-src-6.8.3/src/corelib/text/qt_attribution.json": "6a2ac10d23f98e987a7176281cc1af6da01f5289a7b41a473e20f023a952c0e4",
+      "qtbase-everywhere-src-6.8.3/src/dbus/LIBDBUS-1-LICENSE.txt": "ad90aa08bb1a9b7056aa51e2e215b36630855457cde5dffd36aa0faa7b169f24",
+      "qtbase-everywhere-src-6.8.3/src/dbus/qt_attribution.json": "c03e804fb402ad8ce4c2268cf2f820493a1c5c06d624fb61a24eaa0bc2fcb66d",
+      "qtbase-everywhere-src-6.8.3/src/gui/opengl/KHRONOS_LICENSE.txt": "2e484f3c26ff5008c704a3ca9dd809d43f24a004a1abb6c202660fbff0d19715",
+      "qtbase-everywhere-src-6.8.3/src/gui/opengl/qt_attribution.json": "50fcb16f440df6e7ea2778dbc81cc8caeb0dbd770daa4efddd125adacaa6cf36",
+      "qtbase-everywhere-src-6.8.3/src/gui/painting/QIMAGETRANSFORM_LICENSE.txt": "46b3cbfa2f2946b93291506351e9be1dd0a28d2a53260f5aa488abd36fbeca9d",
+      "qtbase-everywhere-src-6.8.3/src/gui/painting/XCONSORTIUM_LICENSE.txt": "a216b01291eb38fc1af93cfccf1fc67b48d9923612e517c2a695e95b3f03c22c",
+      "qtbase-everywhere-src-6.8.3/src/gui/painting/qt_attribution.json": "6827f1fec09e4a3c89381f0724c998243e412a56a47735ab5b899d470fb47ddf",
+      "qtbase-everywhere-src-6.8.3/src/gui/rhi/MiniEngine_LICENSE.txt": "cf248820bf1178370bb4f1670a59f8748d46bc96d0f64080cd631511c6046409",
+      "qtbase-everywhere-src-6.8.3/src/gui/rhi/qt_attribution.json": "2f362dfbfb7d8f4b3998d3adde8d2f2124df588e6a48f177e335679fded585ed",
+      "qtbase-everywhere-src-6.8.3/src/gui/text/AGLFN_LICENSE.txt": "40818155548ff41c67d3a40edf355e9658992b292c227f4c1147425cedc746c6",
+      "qtbase-everywhere-src-6.8.3/src/gui/text/qt_attribution.json": "cc5c2eedae7d50df84088f1f73a7e3b4720eb3de07019e0ddcc97af74e631671",
+      "qtbase-everywhere-src-6.8.3/src/gui/vulkan/LICENSE.txt": "5f618873b0cdd1e84c611c5529212c2524bfc887bdfd7d1f3b568bad3c649612",
+      "qtbase-everywhere-src-6.8.3/src/gui/vulkan/licenseheader.h.in": "6975a5d3dd6bb9e5fa9058f5d8739b68ca7d635fcfae8bec21949ec4331813ec",
+      "qtbase-everywhere-src-6.8.3/src/gui/vulkan/qt_attribution.json": "4dcb0c227ce6d6079c413e226d67f19a477338af1945de4d7c841ba992cf0505",
+      "qtbase-everywhere-src-6.8.3/src/plugins/platforms/cocoa/COCOA_LICENSE.txt": "e9e5b9f66d21c0e88a4179525ab39cd8d7eac9af78a8404f322c32b0874783d5",
+      "qtbase-everywhere-src-6.8.3/src/plugins/platforms/cocoa/qt_attribution.json": "15d905306337542288d20aac31c3cffbcf28a488dba6236eab17cc8b86f51975",
+      "qtbase-everywhere-src-6.8.3/src/testinternal/3rdparty/cmake/Copyright.txt": "0676e30827684487aa0ea8f72f01e9460a6320fa34a2888df0ad1dd3e8a06eb8",
+      "qtbase-everywhere-src-6.8.3/src/testinternal/3rdparty/cmake/qt_attribution.json": "f194ea33cf9b0d44615a6fa9eb4d45e7796b50cb0a88cdadf5d9b15745bf52f0",
+      "qtbase-everywhere-src-6.8.3/src/testlib/3rdparty/catch2/LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+      "qtbase-everywhere-src-6.8.3/src/testlib/3rdparty/catch2/qt_attribution.json": "9d48fa7b86e9b0412b699e0411815766914478592da5bbb614a45443c14504b0",
+      "qtbase-everywhere-src-6.8.3/src/testlib/3rdparty/cycle/LICENSE.txt": "cb5aedb296c5246d1f22e9099f925a65146f9f0d6b4eebba97fd27a6cdbbab2d",
+      "qtbase-everywhere-src-6.8.3/src/testlib/3rdparty/cycle/qt_attribution.json": "a3ff23399b7ece1a0c6a9696e4f8c671a495f92a74c9c53ea5b66f27bd56b056",
+      "qtbase-everywhere-src-6.8.3/src/testlib/3rdparty/linux/LICENSE.txt": "ed71cfca021790f74094e9810f42e31288e7f43cf00c8d9ac8d6f904124bd815",
+      "qtbase-everywhere-src-6.8.3/src/testlib/3rdparty/linux/qt_attribution.json": "44299f5c08474790c164e73894b81b650463f9e40121041cefdeebd9b5eb734c",
+      "qtbase-everywhere-src-6.8.3/src/testlib/3rdparty/valgrind/LICENSE.txt": "ec72eebd6326165156787da828caaa18386489387aefaa073c9bd40b8b2a400e",
+      "qtbase-everywhere-src-6.8.3/src/testlib/3rdparty/valgrind/qt_attribution.json": "9fab633484b2c78f3fdc789f0e9dfda493b425978d2164c06bf86f733bd878bf",
+      "qtbase-everywhere-src-6.8.3/src/tools/moc/util/licenseheader.cpp.in": "331466d1e3f460ef7f3fe1fcd926307b0594311a2ed286b24ea649c82cc36cc5",
+      "qtbase-everywhere-src-6.8.3/src/widgets/doc/images/licensewizard-flow.png": "7a0e08a4499da689b635d1c2582ceb86d4a76b94940f2faae733af6e97621c43",
+      "qtbase-everywhere-src-6.8.3/tests/manual/examples/widgets/tools/settingseditor/inifiles/licensepage.ini": "1948dabaa56efecd40e55ce1ebc48af807422218408fa69b6c07bfecaddf6ea0",
+      "qtbase-everywhere-src-6.8.3/tests/manual/rhi/shared/imgui/fonts/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "qtbase-everywhere-src-6.8.3/tests/manual/rhi/shared/imgui/imgui/LICENSE.txt": "1b64b23b817e547982a86984685f5e9337695caa542753fb6f08d502d5208e38",
+      "qtbase-everywhere-src-6.8.3/util/gradientgen/WEBGRADIENTS_LICENSE.txt": "9be732e45b638c74f9c0e5248541dd54dc7e8e9a5545df96b5c4b7c9ac0c68ba",
+      "qtbase-everywhere-src-6.8.3/util/gradientgen/qt_attribution.json": "a25f10e47d2b7d9369486d94602ad01b60382b9f032cbbd6f465d87328d8b0e0"
+    }
+  },
+  {
+    "module": "qtsvg",
+    "version": "6.8.3",
+    "basis": "installed SDK SPDX",
+    "packages": [
+      {
+        "name": "GNU",
+        "versionInfo": "10.3.1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "qtsvg",
+        "versionInfo": "c75099a+HEAD",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtsvg.git@c75099a75e81df35e7347a65e301bbf1011831a5"
+      },
+      {
+        "name": "Svg_Attribution_xsvg",
+        "versionInfo": "unknown",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "HPND-sell-variant",
+        "copyrightText": "Copyright 2002 USC/Information Sciences Institute",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "Svg",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtsvg.git@c75099a75e81df35e7347a65e301bbf1011831a5"
+      },
+      {
+        "name": "QSvgIconPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtsvg.git@c75099a75e81df35e7347a65e301bbf1011831a5"
+      },
+      {
+        "name": "QSvgPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtsvg.git@c75099a75e81df35e7347a65e301bbf1011831a5"
+      },
+      {
+        "name": "SvgWidgets",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtsvg.git@c75099a75e81df35e7347a65e301bbf1011831a5"
+      },
+      {
+        "name": "WrapZLIB",
+        "versionInfo": "1.2.11",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      }
+    ],
+    "source_archive": "qtsvg-everywhere-src-6.8.3.tar.xz",
+    "source_notice_files": {
+      "qtsvg-everywhere-src-6.8.3/LICENSES/BSD-3-Clause.txt": "9f0490f18656c6f2435bd14f603ef0c96434d1825615363dce43abb42ed1dcce",
+      "qtsvg-everywhere-src-6.8.3/LICENSES/GFDL-1.3-no-invariants-only.txt": "110535522396708cea37c72a802c5e7e81391139f5f7985631c93ef242b206a4",
+      "qtsvg-everywhere-src-6.8.3/LICENSES/GPL-2.0-only.txt": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+      "qtsvg-everywhere-src-6.8.3/LICENSES/GPL-3.0-only.txt": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "qtsvg-everywhere-src-6.8.3/LICENSES/LGPL-3.0-only.txt": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768",
+      "qtsvg-everywhere-src-6.8.3/LICENSES/LicenseRef-Qt-Commercial.txt": "9b1f50aae6267f9d5e0ceb6775ee86450262c25ec7c0573e151fe5d3f18a4700",
+      "qtsvg-everywhere-src-6.8.3/LICENSES/Qt-GPL-exception-1.0.txt": "40678d338ce53cd93f8b22b281a2ecbcaa3ee65ce60b25ffb0c462b0530846b2",
+      "qtsvg-everywhere-src-6.8.3/licenseRule.json": "8cbdb36bccb167fcc98964d1bd74eaea37ee9ccfd927f41559b77dbc5150e29b",
+      "qtsvg-everywhere-src-6.8.3/src/svg/XSVG_LICENSE.txt": "3a946598a9f674d44df764279ca0b85b5d6faba08f3bc75d8e0fcf6cd729a9bd",
+      "qtsvg-everywhere-src-6.8.3/src/svg/qt_attribution.json": "89c0b12b30ce72d2cda2938875aec15bd47c6c7d8d05f41db9840f94832ccfdd",
+      "qtsvg-everywhere-src-6.8.3/tests/baseline/data/svg_12_testsuite/LICENSE.txt": "635f33fbb460f1731dad45d79dbf2301255f63296d77a064c000f92e2cc79173"
+    }
+  },
+  {
+    "module": "qtwayland",
+    "version": "6.8.3",
+    "basis": "installed SDK SPDX",
+    "packages": [
+      {
+        "name": "GNU",
+        "versionInfo": "10.3.1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "NOASSERTION"
+      },
+      {
+        "name": "qtwayland",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "qtwaylandscanner",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only WITH Qt-GPL-exception-1.0",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WaylandClient_Attribution_wayland-pointer-gestures-protocol",
+        "versionInfo": "unstable v1, version 2",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2015, 2016 Red Hat",
+        "downloadLocation": "https://cgit.freedesktop.org/wayland/wayland-protocols/plain/unstable/pointer-gestures/pointer-gestures-unstable-v1.xml"
+      },
+      {
+        "name": "WaylandClient_Attribution_wayland-tablet-protocol",
+        "versionInfo": "unstable v2, version 1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright 2014 © Stephen \"Lyude\" Chandler Paul\nCopyright 2015-2016 © Red Hat, Inc.",
+        "downloadLocation": "https://cgit.freedesktop.org/wayland/wayland-protocols/plain/unstable/tablet/tablet-unstable-v2.xml"
+      },
+      {
+        "name": "WaylandClient_Attribution_wayland-text-input-unstable-v1",
+        "versionInfo": "unstable v1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2012, 2013 Intel Corporation",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/-/blob/main/unstable/text-input/text-input-unstable-v1.xml"
+      },
+      {
+        "name": "WaylandClient_Attribution_wayland-text-input-unstable-v2",
+        "versionInfo": "unstable v2",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "HPND",
+        "copyrightText": "Copyright © 2012, 2013 Intel Corporation\nCopyright © 2015, 2016 Jan Arne Petersen",
+        "downloadLocation": "https://wayland.freedesktop.org"
+      },
+      {
+        "name": "WaylandClient_Attribution_wayland-text-input-unstable-v3",
+        "versionInfo": "unstable v3",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2012, 2013 Intel Corporation\nCopyright © 2015, 2016 Jan Arne Petersen\nCopyright © 2017, 2018 Red Hat, Inc.\nCopyright © 2018       Purism SPC",
+        "downloadLocation": "https://cgit.freedesktop.org/wayland/wayland-protocols/plain/unstable/text-input/text-input-unstable-v3.xml"
+      },
+      {
+        "name": "WaylandClient_Attribution_wayland-protocol",
+        "versionInfo": "1.19.0",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2008-2011 Kristian Høgsberg\nCopyright © 2010-2011 Intel Corporation\nCopyright © 2012-2013 Collabora, Ltd.",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland/raw/1.19.0/protocol/wayland.xml"
+      },
+      {
+        "name": "WaylandClient_Attribution_wayland-primary-selection-protocol",
+        "versionInfo": "1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2015, 2016 Red Hat",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/raw/1.18/unstable/primary-selection/primary-selection-unstable-v1.xml"
+      },
+      {
+        "name": "WaylandClient_Attribution_wayland-xdg-output-protocol",
+        "versionInfo": "unstable v1, version 3",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2017 Red Hat Inc.",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/raw/1.18/unstable/xdg-output/xdg-output-unstable-v1.xml"
+      },
+      {
+        "name": "WaylandClient_Attribution_fractional-scale-v1",
+        "versionInfo": "1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2022 Kenny Levinsen",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/-/raw/1.31/unstable/fractional-scale/fractional-scale-v1.xml"
+      },
+      {
+        "name": "WaylandClient_Attribution_wayland-viewporter-protocol",
+        "versionInfo": "1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2013-2016 Collabora, Ltd.",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/raw/1.18/stable/viewporter/viewporter.xml"
+      },
+      {
+        "name": "WaylandClient_Attribution_wayland-xdg-shell-protocol",
+        "versionInfo": "1.18",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2008-2013 Kristian Høgsberg\nCopyright © 2013      Rafael Antognolli\nCopyright © 2013      Jasper St. Pierre\nCopyright © 2010-2013 Intel Corporation\nCopyright © 2015-2017 Samsung Electronics Co., Ltd\nCopyright © 2015-2017 Red Hat Inc.\n",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/tree/1.18/"
+      },
+      {
+        "name": "WaylandClient",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WaylandCompositor_Attribution_wayland-ivi-extension-protocol",
+        "versionInfo": "1.9.1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright (C) 2013 DENSO CORPORATION\nCopyright (c) 2013 BMW Car IT GmbH",
+        "downloadLocation": "https://github.com/GENIVI/wayland-ivi-extension/releases/tag/1.9.1"
+      },
+      {
+        "name": "WaylandCompositor_Attribution_presentation-time_xml",
+        "versionInfo": "1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2013, 2014 Collabora, Ltd.",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/raw/1.18/stable/presentation-time/presentation-time.xml"
+      },
+      {
+        "name": "WaylandCompositor_Attribution_wayland-scaler-protocol",
+        "versionInfo": "2",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2013-2014 Collabora, Ltd.",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/weston/raw/1.11/protocol/scaler.xml"
+      },
+      {
+        "name": "WaylandCompositor_Attribution_wayland-text-input-unstable-v2",
+        "versionInfo": "unstable v2",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "HPND",
+        "copyrightText": "Copyright © 2012, 2013 Intel Corporation\nCopyright © 2015, 2016 Jan Arne Petersen",
+        "downloadLocation": "https://wayland.freedesktop.org"
+      },
+      {
+        "name": "WaylandCompositor_Attribution_wayland-text-input-unstable-v3",
+        "versionInfo": "unstable v3",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2012, 2013 Intel Corporation\nCopyright © 2015, 2016 Jan Arne Petersen\nCopyright © 2017, 2018 Red Hat, Inc.\nCopyright © 2018       Purism SPC",
+        "downloadLocation": "https://cgit.freedesktop.org/wayland/wayland-protocols/plain/unstable/text-input/text-input-unstable-v3.xml"
+      },
+      {
+        "name": "WaylandCompositor_Attribution_wayland-viewporter-protocol",
+        "versionInfo": "1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2013-2016 Collabora, Ltd.",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/raw/1.18/stable/viewporter/viewporter.xml"
+      },
+      {
+        "name": "WaylandCompositor_Attribution_wayland-protocol",
+        "versionInfo": "1.19.0",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2008-2011 Kristian Høgsberg\nCopyright © 2010-2011 Intel Corporation\nCopyright © 2012-2013 Collabora, Ltd.",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland/raw/1.19.0/protocol/wayland.xml"
+      },
+      {
+        "name": "WaylandCompositor_Attribution_wayland-xdg-decoration-protocol",
+        "versionInfo": "unstable v1, version 1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2018 Simon Ser",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/raw/1.18/unstable/xdg-decoration/xdg-decoration-unstable-v1.xml"
+      },
+      {
+        "name": "WaylandCompositor_Attribution_wayland-xdg-output-protocol",
+        "versionInfo": "unstable v1, version 3",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2017 Red Hat Inc.",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/raw/1.18/unstable/xdg-output/xdg-output-unstable-v1.xml"
+      },
+      {
+        "name": "WaylandCompositor_Attribution_wayland-xdg-shell-protocol",
+        "versionInfo": "1.18",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2008-2013 Kristian Høgsberg\nCopyright © 2013      Rafael Antognolli\nCopyright © 2013      Jasper St. Pierre\nCopyright © 2010-2013 Intel Corporation\nCopyright © 2015-2017 Samsung Electronics Co., Ltd\nCopyright © 2015-2017 Red Hat Inc.\n",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/tree/1.18/"
+      },
+      {
+        "name": "WaylandCompositor_Attribution_xdg-dialog-v1",
+        "versionInfo": "1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2023 Carlos Garnacho",
+        "downloadLocation": "https://wayland.freedesktop.org"
+      },
+      {
+        "name": "WaylandCompositor",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "qwaylandcompositorplugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WaylandEglClientHwIntegrationPrivate",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WaylandEglCompositorHwIntegrationPrivate",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "QWaylandEglClientBufferPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "DrmEglServerBufferPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "ShmServerBufferPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "DmaBufServerBufferPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "VulkanServerBufferPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "QWaylandDmabufClientBufferIntegrationPlugin_Attribution_wayland-linux-dmabuf-unstable-v1",
+        "versionInfo": "unstable v1, version 3",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2014, 2015 Collabora, Ltd.",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/raw/1.18/unstable/linux-dmabuf/linux-dmabuf-unstable-v1.xml"
+      },
+      {
+        "name": "QWaylandDmabufClientBufferIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "QWaylandEglClientBufferIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "QWaylandEglStreamClientBufferIntegrationPlugin_Attribution_wayland-eglstream-controller",
+        "versionInfo": "1.1.1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright (c) 2017, NVIDIA CORPORATION. All rights reserved.",
+        "downloadLocation": "https://raw.githubusercontent.com/NVIDIA/egl-wayland/1.1.1/wayland-eglstream/wayland-eglstream-controller.xml"
+      },
+      {
+        "name": "QWaylandEglStreamClientBufferIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "DrmEglServerBufferIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "ShmServerBufferIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "DmaBufServerBufferIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "VulkanServerBufferIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "QWaylandIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "QWaylandEglPlatformIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "QWaylandAdwaitaDecorationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "QWaylandBradientDecorationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "QWaylandFullScreenShellV1IntegrationPlugin_Attribution_wayland-fullscreen-protocol",
+        "versionInfo": "unstable v1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2016 Yong Bakos\nCopyright © 2015 Jason Ekstrand\nCopyright © 2015 Jonas Ådahl",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/raw/1.18/unstable/fullscreen-shell/fullscreen-shell-unstable-v1.xml"
+      },
+      {
+        "name": "QWaylandFullScreenShellV1IntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "QWaylandIviShellIntegrationPlugin_Attribution_wayland-ivi-extension-protocol",
+        "versionInfo": "1.9.1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright (C) 2013 DENSO CORPORATION\nCopyright (c) 2013 BMW Car IT GmbH",
+        "downloadLocation": "https://github.com/GENIVI/wayland-ivi-extension/releases/tag/1.9.1"
+      },
+      {
+        "name": "QWaylandIviShellIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WlShellIntegrationPrivate_Attribution_wayland-protocol",
+        "versionInfo": "1.19.0",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2008-2011 Kristian Høgsberg\nCopyright © 2010-2011 Intel Corporation\nCopyright © 2012-2013 Collabora, Ltd.",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland/raw/1.19.0/protocol/wayland.xml"
+      },
+      {
+        "name": "WlShellIntegrationPrivate",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "QWaylandWlShellIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "QWaylandXdgShellIntegrationPlugin_Attribution_wayland-xdg-decoration-protocol",
+        "versionInfo": "unstable v1, version 1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2018 Simon Ser",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/raw/1.18/unstable/xdg-decoration/xdg-decoration-unstable-v1.xml"
+      },
+      {
+        "name": "QWaylandXdgShellIntegrationPlugin_Attribution_wayland-xdg-shell-protocol",
+        "versionInfo": "1.18",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2008-2013 Kristian Høgsberg\nCopyright © 2013      Rafael Antognolli\nCopyright © 2013      Jasper St. Pierre\nCopyright © 2010-2013 Intel Corporation\nCopyright © 2015-2017 Samsung Electronics Co., Ltd\nCopyright © 2015-2017 Red Hat Inc.\n",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/tree/1.18/"
+      },
+      {
+        "name": "QWaylandXdgShellIntegrationPlugin_Attribution_wayland-xdg-activation",
+        "versionInfo": "unstable v1, version 1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2020 Aleix Pol Gonzalez &lt\naleixpol@kde.org&gt\n\nCopyright © 2020 Carlos Garnacho &lt\ncarlosg@gnome.org&gt\n",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/-/blob/main/staging/xdg-activation/xdg-activation-v1.xml"
+      },
+      {
+        "name": "QWaylandXdgShellIntegrationPlugin_Attribution_xdg-foreign-unstable-v2",
+        "versionInfo": "1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2015-2016 Red Hat Inc.",
+        "downloadLocation": "https://gitlab.freedesktop.org/wayland/wayland-protocols/-/raw/1.25/unstable/xdg-foreign/xdg-foreign-unstable-v2.xml"
+      },
+      {
+        "name": "QWaylandXdgShellIntegrationPlugin_Attribution_xdg-dialog-v1",
+        "versionInfo": "1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "MIT",
+        "copyrightText": "Copyright © 2023 Carlos Garnacho",
+        "downloadLocation": "https://wayland.freedesktop.org"
+      },
+      {
+        "name": "QWaylandXdgShellIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "QWaylandQtShellIntegrationPlugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WaylandCompositorXdgShell",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WaylandCompositorXdgShellplugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WaylandCompositorIviapplication",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WaylandCompositorIviapplicationplugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WaylandCompositorWLShell",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WaylandCompositorWLShellplugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WaylandCompositorQtShell",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WaylandCompositorPresentationTime",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WaylandCompositorPresentationTimeplugin",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WaylandTextureSharing",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WaylandTextureSharingExtension",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "WaylandGlobalPrivate",
+        "versionInfo": "6.8.3",
+        "licenseDeclared": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "licenseConcluded": "LicenseRef-Qt-Commercial OR GPL-3.0-only",
+        "copyrightText": "Copyright (C) The Qt Company Ltd. and other contributors.",
+        "downloadLocation": "git://code.qt.io/qt/qtwayland.git"
+      },
+      {
+        "name": "Wayland",
+        "versionInfo": "1.21.0",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "http://wayland.freedesktop.org"
+      },
+      {
+        "name": "EGL",
+        "versionInfo": "1.5",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "https://www.khronos.org/egl/"
+      },
+      {
+        "name": "Libdrm",
+        "versionInfo": "2.4.115",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "https://wiki.freedesktop.org/dri/"
+      },
+      {
+        "name": "XKB",
+        "versionInfo": "0.9.1",
+        "licenseDeclared": "NOASSERTION",
+        "licenseConcluded": "NOASSERTION",
+        "copyrightText": "NOASSERTION",
+        "downloadLocation": "http://xkbcommon.org"
+      }
+    ],
+    "source_archive": "qtwayland-everywhere-src-6.8.3.tar.xz",
+    "source_notice_files": {
+      "qtwayland-everywhere-src-6.8.3/LICENSES/BSD-3-Clause.txt": "9f0490f18656c6f2435bd14f603ef0c96434d1825615363dce43abb42ed1dcce",
+      "qtwayland-everywhere-src-6.8.3/LICENSES/CC0-1.0.txt": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+      "qtwayland-everywhere-src-6.8.3/LICENSES/GFDL-1.3-no-invariants-only.txt": "110535522396708cea37c72a802c5e7e81391139f5f7985631c93ef242b206a4",
+      "qtwayland-everywhere-src-6.8.3/LICENSES/GPL-2.0-only.txt": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+      "qtwayland-everywhere-src-6.8.3/LICENSES/GPL-3.0-only.txt": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "qtwayland-everywhere-src-6.8.3/LICENSES/HPND.txt": "5716e5cd198ed5c4ca2c39de067e89d9f4ac7537c88bfaff661820ef1fe0722d",
+      "qtwayland-everywhere-src-6.8.3/LICENSES/LGPL-3.0-only.txt": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768",
+      "qtwayland-everywhere-src-6.8.3/LICENSES/LicenseRef-Qt-Commercial.txt": "9b1f50aae6267f9d5e0ceb6775ee86450262c25ec7c0573e151fe5d3f18a4700",
+      "qtwayland-everywhere-src-6.8.3/LICENSES/MIT.txt": "d040359701c01996a017d5c515678929cd1b0625e64cb86db44025fbb6cdf1fc",
+      "qtwayland-everywhere-src-6.8.3/LICENSES/Qt-GPL-exception-1.0.txt": "40678d338ce53cd93f8b22b281a2ecbcaa3ee65ce60b25ffb0c462b0530846b2",
+      "qtwayland-everywhere-src-6.8.3/licenseRule.json": "c1726376f414bd0457f3e3c9890042913aad616a61f5ef29dcb78f1b15a7f072",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/MIT_LICENSE.txt": "a8341b9c90ef447a77f55d550e6691e370d3ac15d60edb584def356e348ab828",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/fractional-scale/qt_attribution.json": "bf87b7dc5bf42e91c9d98ad2a109d197141aaebffe563ab247dd771e0b9b07c8",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/fullscreen-shell/qt_attribution.json": "24ebba6014034dcf2c9a23a5b1085dc9708eaa81c021dfe51ba3f6b51ba788a7",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/ivi/qt_attribution.json": "6dcd14eab3d78a8d11429b87aa5bda752332060f22158524b81ed26dbd2c5f6b",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/linux-dmabuf/qt_attribution.json": "64ea0d933ff0d0868e820b443c14feda5208f90bd02032cdc9a1b6881a05f446",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/pointer-gestures/qt_attribution.json": "3c85ce329ccb30c469aa3f3c71596eb915c9cccd645ac1192d94a8fe548556b7",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/presentation-time/qt_attribution.json": "c3af7f51726c7584d5e8ad74a29813d66cac6a215a9675da7cfc9a42f15c2d0a",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/scaler/qt_attribution.json": "8b7751412fc26d70f641d6bad9c6aadd406317cbf17359ffcc58651f58aa2fca",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/tablet/qt_attribution.json": "a46626dbac8fc1f57d5b34eb077425fc402fc0767b75ec06578e1465502883b5",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/text-input/v1/qt_attribution.json": "882ac88020f0ecaea6d991f7e8d292542c9422592ede0396c4d217f040ef6a54",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/text-input/v2/HPND_LICENSE.txt": "8172d52f3b7bba7d10af2f9134c63d0f699ba6b20a47e35f5ac45654c500bfd7",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/text-input/v2/qt_attribution.json": "197d9edcc6fb17d7bc2b230f7061ce0d2ef90fa4291c86e87ae2817e8f2809fe",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/text-input/v3/qt_attribution.json": "476225d10cb5789d993c38335c6cc442fdc19a8d91f1ceb7a3ddb50414a8e68a",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/viewporter/qt_attribution.json": "95139e441967bc289d174078f1ca0485363e8405bd8d06eb9946356c09c0a5e4",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/wayland/qt_attribution.json": "1c315ea4f2d4ff4067384e6ff0e554b9ecf1194e2aedf0dd0faa4bfe03cfa709",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/wl-eglstream/qt_attribution.json": "2432510e17446887decd1fc58770aeeef060aff5331a8bfec7fb668555f3b347",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/wp-primary-selection/qt_attribution.json": "14586c06e09439e9c2b7719766f68e219d0ff0231811e13e44f4587dabf52707",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/xdg-activation/qt_attribution.json": "8f13cfd4c78a2f116d3e674c329d3d211b647d80190e7a95493528cd6dedbd89",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/xdg-decoration/qt_attribution.json": "b8d9102ff3c7eccd840f7d5332d072e41e95eb055a8a9f2e3719a83005879c86",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/xdg-dialog/qt_attribution.json": "c7918fb63ad5be29e9a95db3464a7832224c7d904d21617ccfc689e6b0ab04c0",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/xdg-foreign/qt_attribution.json": "0ed6fbddba411b647bbe895b6e7a842c2a884905206888c0b4df6b6cd3bb9f79",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/xdg-output/qt_attribution.json": "c5e4f132de8d08a75af02682bba3a9349a00f49b773e23ef5543648209b76658",
+      "qtwayland-everywhere-src-6.8.3/src/3rdparty/protocol/xdg-shell/qt_attribution.json": "e1367b44fe28fce2eee7656cda75203f4102662bb6aa370b3c9f3eb5a2cc3f82"
+    }
+  },
+  {
+    "module": "qtimageformats",
+    "version": "6.8.3",
+    "basis": "local build of verified official 6.8.3 source archive; original generated SPDX preserved",
+    "packages": [],
+    "build_sbom": {
+      "qtimageformats-6.8.3.spdx": "69429bae53f82c77d401f3c7a192285ced7af8b15c354a649616aab9102382d8"
+    },
+    "source_archive": "qtimageformats-everywhere-src-6.8.3.tar.xz",
+    "source_notice_files": {
+      "qtimageformats-everywhere-src-6.8.3/LICENSES/BSD-3-Clause.txt": "9f0490f18656c6f2435bd14f603ef0c96434d1825615363dce43abb42ed1dcce",
+      "qtimageformats-everywhere-src-6.8.3/LICENSES/GFDL-1.3-no-invariants-only.txt": "110535522396708cea37c72a802c5e7e81391139f5f7985631c93ef242b206a4",
+      "qtimageformats-everywhere-src-6.8.3/LICENSES/GPL-2.0-only.txt": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+      "qtimageformats-everywhere-src-6.8.3/LICENSES/GPL-3.0-only.txt": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "qtimageformats-everywhere-src-6.8.3/LICENSES/LGPL-3.0-only.txt": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768",
+      "qtimageformats-everywhere-src-6.8.3/LICENSES/LicenseRef-Qt-Commercial.txt": "9b1f50aae6267f9d5e0ceb6775ee86450262c25ec7c0573e151fe5d3f18a4700",
+      "qtimageformats-everywhere-src-6.8.3/LICENSES/libtiff.txt": "fbd6fed7938541d2c809c0826225fc85e551fdbfa8732b10f0c87e0847acafd7",
+      "qtimageformats-everywhere-src-6.8.3/licenseRule.json": "5ef4787b7a84e1f3716fd57289b5217906418b0146f43810508b627dc151d901",
+      "qtimageformats-everywhere-src-6.8.3/src/3rdparty/libtiff/COPYRIGHT": "fbd6fed7938541d2c809c0826225fc85e551fdbfa8732b10f0c87e0847acafd7",
+      "qtimageformats-everywhere-src-6.8.3/src/3rdparty/libtiff/qt_attribution.json": "cfd9d4cf2b46176e99ec545542cd36bd4ca5bbed1eed4e8d79fc2554dfc42ec5",
+      "qtimageformats-everywhere-src-6.8.3/src/3rdparty/libwebp/AUTHORS": "b97b44ab6fc6f4b2e9c5b5ad84fe4f7bd198696fc6b43830598c3e1364b84df4",
+      "qtimageformats-everywhere-src-6.8.3/src/3rdparty/libwebp/COPYING": "5aec868f669e384a22372a4e8a1a6cd7d44c64cd451f960ca69cc170d1e13acf",
+      "qtimageformats-everywhere-src-6.8.3/src/3rdparty/libwebp/qt_attribution.json": "71e8d96e66bf513d831d5451be486e7b81b0efe591ae54d07abb9afeb9e0f809"
+    }
+  }
+]

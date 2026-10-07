@@ -1,0 +1,18 @@
+{
+    "file": "yolov5n.pt",
+    "model": "Ultralytics YOLOv5n v6.0 checkpoint",
+    "task": "detect",
+    "format": "PyTorch checkpoint",
+    "dataset": "COCO",
+    "source": "https://github.com/ultralytics/yolov5/releases/download/v6.0/yolov5n.pt",
+    "release": "https://github.com/ultralytics/yolov5/releases/tag/v6.0",
+    "vendor_source": "https://github.com/ultralytics/yolov5/archive/refs/tags/v7.0.tar.gz",
+    "vendor_directory": "vendor/yolov5",
+    "downloaded_on": "2026-10-05",
+    "bytes": 3952441,
+    "sha256": "649e089f59b78ac021025de035b2d9c45dc26e544ea252955d0ffcefc1099e2f",
+    "license": "GPL-3.0 (YOLOv5 checkpoint and vendored v7.0 framework)",
+    "license_source": "https://github.com/ultralytics/yolov5/blob/v7.0/LICENSE",
+    "checkpoint_loading": "Only load trusted checkpoint files. Legacy YOLOv5 checkpoints require their original model architecture modules and contain pickled Python objects.",
+    "checkpoint_license_source": "https://github.com/ultralytics/yolov5/blob/v6.0/LICENSE"
+}

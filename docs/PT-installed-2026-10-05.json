@@ -1,0 +1,11 @@
+{
+  "backend": "PyTorch / Ultralytics / CPU",
+  "error": "",
+  "inference_ms": 37.957955966703594,
+  "predictions": 5,
+  "qt": "6.8.3",
+  "success": true,
+  "installed_directory": "/home/misaka/VisionStudio",
+  "isolated_preferences": true,
+  "runtime": "/home/misaka/VisionStudio/runtime/bin/python"
+}

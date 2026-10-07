@@ -1,0 +1,8 @@
+{
+  "av_version_info": "5.1.6",
+  "avutil_configuration": "--prefix=/ffmpeg_build --extra-cflags=-I/ffmpeg_build/include --extra-ldflags=-L/ffmpeg_build/lib --enable-openssl --enable-libvpx --enable-shared --enable-pic --bindir=/root/bin",
+  "avutil_license": "LGPL version 2.1 or later",
+  "library": "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libavutil-734d06dd.so.57.28.100",
+  "source": "https://ffmpeg.org/releases/ffmpeg-5.1.6.tar.xz",
+  "wheel_recipe": "https://github.com/opencv/opencv-python/blob/86/docker/manylinux2014/Dockerfile_x86_64"
+}

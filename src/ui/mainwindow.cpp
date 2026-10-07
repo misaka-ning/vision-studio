@@ -1,0 +1,1768 @@
+#include "mainwindow.h"
+#include "core/inferenceworker.h"
+#include "icons.h"
+#include "imagecanvas.h"
+#include <QApplication>
+#include <QCheckBox>
+#include <QCloseEvent>
+#include <QComboBox>
+#include <QDateTime>
+#include <QDebug>
+#include <QDir>
+#include <QDoubleSpinBox>
+#include <QFileDialog>
+#include <QFileInfo>
+#include <QFormLayout>
+#include <QFrame>
+#include <QHeaderView>
+#include <QImageReader>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QKeyEvent>
+#include <QLabel>
+#include <QListWidget>
+#include <QMenu>
+#include <QMessageBox>
+#include <QProgressBar>
+#include <QPushButton>
+#include <QRegularExpression>
+#include <QSaveFile>
+#include <QScrollArea>
+#include <QSet>
+#include <QSettings>
+#include <QShortcut>
+#include <QSpinBox>
+#include <QSplitter>
+#include <QStackedWidget>
+#include <QStandardPaths>
+#include <QTableWidget>
+#include <QTextBrowser>
+#include <QThread>
+#include <QTimer>
+#include <QVBoxLayout>
+#include <algorithm>
+
+namespace
+{
+QLabel *text(const QString &value, const char *name = "body")
+{
+    auto *w = new QLabel(value);
+    w->setObjectName(name);
+    return w;
+}
+QPushButton *button(const QString &title, const QString &iconName = {}, const char *role = "secondary")
+{
+    auto *b = new QPushButton(title);
+    b->setObjectName(role);
+    b->setCursor(Qt::PointingHandCursor);
+    b->setMinimumHeight(36);
+    if (!iconName.isEmpty())
+        b->setIcon(ui::icon(iconName, role == QString("primary") ? QColor("#082c29") : QColor("#a9bccc")));
+    b->setIconSize(QSize(18, 18));
+    return b;
+}
+QFrame *card(const char *name = "card")
+{
+    auto *w = new QFrame;
+    w->setObjectName(name);
+    return w;
+}
+QImage readImage(const QString &path)
+{
+    QImageReader reader(path);
+    reader.setAutoTransform(true);
+    return reader.read();
+}
+QLabel *section(const QString &title, const QString &number)
+{
+    auto *l = text(number + "   " + title, "sectionTitle");
+    l->setMinimumHeight(27);
+    return l;
+}
+void tableStyle(QTableWidget *t)
+{
+    t->setAlternatingRowColors(false);
+    t->setShowGrid(false);
+    t->setSelectionBehavior(QAbstractItemView::SelectRows);
+    t->setSelectionMode(QAbstractItemView::SingleSelection);
+    t->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    t->verticalHeader()->hide();
+    t->verticalHeader()->setDefaultSectionSize(42);
+    t->horizontalHeader()->setHighlightSections(false);
+    t->setFrameShape(QFrame::NoFrame);
+    t->setFocusPolicy(Qt::StrongFocus);
+}
+QString taskName(vision::ModelTask t)
+{
+    return t == vision::ModelTask::YoloV5   ? "YOLOv5"
+           : t == vision::ModelTask::YoloV8 ? "YOLOv8 / 11"
+                                            : "图像分类";
+}
+QString cleanName(const QString &s)
+{
+    QString v = QFileInfo(s).completeBaseName();
+    if (v.isEmpty())
+        v = "frame";
+    v.replace(QRegularExpression("[^\\p{L}\\p{N}_-]"), "_");
+    return v.left(70);
+}
+bool isPtModel(const QString &path)
+{
+    return QFileInfo(path).suffix().compare("pt", Qt::CaseInsensitive) == 0;
+}
+QString modelFormat(const QString &path)
+{
+    return isPtModel(path) ? QString("PT") : QString("ONNX");
+}
+bool atomicWrite(const QString &path, const QByteArray &data, QString *error = nullptr)
+{
+    QSaveFile f(path);
+    if (!f.open(QIODevice::WriteOnly) || f.write(data) != data.size() || !f.commit())
+    {
+        if (error)
+            *error = f.errorString();
+        return false;
+    }
+    return true;
+}
+} // namespace
+
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
+{
+    qRegisterMetaType<vision::InferenceResult>();
+    qRegisterMetaType<vision::JobRequest>();
+    qRegisterMetaType<vision::ModelConfig>();
+    const QString besideExecutable = QDir(QCoreApplication::applicationDirPath() + "/../..").absolutePath();
+    const QString runtimeRoot =
+        QFileInfo::exists(besideExecutable + "/models") && QFileInfo::exists(besideExecutable + "/assets")
+            ? besideExecutable
+            : QString(VISION_PROJECT_DIR);
+    projectRoot_ = qEnvironmentVariable("VISION_STUDIO_HOME", runtimeRoot);
+    if (!qEnvironmentVariableIsSet("VISION_STUDIO_HOME"))
+        qputenv("VISION_STUDIO_HOME", projectRoot_.toUtf8());
+    const bool systemInstall = qEnvironmentVariable("VISION_STUDIO_SYSTEM_INSTALL") == "1" ||
+                               projectRoot_.startsWith("/opt/") || projectRoot_.startsWith("/usr/");
+    dataRoot_ = qEnvironmentVariable(
+        "VISION_STUDIO_DATA_DIR",
+        systemInstall
+            ? QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/vision-studio"
+            : projectRoot_ + "/output");
+    QDir().mkpath(dataRoot_);
+    settings_ = new QSettings(dataRoot_ + "/preferences.ini", QSettings::IniFormat, this);
+    exportDir_ = settings_->value("exportDirectory", dataRoot_ + "/results").toString();
+    models_ = settings_->value("models").toStringList();
+    QFile h(dataRoot_ + "/history.json");
+    if (h.open(QIODevice::ReadOnly))
+        history_ = QJsonDocument::fromJson(h.readAll()).array();
+    setWindowTitle("Vision Studio — 本地视觉推理工作台");
+    resize(1580, 960);
+    setMinimumSize(1260, 820);
+    setupStyle();
+    auto *base = new QWidget;
+    auto *body = new QHBoxLayout(base);
+    body->setContentsMargins(0, 0, 0, 0);
+    body->setSpacing(0);
+    body->addWidget(buildSidebar());
+    auto *workspace = new QWidget;
+    workspace->setObjectName("workspace");
+    auto *w = new QVBoxLayout(workspace);
+    w->setContentsMargins(24, 20, 24, 0);
+    w->setSpacing(20);
+    auto *header = new QHBoxLayout;
+    auto *titles = new QVBoxLayout;
+    titles->setSpacing(5);
+    auto *crumb = text("VISION STUDIO  /  工作空间", "eyebrow");
+    titles->addWidget(crumb);
+    pageTitle_ = text("检测工作台", "pageTitle");
+    titles->addWidget(pageTitle_);
+    pageSubtitle_ = text("从输入到洞察，让每一次视觉推理清晰可见。", "muted");
+    titles->addWidget(pageSubtitle_);
+    header->addLayout(titles);
+    header->addStretch();
+    auto *local = text("●  本地运行", "localBadge");
+    header->addWidget(local, 0, Qt::AlignVCenter);
+    header->addSpacing(12);
+    demoButton_ = button("运行示例", "play");
+    demoButton_->setToolTip("选择 ONNX 或 PT 示例，使用真实模型检测示例图片");
+    header->addWidget(demoButton_);
+    auto *demoMenu = new QMenu(demoButton_);
+    demoMenu->addAction("ONNX · YOLOv5 Nano", this, &MainWindow::runDemo);
+    demoMenu->addAction("PT · YOLOv8 Nano", this, &MainWindow::runPtDemo);
+    demoButton_->setMenu(demoMenu);
+    exportButton_ = button("导出结果", "export");
+    exportButton_->setEnabled(false);
+    header->addWidget(exportButton_);
+    connect(exportButton_, &QPushButton::clicked, this, &MainWindow::exportResult);
+    w->addLayout(header);
+    pages_ = new QStackedWidget;
+    pages_->addWidget(buildWorkbench());
+    pages_->addWidget(buildModels());
+    pages_->addWidget(buildHistory());
+    pages_->addWidget(buildGuide());
+    w->addWidget(pages_, 1);
+    auto *footer = new QFrame;
+    footer->setObjectName("footer");
+    auto *foot = new QHBoxLayout(footer);
+    foot->setContentsMargins(0, 10, 0, 10);
+    statusLabel_ = text("●  准备就绪 · 选择模型与输入后开始检测", "statusText");
+    statusLabel_->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    statusLabel_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    statusLabel_->setMaximumHeight(20);
+    foot->addWidget(statusLabel_, 1);
+    progress_ = new QProgressBar;
+    progress_->setFixedSize(180, 5);
+    progress_->setTextVisible(false);
+    progress_->hide();
+    foot->addWidget(progress_);
+    foot->addSpacing(16);
+    backendFooter_ = text("Qt 6.8.3  ·  OpenCV DNN  ·  CPU", "tiny");
+    foot->addWidget(backendFooter_);
+    w->addWidget(footer);
+    body->addWidget(workspace, 1);
+    setCentralWidget(base);
+    connectWorker();
+    const int savedTask = settings_->value("task", 0).toInt(),
+              savedInput = settings_->value("inputSize", 640).toInt();
+    const double savedConfidence = settings_->value("confidence", 0.25).toDouble(),
+                 savedIou = settings_->value("iou", 0.45).toDouble();
+    const double savedScale = settings_->value("scale", 1.0 / 255.0).toDouble();
+    const double savedR = settings_->value("meanR", 0).toDouble(),
+                 savedG = settings_->value("meanG", 0).toDouble(),
+                 savedB = settings_->value("meanB", 0).toDouble();
+    const bool savedSwap = settings_->value("swapRB", true).toBool(),
+               savedAuto = settings_->value("autoExport", false).toBool();
+    const QStringList savedLabels = settings_->value("labels").toStringList();
+    const QString savedLabelsPath = settings_->value("labelsPath").toString();
+    const QString bundled = projectRoot_ + "/models/yolov5n.onnx";
+    const QString saved = settings_->value("activeModel").toString();
+    if (!saved.isEmpty() && QFileInfo::exists(saved))
+        setModel(saved);
+    else if (QFileInfo::exists(bundled))
+        setModel(bundled);
+    for (const QString &name : {QStringLiteral("yolov8n.pt"), QStringLiteral("yolov5n.pt")})
+    {
+        const QString example = projectRoot_ + "/models/" + name;
+        if (QFileInfo(example).isFile() && !models_.contains(example))
+            models_.append(example);
+    }
+    taskBox_->setCurrentIndex(qBound(0, savedTask, 2));
+    inputSize_->setValue(savedInput);
+    confidence_->setValue(savedConfidence);
+    iou_->setValue(savedIou);
+    scale_->setValue(savedScale);
+    meanR_->setValue(savedR);
+    meanG_->setValue(savedG);
+    meanB_->setValue(savedB);
+    swapRB_->setChecked(savedSwap);
+    autoExport_->setChecked(savedAuto);
+    labels_ = savedLabels;
+    labelsPath_ = savedLabelsPath;
+    if (!labels_.isEmpty())
+    {
+        labelButton_->setText(QString("类别标签 · %1 个").arg(labels_.size()));
+        labelButton_->setToolTip(labelsPath_);
+    }
+    const QString sample = projectRoot_ + "/assets/bus.jpg";
+    if (QFileInfo::exists(sample))
+        addFiles({sample});
+    else
+    {
+        canvas_->setResult(ImageCanvas::createDemoResult());
+        canvasTitle_->setText("示范场景 · 交互预览");
+        resultInfo_->setText("示范框用于预览界面；导入模型后可执行真实推理。");
+    }
+    refreshModelLibrary();
+    refreshHistory();
+    selectRoute(0);
+    updateTaskUi();
+    auto shortcut = [this](const QKeySequence &keys, auto action)
+    {
+        auto *s = new QShortcut(keys, this);
+        s->setContext(Qt::WindowShortcut);
+        connect(s, &QShortcut::activated, this, action);
+    };
+    shortcut(QKeySequence("Ctrl+O"),
+             [this]
+             {
+                 if (!busy_)
+                     chooseImages();
+             });
+    shortcut(QKeySequence("Ctrl+M"),
+             [this]
+             {
+                 if (!busy_)
+                     importModel();
+             });
+    shortcut(QKeySequence("Ctrl+R"), [this] { startInference(); });
+    shortcut(QKeySequence("Ctrl+E"),
+             [this]
+             {
+                 if (!busy_)
+                     exportResult();
+             });
+    shortcut(QKeySequence(Qt::Key_Escape),
+             [this]
+             {
+                 if (busy_)
+                     stopInference();
+                 else
+                 {
+                     predictionTable_->clearSelection();
+                     canvas_->setSelectedPrediction(-1);
+                 }
+             });
+}
+MainWindow::~MainWindow()
+{
+    worker_->requestStop();
+    workerThread_->quit();
+    workerThread_->wait();
+}
+
+void MainWindow::setupStyle()
+{
+    setStyleSheet(R"(
+        QWidget { color: #dce7ee; font-family: 'Noto Sans CJK SC'; font-size: 12px; }
+        QMainWindow, #workspace { background: #101923; }
+        #sidebar { background: #0b131d; border-right: 1px solid #25313f; }
+        #brand { font-size: 19px; font-weight: 700; color: #f2f7fa; }
+        #brandCaption { color: #607589; font-size: 10px; letter-spacing: 2px; }
+        #eyebrow { color: #63788d; font-size: 10px; font-weight: 600; letter-spacing: 1px; }
+        #pageTitle { font-size: 26px; font-weight: 700; color: #edf4f7; }
+        #muted { color: #8396a8; font-size: 11px; }
+        #tiny { color: #698095; font-size: 10px; }
+        #sectionTitle { color: #a9b9c7; font-size: 11px; font-weight: 600; }
+        #card, #metricCard { background: #16212e; border: 1px solid #2a3746; border-radius: 10px; }
+        #configInner { background: #16212e; }
+        #metricCard { background: #15212d; }
+        #metricValue { color: #edf4f9; font-size: 25px; font-weight: 700; }
+        #metricUnit { color: #6d859a; font-size: 11px; }
+        #modelName { font-size: 15px; font-weight: 700; color: #e9f4f4; }
+        #localBadge { color: #53d5bd; background: #15322f; border: 1px solid #245447; border-radius: 12px; padding: 5px 10px; font-size: 10px; }
+        #chip { color: #93a9bc; background: #203040; border-radius: 5px; padding: 4px 8px; font-size: 10px; }
+        QPushButton { background: #202d3b; border: 1px solid #354454; border-radius: 6px; padding: 6px 12px; color: #cddbe5; }
+        QPushButton:hover { background: #2b3c4c; border-color: #5a7185; }
+        QPushButton:pressed { background: #354a59; }
+        QPushButton:disabled { color: #53687a; border-color: #283746; background: #17232e; }
+        QPushButton:focus { border: 1px solid #58d5bf; }
+        #primary { background: #47d6bb; color: #092c2b; border: 1px solid #47d6bb; font-weight: 700; }
+        #primary:hover { background: #6ce6cd; border-color: #6ce6cd; }
+        #primary:disabled { background: #1e4c47; color: #668a82; border-color: #2e645c; }
+        #danger { background: #41252c; border-color: #683843; color: #ec9faa; }
+        #nav { text-align: left; background: transparent; border: 1px solid transparent; color: #8297aa; padding: 11px 12px; font-size: 12px; }
+        #nav:hover { background: #152532; color: #d6e4eb; }
+        #nav:checked { color: #50d9bf; background: #17332f; border-color: #234b43; }
+        #nav:focus { border: 1px solid #58d5bf; }
+        #ghost { background: transparent; border: 1px solid #344355; }
+        #toolbar { background: #182431; border-bottom: 1px solid #2a3947; }
+        QComboBox, QSpinBox, QDoubleSpinBox { background: #0f1b28; border: 1px solid #354456; border-radius: 5px; padding: 6px 8px; min-height: 22px; selection-background-color: #265349; }
+        QComboBox:hover, QSpinBox:hover, QDoubleSpinBox:hover { border-color: #567487; }
+        QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus { border-color: #47d6bb; }
+        QComboBox QAbstractItemView { background: #172733; selection-background-color: #254e48; outline: none; }
+        QSpinBox::up-button, QDoubleSpinBox::up-button { subcontrol-origin: border; subcontrol-position: top right; width: 18px; border: none; background: transparent; }
+        QSpinBox::down-button, QDoubleSpinBox::down-button { subcontrol-origin: border; subcontrol-position: bottom right; width: 18px; border: none; background: transparent; }
+        QSpinBox::up-arrow, QDoubleSpinBox::up-arrow { image: url(:/chevron-up.svg); width: 8px; height: 6px; }
+        QSpinBox::down-arrow, QDoubleSpinBox::down-arrow, QComboBox::down-arrow { image: url(:/chevron-down.svg); width: 8px; height: 6px; }
+        QComboBox::drop-down { border: none; width: 20px; background: transparent; }
+        QCheckBox { color: #9bb0c0; spacing: 8px; }
+        QCheckBox::indicator { width: 14px; height: 14px; border: 1px solid #496070; border-radius: 3px; background: #0d1924; }
+        QCheckBox::indicator:checked { background: #47d6bb; border-color: #47d6bb; }
+        QTableWidget, QListWidget { background: transparent; border: none; selection-background-color: #244d48; outline: none; }
+        QTableWidget::item { padding: 6px; border-bottom: 1px solid #23313e; }
+        QTableWidget::item:selected { background: #21463f; color: #b4fae7; }
+        QListWidget::item { padding: 7px; border: 1px solid transparent; border-radius: 5px; }
+        QListWidget::item:selected { background: #20473f; border-color: #316e60; }
+        QHeaderView::section { background: #172534; color: #7f97aa; border: none; padding: 8px; font-size: 10px; text-align: left; }
+        QScrollArea { border: none; background: transparent; }
+        QScrollBar:vertical { background: transparent; width: 5px; margin: 1px; }
+        QScrollBar::handle:vertical { background: #354a5b; min-height: 25px; border-radius: 2px; }
+        QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }
+        QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: transparent; }
+        QScrollBar:horizontal { background: transparent; height: 5px; }
+        QScrollBar::handle:horizontal { background: #354a5b; min-width: 25px; }
+        QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal { width: 0; }
+        QProgressBar { background: #263846; border: none; border-radius: 2px; }
+        QProgressBar::chunk { background: #47d6bb; border-radius: 2px; }
+        #footer { border-top: 1px solid #263746; }
+        #statusText { color: #859cae; font-size: 10px; }
+        QTextBrowser { background: transparent; border: none; color: #b8cbd8; }
+        QToolTip { color: #e1edf3; background: #263947; border: 1px solid #486070; padding: 6px; }
+        QMenu { background: #172733; border: 1px solid #3b5264; padding: 5px; }
+        QMenu::item { padding: 9px 16px; color: #c7dce7; }
+        QMenu::item:selected { background: #244d44; color: #74e2c4; }
+        QSplitter::handle { background: transparent; width: 8px; }
+    )");
+}
+
+QWidget *MainWindow::buildSidebar()
+{
+    auto *side = new QWidget;
+    side->setObjectName("sidebar");
+    side->setFixedWidth(178);
+    auto *l = new QVBoxLayout(side);
+    l->setContentsMargins(14, 28, 14, 22);
+    l->setSpacing(8);
+    auto *brand = new QHBoxLayout;
+    auto *logo = new QLabel;
+    logo->setPixmap(QIcon(":/app-icon.svg").pixmap(36, 36));
+    brand->addWidget(logo);
+    brand->addWidget(text("Vision", "brand"));
+    brand->addStretch();
+    l->addLayout(brand);
+    auto *cap = text("STUDIO  /  V1.1", "brandCaption");
+    cap->setContentsMargins(4, 4, 0, 0);
+    l->addWidget(cap);
+    l->addSpacing(38);
+    l->addWidget(text("工作空间", "eyebrow"));
+    l->addSpacing(5);
+    const QStringList titles = {"检测工作台", "模型库", "运行记录", "使用指南"};
+    const QStringList icons = {"work", "model", "history", "help"};
+    for (int i = 0; i < titles.size(); ++i)
+    {
+        auto *b = button(titles[i], icons[i], "nav");
+        b->setCheckable(true);
+        navButtons_.append(b);
+        l->addWidget(b);
+        connect(b, &QPushButton::clicked, this, [this, i] { selectRoute(i); });
+    }
+    l->addStretch();
+    auto *info = card();
+    auto *il = new QVBoxLayout(info);
+    il->setContentsMargins(12, 14, 12, 14);
+    il->setSpacing(7);
+    il->addWidget(text("●  PRIVATE BY DESIGN", "tiny"));
+    auto *t = text("模型与图像\n始终留在本机", "body");
+    t->setStyleSheet("font-size: 11px; color: #a3bac8;");
+    il->addWidget(t);
+    il->addWidget(text("无需账户 · 离线推理", "tiny"));
+    l->addWidget(info);
+    l->addSpacing(12);
+    l->addWidget(text("VISION STUDIO\nLocal inference, clear insight.", "tiny"));
+    return side;
+}
+
+QWidget *MainWindow::buildWorkbench()
+{
+    auto *page = new QWidget;
+    auto *all = new QVBoxLayout(page);
+    all->setContentsMargins(0, 0, 0, 0);
+    all->setSpacing(16);
+    auto *metrics = new QHBoxLayout;
+    metrics->setSpacing(12);
+    auto metric = [&](const QString &label, const QString &symbol, QLabel *&value, const QString &unit)
+    {
+        auto *f = card("metricCard");
+        auto *x = new QVBoxLayout(f);
+        x->setContentsMargins(16, 11, 16, 11);
+        x->setSpacing(5);
+        auto *top = new QHBoxLayout;
+        top->addWidget(text(label, "muted"));
+        top->addStretch();
+        auto *ic = new QLabel;
+        ic->setPixmap(ui::icon(symbol, QColor("#4fcab5"), 17).pixmap(17, 17));
+        top->addWidget(ic);
+        x->addLayout(top);
+        auto *row = new QHBoxLayout;
+        value = text("—", "metricValue");
+        row->addWidget(value);
+        row->addWidget(text(unit, "metricUnit"), 0, Qt::AlignBottom);
+        row->addStretch();
+        x->addLayout(row);
+        metrics->addWidget(f, 1);
+    };
+    metric("检测目标", "eye", countMetric_, "objects");
+    metric("模型推理", "cpu", latencyMetric_, "ms");
+    metric("识别类别", "model", classMetric_, "classes");
+    metric("输入分辨率", "image", sizeMetric_, "px");
+    all->addLayout(metrics);
+    auto *columns = new QSplitter;
+    columns->setChildrenCollapsible(false);
+    columns->setHandleWidth(12);
+    auto *config = card();
+    config->setMinimumWidth(246);
+    config->setMaximumWidth(300);
+    auto *cl = new QVBoxLayout(config);
+    cl->setContentsMargins(14, 14, 14, 14);
+    cl->setSpacing(10);
+    auto *scroll = new QScrollArea;
+    scroll->setWidgetResizable(true);
+    scroll->viewport()->setAutoFillBackground(false);
+    auto *inner = new QWidget;
+    inner->setObjectName("configInner");
+    auto *fields = new QVBoxLayout(inner);
+    fields->setContentsMargins(0, 0, 2, 0);
+    fields->setSpacing(9);
+    fields->addWidget(section("输入源", "01"));
+    auto *sources = new QGridLayout;
+    sources->setSpacing(7);
+    QStringList names = {"图片", "文件夹", "视频", "摄像头"};
+    QStringList icons = {"image", "folder", "video", "camera"};
+    for (int i = 0; i < 4; ++i)
+    {
+        auto *b = button(names[i], icons[i]);
+        sources->addWidget(b, i / 2, i % 2);
+        lockedControls_.append(b);
+        if (i == 0)
+            connect(b, &QPushButton::clicked, this, &MainWindow::chooseImages);
+        if (i == 1)
+            connect(b, &QPushButton::clicked, this, &MainWindow::chooseFolder);
+        if (i == 2)
+            connect(b, &QPushButton::clicked, this, &MainWindow::chooseVideo);
+        if (i == 3)
+            connect(b, &QPushButton::clicked, this, &MainWindow::chooseCamera);
+    }
+    fields->addLayout(sources);
+    sourceLabel_ = text("尚未选择输入", "tiny");
+    sourceLabel_->setWordWrap(true);
+    fields->addWidget(sourceLabel_);
+    cameraIndex_ = new QSpinBox;
+    cameraIndex_->setRange(0, 10);
+    cameraIndex_->setPrefix("摄像头编号  ");
+    cameraIndex_->hide();
+    fields->addWidget(cameraIndex_);
+    lockedControls_.append(cameraIndex_);
+    fields->addSpacing(7);
+    fields->addWidget(section("检测模型", "02"));
+    modelName_ = text("选择视觉模型", "modelName");
+    modelName_->setWordWrap(true);
+    fields->addWidget(modelName_);
+    modelMeta_ = text("支持 ONNX / PT 检测模型", "tiny");
+    modelMeta_->setWordWrap(true);
+    fields->addWidget(modelMeta_);
+    modelButton_ = button("导入模型", "plus");
+    fields->addWidget(modelButton_);
+    connect(modelButton_, &QPushButton::clicked, this, &MainWindow::importModel);
+    lockedControls_.append(modelButton_);
+    taskBox_ = new QComboBox;
+    taskBox_->addItems({"YOLOv5 · 目标检测", "YOLOv8 / 11 · 目标检测", "图像分类"});
+    taskBox_->setToolTip("按模型实际输出选择格式，分割、姿态与含 NMS 的模型暂不支持");
+    fields->addWidget(taskBox_);
+    lockedControls_.append(taskBox_);
+    labelButton_ = button("类别标签 · 默认 COCO 80", "help");
+    labelButton_->setToolTip("导入 UTF-8 文本，每行一个类别名。自定义模型应配置自己的标签。");
+    fields->addWidget(labelButton_);
+    auto *labelMenu = new QMenu(labelButton_);
+    labelMenu->addAction("导入标签文件", this, &MainWindow::importLabels);
+    labelMenu->addAction("使用模型默认类别", this,
+                         [this]
+                         {
+                             labels_.clear();
+                             labelsPath_.clear();
+                             updateTaskUi();
+                             persist();
+                             showNotice("已恢复模型默认类别。");
+                         });
+    labelButton_->setMenu(labelMenu);
+    lockedControls_.append(labelButton_);
+    fields->addSpacing(7);
+    fields->addWidget(section("推理参数", "03"));
+    auto *form = new QFormLayout;
+    form->setSpacing(9);
+    form->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+    inputSize_ = new QSpinBox;
+    inputSize_->setRange(32, 2048);
+    inputSize_->setSingleStep(32);
+    inputSize_->setValue(640);
+    inputSize_->setSuffix(" px");
+    form->addRow("输入尺寸", inputSize_);
+    confidence_ = new QDoubleSpinBox;
+    confidence_->setRange(0.01, 1.0);
+    confidence_->setDecimals(2);
+    confidence_->setSingleStep(0.05);
+    confidence_->setValue(0.25);
+    form->addRow("置信度", confidence_);
+    iou_ = new QDoubleSpinBox;
+    iou_->setRange(0.01, 1.0);
+    iou_->setDecimals(2);
+    iou_->setSingleStep(0.05);
+    iou_->setValue(0.45);
+    form->addRow("NMS IoU", iou_);
+    fields->addLayout(form);
+    for (auto *p : QList<QWidget *>{inputSize_, confidence_, iou_})
+        lockedControls_.append(p);
+    auto *advanced = button("预处理设置 ▾", {}, "ghost");
+    fields->addWidget(advanced);
+    auto *adv = new QWidget;
+    auto *af = new QFormLayout(adv);
+    af->setContentsMargins(0, 5, 0, 0);
+    af->setSpacing(6);
+    swapRB_ = new QCheckBox("RGB 通道顺序");
+    swapRB_->setChecked(true);
+    af->addRow(swapRB_);
+    scale_ = new QDoubleSpinBox;
+    scale_->setDecimals(8);
+    scale_->setRange(0.00000001, 10);
+    scale_->setValue(1.0 / 255.0);
+    scale_->setSingleStep(0.001);
+    af->addRow("缩放系数", scale_);
+    auto mean = [&](QDoubleSpinBox *&m, const QString &label)
+    {
+        m = new QDoubleSpinBox;
+        m->setRange(-1024, 1024);
+        m->setDecimals(3);
+        af->addRow(label, m);
+        lockedControls_.append(m);
+    };
+    mean(meanR_, "均值 R");
+    mean(meanG_, "均值 G");
+    mean(meanB_, "均值 B");
+    adv->hide();
+    fields->addWidget(adv);
+    connect(advanced, &QPushButton::clicked, this,
+            [adv, advanced]
+            {
+                adv->setVisible(!adv->isVisible());
+                advanced->setText(adv->isVisible() ? "预处理设置 ▴" : "预处理设置 ▾");
+            });
+    lockedControls_.append(swapRB_);
+    lockedControls_.append(scale_);
+    autoExport_ = new QCheckBox("自动保存每张图片的结果");
+    autoExport_->setToolTip("保存标注 PNG、JSON 和 CSV；视频与摄像头在停止后保存最后一帧");
+    fields->addWidget(autoExport_);
+    lockedControls_.append(autoExport_);
+    backendBadge_ = text("CPU  /  OpenCV DNN", "chip");
+    fields->addWidget(backendBadge_);
+    fields->addStretch();
+    scroll->setWidget(inner);
+    cl->addWidget(scroll, 1);
+    runButton_ = button("开始检测", "play", "primary");
+    runButton_->setMinimumHeight(44);
+    cl->addWidget(runButton_);
+    connect(runButton_, &QPushButton::clicked, this, &MainWindow::startInference);
+    stopButton_ = button("停止运行", "stop", "danger");
+    stopButton_->hide();
+    cl->addWidget(stopButton_);
+    connect(stopButton_, &QPushButton::clicked, this, &MainWindow::stopInference);
+    cl->addWidget(text("Ctrl + R 开始  ·  Esc 停止", "tiny"), 0, Qt::AlignCenter);
+    columns->addWidget(config);
+    auto *center = new QWidget;
+    center->setMinimumWidth(390);
+    auto *ml = new QVBoxLayout(center);
+    ml->setContentsMargins(0, 0, 0, 0);
+    ml->setSpacing(12);
+    auto *canvasFrame = card();
+    auto *cf = new QVBoxLayout(canvasFrame);
+    cf->setContentsMargins(0, 0, 0, 0);
+    cf->setSpacing(0);
+    auto *toolbar = new QWidget;
+    toolbar->setObjectName("toolbar");
+    auto *tl = new QHBoxLayout(toolbar);
+    tl->setContentsMargins(14, 9, 12, 9);
+    tl->setSpacing(8);
+    canvasTitle_ = text("视觉预览", "sectionTitle");
+    tl->addWidget(canvasTitle_, 1);
+    showBoxes_ = new QCheckBox("检测框");
+    showBoxes_->setChecked(true);
+    tl->addWidget(showBoxes_);
+    showLabels_ = new QCheckBox("标签");
+    showLabels_->setChecked(true);
+    tl->addWidget(showLabels_);
+    auto *fit = button({}, "fit", "ghost");
+    fit->setFixedSize(30, 30);
+    fit->setMinimumHeight(30);
+    fit->setToolTip("适应画布 · 双击图像");
+    tl->addWidget(fit);
+    auto *actual = button("1:1", {}, "ghost");
+    actual->setFixedSize(36, 30);
+    actual->setMinimumHeight(30);
+    actual->setToolTip("原始像素大小");
+    tl->addWidget(actual);
+    cf->addWidget(toolbar);
+    canvas_ = new ImageCanvas;
+    canvas_->setMinimumHeight(330);
+    cf->addWidget(canvas_, 1);
+    auto *cb = new QHBoxLayout;
+    cb->setContentsMargins(14, 9, 14, 9);
+    cb->addWidget(text("滚轮缩放 · 拖动平移 · 点击目标查看", "tiny"), 1);
+    zoomLabel_ = text("100%", "tiny");
+    cb->addWidget(zoomLabel_);
+    cf->addLayout(cb);
+    ml->addWidget(canvasFrame, 1);
+    connect(fit, &QPushButton::clicked, canvas_, &ImageCanvas::fitToView);
+    connect(actual, &QPushButton::clicked, canvas_, &ImageCanvas::actualSize);
+    connect(showBoxes_, &QCheckBox::toggled, canvas_, &ImageCanvas::setBoxesVisible);
+    connect(showLabels_, &QCheckBox::toggled, canvas_, &ImageCanvas::setLabelsVisible);
+    connect(canvas_, &ImageCanvas::zoomChanged, this,
+            [this](int z) { zoomLabel_->setText(QString::number(z) + "%"); });
+    connect(canvas_, &ImageCanvas::fileDropped, this,
+            [this](const QString &p)
+            {
+                if (!busy_)
+                    addFiles({p});
+                else
+                    showNotice("请先停止任务，再更换输入。");
+            });
+    auto *queueFrame = card();
+    auto *ql = new QVBoxLayout(queueFrame);
+    ql->setContentsMargins(12, 9, 12, 8);
+    ql->setSpacing(5);
+    auto *qh = new QHBoxLayout;
+    qh->addWidget(text("输入队列", "sectionTitle"), 1);
+    auto *clear = button("清空", "cross", "ghost");
+    clear->setMinimumHeight(25);
+    clear->setMaximumHeight(27);
+    qh->addWidget(clear);
+    lockedControls_.append(clear);
+    connect(clear, &QPushButton::clicked, this,
+            [this]
+            {
+                files_.clear();
+                queue_->clear();
+                sourceKind_ = vision::SourceKind::Images;
+                lastResult_ = {};
+                canvas_->clear();
+                predictionTable_->setRowCount(0);
+                emptyResults_->show();
+                exportButton_->setEnabled(false);
+                updateSourceUi();
+            });
+    ql->addLayout(qh);
+    queue_ = new QListWidget;
+    queue_->setFlow(QListView::LeftToRight);
+    queue_->setViewMode(QListView::IconMode);
+    queue_->setIconSize(QSize(64, 46));
+    queue_->setGridSize(QSize(97, 78));
+    queue_->setWrapping(false);
+    queue_->setFixedHeight(84);
+    queue_->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    ql->addWidget(queue_);
+    ml->addWidget(queueFrame);
+    connect(queue_, &QListWidget::currentRowChanged, this,
+            [this](int row)
+            {
+                if (!busy_ && sourceKind_ == vision::SourceKind::Images && row >= 0 && row < files_.size())
+                {
+                    vision::InferenceResult r;
+                    r.source = files_[row];
+                    r.image = readImage(r.source);
+                    if (!r.image.isNull())
+                    {
+                        lastResult_ = {};
+                        canvas_->setResult(r);
+                        canvasTitle_->setText(QFileInfo(r.source).fileName());
+                        sizeMetric_->setText(QString("%1 × %2").arg(r.image.width()).arg(r.image.height()));
+                        countMetric_->setText("—");
+                        latencyMetric_->setText("—");
+                        classMetric_->setText("—");
+                        predictionTable_->setRowCount(0);
+                        emptyResults_->show();
+                        resultInfo_->setText("图片已就绪，点击开始检测。");
+                        exportButton_->setEnabled(false);
+                    }
+                }
+            });
+    columns->addWidget(center);
+    auto *inspector = card();
+    inspector->setMinimumWidth(230);
+    inspector->setMaximumWidth(300);
+    auto *rl = new QVBoxLayout(inspector);
+    rl->setContentsMargins(12, 14, 12, 14);
+    rl->setSpacing(12);
+    auto *ih = new QHBoxLayout;
+    ih->addWidget(text("检测结果", "sectionTitle"), 1);
+    ih->addWidget(text("LIVE", "chip"));
+    rl->addLayout(ih);
+    resultInfo_ = text("运行模型后，目标和置信度将显示在这里。", "muted");
+    resultInfo_->setWordWrap(true);
+    rl->addWidget(resultInfo_);
+    predictionTable_ = new QTableWidget(0, 3);
+    predictionTable_->setHorizontalHeaderLabels({"类别", "置信度", "编号"});
+    tableStyle(predictionTable_);
+    predictionTable_->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    predictionTable_->setColumnWidth(1, 78);
+    predictionTable_->setColumnWidth(2, 38);
+    rl->addWidget(predictionTable_, 1);
+    emptyResults_ = text("等待检测\n\n目标详情将在运行后呈现。", "muted");
+    emptyResults_->setAlignment(Qt::AlignCenter);
+    emptyResults_->setWordWrap(true);
+    rl->addWidget(emptyResults_);
+    rl->addStretch(0);
+    auto *hints = text("点击列表中的目标，可在画布中定位。\n检测框坐标以原始图像像素为准。", "tiny");
+    hints->setWordWrap(true);
+    rl->addWidget(hints);
+    columns->addWidget(inspector);
+    connect(predictionTable_, &QTableWidget::itemSelectionChanged, this,
+            [this]
+            {
+                canvas_->setSelectedPrediction(
+                    predictionTable_->selectedItems().isEmpty() ? -1 : predictionTable_->currentRow());
+            });
+    connect(canvas_, &ImageCanvas::predictionSelected, this,
+            [this](int row)
+            {
+                if (row >= 0 && row < predictionTable_->rowCount())
+                    predictionTable_->selectRow(row);
+                else
+                    predictionTable_->clearSelection();
+            });
+    connect(taskBox_, &QComboBox::currentIndexChanged, this, [this] { updateTaskUi(); });
+    columns->setStretchFactor(0, 0);
+    columns->setStretchFactor(1, 1);
+    columns->setStretchFactor(2, 0);
+    columns->setSizes({258, 630, 270});
+    all->addWidget(columns, 1);
+    return page;
+}
+
+QWidget *MainWindow::buildModels()
+{
+    auto *page = new QWidget;
+    auto *l = new QVBoxLayout(page);
+    l->setContentsMargins(0, 0, 0, 0);
+    l->setSpacing(16);
+    auto *row = new QHBoxLayout;
+    modelCount_ = text("本地模型库", "sectionTitle");
+    row->addWidget(modelCount_, 1);
+    auto *add = button("导入 ONNX / PT 模型", "plus", "primary");
+    row->addWidget(add);
+    connect(add, &QPushButton::clicked, this, &MainWindow::importModel);
+    lockedControls_.append(add);
+    l->addLayout(row);
+    auto *frame = card();
+    auto *fl = new QVBoxLayout(frame);
+    fl->setContentsMargins(20, 18, 20, 18);
+    fl->setSpacing(12);
+    fl->addWidget(text("集中管理你的模型", "modelName"));
+    fl->addWidget(
+        text("支持 ONNX 和 PT。PT 自动读取模型任务与类别，ONNX 可手动配置输出格式和标签。", "muted"));
+    modelList_ = new QListWidget;
+    modelList_->setIconSize(QSize(34, 34));
+    fl->addWidget(modelList_, 1);
+    auto *actions = new QHBoxLayout;
+    auto *activate = button("在工作台使用", "arrow", "primary");
+    auto *remove = button("从列表移除", "cross");
+    lockedControls_.append(activate);
+    lockedControls_.append(remove);
+    actions->addWidget(activate);
+    actions->addWidget(remove);
+    actions->addStretch();
+    fl->addLayout(actions);
+    connect(activate, &QPushButton::clicked, this,
+            [this]
+            {
+                auto *item = modelList_->currentItem();
+                if (item)
+                {
+                    setModel(item->data(Qt::UserRole).toString());
+                    selectRoute(0);
+                }
+            });
+    connect(modelList_, &QListWidget::itemDoubleClicked, this,
+            [this](QListWidgetItem *i)
+            {
+                if (!busy_)
+                {
+                    setModel(i->data(Qt::UserRole).toString());
+                    selectRoute(0);
+                }
+            });
+    connect(remove, &QPushButton::clicked, this,
+            [this]
+            {
+                auto *i = modelList_->currentItem();
+                if (i)
+                {
+                    const QString p = i->data(Qt::UserRole).toString();
+                    models_.removeAll(p);
+                    persist();
+                    refreshModelLibrary();
+                    showNotice("已从模型库移除，原始模型文件保留。");
+                }
+            });
+    l->addWidget(frame, 1);
+    auto *notes = card();
+    auto *nl = new QVBoxLayout(notes);
+    nl->setContentsMargins(18, 14, 18, 14);
+    nl->addWidget(text("推荐模型导出配置", "sectionTitle"));
+    auto *info = text(
+        "PT · 本机 PyTorch 直接推理，自动读取模型内置类别。\nONNX · batch=1、固定正方形输入、FP32、不包含 "
+        "NMS。YOLOv5 使用 [1, N, 5+C]，YOLOv8 / 11 使用 [1, 4+C, N]。",
+        "muted");
+    info->setWordWrap(true);
+    nl->addWidget(info);
+    l->addWidget(notes);
+    return page;
+}
+QWidget *MainWindow::buildHistory()
+{
+    auto *page = new QWidget;
+    auto *l = new QVBoxLayout(page);
+    l->setContentsMargins(0, 0, 0, 0);
+    l->setSpacing(16);
+    auto *row = new QHBoxLayout;
+    row->addWidget(text("最近 200 次图片推理与视频任务", "sectionTitle"), 1);
+    auto *exportHistory = button("导出运行记录", "export");
+    row->addWidget(exportHistory);
+    connect(exportHistory, &QPushButton::clicked, this,
+            [this]
+            {
+                QString p = QFileDialog::getSaveFileName(this, "导出运行记录",
+                                                         dataRoot_ + "/history-export.json", "JSON (*.json)");
+                if (p.isEmpty())
+                    return;
+                QString err;
+                if (atomicWrite(p, QJsonDocument(history_).toJson(), &err))
+                    showNotice("运行记录已导出：" + p);
+                else
+                    showNotice("导出失败：" + err, true);
+            });
+    l->addLayout(row);
+    auto *f = card();
+    auto *fl = new QVBoxLayout(f);
+    fl->setContentsMargins(12, 12, 12, 12);
+    historyTable_ = new QTableWidget(0, 6);
+    historyTable_->setHorizontalHeaderLabels({"时间", "输入", "模型", "目标数", "推理耗时", "任务"});
+    tableStyle(historyTable_);
+    historyTable_->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    historyTable_->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+    historyTable_->setColumnWidth(0, 165);
+    historyTable_->setColumnWidth(3, 85);
+    historyTable_->setColumnWidth(4, 100);
+    historyTable_->setColumnWidth(5, 120);
+    fl->addWidget(historyTable_);
+    l->addWidget(f, 1);
+    auto *historyHint = text("运行记录已自动保存。导出图像与原始预测数据可在工作台完成。", "muted");
+    historyHint->setToolTip(dataRoot_ + "/history.json");
+    l->addWidget(historyHint);
+    return page;
+}
+QWidget *MainWindow::buildGuide()
+{
+    auto *f = card();
+    auto *l = new QVBoxLayout(f);
+    l->setContentsMargins(32, 22, 32, 22);
+    auto *html = new QTextBrowser;
+    html->setOpenExternalLinks(true);
+    html->setHtml(R"(
+    <style>h1{color:#e3f3f1;font-size:24px}h2{color:#56d8bd;font-size:16px;margin-top:26px}p,li{line-height:1.7;color:#a5bacb;font-size:13px}code{color:#c9e4dd}a{color:#56d8bd}</style>
+    <h1>让你的视觉模型，真正运行起来。</h1><p>Vision Studio 是一个原生 C++ / Qt 桌面工作台。模型加载、图像处理与推理均在本机完成。</p>
+    <h2>01 / 开始你的第一次检测</h2><p>右上角“运行示例”可选择 ONNX / PT 示例。使用自己的模型时，导入 ONNX 或 PT，然后选择图片、文件夹、视频或摄像头，点击“开始检测”。PT 使用本机独立 PyTorch 环境直接推理，无需手动导出。</p>
+    <h2>PT 模型</h2><p>Ultralytics YOLO 的 PT 检查点会自动读取任务和类别名称，预处理由原生后端执行。支持的旧版 YOLOv5 权重使用随附的本地兼容模块。只包含 state_dict 的任意 PT 文件无法单独重建网络，需要原始模型架构。分割、姿态和旋转框输出暂不支持。</p>
+    <h2>02 / 正确匹配模型</h2><p>YOLOv5：原始输出 <code>[1,N,5+C]</code>，包含 objectness。YOLOv8 / YOLO11：原始输出 <code>[1,4+C,N]</code>。模型应为 batch=1、固定正方形输入、FP32、不包含 NMS。输入尺寸必须与导出模型一致。分割、姿态、旋转框和端到端输出暂不支持。</p>
+    <p>默认 640 px、RGB、1/255 缩放、零均值，适合常见 YOLO 模型。自定义检测模型必须导入数量匹配的 UTF-8 标签文本，每行一个名称，并保持训练时类别顺序。未导入标签时按 COCO 80 类解释检测输出。分类模型未配置标签时显示数字类别。</p>
+    <h2>03 / 调整结果与预处理</h2><p>置信度越高，保留的目标越少；NMS IoU 控制同类重叠框的抑制。不同类别独立执行 NMS。检测输入使用 letterbox 保持比例，并将框映射回原图。分类使用正方形缩放和 top-5 输出，可在“预处理设置”调整通道、缩放和均值；本版不提供逐通道标准差除法。</p>
+    <h2>04 / 批量、视频与摄像头</h2><p>文件夹模式扫描当前目录内的常见图片格式，逐张推理。视频与摄像头连续处理每帧；CPU 性能决定速度，界面预览限流。点击“停止运行”结束任务。视频导出保存当前帧，完整标注视频录制不在本版范围内。</p>
+    <h2>05 / 保存你的洞察</h2><p>导出结果会生成标注 PNG、包含原始像素坐标的 JSON，以及可用于表格分析的 CSV。启用自动保存后，批量任务为每张图片保存结果，流式任务在结束时保存最后一帧。设置和运行记录自动保存在用户数据目录。</p>
+    <h2>键盘与画布</h2><p><code>Ctrl+O</code> 添加图片　<code>Ctrl+M</code> 导入模型　<code>Ctrl+R</code> 开始　<code>Ctrl+E</code> 导出　<code>Esc</code> 停止<br>滚轮缩放，拖动画布平移，双击适应画布，点击检测框或结果列表定位目标。</p>
+    <h2>运行环境与兼容性</h2><p>界面为本机 C++ / Qt 6.8.3。ONNX 使用 OpenCV 4.5.4 DNN；PT 使用项目独立 Python / PyTorch 环境，CPU 执行。ONNX 算子兼容性取决于本机 OpenCV。PT 环境位于 runtime，缺失时可运行 scripts/setup_pt.sh。安装完成后无需联网运行模型。</p>
+    <p><a href="https://github.com/ultralytics/yolov5">YOLOv5 官方项目</a>　<a href="https://docs.ultralytics.com/modes/export/">Ultralytics ONNX 导出文档</a></p>
+    <h2>开源许可</h2><p>Copyright © 2026 misaka_ning。Vision Studio 应用代码按 GNU AGPL v3 发布，您可以依据许可证复制、修改和再分发。程序不提供任何担保。完整许可证、第三方许可和对应源码资料随发行版本提供。</p>
+    <p><a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL v3 完整许可证</a>　联系维护者：1468549029@qq.com</p>
+    )");
+    l->addWidget(html);
+    return f;
+}
+
+void MainWindow::connectWorker()
+{
+    workerThread_ = new QThread(this);
+    worker_ = new vision::InferenceWorker;
+    worker_->moveToThread(workerThread_);
+    connect(workerThread_, &QThread::finished, worker_, &QObject::deleteLater);
+    connect(this, &MainWindow::startRequested, worker_, &vision::InferenceWorker::run, Qt::QueuedConnection);
+    connect(worker_, &vision::InferenceWorker::resultReady, this, &MainWindow::onResult);
+    connect(worker_, &vision::InferenceWorker::modelReady, this,
+            [this](const QString &backend, const vision::ModelConfig &config)
+            {
+                lastConfig_ = config;
+                if (isPtModel(modelPath_))
+                {
+                    nativeLabels_ = config.labels;
+                    taskBox_->setCurrentIndex(static_cast<int>(config.task));
+                }
+                backendBadge_->setText("CPU  /  " + backend);
+                backendFooter_->setText("Qt 6.8.3  ·  " + backend + "  ·  CPU");
+                updateTaskUi();
+            });
+    connect(worker_, &vision::InferenceWorker::status, this, [this](const QString &s) { showNotice(s); });
+    connect(worker_, &vision::InferenceWorker::progress, this,
+            [this](int done, int total)
+            {
+                completed_ = done;
+                if (total > 0)
+                {
+                    progress_->setRange(0, total);
+                    progress_->setValue(done);
+                }
+                else
+                    progress_->setRange(0, 0);
+            });
+    connect(worker_, &vision::InferenceWorker::failed, this,
+            [this](const QString &s)
+            {
+                failed_ = true;
+                lastError_ = s;
+                resultInfo_->setText("推理失败 · 请检查模型与输入配置。");
+                showNotice(s, true);
+                if (smokeDir_.isEmpty() && !closing_)
+                    QMessageBox::warning(this, "推理未完成", s);
+            });
+    connect(worker_, &vision::InferenceWorker::finished, this, &MainWindow::onFinished);
+    workerThread_->start();
+}
+
+void MainWindow::chooseImages()
+{
+    const QStringList p =
+        QFileDialog::getOpenFileNames(this, "选择待检测图片", projectRoot_,
+                                      "图片 (*.jpg *.jpeg *.png *.bmp *.webp *.tif *.tiff);;全部文件 (*)");
+    if (!p.isEmpty())
+        addFiles(p);
+}
+void MainWindow::chooseFolder()
+{
+    const QString p = QFileDialog::getExistingDirectory(this, "选择图片文件夹", projectRoot_);
+    if (p.isEmpty())
+        return;
+    QStringList files;
+    const QDir d(p);
+    for (const QFileInfo &f : d.entryInfoList(QDir::Files, QDir::Name))
+    {
+        const QString ext = f.suffix().toLower();
+        if (QStringList{"jpg", "jpeg", "png", "bmp", "webp", "tif", "tiff"}.contains(ext))
+            files.append(f.absoluteFilePath());
+    }
+    if (files.isEmpty())
+    {
+        showNotice("该文件夹中没有支持的图片。", true);
+        return;
+    }
+    files_.clear();
+    queue_->clear();
+    addFiles(files);
+}
+void MainWindow::chooseVideo()
+{
+    const QString p = QFileDialog::getOpenFileName(
+        this, "选择视频", projectRoot_, "视频 (*.mp4 *.avi *.mkv *.mov *.webm *.m4v);;全部文件 (*)");
+    if (p.isEmpty())
+        return;
+    sourceKind_ = vision::SourceKind::Video;
+    streamPath_ = p;
+    files_.clear();
+    queue_->clear();
+    auto *i = new QListWidgetItem(ui::icon("video"), QFileInfo(p).fileName());
+    i->setToolTip(p);
+    queue_->addItem(i);
+    lastResult_ = {};
+    canvas_->clear();
+    canvasTitle_->setText(QFileInfo(p).fileName());
+    predictionTable_->setRowCount(0);
+    emptyResults_->show();
+    exportButton_->setEnabled(false);
+    updateSourceUi();
+}
+void MainWindow::chooseCamera()
+{
+    sourceKind_ = vision::SourceKind::Camera;
+    files_.clear();
+    queue_->clear();
+    queue_->addItem(new QListWidgetItem(ui::icon("camera"), "实时摄像头"));
+    lastResult_ = {};
+    canvas_->clear();
+    canvasTitle_->setText("摄像头预览");
+    predictionTable_->setRowCount(0);
+    emptyResults_->show();
+    exportButton_->setEnabled(false);
+    updateSourceUi();
+}
+void MainWindow::updateSourceUi()
+{
+    cameraIndex_->setVisible(sourceKind_ == vision::SourceKind::Camera);
+    if (sourceKind_ == vision::SourceKind::Images)
+        sourceLabel_->setText(QString("图片输入 · %1 个文件").arg(files_.size()));
+    else if (sourceKind_ == vision::SourceKind::Video)
+        sourceLabel_->setText("视频 · " + QFileInfo(streamPath_).fileName());
+    else
+        sourceLabel_->setText("实时摄像头 · 点击开始连接");
+    if (lastResult_.image.isNull())
+    {
+        countMetric_->setText("—");
+        latencyMetric_->setText("—");
+        classMetric_->setText("—");
+        if (sourceKind_ != vision::SourceKind::Images || files_.isEmpty())
+            sizeMetric_->setText("—");
+        resultInfo_->setText("输入已就绪，点击开始检测。");
+    }
+}
+
+void MainWindow::addFiles(const QStringList &input)
+{
+    if (sourceKind_ != vision::SourceKind::Images)
+    {
+        files_.clear();
+        queue_->clear();
+    }
+    sourceKind_ = vision::SourceKind::Images;
+    int first = -1;
+    for (const QString &p : input)
+    {
+        const QString absolute = QFileInfo(p).absoluteFilePath();
+        if (files_.contains(absolute))
+            continue;
+        const QImage img = readImage(absolute);
+        if (img.isNull())
+        {
+            showNotice("无法读取图片：" + QFileInfo(p).fileName(), true);
+            continue;
+        }
+        if (first < 0)
+            first = files_.size();
+        files_.append(absolute);
+        auto *item = new QListWidgetItem(
+            QIcon(QPixmap::fromImage(img.scaled(64, 46, Qt::KeepAspectRatio, Qt::SmoothTransformation))),
+            QFileInfo(p).fileName());
+        item->setToolTip(absolute);
+        queue_->addItem(item);
+    }
+    if (first >= 0)
+        queue_->setCurrentRow(first);
+    updateSourceUi();
+}
+void MainWindow::importModel()
+{
+    const QString p =
+        QFileDialog::getOpenFileName(this, "导入视觉模型", projectRoot_ + "/models",
+                                     "视觉模型 (*.onnx *.pt);;ONNX 模型 (*.onnx);;PyTorch 模型 (*.pt)");
+    if (!p.isEmpty())
+        setModel(p);
+}
+void MainWindow::setModel(const QString &path)
+{
+    if (busy_)
+        return;
+    QFileInfo f(path);
+    if (!f.isFile())
+    {
+        showNotice("模型文件不存在：" + path, true);
+        return;
+    }
+    modelPath_ = f.absoluteFilePath();
+    nativeLabels_.clear();
+    modelName_->setText(f.fileName());
+    modelMeta_->setText(
+        QString("%1  ·  %2 MB  ·  已选择").arg(modelFormat(modelPath_)).arg(f.size() / 1048576.0, 0, 'f', 1));
+    modelName_->setToolTip(modelPath_);
+    if (!models_.contains(modelPath_))
+        models_.append(modelPath_);
+    const QString n = f.fileName().toLower();
+    if (n.contains("yolov5"))
+        taskBox_->setCurrentIndex(0);
+    else if (n.contains("yolov8") || n.contains("yolo11"))
+        taskBox_->setCurrentIndex(1);
+    updateTaskUi();
+    persist();
+    refreshModelLibrary();
+    showNotice("模型已选择，开始检测时将载入并验证。");
+}
+void MainWindow::importLabels()
+{
+    const QString p = QFileDialog::getOpenFileName(this, "导入类别标签（每行一个名称）", projectRoot_,
+                                                   "UTF-8 文本 (*.txt *.names);;全部文件 (*)");
+    if (p.isEmpty())
+        return;
+    QFile f(p);
+    if (!f.open(QIODevice::ReadOnly))
+    {
+        showNotice("标签读取失败：" + f.errorString(), true);
+        return;
+    }
+    QString s = QString::fromUtf8(f.readAll());
+    if (s.startsWith(QChar(0xfeff)))
+        s.remove(0, 1);
+    QStringList labels;
+    for (const QString &line : s.split('\n'))
+    {
+        const QString v = line.trimmed();
+        if (!v.isEmpty())
+            labels.append(v);
+    }
+    if (labels.isEmpty())
+    {
+        showNotice("标签文件为空。", true);
+        return;
+    }
+    labels_ = labels;
+    labelsPath_ = p;
+    labelButton_->setText(QString("类别标签 · %1 个").arg(labels_.size()));
+    labelButton_->setToolTip(p);
+    showNotice("已导入 " + QString::number(labels_.size()) + " 个类别标签。");
+}
+vision::ModelConfig MainWindow::currentConfig() const
+{
+    vision::ModelConfig c;
+    c.modelPath = modelPath_;
+    c.task = static_cast<vision::ModelTask>(taskBox_->currentIndex());
+    c.labels = labels_.isEmpty() ? ((isPtModel(modelPath_) || c.task == vision::ModelTask::Classification)
+                                        ? QStringList{}
+                                        : vision::cocoLabels())
+                                 : labels_;
+    c.inputSize = inputSize_->value();
+    c.confidence = confidence_->value();
+    c.iou = iou_->value();
+    c.swapRB = swapRB_->isChecked();
+    c.scale = scale_->value();
+    c.meanR = meanR_->value();
+    c.meanG = meanG_->value();
+    c.meanB = meanB_->value();
+    if (isPtModel(modelPath_))
+    {
+        c.swapRB = true;
+        c.scale = 1.0 / 255.0;
+        c.meanR = c.meanG = c.meanB = 0;
+    }
+    return c;
+}
+void MainWindow::startInference()
+{
+    if (busy_)
+        return;
+    if (modelPath_.isEmpty())
+    {
+        showNotice("请先导入 ONNX 或 PT 模型。", true);
+        return;
+    }
+    if (sourceKind_ == vision::SourceKind::Images && files_.isEmpty())
+    {
+        showNotice("请先添加图片或选择其他输入源。", true);
+        return;
+    }
+    if (autoExport_->isChecked())
+    {
+        if (!QDir().mkpath(exportDir_))
+        {
+            showNotice("无法创建自动导出目录：" + exportDir_, true);
+            return;
+        }
+    }
+    vision::JobRequest req;
+    req.config = currentConfig();
+    req.sourceKind = sourceKind_;
+    req.cameraIndex = cameraIndex_->value();
+    req.files = sourceKind_ == vision::SourceKind::Video ? QStringList{streamPath_} : files_;
+    failed_ = false;
+    lastError_.clear();
+    completed_ = 0;
+    lastResult_ = {};
+    lastConfig_ = req.config;
+    predictionTable_->setRowCount(0);
+    emptyResults_->show();
+    resultInfo_->setText("模型正在加载，等待推理结果…");
+    auto preview = canvas_->result();
+    preview.predictions.clear();
+    canvas_->setResult(preview);
+    countMetric_->setText("—");
+    latencyMetric_->setText("—");
+    classMetric_->setText("—");
+    setBusy(true);
+    persist();
+    worker_->prepare();
+    emit startRequested(req);
+}
+void MainWindow::stopInference()
+{
+    if (!busy_)
+        return;
+    worker_->requestStop();
+    stopButton_->setEnabled(false);
+    showNotice("正在停止，请等待当前帧处理完成…");
+}
+void MainWindow::setBusy(bool busy)
+{
+    busy_ = busy;
+    for (auto *c : lockedControls_)
+        c->setEnabled(!busy);
+    demoButton_->setEnabled(!busy);
+    runButton_->setVisible(!busy);
+    stopButton_->setVisible(busy);
+    stopButton_->setEnabled(busy);
+    exportButton_->setEnabled(!busy && !lastResult_.image.isNull() && !lastResult_.demonstration);
+    queue_->setEnabled(!busy);
+    progress_->setVisible(busy);
+    updateTaskUi();
+    if (busy)
+    {
+        progress_->setRange(0, 0);
+    }
+}
+void MainWindow::updateTaskUi()
+{
+    const bool pt = isPtModel(modelPath_);
+    const bool classification = taskBox_->currentIndex() == 2;
+    confidence_->setEnabled(!busy_ && !classification);
+    iou_->setEnabled(!busy_ && !classification);
+    taskBox_->setEnabled(!busy_ && !pt);
+    taskBox_->setToolTip(pt ? "PT 模型的任务由文件内置架构自动识别" : "按照 ONNX 输出张量选择任务格式");
+    for (auto *control : QList<QWidget *>{swapRB_, scale_, meanR_, meanG_, meanB_})
+        control->setEnabled(!busy_ && !pt);
+    if (pt)
+    {
+        swapRB_->setChecked(true);
+        scale_->setValue(1.0 / 255.0);
+        meanR_->setValue(0);
+        meanG_->setValue(0);
+        meanB_->setValue(0);
+    }
+    if (labels_.isEmpty())
+        labelButton_->setText(pt ? (nativeLabels_.isEmpty()
+                                        ? "类别标签 · 模型自动读取"
+                                        : QString("类别标签 · 内置 %1 类").arg(nativeLabels_.size()))
+                                 : (classification ? "类别标签 · 数字类别" : "类别标签 · 默认 COCO 80"));
+    else
+        labelButton_->setText(QString("类别标签 · %1 个").arg(labels_.size()));
+    if (backendBadge_)
+        backendBadge_->setText(pt ? "CPU  /  PyTorch" : "CPU  /  OpenCV DNN");
+    if (backendFooter_)
+        backendFooter_->setText(pt ? "Qt 6.8.3  ·  PyTorch  ·  CPU" : "Qt 6.8.3  ·  OpenCV DNN  ·  CPU");
+}
+void MainWindow::onResult(const vision::InferenceResult &r)
+{
+    lastResult_ = r;
+    modelMeta_->setText(QString("%1  ·  %2 MB  ·  已验证")
+                            .arg(modelFormat(modelPath_))
+                            .arg(QFileInfo(modelPath_).size() / 1048576.0, 0, 'f', 1));
+    canvas_->setResult(r);
+    canvasTitle_->setText(sourceKind_ == vision::SourceKind::Images
+                              ? QFileInfo(r.source).fileName()
+                              : QString("%1 · 第 %2 帧")
+                                    .arg(sourceKind_ == vision::SourceKind::Camera
+                                             ? "摄像头"
+                                             : QFileInfo(streamPath_).fileName())
+                                    .arg(r.frameNumber));
+    countMetric_->setText(QString::number(r.predictions.size()));
+    latencyMetric_->setText(QString::number(r.inferenceMs, 'f', 1));
+    QSet<int> cls;
+    for (const auto &p : r.predictions)
+        cls.insert(p.classId);
+    classMetric_->setText(QString::number(cls.size()));
+    sizeMetric_->setText(QString("%1 × %2").arg(r.image.width()).arg(r.image.height()));
+    resultInfo_->setText(QString("%1 · %2 个%3\n总处理 %4 ms")
+                             .arg(taskName(r.task))
+                             .arg(r.predictions.size())
+                             .arg(r.task == vision::ModelTask::Classification ? "分类结果" : "目标")
+                             .arg(r.totalMs, 0, 'f', 1));
+    emptyResults_->setVisible(r.predictions.isEmpty());
+    emptyResults_->setText("未发现符合阈值的目标\n\n可尝试降低置信度或检查模型配置。");
+    predictionTable_->setRowCount(r.predictions.size());
+    for (int i = 0; i < r.predictions.size(); ++i)
+    {
+        const auto &p = r.predictions[i];
+        auto *name = new QTableWidgetItem(p.label);
+        name->setForeground(QColor::fromHsv((p.classId * 53 + 156) % 360, 130, 225));
+        name->setToolTip(QString("x: %1  y: %2\nw: %3  h: %4")
+                             .arg(p.box.x(), 0, 'f', 1)
+                             .arg(p.box.y(), 0, 'f', 1)
+                             .arg(p.box.width(), 0, 'f', 1)
+                             .arg(p.box.height(), 0, 'f', 1));
+        predictionTable_->setItem(i, 0, name);
+        auto *conf = new QTableWidgetItem(QString::number(p.confidence * 100, 'f', 1) + "%");
+        conf->setTextAlignment(Qt::AlignCenter);
+        predictionTable_->setItem(i, 1, conf);
+        auto *id = new QTableWidgetItem(QString::number(i + 1).rightJustified(2, '0'));
+        id->setTextAlignment(Qt::AlignCenter);
+        id->setForeground(QColor("#678699"));
+        predictionTable_->setItem(i, 2, id);
+    }
+    if (sourceKind_ == vision::SourceKind::Images)
+    {
+        recordResult(r);
+        const int row = files_.indexOf(r.source);
+        if (row >= 0)
+        {
+            queue_->setCurrentRow(row);
+            queue_->item(row)->setForeground(QColor("#57d6bc"));
+        }
+        if (autoExport_->isChecked())
+        {
+            QString error;
+            if (!writeResult(r, exportDir_, &error))
+            {
+                failed_ = true;
+                worker_->requestStop();
+                showNotice("自动导出失败：" + error, true);
+            }
+        }
+    }
+}
+void MainWindow::onFinished(bool cancelled)
+{
+    if (sourceKind_ != vision::SourceKind::Images && !lastResult_.image.isNull())
+    {
+        recordResult(lastResult_);
+        if (autoExport_->isChecked())
+        {
+            QString error;
+            if (!writeResult(lastResult_, exportDir_, &error))
+            {
+                failed_ = true;
+                showNotice("自动导出失败：" + error, true);
+            }
+        }
+    }
+    setBusy(false);
+    if (!failed_)
+        showNotice(cancelled ? "任务已停止 · 当前结果可导出"
+                             : QString("检测完成 · 已处理 %1 %2")
+                                   .arg(completed_)
+                                   .arg(sourceKind_ == vision::SourceKind::Images ? "张图片" : "帧"));
+    if (!smokeDir_.isEmpty())
+    {
+        const bool success = !failed_ && !lastResult_.image.isNull() && !lastResult_.predictions.isEmpty();
+        QString error = lastError_;
+        bool exported = success && writeResult(lastResult_, smokeDir_, &error);
+        QTimer::singleShot(100, this,
+                           [this, success, exported, error]
+                           {
+                               saveScreenshot(smokeDir_ + "/workbench.png");
+                               QJsonObject j{{"success", success && exported},
+                                             {"qt", qVersion()},
+                                             {"predictions", lastResult_.predictions.size()},
+                                             {"inference_ms", lastResult_.inferenceMs},
+                                             {"error", error},
+                                             {"backend", lastResult_.backend}};
+                               atomicWrite(smokeDir_ + "/smoke-report.json", QJsonDocument(j).toJson());
+                               qInfo().noquote() << QJsonDocument(j).toJson(QJsonDocument::Compact);
+                               QApplication::exit(success && exported ? 0 : 2);
+                           });
+    }
+    if (closing_)
+        QTimer::singleShot(0, this, &QWidget::close);
+}
+
+void MainWindow::runDemo()
+{
+    if (busy_)
+        return;
+    const QString model = projectRoot_ + "/models/yolov5n.onnx", image = projectRoot_ + "/assets/bus.jpg";
+    if (!QFileInfo::exists(model) || !QFileInfo::exists(image))
+    {
+        showNotice("示例资源尚未准备好。请导入自己的 ONNX 模型与图片。", true);
+        if (!smokeDir_.isEmpty())
+            QApplication::exit(2);
+        return;
+    }
+    setModel(model);
+    taskBox_->setCurrentIndex(0);
+    inputSize_->setValue(640);
+    confidence_->setValue(0.25);
+    iou_->setValue(0.45);
+    scale_->setValue(1.0 / 255.0);
+    meanR_->setValue(0);
+    meanG_->setValue(0);
+    meanB_->setValue(0);
+    swapRB_->setChecked(true);
+    labels_.clear();
+    labelsPath_.clear();
+    labelButton_->setText("类别标签 · 默认 COCO 80");
+    files_.clear();
+    queue_->clear();
+    sourceKind_ = vision::SourceKind::Images;
+    addFiles({image});
+    selectRoute(0);
+    startInference();
+}
+void MainWindow::runSmoke(const QString &dir)
+{
+    smokeDir_ = QFileInfo(dir).absoluteFilePath();
+    QDir().mkpath(smokeDir_);
+    runDemo();
+}
+void MainWindow::runPtDemo()
+{
+    if (busy_)
+        return;
+    const QString model = projectRoot_ + "/models/yolov8n.pt", image = projectRoot_ + "/assets/bus.jpg";
+    if (!QFileInfo::exists(model) || !QFileInfo::exists(image))
+    {
+        showNotice("PT 示例资源不存在，请导入自己的 .pt 模型。", true);
+        if (!smokeDir_.isEmpty())
+            QApplication::exit(2);
+        return;
+    }
+    labels_.clear();
+    labelsPath_.clear();
+    setModel(model);
+    taskBox_->setCurrentIndex(1);
+    inputSize_->setValue(640);
+    confidence_->setValue(.25);
+    iou_->setValue(.45);
+    files_.clear();
+    queue_->clear();
+    sourceKind_ = vision::SourceKind::Images;
+    addFiles({image});
+    selectRoute(0);
+    updateTaskUi();
+    startInference();
+}
+void MainWindow::runPtSmoke(const QString &dir)
+{
+    smokeDir_ = QFileInfo(dir).absoluteFilePath();
+    QDir().mkpath(smokeDir_);
+    runPtDemo();
+}
+void MainWindow::saveScreenshot(const QString &p)
+{
+    QDir().mkpath(QFileInfo(p).absolutePath());
+    if (!grab().save(p))
+        qWarning().noquote() << "Cannot save screenshot" << p;
+}
+
+bool MainWindow::writeResult(const vision::InferenceResult &r, const QString &dir, QString *error)
+{
+    if (r.image.isNull() || r.demonstration)
+    {
+        if (error)
+            *error = "没有可导出的真实结果。";
+        return false;
+    }
+    if (!QDir().mkpath(dir))
+    {
+        if (error)
+            *error = "无法创建目录。";
+        return false;
+    }
+    const QString stamp = QDateTime::currentDateTime().toString("yyyyMMdd-HHmmss-zzz");
+    const QString base = dir + "/" + cleanName(r.source) + "-" + stamp +
+                         (r.frameNumber > 0 ? QString("-f%1").arg(r.frameNumber) : "");
+    // Render from the result being exported; the canvas can be showing another queue item.
+    ImageCanvas renderer;
+    renderer.setResult(r);
+    const QImage image = renderer.annotatedImage();
+    QSaveFile png(base + ".png");
+    if (!png.open(QIODevice::WriteOnly) || !image.save(&png, "PNG") || !png.commit())
+    {
+        if (error)
+            *error = png.errorString();
+        return false;
+    }
+    QJsonArray predictions;
+    QByteArray csv = "class_id,label,confidence,x,y,width,height\n";
+    for (const auto &p : r.predictions)
+    {
+        QJsonObject pred{{"class_id", p.classId},   {"label", p.label}, {"confidence", double(p.confidence)},
+                         {"x", p.box.x()},          {"y", p.box.y()},   {"width", p.box.width()},
+                         {"height", p.box.height()}};
+        predictions.append(pred);
+        QString label = p.label;
+        label.replace('"', "\"\"");
+        if (!label.isEmpty() && QString("=+-@\t\r").contains(label.front()))
+            label.prepend('\'');
+        csv += QString("%1,\"%2\",%3,%4,%5,%6,%7\n")
+                   .arg(p.classId)
+                   .arg(label)
+                   .arg(p.confidence, 0, 'f', 6)
+                   .arg(p.box.x(), 0, 'f', 2)
+                   .arg(p.box.y(), 0, 'f', 2)
+                   .arg(p.box.width(), 0, 'f', 2)
+                   .arg(p.box.height(), 0, 'f', 2)
+                   .toUtf8();
+    }
+    const QJsonObject preprocess{
+        {"mode", isPtModel(lastConfig_.modelPath) ? "model_native" : "configured"},
+        {"swap_rb", lastConfig_.swapRB},
+        {"scale", lastConfig_.scale},
+        {"mean_rgb", QJsonArray{lastConfig_.meanR, lastConfig_.meanG, lastConfig_.meanB}}};
+    const QJsonObject config{{"input_size", lastConfig_.inputSize},
+                             {"confidence_threshold", double(lastConfig_.confidence)},
+                             {"nms_iou", double(lastConfig_.iou)},
+                             {"preprocess", preprocess}};
+    QJsonObject root{{"application", "Vision Studio"},
+                     {"version", "1.1.0"},
+                     {"timestamp", QDateTime::currentDateTime().toString(Qt::ISODateWithMs)},
+                     {"source", r.source},
+                     {"model", r.modelName},
+                     {"backend", r.backend},
+                     {"model_file", lastConfig_.modelPath},
+                     {"config", config},
+                     {"task", taskName(r.task)},
+                     {"width", r.image.width()},
+                     {"height", r.image.height()},
+                     {"frame", r.frameNumber},
+                     {"inference_ms", r.inferenceMs},
+                     {"total_ms", r.totalMs},
+                     {"predictions", predictions}};
+    return atomicWrite(base + ".json", QJsonDocument(root).toJson(), error) &&
+           atomicWrite(base + ".csv", csv, error);
+}
+void MainWindow::exportResult()
+{
+    if (lastResult_.image.isNull() || lastResult_.demonstration)
+        return;
+    const QString dir = QFileDialog::getExistingDirectory(this, "选择结果导出目录",
+                                                          QDir(exportDir_).exists() ? exportDir_ : dataRoot_);
+    if (dir.isEmpty())
+        return;
+    QString error;
+    if (writeResult(lastResult_, dir, &error))
+    {
+        exportDir_ = dir;
+        persist();
+        showNotice("已导出标注 PNG、JSON 与 CSV 到：" + dir);
+    }
+    else
+        showNotice("导出失败：" + error, true);
+}
+void MainWindow::recordResult(const vision::InferenceResult &r)
+{
+    QJsonObject o{{"time", QDateTime::currentDateTime().toString(Qt::ISODateWithMs)},
+                  {"source", r.source},
+                  {"model", r.modelName},
+                  {"objects", r.predictions.size()},
+                  {"inference_ms", r.inferenceMs},
+                  {"task", taskName(r.task)},
+                  {"width", r.image.width()},
+                  {"height", r.image.height()},
+                  {"frame", r.frameNumber}};
+    history_.prepend(o);
+    while (history_.size() > 200)
+        history_.removeLast();
+    QString error;
+    if (!atomicWrite(dataRoot_ + "/history.json", QJsonDocument(history_).toJson(), &error))
+        showNotice("运行记录保存失败：" + error, true);
+    refreshHistory();
+}
+void MainWindow::refreshHistory()
+{
+    if (!historyTable_)
+        return;
+    historyTable_->setRowCount(history_.size());
+    for (int i = 0; i < history_.size(); ++i)
+    {
+        auto o = history_[i].toObject();
+        const QStringList values = {
+            QDateTime::fromString(o["time"].toString(), Qt::ISODateWithMs).toString("MM-dd  HH:mm:ss"),
+            QFileInfo(o["source"].toString()).fileName(),
+            o["model"].toString(),
+            QString::number(o["objects"].toInt()),
+            QString::number(o["inference_ms"].toDouble(), 'f', 1) + " ms",
+            o["task"].toString()};
+        for (int c = 0; c < values.size(); ++c)
+        {
+            auto *item = new QTableWidgetItem(values[c]);
+            item->setToolTip(c == 1 ? o["source"].toString() : values[c]);
+            historyTable_->setItem(i, c, item);
+        }
+    }
+}
+void MainWindow::refreshModelLibrary()
+{
+    if (!modelList_)
+        return;
+    modelList_->clear();
+    for (const QString &p : models_)
+    {
+        QFileInfo f(p);
+        const QString detail =
+            f.exists()
+                ? QString("%1 MB  ·  %2  ·  CPU").arg(f.size() / 1048576.0, 0, 'f', 1).arg(modelFormat(p))
+                : "文件已移动或不存在";
+        auto *i = new QListWidgetItem(ui::icon("model", QColor("#53d9bb"), 34),
+                                      f.fileName() + "\n" + detail + "\n" + p);
+        i->setData(Qt::UserRole, p);
+        i->setToolTip(p);
+        i->setSizeHint(QSize(100, 94));
+        modelList_->addItem(i);
+        if (p == modelPath_)
+            modelList_->setCurrentItem(i);
+    }
+    modelCount_->setText(QString("本地模型库 · %1 个模型").arg(models_.size()));
+}
+void MainWindow::selectRoute(int index)
+{
+    if (!pages_ || index < 0 || index >= pages_->count())
+        return;
+    pages_->setCurrentIndex(index);
+    for (int i = 0; i < navButtons_.size(); ++i)
+    {
+        navButtons_[i]->setChecked(i == index);
+        navButtons_[i]->setIcon(ui::icon(QStringList{"work", "model", "history", "help"}[i],
+                                         QColor(i == index ? "#50d9bf" : "#8297aa")));
+    }
+    const QStringList titles = {"检测工作台", "模型库", "运行记录", "使用指南"};
+    const QStringList descriptions = {
+        "从输入到洞察，让每一次视觉推理清晰可见。", "管理本地模型，让每一个实验都有清晰的起点。",
+        "回看每一次推理，沉淀可追溯的运行数据。", "从模型配置到结果导出，掌握完整的工作流程。"};
+    pageTitle_->setText(titles[index]);
+    pageSubtitle_->setText(descriptions[index]);
+    exportButton_->setVisible(index == 0);
+    demoButton_->setVisible(index == 0);
+}
+void MainWindow::showNotice(const QString &s, bool error)
+{
+    if (!statusLabel_)
+        return;
+    const QString message = "●  " + s.simplified();
+    statusLabel_->setText(statusLabel_->fontMetrics().elidedText(message, Qt::ElideRight,
+                                                                 std::max(200, statusLabel_->width())));
+    statusLabel_->setToolTip(s);
+    statusLabel_->setStyleSheet(error ? "color:#ef9aab;" : "color:#8ca7b9;");
+}
+void MainWindow::persist()
+{
+    if (!settings_)
+        return;
+    settings_->setValue("models", models_);
+    settings_->setValue("activeModel", modelPath_);
+    settings_->setValue("exportDirectory", exportDir_);
+    settings_->setValue("labels", labels_);
+    settings_->setValue("labelsPath", labelsPath_);
+    if (taskBox_)
+    {
+        settings_->setValue("task", taskBox_->currentIndex());
+        settings_->setValue("inputSize", inputSize_->value());
+        settings_->setValue("confidence", confidence_->value());
+        settings_->setValue("iou", iou_->value());
+        settings_->setValue("scale", scale_->value());
+        settings_->setValue("meanR", meanR_->value());
+        settings_->setValue("meanG", meanG_->value());
+        settings_->setValue("meanB", meanB_->value());
+        settings_->setValue("swapRB", swapRB_->isChecked());
+        settings_->setValue("autoExport", autoExport_->isChecked());
+    }
+    settings_->sync();
+}
+void MainWindow::closeEvent(QCloseEvent *e)
+{
+    if (busy_)
+    {
+        closing_ = true;
+        stopInference();
+        e->ignore();
+        return;
+    }
+    persist();
+    e->accept();
+}
+void MainWindow::keyPressEvent(QKeyEvent *e)
+{
+    if (e->key() == Qt::Key_Escape)
+    {
+        stopInference();
+        e->accept();
+        return;
+    }
+    if (e->modifiers() & Qt::ControlModifier)
+    {
+        if (e->key() == Qt::Key_O && !busy_)
+        {
+            chooseImages();
+            return;
+        }
+        if (e->key() == Qt::Key_M && !busy_)
+        {
+            importModel();
+            return;
+        }
+        if (e->key() == Qt::Key_R)
+        {
+            startInference();
+            return;
+        }
+        if (e->key() == Qt::Key_E && !busy_)
+        {
+            exportResult();
+            return;
+        }
+    }
+    QMainWindow::keyPressEvent(e);
+}
