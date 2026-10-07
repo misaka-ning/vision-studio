@@ -2,8 +2,10 @@
 #include "ptbackend.h"
 
 #include <QElapsedTimer>
+#include <QByteArrayView>
 #include <QFile>
 #include <QFileInfo>
+#include <QSet>
 #include <algorithm>
 #include <cmath>
 #include <numeric>
@@ -19,6 +21,148 @@ namespace
 [[noreturn]] void fail(const QString &message)
 {
     throw std::runtime_error(message.toUtf8().constData());
+}
+
+// Read only the ONNX input declaration; OpenCV remains the network importer.
+// Schema: https://github.com/onnx/onnx/blob/main/onnx/onnx.proto
+// Views skip tensor weights without copying or adding a Python dependency.
+struct ProtoField
+{
+    quint32 number = 0;
+    int wire = 0;
+    quint64 value = 0;
+    QByteArrayView bytes;
+};
+
+class ProtoReader
+{
+  public:
+    explicit ProtoReader(QByteArrayView bytes) : bytes_(bytes) {}
+    bool next(ProtoField &field)
+    {
+        if (position_ == bytes_.size())
+            return false;
+        field = {};
+        const quint64 tag = varint();
+        if ((tag >> 3) == 0 || (tag >> 3) > 0x1fffffff)
+            invalid();
+        field.number = quint32(tag >> 3);
+        field.wire = int(tag & 7);
+        if (field.wire == 0)
+            field.value = varint();
+        else if (field.wire == 2)
+        {
+            const quint64 size = varint();
+            if (size > quint64(bytes_.size() - position_))
+                invalid();
+            field.bytes = bytes_.sliced(position_, qsizetype(size));
+            position_ += qsizetype(size);
+        }
+        else if (field.wire == 1 || field.wire == 5)
+        {
+            const int size = field.wire == 1 ? 8 : 4;
+            if (bytes_.size() - position_ < size)
+                invalid();
+            position_ += size;
+        }
+        else
+            invalid();
+        return true;
+    }
+
+  private:
+    [[noreturn]] static void invalid()
+    {
+        fail(QStringLiteral("ONNX 输入声明损坏或不完整，无法识别模型通道数。"));
+    }
+    quint64 varint()
+    {
+        quint64 value = 0;
+        for (int index = 0; index < 10; ++index)
+        {
+            if (position_ == bytes_.size())
+                invalid();
+            const quint8 byte = quint8(bytes_[position_++]);
+            if (index == 9 && (byte & 0xfe))
+                invalid();
+            value |= quint64(byte & 0x7f) << (7 * index);
+            if (!(byte & 0x80))
+                return value;
+        }
+        invalid();
+    }
+    QByteArrayView bytes_;
+    qsizetype position_ = 0;
+};
+
+QByteArrayView protoMessage(QByteArrayView bytes, quint32 number)
+{
+    ProtoReader reader(bytes);
+    ProtoField field;
+    QByteArrayView found;
+    while (reader.next(field))
+        if (field.number == number && field.wire == 2)
+            found = field.bytes;
+    return found;
+}
+
+int onnxInputChannels(const QByteArray &model)
+{
+    const QByteArrayView graph = protoMessage(model, 7); // ModelProto.graph
+    if (graph.isEmpty())
+        fail(QStringLiteral("ONNX 模型没有有效的计算图。"));
+    QVector<QByteArrayView> inputs;
+    QSet<QByteArray> initializers;
+    ProtoReader graphReader(graph);
+    ProtoField field;
+    while (graphReader.next(field))
+    {
+        if (field.wire != 2)
+            continue;
+        if (field.number == 11) // GraphProto.input
+            inputs.append(field.bytes);
+        else if (field.number == 5) // TensorProto.name
+            initializers.insert(protoMessage(field.bytes, 8).toByteArray());
+        else if (field.number == 15) // SparseTensorProto.values
+            initializers.insert(protoMessage(protoMessage(field.bytes, 1), 8).toByteArray());
+    }
+    QByteArrayView imageInput;
+    int inputCount = 0;
+    for (QByteArrayView input : inputs)
+    {
+        const QByteArray name = protoMessage(input, 1).toByteArray();
+        if (name.isEmpty())
+            fail(QStringLiteral("ONNX 模型的输入名称无效。"));
+        if (!initializers.contains(name))
+        {
+            imageInput = input;
+            ++inputCount;
+        }
+    }
+    if (inputCount != 1)
+        fail(QStringLiteral("当前支持一个图像输入的 ONNX 模型，实际有 %1 个输入。").arg(inputCount));
+    const QByteArrayView tensor = protoMessage(protoMessage(imageInput, 2), 1);
+    const QByteArrayView shape = protoMessage(tensor, 2);
+    QVector<quint64> dimensions;
+    ProtoReader shapeReader(shape);
+    while (shapeReader.next(field))
+    {
+        if (field.number != 1 || field.wire != 2)
+            continue;
+        quint64 dimension = 0;
+        ProtoReader dimensionReader(field.bytes);
+        ProtoField item;
+        while (dimensionReader.next(item))
+            if (item.number == 1 && item.wire == 0)
+                dimension = item.value;
+        dimensions.append(dimension);
+    }
+    if (dimensions.size() != 4 || dimensions[0] > 1)
+        fail(QStringLiteral("ONNX 图像输入应为 NCHW [1, C, H, W]，当前输入形状不受支持。"));
+    if (dimensions[1] != 1 && dimensions[1] != 3)
+        fail(QStringLiteral("无法确定兼容的模型输入通道：当前支持固定 1 或 3 通道。"
+                            "请导出通道数固定为 1 或 3 的 NCHW ONNX。"));
+    return int(dimensions[1]);
 }
 
 QString shapeOf(const cv::Mat &tensor)
@@ -255,7 +399,7 @@ void VisionEngine::unload()
 
 void VisionEngine::load(const ModelConfig &requestedConfig)
 {
-    const ModelConfig config = requestedConfig;
+    ModelConfig config = requestedConfig;
     unload();
     if (config.inputSize < 16 || config.inputSize > 4096)
         fail(QStringLiteral("输入尺寸应在 16 到 4096 像素之间。"));
@@ -285,6 +429,11 @@ void VisionEngine::load(const ModelConfig &requestedConfig)
     const QByteArray modelBytes = modelFile.readAll();
     if (modelBytes.isEmpty())
         fail(QStringLiteral("模型文件为空。"));
+    config.inputChannels = onnxInputChannels(modelBytes);
+    if (config.colorMode == InputColorMode::Color && config.inputChannels != 3)
+        fail(QStringLiteral("此模型需要 1 通道输入，请将输入通道模式切换为「灰度」。"));
+    if (config.colorMode == InputColorMode::Grayscale)
+        config.meanG = config.meanB = config.meanR;
     try
     {
         cv::dnn::Net net = cv::dnn::readNetFromONNX(modelBytes.constData(), size_t(modelBytes.size()));
@@ -319,6 +468,15 @@ InferenceResult VisionEngine::infer(const QImage &image, const QString &source)
                              size_t(rgb.bytesPerLine()));
         cv::Mat bgr;
         cv::cvtColor(rgbMat, bgr, cv::COLOR_RGB2BGR);
+        if (m_config.colorMode == InputColorMode::Grayscale)
+        {
+            cv::Mat gray;
+            cv::cvtColor(bgr, gray, cv::COLOR_BGR2GRAY);
+            if (m_config.inputChannels == 1)
+                bgr = gray;
+            else
+                cv::cvtColor(gray, bgr, cv::COLOR_GRAY2BGR);
+        }
         Letterbox letterbox;
         if (m_config.task == ModelTask::Classification)
         {
@@ -328,11 +486,15 @@ InferenceResult VisionEngine::infer(const QImage &image, const QString &source)
         {
             letterbox = makeLetterbox(bgr, m_config.inputSize);
         }
-        const cv::Scalar mean = m_config.swapRB ? cv::Scalar(m_config.meanR, m_config.meanG, m_config.meanB)
-                                                : cv::Scalar(m_config.meanB, m_config.meanG, m_config.meanR);
+        const bool grayInput = m_config.colorMode == InputColorMode::Grayscale;
+        const cv::Scalar mean = grayInput
+                                    ? cv::Scalar::all(m_config.meanR)
+                                    : m_config.swapRB
+                                          ? cv::Scalar(m_config.meanR, m_config.meanG, m_config.meanB)
+                                          : cv::Scalar(m_config.meanB, m_config.meanG, m_config.meanR);
         const cv::Mat blob = cv::dnn::blobFromImage(letterbox.image, m_config.scale,
                                                     cv::Size(m_config.inputSize, m_config.inputSize), mean,
-                                                    m_config.swapRB, false, CV_32F);
+                                                    !grayInput && m_config.swapRB, false, CV_32F);
         m_net.setInput(blob);
         QElapsedTimer inferenceTimer;
         inferenceTimer.start();

@@ -31,9 +31,11 @@
 #include <QSet>
 #include <QSettings>
 #include <QShortcut>
+#include <QSignalBlocker>
 #include <QSpinBox>
 #include <QSplitter>
 #include <QStackedWidget>
+#include <QStandardItemModel>
 #include <QStandardPaths>
 #include <QTableWidget>
 #include <QTextBrowser>
@@ -44,6 +46,20 @@
 
 namespace
 {
+QString stereoCode(vision::StereoView view)
+{
+    return view == vision::StereoView::Left ? "left" : (view == vision::StereoView::Right ? "right" : "full");
+}
+QString stereoName(vision::StereoView view)
+{
+    return view == vision::StereoView::Left ? "双目左目"
+                                            : (view == vision::StereoView::Right ? "双目右目" : "完整画面");
+}
+vision::StereoView stereoMode(const QString &value)
+{
+    return value == "left" ? vision::StereoView::Left
+                           : (value == "right" ? vision::StereoView::Right : vision::StereoView::Full);
+}
 QLabel *text(const QString &value, const char *name = "body")
 {
     auto *w = new QLabel(value);
@@ -231,6 +247,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
                  savedB = settings_->value("meanB", 0).toDouble();
     const bool savedSwap = settings_->value("swapRB", true).toBool(),
                savedAuto = settings_->value("autoExport", false).toBool();
+    const QString savedColorMode = settings_->value("colorMode", savedSwap ? "rgb" : "bgr").toString();
+    const QString savedStereo = settings_->value("stereoView", "full").toString();
+    const int savedCameraIndex = settings_->value("cameraIndex", 0).toInt();
     const QStringList savedLabels = settings_->value("labels").toStringList();
     const QString savedLabelsPath = settings_->value("labelsPath").toString();
     const QString bundled = projectRoot_ + "/models/yolov5n.onnx";
@@ -253,7 +272,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     meanR_->setValue(savedR);
     meanG_->setValue(savedG);
     meanB_->setValue(savedB);
-    swapRB_->setChecked(savedSwap);
+    const int savedColorIndex = inputColorMode_->findData(savedColorMode);
+    inputColorMode_->setCurrentIndex(savedColorIndex < 0 ? 0 : savedColorIndex);
+    const int savedStereoIndex = stereoView_->findData(savedStereo);
+    stereoView_->setCurrentIndex(savedStereoIndex < 0 ? 0 : savedStereoIndex);
+    cameraIndex_->setValue(savedCameraIndex);
     autoExport_->setChecked(savedAuto);
     labels_ = savedLabels;
     labelsPath_ = savedLabelsPath;
@@ -330,7 +353,7 @@ void MainWindow::setupStyle()
         #eyebrow { color: #63788d; font-size: 10px; font-weight: 600; letter-spacing: 1px; }
         #pageTitle { font-size: 26px; font-weight: 700; color: #edf4f7; }
         #muted { color: #8396a8; font-size: 11px; }
-        #tiny { color: #698095; font-size: 10px; }
+        #tiny, #modelMetadata { color: #698095; font-size: 10px; }
         #sectionTitle { color: #a9b9c7; font-size: 11px; font-weight: 600; }
         #card, #metricCard { background: #16212e; border: 1px solid #2a3746; border-radius: 10px; }
         #configInner { background: #16212e; }
@@ -409,7 +432,7 @@ QWidget *MainWindow::buildSidebar()
     brand->addWidget(text("Vision", "brand"));
     brand->addStretch();
     l->addLayout(brand);
-    auto *cap = text("STUDIO  /  V1.1", "brandCaption");
+    auto *cap = text("STUDIO  /  V1.2", "brandCaption");
     cap->setContentsMargins(4, 4, 0, 0);
     l->addWidget(cap);
     l->addSpacing(38);
@@ -516,17 +539,50 @@ QWidget *MainWindow::buildWorkbench()
     sourceLabel_->setWordWrap(true);
     fields->addWidget(sourceLabel_);
     cameraIndex_ = new QSpinBox;
+    cameraIndex_->setObjectName("cameraIndex");
     cameraIndex_->setRange(0, 10);
     cameraIndex_->setPrefix("摄像头编号  ");
     cameraIndex_->hide();
     fields->addWidget(cameraIndex_);
     lockedControls_.append(cameraIndex_);
+    auto *sourceOptions = new QFormLayout;
+    sourceOptions->setSpacing(7);
+    sourceOptions->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+    inputColorMode_ = new QComboBox;
+    inputColorMode_->setObjectName("inputColorMode");
+    inputColorMode_->addItem("RGB · 彩色", "rgb");
+    inputColorMode_->addItem("BGR · 彩色", "bgr");
+    inputColorMode_->addItem("灰度 · 明度", "grayscale");
+    inputColorMode_->setAccessibleName("输入颜色");
+    inputColorMode_->setToolTip("选择模型实际接收的颜色。灰度会转换为明度：单通道模型直接使用，三通道模型复制"
+                                "为三个相同通道。原图预览保持原始颜色。");
+    sourceOptions->addRow("输入颜色", inputColorMode_);
+    stereoView_ = new QComboBox;
+    stereoView_->setObjectName("stereoView");
+    stereoView_->addItem("完整画面", "full");
+    stereoView_->addItem("双目左目", "left");
+    stereoView_->addItem("双目右目", "right");
+    stereoView_->setAccessibleName("双目画面选择");
+    stereoView_->setToolTip("单设备左右并排（SBS）输入：沿水平中线裁出左目或右目，预览、推理和导出均使用所选"
+                            "眼；完整画面不裁剪。");
+    stereoLabel_ = text("画面选择");
+    sourceOptions->addRow(stereoLabel_, stereoView_);
+    stereoLabel_->hide();
+    stereoView_->hide();
+    stereoView_->setEnabled(false);
+    fields->addLayout(sourceOptions);
+    preprocessHint_ = text("彩色输入 · RGB / BGR 通道顺序", "tiny");
+    preprocessHint_->setWordWrap(true);
+    fields->addWidget(preprocessHint_);
+    lockedControls_.append(inputColorMode_);
+    lockedControls_.append(stereoView_);
     fields->addSpacing(7);
     fields->addWidget(section("检测模型", "02"));
     modelName_ = text("选择视觉模型", "modelName");
     modelName_->setWordWrap(true);
     fields->addWidget(modelName_);
     modelMeta_ = text("支持 ONNX / PT 检测模型", "tiny");
+    modelMeta_->setObjectName("modelMetadata");
     modelMeta_->setWordWrap(true);
     fields->addWidget(modelMeta_);
     modelButton_ = button("导入模型", "plus");
@@ -586,9 +642,6 @@ QWidget *MainWindow::buildWorkbench()
     auto *af = new QFormLayout(adv);
     af->setContentsMargins(0, 5, 0, 0);
     af->setSpacing(6);
-    swapRB_ = new QCheckBox("RGB 通道顺序");
-    swapRB_->setChecked(true);
-    af->addRow(swapRB_);
     scale_ = new QDoubleSpinBox;
     scale_->setDecimals(8);
     scale_->setRange(0.00000001, 10);
@@ -606,6 +659,10 @@ QWidget *MainWindow::buildWorkbench()
     mean(meanR_, "均值 R");
     mean(meanG_, "均值 G");
     mean(meanB_, "均值 B");
+    meanR_->setObjectName("meanR");
+    meanG_->setObjectName("meanG");
+    meanB_->setObjectName("meanB");
+    meanRLabel_ = qobject_cast<QLabel *>(af->labelForField(meanR_));
     adv->hide();
     fields->addWidget(adv);
     connect(advanced, &QPushButton::clicked, this,
@@ -614,7 +671,6 @@ QWidget *MainWindow::buildWorkbench()
                 adv->setVisible(!adv->isVisible());
                 advanced->setText(adv->isVisible() ? "预处理设置 ▴" : "预处理设置 ▾");
             });
-    lockedControls_.append(swapRB_);
     lockedControls_.append(scale_);
     autoExport_ = new QCheckBox("自动保存每张图片的结果");
     autoExport_->setToolTip("保存标注 PNG、JSON 和 CSV；视频与摄像头在停止后保存最后一帧");
@@ -796,6 +852,32 @@ QWidget *MainWindow::buildWorkbench()
                     predictionTable_->clearSelection();
             });
     connect(taskBox_, &QComboBox::currentIndexChanged, this, [this] { updateTaskUi(); });
+    connect(inputColorMode_, &QComboBox::currentIndexChanged, this,
+            [this]
+            {
+                updateTaskUi();
+                persist();
+            });
+    connect(stereoView_, &QComboBox::currentIndexChanged, this,
+            [this]
+            {
+                if (!busy_ && sourceKind_ != vision::SourceKind::Images)
+                {
+                    lastResult_ = {};
+                    canvas_->clear();
+                    predictionTable_->setRowCount(0);
+                    emptyResults_->show();
+                    exportButton_->setEnabled(false);
+                }
+                updateSourceUi();
+                persist();
+            });
+    connect(cameraIndex_, &QSpinBox::valueChanged, this,
+            [this]
+            {
+                updateSourceUi();
+                persist();
+            });
     columns->setStretchFactor(0, 0);
     columns->setStretchFactor(1, 1);
     columns->setStretchFactor(2, 0);
@@ -940,8 +1022,10 @@ QWidget *MainWindow::buildGuide()
     <h2>PT 模型</h2><p>Ultralytics YOLO 的 PT 检查点会自动读取任务和类别名称，预处理由原生后端执行。支持的旧版 YOLOv5 权重使用随附的本地兼容模块。只包含 state_dict 的任意 PT 文件无法单独重建网络，需要原始模型架构。分割、姿态和旋转框输出暂不支持。</p>
     <h2>02 / 正确匹配模型</h2><p>YOLOv5：原始输出 <code>[1,N,5+C]</code>，包含 objectness。YOLOv8 / YOLO11：原始输出 <code>[1,4+C,N]</code>。模型应为 batch=1、固定正方形输入、FP32、不包含 NMS。输入尺寸必须与导出模型一致。分割、姿态、旋转框和端到端输出暂不支持。</p>
     <p>默认 640 px、RGB、1/255 缩放、零均值，适合常见 YOLO 模型。自定义检测模型必须导入数量匹配的 UTF-8 标签文本，每行一个名称，并保持训练时类别顺序。未导入标签时按 COCO 80 类解释检测输出。分类模型未配置标签时显示数字类别。</p>
-    <h2>03 / 调整结果与预处理</h2><p>置信度越高，保留的目标越少；NMS IoU 控制同类重叠框的抑制。不同类别独立执行 NMS。检测输入使用 letterbox 保持比例，并将框映射回原图。分类使用正方形缩放和 top-5 输出，可在“预处理设置”调整通道、缩放和均值；本版不提供逐通道标准差除法。</p>
+    <h2>03 / 调整结果与预处理</h2><p>置信度越高，保留的目标越少；NMS IoU 控制同类重叠框的抑制。不同类别独立执行 NMS。检测输入使用 letterbox 保持比例，并将框映射回原图。分类使用正方形缩放和 top-5 输出，可在“预处理设置”调整缩放和均值；本版不提供逐通道标准差除法。</p>
+    <p>输入源区域可直接选择 RGB、BGR 或灰度。灰度转换为图像明度：单通道模型直接接收灰度，三通道模型接收三个相同的灰度通道。ONNX 灰度输入统一使用“灰度均值”，G/B 均值不再分别参与计算；PT 可选 RGB 或灰度，归一化和零均值由原生后端执行。原图预览保持原始颜色，模型载入后会显示实际输入通道数。</p>
     <h2>04 / 批量、视频与摄像头</h2><p>文件夹模式扫描当前目录内的常见图片格式，逐张推理。视频与摄像头连续处理每帧；CPU 性能决定速度，界面预览限流。点击“停止运行”结束任务。视频导出保存当前帧，完整标注视频录制不在本版范围内。</p>
+    <p>单设备左右并排（SBS）的双目摄像头或视频可选“完整画面”“双目左目”“双目右目”。选择单目时，沿水平中线裁出所选眼，再执行预览、推理和导出；结果坐标以该单目图像为基准，JSON 同时记录原始双目画面尺寸。普通图片始终使用完整图像。运行中画面选择锁定，停止后可切换。</p>
     <h2>05 / 保存你的洞察</h2><p>导出结果会生成标注 PNG、包含原始像素坐标的 JSON，以及可用于表格分析的 CSV。启用自动保存后，批量任务为每张图片保存结果，流式任务在结束时保存最后一帧。设置和运行记录自动保存在用户数据目录。</p>
     <h2>键盘与画布</h2><p><code>Ctrl+O</code> 添加图片　<code>Ctrl+M</code> 导入模型　<code>Ctrl+R</code> 开始　<code>Ctrl+E</code> 导出　<code>Esc</code> 停止<br>滚轮缩放，拖动画布平移，双击适应画布，点击检测框或结果列表定位目标。</p>
     <h2>运行环境与兼容性</h2><p>界面为本机 C++ / Qt 6.8.3。ONNX 使用 OpenCV 4.5.4 DNN；PT 使用项目独立 Python / PyTorch 环境，CPU 执行。ONNX 算子兼容性取决于本机 OpenCV。PT 环境位于 runtime，缺失时可运行 scripts/setup_pt.sh。安装完成后无需联网运行模型。</p>
@@ -965,6 +1049,8 @@ void MainWindow::connectWorker()
             [this](const QString &backend, const vision::ModelConfig &config)
             {
                 lastConfig_ = config;
+                modelInputChannels_ = config.inputChannels;
+                updateModelMeta("已加载");
                 if (isPtModel(modelPath_))
                 {
                     nativeLabels_ = config.labels;
@@ -1069,12 +1155,17 @@ void MainWindow::chooseCamera()
 void MainWindow::updateSourceUi()
 {
     cameraIndex_->setVisible(sourceKind_ == vision::SourceKind::Camera);
+    const bool streaming = sourceKind_ != vision::SourceKind::Images;
+    stereoLabel_->setVisible(streaming);
+    stereoView_->setVisible(streaming);
+    stereoView_->setEnabled(streaming && !busy_);
+    const QString view = stereoName(stereoMode(stereoView_->currentData().toString()));
     if (sourceKind_ == vision::SourceKind::Images)
         sourceLabel_->setText(QString("图片输入 · %1 个文件").arg(files_.size()));
     else if (sourceKind_ == vision::SourceKind::Video)
-        sourceLabel_->setText("视频 · " + QFileInfo(streamPath_).fileName());
+        sourceLabel_->setText("视频 · " + QFileInfo(streamPath_).fileName() + " · " + view);
     else
-        sourceLabel_->setText("实时摄像头 · 点击开始连接");
+        sourceLabel_->setText(QString("摄像头 %1 · %2 · 点击开始连接").arg(cameraIndex_->value()).arg(view));
     if (lastResult_.image.isNull())
     {
         countMetric_->setText("—");
@@ -1137,11 +1228,13 @@ void MainWindow::setModel(const QString &path)
         showNotice("模型文件不存在：" + path, true);
         return;
     }
+    const bool convertedBgr =
+        isPtModel(f.absoluteFilePath()) && inputColorMode_->currentData().toString() == "bgr";
     modelPath_ = f.absoluteFilePath();
+    modelInputChannels_ = 0;
     nativeLabels_.clear();
     modelName_->setText(f.fileName());
-    modelMeta_->setText(
-        QString("%1  ·  %2 MB  ·  已选择").arg(modelFormat(modelPath_)).arg(f.size() / 1048576.0, 0, 'f', 1));
+    updateModelMeta("已选择");
     modelName_->setToolTip(modelPath_);
     if (!models_.contains(modelPath_))
         models_.append(modelPath_);
@@ -1153,7 +1246,8 @@ void MainWindow::setModel(const QString &path)
     updateTaskUi();
     persist();
     refreshModelLibrary();
-    showNotice("模型已选择，开始检测时将载入并验证。");
+    showNotice(convertedBgr ? "PT 的彩色输入使用 RGB，已从 BGR 切换为 RGB；也可选择灰度。"
+                            : "模型已选择，开始检测时将载入并验证。");
 }
 void MainWindow::importLabels()
 {
@@ -1200,11 +1294,14 @@ vision::ModelConfig MainWindow::currentConfig() const
     c.inputSize = inputSize_->value();
     c.confidence = confidence_->value();
     c.iou = iou_->value();
-    c.swapRB = swapRB_->isChecked();
+    const bool grayscale = inputColorMode_->currentData().toString() == "grayscale";
+    c.colorMode = grayscale ? vision::InputColorMode::Grayscale : vision::InputColorMode::Color;
+    c.inputChannels = modelInputChannels_;
+    c.swapRB = inputColorMode_->currentData().toString() != "bgr";
     c.scale = scale_->value();
     c.meanR = meanR_->value();
-    c.meanG = meanG_->value();
-    c.meanB = meanB_->value();
+    c.meanG = grayscale ? c.meanR : meanG_->value();
+    c.meanB = grayscale ? c.meanR : meanB_->value();
     if (isPtModel(modelPath_))
     {
         c.swapRB = true;
@@ -1238,6 +1335,9 @@ void MainWindow::startInference()
     vision::JobRequest req;
     req.config = currentConfig();
     req.sourceKind = sourceKind_;
+    req.stereoView = sourceKind_ == vision::SourceKind::Images
+                         ? vision::StereoView::Full
+                         : stereoMode(stereoView_->currentData().toString());
     req.cameraIndex = cameraIndex_->value();
     req.files = sourceKind_ == vision::SourceKind::Video ? QStringList{streamPath_} : files_;
     failed_ = false;
@@ -1278,6 +1378,7 @@ void MainWindow::setBusy(bool busy)
     stopButton_->setEnabled(busy);
     exportButton_->setEnabled(!busy && !lastResult_.image.isNull() && !lastResult_.demonstration);
     queue_->setEnabled(!busy);
+    stereoView_->setEnabled(!busy && sourceKind_ != vision::SourceKind::Images);
     progress_->setVisible(busy);
     updateTaskUi();
     if (busy)
@@ -1288,21 +1389,41 @@ void MainWindow::setBusy(bool busy)
 void MainWindow::updateTaskUi()
 {
     const bool pt = isPtModel(modelPath_);
+    auto *colorItems = qobject_cast<QStandardItemModel *>(inputColorMode_->model());
+    if (colorItems && colorItems->item(1))
+        colorItems->item(1)->setEnabled(!pt);
+    if (pt && inputColorMode_->currentData().toString() == "bgr")
+    {
+        const QSignalBlocker blocker(inputColorMode_);
+        inputColorMode_->setCurrentIndex(0);
+    }
+    const bool grayscale = inputColorMode_->currentData().toString() == "grayscale";
     const bool classification = taskBox_->currentIndex() == 2;
     confidence_->setEnabled(!busy_ && !classification);
     iou_->setEnabled(!busy_ && !classification);
     taskBox_->setEnabled(!busy_ && !pt);
     taskBox_->setToolTip(pt ? "PT 模型的任务由文件内置架构自动识别" : "按照 ONNX 输出张量选择任务格式");
-    for (auto *control : QList<QWidget *>{swapRB_, scale_, meanR_, meanG_, meanB_})
+    inputColorMode_->setEnabled(!busy_);
+    for (auto *control : QList<QWidget *>{scale_, meanR_})
         control->setEnabled(!busy_ && !pt);
+    meanG_->setEnabled(!busy_ && !pt && !grayscale);
+    meanB_->setEnabled(!busy_ && !pt && !grayscale);
+    meanRLabel_->setText(grayscale ? "灰度均值" : "均值 R");
+    meanR_->setAccessibleName(grayscale ? "灰度均值" : "均值 R");
+    meanR_->setToolTip(grayscale ? "ONNX 灰度输入统一使用该均值；三通道模型的三个灰度通道使用相同值。"
+                                 : "RGB / BGR 彩色输入的 R 通道均值");
+    meanG_->setToolTip(grayscale ? "灰度模式统一使用灰度均值，忽略此项。" : "G 通道均值");
+    meanB_->setToolTip(grayscale ? "灰度模式统一使用灰度均值，忽略此项。" : "B 通道均值");
     if (pt)
     {
-        swapRB_->setChecked(true);
         scale_->setValue(1.0 / 255.0);
         meanR_->setValue(0);
         meanG_->setValue(0);
         meanB_->setValue(0);
     }
+    preprocessHint_->setText(
+        pt ? (grayscale ? "灰度输入 · 模型原生归一化" : "PT 彩色使用 RGB · 原生预处理")
+           : (grayscale ? "灰度输入 · 统一使用灰度均值" : "彩色输入 · RGB / BGR 通道顺序"));
     if (labels_.isEmpty())
         labelButton_->setText(pt ? (nativeLabels_.isEmpty()
                                         ? "类别标签 · 模型自动读取"
@@ -1315,12 +1436,20 @@ void MainWindow::updateTaskUi()
     if (backendFooter_)
         backendFooter_->setText(pt ? "Qt 6.8.3  ·  PyTorch  ·  CPU" : "Qt 6.8.3  ·  OpenCV DNN  ·  CPU");
 }
+void MainWindow::updateModelMeta(const QString &state)
+{
+    const QString channels =
+        modelInputChannels_ > 0 ? QString("输入 %1 通道").arg(modelInputChannels_) : "输入通道待识别";
+    modelMeta_->setText(QString("%1  ·  %2 MB  ·  %3  ·  %4")
+                            .arg(modelFormat(modelPath_))
+                            .arg(QFileInfo(modelPath_).size() / 1048576.0, 0, 'f', 1)
+                            .arg(channels)
+                            .arg(state));
+}
 void MainWindow::onResult(const vision::InferenceResult &r)
 {
     lastResult_ = r;
-    modelMeta_->setText(QString("%1  ·  %2 MB  ·  已验证")
-                            .arg(modelFormat(modelPath_))
-                            .arg(QFileInfo(modelPath_).size() / 1048576.0, 0, 'f', 1));
+    updateModelMeta("已验证");
     canvas_->setResult(r);
     canvasTitle_->setText(sourceKind_ == vision::SourceKind::Images
                               ? QFileInfo(r.source).fileName()
@@ -1329,6 +1458,8 @@ void MainWindow::onResult(const vision::InferenceResult &r)
                                              ? "摄像头"
                                              : QFileInfo(streamPath_).fileName())
                                     .arg(r.frameNumber));
+    if (r.stereoView != vision::StereoView::Full)
+        canvasTitle_->setText(canvasTitle_->text() + " · " + stereoName(r.stereoView));
     countMetric_->setText(QString::number(r.predictions.size()));
     latencyMetric_->setText(QString::number(r.inferenceMs, 'f', 1));
     QSet<int> cls;
@@ -1336,6 +1467,11 @@ void MainWindow::onResult(const vision::InferenceResult &r)
         cls.insert(p.classId);
     classMetric_->setText(QString::number(cls.size()));
     sizeMetric_->setText(QString("%1 × %2").arg(r.image.width()).arg(r.image.height()));
+    sizeMetric_->setToolTip(r.sourceFrameSize.isEmpty() ? "预览与导出图像尺寸"
+                                                        : QString("原始输入 %1 × %2 · %3")
+                                                              .arg(r.sourceFrameSize.width())
+                                                              .arg(r.sourceFrameSize.height())
+                                                              .arg(stereoName(r.stereoView)));
     resultInfo_->setText(QString("%1 · %2 个%3\n总处理 %4 ms")
                              .arg(taskName(r.task))
                              .arg(r.predictions.size())
@@ -1450,7 +1586,7 @@ void MainWindow::runDemo()
     meanR_->setValue(0);
     meanG_->setValue(0);
     meanB_->setValue(0);
-    swapRB_->setChecked(true);
+    inputColorMode_->setCurrentIndex(0);
     labels_.clear();
     labelsPath_.clear();
     labelButton_->setText("类别标签 · 默认 COCO 80");
@@ -1559,28 +1695,41 @@ bool MainWindow::writeResult(const vision::InferenceResult &r, const QString &di
     }
     const QJsonObject preprocess{
         {"mode", isPtModel(lastConfig_.modelPath) ? "model_native" : "configured"},
+        {"color_mode", lastConfig_.colorMode == vision::InputColorMode::Grayscale
+                           ? "grayscale"
+                           : (lastConfig_.swapRB ? "rgb" : "bgr")},
         {"swap_rb", lastConfig_.swapRB},
         {"scale", lastConfig_.scale},
         {"mean_rgb", QJsonArray{lastConfig_.meanR, lastConfig_.meanG, lastConfig_.meanB}}};
     const QJsonObject config{{"input_size", lastConfig_.inputSize},
+                             {"input_channels", lastConfig_.inputChannels},
+                             {"color_mode", lastConfig_.colorMode == vision::InputColorMode::Grayscale
+                                                ? "grayscale"
+                                                : (lastConfig_.swapRB ? "rgb" : "bgr")},
                              {"confidence_threshold", double(lastConfig_.confidence)},
                              {"nms_iou", double(lastConfig_.iou)},
                              {"preprocess", preprocess}};
-    QJsonObject root{{"application", "Vision Studio"},
-                     {"version", "1.1.0"},
-                     {"timestamp", QDateTime::currentDateTime().toString(Qt::ISODateWithMs)},
-                     {"source", r.source},
-                     {"model", r.modelName},
-                     {"backend", r.backend},
-                     {"model_file", lastConfig_.modelPath},
-                     {"config", config},
-                     {"task", taskName(r.task)},
-                     {"width", r.image.width()},
-                     {"height", r.image.height()},
-                     {"frame", r.frameNumber},
-                     {"inference_ms", r.inferenceMs},
-                     {"total_ms", r.totalMs},
-                     {"predictions", predictions}};
+    QJsonObject root{
+        {"application", "Vision Studio"},
+        {"version", "1.2.0"},
+        {"timestamp", QDateTime::currentDateTime().toString(Qt::ISODateWithMs)},
+        {"source", r.source},
+        {"model", r.modelName},
+        {"backend", r.backend},
+        {"model_file", lastConfig_.modelPath},
+        {"config", config},
+        {"task", taskName(r.task)},
+        {"width", r.image.width()},
+        {"height", r.image.height()},
+        {"stereo_view", stereoCode(r.stereoView)},
+        {"source_frame_size",
+         QJsonObject{
+             {"width", r.sourceFrameSize.isEmpty() ? r.image.width() : r.sourceFrameSize.width()},
+             {"height", r.sourceFrameSize.isEmpty() ? r.image.height() : r.sourceFrameSize.height()}}},
+        {"frame", r.frameNumber},
+        {"inference_ms", r.inferenceMs},
+        {"total_ms", r.totalMs},
+        {"predictions", predictions}};
     return atomicWrite(base + ".json", QJsonDocument(root).toJson(), error) &&
            atomicWrite(base + ".csv", csv, error);
 }
@@ -1604,15 +1753,21 @@ void MainWindow::exportResult()
 }
 void MainWindow::recordResult(const vision::InferenceResult &r)
 {
-    QJsonObject o{{"time", QDateTime::currentDateTime().toString(Qt::ISODateWithMs)},
-                  {"source", r.source},
-                  {"model", r.modelName},
-                  {"objects", r.predictions.size()},
-                  {"inference_ms", r.inferenceMs},
-                  {"task", taskName(r.task)},
-                  {"width", r.image.width()},
-                  {"height", r.image.height()},
-                  {"frame", r.frameNumber}};
+    QJsonObject o{
+        {"time", QDateTime::currentDateTime().toString(Qt::ISODateWithMs)},
+        {"source", r.source},
+        {"model", r.modelName},
+        {"objects", r.predictions.size()},
+        {"inference_ms", r.inferenceMs},
+        {"task", taskName(r.task)},
+        {"width", r.image.width()},
+        {"height", r.image.height()},
+        {"stereo_view", stereoCode(r.stereoView)},
+        {"source_frame_size",
+         QJsonObject{
+             {"width", r.sourceFrameSize.isEmpty() ? r.image.width() : r.sourceFrameSize.width()},
+             {"height", r.sourceFrameSize.isEmpty() ? r.image.height() : r.sourceFrameSize.height()}}},
+        {"frame", r.frameNumber}};
     history_.prepend(o);
     while (history_.size() > 200)
         history_.removeLast();
@@ -1631,7 +1786,10 @@ void MainWindow::refreshHistory()
         auto o = history_[i].toObject();
         const QStringList values = {
             QDateTime::fromString(o["time"].toString(), Qt::ISODateWithMs).toString("MM-dd  HH:mm:ss"),
-            QFileInfo(o["source"].toString()).fileName(),
+            QFileInfo(o["source"].toString()).fileName() +
+                ((o["stereo_view"].toString() == "left" || o["stereo_view"].toString() == "right")
+                     ? " · " + stereoName(stereoMode(o["stereo_view"].toString()))
+                     : QString()),
             o["model"].toString(),
             QString::number(o["objects"].toInt()),
             QString::number(o["inference_ms"].toDouble(), 'f', 1) + " ms",
@@ -1716,7 +1874,10 @@ void MainWindow::persist()
         settings_->setValue("meanR", meanR_->value());
         settings_->setValue("meanG", meanG_->value());
         settings_->setValue("meanB", meanB_->value());
-        settings_->setValue("swapRB", swapRB_->isChecked());
+        settings_->setValue("colorMode", inputColorMode_->currentData());
+        settings_->setValue("stereoView", stereoView_->currentData());
+        settings_->setValue("cameraIndex", cameraIndex_->value());
+        settings_->setValue("swapRB", inputColorMode_->currentData().toString() != "bgr");
         settings_->setValue("autoExport", autoExport_->isChecked());
     }
     settings_->sync();

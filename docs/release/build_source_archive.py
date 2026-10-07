@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 import tarfile
 
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 SOURCE_ITEMS = ("src", "tests", "scripts", "packaging", "docs", "assets", "models", "vendor",
                 "CMakeLists.txt", "resources.qrc", "run.sh", "VisionStudio.desktop", "README.md",
                 "LICENSE", "requirements-pt.txt", "requirements-pt.lock.txt", "runtime-info.json",
@@ -53,7 +53,7 @@ def inventory(project, release):
             verification = "official .sha256 checked at download; local archive digest preserved"
         rows.append({"file": "sources/" + name, "bytes": path.stat().st_size,
                      "sha256": checksum, "url": url, "verification": verification})
-    data = {"application": "Vision Studio", "version": VERSION, "debian_version": "1.1.0-1",
+    data = {"application": "Vision Studio", "version": VERSION, "debian_version": f"{VERSION}-1",
             "maintainer": "misaka_ning <1468549029@qq.com>",
             "application_license": "AGPL-3.0-only",
             "application_archive": f"vision-studio-{VERSION}-sources.tar.xz",
@@ -99,7 +99,7 @@ def make_archive(destination, entries, prefix, overwrite, preset=3):
     if destination.exists() and not overwrite:
         raise RuntimeError(f"Source archive already exists: {destination}; use --overwrite to rebuild")
     temporary = destination.with_suffix(destination.suffix + ".tmp")
-    epoch = int(os.environ.get("SOURCE_DATE_EPOCH", "1791158400"))
+    epoch = int(os.environ.get("SOURCE_DATE_EPOCH", "1791244800"))
     try:
         with tarfile.open(temporary, "w:xz", preset=preset) as archive:
             for path, relative in entries:
@@ -150,7 +150,7 @@ def main():
                 (project / "docs/release/README-SOURCES.md", "README.md")]
     complete = release / f"vision-studio-{VERSION}-complete-source.tar.xz"
     make_archive(complete, entries, f"vision-studio-{VERSION}-complete-source", args.overwrite, preset=0)
-    deb = release / "vision-studio_1.1.0-1_amd64.deb"
+    deb = release / f"vision-studio_{VERSION}-1_amd64.deb"
     if not deb.is_file():
         raise RuntimeError("The final DEB is required before public SHA256SUMS can be generated")
     files = [deb, complete]

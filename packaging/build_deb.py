@@ -461,8 +461,9 @@ def stage_payload(arguments: argparse.Namespace) -> tuple[Path, dict[str, str]]:
         copy_tree(arguments.source_root / "docs/release", docs / "release")
         # Raw build/test logs can expose build-machine paths. They remain in the
         # separate source/verification release bundle, not in the installed app.
-        for path in (docs / "release").rglob("*.log"):
-            path.unlink()
+        for path in (docs / "release").rglob("*"):
+            if path.is_file() and (path.suffix == ".log" or ".log.tmp" in path.name):
+                path.unlink()
     shutil.copy2(arguments.source_root / "packaging/run-installed.sh", app / "run-installed.sh")
     (app / "run-installed.sh").chmod(0o755)
     (app / "run.sh").symlink_to("run-installed.sh")
@@ -508,6 +509,8 @@ def build(arguments: argparse.Namespace) -> None:
                "Description: Professional local YOLO vision model workspace\n"
                " C++ and Qt 6.8.3 desktop application with bundled CPU PyTorch runtime.\n"
                " Supports YOLO .pt and ONNX image, video, camera inference and result exports.\n"
+               " Grayscale input adapts to one or three model channels; side-by-side streams\n"
+               " can preview and infer the left or right eye independently.\n"
                " Built for Ubuntu 22.04 LTS amd64. Runtime assets reside in /opt/VisionStudio\n"
                " by default; results and settings are stored separately for each user.\n")
     write(arguments.stage / "DEBIAN/control", control)
@@ -548,7 +551,7 @@ def main() -> int:
                         help="Additional Qt 6.8.3 plugins directory, e.g. a supplemental QtImageFormats install.")
     parser.add_argument("--runtime", type=Path, required=True)
     parser.add_argument("--install-root", default=DEFAULT_ROOT)
-    parser.add_argument("--version", default="1.1.0-1")
+    parser.add_argument("--version", default="1.2.0-1")
     parser.add_argument("--stage", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--copyright", type=Path)

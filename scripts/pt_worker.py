@@ -88,14 +88,132 @@ def local_checkpoint_loader(path):
     return loader
 
 
-def letterbox(image, size):
+def checked_channels(value, color_mode):
+    if isinstance(value, bool) or not isinstance(value, int) or value not in (1, 3):
+        raise ValueError("当前支持输入通道数为 1 或 3 的模型。请检查模型输入层和 input_channels 元数据。")
+    if color_mode == "color" and value != 3:
+        raise ValueError("此模型需要单通道输入；请选择灰度模式后重新运行。")
+    return value
+
+
+def module_input_channels(model, color_mode):
+    """Read the actual YOLO input stem; YAML may be stale after customization."""
+    convolutions = [module for module in model.modules() if isinstance(module, torch.nn.Conv2d)]
+    actual = convolutions[0].in_channels if convolutions else None
+    stem = getattr(model, "model", None)
+    if isinstance(stem, (torch.nn.Sequential, torch.nn.ModuleList)) and len(stem) \
+            and stem[0].__class__.__name__ == "Focus" and actual is not None:
+        # Older YOLOv5 Focus concatenates four spatial slices before its Conv.
+        if actual % 4:
+            raise ValueError("YOLOv5 Focus 输入层的通道数无效。")
+        actual //= 4
+    yaml = getattr(model, "yaml", {})
+    declared = yaml.get("channels", yaml.get("ch")) if isinstance(yaml, dict) else None
+    if actual is None and declared is None:
+        raise ValueError("无法确定模型的输入通道数；请使用含输入层或通道元数据的完整模型。")
+    return checked_channels(actual if actual is not None else declared, color_mode)
+
+
+def script_input_channels(model, metadata, color_mode):
+    """Infer only from convolutions that consume the image input unchanged.
+
+    Saved TorchScript often erases TensorType input sizes. Reading an arbitrary
+    first parameter could mistake a later layer's channels for the input, so we
+    trace the graph back to the image argument and resolve its Conv weight.
+    """
+    graph = model.inlined_graph
+    inputs = list(graph.inputs())
+    image_inputs = [value for value in inputs if isinstance(value.type(), torch.TensorType)]
+    inferred = set()
+    if len(image_inputs) == 1:
+        image_input = image_inputs[0]
+        sizes = image_input.type().sizes()
+        if sizes is not None and len(sizes) == 4 and sizes[1] is not None:
+            inferred.add(sizes[1])
+        preserving = {"aten::to", "aten::contiguous", "aten::detach", "aten::clone", "aten::cpu",
+                      "aten::type_as", "aten::div", "aten::mul", "aten::sub", "aten::add"}
+
+        def unchanged_input(value):
+            if value == image_input:
+                return True
+            node = value.node()
+            if node.kind() not in preserving:
+                return False
+            arguments = list(node.inputs())
+            # Arithmetic with another image tensor may broadcast/change channels.
+            if node.kind() in {"aten::div", "aten::mul", "aten::sub", "aten::add"} \
+                    and len(arguments) > 1 and isinstance(arguments[1].type(), torch.TensorType):
+                return False
+            return bool(arguments) and unchanged_input(arguments[0])
+
+        def attribute_value(value):
+            if value == inputs[0]:
+                return model
+            node = value.node()
+            if node.kind() == "prim::GetAttr":
+                owner = attribute_value(list(node.inputs())[0])
+                return getattr(owner, node.s("name"))
+            return value.toIValue()
+
+        for node in graph.nodes():
+            if node.kind() not in ("aten::_convolution", "aten::conv2d", "aten::convolution"):
+                continue
+            arguments = list(node.inputs())
+            if not arguments or not unchanged_input(arguments[0]):
+                continue
+            try:
+                weight = attribute_value(arguments[1])
+                groups = arguments[6 if node.kind() == "aten::conv2d" else 8].toIValue()
+                if node.kind() != "aten::conv2d" and arguments[6].toIValue() is not False:
+                    continue  # transposed or dynamic convolution needs explicit metadata
+                if isinstance(weight, torch.Tensor) and weight.ndim == 4 \
+                        and isinstance(groups, int) and not isinstance(groups, bool) and groups > 0:
+                    inferred.add(int(weight.shape[1]) * groups)
+            except (AttributeError, RuntimeError, TypeError, IndexError):
+                continue
+    if len(inferred) > 1:
+        raise ValueError("TorchScript 输入层的通道约束不一致。")
+    declared = metadata.get("input_channels")
+    if declared is None:
+        shape = metadata.get("shape")
+        if isinstance(shape, (list, tuple)) and len(shape) == 4:
+            declared = shape[1]
+    actual = next(iter(inferred), None)
+    if declared is not None and actual is not None and declared != actual:
+        raise ValueError("TorchScript 的 input_channels 元数据与实际输入层不一致。")
+    if declared is None and actual is None:
+        raise ValueError("无法确定 TorchScript 的输入通道数；请在 config.txt 中添加 input_channels: 1 或 3。")
+    return checked_channels(declared if declared is not None else actual, color_mode)
+
+
+def prepared_image(image, color_mode, channels):
+    if color_mode == "color":
+        return image
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    return gray[:, :, None] if channels == 1 else cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
+
+
+def classification_tensor(image, size, color_mode, channels):
+    from PIL import Image
+    from ultralytics.data.augment import classify_transforms
+    prepared = prepared_image(image, color_mode, 3)
+    transform = classify_transforms(size=size, mean=(0.0, 0.0, 0.0), std=(1.0, 1.0, 1.0)) \
+        if color_mode == "grayscale" else classify_transforms(size=size)
+    tensor = transform(Image.fromarray(cv2.cvtColor(prepared, cv2.COLOR_BGR2RGB)))
+    return tensor[:channels].unsqueeze(0)
+
+
+def letterbox(image, size, color_mode="color", channels=3):
+    image = prepared_image(image, color_mode, channels)
     height, width = image.shape[:2]
     scale = min(size / width, size / height)
     new_width, new_height = max(1, round(width * scale)), max(1, round(height * scale))
     left, top = (size - new_width) // 2, (size - new_height) // 2
     resized = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
     padded = cv2.copyMakeBorder(resized, top, size - new_height - top,
-                                left, size - new_width - left, cv2.BORDER_CONSTANT, value=(114, 114, 114))
+                                left, size - new_width - left, cv2.BORDER_CONSTANT, value=(114,) * channels)
+    if channels == 1:
+        padded = padded[:, :, None] if padded.ndim == 2 else padded
     tensor = torch.from_numpy(np.ascontiguousarray(padded[:, :, ::-1].transpose(2, 0, 1))).float().unsqueeze(0) / 255.0
     return tensor, (left, top, new_width / width, new_height / height)
 
@@ -174,7 +292,7 @@ def classification_predictions(output, labels):
 
 
 class NativeYolo:
-    def __init__(self, path, model, checkpoint):
+    def __init__(self, path, model, checkpoint, color_mode):
         from ultralytics import YOLO
         from ultralytics.engine.model import Model as UltralyticsModel
 
@@ -201,10 +319,27 @@ class NativeYolo:
         self.backend = "PyTorch / Ultralytics / CPU"
         self.layout = "v8"
         self.source_path = path
+        self.color_mode = color_mode
+        self.input_channels = module_input_channels(model, color_mode)
 
     def infer(self, image, size, confidence, iou):
+        geometry = None
+        source = image
+        if self.color_mode == "grayscale":
+            if self.task == "classify":
+                source = classification_tensor(image, size, self.color_mode, self.input_channels)
+                start = time.perf_counter()
+                with torch.inference_mode():
+                    output = self.model.model(source)
+                inference_ms = (time.perf_counter() - start) * 1000
+                return classification_predictions(output, self.labels), inference_ms
+            else:
+                source, geometry = letterbox(image, size, self.color_mode, self.input_channels)
         start = time.perf_counter()
-        results = self.model.predict(source=image, imgsz=size, conf=confidence, iou=iou,
+        # Tensor sources bypass the framework's image loader and preserve C=1.
+        # Its Results coordinates then refer to our padded tensor; invert the
+        # exact resize below instead of treating them as original-image pixels.
+        results = self.model.predict(source=source, imgsz=size, conf=confidence, iou=iou,
                                      device="cpu", max_det=300, rect=False, agnostic_nms=False,
                                      verbose=False, save=False, show=False, stream=False)
         if len(results) != 1:
@@ -223,6 +358,14 @@ class NativeYolo:
             classes = result.boxes.cls.detach().cpu().tolist()
             for box, score, class_id in zip(boxes, scores, classes):
                 x1, y1, x2, y2 = box
+                if geometry is not None:
+                    left, top, scale_x, scale_y = geometry
+                    x1, x2 = (x1 - left) / scale_x, (x2 - left) / scale_x
+                    y1, y2 = (y1 - top) / scale_y, (y2 - top) / scale_y
+                    x1, x2 = max(0, min(image.shape[1], x1)), max(0, min(image.shape[1], x2))
+                    y1, y2 = max(0, min(image.shape[0], y1)), max(0, min(image.shape[0], y2))
+                    if x2 <= x1 or y2 <= y1:
+                        continue
                 predictions.append({"class_id": int(class_id), "confidence": float(score),
                                     "box": [x1, y1, x2 - x1, y2 - y1]})
         total_ms = (time.perf_counter() - start) * 1000
@@ -231,7 +374,7 @@ class NativeYolo:
 
 
 class LegacyYolo:
-    def __init__(self, path, existing_model=None):
+    def __init__(self, path, existing_model=None, color_mode="color"):
         if existing_model is None:
             if not install_legacy_path():
                 raise ValueError("旧版 YOLOv5 .pt 需要随应用提供的 vendor/yolov5 框架。请保留完整项目目录。")
@@ -264,9 +407,11 @@ class LegacyYolo:
         self.backend = "PyTorch / YOLOv5 / CPU"
         self.layout = "v5"
         self.source_path = path
+        self.color_mode = color_mode
+        self.input_channels = module_input_channels(self.model, color_mode)
 
     def infer(self, image, size, confidence, iou):
-        tensor, geometry = letterbox(image, size)
+        tensor, geometry = letterbox(image, size, self.color_mode, self.input_channels)
         start = time.perf_counter()
         with torch.inference_mode():
             output = self.model(tensor)
@@ -275,19 +420,23 @@ class LegacyYolo:
 
 
 class TorchScriptYolo:
-    def __init__(self, path, task, size, supplied_labels):
+    def __init__(self, path, task, size, supplied_labels, color_mode):
         extra = {"config.txt": ""}
         self.model = torch.jit.load(str(path), map_location="cpu", _extra_files=extra).float().eval()
         metadata = {}
         if extra["config.txt"]:
             metadata = json.loads(extra["config.txt"])
+        if not isinstance(metadata, dict):
+            raise ValueError("TorchScript 的 config.txt 必须是 JSON 对象。")
         self.task = metadata.get("task", "classify" if task == "classify" else "detect")
         if self.task not in ("detect", "classify"):
             raise ValueError("此 TorchScript 模型任务尚不受支持；请选择检测或分类模型。")
         self.labels = labels_list(metadata.get("names", supplied_labels))
         self.layout = "v5" if task == "v5" else "v8"
+        self.color_mode = color_mode
+        self.input_channels = script_input_channels(self.model, metadata, color_mode)
         with torch.inference_mode():
-            output = primary_tensor(self.model(torch.zeros(1, 3, size, size)))
+            output = primary_tensor(self.model(torch.zeros(1, self.input_channels, size, size)))
         if self.task == "detect":
             if output.ndim != 3 or output.shape[0] != 1:
                 raise ValueError("TorchScript 检测模型没有标准原始 YOLO 输出。")
@@ -304,13 +453,10 @@ class TorchScriptYolo:
 
     def infer(self, image, size, confidence, iou):
         if self.task == "classify":
-            from PIL import Image
-            from ultralytics.data.augment import classify_transforms
-            transform = classify_transforms(size=size)
-            tensor = transform(Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))).unsqueeze(0)
+            tensor = classification_tensor(image, size, self.color_mode, self.input_channels)
             geometry = None
         else:
-            tensor, geometry = letterbox(image, size)
+            tensor, geometry = letterbox(image, size, self.color_mode, self.input_channels)
         start = time.perf_counter()
         with torch.inference_mode():
             output = self.model(tensor)
@@ -328,7 +474,7 @@ def load_model(arguments):
         raise ValueError(".pt 模型文件为空。")
     labels = json.loads(arguments.labels)
     if is_torchscript(path):
-        return TorchScriptYolo(path, arguments.task, arguments.size, labels)
+        return TorchScriptYolo(path, arguments.task, arguments.size, labels, arguments.color_mode)
     install_legacy_path()
     try:
         model, checkpoint = local_checkpoint_loader(path)(str(path), device=torch.device("cpu"))
@@ -336,9 +482,9 @@ def load_model(arguments):
             raise ValueError("模型框架没有加载所选的本地文件，已拒绝继续推理。")
         module_namespace = model.__class__.__module__
         if module_namespace.startswith("models."):
-            return LegacyYolo(path, model)
+            return LegacyYolo(path, model, arguments.color_mode)
         if module_namespace.startswith("ultralytics."):
-            return NativeYolo(path, model, checkpoint)
+            return NativeYolo(path, model, checkpoint, arguments.color_mode)
         raise ValueError("此 .pt 的网络架构不属于支持的 YOLO 框架。")
     except ValueError:
         raise
@@ -354,6 +500,7 @@ def main():
     parser.add_argument("--task", choices=("detect", "v5", "classify"), default="detect")
     parser.add_argument("--size", type=int, default=640)
     parser.add_argument("--labels", default="[]")
+    parser.add_argument("--color-mode", choices=("color", "grayscale"), default="color")
     arguments = parser.parse_args()
     config_directory = os.environ.get("YOLO_CONFIG_DIR")
     if config_directory:
@@ -371,9 +518,14 @@ def main():
                "detail": str(error)[:1500]})
         return 1
     try:
+        if not 16 <= arguments.size <= 4096:
+            raise ValueError("模型输入尺寸必须在 16 至 4096 之间。")
         backend = load_model(arguments)
+        if backend.task == "detect" and arguments.size % 32:
+            raise ValueError(".pt 检测模型输入尺寸必须是 32 的倍数；请调整输入尺寸后重新加载。")
         reply({"ok": True, "event": "ready", "protocol": 1, "task": backend.task,
                "layout": backend.layout,
+               "input_channels": backend.input_channels,
                "model_path": str(backend.source_path),
                "labels": backend.labels, "backend": backend.backend,
                "versions": {"torch": torch.__version__, "python": sys.version.split()[0]}})

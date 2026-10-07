@@ -69,6 +69,7 @@ class MainWindow : public QMainWindow
     void selectRoute(int index);
     void updateSourceUi();
     void updateTaskUi();
+    void updateModelMeta(const QString &state);
     vision::ModelConfig currentConfig() const;
     QString projectRoot_, dataRoot_, modelPath_, labelsPath_, streamPath_, exportDir_, smokeDir_;
     QStringList files_, labels_, models_;
@@ -79,7 +80,7 @@ class MainWindow : public QMainWindow
     QString lastError_;
     QJsonArray history_;
     bool busy_ = false, closing_ = false, failed_ = false;
-    int completed_ = 0;
+    int completed_ = 0, modelInputChannels_ = 0;
     QSettings *settings_ = nullptr;
     QThread *workerThread_ = nullptr;
     vision::InferenceWorker *worker_ = nullptr;
@@ -91,15 +92,16 @@ class MainWindow : public QMainWindow
            *sizeMetric_ = nullptr, *canvasTitle_ = nullptr, *zoomLabel_ = nullptr, *resultInfo_ = nullptr,
            *emptyResults_ = nullptr, *modelCount_ = nullptr;
     QLabel *backendBadge_ = nullptr, *backendFooter_ = nullptr;
+    QLabel *preprocessHint_ = nullptr, *meanRLabel_ = nullptr, *stereoLabel_ = nullptr;
     QPushButton *runButton_ = nullptr, *stopButton_ = nullptr, *exportButton_ = nullptr,
                 *demoButton_ = nullptr, *modelButton_ = nullptr, *labelButton_ = nullptr;
     QListWidget *queue_ = nullptr, *modelList_ = nullptr;
     QTableWidget *predictionTable_ = nullptr, *historyTable_ = nullptr;
-    QComboBox *taskBox_ = nullptr;
+    QComboBox *taskBox_ = nullptr, *inputColorMode_ = nullptr, *stereoView_ = nullptr;
     QSpinBox *inputSize_ = nullptr, *cameraIndex_ = nullptr;
     QDoubleSpinBox *confidence_ = nullptr, *iou_ = nullptr, *scale_ = nullptr, *meanR_ = nullptr,
                    *meanG_ = nullptr, *meanB_ = nullptr;
-    QCheckBox *swapRB_ = nullptr, *autoExport_ = nullptr, *showBoxes_ = nullptr, *showLabels_ = nullptr;
+    QCheckBox *autoExport_ = nullptr, *showBoxes_ = nullptr, *showLabels_ = nullptr;
     QProgressBar *progress_ = nullptr;
     ImageCanvas *canvas_ = nullptr;
     QList<QWidget *> lockedControls_;

@@ -32,6 +32,19 @@ QImage frameToImage(const cv::Mat &frame)
 
 } // namespace
 
+QImage selectStereoView(const QImage &image, StereoView view)
+{
+    if (image.isNull())
+        throw std::runtime_error("双目画面为空，无法选择左目或右目。");
+    if (view == StereoView::Full)
+        return image;
+    if (image.width() < 2)
+        throw std::runtime_error("双目拼接画面宽度至少需要 2 像素，请检查摄像头输出。");
+    const int leftWidth = image.width() / 2;
+    return view == StereoView::Left ? image.copy(0, 0, leftWidth, image.height())
+                                    : image.copy(leftWidth, 0, image.width() - leftWidth, image.height());
+}
+
 void InferenceWorker::run(vision::JobRequest request)
 {
     try
@@ -70,6 +83,7 @@ void InferenceWorker::run(vision::JobRequest request)
                                                  .constData());
                 auto result = engine.infer(image, request.files.at(i));
                 result.frameNumber = i + 1;
+                result.sourceFrameSize = image.size();
                 if (stopping())
                     break;
                 emit resultReady(std::move(result));
@@ -94,8 +108,8 @@ void InferenceWorker::run(vision::JobRequest request)
             if (camera)
             {
                 capture.set(cv::CAP_PROP_BUFFERSIZE, 1);
-                capture.set(cv::CAP_PROP_FRAME_WIDTH, 1280);
-                capture.set(cv::CAP_PROP_FRAME_HEIGHT, 720);
+                // Preserve the device's native layout. A forced 16:9 mode can
+                // change a stereo camera's side-by-side output or aspect ratio.
             }
             const double count = capture.get(cv::CAP_PROP_FRAME_COUNT);
             const int total = !camera && std::isfinite(count) && count > 0
@@ -104,7 +118,11 @@ void InferenceWorker::run(vision::JobRequest request)
             const double rawFps = capture.get(cv::CAP_PROP_FPS);
             const double fps = std::isfinite(rawFps) && rawFps > 0.1 && rawFps < 1000 ? rawFps : 25;
             emit progress(0, total);
-            emit status(camera ? QStringLiteral("摄像头实时推理中…") : QStringLiteral("视频逐帧推理中…"));
+            const QString eye = request.stereoView == StereoView::Left
+                                    ? QStringLiteral(" · 左目")
+                                    : request.stereoView == StereoView::Right ? QStringLiteral(" · 右目") : QString();
+            emit status((camera ? QStringLiteral("摄像头实时推理中") : QStringLiteral("视频逐帧推理中")) + eye +
+                        QStringLiteral("…"));
             qint64 frameNumber = 0;
             qint64 lastDeliveredNumber = 0;
             std::optional<InferenceResult> lastResult;
@@ -126,8 +144,11 @@ void InferenceWorker::run(vision::JobRequest request)
                 ++frameNumber;
                 QElapsedTimer frameTimer;
                 frameTimer.start();
-                auto result = engine.infer(frameToImage(frame), source);
+                const QImage sourceImage = frameToImage(frame);
+                auto result = engine.infer(selectStereoView(sourceImage, request.stereoView), source);
                 result.frameNumber = frameNumber;
+                result.stereoView = request.stereoView;
+                result.sourceFrameSize = sourceImage.size();
                 lastResult = std::move(result);
                 if (stopping())
                     break;

@@ -7,6 +7,9 @@
 namespace vision
 {
 
+// A side-by-side stream is split before inference; coordinates are relative to the selected eye.
+QImage selectStereoView(const QImage &image, StereoView view);
+
 class InferenceWorker final : public QObject
 {
     Q_OBJECT

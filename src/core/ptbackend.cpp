@@ -202,10 +202,11 @@ void PtBackend::load(const ModelConfig &config)
 {
     reset();
     // The UI's spin box rounds the default 1/255 value to eight decimal places.
-    if (!config.swapRB || std::abs(config.scale - 1.0 / 255.0) > 1e-8 || config.meanR != 0 ||
+    if ((config.colorMode == InputColorMode::Color && !config.swapRB) ||
+        std::abs(config.scale - 1.0 / 255.0) > 1e-8 || config.meanR != 0 ||
         config.meanG != 0 || config.meanB != 0)
-        fail(QStringLiteral(".pt 使用模型原生的 RGB 和归一化预处理。请把通道交换恢复为 RGB、"
-                            "缩放系数恢复为 1/255、三通道均值恢复为 0。"));
+        fail(QStringLiteral(".pt 支持 RGB 彩色或灰度输入。彩色模式请使用 RGB；灰度模式忽略通道交换。"
+                            "缩放系数应为 1/255、三通道均值应为 0。"));
     const QString script = helperPath();
     const QString python = interpreterPath(script);
     auto process = std::make_unique<QProcess>();
@@ -228,7 +229,8 @@ void PtBackend::load(const ModelConfig &config)
         {"-u", script, "--model", QFileInfo(config.modelPath).absoluteFilePath(), "--task", task, "--size",
          QString::number(config.inputSize), "--labels",
          QString::fromUtf8(
-             QJsonDocument(QJsonArray::fromStringList(config.labels)).toJson(QJsonDocument::Compact))});
+             QJsonDocument(QJsonArray::fromStringList(config.labels)).toJson(QJsonDocument::Compact)),
+         "--color-mode", config.colorMode == InputColorMode::Grayscale ? "grayscale" : "color"});
     m_process = std::move(process);
     if (m_cancellationCheck && m_cancellationCheck())
         processFailure(QStringLiteral("PyTorch 推理已取消。"));
@@ -255,6 +257,11 @@ void PtBackend::load(const ModelConfig &config)
         if (loadedModelPath.isEmpty() || expectedPath.isEmpty() ||
             QFileInfo(loadedModelPath).canonicalFilePath() != expectedPath)
             fail(QStringLiteral("PyTorch 推理进程加载的文件与所选模型不一致，已拒绝继续推理。"));
+        const QJsonValue channels = ready.value("input_channels");
+        if (!finiteNumber(channels) || (channels.toDouble() != 1 && channels.toDouble() != 3))
+            fail(QStringLiteral("PyTorch 模型输入通道元数据无效；当前支持 1 或 3 通道模型。"));
+        if (config.colorMode == InputColorMode::Color && channels.toInt() != 3)
+            fail(QStringLiteral("此模型需要单通道输入；请选择灰度模式后重新运行。"));
         const QString detectedTask = ready.value("task").toString();
         if (detectedTask != "detect" && detectedTask != "classify")
             fail(QStringLiteral("此 .pt 模型任务尚不受支持；请选择目标检测或分类模型。"));
@@ -275,6 +282,7 @@ void PtBackend::load(const ModelConfig &config)
                      .arg(config.labels.size())
                      .arg(labels.size()));
         m_config = config;
+        m_config.inputChannels = channels.toInt();
         const QString layout = ready.value("layout").toString("v8");
         if (detectedTask == "detect" && layout != "v5" && layout != "v8")
             fail(QStringLiteral("PyTorch 检测模型格式元数据无效。"));
