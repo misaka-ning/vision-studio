@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "version": "2.0.0",
+  "success": true,
+  "run_label": "final-caption-fix",
+  "rerun_reason": "Rebuilt and revalidated after fixing the release-blocking sidebar Beta caption and stylesheet comment; the previous complete pass was archived separately as candidate evidence.",
+  "errors": [],
+  "registered_suites": 10,
+  "all_suites_passed": 10,
+  "failed": 0,
+  "qt_skipped": 0,
+  "python_skipped": 0,
+  "elapsed_seconds": 200.968,
+  "log": "ctest-all.log",
+  "execution": "ctest-all.log.execution.json",
+  "log_sha256": "84c4a711fc1e3276b433fd19421d01586aaa9e2178a624d59d130c8ef87ca43a",
+  "qt_suites": [
+    {
+      "ctest_number": 1,
+      "name": "vision-core-tests",
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 433
+    },
+    {
+      "ctest_number": 2,
+      "name": "vision-inference-delivery-tests",
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 1499
+    },
+    {
+      "ctest_number": 3,
+      "name": "vision-recording-tests",
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 2708
+    },
+    {
+      "ctest_number": 4,
+      "name": "vision-pt-tests",
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 76606
+    },
+    {
+      "ctest_number": 5,
+      "name": "vision-gpu-tests",
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 53361
+    },
+    {
+      "ctest_number": 6,
+      "name": "vision-ui-tests",
+      "passed": 33,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 36405
+    },
+    {
+      "ctest_number": 7,
+      "name": "vision-batch-responsiveness-tests",
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 8977
+    },
+    {
+      "ctest_number": 8,
+      "name": "vision-modelviewer-tests",
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 13660
+    }
+  ],
+  "python_suites": [
+    {
+      "ctest_number": 9,
+      "name": "vision-netron-server-tests",
+      "tests": 11,
+      "skipped": 0,
+      "success": true,
+      "elapsed_seconds": 4.905
+    },
+    {
+      "ctest_number": 10,
+      "name": "vision-gpu-runtime-tests",
+      "tests": 21,
+      "skipped": 0,
+      "success": true,
+      "elapsed_seconds": 1.356
+    }
+  ],
+  "focused_ui_regression": {
+    "functional_rows": 17,
+    "qt_passed": 19,
+    "failed": 0,
+    "skipped": 0,
+    "elapsed_seconds": 20.719,
+    "log": "ui-focused.log"
+  },
+  "focused_ui_stage": "integration_candidate; final verification is the complete CTest run",
+  "batch_responsiveness": [
+    {
+      "accepted_after_stop": 1,
+      "accepted_at_stop": 1,
+      "automatic_export": true,
+      "backend": "OpenCV DNN / CPU",
+      "cache_survives_removed_sources": true,
+      "complete_exports": true,
+      "device": "cpu",
+      "heartbeat_ticks": 48,
+      "height": 1080,
+      "maximum_heartbeat_gap_ms": 20,
+      "observed_stop_elapsed_ms": 40,
+      "scheduled_stop_dispatch_ms": 30,
+      "total_images": 3,
+      "width": 1920
+    },
+    {
+      "accepted_after_stop": 1,
+      "accepted_at_stop": 1,
+      "automatic_export": true,
+      "backend": "OpenCV DNN / CPU",
+      "cache_survives_removed_sources": true,
+      "complete_exports": true,
+      "device": "cpu",
+      "heartbeat_ticks": 173,
+      "height": 2160,
+      "maximum_heartbeat_gap_ms": 15,
+      "observed_stop_elapsed_ms": 30,
+      "scheduled_stop_dispatch_ms": 38,
+      "total_images": 3,
+      "width": 3840
+    }
+  ],
+  "bounded_image_delivery": {
+    "maximum_unacknowledged": 1,
+    "stop_elapsed_ms": 50,
+    "delivered": 2,
+    "total_images": 3
+  },
+  "automatic_export_disk_failure_recovery": true,
+  "note": "All registered suites ran serially on the Release build with actual GPU tests explicitly enabled. The 64-image folder regression uses distinct small RGB images and zero detections with real ONNX CPU inference; existing tests cover nonzero RGB/grayscale detections. Model reordering exercises Qt internal moveRows, global selection and restart persistence, rather than a physical mouse drag gesture. Physical camera was not tested."
+}

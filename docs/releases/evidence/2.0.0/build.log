@@ -1,0 +1,15 @@
+[1/18] Automatic MOC for target vision-studio
+[2/17] Automatic MOC for target vision-ui-tests
+[3/16] Automatic MOC for target vision-batch-responsiveness-tests
+[4/15] Automatic RCC for resources.qrc
+[5/15] Automatic RCC for resources.qrc
+[6/15] Automatic RCC for resources.qrc
+[7/15] Building CXX object CMakeFiles/vision-ui-tests.dir/vision-ui-tests_autogen/EWIEGA46WW/qrc_resources.cpp.o
+[8/15] Building CXX object CMakeFiles/vision-studio.dir/vision-studio_autogen/EWIEGA46WW/qrc_resources.cpp.o
+[9/15] Building CXX object CMakeFiles/vision-batch-responsiveness-tests.dir/vision-batch-responsiveness-tests_autogen/EWIEGA46WW/qrc_resources.cpp.o
+[10/15] Building CXX object CMakeFiles/vision-batch-responsiveness-tests.dir/src/ui/mainwindow.cpp.o
+[11/15] Building CXX object CMakeFiles/vision-ui-tests.dir/src/ui/mainwindow.cpp.o
+[12/15] Building CXX object CMakeFiles/vision-studio.dir/src/ui/mainwindow.cpp.o
+[13/15] Linking CXX executable vision-batch-responsiveness-tests
+[14/15] Linking CXX executable vision-ui-tests
+[15/15] Linking CXX executable bin/vision-studio

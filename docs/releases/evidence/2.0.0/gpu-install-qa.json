@@ -1,0 +1,573 @@
+{
+  "schema": 1,
+  "success": true,
+  "version": "2.0.0",
+  "deb_version": "2.0.0-1",
+  "deb": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.0.0/vision-studio_2.0.0-1_amd64.deb",
+  "deb_sha256": "2e5a467b07d82cf600eedeec2bd40624a724efccb4715366997ef04f3a4a042e",
+  "runtime_dir": "/home/misaka/.local/share/vision-studio/gpu-runtime",
+  "gpu_index": 0,
+  "checks": {
+    "packaged_onnx_cuda": true,
+    "packaged_pt_cuda": true,
+    "cpu_regression": true
+  },
+  "evidence": {
+    "onnx_cuda": {
+      "success": true,
+      "arguments": [
+        "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/root/opt/VisionStudio/run-installed.sh",
+        "--device",
+        "cuda",
+        "--gpu-index",
+        "0",
+        "--smoke",
+        "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/onnx_cuda/results"
+      ],
+      "error": "",
+      "exit_code": 0,
+      "timed_out": false,
+      "report": {
+        "actual_device": "cuda",
+        "backend": "ONNX Runtime / CUDA",
+        "device_index": 0,
+        "device_name": "NVIDIA GeForce RTX 4060",
+        "device_notice": "",
+        "error": "",
+        "inference_ms": 12.376473,
+        "predictions": 5,
+        "qt": "6.8.3",
+        "requested_device": "cuda",
+        "success": true
+      },
+      "exports": [
+        {
+          "file": "bus-20261008-165449-892-f1.json",
+          "sha256": "1e920737e9d0e8030bb680ccd3e97b86d4ccc0d52d1ab165aab872267eae88e8",
+          "report": {
+            "actual_device": "cuda",
+            "application": "Vision Studio",
+            "backend": "ONNX Runtime / CUDA",
+            "config": {
+              "color_mode": "rgb",
+              "confidence_threshold": 0.25,
+              "input_channels": 3,
+              "input_size": 640,
+              "nms_iou": 0.44999998807907104,
+              "preprocess": {
+                "color_mode": "rgb",
+                "mean_rgb": [
+                  0,
+                  0,
+                  0
+                ],
+                "mode": "configured",
+                "scale": 0.00392157,
+                "swap_rb": true
+              }
+            },
+            "device_index": 0,
+            "device_name": "NVIDIA GeForce RTX 4060",
+            "device_notice": "",
+            "frame": 1,
+            "height": 1080,
+            "inference_ms": 12.376473,
+            "model": "yolov5n.onnx",
+            "model_file": "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/root/opt/VisionStudio/models/yolov5n.onnx",
+            "predictions": [
+              {
+                "class_id": 0,
+                "confidence": 0.8113210797309875,
+                "height": 491.25525856018066,
+                "label": "person",
+                "width": 178.21703052520752,
+                "x": 50.96057653427124,
+                "y": 397.24106884002686
+              },
+              {
+                "class_id": 0,
+                "confidence": 0.7569612860679626,
+                "height": 448.6468105316162,
+                "label": "person",
+                "width": 123.39116334915161,
+                "x": 221.85903239250183,
+                "y": 412.81274700164795
+              },
+              {
+                "class_id": 5,
+                "confidence": 0.7007485628128052,
+                "height": 551.2551326751709,
+                "label": "bus",
+                "width": 759.9337577819824,
+                "x": 16.60030746459961,
+                "y": 235.70589351654053
+              },
+              {
+                "class_id": 0,
+                "confidence": 0.6967292428016663,
+                "height": 476.4364356994629,
+                "label": "person",
+                "width": 123.45950174331665,
+                "x": 686.5404982566833,
+                "y": 389.5322971343994
+              },
+              {
+                "class_id": 0,
+                "confidence": 0.28018414974212646,
+                "height": 311.0678987503052,
+                "label": "person",
+                "width": 64.4485033750534,
+                "x": 0,
+                "y": 567.5767951011658
+              }
+            ],
+            "requested_device": "cuda",
+            "source": "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/root/opt/VisionStudio/assets/bus.jpg",
+            "source_frame_size": {
+              "height": 1080,
+              "width": 810
+            },
+            "stereo_view": "full",
+            "task": "YOLOv5",
+            "timestamp": "2026-10-08T16:54:49.892",
+            "total_ms": 19.172578,
+            "version": "2.0.0",
+            "width": 810
+          },
+          "png_sha256": "e8fc25906fe4f7efbfab9f23fb62d0e0b2da13fec4aa9fd04cb5c6076deb08b8",
+          "csv_sha256": "426f57f2267770893a707ae7695412f519d30aaad53af2e7faf19112d2c09717"
+        }
+      ],
+      "elapsed_seconds": 1.721,
+      "stdout": {
+        "bytes": 0,
+        "truncated": false,
+        "text": ""
+      },
+      "stderr": {
+        "bytes": 453,
+        "truncated": false,
+        "text": "QRhiGles2: Failed to create temporary context\nQRhiGles2: Failed to create context\nThis plugin does not support createPlatformVulkanInstance\nQVulkanInstance: Failed to initialize Vulkan\nUnable to detect GPU vendor.\n{\"actual_device\":\"cuda\",\"backend\":\"ONNX Runtime / CUDA\",\"device_index\":0,\"device_name\":\"NVIDIA GeForce RTX 4060\",\"device_notice\":\"\",\"error\":\"\",\"inference_ms\":12.376473,\"predictions\":5,\"qt\":\"6.8.3\",\"requested_device\":\"cuda\",\"success\":true}\n"
+      }
+    },
+    "pt_cuda": {
+      "success": true,
+      "arguments": [
+        "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/root/opt/VisionStudio/run-installed.sh",
+        "--device",
+        "cuda",
+        "--gpu-index",
+        "0",
+        "--smoke-pt",
+        "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/pt_cuda/results"
+      ],
+      "error": "",
+      "exit_code": 0,
+      "timed_out": false,
+      "report": {
+        "actual_device": "cuda",
+        "backend": "PyTorch / Ultralytics / CUDA",
+        "device_index": 0,
+        "device_name": "NVIDIA GeForce RTX 4060",
+        "device_notice": "",
+        "error": "",
+        "inference_ms": 2.780134091153741,
+        "predictions": 5,
+        "qt": "6.8.3",
+        "requested_device": "cuda",
+        "success": true
+      },
+      "exports": [
+        {
+          "file": "bus-20261008-165453-067-f1.json",
+          "sha256": "de18aa875ad2ddaf18cd1e86292e0d6edb7cf755b164fdbf2a42426ced7b93d6",
+          "report": {
+            "actual_device": "cuda",
+            "application": "Vision Studio",
+            "backend": "PyTorch / Ultralytics / CUDA",
+            "config": {
+              "color_mode": "rgb",
+              "confidence_threshold": 0.25,
+              "input_channels": 3,
+              "input_size": 640,
+              "nms_iou": 0.44999998807907104,
+              "preprocess": {
+                "color_mode": "rgb",
+                "mean_rgb": [
+                  0,
+                  0,
+                  0
+                ],
+                "mode": "model_native",
+                "scale": 0.00392156862745098,
+                "swap_rb": true
+              }
+            },
+            "device_index": 0,
+            "device_name": "NVIDIA GeForce RTX 4060",
+            "device_notice": "",
+            "frame": 1,
+            "height": 1080,
+            "inference_ms": 2.780134091153741,
+            "model": "yolov8n.pt",
+            "model_file": "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/root/opt/VisionStudio/models/yolov8n.pt",
+            "predictions": [
+              {
+                "class_id": 0,
+                "confidence": 0.9009041786193848,
+                "height": 501.773681640625,
+                "label": "person",
+                "width": 138.97821044921875,
+                "x": 671.0217895507812,
+                "y": 378.0269775390625
+              },
+              {
+                "class_id": 0,
+                "confidence": 0.8838161826133728,
+                "height": 448.2424011230469,
+                "label": "person",
+                "width": 122.055908203125,
+                "x": 221.422119140625,
+                "y": 407.5936584472656
+              },
+              {
+                "class_id": 0,
+                "confidence": 0.8755385279655457,
+                "height": 506.740966796875,
+                "label": "person",
+                "width": 193.72353744506836,
+                "x": 50.35676956176758,
+                "y": 398.09674072265625
+              },
+              {
+                "class_id": 5,
+                "confidence": 0.8421508073806763,
+                "height": 539.2234954833984,
+                "label": "bus",
+                "width": 761.2479515075684,
+                "x": 34.33664321899414,
+                "y": 229.3249053955078
+              },
+              {
+                "class_id": 0,
+                "confidence": 0.4358821511268616,
+                "height": 317.4464111328125,
+                "label": "person",
+                "width": 59.878671646118164,
+                "x": 0.4055500030517578,
+                "y": 550.6466064453125
+              }
+            ],
+            "requested_device": "cuda",
+            "source": "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/root/opt/VisionStudio/assets/bus.jpg",
+            "source_frame_size": {
+              "height": 1080,
+              "width": 810
+            },
+            "stereo_view": "full",
+            "task": "YOLOv8 / 11",
+            "timestamp": "2026-10-08T16:54:53.067",
+            "total_ms": 100.940523,
+            "version": "2.0.0",
+            "width": 810
+          },
+          "png_sha256": "7310b266125ec51b537d2a3144dbe21e18fe0410f4907dcde3f3c9158f9ba05a",
+          "csv_sha256": "cff8fa072279ce6e3808e2a8ae987cdec4554f9b76b40e462c3e2f96bd57aa3f"
+        }
+      ],
+      "elapsed_seconds": 3.071,
+      "stdout": {
+        "bytes": 0,
+        "truncated": false,
+        "text": ""
+      },
+      "stderr": {
+        "bytes": 470,
+        "truncated": false,
+        "text": "QRhiGles2: Failed to create temporary context\nQRhiGles2: Failed to create context\nThis plugin does not support createPlatformVulkanInstance\nQVulkanInstance: Failed to initialize Vulkan\nUnable to detect GPU vendor.\n{\"actual_device\":\"cuda\",\"backend\":\"PyTorch / Ultralytics / CUDA\",\"device_index\":0,\"device_name\":\"NVIDIA GeForce RTX 4060\",\"device_notice\":\"\",\"error\":\"\",\"inference_ms\":2.780134091153741,\"predictions\":5,\"qt\":\"6.8.3\",\"requested_device\":\"cuda\",\"success\":true}\n"
+      }
+    },
+    "onnx_cpu": {
+      "success": true,
+      "arguments": [
+        "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/root/opt/VisionStudio/run-installed.sh",
+        "--device",
+        "cpu",
+        "--gpu-index",
+        "0",
+        "--smoke",
+        "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/onnx_cpu/results"
+      ],
+      "error": "",
+      "exit_code": 0,
+      "timed_out": false,
+      "report": {
+        "actual_device": "cpu",
+        "backend": "OpenCV DNN / CPU",
+        "device_index": -1,
+        "device_name": "CPU",
+        "device_notice": "",
+        "error": "",
+        "inference_ms": 61.388789,
+        "predictions": 5,
+        "qt": "6.8.3",
+        "requested_device": "cpu",
+        "success": true
+      },
+      "exports": [
+        {
+          "file": "bus-20261008-165454-238-f1.json",
+          "sha256": "7a5d3d369671f6c06393875dd8aef161073f691ea9723cf1818028d3ab436cd9",
+          "report": {
+            "actual_device": "cpu",
+            "application": "Vision Studio",
+            "backend": "OpenCV DNN / CPU",
+            "config": {
+              "color_mode": "rgb",
+              "confidence_threshold": 0.25,
+              "input_channels": 3,
+              "input_size": 640,
+              "nms_iou": 0.44999998807907104,
+              "preprocess": {
+                "color_mode": "rgb",
+                "mean_rgb": [
+                  0,
+                  0,
+                  0
+                ],
+                "mode": "configured",
+                "scale": 0.00392157,
+                "swap_rb": true
+              }
+            },
+            "device_index": -1,
+            "device_name": "CPU",
+            "device_notice": "",
+            "frame": 1,
+            "height": 1080,
+            "inference_ms": 61.388789,
+            "model": "yolov5n.onnx",
+            "model_file": "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/root/opt/VisionStudio/models/yolov5n.onnx",
+            "predictions": [
+              {
+                "class_id": 0,
+                "confidence": 0.8113212585449219,
+                "height": 491.2555160522461,
+                "label": "person",
+                "width": 178.21703052520752,
+                "x": 50.9605507850647,
+                "y": 397.24094009399414
+              },
+              {
+                "class_id": 0,
+                "confidence": 0.7569612860679626,
+                "height": 448.64670753479004,
+                "label": "person",
+                "width": 123.39118909835815,
+                "x": 221.85901951789856,
+                "y": 412.8128499984741
+              },
+              {
+                "class_id": 5,
+                "confidence": 0.70074862241745,
+                "height": 551.2556476593018,
+                "label": "bus",
+                "width": 759.9342727661133,
+                "x": 16.600101470947266,
+                "y": 235.7056360244751
+              },
+              {
+                "class_id": 0,
+                "confidence": 0.6967291831970215,
+                "height": 476.43653869628906,
+                "label": "person",
+                "width": 123.45953392982483,
+                "x": 686.5404660701752,
+                "y": 389.5322971343994
+              },
+              {
+                "class_id": 0,
+                "confidence": 0.2801841199398041,
+                "height": 311.06787300109863,
+                "label": "person",
+                "width": 64.4484840631485,
+                "x": 0,
+                "y": 567.576807975769
+              }
+            ],
+            "requested_device": "cpu",
+            "source": "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/root/opt/VisionStudio/assets/bus.jpg",
+            "source_frame_size": {
+              "height": 1080,
+              "width": 810
+            },
+            "stereo_view": "full",
+            "task": "YOLOv5",
+            "timestamp": "2026-10-08T16:54:54.238",
+            "total_ms": 66.100526,
+            "version": "2.0.0",
+            "width": 810
+          },
+          "png_sha256": "a695515485b703a2bc9b0f2e3638b6837866797c0542176d166d312cd0b925a2",
+          "csv_sha256": "426f57f2267770893a707ae7695412f519d30aaad53af2e7faf19112d2c09717"
+        }
+      ],
+      "elapsed_seconds": 1.067,
+      "stdout": {
+        "bytes": 0,
+        "truncated": false,
+        "text": ""
+      },
+      "stderr": {
+        "bytes": 429,
+        "truncated": false,
+        "text": "QRhiGles2: Failed to create temporary context\nQRhiGles2: Failed to create context\nThis plugin does not support createPlatformVulkanInstance\nQVulkanInstance: Failed to initialize Vulkan\nUnable to detect GPU vendor.\n{\"actual_device\":\"cpu\",\"backend\":\"OpenCV DNN / CPU\",\"device_index\":-1,\"device_name\":\"CPU\",\"device_notice\":\"\",\"error\":\"\",\"inference_ms\":61.388789,\"predictions\":5,\"qt\":\"6.8.3\",\"requested_device\":\"cpu\",\"success\":true}\n"
+      }
+    },
+    "pt_cpu": {
+      "success": true,
+      "arguments": [
+        "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/root/opt/VisionStudio/run-installed.sh",
+        "--device",
+        "cpu",
+        "--gpu-index",
+        "0",
+        "--smoke-pt",
+        "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/pt_cpu/results"
+      ],
+      "error": "",
+      "exit_code": 0,
+      "timed_out": false,
+      "report": {
+        "actual_device": "cpu",
+        "backend": "PyTorch / Ultralytics / CPU",
+        "device_index": -1,
+        "device_name": "CPU",
+        "device_notice": "",
+        "error": "",
+        "inference_ms": 40.83111905492842,
+        "predictions": 5,
+        "qt": "6.8.3",
+        "requested_device": "cpu",
+        "success": true
+      },
+      "exports": [
+        {
+          "file": "bus-20261008-165458-415-f1.json",
+          "sha256": "66e828a06860116444c95d45282d48fd5b6dfa85492110a9111a8f50a32f2c12",
+          "report": {
+            "actual_device": "cpu",
+            "application": "Vision Studio",
+            "backend": "PyTorch / Ultralytics / CPU",
+            "config": {
+              "color_mode": "rgb",
+              "confidence_threshold": 0.25,
+              "input_channels": 3,
+              "input_size": 640,
+              "nms_iou": 0.44999998807907104,
+              "preprocess": {
+                "color_mode": "rgb",
+                "mean_rgb": [
+                  0,
+                  0,
+                  0
+                ],
+                "mode": "model_native",
+                "scale": 0.00392156862745098,
+                "swap_rb": true
+              }
+            },
+            "device_index": -1,
+            "device_name": "CPU",
+            "device_notice": "",
+            "frame": 1,
+            "height": 1080,
+            "inference_ms": 40.83111905492842,
+            "model": "yolov8n.pt",
+            "model_file": "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/root/opt/VisionStudio/models/yolov8n.pt",
+            "predictions": [
+              {
+                "class_id": 0,
+                "confidence": 0.9009041786193848,
+                "height": 501.77374267578125,
+                "label": "person",
+                "width": 138.97821044921875,
+                "x": 671.0217895507812,
+                "y": 378.02691650390625
+              },
+              {
+                "class_id": 0,
+                "confidence": 0.8838161826133728,
+                "height": 448.2424011230469,
+                "label": "person",
+                "width": 122.055908203125,
+                "x": 221.422119140625,
+                "y": 407.5936584472656
+              },
+              {
+                "class_id": 0,
+                "confidence": 0.8755389451980591,
+                "height": 506.7410583496094,
+                "label": "person",
+                "width": 193.7235336303711,
+                "x": 50.35674285888672,
+                "y": 398.0966491699219
+              },
+              {
+                "class_id": 5,
+                "confidence": 0.8421509861946106,
+                "height": 539.2236022949219,
+                "label": "bus",
+                "width": 761.2479667663574,
+                "x": 34.33656692504883,
+                "y": 229.32485961914062
+              },
+              {
+                "class_id": 0,
+                "confidence": 0.4358823001384735,
+                "height": 317.4464111328125,
+                "label": "person",
+                "width": 59.87869739532471,
+                "x": 0.40552425384521484,
+                "y": 550.6465454101562
+              }
+            ],
+            "requested_device": "cpu",
+            "source": "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/root/opt/VisionStudio/assets/bus.jpg",
+            "source_frame_size": {
+              "height": 1080,
+              "width": 810
+            },
+            "stereo_view": "full",
+            "task": "YOLOv8 / 11",
+            "timestamp": "2026-10-08T16:54:58.415",
+            "total_ms": 149.888028,
+            "version": "2.0.0",
+            "width": 810
+          },
+          "png_sha256": "4735ba8516794a37fbbeea1ff63e289a000e9779d2f72b247b7344a5734cf2c8",
+          "csv_sha256": "cff8fa072279ce6e3808e2a8ae987cdec4554f9b76b40e462c3e2f96bd57aa3f"
+        }
+      ],
+      "elapsed_seconds": 4.073,
+      "stdout": {
+        "bytes": 0,
+        "truncated": false,
+        "text": ""
+      },
+      "stderr": {
+        "bytes": 448,
+        "truncated": false,
+        "text": "QRhiGles2: Failed to create temporary context\nQRhiGles2: Failed to create context\nThis plugin does not support createPlatformVulkanInstance\nQVulkanInstance: Failed to initialize Vulkan\nUnable to detect GPU vendor.\n{\"actual_device\":\"cpu\",\"backend\":\"PyTorch / Ultralytics / CPU\",\"device_index\":-1,\"device_name\":\"CPU\",\"device_notice\":\"\",\"error\":\"\",\"inference_ms\":40.83111905492842,\"predictions\":5,\"qt\":\"6.8.3\",\"requested_device\":\"cpu\",\"success\":true}\n"
+      }
+    }
+  },
+  "errors": [],
+  "runtime_pins": {
+    "schema": 1,
+    "torch_version": "2.9.1+cu128",
+    "torch_cuda": "12.8",
+    "ort_version": "1.23.2"
+  },
+  "workdir": "/tmp/vision-studio-gpu-deb-qa-t9okr6n7"
+}

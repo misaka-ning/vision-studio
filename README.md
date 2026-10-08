@@ -4,21 +4,21 @@
 
 [下载发行版](https://github.com/misaka-ning/vision-studio/releases) · [更新日志](CHANGELOG.md) · [使用指南](docs/使用指南.md) · [报告问题](https://github.com/misaka-ning/vision-studio/issues)
 
-正式版：**1.6.0**；预发布：**[2.0.0-beta.2](https://github.com/misaka-ning/vision-studio/releases/tag/v2.0.0-beta.2)**。2.0 Beta 参照 [Fluent-Qt](https://github.com/calvinhxx/Fluent-Qt) 调整深色界面、控件与布局；Beta.2 修复批量图片完成检测后无法回看识别结果的问题。发行平台：**Ubuntu 22.04 LTS amd64**。应用代码采用 **AGPL-3.0-only**。
+当前正式版本：**[2.0.0](https://github.com/misaka-ning/vision-studio/releases/tag/v2.0.0)**。2.0 保留 [Fluent-Qt](https://github.com/calvinhxx/Fluent-Qt) 风格的深色界面，并集中改进参数输入、文件夹任务停止、保存目录入口与模型库排序。CPU／NVIDIA GPU、ONNX／PT、灰度和左右目处理沿用现有约定。发行平台：**Ubuntu 22.04 LTS amd64**。应用代码采用 **AGPL-3.0-only**。
 
-![V2.0 Beta Fluent 风格检测工作台：RTX 4060 实际 CUDA 推理](docs/preview.png)
+![V2.0 Fluent 风格检测工作台：RTX 4060 实际 CUDA 推理](docs/preview.png)
 
 ## 功能
 
-- **检测工作台**：图片队列、批量图片、视频和摄像头输入，YOLO 检测与单标签图像分类，置信度和 NMS 阈值可调；后台推理可取消。批量完成后可点击队列图片回看本轮标注、目标列表和指标，并导出所选图片的结果。
-- **模型库**：导入 ONNX / PT，模型选择全局生效，统一决定工作台和模型显示使用的文件。
+- **检测工作台**：图片队列、批量图片、视频和摄像头输入，YOLO 检测与单标签图像分类，置信度和 NMS IoU 阈值可调；输入尺寸、置信度和 NMS IoU 不受鼠标滚轮误改，文件夹结果保存放在后台，停止时不受保存队列阻塞。批量完成后可点击队列图片回看本轮标注、目标列表和指标，并导出所选图片的结果。
+- **模型库**：导入 ONNX / PT，可拖动排序并在重启后保留；重排保持当前全局模型，统一决定工作台和模型显示使用的文件。
 - **模型显示**：Netron 结构图、可展开层级树、参数表；后台预加载并缓存，切换页面与模式复用解析结果，树与表支持搜索和详情。
 - **灰度与双目输入**：灰度按模型的 1 / 3 通道适配；单设备水平左右拼接视频或摄像头可只处理左目或右目。预览和导出显示实际所选画面与颜色模式。
-- **标注与录制**：检测框、类别、置信度、缩放和平移；保存 PNG / JSON / CSV。视频和摄像头可开始／结束录制，在「录制视频」页浏览、播放和导出。
+- **标注与录制**：检测框、类别、置信度、缩放和平移；保存 PNG / JSON / CSV，自动保存选项下方可直接打开结果目录。视频和摄像头可开始／结束录制，在「录制视频」页浏览、播放和导出。
 - **运行记录与更多**：保留处理记录、模型和耗时；「更多」集中提供运行示例与手动导出。
 - **计算设备**：工作台可选自动、CPU 或 NVIDIA GPU；「更多」检查并准备独立 GPU 环境。自动模式在 GPU 不可用时显示原因并使用 CPU，显式 GPU 失败时报告错误；结果记录实际设备。
 
-![V2.0 Beta ONNX 模型结构图：Netron 节点与运算连接](docs/model-hierarchy.png)
+![V2.0 ONNX 模型结构图：Netron 节点与运算连接](docs/model-hierarchy.png)
 
 普通 PT 的层级树表示文件可解析的模块包含关系，裸权重按名称分组；参数表列出权重、常量和缓冲，不能直接作为可训练参数总量。ONNX 更适合查看完整运算连接。不支持或损坏的模型会显示文字说明。详细范围见 [模型说明](docs/模型说明.md)。
 
@@ -30,11 +30,11 @@
 
 ```bash
 sha256sum -c SHA256SUMS
-sudo apt install ./vision-studio_1.6.0-1_amd64.deb
+sudo apt install ./vision-studio_2.0.0-1_amd64.deb
 vision-studio
 ```
 
-体验 2.0 Beta 可下载已发布版本的预发布附件。Beta.2 安装包文件名为 `vision-studio_2.0.0-beta.2-1_amd64.deb`，包内 Debian 版本为 `2.0.0~beta.2-1`；它排在同版正式包之前，GitHub 的 Latest 保持为 1.6.0。
+正式包的 Debian 版本为 `2.0.0-1`，高于 Beta.2 的 `2.0.0~beta.2-1`，可用以上 APT 命令直接升级。先结束检测与录像，导出需要永久保存的结果，退出旧程序再安装；升级保留个人设置、模型、运行记录、导出、录像与已准备的 GPU 环境。本轮临时回看缓存不会跨程序重启保留。
 
 也可从应用菜单启动 **Vision Studio**。首次体验可打开「更多 → 运行示例」，再导入自己的模型。
 
@@ -100,11 +100,13 @@ GPU 依赖使用独立的 `requirements-gpu.txt`／`requirements-gpu.lock.txt`�
 
 ## 验证与发行
 
-2.0.0-beta.2 的最终 Release 构建已通过全部 8 组 CTest（176.359 秒，零失败、零跳过），批量结果回看专项包含彩色、灰度、零目标、当前导出对象与缓存清理；发布工具 48 项、版本元数据 11 项测试通过。GPU 后端 10 项、录像 14 项均通过。最终 DEB 已通过普通用户 CPU／PT 与模型三视图缓存、隔离离线安装／卸载，以及包内 ONNX／PT CUDA／CPU 四轮验收；对应源码独立核验，报告按同版本保存，范围见 [Beta.2 发布说明](docs/releases/2.0.0-beta.2.md) 与 [Beta.2 验收证据](docs/releases/evidence/2.0.0-beta.2)。
+2.0.0 的最终 Qt 6.8.3 Release 构建通过全部 **10 组 CTest**（200.968 秒，零失败、零跳过），覆盖四项操作改进、CPU／CUDA、ONNX／PT、灰度 C1／C3、左右目、录像、批量回看和模型三视图缓存。发布／清理安全 48 项、版本元数据 11 项及 GPU 环境保护 21 项检查通过；独立 ONNX profile 记录 364 个实际 CUDA 节点事件。
 
-2.0.0-beta.1 已通过全部 8 组 CTest、80 项发布与环境安全测试、14 项 UI 逻辑静态审计，以及 20 张实际截图检查。最终 DEB 完成普通用户运行、隔离安装／卸载、模型三视图缓存、包内 ONNX／PT CUDA／CPU 推理验收；操作、参数和数据格式沿用 1.6。[Beta.1 发布说明](docs/releases/2.0.0-beta.1.md) 与 [Beta.1 验收证据](docs/releases/evidence/2.0.0-beta.1) 随源码保存。
+最终 DEB 通过普通用户 CPU／现代与旧版 PT、ONNX／PT 三视图缓存、APT 依赖模拟、隔离离线安装／卸载及包内 ONNX／PT CUDA／CPU 四轮检查。包报告绑定 SHA256 `2e5a467b07d82cf600eedeec2bd40624a724efccb4715366997ef04f3a4a042e`，无错误或警告。本机 1080p／4K 自动保存测试中停止观察值为 40／30 毫秒，界面心跳最大间隔为 20／15 毫秒；这不是所有后端和模型的统一时限，CPU 当前 OpenCV forward 仍需自然结束。模型拖动检查采用 Qt 内部移动与重启恢复，物理摄像头未实测。
 
-V1.6 已在 CPU／GPU 两阶段实际执行并通过 8 组 CTest，覆盖真实 ONNX／三类 PT 模型、彩色及灰度 C1 / C3、左右目、录像、取消与恢复、UI、模型显示及本机 HTTP 服务。GPU 环境保护、原子发布、取消与原始许可收集的 21 项测试通过；RTX 4060 上的 ONNX CUDA 节点、PT CUDA 和右目灰度标注录像也已验证。候选安装包完成普通用户运行、模型三视图缓存复用、断网安装／卸载，以及包内 CUDA／CPU 四轮推理检查。具体范围见 [本版发布说明](docs/releases/1.6.0.md)；正式附件对应的最终报告与原始日志见 [本版验收证据](docs/releases/evidence/1.6.0)。每版证据随仓库保存，不零散上传 Release。物理摄像头仍需按实际设备验证。
+最终对应源码的文件集合与 SHA256 核验由独立 `source-bundle-qa.json` 记录，发布工具要求其通过后才公开 Release；报告与冻结清单在归档生成后加入仓库，避免递归自校验。范围与真实原始日志见 [2.0.0 发布说明](docs/releases/2.0.0.md) 和 [同版验收证据](docs/releases/evidence/2.0.0)。
+
+历史预发布与正式版记录保留在 [Beta.2](docs/releases/2.0.0-beta.2.md)、[Beta.1](docs/releases/2.0.0-beta.1.md) 和 [1.6.0](docs/releases/1.6.0.md) 及各自证据目录，不改写其原始报告或发行文件。
 
 ```bash
 ./build/bin/vision-studio --smoke /tmp/vision-studio-onnx-smoke
@@ -118,7 +120,7 @@ V1.6 已在 CPU／GPU 两阶段实际执行并通过 8 组 CTest，覆盖真实 
 
 打包、对应源码及上游重建说明见 [打包说明](packaging/README.md) 和 [对应源码与重建](docs/release/对应源码与重建.md)。完整源码包内已有应用源码拆分归档、`SOURCE-SHA256SUMS`、`SOURCE-INVENTORY.json` 及上游源码、许可和原始通知，可解压后获取。GitHub 自动生成的 Source code ZIP／tar.gz 来自 Git 标签，不能替代 Release 中的完整对应源码包。
 
-源码主线为 `main`，正式标签为 `vX.Y.Z`，预发布标签为 `vX.Y.Z-beta.N`。每个新版必须按 [版本管理](docs/版本管理.md) 完成测试、源码与标签推送，并使用 `scripts/github_release.py` 发布和校验 Release；远端核验后本地保留最新 Beta 与当前正式版，历史版本可通过标签和 Release 获取，原归档保持不变。
+源码主线为 `main`，正式标签为 `vX.Y.Z`，预发布标签为 `vX.Y.Z-beta.N`。每个新版必须按 [版本管理](docs/版本管理.md) 完成测试、源码与标签推送，并使用 `scripts/github_release.py` 发布和校验 Release；远端核验后本地保留最新两个正式版的发行与独立构建副本；2.0.0 发布后为 2.0.0 与 1.6.0。旧 Beta 副本逐版精确核验后单独清理，历史版本可通过标签和 Release 获取，原归档保持不变。
 
 ## 文档、贡献与许可
 

@@ -1,0 +1,434 @@
+Internal ctest changing into directory: /home/misaka/文档/ChatGPT/yolo/build-stable
+UpdateCTestConfiguration  from :/home/misaka/文档/ChatGPT/yolo/build-stable/DartConfiguration.tcl
+Parse Config file:/home/misaka/文档/ChatGPT/yolo/build-stable/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/文档/ChatGPT/yolo/build-stable/DartConfiguration.tcl
+Parse Config file:/home/misaka/文档/ChatGPT/yolo/build-stable/DartConfiguration.tcl
+Test project /home/misaka/文档/ChatGPT/yolo/build-stable
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+      Start  1: vision-core-tests
+
+1: Test command: /home/misaka/文档/ChatGPT/yolo/build-stable/vision-core-tests
+1: Environment variables: 
+1:  QT_QPA_PLATFORM=offscreen
+1: Test timeout computed to be: 1500
+1: ********* Start testing of CoreTests *********
+1: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+1: PASS   : CoreTests::initTestCase()
+1: PASS   : CoreTests::yoloV8LetterboxClippingAndNms()
+1: PASS   : CoreTests::yoloV5UsesObjectnessAndClassScores()
+1: PASS   : CoreTests::classificationLogitsBecomeProbabilities()
+1: PASS   : CoreTests::classificationProbabilitiesRemainUnchanged()
+1: PASS   : CoreTests::preprocessingRespectsColorChannels()
+1: PASS   : CoreTests::preprocessingSubtractsMeanBeforeScaling()
+1: PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgb888-padded-scanlines)
+1: PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgba8888)
+1: PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgb32)
+1: PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(red)
+1: PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(green)
+1: PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(blue)
+1: PASS   : CoreTests::grayscaleThreeChannelsReplicateOneIntensity()
+1: PASS   : CoreTests::grayscaleDetectionPaddingUses114(single-channel)
+1: PASS   : CoreTests::grayscaleDetectionPaddingUses114(replicated-three-channel)
+1: PASS   : CoreTests::colorInputRejectsSingleChannelModel()
+1: PASS   : CoreTests::unsupportedONNXInputChannels(four-channels)
+1: PASS   : CoreTests::unsupportedONNXInputChannels(symbolic-channel-axis)
+1: PASS   : CoreTests::initializerGraphInputsRemainCompatible()
+1: PASS   : CoreTests::missingModelReportsFailure()
+1: PASS   : CoreTests::unsupportedDetectionOutputReportsFailure()
+1: PASS   : CoreTests::emptyImageReportsFailure()
+1: PASS   : CoreTests::workerProcessesEveryImageInBatch()
+1: PASS   : CoreTests::workerStopsBatchAndCanRunAgain()
+1: PASS   : CoreTests::workerDeliversVideoLastFrameAtEndOfFile()
+1: PASS   : CoreTests::workerReportsUnreadableInputAndFinishes()
+1: PASS   : CoreTests::stereoOddWidthSelectionAndInference()
+1: PASS   : CoreTests::stereoSelectionRejectsEmptyAndTooNarrowFrames()
+1: PASS   : CoreTests::workerSelectsSideBySideVideoView(full-frame)
+1: PASS   : CoreTests::workerSelectsSideBySideVideoView(left-eye)
+1: PASS   : CoreTests::workerSelectsSideBySideVideoView(right-eye)
+1: PASS   : CoreTests::workerKeepsImagesWholeWhenStereoViewSelected()
+1: PASS   : CoreTests::cleanupTestCase()
+1: Totals: 34 passed, 0 failed, 0 skipped, 0 blacklisted, 433ms
+1: ********* Finished testing of CoreTests *********
+ 1/10 Test  #1: vision-core-tests ...................   Passed    0.49 sec
+test 2
+      Start  2: vision-inference-delivery-tests
+
+2: Test command: /home/misaka/文档/ChatGPT/yolo/build-stable/vision-inference-delivery-tests
+2: Environment variables: 
+2:  QT_QPA_PLATFORM=offscreen
+2: Test timeout computed to be: 90
+2: ********* Start testing of InferenceDeliveryTests *********
+2: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+2: PASS   : InferenceDeliveryTests::initTestCase()
+2: QINFO  : InferenceDeliveryTests::slowConsumerBoundsDeliveryAndStopReleasesUnacknowledgedResult() delivery_cancel_evidence: max_unacknowledged=1 stop_elapsed_ms=50 delivered=2 total=3
+2: PASS   : InferenceDeliveryTests::slowConsumerBoundsDeliveryAndStopReleasesUnacknowledgedResult()
+2: PASS   : InferenceDeliveryTests::lateAcknowledgementFromCancelledJobCannotAdvanceNextJob()
+2: PASS   : InferenceDeliveryTests::acknowledgedBatchCompletesAllImagesWithoutLegacyDuplicateDelivery()
+2: PASS   : InferenceDeliveryTests::unboundedStandaloneWorkerRetainsExistingResultSignal()
+2: PASS   : InferenceDeliveryTests::cleanupTestCase()
+2: Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 1499ms
+2: ********* Finished testing of InferenceDeliveryTests *********
+ 2/10 Test  #2: vision-inference-delivery-tests .....   Passed    1.57 sec
+test 3
+      Start  3: vision-recording-tests
+
+3: Test command: /home/misaka/文档/ChatGPT/yolo/build-stable/vision-recording-tests
+3: Environment variables: 
+3:  QT_QPA_PLATFORM=offscreen
+3: Test timeout computed to be: 90
+3: ********* Start testing of RecordingTests *********
+3: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+3: PASS   : RecordingTests::initTestCase()
+3: PASS   : RecordingTests::videoIsAnnotatedPlayableAndPublishedOnlyAtFinish()
+3: PASS   : RecordingTests::grayscaleOddEyePreservesContentAndAddsOnlyEdgePadding()
+3: PASS   : RecordingTests::cameraTimingUsesMeasuredDurationAndDecodesAllFrames()
+3: PASS   : RecordingTests::emptyDiscardAndInvalidDirectoryNeverPublishBrokenClips()
+3: PASS   : RecordingTests::changedResolutionEndsClipWithoutLosingItsPreviousFrames()
+3: PASS   : RecordingTests::workerRecordsEveryFrameAndFinishesAtEof()
+3: PASS   : RecordingTests::gpuRightEyeGrayscaleRecordingPreservesActualDevice()
+3: PASS   : RecordingTests::workerStartAfterFirstPreviewAndCancelClosesOnlyRecordedFrames()
+3: PASS   : RecordingTests::recordingFailureDoesNotInterruptInference()
+3: PASS   : RecordingTests::manualStopKeepsInferenceRunningAndRestartCreatesANewClip()
+3: PASS   : RecordingTests::stoppingDuringOnnxForwardRecordsTheLastCompletedFrame()
+3: PASS   : RecordingTests::stoppingWithPendingRecordingNeverOpensANewClip()
+3: PASS   : RecordingTests::cleanupTestCase()
+3: Totals: 14 passed, 0 failed, 0 skipped, 0 blacklisted, 2708ms
+3: ********* Finished testing of RecordingTests *********
+ 3/10 Test  #3: vision-recording-tests ..............   Passed    2.88 sec
+test 4
+      Start  4: vision-pt-tests
+
+4: Test command: /home/misaka/文档/ChatGPT/yolo/build-stable/vision-pt-tests
+4: Environment variables: 
+4:  QT_QPA_PLATFORM=offscreen
+4: Test timeout computed to be: 180
+4: ********* Start testing of PtBackendTests *********
+4: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+4: PASS   : PtBackendTests::initTestCase()
+4: PASS   : PtBackendTests::realCheckpointLoadsNamesAndProcessesConsecutiveImages()
+4: PASS   : PtBackendTests::unavailableCudaIsExplicitAndAutoFallbackIsRecorded()
+4: PASS   : PtBackendTests::cpuRequestRejectsUnexpectedCudaHandshake()
+4: PASS   : PtBackendTests::realModernAndLegacyGrayscalePreviewPreservesOriginalPixels()
+4: PASS   : PtBackendTests::grayscaleThreeChannelsAreEqualAndUseBgrToGrayWeights()
+4: PASS   : PtBackendTests::grayscaleSingleChannelIsInferredFromTorchScriptConv()
+4: PASS   : PtBackendTests::nativeClassificationSupportsOneAndThreeGrayChannels()
+4: PASS   : PtBackendTests::grayscaleTorchScriptDetectionRestoresLetterboxCoordinates()
+4: PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(red)
+4: PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(green)
+4: PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(blue)
+4: PASS   : PtBackendTests::sixteenBitGrayscalePreviewMatchesActualPtInput(rgba64)
+4: PASS   : PtBackendTests::sixteenBitGrayscalePreviewMatchesActualPtInput(grayscale16)
+4: PASS   : PtBackendTests::realYoloSingleChannelStemsPreserveGrayscalePredictions()
+4: PASS   : PtBackendTests::invalidTorchScriptChannelMetadataIsRejected()
+4: PASS   : PtBackendTests::detectionInputSizeMustBeMultipleOf32AtLoad()
+4: PASS   : PtBackendTests::torchScriptWithoutInputConstraintsRequiresActionableMetadata()
+4: PASS   : PtBackendTests::processHandshakeCannotGuessMissingOrInvalidInputChannels()
+4: PASS   : PtBackendTests::missingExplicitPythonReportsFailure()
+4: PASS   : PtBackendTests::officialLegacyYoloV5CheckpointRunsWithBundledFramework()
+4: PASS   : PtBackendTests::invalidCheckpointCannotLeavePreviousModelLoaded()
+4: PASS   : PtBackendTests::bareStateDictionaryReportsMissingArchitecture()
+4: PASS   : PtBackendTests::metadataBearingTorchScriptClassificationUsesTopK()
+4: PASS   : PtBackendTests::customOnnxPreprocessingCannotSilentlyChangePtInference()
+4: PASS   : PtBackendTests::cancellationInterruptsBlockedModelInitialization()
+4: PASS   : PtBackendTests::cancellationInterruptsBlockedInference()
+4: PASS   : PtBackendTests::invalidProcessProtocolResetsBackend()
+4: PASS   : PtBackendTests::substitutedModelHandshakeIsRejected()
+4: PASS   : PtBackendTests::shortenedInitializationDeadlineStopsBackend()
+4: PASS   : PtBackendTests::cleanupTestCase()
+4: Totals: 31 passed, 0 failed, 0 skipped, 0 blacklisted, 76606ms
+4: ********* Finished testing of PtBackendTests *********
+ 4/10 Test  #4: vision-pt-tests .....................   Passed   76.63 sec
+test 5
+      Start  5: vision-gpu-tests
+
+5: Test command: /home/misaka/文档/ChatGPT/yolo/build-stable/vision-gpu-tests
+5: Environment variables: 
+5:  QT_QPA_PLATFORM=offscreen
+5: Test timeout computed to be: 600
+5: ********* Start testing of GpuBackendTests *********
+5: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+5: PASS   : GpuBackendTests::initTestCase()
+5: PASS   : GpuBackendTests::realModernAndLegacyPtColorAndGrayscale()
+5: PASS   : GpuBackendTests::torchScriptC1AndC3GrayscaleDetectionAndClassification()
+5: PASS   : GpuBackendTests::nativeGrayC1C3Classification()
+5: PASS   : GpuBackendTests::modernAndLegacyRealSingleChannelStems()
+5: PASS   : GpuBackendTests::realOnnxCudaMatchesCpuAndExecutesCudaNodes()
+5: PASS   : GpuBackendTests::onnxC1AndC3GrayPixelsMatchModelInput()
+5: PASS   : GpuBackendTests::onnxCudaCancellationTerminatesRunAndSessionCanRecover()
+5: PASS   : GpuBackendTests::ptCudaCancellationStopsChildAndCudaReloadWorks()
+5: PASS   : GpuBackendTests::cleanupTestCase()
+5: Totals: 10 passed, 0 failed, 0 skipped, 0 blacklisted, 53361ms
+5: ********* Finished testing of GpuBackendTests *********
+ 5/10 Test  #5: vision-gpu-tests ....................   Passed   53.51 sec
+test 6
+      Start  6: vision-ui-tests
+
+6: Test command: /home/misaka/文档/ChatGPT/yolo/build-stable/vision-ui-tests
+6: Environment variables: 
+6:  QT_QPA_PLATFORM=offscreen
+6: Test timeout computed to be: 120
+6: ********* Start testing of UiTests *********
+6: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+6: PASS   : UiTests::initTestCase()
+6: QDEBUG : UiTests::realInferenceSelectionAndNavigation() Compositor returned null texture
+6: QDEBUG : UiTests::realInferenceSelectionAndNavigation() Compositor returned null texture
+6: PASS   : UiTests::realInferenceSelectionAndNavigation()
+6: PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(input-size-unfocused)
+6: PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(input-size-focused)
+6: PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(confidence-unfocused)
+6: PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(confidence-focused)
+6: PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(nms-iou-unfocused)
+6: PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(nms-iou-focused)
+6: PASS   : UiTests::automaticSaveDirectoryButtonOpensConfiguredLocalFolder(default-results-directory)
+6: PASS   : UiTests::automaticSaveDirectoryButtonOpensConfiguredLocalFolder(configured-directory-with-spaces)
+6: QWARN  : UiTests::modelLibraryInternalMovesPreserveGlobalSelectionAndPersistAfterRestart() This plugin does not support propagateSizeHints()
+6: PASS   : UiTests::modelLibraryInternalMovesPreserveGlobalSelectionAndPersistAfterRestart()
+6: QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+6: QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+6: QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+6: QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+6: QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+6: QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+6: QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+6: QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+6: QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+6: QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+6: QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+6: QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+6: QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+6: QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+6: QDEBUG : UiTests::globalModelSelectionPreloadsAndCachesStructure() Compositor returned null texture
+6: PASS   : UiTests::globalModelSelectionPreloadsAndCachesStructure()
+6: PASS   : UiTests::shortcutsCancelAndRestartFromFocusedControls()
+6: PASS   : UiTests::directPtInferenceReadsNamesAndExportsNativeBackend()
+6: PASS   : UiTests::queueChangeAndClearInvalidateOldResults()
+6: QWARN  : UiTests::completedFolderResultsCanBeReviewedAndExported(rgb) This plugin does not support propagateSizeHints()
+6: QWARN  : UiTests::completedFolderResultsCanBeReviewedAndExported(rgb) This plugin does not support propagateSizeHints()
+6: PASS   : UiTests::completedFolderResultsCanBeReviewedAndExported(rgb)
+6: QWARN  : UiTests::completedFolderResultsCanBeReviewedAndExported(grayscale) This plugin does not support propagateSizeHints()
+6: QWARN  : UiTests::completedFolderResultsCanBeReviewedAndExported(grayscale) This plugin does not support propagateSizeHints()
+6: PASS   : UiTests::completedFolderResultsCanBeReviewedAndExported(grayscale)
+6: QWARN  : UiTests::importedFolderLargerThanFiftyImagesIsFullyProcessedAndReviewable() This plugin does not support propagateSizeHints()
+6: PASS   : UiTests::importedFolderLargerThanFiftyImagesIsFullyProcessedAndReviewable()
+6: QWARN  : UiTests::partiallyCompletedFolderResultsRemainReviewableAfterStopping() This plugin does not support propagateSizeHints()
+6: PASS   : UiTests::partiallyCompletedFolderResultsRemainReviewableAfterStopping()
+6: QWARN  : UiTests::completedFolderResultsRemainReviewableAfterLaterImageReadFails() This plugin does not support propagateSizeHints()
+6: QWARN  : UiTests::completedFolderResultsRemainReviewableAfterLaterImageReadFails() This plugin does not support propagateSizeHints()
+6: PASS   : UiTests::completedFolderResultsRemainReviewableAfterLaterImageReadFails()
+6: QWARN  : UiTests::completedFolderResultsAreInvalidatedWhenModelOrDeviceChanges(global-model) This plugin does not support propagateSizeHints()
+6: PASS   : UiTests::completedFolderResultsAreInvalidatedWhenModelOrDeviceChanges(global-model)
+6: QWARN  : UiTests::completedFolderResultsAreInvalidatedWhenModelOrDeviceChanges(compute-device) This plugin does not support propagateSizeHints()
+6: PASS   : UiTests::completedFolderResultsAreInvalidatedWhenModelOrDeviceChanges(compute-device)
+6: QWARN  : UiTests::zeroDetectionFolderResultsSurviveReviewAndCancelledRerunClearsThem() This plugin does not support propagateSizeHints()
+6: QWARN  : UiTests::zeroDetectionFolderResultsSurviveReviewAndCancelledRerunClearsThem() This plugin does not support propagateSizeHints()
+6: PASS   : UiTests::zeroDetectionFolderResultsSurviveReviewAndCancelledRerunClearsThem()
+6: PASS   : UiTests::grayscalePreviewAndColorSwitchInvalidatePredictions()
+6: PASS   : UiTests::legacyColorPreferenceMigration(legacy-rgb)
+6: PASS   : UiTests::legacyColorPreferenceMigration(legacy-bgr)
+6: QDEBUG : UiTests::grayscaleAndStereoPreferencesSurviveRestartAndPtSwitch() Compositor returned null texture
+6: PASS   : UiTests::grayscaleAndStereoPreferencesSurviveRestartAndPtSwitch()
+6: QWARN  : UiTests::stereoVideoRequestExportAndImageIsolation() This plugin does not support propagateSizeHints()
+6: PASS   : UiTests::stereoVideoRequestExportAndImageIsolation()
+6: QWARN  : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() This plugin does not support propagateSizeHints()
+6: QDEBUG : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() Compositor returned null texture
+6: QWARN  : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() This plugin does not support propagateSizeHints()
+6: QWARN  : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() This plugin does not support propagateSizeHints()
+6: PASS   : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo()
+6: PASS   : UiTests::explicitCudaSmokeFailureDoesNotClaimCpuInference()
+6: QDEBUG : UiTests::automaticDeviceDefaultAndPreferencesPreserveInputModes() Compositor returned null texture
+6: PASS   : UiTests::automaticDeviceDefaultAndPreferencesPreserveInputModes()
+6: QDEBUG : UiTests::gpuPreparationReportsProgressCancelsAndRefreshesWithoutBlocking() Compositor returned null texture
+6: PASS   : UiTests::gpuPreparationReportsProgressCancelsAndRefreshesWithoutBlocking()
+6: PASS   : UiTests::cleanupTestCase()
+6: Totals: 33 passed, 0 failed, 0 skipped, 0 blacklisted, 36405ms
+6: ********* Finished testing of UiTests *********
+ 6/10 Test  #6: vision-ui-tests .....................   Passed   36.62 sec
+test 7
+      Start  7: vision-batch-responsiveness-tests
+
+7: Test command: /home/misaka/文档/ChatGPT/yolo/build-stable/vision-batch-responsiveness-tests
+7: Environment variables: 
+7:  QT_QPA_PLATFORM=offscreen
+7:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+7: Test timeout computed to be: 180
+7: ********* Start testing of BatchResponsivenessTests *********
+7: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+7: PASS   : BatchResponsivenessTests::initTestCase()
+7: QWARN  : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(1920x1080-rgb-random) This plugin does not support propagateSizeHints()
+7: QINFO  : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(1920x1080-rgb-random) batch_responsiveness_evidence: {"accepted_after_stop":1,"accepted_at_stop":1,"automatic_export":true,"backend":"OpenCV DNN / CPU","cache_survives_removed_sources":true,"complete_exports":true,"device":"cpu","heartbeat_ticks":48,"height":1080,"maximum_heartbeat_gap_ms":20,"observed_stop_elapsed_ms":40,"scheduled_stop_dispatch_ms":30,"total_images":3,"width":1920}
+7: PASS   : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(1920x1080-rgb-random)
+7: QWARN  : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(3840x2160-rgb-random) This plugin does not support propagateSizeHints()
+7: QINFO  : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(3840x2160-rgb-random) batch_responsiveness_evidence: {"accepted_after_stop":1,"accepted_at_stop":1,"automatic_export":true,"backend":"OpenCV DNN / CPU","cache_survives_removed_sources":true,"complete_exports":true,"device":"cpu","heartbeat_ticks":173,"height":2160,"maximum_heartbeat_gap_ms":15,"observed_stop_elapsed_ms":30,"scheduled_stop_dispatch_ms":38,"total_images":3,"width":3840}
+7: PASS   : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(3840x2160-rgb-random)
+7: QWARN  : BatchResponsivenessTests::automaticExportDiskFailureStopsWithoutDeadlockAndBatchCanRecover() This plugin does not support propagateSizeHints()
+7: QINFO  : BatchResponsivenessTests::automaticExportDiskFailureStopsWithoutDeadlockAndBatchCanRecover() batch_disk_failure_evidence: export_error_reported=true no_deadlock=true completed_result_retained=true recovered_images=3
+7: PASS   : BatchResponsivenessTests::automaticExportDiskFailureStopsWithoutDeadlockAndBatchCanRecover()
+7: PASS   : BatchResponsivenessTests::cleanupTestCase()
+7: Totals: 5 passed, 0 failed, 0 skipped, 0 blacklisted, 8977ms
+7: ********* Finished testing of BatchResponsivenessTests *********
+ 7/10 Test  #7: vision-batch-responsiveness-tests ...   Passed    9.13 sec
+test 8
+      Start  8: vision-modelviewer-tests
+
+8: Test command: /home/misaka/文档/ChatGPT/yolo/build-stable/vision-modelviewer-tests
+8: Environment variables: 
+8:  QT_QPA_PLATFORM=offscreen
+8:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+8: Test timeout computed to be: 180
+8: ********* Start testing of ModelViewerTests *********
+8: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+8: PASS   : ModelViewerTests::initTestCase()
+8: QWARN  : ModelViewerTests::realModelsRenderGraphs(onnx-structure) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::realModelsRenderGraphs(onnx-structure) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::realModelsRenderGraphs(onnx-structure) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::realModelsRenderGraphs(onnx-structure) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::realModelsRenderGraphs(onnx-structure) This plugin does not support propagateSizeHints()
+8: PASS   : ModelViewerTests::realModelsRenderGraphs(onnx-structure)
+8: QWARN  : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy) This plugin does not support propagateSizeHints()
+8: PASS   : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy)
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx) This plugin does not support propagateSizeHints()
+8: PASS   : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx)
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch) This plugin does not support propagateSizeHints()
+8: PASS   : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch)
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict) This plugin does not support propagateSizeHints()
+8: PASS   : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict)
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward) This plugin does not support propagateSizeHints()
+8: PASS   : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward)
+8: QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::changingOrStoppingModelClearsOldMetadata() This plugin does not support propagateSizeHints()
+8: PASS   : ModelViewerTests::changingOrStoppingModelClearsOldMetadata()
+8: QWARN  : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate() This plugin does not support propagateSizeHints()
+8: PASS   : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate()
+8: QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(unknown-format) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(unknown-format) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(unknown-format) This plugin does not support propagateSizeHints()
+8: PASS   : ModelViewerTests::browserParsingFailuresAreChinese(unknown-format)
+8: QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(corrupt-onnx) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(corrupt-onnx) This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::browserParsingFailuresAreChinese(corrupt-onnx) This plugin does not support propagateSizeHints()
+8: PASS   : ModelViewerTests::browserParsingFailuresAreChinese(corrupt-onnx)
+8: QWARN  : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel() This plugin does not support propagateSizeHints()
+8: PASS   : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel()
+8: QWARN  : ModelViewerTests::hiddenStackedPagePreloadsAndKeepsCachedGraph() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::hiddenStackedPagePreloadsAndKeepsCachedGraph() This plugin does not support propagateSizeHints()
+8: PASS   : ModelViewerTests::hiddenStackedPagePreloadsAndKeepsCachedGraph()
+8: QWARN  : ModelViewerTests::stopDuringLoadingReleasesStartedBrowserAndService() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::stopDuringLoadingReleasesStartedBrowserAndService() This plugin does not support propagateSizeHints()
+8: QWARN  : ModelViewerTests::stopDuringLoadingReleasesStartedBrowserAndService() This plugin does not support propagateSizeHints()
+8: PASS   : ModelViewerTests::stopDuringLoadingReleasesStartedBrowserAndService()
+8: PASS   : ModelViewerTests::missingHelperOrRuntimeHasActionableChineseError()
+8: PASS   : ModelViewerTests::cleanupTestCase()
+8: Totals: 16 passed, 0 failed, 0 skipped, 0 blacklisted, 13660ms
+8: ********* Finished testing of ModelViewerTests *********
+ 8/10 Test  #8: vision-modelviewer-tests ............   Passed   13.76 sec
+test 9
+      Start  9: vision-netron-server-tests
+
+9: Test command: /usr/bin/python3.10 "/home/misaka/文档/ChatGPT/yolo/tests/netron_server_tests.py"
+9: Test timeout computed to be: 45
+9: test_concurrent_sessions_have_different_ephemeral_ports (__main__.NetronServerTests) ... ok
+9: test_eof_and_sigterm_close_session (__main__.NetronServerTests) ... ok
+9: test_external_data_stays_within_model_directory (__main__.NetronServerTests) ... ok
+9: test_invalid_command_releases_port (__main__.NetronServerTests) ... ok
+9: test_invalid_path_directory_and_arguments_emit_errors (__main__.NetronServerTests) ... ok
+9: test_missing_module_and_wrong_version_are_clear_errors (__main__.NetronServerTests) ... ok
+9: test_pickle_payload_is_never_deserialized_or_framework_imported (__main__.NetronServerTests) ... ok
+9: test_real_onnx_static_assets_model_bytes_and_json_quit (__main__.NetronServerTests) ... ok
+9: test_real_pt_raw_bytes_and_plain_quit (__main__.NetronServerTests) ... ok
+9: test_slow_http_client_does_not_block_quit (__main__.NetronServerTests) ... ok
+9: test_unknown_suffix_and_corrupt_bytes_are_served_without_parsing (__main__.NetronServerTests) ... ok
+9: 
+9: ----------------------------------------------------------------------
+9: Ran 11 tests in 4.905s
+9: 
+9: OK
+ 9/10 Test  #9: vision-netron-server-tests ..........   Passed    4.96 sec
+test 10
+      Start 10: vision-gpu-runtime-tests
+
+10: Test command: /usr/bin/python3.10 "/home/misaka/文档/ChatGPT/yolo/tests/gpu_runtime_tests.py"
+10: Test timeout computed to be: 60
+10: .....................
+10: ----------------------------------------------------------------------
+10: Ran 21 tests in 1.356s
+10: 
+10: OK
+10/10 Test #10: vision-gpu-runtime-tests ............   Passed    1.40 sec
+
+100% tests passed, 0 tests failed out of 10
+
+Label Time Summary:
+gpu    =  53.51 sec*proc (1 test)
+
+Total Test time (real) = 200.96 sec

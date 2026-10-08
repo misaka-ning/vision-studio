@@ -1,0 +1,255 @@
+{
+  "version": "2.0.0",
+  "mode": "gpu",
+  "workdir": "/tmp/vision-studio-gpu-deb-qa-t9okr6n7",
+  "identity": {
+    "device": 66308,
+    "inode": 38835020,
+    "uid": 1000
+  },
+  "files": [
+    {
+      "file": "onnx_cuda/stderr.log",
+      "bytes": 453,
+      "sha256": "c3550601086cd57d232d83c6bcd1ae78355cb9afbd5331dc77a65ad744b630d7",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cuda/stderr.log"
+    },
+    {
+      "file": "onnx_cuda/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cuda/stdout.log"
+    },
+    {
+      "file": "onnx_cuda/data/vision-studio/history.json",
+      "bytes": 680,
+      "sha256": "dc35bb9bab94ef1aadc924a209297536600bce9212897629a47dde750c6d15ae",
+      "tracked": null
+    },
+    {
+      "file": "onnx_cuda/data/vision-studio/preferences.ini",
+      "bytes": 666,
+      "sha256": "393c5c9811dd1de02f5327cf20e62ace7e3d8fc11fb9ee39bd308fb1da246dfb",
+      "tracked": null
+    },
+    {
+      "file": "onnx_cuda/results/bus-20261008-165449-892-f1.csv",
+      "bytes": 275,
+      "sha256": "426f57f2267770893a707ae7695412f519d30aaad53af2e7faf19112d2c09717",
+      "tracked": null
+    },
+    {
+      "file": "onnx_cuda/results/bus-20261008-165449-892-f1.json",
+      "bytes": 2610,
+      "sha256": "1e920737e9d0e8030bb680ccd3e97b86d4ccc0d52d1ab165aab872267eae88e8",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cuda/results/bus-20261008-165449-892-f1.json"
+    },
+    {
+      "file": "onnx_cuda/results/bus-20261008-165449-892-f1.png",
+      "bytes": 1756576,
+      "sha256": "e8fc25906fe4f7efbfab9f23fb62d0e0b2da13fec4aa9fd04cb5c6076deb08b8",
+      "tracked": null
+    },
+    {
+      "file": "onnx_cuda/results/smoke-report.json",
+      "bytes": 306,
+      "sha256": "84d3457c10978aec9ef757335d535e257727e9d6aa3e475503ee764097282393",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cuda/results/smoke-report.json"
+    },
+    {
+      "file": "onnx_cuda/results/workbench.png",
+      "bytes": 384666,
+      "sha256": "7be19d54e2ed1cb6cadcf16678e93f0b7826643990a3842616598688fff4384e",
+      "tracked": null
+    },
+    {
+      "file": "pt_cuda/stderr.log",
+      "bytes": 470,
+      "sha256": "fd5b3922cc18876ef74819a6101cea770c8b129b992eea17b9f7a8e853565304",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cuda/stderr.log"
+    },
+    {
+      "file": "pt_cuda/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cuda/stdout.log"
+    },
+    {
+      "file": "pt_cuda/data/vision-studio/history.json",
+      "bytes": 700,
+      "sha256": "25cd63a91c87cfff60eae3f381c888ce19a1a7340f8053f1111a13bc4052850e",
+      "tracked": null
+    },
+    {
+      "file": "pt_cuda/data/vision-studio/preferences.ini",
+      "bytes": 662,
+      "sha256": "04085bfe99b52eec0d9fa50e95632e23fb0c7797a4f21c111f9b31f43acfa3db",
+      "tracked": null
+    },
+    {
+      "file": "pt_cuda/results/bus-20261008-165453-067-f1.csv",
+      "bytes": 275,
+      "sha256": "cff8fa072279ce6e3808e2a8ae987cdec4554f9b76b40e462c3e2f96bd57aa3f",
+      "tracked": null
+    },
+    {
+      "file": "pt_cuda/results/bus-20261008-165453-067-f1.json",
+      "bytes": 2649,
+      "sha256": "de18aa875ad2ddaf18cd1e86292e0d6edb7cf755b164fdbf2a42426ced7b93d6",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cuda/results/bus-20261008-165453-067-f1.json"
+    },
+    {
+      "file": "pt_cuda/results/bus-20261008-165453-067-f1.png",
+      "bytes": 1755942,
+      "sha256": "7310b266125ec51b537d2a3144dbe21e18fe0410f4907dcde3f3c9158f9ba05a",
+      "tracked": null
+    },
+    {
+      "file": "pt_cuda/results/smoke-report.json",
+      "bytes": 323,
+      "sha256": "5f6381e75100dc10ed7760f9641e030c3626e8213ea58570a2059f34c3dd4d8d",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cuda/results/smoke-report.json"
+    },
+    {
+      "file": "pt_cuda/results/workbench.png",
+      "bytes": 383780,
+      "sha256": "da63e388a64c4908ceca413c84241d944665bebc76e3afe5dfd1289a28be31d4",
+      "tracked": null
+    },
+    {
+      "file": "pt_cuda/ultralytics/Ultralytics/settings.json",
+      "bytes": 471,
+      "sha256": "1d0ea052b7e6f20931c3485c4284f05e7dc5ecf7449493f33e17db1e2e1edb56",
+      "tracked": null
+    },
+    {
+      "file": "pt_cuda/matplotlib/fontlist-v390.json",
+      "bytes": 115885,
+      "sha256": "bb502d99c115abbda1c22cbad52d85eaf0a62ab5d783f4a014180cdf14840e2b",
+      "tracked": null
+    },
+    {
+      "file": "onnx_cpu/stderr.log",
+      "bytes": 429,
+      "sha256": "fb6e26414f6bade0ce12f4c5d78ee048d68dfdee819c5c5bba0427f51c9edec2",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cpu/stderr.log"
+    },
+    {
+      "file": "onnx_cpu/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cpu/stdout.log"
+    },
+    {
+      "file": "onnx_cpu/data/vision-studio/history.json",
+      "bytes": 656,
+      "sha256": "f4e6ff2aff492d17f4e3589277e7a1c464a350131e2ee706b31fe80f5dfe3d28",
+      "tracked": null
+    },
+    {
+      "file": "onnx_cpu/data/vision-studio/preferences.ini",
+      "bytes": 664,
+      "sha256": "86f18592d49f4190d4ceb490cdc310d5ccfea86588596e1ba0614e171443ee88",
+      "tracked": null
+    },
+    {
+      "file": "onnx_cpu/results/bus-20261008-165454-238-f1.csv",
+      "bytes": 275,
+      "sha256": "426f57f2267770893a707ae7695412f519d30aaad53af2e7faf19112d2c09717",
+      "tracked": null
+    },
+    {
+      "file": "onnx_cpu/results/bus-20261008-165454-238-f1.json",
+      "bytes": 2582,
+      "sha256": "7a5d3d369671f6c06393875dd8aef161073f691ea9723cf1818028d3ab436cd9",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cpu/results/bus-20261008-165454-238-f1.json"
+    },
+    {
+      "file": "onnx_cpu/results/bus-20261008-165454-238-f1.png",
+      "bytes": 1756580,
+      "sha256": "a695515485b703a2bc9b0f2e3638b6837866797c0542176d166d312cd0b925a2",
+      "tracked": null
+    },
+    {
+      "file": "onnx_cpu/results/smoke-report.json",
+      "bytes": 282,
+      "sha256": "a4394fd9248c16e051bca32e9f62de6297885b1020916d1628cb9569603b3cdd",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cpu/results/smoke-report.json"
+    },
+    {
+      "file": "onnx_cpu/results/workbench.png",
+      "bytes": 381501,
+      "sha256": "b04dd62f35c7b873d159682d157c9f94d5664a1e295f9597defe7f3c35a72304",
+      "tracked": null
+    },
+    {
+      "file": "pt_cpu/stderr.log",
+      "bytes": 448,
+      "sha256": "761b5884974083a00e3615a03a7df84d04e0648db5849715af0db1f18b5ce22a",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cpu/stderr.log"
+    },
+    {
+      "file": "pt_cpu/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cpu/stdout.log"
+    },
+    {
+      "file": "pt_cpu/data/vision-studio/history.json",
+      "bytes": 678,
+      "sha256": "21c16f705730ac2371ef4eb14b76db7ff75c3d718ec50ee2aeaebdd056951a2d",
+      "tracked": null
+    },
+    {
+      "file": "pt_cpu/data/vision-studio/preferences.ini",
+      "bytes": 660,
+      "sha256": "ed80e21cbb046abdb82fe525a70aacce7947a67d745bff833495fb6d46005c25",
+      "tracked": null
+    },
+    {
+      "file": "pt_cpu/results/bus-20261008-165458-415-f1.csv",
+      "bytes": 275,
+      "sha256": "cff8fa072279ce6e3808e2a8ae987cdec4554f9b76b40e462c3e2f96bd57aa3f",
+      "tracked": null
+    },
+    {
+      "file": "pt_cpu/results/bus-20261008-165458-415-f1.json",
+      "bytes": 2630,
+      "sha256": "66e828a06860116444c95d45282d48fd5b6dfa85492110a9111a8f50a32f2c12",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cpu/results/bus-20261008-165458-415-f1.json"
+    },
+    {
+      "file": "pt_cpu/results/bus-20261008-165458-415-f1.png",
+      "bytes": 1755904,
+      "sha256": "4735ba8516794a37fbbeea1ff63e289a000e9779d2f72b247b7344a5734cf2c8",
+      "tracked": null
+    },
+    {
+      "file": "pt_cpu/results/smoke-report.json",
+      "bytes": 301,
+      "sha256": "f7a3cb613f7fce91514a255e4634fd408025c26ae3a82c21e94c486b9853ff3a",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cpu/results/smoke-report.json"
+    },
+    {
+      "file": "pt_cpu/results/workbench.png",
+      "bytes": 381220,
+      "sha256": "4e7592a29548bbace50dcbf23787ef794359f0f9aeeb3392d789ea898b886a97",
+      "tracked": null
+    },
+    {
+      "file": "pt_cpu/ultralytics/Ultralytics/settings.json",
+      "bytes": 470,
+      "sha256": "14175543b384beceff33fd2eca56e3a0286e8d74ccf8f6b327541124bfd3ae73",
+      "tracked": null
+    },
+    {
+      "file": "pt_cpu/matplotlib/fontlist-v390.json",
+      "bytes": 115885,
+      "sha256": "f90a4a0735938f586653d215c0f71edf790c43561edd9f703e6f94b4db8f0095",
+      "tracked": null
+    }
+  ],
+  "preserved_raw": 40,
+  "raw_bytes": 8808829,
+  "success": true
+}

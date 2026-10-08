@@ -136,17 +136,24 @@ QColor ImageCanvas::classColor(int classId)
 
 void ImageCanvas::paintAnnotations(QPainter &painter, qreal scale, bool exporting) const
 {
-    if (!m_boxesVisible && !m_labelsVisible)
+    paintResultAnnotations(painter, m_result, m_boxesVisible, m_labelsVisible, m_selected, scale, exporting);
+}
+
+void ImageCanvas::paintResultAnnotations(QPainter &painter, const vision::InferenceResult &result,
+                                          bool boxesVisible, bool labelsVisible, int selectedIndex,
+                                          qreal scale, bool exporting)
+{
+    if (!boxesVisible && !labelsVisible)
         return;
-    const qreal unit = exporting ? std::max(1.0, m_result.image.width() / 1000.0) : 1.0 / scale;
-    const QRectF bounds(QPointF(0, 0), m_result.image.size());
+    const qreal unit = exporting ? std::max(1.0, result.image.width() / 1000.0) : 1.0 / scale;
+    const QRectF bounds(QPointF(0, 0), result.image.size());
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing);
-    if (m_result.task == vision::ModelTask::Classification)
+    if (result.task == vision::ModelTask::Classification)
     {
-        if (m_labelsVisible && !m_result.predictions.isEmpty())
+        if (labelsVisible && !result.predictions.isEmpty())
         {
-            const auto &prediction = m_result.predictions.first();
+            const auto &prediction = result.predictions.first();
             QFont font = canvasFont(10, QFont::DemiBold);
             font.setPixelSize(qRound(13 * unit));
             painter.setFont(font);
@@ -247,17 +254,17 @@ void ImageCanvas::paintAnnotations(QPainter &painter, qreal scale, bool exportin
         return qMakePair(best, preferred);
     };
 
-    for (int i = 0; i < m_result.predictions.size(); ++i)
+    for (int i = 0; i < result.predictions.size(); ++i)
     {
-        const auto &prediction = m_result.predictions[i];
+        const auto &prediction = result.predictions[i];
         const QRectF box = prediction.box.intersected(bounds);
         if (box.isEmpty())
             continue;
-        const bool selected = i == m_selected && !exporting;
+        const bool selected = i == selectedIndex && !exporting;
         const QColor color = classColor(prediction.classId);
         QColor fill = color;
         fill.setAlpha(selected ? 43 : 14);
-        if (m_boxesVisible)
+        if (boxesVisible)
         {
             painter.setPen(QPen(color, (selected ? 2.5 : 1.7) * unit));
             painter.setBrush(fill);
@@ -272,7 +279,7 @@ void ImageCanvas::paintAnnotations(QPainter &painter, qreal scale, bool exportin
                 painter.drawLine(corner, corner + QPointF(0, dy));
             }
         }
-        if (m_labelsVisible)
+        if (labelsVisible)
         {
             const QString label =
                 QStringLiteral("%1  %2%")
@@ -638,12 +645,18 @@ void ImageCanvas::dropEvent(QDropEvent *event)
 
 QImage ImageCanvas::annotatedImage() const
 {
-    if (m_result.image.isNull())
+    return annotatedResultImage(m_result, m_boxesVisible, m_labelsVisible);
+}
+
+QImage ImageCanvas::annotatedResultImage(const vision::InferenceResult &result,
+                                         bool boxesVisible, bool labelsVisible)
+{
+    if (result.image.isNull())
         return {};
-    QImage image = m_result.image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+    QImage image = result.image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
     QPainter painter(&image);
-    paintAnnotations(painter, 1, true);
-    if (m_result.demonstration)
+    paintResultAnnotations(painter, result, boxesVisible, labelsVisible, -1, 1, true);
+    if (result.demonstration)
     {
         const qreal scale = std::max(1.0, image.width() / 1000.0);
         QFont font = canvasFont(10, QFont::DemiBold);

@@ -1,0 +1,11 @@
+********* Start testing of InferenceDeliveryTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : InferenceDeliveryTests::initTestCase()
+QINFO  : InferenceDeliveryTests::slowConsumerBoundsDeliveryAndStopReleasesUnacknowledgedResult() delivery_cancel_evidence: max_unacknowledged=1 stop_elapsed_ms=50 delivered=2 total=3
+PASS   : InferenceDeliveryTests::slowConsumerBoundsDeliveryAndStopReleasesUnacknowledgedResult()
+PASS   : InferenceDeliveryTests::lateAcknowledgementFromCancelledJobCannotAdvanceNextJob()
+PASS   : InferenceDeliveryTests::acknowledgedBatchCompletesAllImagesWithoutLegacyDuplicateDelivery()
+PASS   : InferenceDeliveryTests::unboundedStandaloneWorkerRetainsExistingResultSignal()
+PASS   : InferenceDeliveryTests::cleanupTestCase()
+Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 1348ms
+********* Finished testing of InferenceDeliveryTests *********

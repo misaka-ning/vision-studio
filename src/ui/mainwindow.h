@@ -17,6 +17,7 @@ class QTableWidget;
 class QStackedWidget;
 class QProgressBar;
 class QThread;
+class QThreadPool;
 class QSettings;
 class QTimer;
 class QProcess;
@@ -83,17 +84,27 @@ class MainWindow : public QMainWindow
     void addFiles(const QStringList &files);
     void startInference();
     void stopInference();
-    void onResult(const vision::InferenceResult &result);
+    void onResult(const vision::InferenceResult &result, quint64 ticket = 0);
     void displayResult(const vision::InferenceResult &result);
     void selectQueueImage(int row);
     void cacheImageResult(const vision::InferenceResult &result);
     void clearImageResults();
+    void saveImageResultInBackground(const vision::InferenceResult &result, quint64 ticket);
     void onFinished(bool cancelled);
     void setBusy(bool busy);
     void refreshModelLibrary();
     void refreshHistory();
-    void recordResult(const vision::InferenceResult &result);
+    void recordResult(const vision::InferenceResult &result, bool writeToDisk = true);
     void exportResult();
+    struct ResultExport
+    {
+        QString base;
+        vision::InferenceResult result;
+        QByteArray json, csv;
+    };
+    ResultExport prepareResultExport(const vision::InferenceResult &result, const QString &directory,
+                                    const vision::ModelConfig &config);
+    static bool writePreparedResult(const ResultExport &result, QString *error = nullptr);
     bool writeResult(const vision::InferenceResult &result, const QString &directory,
                      QString *error = nullptr);
     void showNotice(const QString &text, bool error = false);
@@ -124,8 +135,12 @@ class MainWindow : public QMainWindow
         QString snapshotPath;
     };
     QHash<QString, CachedImageResult> imageResults_;
-    std::unique_ptr<QTemporaryDir> imageResultDirectory_;
+    std::shared_ptr<QTemporaryDir> imageResultDirectory_;
+    quint64 imageResultGeneration_ = 0;
+    int resultIoPending_ = 0;
+    QThreadPool *resultIoPool_ = nullptr;
     bool imageResultCacheWarning_ = false;
+    bool modelListReordering_ = false;
     QString lastError_;
     QString actualBackend_, actualDeviceName_, actualDeviceNotice_;
     vision::ComputeDevice actualDevice_ = vision::ComputeDevice::CPU;

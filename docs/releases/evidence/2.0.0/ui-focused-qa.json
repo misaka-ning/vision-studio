@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "version": "2.0.0",
+  "success": true,
+  "errors": [],
+  "functional_rows": 17,
+  "qt_passed": 19,
+  "failed": 0,
+  "skipped": 0,
+  "blacklisted": 0,
+  "elapsed_seconds": 20.719,
+  "log": "ui-focused.log",
+  "execution": "ui-focused.log.execution.json",
+  "log_sha256": "1aa4628b1b6502feff48bb671b56ddf029d00c55508604f5c8189e57b97fff3b",
+  "qt_scenario_rows": {
+    "parameter_wheel": 6,
+    "save_directory": 2,
+    "model_reordering": 1,
+    "rgb_gray_result_review": 2,
+    "64_image_rgb_zero_detection_folder": 1,
+    "partial_cancellation_review": 1,
+    "later_image_failure_review": 1,
+    "global_model_and_device_cache_invalidation": 2,
+    "zero_result_cancelled_rerun": 1
+  },
+  "note": "Model ordering uses Qt internal model moveRows and checks enabled drag mode, global selection and restart persistence; a physical mouse drag gesture is not simulated. The 64-image test uses small distinct RGB fixtures and zero detections with actual ONNX CPU inference, and is not a stress benchmark. Initial direct QWidget wheel dispatch did not exercise platform propagation; preserved initial failed logs are ui-focused.initial-direct-dispatch.log and its execution report. The corrected QtTest platform QWindow wheel delivery passes all 6 wheel rows.",
+  "stage": "integration_candidate",
+  "final_validation": "The frozen product is validated by the later complete CTest run; this focused report describes its original integration candidate binaries only."
+}

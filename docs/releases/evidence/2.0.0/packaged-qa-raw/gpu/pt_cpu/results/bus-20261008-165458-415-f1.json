@@ -1,0 +1,90 @@
+{
+    "actual_device": "cpu",
+    "application": "Vision Studio",
+    "backend": "PyTorch / Ultralytics / CPU",
+    "config": {
+        "color_mode": "rgb",
+        "confidence_threshold": 0.25,
+        "input_channels": 3,
+        "input_size": 640,
+        "nms_iou": 0.44999998807907104,
+        "preprocess": {
+            "color_mode": "rgb",
+            "mean_rgb": [
+                0,
+                0,
+                0
+            ],
+            "mode": "model_native",
+            "scale": 0.00392156862745098,
+            "swap_rb": true
+        }
+    },
+    "device_index": -1,
+    "device_name": "CPU",
+    "device_notice": "",
+    "frame": 1,
+    "height": 1080,
+    "inference_ms": 40.83111905492842,
+    "model": "yolov8n.pt",
+    "model_file": "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/root/opt/VisionStudio/models/yolov8n.pt",
+    "predictions": [
+        {
+            "class_id": 0,
+            "confidence": 0.9009041786193848,
+            "height": 501.77374267578125,
+            "label": "person",
+            "width": 138.97821044921875,
+            "x": 671.0217895507812,
+            "y": 378.02691650390625
+        },
+        {
+            "class_id": 0,
+            "confidence": 0.8838161826133728,
+            "height": 448.2424011230469,
+            "label": "person",
+            "width": 122.055908203125,
+            "x": 221.422119140625,
+            "y": 407.5936584472656
+        },
+        {
+            "class_id": 0,
+            "confidence": 0.8755389451980591,
+            "height": 506.7410583496094,
+            "label": "person",
+            "width": 193.7235336303711,
+            "x": 50.35674285888672,
+            "y": 398.0966491699219
+        },
+        {
+            "class_id": 5,
+            "confidence": 0.8421509861946106,
+            "height": 539.2236022949219,
+            "label": "bus",
+            "width": 761.2479667663574,
+            "x": 34.33656692504883,
+            "y": 229.32485961914062
+        },
+        {
+            "class_id": 0,
+            "confidence": 0.4358823001384735,
+            "height": 317.4464111328125,
+            "label": "person",
+            "width": 59.87869739532471,
+            "x": 0.40552425384521484,
+            "y": 550.6465454101562
+        }
+    ],
+    "requested_device": "cpu",
+    "source": "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/root/opt/VisionStudio/assets/bus.jpg",
+    "source_frame_size": {
+        "height": 1080,
+        "width": 810
+    },
+    "stereo_view": "full",
+    "task": "YOLOv8 / 11",
+    "timestamp": "2026-10-08T16:54:58.415",
+    "total_ms": 149.888028,
+    "version": "2.0.0",
+    "width": 810
+}

@@ -1,0 +1,201 @@
+{
+  "version": "2.0.0",
+  "mode": "qa",
+  "workdir": "/tmp/vision-studio-deb-qa-052vntgi",
+  "identity": {
+    "device": 66308,
+    "inode": 38835016,
+    "uid": 1000
+  },
+  "files": [
+    {
+      "file": "user-state/legacy-stderr.log",
+      "bytes": 80,
+      "sha256": "4fa2e3f1beb42698e532de4b8540d923b084fb5ba244370830a2d521ffc83b25",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/legacy-stderr.log"
+    },
+    {
+      "file": "user-state/model_display-stderr.log",
+      "bytes": 644,
+      "sha256": "6b69d922ad80dccabd8346a2215e6ffa0fb875485eb1f217a0cc44b15d0c9176",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display-stderr.log"
+    },
+    {
+      "file": "user-state/model_display-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display-stdout.log"
+    },
+    {
+      "file": "user-state/model_display_pt-stderr.log",
+      "bytes": 639,
+      "sha256": "27f193ad37fb2b830b3fa888704af2a92bc8d0c694bcb66c8cf323c4b6979c93",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display_pt-stderr.log"
+    },
+    {
+      "file": "user-state/model_display_pt-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display_pt-stdout.log"
+    },
+    {
+      "file": "user-state/onnx-stderr.log",
+      "bytes": 595,
+      "sha256": "40f30c598ca6ecf4abe2866c14a63a2837e7829147f1cd0a67f5759dd15c37c6",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/onnx-stderr.log"
+    },
+    {
+      "file": "user-state/onnx-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/onnx-stdout.log"
+    },
+    {
+      "file": "user-state/pt-stderr.log",
+      "bytes": 614,
+      "sha256": "c68fc2a46ffb555c3a7dd50ae940780d5d02d72023186f6ae1ce39687a3b35e5",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/pt-stderr.log"
+    },
+    {
+      "file": "user-state/pt-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/pt-stdout.log"
+    },
+    {
+      "file": "user-state/model_display/model-display-report.json",
+      "bytes": 550,
+      "sha256": "409fbb5988ee648a995125b5bf8baeed6b3ebd36e759a2c7137ac0ebaa81a4fa",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display/model-display-report.json"
+    },
+    {
+      "file": "user-state/model_display/model-display.png",
+      "bytes": 124511,
+      "sha256": "8ee3f974e86014de51df3470ca12b4ca7cfb324c135bb726e66134eb00356d88",
+      "tracked": null
+    },
+    {
+      "file": "user-state/model_display/model-hierarchy.png",
+      "bytes": 159658,
+      "sha256": "d34913bc876178933534993d31bd641959170183f8aa8f69df6891185810c487",
+      "tracked": null
+    },
+    {
+      "file": "user-state/model_display/model-parameters.png",
+      "bytes": 247884,
+      "sha256": "02caf32612039198df8ee2e8fa1b05a91d7b2dde62e617ce7e8799f94959a85f",
+      "tracked": null
+    },
+    {
+      "file": "user-state/data/vision-studio/history.json",
+      "bytes": 1665,
+      "sha256": "eb5539a808fc8ebb8b1524374469f97c0f478838127cff2cacd10602c6869aa7",
+      "tracked": null
+    },
+    {
+      "file": "user-state/data/vision-studio/preferences.ini",
+      "bytes": 665,
+      "sha256": "781d50ccfdf9ccbcd04f1215144423a74f52402c8fafcdbe7a52679727d3d772",
+      "tracked": null
+    },
+    {
+      "file": "user-state/model_display_pt/model-display-report.json",
+      "bytes": 545,
+      "sha256": "21eab04825c52e83d8e1afdd82c6eabc1d478795eb7606f6d6a29e8cd38bd1f0",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display_pt/model-display-report.json"
+    },
+    {
+      "file": "user-state/model_display_pt/model-display.png",
+      "bytes": 139477,
+      "sha256": "b3d80fd1e7a02adae8832bc6bbf9aa362b12b64e3b750e78d86a766562d67dd7",
+      "tracked": null
+    },
+    {
+      "file": "user-state/model_display_pt/model-hierarchy.png",
+      "bytes": 172664,
+      "sha256": "0ec8d702bb277a76174bc5c66ed3051c55271ecade54e7b72eede39dfa401c7a",
+      "tracked": null
+    },
+    {
+      "file": "user-state/model_display_pt/model-parameters.png",
+      "bytes": 233998,
+      "sha256": "fffe002ec7ed54d6214f9a6b9da39fc65c7aaf6db6eebe0f0f2c3cd7ac1c5d3d",
+      "tracked": null
+    },
+    {
+      "file": "user-state/ultralytics/Ultralytics/settings.json",
+      "bytes": 463,
+      "sha256": "dd46344441c6d1eff4a10c6e0ecca65e5b977f6d7e7d2cb6833299f68a7379e8",
+      "tracked": null
+    },
+    {
+      "file": "user-state/matplotlib/fontlist-v390.json",
+      "bytes": 115885,
+      "sha256": "3c9dde4ec46463b2ae1bf1a03a1ff49cf0c44a5e677769b0d33853242511b41b",
+      "tracked": null
+    },
+    {
+      "file": "user-state/onnx/bus-20261008-165509-487-f1.csv",
+      "bytes": 275,
+      "sha256": "426f57f2267770893a707ae7695412f519d30aaad53af2e7faf19112d2c09717",
+      "tracked": null
+    },
+    {
+      "file": "user-state/onnx/bus-20261008-165509-487-f1.json",
+      "bytes": 2750,
+      "sha256": "f5d871ff2ee2f814948fb487abfd6a77203c66012b8a29ea66da49ec7d4bc454",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/onnx/bus-20261008-165509-487-f1.json"
+    },
+    {
+      "file": "user-state/onnx/bus-20261008-165509-487-f1.png",
+      "bytes": 1756580,
+      "sha256": "a695515485b703a2bc9b0f2e3638b6837866797c0542176d166d312cd0b925a2",
+      "tracked": null
+    },
+    {
+      "file": "user-state/onnx/smoke-report.json",
+      "bytes": 448,
+      "sha256": "22f8d304cb0d36c7353fcb8fdf7f48e4ef9b0a961b3dd19dd944326192158a48",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/onnx/smoke-report.json"
+    },
+    {
+      "file": "user-state/onnx/workbench.png",
+      "bytes": 397394,
+      "sha256": "2ae8dd4558d5ce5a7b5fe54c31b08cc50a1836d9d30b77a9f9da155c811d5af6",
+      "tracked": null
+    },
+    {
+      "file": "user-state/pt/bus-20261008-165513-471-f1.csv",
+      "bytes": 275,
+      "sha256": "cff8fa072279ce6e3808e2a8ae987cdec4554f9b76b40e462c3e2f96bd57aa3f",
+      "tracked": null
+    },
+    {
+      "file": "user-state/pt/bus-20261008-165513-471-f1.json",
+      "bytes": 2798,
+      "sha256": "302472e34d9da03401528f1bb6b7efb3feb103a226e086c175938026feac4d70",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/pt/bus-20261008-165513-471-f1.json"
+    },
+    {
+      "file": "user-state/pt/bus-20261008-165513-471-f1.png",
+      "bytes": 1755904,
+      "sha256": "4735ba8516794a37fbbeea1ff63e289a000e9779d2f72b247b7344a5734cf2c8",
+      "tracked": null
+    },
+    {
+      "file": "user-state/pt/smoke-report.json",
+      "bytes": 467,
+      "sha256": "68530cde9fbdd98d9ace73bf2417cd6380d0c7e5080b376f66a9bb650509e372",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/pt/smoke-report.json"
+    },
+    {
+      "file": "user-state/pt/workbench.png",
+      "bytes": 397201,
+      "sha256": "63699df4c7b1b1bc1f343f5abd6e4d5618432e8098e45f064f5d621bad84e26f",
+      "tracked": null
+    }
+  ],
+  "preserved_raw": 31,
+  "raw_bytes": 5514629,
+  "success": true
+}

@@ -1,0 +1,89 @@
+{
+  "version": "2.0.0",
+  "run_label": "final-caption-fix",
+  "command": [
+    "ctest",
+    "--test-dir",
+    "/home/misaka/文档/ChatGPT/yolo/build-stable",
+    "-V",
+    "-j",
+    "1",
+    "--no-tests=error"
+  ],
+  "started_at": "2026-10-08T16:31:05.897674+08:00",
+  "finished_at": "2026-10-08T16:34:26.865785+08:00",
+  "elapsed_seconds": 200.968,
+  "exit_code": 0,
+  "environment": {
+    "HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/all-final-caption-fix/home",
+    "XDG_CONFIG_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/all-final-caption-fix/config",
+    "XDG_DATA_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/all-final-caption-fix/data",
+    "XDG_CACHE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/all-final-caption-fix/cache",
+    "XDG_STATE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/all-final-caption-fix/state",
+    "XDG_RUNTIME_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/all-final-caption-fix/runtime",
+    "VISION_STUDIO_DATA_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/all-final-caption-fix/app-data",
+    "YOLO_CONFIG_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/all-final-caption-fix/ultralytics",
+    "YOLOV5_CONFIG_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/all-final-caption-fix/yolov5",
+    "MPLCONFIGDIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/all-final-caption-fix/matplotlib",
+    "TORCH_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/all-final-caption-fix/torch",
+    "CUDA_CACHE_PATH": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/all-final-caption-fix/cuda-cache",
+    "TMPDIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/all-final-caption-fix/tmp",
+    "QT_QPA_PLATFORM": "offscreen",
+    "VISION_STUDIO_HOME": "/home/misaka/文档/ChatGPT/yolo",
+    "VISION_STUDIO_PYTHON": "/home/misaka/文档/ChatGPT/yolo/build/release-runtime/bin/python3",
+    "VISION_STUDIO_GPU_RUNTIME_DIR": "/home/misaka/.local/share/vision-studio/gpu-runtime",
+    "VISION_STUDIO_GPU_TESTS": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONNOUSERSITE": "1",
+    "OMP_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2"
+  },
+  "binaries": [
+    {
+      "file": "build-stable/bin/vision-studio",
+      "bytes": 1041776,
+      "sha256": "b21fd1b4e735247d52937e6bd8e77eb47a2266da90c3c5845514da5555605470"
+    },
+    {
+      "file": "build-stable/vision-core-tests",
+      "bytes": 446016,
+      "sha256": "0a1cab7c589c01e5d81728c86ef510cc5222b6ff9d35caee35cb112c0119a571"
+    },
+    {
+      "file": "build-stable/vision-recording-tests",
+      "bytes": 441120,
+      "sha256": "55378d0e20da49840dbc300ed496d8bf1b656fbd9dad159c88b7a2690cf71361"
+    },
+    {
+      "file": "build-stable/vision-pt-tests",
+      "bytes": 351744,
+      "sha256": "a999eac6b7d1a973df2ad6278184e5fd7a91a0b4dbc819e76657e51f4ca6a8df"
+    },
+    {
+      "file": "build-stable/vision-gpu-tests",
+      "bytes": 287552,
+      "sha256": "14a3ed15c86ac25714bd19a2a5c9972aa089273be9631a367dd774bd3141f417"
+    },
+    {
+      "file": "build-stable/vision-ui-tests",
+      "bytes": 1419760,
+      "sha256": "7d04d613e7daa8c32e20882841f607b55b0399936d1d1f46c4f25bfb6a1b56e3"
+    },
+    {
+      "file": "build-stable/vision-modelviewer-tests",
+      "bytes": 409024,
+      "sha256": "27a2e535d3563e131288e0ea5a3aa11b956ba493f1835a0bcbfaa731f80caf72"
+    },
+    {
+      "file": "build-stable/vision-inference-delivery-tests",
+      "bytes": 381840,
+      "sha256": "8948d7c620aa9dc421856e6e190d761f5fb84fb803b55387c0b9ccd7ef5985f4"
+    },
+    {
+      "file": "build-stable/vision-batch-responsiveness-tests",
+      "bytes": 1124240,
+      "sha256": "641fe7c033f8f5339534d3b5f49669533745af5bfdd5bf087595dd2d4ccade7c"
+    }
+  ]
+}

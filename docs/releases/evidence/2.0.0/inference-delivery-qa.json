@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "version": "2.0.0",
+  "scope": "Standalone real CPU ONNX inference-worker bounded delivery and cancellation regression; final GUI/package validation is separate",
+  "recorded_at_utc": "2026-10-08T07:59:28.712789+00:00",
+  "success": true,
+  "exit_code": 0,
+  "command": [
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/review/delivery-build/vision-inference-delivery-tests"
+  ],
+  "qt": "6.8.3",
+  "build_type": "Release",
+  "actual_backend": "OpenCV DNN / CPU",
+  "passed": 6,
+  "failed": 0,
+  "skipped": 0,
+  "qt_test_elapsed_ms": 1348,
+  "observed_waiting_cancellation_ms": 50,
+  "maximum_unacknowledged_delivery": 1,
+  "raw_log": {
+    "file": "docs/releases/evidence/2.0.0/inference-delivery-tests.log",
+    "bytes": 1004,
+    "sha256": "ce865e15b8a44c97aa4bcbe02ac839a97fd1f3113bbde7558003e9cd05d066f5"
+  },
+  "executable": {
+    "file": "output/v2.0-stable/review/delivery-build/vision-inference-delivery-tests",
+    "bytes": 381840,
+    "sha256": "f45469bd7d82766170da2343488aa03d207b89ee20e576f239b00a34a6d61646"
+  },
+  "model": {
+    "file": "models/yolov5n.onnx",
+    "bytes": 7903550,
+    "sha256": "60c130eb3cd8e3f378673ea71c8b54da8afa0c051d82a1ea1490c36bbf10c820"
+  },
+  "source_files": [
+    {
+      "file": "src/core/inferenceworker.cpp",
+      "bytes": 13467,
+      "sha256": "db67509f9f96011a519a5b66031ba66617123adea2e43a782b7122defe391ccd"
+    },
+    {
+      "file": "src/core/inferenceworker.h",
+      "bytes": 2408,
+      "sha256": "96cbfc0f2abcead572539ae6bf29b275b4a1abf5f46c77d6103e65719b938965"
+    },
+    {
+      "file": "tests/inference_delivery_tests.cpp",
+      "bytes": 9358,
+      "sha256": "abbdc67aaec9ac626f92514a72962b1f5717e1852142ee9e244ca1a282206c8e"
+    }
+  ],
+  "checks": {
+    "one_unacknowledged_image_bounds_delivery": true,
+    "gui_thread_event_timer_continues_while_worker_waits": true,
+    "wrong_acknowledgement_does_not_advance": true,
+    "stop_releases_wait_without_ack": true,
+    "stop_does_not_deliver_next_image": true,
+    "late_old_job_ack_does_not_advance_new_job": true,
+    "acknowledged_batch_completes_all_images": true,
+    "no_duplicate_legacy_delivery": true,
+    "standalone_legacy_signal_compatible": true
+  },
+  "limits": [
+    "This test runs an independent worker with real CPU ONNX; it does not validate final MainWindow asynchronous cache/export integration.",
+    "The 50 ms cancellation observation uses QtTest event polling and applies to a worker waiting for acknowledgement, not an in-flight decode or CPU forward.",
+    "An already executing OpenCV CPU forward or image decode is not forcibly interrupted; stop prevents subsequent image work.",
+    "No GPU, physical camera, final DEB, or high-resolution performance claim is made by this report."
+  ]
+}

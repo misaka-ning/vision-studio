@@ -1,0 +1,20 @@
+{
+    "application": "Vision Studio",
+    "cache_preserved": true,
+    "display_modes": {
+        "graph": true,
+        "hierarchy": true,
+        "parameters": true
+    },
+    "error": "",
+    "hierarchy_items": 246,
+    "model": "/tmp/vision-studio-deb-qa-052vntgi/extracted/opt/VisionStudio/models/yolov5n.onnx",
+    "netron": "9.3.1",
+    "nodes": 245,
+    "onnx_hint": "想看完整结构，建使用导出的 ONNX。",
+    "onnx_hint_visible": false,
+    "parameter_rows": 141,
+    "qt": "6.8.3",
+    "success": true,
+    "version": "2.0.0"
+}

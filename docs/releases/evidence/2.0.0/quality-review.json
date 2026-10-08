@@ -1,0 +1,304 @@
+{
+  "schema_version": 1,
+  "kind": "final_code_and_test_review",
+  "application": "Vision Studio",
+  "target_release": "2.0.0",
+  "reviewed_at_utc": "2026-10-08T09:03:30.083681+00:00",
+  "baseline_tag": "v2.0.0-beta.2",
+  "baseline_commit": "1867488458ce3efc9209482badb4d9990c1f01d6",
+  "review_outcome": "no_unresolved_blocking_findings_in_reviewed_scope",
+  "reviewer_role": "Worker delivery and new response tests implemented by this reviewer; peer review of MainWindow asynchronous writer, static annotation rendering, existing model viewer/recording/backends, and another agent's UI tests. This is not an independent review of the reviewer's own implementation.",
+  "instructions_read": [
+    "AGENTS.md",
+    "README.md",
+    "CHANGELOG.md",
+    "docs/版本管理.md"
+  ],
+  "file_sha256": {
+    "CMakeLists.txt": "384ea8fda87a43c3e56fd61c708f4aae604e9721ee5fb6ea9f9b462dea4c1609",
+    "src/ui/mainwindow.cpp": "efd6db454f97f9b2983f3fd3099cd19fff6100c0040d1af7e844b6d0b56e251c",
+    "src/ui/mainwindow.h": "cf0d97a1ff1e7a8d7f8285e238090ff1a40c6acb7ac3e376df5009e03665baae",
+    "src/ui/imagecanvas.cpp": "18b8f9b766038ae3d063a1e7c5b730ff729462d746d2d734cf76f24e6c7b30d7",
+    "src/ui/imagecanvas.h": "646ff03a605b748021d1f0bffbe1e5999e9ae3bb5c21af60df0fe0a9fa698de0",
+    "src/ui/modelviewer.cpp": "bca6a7c57da5b109f29fcd2c9ddf6f98ad31ecf81e4f053a7bda912c61158b72",
+    "src/ui/modelviewer.h": "2b939e9aa06a58ae972842477e0bf96dd1caed76be66acb4f5bca5ea23c2491f",
+    "src/core/inferenceworker.cpp": "db67509f9f96011a519a5b66031ba66617123adea2e43a782b7122defe391ccd",
+    "src/core/inferenceworker.h": "96cbfc0f2abcead572539ae6bf29b275b4a1abf5f46c77d6103e65719b938965",
+    "src/core/videorecorder.cpp": "fe0f990c36a161d5b563e312e013b13cebc1c14dd1e189acca8d504d3cb371b5",
+    "src/core/visionengine.cpp": "7ae6f0d5374f0a1620098c0224b5876229b6c8a8f5b169f46c589506cd662797",
+    "src/core/onnxcudabackend.cpp": "3f45888a068ac09ac420bd1bf78605288efa37e16b4d66171750d466bd167b2a",
+    "src/core/ptbackend.cpp": "ef7b4736ceffd34032f7b21f85405a9632795642349d29a6533f353174014c63",
+    "tests/ui_tests.cpp": "aa3c30d83ab4c364feec68333e63832ee9929c15ed35b299e0e09c420d69965f",
+    "tests/inference_delivery_tests.cpp": "abbdc67aaec9ac626f92514a72962b1f5717e1852142ee9e244ca1a282206c8e",
+    "tests/batch_responsiveness_tests.cpp": "962851b1b4c317566dcc2536896232a8ecffe758067fb749cdf76efce6198c1f",
+    "assets/fluent-dark.qss": "458dcfe3d905193d8bc1920892fe5a77c73007ccd5e5410f3f743481a692dcb2",
+    "resources.qrc": "9e37952e3fc73853c8d95a8e24016661ffea1c4294dadefd05d642b268ffa8d4",
+    "src/main.cpp": "f1a800465cc52c4d1d2ef8e5994b5d2f77411d44a6a925af07c4f644457e3938"
+  },
+  "application_changes_since_beta2": [
+    "有界 imageResultReady 交付及可取消等待确认",
+    "异步无损快照、自动标注导出和历史写入，纯 QImage 后台标注",
+    "停止后保留已交付结果，保存完成前禁止新任务，关闭时等待保存而不阻塞事件循环",
+    "保留失败原因，正常停止状态不覆盖导出错误",
+    "输入参数滚轮只滚动面板、打开自动保存目录、模型库内部拖动重排并持久化",
+    "侧栏显示完整应用版本，正式版不再残留硬编码 BETA"
+  ],
+  "resolved_findings": [
+    {
+      "severity": "usability",
+      "evidence": [
+        "src/ui/mainwindow.cpp:1884",
+        "src/ui/mainwindow.cpp:2806",
+        "tests/batch_responsiveness_tests.cpp:336"
+      ],
+      "problem": "初轮真实异步导出错误测试发现，自动导出失败提示随后被 worker 普通停止状态覆盖。",
+      "resolution": "worker 状态接收在 failed 或 stopping 时不覆盖现有原因，onFinished 重新显示 lastError。最终 disk-failure case 实际通过并保留错误原因。"
+    },
+    {
+      "severity": "release_consistency",
+      "evidence": [
+        "src/ui/mainwindow.cpp:465",
+        "gpu-proof/onnx-profile/images/workbench.png"
+      ],
+      "problem": "正式版本 export.version 为 2.0.0，但工作台左栏仍硬编码显示 2.0 BETA。真实正式二进制截图证实版本标识不一致。",
+      "resolution": "侧栏改为读取 QCoreApplication::applicationVersion()，纯 QSS 注释去除 Beta。本 reviewer 只读确认源码并运行最终 b21fd1b4… 二进制 ONNX CUDA profile，目视新 workbench.png 显示 2.0.0。修正前全部原始 profile 与截图原样保存在 ignored candidate-1/profile。"
+    },
+    {
+      "severity": "release_scope",
+      "evidence": [
+        "packaging/build_deb.py:495",
+        "package-isolation-qa.json",
+        "gpu-qa.json",
+        "qa-report.json",
+        "install-qa.json"
+      ],
+      "problem": "候选 DEB 的 docs/*.md 枚举纳入其他任务未跟踪的足球文档，超出本轮发行范围，候选未发布。",
+      "resolution": "从隔离的干净源码导出重新打包，明确排除该文档及两个足球训练脚本。包隔离报告记录除文档移除和 Installed-Size 更新外所有应用/runtime regular file 字节相同。新最终 DEB SHA 2e5a467b… 已重新执行三项实际包 QA 并全部通过，七项 GPU 汇总仅绑定该新包。旧候选 QA 和安装包保持 ignored candidate-2，不作为发布证据。"
+    }
+  ],
+  "reviewed_behavior": [
+    {
+      "area": "批量吞吐、停止与确认协议",
+      "evidence": [
+        "src/core/inferenceworker.cpp:56",
+        "src/core/inferenceworker.cpp:64",
+        "src/core/inferenceworker.cpp:79",
+        "src/core/inferenceworker.cpp:89",
+        "src/core/inferenceworker.cpp:197",
+        "src/ui/mainwindow.cpp:1853"
+      ],
+      "conclusion": "GUI opt-in 后最多一个未确认图像结果；图片缓存、自动导出和历史写入完成再 ack。requestStop 原子置位并唤醒等待，不依赖 GUI 磁盘任务确认才结束。单调 ticket 不随新任务重置，旧确认不能解锁新任务；解码后及推理交付前检查取消，后续图片不再开始。Video/Camera 继续原限流 resultReady，独立 worker 默认协议兼容。"
+    },
+    {
+      "area": "异步写入、生命周期与旧任务回写",
+      "evidence": [
+        "src/ui/mainwindow.cpp:1402",
+        "src/ui/mainwindow.cpp:1413",
+        "src/ui/mainwindow.cpp:1422",
+        "src/ui/mainwindow.cpp:2213",
+        "src/ui/mainwindow.cpp:3068",
+        "src/ui/mainwindow.cpp:3145",
+        "src/ui/mainwindow.cpp:3360",
+        "src/ui/imagecanvas.cpp:142",
+        "src/ui/imagecanvas.cpp:651"
+      ],
+      "conclusion": "单线程 QThreadPool 写 PNG 和 QSaveFile，不在后台构造或访问 QWidget。结果及配置在 GUI 接收时保存，成功提交快照后才释放缓存像素；快照失败保留内存结果并提示。shared 临时目录保证工作过程中不被清空删除，generation 防止旧任务回写当前缓存，ack 始终执行。pending 禁止新的推理，关闭 pending 时保持事件循环，完成后关闭；析构保护未结束的 worker/pool。"
+    },
+    {
+      "area": "结果回看与失效",
+      "evidence": [
+        "src/ui/mainwindow.cpp:1501",
+        "src/ui/mainwindow.cpp:1555",
+        "src/ui/mainwindow.cpp:2086",
+        "src/ui/mainwindow.cpp:2354",
+        "src/ui/mainwindow.cpp:2703",
+        "src/ui/mainwindow.cpp:2726"
+      ],
+      "conclusion": "完整图片路径关联结果与已解析配置。回看仅恢复显示和导出对象，不重新推理、自动导出或新增历史；零目标是已完成结果。清空、新任务、模型、颜色或设备切换释放旧缓存；停止或后续坏图失败保留已交付前缀，未完成尾图显示原图。"
+    },
+    {
+      "area": "输入滚轮、保存位置与模型顺序",
+      "evidence": [
+        "src/ui/mainwindow.cpp:67",
+        "src/ui/mainwindow.cpp:710",
+        "src/ui/mainwindow.cpp:773",
+        "src/ui/mainwindow.cpp:1018",
+        "tests/ui_tests.cpp:467",
+        "tests/ui_tests.cpp:528",
+        "tests/ui_tests.cpp:576"
+      ],
+      "conclusion": "三个推理参数仅忽略 wheelEvent，保留键盘编辑并让父滚动面板接收滚轮；保存目录使用当前配置本地 URL 并创建需要的目录。模型重排跟随 Qt InternalMove/moveRows，移动中抑制全局模型切换，移动后保存顺序并恢复原全局选中项，不删除模型文件。"
+    },
+    {
+      "area": "模型显示异步缓存",
+      "evidence": [
+        "src/ui/modelviewer.cpp:996",
+        "src/ui/modelviewer.cpp:1054",
+        "src/ui/modelviewer.cpp:1124",
+        "src/ui/modelviewer.cpp:1342"
+      ],
+      "conclusion": "三种视图共享已解析缓存。切模型释放旧服务、页面和元信息，generation 与 page 检查拒绝迟到解析回调，页面或模式切换不重新解析。错误／不支持模型显示文字并可重试，HTTP 限制本机地址。"
+    },
+    {
+      "area": "录像、灰度、双目与设备",
+      "evidence": [
+        "src/core/inferenceworker.cpp:39",
+        "src/core/inferenceworker.cpp:124",
+        "src/core/videorecorder.cpp:135",
+        "src/core/videorecorder.cpp:261",
+        "src/core/videorecorder.cpp:291",
+        "src/core/visionengine.cpp:424",
+        "src/core/visionengine.cpp:508",
+        "src/core/onnxcudabackend.cpp:176",
+        "src/core/ptbackend.cpp:202"
+      ],
+      "conclusion": "运行期间锁定影响源/模型/颜色/双目/设备的控件，录制状态为线程安全命令而写入器由 worker 独占；停止、EOF 和异常封口验证 AVI。单目先裁剪后推理，灰度 C1/C3 适配和实际预览约定保留。Auto 初始化失败说明原因后尝试 CPU；显式 CUDA 失败不伪报 CPU，结果/导出/录像使用实际设备。"
+    }
+  ],
+  "reviewed_test_scope": [
+    "64 张 RGB 小图真实 CPU ONNX 零目标完整检测、双向回看、删除第 51 与最后源图后恢复；不是高分辨率压力测试。",
+    "部分实际完成后点击停止，后续导入图片损坏导致 worker 错误，全局换模型与换设备时清缓存；既有灰度／非零目标用例保留。",
+    "滚轮 6 data rows、保存目录 2 rows、内部模型 moveRows 持久化和重启；未模拟物理鼠标拖拽全过程。",
+    "新 worker suite 真实 CPU ONNX 验证一个未 ack 上限、错误和旧 ack、取消等待、正常完成与独立 worker 旧 signal。",
+    "新 MainWindow suite 两种高分辨率随机纹理 PNG + 自动保存，真实 stop timer、UI heartbeat、保存/缓存完好，以及真实导出路径写入失败和恢复。"
+  ],
+  "runtime_checks_executed_by_this_reviewer": true,
+  "runtime_reports": [
+    {
+      "file": "inference-delivery-qa.json",
+      "sha256": "cf44616118bbf022adf6f208debfb929eb79faf1776931b3eb441c9c62da9bc0",
+      "scope": "本 reviewer 独立 worker integration regression 6 passed/0 failed/0 skipped；最终统一构建以 ctest-qa.json 为准。"
+    },
+    {
+      "file": "batch-responsiveness-qa.json",
+      "sha256": "86e58df06064a9f497674f0ccae283176c315a2bcc053ff8ce490cad5f4d43f3",
+      "scope": "本 reviewer 实际 MainWindow integration regression 5 passed/0 failed/0 skipped，最终侧栏文本修正前候选。39/30 ms 是该候选测量，最终统一构建以 ctest-qa.json 为准。"
+    },
+    {
+      "file": "gpu-proof/onnx-profile/profile-qa.json",
+      "sha256": "c0ea5430adb36fa1fe99d7f9b3296d20d48fa7601b64a2fae0d0aa162acb87c3",
+      "scope": "本 reviewer 实际运行最终统一构建 b21fd1b4… 二进制；11 checks passed，364 CUDAExecutionProvider Node events、5 predictions、export.version=2.0.0，原始 trace/导出/截图保存。单张 RGB ONNX 样本，不代表包安装或物理摄像头验收。"
+    },
+    {
+      "file": "gpu-qa.json",
+      "sha256": "31f62c99685d8c2175e8ea99476e77dee0574558548c06962d513cfb8772d7c7",
+      "scope": "本 reviewer 只读核对最终 10 套 CTest、自己实际执行的 CUDA trace 和另一 agent 实际执行的清洁最终 DEB 四模式 smoke/exports/raw logs，并生成 publisher schema1 七项全通过聚合；不声称自己重新执行包验收。"
+    }
+  ],
+  "non_blocking_limits_and_followups": [
+    {
+      "area": "取消边界",
+      "note": "CPU OpenCV forward 和正在进行的图像解码不强杀。最终统一构建本机 CPU/1080p 与 4K 自动保存测试停止完成观测 40/30 ms、UI heartbeat 最大间隔 20/15 ms；仅是所测模型、设备和数据的事件轮询观测，不是所有模型/设备的统一 SLA。"
+    },
+    {
+      "area": "同步动作与性能范围",
+      "note": "文件夹导入、缓存回看读取、手动导出和部分视频结束保存仍可能有同步成本，未建立无界高分辨率队列、磁盘 ENOSPC 或大模型 renderer 性能保证。"
+    },
+    {
+      "area": "模型原路径覆写",
+      "note": "外部覆写同一路径模型不会自动使已解析结构视图失效，可手动重试；本轮不扩充文件监控功能。"
+    },
+    {
+      "area": "小屏幕和硬件",
+      "note": "窗口最小 1260 × 820。物理摄像头断连、实际双目布局、小屏幕／DPI 和非本机驱动需按设备验证。"
+    }
+  ],
+  "limitations": [
+    "本报告绑定列出的源码 SHA256、明确链接的实际报告及最终清洁 DEB SHA256；不绑定尚未产生的 Git 发布提交或标签，原始报告各自的执行范围保持不变。",
+    "本 reviewer 实际执行两个明确链接的 integration regression 以及最终统一构建正式二进制 ONNX CUDA profile。另一测试 agent 执行最终全 10 套串行 CTest，另一打包 agent 执行清洁最终 DEB 三项验收；本 reviewer 核对同版原始报告/日志/哈希后生成七项 GPU 聚合，不将他人执行描述为自己执行。",
+    "测试环境 HOME/XDG/TMP/配置/输出隔离，不修改运行中的 /opt/VisionStudio、个人设置/历史/模型/录像，未配置或改动 GPU runtime。",
+    "没有未解决的阻断发现不等同覆盖所有输入或不存在其他缺陷。"
+  ],
+  "findings": [],
+  "final_unified_verification_reviewed": {
+    "executed_by_this_reviewer": false,
+    "file": "ctest-qa.json",
+    "sha256": "3c6bfb03c0264decb5be41e6d82553f6c161397432d0bd6b6f1e8ff81f23a34c",
+    "success": true,
+    "all_suites_passed": 10,
+    "failed": 0,
+    "qt_skipped": 0,
+    "python_skipped": 0,
+    "elapsed_seconds": 200.968,
+    "batch_responsiveness": [
+      {
+        "accepted_after_stop": 1,
+        "accepted_at_stop": 1,
+        "automatic_export": true,
+        "backend": "OpenCV DNN / CPU",
+        "cache_survives_removed_sources": true,
+        "complete_exports": true,
+        "device": "cpu",
+        "heartbeat_ticks": 48,
+        "height": 1080,
+        "maximum_heartbeat_gap_ms": 20,
+        "observed_stop_elapsed_ms": 40,
+        "scheduled_stop_dispatch_ms": 30,
+        "total_images": 3,
+        "width": 1920
+      },
+      {
+        "accepted_after_stop": 1,
+        "accepted_at_stop": 1,
+        "automatic_export": true,
+        "backend": "OpenCV DNN / CPU",
+        "cache_survives_removed_sources": true,
+        "complete_exports": true,
+        "device": "cpu",
+        "heartbeat_ticks": 173,
+        "height": 2160,
+        "maximum_heartbeat_gap_ms": 15,
+        "observed_stop_elapsed_ms": 30,
+        "scheduled_stop_dispatch_ms": 38,
+        "total_images": 3,
+        "width": 3840
+      }
+    ],
+    "bounded_image_delivery": {
+      "maximum_unacknowledged": 1,
+      "stop_elapsed_ms": 50,
+      "delivered": 2,
+      "total_images": 3
+    },
+    "automatic_export_disk_failure_recovery": true,
+    "final_application": {
+      "path": "build-stable/bin/vision-studio",
+      "bytes": 1041776,
+      "sha256": "b21fd1b4e735247d52937e6bd8e77eb47a2266da90c3c5845514da5555605470"
+    },
+    "note": "串行最终 10 套由另一测试 agent 实际执行；本 reviewer 读取原始日志及报告，并用同 SHA 正式程序另做真实 CUDA profile。"
+  },
+  "packaging_verification_reviewed": {
+    "deb_sha256": "2e5a467b07d82cf600eedeec2bd40624a724efccb4715366997ef04f3a4a042e",
+    "executed_by_this_reviewer": false,
+    "reports": [
+      {
+        "file": "qa-report.json",
+        "sha256": "53b949683f3af7bff1cb3cdce3e16327d0434321c2c3bd40af57a78153180c43",
+        "success": true,
+        "executed_by_this_reviewer": false
+      },
+      {
+        "file": "install-qa.json",
+        "sha256": "9fae96f5578a3a41fdff0d850f42121f4c357a685109c4fbebffdff4ee4c3664",
+        "success": true,
+        "executed_by_this_reviewer": false
+      },
+      {
+        "file": "gpu-install-qa.json",
+        "sha256": "8e6e532420f9c5594b7f15e20974eb609967643be33745f06531bf093709af9e",
+        "success": true,
+        "executed_by_this_reviewer": false
+      },
+      {
+        "file": "package-isolation-qa.json",
+        "sha256": "8f65df98f1981cb4c24c9daed84347c0db9ab67be9e3a8f8174461877b51cd8b",
+        "success": true,
+        "executed_by_this_reviewer": false
+      }
+    ],
+    "gpu_aggregate_sha256": "31f62c99685d8c2175e8ea99476e77dee0574558548c06962d513cfb8772d7c7",
+    "scope": "实际运行安装包/CPU smoke/GPU ONNX+PT smoke，并在隔离离线 namespace 验证安装、普通 UID 推理、清除和用户数据保留。安装 namespace 为隔离 root、宿主只读，维护者脚本和 triggers 未执行。",
+    "limits": "不代表宿主真实系统安装、物理摄像头或所有系统环境验收。"
+  }
+}

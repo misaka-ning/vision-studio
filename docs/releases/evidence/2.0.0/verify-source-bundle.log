@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "success": true,
+  "version": "2.0.0",
+  "errors": [],
+  "embedded_source_files_sha256_verified": 18,
+  "frozen_application_sources_byte_equal": 3229,
+  "application_source": {
+    "file": "vision-studio-2.0.0-sources.tar.xz",
+    "bytes": 41695584,
+    "sha256": "7a3de9f0b98a87d7844910260a3c9f3c3bee155c53141a0483b4b297af260452"
+  },
+  "complete_source": {
+    "file": "vision-studio-2.0.0-complete-source.tar.xz",
+    "bytes": 811939396,
+    "sha256": "c276c20a838dfe3a6cfa6c2db45139d4d68389c40cd7b58c2f8606e71b05ff6b"
+  },
+  "deb_sha256_confirmed": "2e5a467b07d82cf600eedeec2bd40624a724efccb4715366997ef04f3a4a042e",
+  "required_application_files_verified": [
+    "CHANGELOG.md",
+    "CMakeLists.txt",
+    "assets/fluent-check.svg",
+    "assets/fluent-dark.qss",
+    "docs/releases/2.0.0.md",
+    "docs/releases/evidence/2.0.0/ctest-qa.json",
+    "docs/releases/evidence/2.0.0/gpu-qa.json",
+    "docs/releases/evidence/2.0.0/quality-review.json",
+    "packaging/licenses/fluent-qt-design-reference/LICENSE",
+    "requirements-gpu.lock.txt",
+    "requirements-gpu.txt",
+    "resources.qrc",
+    "scripts/gpu_probe.py",
+    "scripts/gpu_setup.py",
+    "scripts/setup_gpu.sh",
+    "src/core/gpuruntime.cpp",
+    "src/core/inferenceworker.cpp",
+    "src/core/inferenceworker.h",
+    "src/core/onnxcudabackend.cpp",
+    "src/ui/imagecanvas.cpp",
+    "src/ui/imagecanvas.h",
+    "src/ui/mainwindow.cpp",
+    "src/ui/mainwindow.h",
+    "tests/batch_responsiveness_tests.cpp",
+    "tests/inference_delivery_tests.cpp",
+    "tests/ui_tests.cpp",
+    "vendor/onnxruntime/LICENSE",
+    "vendor/onnxruntime/onnxruntime_c_api.h"
+  ],
+  "note": "Application archive files match frozen inputs byte for byte. This final validation report and frozen manifest are added after archive creation to avoid recursive self-hashing; product and build inputs remain frozen."
+}

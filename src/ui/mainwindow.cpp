@@ -35,6 +35,9 @@
 #include <QProgressBar>
 #include <QPushButton>
 #include <QRegularExpression>
+#include <QRunnable>
+#include <QThreadPool>
+#include <QWheelEvent>
 #include <QSaveFile>
 #include <QScrollArea>
 #include <QSet>
@@ -61,6 +64,18 @@
 
 namespace
 {
+template <typename Base> class WheelSafeSpinBox final : public Base
+{
+  public:
+    using Base::Base;
+  protected:
+    void wheelEvent(QWheelEvent *event) override
+    {
+        // Ignoring lets the surrounding configuration panel receive scrolling,
+        // even when this input currently has keyboard focus.
+        event->ignore();
+    }
+};
 vision::ComputeDevice computeMode(const QString &value)
 {
     return value == "cuda" ? vision::ComputeDevice::CUDA
@@ -271,6 +286,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     w->addWidget(footer);
     body->addWidget(workspace, 1);
     setCentralWidget(base);
+    resultIoPool_ = new QThreadPool(this);
+    resultIoPool_->setMaxThreadCount(1);
     connectWorker();
     const int savedTask = settings_->value("task", 0).toInt(),
               savedInput = settings_->value("inputSize", 640).toInt();
@@ -405,6 +422,7 @@ MainWindow::~MainWindow()
     worker_->requestStop();
     workerThread_->quit();
     workerThread_->wait();
+    resultIoPool_->waitForDone();
 }
 
 void MainWindow::setupStyle()
@@ -444,7 +462,7 @@ QWidget *MainWindow::buildSidebar()
     brand->addWidget(text("Vision Studio", "brand"));
     brand->addStretch();
     l->addLayout(brand);
-    auto *cap = text("2.0 BETA  ·  本地视觉工作空间", "brandCaption");
+    auto *cap = text(QCoreApplication::applicationVersion() + "  ·  本地视觉工作空间", "brandCaption");
     cap->setContentsMargins(4, 4, 0, 0);
     l->addWidget(cap);
     l->addSpacing(24);
@@ -602,6 +620,7 @@ QWidget *MainWindow::buildWorkbench()
     connect(computeDevice_, &QComboBox::currentIndexChanged, this, deviceChanged);
     connect(gpuDeviceIndex_, &QComboBox::currentIndexChanged, this, deviceChanged);
     auto *scroll = new QScrollArea;
+    scroll->setObjectName("configurationScrollArea");
     scroll->setWidgetResizable(true);
     scroll->viewport()->setAutoFillBackground(false);
     auto *inner = new QWidget;
@@ -688,19 +707,22 @@ QWidget *MainWindow::buildWorkbench()
     auto *form = new QFormLayout;
     form->setSpacing(9);
     form->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
-    inputSize_ = new QSpinBox;
+    inputSize_ = new WheelSafeSpinBox<QSpinBox>;
+    inputSize_->setObjectName("inputSize");
     inputSize_->setRange(32, 2048);
     inputSize_->setSingleStep(32);
     inputSize_->setValue(640);
     inputSize_->setSuffix(" px");
     form->addRow("输入尺寸", inputSize_);
-    confidence_ = new QDoubleSpinBox;
+    confidence_ = new WheelSafeSpinBox<QDoubleSpinBox>;
+    confidence_->setObjectName("confidence");
     confidence_->setRange(0.01, 1.0);
     confidence_->setDecimals(2);
     confidence_->setSingleStep(0.05);
     confidence_->setValue(0.25);
     form->addRow("置信度", confidence_);
-    iou_ = new QDoubleSpinBox;
+    iou_ = new WheelSafeSpinBox<QDoubleSpinBox>;
+    iou_->setObjectName("nmsIou");
     iou_->setRange(0.01, 1.0);
     iou_->setDecimals(2);
     iou_->setSingleStep(0.05);
@@ -748,6 +770,19 @@ QWidget *MainWindow::buildWorkbench()
     autoExport_ = new QCheckBox("自动保存每张图片的结果");
     autoExport_->setToolTip("保存标注 PNG、JSON 和 CSV；视频与摄像头在停止后保存最后一帧");
     fields->addWidget(autoExport_);
+    auto *openExportDirectory = button("打开保存文件夹", "folder", "ghost");
+    openExportDirectory->setObjectName("openExportDirectoryButton");
+    openExportDirectory->setToolTip(exportDir_);
+    fields->addWidget(openExportDirectory);
+    connect(openExportDirectory, &QPushButton::clicked, this,
+            [this, openExportDirectory]
+            {
+                openExportDirectory->setToolTip(exportDir_);
+                if (!QDir().mkpath(exportDir_))
+                    showNotice("无法创建保存文件夹：" + exportDir_, true);
+                else if (!QDesktopServices::openUrl(QUrl::fromLocalFile(QFileInfo(exportDir_).absoluteFilePath())))
+                    showNotice("无法打开保存文件夹：" + exportDir_, true);
+            });
     lockedControls_.append(autoExport_);
     backendBadge_ = text("设备待验证", "chip");
     backendBadge_->setObjectName("actualDeviceBadge");
@@ -980,6 +1015,33 @@ QWidget *MainWindow::buildModels()
     modelList_->setObjectName("globalModelList");
     lockedControls_.append(modelList_);
     modelList_->setIconSize(QSize(34, 34));
+    modelList_->setDragEnabled(true);
+    modelList_->setAcceptDrops(true);
+    modelList_->setDropIndicatorShown(true);
+    modelList_->setDragDropMode(QAbstractItemView::InternalMove);
+    modelList_->setDefaultDropAction(Qt::MoveAction);
+    modelList_->setDragDropOverwriteMode(false);
+    modelList_->setSelectionMode(QAbstractItemView::SingleSelection);
+    modelList_->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    modelList_->setToolTip("拖动模型调整顺序；顺序自动保存，当前全局选用模型保持不变。");
+    connect(modelList_->model(), &QAbstractItemModel::rowsAboutToBeMoved, this,
+            [this] { modelListReordering_ = true; });
+    connect(modelList_->model(), &QAbstractItemModel::rowsMoved, this,
+            [this]
+            {
+                models_.clear();
+                const QSignalBlocker blocker(modelList_);
+                for (int row = 0; row < modelList_->count(); ++row)
+                {
+                    auto *item = modelList_->item(row);
+                    const QString path = item->data(Qt::UserRole).toString();
+                    models_.append(path);
+                    if (path == modelPath_)
+                        modelList_->setCurrentItem(item);
+                }
+                modelListReordering_ = false;
+                persist();
+            });
     fl->addWidget(modelList_, 1);
     auto *actions = new QHBoxLayout;
     auto *activate = button("前往检测工作台", "arrow", "primary");
@@ -998,7 +1060,7 @@ QWidget *MainWindow::buildModels()
     connect(modelList_, &QListWidget::currentItemChanged, this,
             [this](QListWidgetItem *item)
             {
-                if (item && !busy_)
+                if (item && !busy_ && !modelListReordering_)
                     setModel(item->data(Qt::UserRole).toString());
             });
     connect(modelList_, &QListWidget::itemDoubleClicked, this, [this](QListWidgetItem *) { selectRoute(0); });
@@ -1339,6 +1401,7 @@ QWidget *MainWindow::buildRecordings()
 
 void MainWindow::clearImageResults()
 {
+    ++imageResultGeneration_;
     imageResults_.clear();
     imageResultDirectory_.reset();
     imageResultCacheWarning_ = false;
@@ -1351,38 +1414,88 @@ void MainWindow::cacheImageResult(const vision::InferenceResult &result)
 {
     if (result.image.isNull() || result.demonstration || !files_.contains(result.source))
         return;
-    CachedImageResult cached{result, lastConfig_, {}};
+    // The UI immediately keeps the accepted result. The bounded background writer
+    // replaces its pixels with a lossless snapshot only after a successful commit.
+    imageResults_.insert(result.source, CachedImageResult{result, lastConfig_, {}});
+}
+
+void MainWindow::saveImageResultInBackground(const vision::InferenceResult &result, quint64 ticket)
+{
     if (!imageResultDirectory_)
-        imageResultDirectory_ = std::make_unique<QTemporaryDir>(
+        imageResultDirectory_ = std::make_shared<QTemporaryDir>(
             QDir::tempPath() + "/vision-studio-image-results-XXXXXX");
-    if (imageResultDirectory_->isValid())
-    {
-        const QString snapshot = imageResultDirectory_->filePath(
-            QUuid::createUuid().toString(QUuid::Id128) + ".png");
-        QSaveFile file(snapshot);
-        if (file.open(QIODevice::WriteOnly))
+    const auto directory = imageResultDirectory_;
+    const QString snapshot = directory->isValid()
+                                 ? directory->filePath(QUuid::createUuid().toString(QUuid::Id128) + ".png")
+                                 : QString();
+    const quint64 generation = imageResultGeneration_;
+    const bool automatic = autoExport_->isChecked();
+    const auto exported = automatic ? prepareResultExport(result, exportDir_, lastConfig_) : ResultExport{};
+    const QString historyPath = dataRoot_ + "/history.json";
+    const QByteArray history = QJsonDocument(history_).toJson();
+    ++resultIoPending_;
+    resultIoPool_->start(QRunnable::create(
+        [this, result, ticket, generation, directory, snapshot, automatic, exported, historyPath, history]
         {
-            QImageWriter writer(&file, "PNG");
-            writer.setCompression(11); // Fast lossless snapshots, independent of source-file changes.
-            const QImage &original = result.originalImage.isNull() ? result.image : result.originalImage;
-            if (writer.write(original) && file.commit())
+            bool snapshotSaved = false;
+            if (!snapshot.isEmpty())
             {
-                cached.snapshotPath = snapshot;
-                // Keep only metadata in memory; a large folder must not retain every decoded image.
-                cached.result.image = {};
-                cached.result.originalImage = {};
+                QSaveFile file(snapshot);
+                if (file.open(QIODevice::WriteOnly))
+                {
+                    QImageWriter writer(&file, "PNG");
+                    writer.setCompression(11);
+                    const auto &original = result.originalImage.isNull() ? result.image : result.originalImage;
+                    snapshotSaved = writer.write(original) && file.commit();
+                }
             }
-        }
-    }
-    if (cached.snapshotPath.isEmpty() && !imageResultCacheWarning_)
-    {
-        imageResultCacheWarning_ = true;
-        showNotice("无法写入临时结果缓存，本轮结果将保存在内存中。请检查临时目录空间或权限。", true);
-    }
-    const auto previous = imageResults_.constFind(result.source);
-    if (previous != imageResults_.cend() && !previous->snapshotPath.isEmpty())
-        QFile::remove(previous->snapshotPath);
-    imageResults_.insert(result.source, std::move(cached));
+            QString exportError, historyError;
+            const bool exportSaved = !automatic || writePreparedResult(exported, &exportError);
+            const bool historySaved = atomicWrite(historyPath, history, &historyError);
+            // Captured directory keeps the snapshot tree alive across clear/new jobs.
+            // Destructor waits for this pool before destroying any captured state.
+            QMetaObject::invokeMethod(this,
+                [this, result, ticket, generation, directory, snapshot, snapshotSaved,
+                 automatic, exportSaved, exportError, historySaved, historyError]
+                {
+                    --resultIoPending_;
+                    if (generation == imageResultGeneration_)
+                    {
+                        auto cached = imageResults_.find(result.source);
+                        if (cached != imageResults_.end())
+                        {
+                            if (snapshotSaved)
+                            {
+                                cached->snapshotPath = snapshot;
+                                cached->result.image = {};
+                                cached->result.originalImage = {};
+                            }
+                            else if (!imageResultCacheWarning_)
+                            {
+                                imageResultCacheWarning_ = true;
+                                showNotice("无法写入临时结果缓存，本轮结果保存在内存中。请检查临时目录空间或权限。", true);
+                            }
+                        }
+                        if (!historySaved)
+                            showNotice("运行记录保存失败：" + historyError, true);
+                        if (automatic && !exportSaved)
+                        {
+                            failed_ = true;
+                            lastError_ = "自动导出失败：" + exportError;
+                            worker_->requestStop();
+                            showNotice(lastError_, true);
+                        }
+                    }
+                    worker_->acknowledgeImageResult(ticket);
+                    if (!busy_ && !resultIoPending_)
+                    {
+                        runButton_->setEnabled(!gpuSetupProcess_);
+                        demoButton_->setEnabled(!gpuSetupProcess_);
+                        if (closing_)
+                            QTimer::singleShot(0, this, &QWidget::close);
+                    }
+                }, Qt::QueuedConnection);
+        }));
 }
 
 void MainWindow::selectQueueImage(int row)
@@ -1740,10 +1853,14 @@ void MainWindow::connectWorker()
 {
     workerThread_ = new QThread(this);
     worker_ = new vision::InferenceWorker;
+    worker_->setImageResultBackpressureEnabled(true);
     worker_->moveToThread(workerThread_);
     connect(workerThread_, &QThread::finished, worker_, &QObject::deleteLater);
     connect(this, &MainWindow::startRequested, worker_, &vision::InferenceWorker::run, Qt::QueuedConnection);
-    connect(worker_, &vision::InferenceWorker::resultReady, this, &MainWindow::onResult);
+    connect(worker_, &vision::InferenceWorker::resultReady, this,
+            [this](const vision::InferenceResult &result) { onResult(result); });
+    connect(worker_, &vision::InferenceWorker::imageResultReady, this,
+            [this](const vision::InferenceResult &result, quint64 ticket) { onResult(result, ticket); });
     connect(worker_, &vision::InferenceWorker::modelReady, this,
             [this](const QString &backend, const vision::ModelConfig &config)
             {
@@ -1765,7 +1882,12 @@ void MainWindow::connectWorker()
                 updateTaskUi();
                 updateDeviceUi();
             });
-    connect(worker_, &vision::InferenceWorker::status, this, [this](const QString &s) { showNotice(s); });
+    connect(worker_, &vision::InferenceWorker::status, this,
+            [this](const QString &message)
+            {
+                if (!failed_ && !inferenceStopping_)
+                    showNotice(message);
+            });
     connect(worker_, &vision::InferenceWorker::progress, this,
             [this](int done, int total)
             {
@@ -2092,6 +2214,11 @@ void MainWindow::startInference()
 {
     if (busy_ || gpuSetupProcess_)
         return;
+    if (resultIoPending_)
+    {
+        showNotice("正在保存已完成的结果，保存完成后即可开始新任务。");
+        return;
+    }
     if (modelPath_.isEmpty())
     {
         showNotice("请先导入 ONNX 或 PT 模型。", true);
@@ -2152,7 +2279,7 @@ void MainWindow::stopInference()
     worker_->requestStop();
     updateRecordingUi();
     stopButton_->setEnabled(false);
-    showNotice("正在停止，请等待当前帧处理完成…");
+    showNotice("停止请求已发送 · 正在结束当前推理，已完成结果保留");
 }
 void MainWindow::setBusy(bool busy)
 {
@@ -2308,9 +2435,9 @@ void MainWindow::updateDeviceUi()
         gpuCancelButton_->setEnabled(installing && !gpuSetupCancelling_);
     }
     if (runButton_)
-        runButton_->setEnabled(!installing);
+        runButton_->setEnabled(!installing && !resultIoPending_);
     if (demoButton_)
-        demoButton_->setEnabled(!busy_ && !installing);
+        demoButton_->setEnabled(!busy_ && !installing && !resultIoPending_);
 }
 
 QString MainWindow::gpuLauncherPython() const
@@ -2573,30 +2700,26 @@ void MainWindow::updateModelMeta(const QString &state)
                             .arg(channels)
                             .arg(state));
 }
-void MainWindow::onResult(const vision::InferenceResult &r)
+void MainWindow::onResult(const vision::InferenceResult &r, quint64 ticket)
 {
+    if (ticket && (!busy_ || inferenceStopping_))
+    {
+        worker_->acknowledgeImageResult(ticket);
+        return;
+    }
     if (sourceKind_ == vision::SourceKind::Images)
         cacheImageResult(r);
     displayResult(r);
     if (sourceKind_ == vision::SourceKind::Images)
     {
-        recordResult(r);
+        recordResult(r, false);
         const int row = files_.indexOf(r.source);
         if (row >= 0)
         {
             queue_->setCurrentRow(row);
             queue_->item(row)->setForeground(QColor("#60CDFF"));
         }
-        if (autoExport_->isChecked())
-        {
-            QString error;
-            if (!writeResult(r, exportDir_, &error))
-            {
-                failed_ = true;
-                worker_->requestStop();
-                showNotice("自动导出失败：" + error, true);
-            }
-        }
+        saveImageResultInBackground(r, ticket);
     }
 }
 
@@ -2693,12 +2816,16 @@ void MainWindow::onFinished(bool cancelled)
             if (!writeResult(lastResult_, exportDir_, &error))
             {
                 failed_ = true;
-                showNotice("自动导出失败：" + error, true);
+                lastError_ = "自动导出失败：" + error;
+                showNotice(lastError_, true);
             }
         }
     }
     setBusy(false);
-    if (!failed_)
+    refreshHistory();
+    if (failed_ && !lastError_.isEmpty())
+        showNotice(lastError_, true);
+    else if (!failed_)
         showNotice(cancelled ? "任务已停止 · 当前结果可导出"
                              : QString("检测完成 · 已处理 %1 %2")
                                    .arg(completed_)
@@ -2938,34 +3065,16 @@ void MainWindow::saveScreenshot(const QString &p)
         qWarning().noquote() << "Cannot save screenshot" << p;
 }
 
-bool MainWindow::writeResult(const vision::InferenceResult &r, const QString &dir, QString *error)
+MainWindow::ResultExport MainWindow::prepareResultExport(const vision::InferenceResult &r,
+                                                          const QString &dir,
+                                                          const vision::ModelConfig &configValue)
 {
     if (r.image.isNull() || r.demonstration)
-    {
-        if (error)
-            *error = "没有可导出的真实结果。";
-        return false;
-    }
-    if (!QDir().mkpath(dir))
-    {
-        if (error)
-            *error = "无法创建目录。";
-        return false;
-    }
+        return {};
     const QString stamp = QDateTime::currentDateTime().toString("yyyyMMdd-HHmmss-zzz");
     const QString base = dir + "/" + cleanName(r.source) + "-" + stamp +
                          (r.frameNumber > 0 ? QString("-f%1").arg(r.frameNumber) : "");
-    // Render from the result being exported; the canvas can be showing another queue item.
-    ImageCanvas renderer;
-    renderer.setResult(r);
-    const QImage image = renderer.annotatedImage();
-    QSaveFile png(base + ".png");
-    if (!png.open(QIODevice::WriteOnly) || !image.save(&png, "PNG") || !png.commit())
-    {
-        if (error)
-            *error = png.errorString();
-        return false;
-    }
+    // Capture metadata only; annotation rendering and encoding run in the writer.
     QJsonArray predictions;
     QByteArray csv = "class_id,label,confidence,x,y,width,height\n";
     for (const auto &p : r.predictions)
@@ -2989,20 +3098,20 @@ bool MainWindow::writeResult(const vision::InferenceResult &r, const QString &di
                    .toUtf8();
     }
     const QJsonObject preprocess{
-        {"mode", isPtModel(lastConfig_.modelPath) ? "model_native" : "configured"},
-        {"color_mode", lastConfig_.colorMode == vision::InputColorMode::Grayscale
+        {"mode", isPtModel(configValue.modelPath) ? "model_native" : "configured"},
+        {"color_mode", configValue.colorMode == vision::InputColorMode::Grayscale
                            ? "grayscale"
-                           : (lastConfig_.swapRB ? "rgb" : "bgr")},
-        {"swap_rb", lastConfig_.swapRB},
-        {"scale", lastConfig_.scale},
-        {"mean_rgb", QJsonArray{lastConfig_.meanR, lastConfig_.meanG, lastConfig_.meanB}}};
-    const QJsonObject config{{"input_size", lastConfig_.inputSize},
-                             {"input_channels", lastConfig_.inputChannels},
-                             {"color_mode", lastConfig_.colorMode == vision::InputColorMode::Grayscale
+                           : (configValue.swapRB ? "rgb" : "bgr")},
+        {"swap_rb", configValue.swapRB},
+        {"scale", configValue.scale},
+        {"mean_rgb", QJsonArray{configValue.meanR, configValue.meanG, configValue.meanB}}};
+    const QJsonObject config{{"input_size", configValue.inputSize},
+                             {"input_channels", configValue.inputChannels},
+                             {"color_mode", configValue.colorMode == vision::InputColorMode::Grayscale
                                                 ? "grayscale"
-                                                : (lastConfig_.swapRB ? "rgb" : "bgr")},
-                             {"confidence_threshold", double(lastConfig_.confidence)},
-                             {"nms_iou", double(lastConfig_.iou)},
+                                                : (configValue.swapRB ? "rgb" : "bgr")},
+                             {"confidence_threshold", double(configValue.confidence)},
+                             {"nms_iou", double(configValue.iou)},
                              {"preprocess", preprocess}};
     QJsonObject root{
         {"application", "Vision Studio"},
@@ -3016,7 +3125,7 @@ bool MainWindow::writeResult(const vision::InferenceResult &r, const QString &di
         {"device_index", r.deviceIndex},
         {"device_name", r.deviceName},
         {"device_notice", r.deviceNotice},
-        {"model_file", lastConfig_.modelPath},
+        {"model_file", configValue.modelPath},
         {"config", config},
         {"task", taskName(r.task)},
         {"width", r.image.width()},
@@ -3030,9 +3139,48 @@ bool MainWindow::writeResult(const vision::InferenceResult &r, const QString &di
         {"inference_ms", r.inferenceMs},
         {"total_ms", r.totalMs},
         {"predictions", predictions}};
-    return atomicWrite(base + ".json", QJsonDocument(root).toJson(), error) &&
-           atomicWrite(base + ".csv", csv, error);
+    return ResultExport{base, r, QJsonDocument(root).toJson(), csv};
 }
+
+bool MainWindow::writePreparedResult(const ResultExport &result, QString *error)
+{
+    if (result.result.image.isNull() || result.base.isEmpty())
+    {
+        if (error)
+            *error = "没有可导出的真实结果。";
+        return false;
+    }
+    if (!QDir().mkpath(QFileInfo(result.base).absolutePath()))
+    {
+        if (error)
+            *error = "无法创建目录。";
+        return false;
+    }
+    QSaveFile png(result.base + ".png");
+    if (!png.open(QIODevice::WriteOnly))
+    {
+        if (error)
+            *error = png.errorString();
+        return false;
+    }
+    QImageWriter writer(&png, "PNG");
+    writer.setCompression(11);
+    const QImage image = ImageCanvas::annotatedResultImage(result.result);
+    if (!writer.write(image) || !png.commit())
+    {
+        if (error)
+            *error = writer.errorString().isEmpty() ? png.errorString() : writer.errorString();
+        return false;
+    }
+    return atomicWrite(result.base + ".json", result.json, error) &&
+           atomicWrite(result.base + ".csv", result.csv, error);
+}
+
+bool MainWindow::writeResult(const vision::InferenceResult &result, const QString &directory, QString *error)
+{
+    return writePreparedResult(prepareResultExport(result, directory, lastConfig_), error);
+}
+
 void MainWindow::exportResult()
 {
     if (lastResult_.image.isNull() || lastResult_.demonstration)
@@ -3051,7 +3199,7 @@ void MainWindow::exportResult()
     else
         showNotice("导出失败：" + error, true);
 }
-void MainWindow::recordResult(const vision::InferenceResult &r)
+void MainWindow::recordResult(const vision::InferenceResult &r, bool writeToDisk)
 {
     QJsonObject o{
         {"time", QDateTime::currentDateTime().toString(Qt::ISODateWithMs)},
@@ -3077,10 +3225,14 @@ void MainWindow::recordResult(const vision::InferenceResult &r)
     history_.prepend(o);
     while (history_.size() > 200)
         history_.removeLast();
-    QString error;
-    if (!atomicWrite(dataRoot_ + "/history.json", QJsonDocument(history_).toJson(), &error))
-        showNotice("运行记录保存失败：" + error, true);
-    refreshHistory();
+    if (writeToDisk)
+    {
+        QString error;
+        if (!atomicWrite(dataRoot_ + "/history.json", QJsonDocument(history_).toJson(), &error))
+            showNotice("运行记录保存失败：" + error, true);
+    }
+    if (!busy_ || (pages_ && pages_->currentIndex() == 3))
+        refreshHistory();
 }
 void MainWindow::refreshHistory()
 {
@@ -3214,10 +3366,13 @@ void MainWindow::closeEvent(QCloseEvent *e)
         e->ignore();
         return;
     }
-    if (busy_)
+    if (busy_ || resultIoPending_)
     {
         closing_ = true;
-        stopInference();
+        if (busy_)
+            stopInference();
+        else
+            showNotice("正在保存已完成的结果，保存完成后关闭窗口…");
         e->ignore();
         return;
     }

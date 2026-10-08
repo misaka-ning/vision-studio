@@ -1,0 +1,15 @@
+********* Start testing of BatchResponsivenessTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : BatchResponsivenessTests::initTestCase()
+QWARN  : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(1920x1080-rgb-random) This plugin does not support propagateSizeHints()
+QINFO  : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(1920x1080-rgb-random) batch_responsiveness_evidence: {"accepted_after_stop":1,"accepted_at_stop":1,"automatic_export":true,"backend":"OpenCV DNN / CPU","cache_survives_removed_sources":true,"complete_exports":true,"device":"cpu","heartbeat_ticks":49,"height":1080,"maximum_heartbeat_gap_ms":19,"observed_stop_elapsed_ms":39,"scheduled_stop_dispatch_ms":30,"total_images":3,"width":1920}
+PASS   : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(1920x1080-rgb-random)
+QWARN  : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(3840x2160-rgb-random) This plugin does not support propagateSizeHints()
+QINFO  : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(3840x2160-rgb-random) batch_responsiveness_evidence: {"accepted_after_stop":1,"accepted_at_stop":1,"automatic_export":true,"backend":"OpenCV DNN / CPU","cache_survives_removed_sources":true,"complete_exports":true,"device":"cpu","heartbeat_ticks":168,"height":2160,"maximum_heartbeat_gap_ms":19,"observed_stop_elapsed_ms":30,"scheduled_stop_dispatch_ms":37,"total_images":3,"width":3840}
+PASS   : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(3840x2160-rgb-random)
+QWARN  : BatchResponsivenessTests::automaticExportDiskFailureStopsWithoutDeadlockAndBatchCanRecover() This plugin does not support propagateSizeHints()
+QINFO  : BatchResponsivenessTests::automaticExportDiskFailureStopsWithoutDeadlockAndBatchCanRecover() batch_disk_failure_evidence: export_error_reported=true no_deadlock=true completed_result_retained=true recovered_images=3
+PASS   : BatchResponsivenessTests::automaticExportDiskFailureStopsWithoutDeadlockAndBatchCanRecover()
+PASS   : BatchResponsivenessTests::cleanupTestCase()
+Totals: 5 passed, 0 failed, 0 skipped, 0 blacklisted, 9182ms
+********* Finished testing of BatchResponsivenessTests *********

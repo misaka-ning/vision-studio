@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "version": "2.0.0",
+  "scope": "Actual MainWindow real CPU ONNX high-resolution automatic-save cancellation and export-path failure regression; final application/package validation is separate",
+  "recorded_at_utc": "2026-10-08T08:13:11.189793+00:00",
+  "success": true,
+  "exit_code": 0,
+  "command": [
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/review/delivery-build/vision-batch-responsiveness-tests"
+  ],
+  "qt": "6.8.3",
+  "build_type": "Release",
+  "actual_backend": "OpenCV DNN / CPU",
+  "passed": 5,
+  "failed": 0,
+  "skipped": 0,
+  "qt_test_elapsed_ms": 9182,
+  "high_resolution_cases": [
+    {
+      "accepted_after_stop": 1,
+      "accepted_at_stop": 1,
+      "automatic_export": true,
+      "backend": "OpenCV DNN / CPU",
+      "cache_survives_removed_sources": true,
+      "complete_exports": true,
+      "device": "cpu",
+      "heartbeat_ticks": 49,
+      "height": 1080,
+      "maximum_heartbeat_gap_ms": 19,
+      "observed_stop_elapsed_ms": 39,
+      "scheduled_stop_dispatch_ms": 30,
+      "total_images": 3,
+      "width": 1920
+    },
+    {
+      "accepted_after_stop": 1,
+      "accepted_at_stop": 1,
+      "automatic_export": true,
+      "backend": "OpenCV DNN / CPU",
+      "cache_survives_removed_sources": true,
+      "complete_exports": true,
+      "device": "cpu",
+      "heartbeat_ticks": 168,
+      "height": 2160,
+      "maximum_heartbeat_gap_ms": 19,
+      "observed_stop_elapsed_ms": 30,
+      "scheduled_stop_dispatch_ms": 37,
+      "total_images": 3,
+      "width": 3840
+    }
+  ],
+  "raw_log": {
+    "file": "docs/releases/evidence/2.0.0/batch-responsiveness-tests.log",
+    "bytes": 2428,
+    "sha256": "f77dac17befcfd5a0ab14474d635c6033c3f9877ebea28283aa2108f7525e7ed"
+  },
+  "executable": {
+    "file": "output/v2.0-stable/review/delivery-build/vision-batch-responsiveness-tests",
+    "bytes": 1124240,
+    "sha256": "196fcb27852549d7675a893a88c78e88292a8ff402e6ee8ef66a37724e0f4bc3"
+  },
+  "model": {
+    "file": "models/yolov5n.onnx",
+    "bytes": 7903550,
+    "sha256": "60c130eb3cd8e3f378673ea71c8b54da8afa0c051d82a1ea1490c36bbf10c820"
+  },
+  "source_files": [
+    {
+      "file": "src/core/inferenceworker.cpp",
+      "bytes": 13467,
+      "sha256": "db67509f9f96011a519a5b66031ba66617123adea2e43a782b7122defe391ccd"
+    },
+    {
+      "file": "src/core/inferenceworker.h",
+      "bytes": 2408,
+      "sha256": "96cbfc0f2abcead572539ae6bf29b275b4a1abf5f46c77d6103e65719b938965"
+    },
+    {
+      "file": "src/ui/mainwindow.cpp",
+      "bytes": 151776,
+      "sha256": "e7203e155a160c89ed8430bd0a3092ec0ca81ebd3cf1a492616caf3bd776ceef"
+    },
+    {
+      "file": "src/ui/mainwindow.h",
+      "bytes": 7982,
+      "sha256": "cf0d97a1ff1e7a8d7f8285e238090ff1a40c6acb7ac3e376df5009e03665baae"
+    },
+    {
+      "file": "src/ui/imagecanvas.cpp",
+      "bytes": 29853,
+      "sha256": "18b8f9b766038ae3d063a1e7c5b730ff729462d746d2d734cf76f24e6c7b30d7"
+    },
+    {
+      "file": "src/ui/imagecanvas.h",
+      "bytes": 2768,
+      "sha256": "646ff03a605b748021d1f0bffbe1e5999e9ae3bb5c21af60df0fe0a9fa698de0"
+    },
+    {
+      "file": "tests/batch_responsiveness_tests.cpp",
+      "bytes": 17909,
+      "sha256": "962851b1b4c317566dcc2536896232a8ecffe758067fb749cdf76efce6198c1f"
+    }
+  ],
+  "checks": {
+    "real_folder_dialog_and_cpu_onnx": true,
+    "random_rgb_1920x1080_and_3840x2160": true,
+    "automatic_save_enabled": true,
+    "ui_heartbeat_continues_during_snapshot_and_export": true,
+    "stop_timer_dispatches_without_multi_second_gui_block": true,
+    "stop_observed_without_waiting_for_png_disk_work": true,
+    "no_results_after_stop_in_measured_cases": true,
+    "completed_snapshots_and_png_json_csv_exports_preserved": true,
+    "cache_restores_after_source_deletion": true,
+    "review_does_not_duplicate_history": true,
+    "async_export_path_failure_reports_reason": true,
+    "export_failure_stops_without_deadlock": true,
+    "completed_result_retained_after_export_failure": true,
+    "disabled_autosave_allows_recovery_with_three_images": true
+  },
+  "limits": [
+    "Two RGB random-texture zero-detection CPU ONNX cases, three source files each; not an unlimited-folder stress benchmark.",
+    "Observed stop is 39 ms (1080p) and 30 ms (4K) with QtTest/event-timer polling on this machine; not a universal timing guarantee and not an in-flight CPU-forward interruption claim.",
+    "Completed background saves finish after stopping; the UI remains responsive and a new run waits for pending saves.",
+    "Physical GPU/camera, cold-drive/full-disk ENOSPC, synchronous folder import, manual export and large-model renderer performance are not established by this suite.",
+    "The export error fixture is an owned path replaced by a regular file after the first result, not a destructive system disk-space test.",
+    "The initial run found failure status overwritten by normal stop status; MainWindow status handling was corrected before this successful final run."
+  ]
+}

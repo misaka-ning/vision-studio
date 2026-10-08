@@ -1,0 +1,6 @@
+QRhiGles2: Failed to create temporary context
+QRhiGles2: Failed to create context
+This plugin does not support createPlatformVulkanInstance
+QVulkanInstance: Failed to initialize Vulkan
+Unable to detect GPU vendor.
+{"actual_device":"cpu","backend":"OpenCV DNN / CPU","device_index":-1,"device_name":"CPU","device_notice":"","error":"","inference_ms":61.388789,"predictions":5,"qt":"6.8.3","requested_device":"cpu","success":true}
