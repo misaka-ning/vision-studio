@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "success": true,
+  "version": "2.0.0-beta.2",
+  "errors": [],
+  "details": {
+    "deb_sha256": "72b4592fe4b7fb114654fc7af73233b4a1f75bef58f5fcc3bf27ca8839fa9abd",
+    "hardware": "NVIDIA GeForce RTX 4060",
+    "cuda_node_events": 364,
+    "backend_tests": {
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0
+    },
+    "recording_tests": {
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0
+    },
+    "recording": {
+      "source_frames_encoded": 8,
+      "source_size": [
+        320,
+        96
+      ],
+      "right_eye_size": [
+        160,
+        96
+      ],
+      "color_mode": "grayscale"
+    },
+    "physical_camera_tested": false
+  },
+  "checks": {
+    "onnx_cuda_nodes": true,
+    "pt_cuda": true,
+    "packaged_onnx_cuda": true,
+    "packaged_pt_cuda": true,
+    "cpu_regression": true,
+    "grayscale_c1_c3": true,
+    "stereo_recording": true
+  },
+  "evidence": [
+    {
+      "file": "ctest-qa.json",
+      "bytes": 1575,
+      "sha256": "02583646e22503260736bdca0f89344a740435ae56f1851d594402dc30d14611"
+    },
+    {
+      "file": "ctest-all.log",
+      "bytes": 30752,
+      "sha256": "c4ccc388b9c98605909362faaa1b76767ce620f590c2185c97497713b88b460b"
+    },
+    {
+      "file": "ctest-all.log.execution.json",
+      "bytes": 2668,
+      "sha256": "899a79362bdbe9f5ecf382725651ce853a9c8288932ddde7c6be6f9cbc73ad9d"
+    },
+    {
+      "file": "gpu-install-qa.json",
+      "bytes": 20663,
+      "sha256": "174caa599e7fedba030520b0c89f9828164c1cd8297213767653eebd3a64488d"
+    },
+    {
+      "file": "verify-gpu-deb.log",
+      "bytes": 244,
+      "sha256": "3e74169b6ee91e71a8a3eae4f93235c50c72c5efe58cd4154dbe8621ff9e4644"
+    },
+    {
+      "file": "gpu-proof/onnx-profile/profile-qa.json",
+      "bytes": 7840,
+      "sha256": "d3fe340f88f82ea58fb94c7bceb80f436dd9a9589ca619c2daf20f17c5401915"
+    },
+    {
+      "file": "gpu-proof/onnx-profile/node-trace_2026-10-08_14-14-10.json",
+      "bytes": 288319,
+      "sha256": "545ad67b32886ab451a74f17cb91b246ae5aa67e0493df27e63e5c4921249d00"
+    }
+  ],
+  "limits": [
+    "GPU checks use an RTX 4060 on Ubuntu 22.04 amd64. Stereo recording uses a synthetic horizontally joined video; physical camera was not tested.",
+    "New folder-review integration cases use ONNX CPU in RGB/grayscale. PT/CUDA use the unchanged worker/backend path and were tested separately; no claim of a physical-camera or long-running large-folder performance benchmark."
+  ]
+}

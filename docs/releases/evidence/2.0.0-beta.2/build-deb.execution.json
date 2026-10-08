@@ -1,0 +1,18 @@
+{
+  "command": [
+    "python3",
+    "packaging/build_deb.py",
+    "--binary",
+    "build-beta2/bin/vision-studio",
+    "--qt-prefix",
+    "/home/misaka/Qt/6.8.3/gcc_64",
+    "--extra-qt-plugins",
+    "build/qt-imageformats-prefix/plugins",
+    "--runtime",
+    "build/release-runtime"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 61.162,
+  "binary_sha256": "cfb07fb1ccc90790b3379a420e0b979d461f0da0b7bd0afff82ff25c27b193c8",
+  "version": "2.0.0-beta.2"
+}

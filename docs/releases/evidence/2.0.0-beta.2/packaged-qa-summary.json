@@ -1,0 +1,34 @@
+{
+  "success": true,
+  "version": "2.0.0-beta.2",
+  "errors": [],
+  "deb": {
+    "file": "vision-studio_2.0.0-beta.2-1_amd64.deb",
+    "bytes": 377226368,
+    "sha256": "72b4592fe4b7fb114654fc7af73233b4a1f75bef58f5fcc3bf27ca8839fa9abd"
+  },
+  "reports": [
+    {
+      "file": "qa-report.json",
+      "bytes": 101704,
+      "sha256": "f8feead969d9c74e53b29f8e47e27fe07afd2acc5cb58da9ba1e58d9f7d062aa",
+      "success": true,
+      "workdir": "/tmp/vision-studio-deb-qa-kjk8l4in"
+    },
+    {
+      "file": "install-qa.json",
+      "bytes": 5031,
+      "sha256": "82e8eeed7c4724f25c753754999992d14e1f120d77d54778a668ed143ad82954",
+      "success": true,
+      "workdir": "/tmp/vision-studio-install-qa-egiehabo"
+    },
+    {
+      "file": "gpu-install-qa.json",
+      "bytes": 20663,
+      "sha256": "174caa599e7fedba030520b0c89f9828164c1cd8297213767653eebd3a64488d",
+      "success": true,
+      "workdir": "/tmp/vision-studio-gpu-deb-qa-3cpkt3pf"
+    }
+  ],
+  "notes": "Final package checks completed; full corresponding source companion and remote publication are separate next steps. Positively identified temporary package extractions are preserved, not removed."
+}

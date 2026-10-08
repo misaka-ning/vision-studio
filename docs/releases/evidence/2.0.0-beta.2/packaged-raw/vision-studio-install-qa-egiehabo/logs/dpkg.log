@@ -1,0 +1,18 @@
+2026-10-08 14:17:40 startup archives install
+2026-10-08 14:17:40 install vision-studio:amd64 <none> 2.0.0~beta.2-1
+2026-10-08 14:17:40 status half-installed vision-studio:amd64 2.0.0~beta.2-1
+2026-10-08 14:17:56 status triggers-pending mailcap:all 3.70+nmu1ubuntu1.22.04.1
+2026-10-08 14:17:56 status triggers-pending gnome-menus:amd64 3.36.0-1ubuntu3
+2026-10-08 14:17:56 status triggers-pending desktop-file-utils:amd64 0.26-1ubuntu3
+2026-10-08 14:17:57 status triggers-pending hicolor-icon-theme:all 0.17-2
+2026-10-08 14:17:59 status unpacked vision-studio:amd64 2.0.0~beta.2-1
+2026-10-08 14:17:59 configure vision-studio:amd64 2.0.0~beta.2-1 2.0.0~beta.2-1
+2026-10-08 14:17:59 status half-configured vision-studio:amd64 2.0.0~beta.2-1
+2026-10-08 14:17:59 status installed vision-studio:amd64 2.0.0~beta.2-1
+2026-10-08 14:18:18 startup packages purge
+2026-10-08 14:18:18 status installed vision-studio:amd64 2.0.0~beta.2-1
+2026-10-08 14:18:19 remove vision-studio:amd64 2.0.0~beta.2-1 <none>
+2026-10-08 14:18:19 status half-configured vision-studio:amd64 2.0.0~beta.2-1
+2026-10-08 14:18:19 status half-installed vision-studio:amd64 2.0.0~beta.2-1
+2026-10-08 14:18:19 status config-files vision-studio:amd64 2.0.0~beta.2-1
+2026-10-08 14:18:19 status not-installed vision-studio:amd64 <none>

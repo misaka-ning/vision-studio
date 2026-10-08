@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0-beta.2",
+  "command": [
+    "python3",
+    "packaging/verify_install_namespace.py",
+    "/home/misaka/文档/ChatGPT/yolo/output/releases/2.0.0-beta.2/vision-studio_2.0.0-beta.2-1_amd64.deb",
+    "--keep-workdir",
+    "--report",
+    "/home/misaka/文档/ChatGPT/yolo/output/releases/2.0.0-beta.2/install-qa.json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 60.654,
+  "deb_bytes": 377226368,
+  "deb_sha256": "72b4592fe4b7fb114654fc7af73233b4a1f75bef58f5fcc3bf27ca8839fa9abd",
+  "report": "install-qa.json",
+  "reported_deb_sha256": "72b4592fe4b7fb114654fc7af73233b4a1f75bef58f5fcc3bf27ca8839fa9abd",
+  "success": true,
+  "workdir": "/tmp/vision-studio-install-qa-egiehabo"
+}

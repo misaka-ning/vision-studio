@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "success": true,
+  "version": "2.0.0-beta.2",
+  "errors": [],
+  "registered_suites": 8,
+  "all_suites_passed": 8,
+  "failed": 0,
+  "qt_skipped": 0,
+  "elapsed_seconds": 176.359,
+  "log": "ctest-all.log",
+  "execution": "ctest-all.log.execution.json",
+  "qt_suites": [
+    {
+      "ctest_number": 1,
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 439
+    },
+    {
+      "ctest_number": 2,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 2650
+    },
+    {
+      "ctest_number": 3,
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 76856
+    },
+    {
+      "ctest_number": 4,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 52551
+    },
+    {
+      "ctest_number": 5,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 22869
+    },
+    {
+      "ctest_number": 6,
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 13924
+    }
+  ],
+  "focused_folder_regression": {
+    "functional_rows": 3,
+    "qt_passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "log": "batch-focused.log"
+  },
+  "note": "All 8 suites ran on the final Release build. Actual GPU tests were explicitly enabled, including PT/C++ CUDA, grayscale C1/C3, synthetic stereo recording, cancellation, UI and model-view/cache checks. Physical camera was not tested."
+}

@@ -4,13 +4,13 @@
 
 [下载发行版](https://github.com/misaka-ning/vision-studio/releases) · [更新日志](CHANGELOG.md) · [使用指南](docs/使用指南.md) · [报告问题](https://github.com/misaka-ning/vision-studio/issues)
 
-正式版：**1.6.0**；预发布：**[2.0.0-beta.1](https://github.com/misaka-ning/vision-studio/releases/tag/v2.0.0-beta.1)**。2.0 Beta 参照 [Fluent-Qt](https://github.com/calvinhxx/Fluent-Qt) 调整深色界面、控件与布局，保留 1.6 的操作逻辑和推理功能。发行平台：**Ubuntu 22.04 LTS amd64**。应用代码采用 **AGPL-3.0-only**。
+正式版：**1.6.0**；预发布：**[2.0.0-beta.2](https://github.com/misaka-ning/vision-studio/releases/tag/v2.0.0-beta.2)**。2.0 Beta 参照 [Fluent-Qt](https://github.com/calvinhxx/Fluent-Qt) 调整深色界面、控件与布局；Beta.2 修复批量图片完成检测后无法回看识别结果的问题。发行平台：**Ubuntu 22.04 LTS amd64**。应用代码采用 **AGPL-3.0-only**。
 
 ![V2.0 Beta Fluent 风格检测工作台：RTX 4060 实际 CUDA 推理](docs/preview.png)
 
 ## 功能
 
-- **检测工作台**：图片队列、批量图片、视频和摄像头输入，YOLO 检测与单标签图像分类，置信度和 NMS 阈值可调；后台推理可取消。
+- **检测工作台**：图片队列、批量图片、视频和摄像头输入，YOLO 检测与单标签图像分类，置信度和 NMS 阈值可调；后台推理可取消。批量完成后可点击队列图片回看本轮标注、目标列表和指标，并导出所选图片的结果。
 - **模型库**：导入 ONNX / PT，模型选择全局生效，统一决定工作台和模型显示使用的文件。
 - **模型显示**：Netron 结构图、可展开层级树、参数表；后台预加载并缓存，切换页面与模式复用解析结果，树与表支持搜索和详情。
 - **灰度与双目输入**：灰度按模型的 1 / 3 通道适配；单设备水平左右拼接视频或摄像头可只处理左目或右目。预览和导出显示实际所选画面与颜色模式。
@@ -34,7 +34,7 @@ sudo apt install ./vision-studio_1.6.0-1_amd64.deb
 vision-studio
 ```
 
-体验 2.0 Beta 可下载其预发布附件，安装文件名为 `vision-studio_2.0.0-beta.1-1_amd64.deb`。包内 Debian 版本为 `2.0.0~beta.1-1`，保证排在同版正式包之前；GitHub 的 Latest 保持为 1.6.0。
+体验 2.0 Beta 可下载已发布版本的预发布附件。Beta.2 安装包文件名为 `vision-studio_2.0.0-beta.2-1_amd64.deb`，包内 Debian 版本为 `2.0.0~beta.2-1`；它排在同版正式包之前，GitHub 的 Latest 保持为 1.6.0。
 
 也可从应用菜单启动 **Vision Studio**。首次体验可打开「更多 → 运行示例」，再导入自己的模型。
 
@@ -100,7 +100,9 @@ GPU 依赖使用独立的 `requirements-gpu.txt`／`requirements-gpu.lock.txt`�
 
 ## 验证与发行
 
-2.0 Beta 已通过全部 8 组 CTest、80 项发布与环境安全测试、14 项 UI 逻辑静态审计，以及 20 张实际截图检查。最终 DEB 完成普通用户运行、隔离安装／卸载、模型三视图缓存、包内 ONNX／PT CUDA／CPU 推理验收；操作、参数和数据格式沿用 1.6。[Beta 发布说明](docs/releases/2.0.0-beta.1.md) 与 [验收证据](docs/releases/evidence/2.0.0-beta.1) 随源码保存。
+2.0.0-beta.2 的最终 Release 构建已通过全部 8 组 CTest（176.359 秒，零失败、零跳过），批量结果回看专项包含彩色、灰度、零目标、当前导出对象与缓存清理；发布工具 48 项、版本元数据 11 项测试通过。GPU 后端 10 项、录像 14 项均通过。最终 DEB 已通过普通用户 CPU／PT 与模型三视图缓存、隔离离线安装／卸载，以及包内 ONNX／PT CUDA／CPU 四轮验收；对应源码独立核验，报告按同版本保存，范围见 [Beta.2 发布说明](docs/releases/2.0.0-beta.2.md) 与 [Beta.2 验收证据](docs/releases/evidence/2.0.0-beta.2)。
+
+2.0.0-beta.1 已通过全部 8 组 CTest、80 项发布与环境安全测试、14 项 UI 逻辑静态审计，以及 20 张实际截图检查。最终 DEB 完成普通用户运行、隔离安装／卸载、模型三视图缓存、包内 ONNX／PT CUDA／CPU 推理验收；操作、参数和数据格式沿用 1.6。[Beta.1 发布说明](docs/releases/2.0.0-beta.1.md) 与 [Beta.1 验收证据](docs/releases/evidence/2.0.0-beta.1) 随源码保存。
 
 V1.6 已在 CPU／GPU 两阶段实际执行并通过 8 组 CTest，覆盖真实 ONNX／三类 PT 模型、彩色及灰度 C1 / C3、左右目、录像、取消与恢复、UI、模型显示及本机 HTTP 服务。GPU 环境保护、原子发布、取消与原始许可收集的 21 项测试通过；RTX 4060 上的 ONNX CUDA 节点、PT CUDA 和右目灰度标注录像也已验证。候选安装包完成普通用户运行、模型三视图缓存复用、断网安装／卸载，以及包内 CUDA／CPU 四轮推理检查。具体范围见 [本版发布说明](docs/releases/1.6.0.md)；正式附件对应的最终报告与原始日志见 [本版验收证据](docs/releases/evidence/1.6.0)。每版证据随仓库保存，不零散上传 Release。物理摄像头仍需按实际设备验证。
 

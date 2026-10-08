@@ -1,11 +1,11 @@
 {
   "application": "Vision Studio",
-  "version": "2.0.0-beta.1",
-  "debian_version": "2.0.0~beta.1-1",
+  "version": "2.0.0-beta.2",
+  "debian_version": "2.0.0~beta.2-1",
   "maintainer": "misaka_ning <1468549029@qq.com>",
   "application_license": "AGPL-3.0-only",
-  "application_archive": "vision-studio-2.0.0-beta.1-sources.tar.xz",
-  "complete_companion": "vision-studio-2.0.0-beta.1-complete-source.tar.xz",
+  "application_archive": "vision-studio-2.0.0-beta.2-sources.tar.xz",
+  "complete_companion": "vision-studio-2.0.0-beta.2-complete-source.tar.xz",
   "public_checksums": "SHA256SUMS",
   "source_checksums": "SOURCE-SHA256SUMS",
   "upstream_archives": [

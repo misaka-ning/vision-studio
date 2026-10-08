@@ -1,0 +1,15 @@
+********* Start testing of UiTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : UiTests::initTestCase()
+QWARN  : UiTests::completedFolderResultsCanBeReviewedAndExported(rgb) This plugin does not support propagateSizeHints()
+QWARN  : UiTests::completedFolderResultsCanBeReviewedAndExported(rgb) This plugin does not support propagateSizeHints()
+PASS   : UiTests::completedFolderResultsCanBeReviewedAndExported(rgb)
+QWARN  : UiTests::completedFolderResultsCanBeReviewedAndExported(grayscale) This plugin does not support propagateSizeHints()
+QWARN  : UiTests::completedFolderResultsCanBeReviewedAndExported(grayscale) This plugin does not support propagateSizeHints()
+PASS   : UiTests::completedFolderResultsCanBeReviewedAndExported(grayscale)
+QWARN  : UiTests::zeroDetectionFolderResultsSurviveReviewAndCancelledRerunClearsThem() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::zeroDetectionFolderResultsSurviveReviewAndCancelledRerunClearsThem() This plugin does not support propagateSizeHints()
+PASS   : UiTests::zeroDetectionFolderResultsSurviveReviewAndCancelledRerunClearsThem()
+PASS   : UiTests::cleanupTestCase()
+Totals: 5 passed, 0 failed, 0 skipped, 0 blacklisted, 6476ms
+********* Finished testing of UiTests *********
