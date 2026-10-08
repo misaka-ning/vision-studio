@@ -3,7 +3,7 @@
 ## 仓库与版本
 
 - 官方仓库：`https://github.com/misaka-ning/vision-studio`，源码主线为 `main`。
-- 功能分支默认使用 `codex/` 前缀。应用版本采用语义化版本，标签为 `vX.Y.Z`。
+- 功能分支默认使用 `codex/` 前缀。正式版标签为 `vX.Y.Z`；预发布使用 `vX.Y.Z-beta.N`，Debian Control Version 为 `X.Y.Z~beta.N-1`，公开文件名保留安全的 `-beta.N`。CMake 的数字 `project VERSION` 保留 `X.Y.Z`，完整应用版本由 `VISION_STUDIO_APP_VERSION` 给出。
 - 开始工作前读取 `README.md`、`CHANGELOG.md` 和 `docs/版本管理.md`，保留用户设置、运行记录、模型和录像。
 - 当前桌面程序是 C++17 / Qt 6.8；ONNX 使用 C++ OpenCV DNN，PT 使用常驻 Python / PyTorch 后端。新增后端时保持颜色通道和单目裁剪约定一致。
 
@@ -17,6 +17,8 @@
 4. 使用 `scripts/github_release.py` 发布同版本的 3 个手动附件：DEB、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。QA 必须通过并保留在仓库证据目录，不零散上传为 Release 附件。
 5. 检查远端标签、发布状态、每个资产的大小和 SHA256；上传失败或认证失效时保留本地资料并明确报告。
 6. 通过核验后使用发布工具预览并执行旧发行目录清理，保留最新两个版本。构建暂存目录按明确版本分别检查，禁止按宽泛通配符删除。
+
+预发布必须标记 GitHub `prerelease=true`、`latest=false`，保留当前正式版的 Latest。默认 `prune` 只识别正式版本，beta 不挤掉正式版备份，也不自动删除；若按最新两版要求保留 beta 与当前正式版，其他旧副本须逐版精确核验后单独清理。
 
 此授权针对本仓库的版本发布；不涉及其他仓库、显卡驱动安装、历史重写或账号权限变更。需要身份验证时请维护者完成登录，不索取密码或访问令牌。
 

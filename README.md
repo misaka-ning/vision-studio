@@ -4,9 +4,9 @@
 
 [下载发行版](https://github.com/misaka-ning/vision-studio/releases) · [更新日志](CHANGELOG.md) · [使用指南](docs/使用指南.md) · [报告问题](https://github.com/misaka-ning/vision-studio/issues)
 
-当前版本：**1.6.0**；发行文件见 [Releases](https://github.com/misaka-ning/vision-studio/releases)。正式发行平台：**Ubuntu 22.04 LTS amd64**。应用代码采用 **AGPL-3.0-only**。
+正式版：**1.6.0**；预发布：**[2.0.0-beta.1](https://github.com/misaka-ning/vision-studio/releases/tag/v2.0.0-beta.1)**。2.0 Beta 参照 [Fluent-Qt](https://github.com/calvinhxx/Fluent-Qt) 调整深色界面、控件与布局，保留 1.6 的操作逻辑和推理功能。发行平台：**Ubuntu 22.04 LTS amd64**。应用代码采用 **AGPL-3.0-only**。
 
-![V1.6 NVIDIA GPU YOLO 检测工作台：RTX 4060 实际 CUDA 推理](docs/preview.png)
+![V2.0 Beta Fluent 风格检测工作台：RTX 4060 实际 CUDA 推理](docs/preview.png)
 
 ## 功能
 
@@ -18,7 +18,7 @@
 - **运行记录与更多**：保留处理记录、模型和耗时；「更多」集中提供运行示例与手动导出。
 - **计算设备**：工作台可选自动、CPU 或 NVIDIA GPU；「更多」检查并准备独立 GPU 环境。自动模式在 GPU 不可用时显示原因并使用 CPU，显式 GPU 失败时报告错误；结果记录实际设备。
 
-![V1.6 ONNX 模型结构图：Netron 节点与运算连接](docs/model-hierarchy.png)
+![V2.0 Beta ONNX 模型结构图：Netron 节点与运算连接](docs/model-hierarchy.png)
 
 普通 PT 的层级树表示文件可解析的模块包含关系，裸权重按名称分组；参数表列出权重、常量和缓冲，不能直接作为可训练参数总量。ONNX 更适合查看完整运算连接。不支持或损坏的模型会显示文字说明。详细范围见 [模型说明](docs/模型说明.md)。
 
@@ -33,6 +33,8 @@ sha256sum -c SHA256SUMS
 sudo apt install ./vision-studio_1.6.0-1_amd64.deb
 vision-studio
 ```
+
+体验 2.0 Beta 可下载其预发布附件，安装文件名为 `vision-studio_2.0.0-beta.1-1_amd64.deb`。包内 Debian 版本为 `2.0.0~beta.1-1`，保证排在同版正式包之前；GitHub 的 Latest 保持为 1.6.0。
 
 也可从应用菜单启动 **Vision Studio**。首次体验可打开「更多 → 运行示例」，再导入自己的模型。
 
@@ -98,6 +100,8 @@ GPU 依赖使用独立的 `requirements-gpu.txt`／`requirements-gpu.lock.txt`�
 
 ## 验证与发行
 
+2.0 Beta 已通过全部 8 组 CTest、80 项发布与环境安全测试、14 项 UI 逻辑静态审计，以及 20 张实际截图检查。最终 DEB 完成普通用户运行、隔离安装／卸载、模型三视图缓存、包内 ONNX／PT CUDA／CPU 推理验收；操作、参数和数据格式沿用 1.6。[Beta 发布说明](docs/releases/2.0.0-beta.1.md) 与 [验收证据](docs/releases/evidence/2.0.0-beta.1) 随源码保存。
+
 V1.6 已在 CPU／GPU 两阶段实际执行并通过 8 组 CTest，覆盖真实 ONNX／三类 PT 模型、彩色及灰度 C1 / C3、左右目、录像、取消与恢复、UI、模型显示及本机 HTTP 服务。GPU 环境保护、原子发布、取消与原始许可收集的 21 项测试通过；RTX 4060 上的 ONNX CUDA 节点、PT CUDA 和右目灰度标注录像也已验证。候选安装包完成普通用户运行、模型三视图缓存复用、断网安装／卸载，以及包内 CUDA／CPU 四轮推理检查。具体范围见 [本版发布说明](docs/releases/1.6.0.md)；正式附件对应的最终报告与原始日志见 [本版验收证据](docs/releases/evidence/1.6.0)。每版证据随仓库保存，不零散上传 Release。物理摄像头仍需按实际设备验证。
 
 ```bash
@@ -112,7 +116,7 @@ V1.6 已在 CPU／GPU 两阶段实际执行并通过 8 组 CTest，覆盖真实 
 
 打包、对应源码及上游重建说明见 [打包说明](packaging/README.md) 和 [对应源码与重建](docs/release/对应源码与重建.md)。完整源码包内已有应用源码拆分归档、`SOURCE-SHA256SUMS`、`SOURCE-INVENTORY.json` 及上游源码、许可和原始通知，可解压后获取。GitHub 自动生成的 Source code ZIP／tar.gz 来自 Git 标签，不能替代 Release 中的完整对应源码包。
 
-源码主线为 `main`，发行标签为 `vX.Y.Z`。每个新版必须按 [版本管理](docs/版本管理.md) 完成测试、源码与标签推送，并使用 `scripts/github_release.py` 发布和校验 Release；远端核验后本地只保留最新两版发行／构建副本。历史版本可通过标签和 Release 获取，原归档保持不变。
+源码主线为 `main`，正式标签为 `vX.Y.Z`，预发布标签为 `vX.Y.Z-beta.N`。每个新版必须按 [版本管理](docs/版本管理.md) 完成测试、源码与标签推送，并使用 `scripts/github_release.py` 发布和校验 Release；远端核验后本地保留最新 Beta 与当前正式版，历史版本可通过标签和 Release 获取，原归档保持不变。
 
 ## 文档、贡献与许可
 

@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "version": "2.0.0-beta.1",
+  "success": true,
+  "generated_at": "2026-10-08T02:58:53.692825+00:00",
+  "scope": "Release metadata, mocked GitHub safety and unchanged GPU setup regression only; not application/model/install/remote-release acceptance.",
+  "total_tests": 80,
+  "failures": 0,
+  "skipped": 0,
+  "python_syntax_exit_code": 0,
+  "current_tag_metadata": {
+    "application_version": "2.0.0-beta.1",
+    "cmake_numeric_version": "2.0.0",
+    "debian_version": "2.0.0~beta.1-1",
+    "prerelease": true,
+    "latest": false,
+    "deb_filename": "vision-studio_2.0.0-beta.1-1_amd64.deb"
+  },
+  "suites": [
+    {
+      "log": "github-release-tests.log",
+      "tests": 48,
+      "elapsed_seconds": 0.127,
+      "exit_code": 0,
+      "scope": "publication_and_retention_safety",
+      "sha256": "9893a7e6881e68a4b543ef1504a30ffbc58866ecc2a8980ce52c6d5146209ac6"
+    },
+    {
+      "log": "release-metadata-tests.log",
+      "tests": 11,
+      "elapsed_seconds": 0.01,
+      "exit_code": 0,
+      "scope": "stable_and_beta_packaging_metadata",
+      "sha256": "f20fcdc082a4557251c909353d72516a14658b08f9a4e634d552a2e88022f1d7"
+    },
+    {
+      "log": "gpu-runtime-tests.log",
+      "tests": 21,
+      "elapsed_seconds": 1.126,
+      "exit_code": 0,
+      "scope": "existing_gpu_setup_safety_regression",
+      "sha256": "bbff1e0fff13f914eba97556a21dd781f2d92db585d596eb298fdf03229cc129"
+    }
+  ],
+  "diff_whitespace_exit_code": 0
+}

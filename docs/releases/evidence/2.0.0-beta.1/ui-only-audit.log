@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "checks": {
+    "protected_sources_models_and_contracts_byte_identical": true,
+    "main_cpp_only_application_version_metadata_changed": true,
+    "mainwindow_connect_and_lambda_multiset_exact": true,
+    "mainwindow_helpers_only_button_visual_property_colors_and_section_height": true,
+    "mainwindow_operational_control_calls_multiset_exact": true,
+    "mainwindow_nonvisual_methods_equal": true,
+    "relocated_source_loop_identical_except_layout_addwidget": true,
+    "relocated_source_button_names_and_icon_identifiers_identical": true,
+    "relocated_device_controls_and_named_lambda_identical_except_layout_and_size": true,
+    "imagecanvas_nonpaint_methods_byte_identical": true,
+    "imagecanvas_all_source_outside_paintevent_byte_identical": true,
+    "imagecanvas_paint_only_colors_and_empty_icon_radius": true,
+    "modelviewer_only_stylesheet_and_color_changes": true
+  },
+  "counts": {
+    "protected_files": 198,
+    "mainwindow_connect_calls": 69,
+    "mainwindow_operational_calls": 215,
+    "mainwindow_methods": 64,
+    "imagecanvas_methods": 28
+  },
+  "unexpected_methods": []
+}
+{
+  "extra_check": "canvas_minimum_height_280_unchanged",
+  "passed": true,
+  "checks_total": 14,
+  "queue_layout_review": {
+    "equal_except_layout_direction_margins_thumbnail_geometry_and_stretch": true,
+    "outer_layout": "QVBoxLayout -> QHBoxLayout",
+    "title_and_clear_layout": "QHBoxLayout -> QVBoxLayout",
+    "queue_fixed_height": 68,
+    "clear_and_selection_full_lambdas_preserved": true,
+    "source_pixels_and_inference_pipeline_changed": false
+  },
+  "in_memory_extension": [
+    {
+      "scope": "namespace_norm only",
+      "baseline": "l->setMinimumHeight(27);",
+      "working": "l->setMinimumHeight(20);",
+      "reason": "Reviewed section QLabel minimum height is a layout-only change. In-memory explicit normalization; audit script file was not modified."
+    }
+  ]
+}

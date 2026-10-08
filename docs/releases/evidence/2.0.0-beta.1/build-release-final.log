@@ -1,0 +1,24 @@
+[1/25] Building CXX object CMakeFiles/vision-core.dir/vision-core_autogen/mocs_compilation.cpp.o
+[2/25] Building CXX object CMakeFiles/vision-core.dir/src/core/inferenceworker.cpp.o
+[3/25] Building CXX object CMakeFiles/vision-core.dir/src/core/ptbackend.cpp.o
+[4/25] Building CXX object CMakeFiles/vision-core.dir/src/core/visionengine.cpp.o
+[5/25] Building CXX object CMakeFiles/vision-core.dir/src/core/videorecorder.cpp.o
+[6/25] Building CXX object CMakeFiles/vision-core.dir/src/core/gpuruntime.cpp.o
+[7/25] Building CXX object CMakeFiles/vision-core.dir/src/core/onnxcudabackend.cpp.o
+[8/25] Linking CXX static library libvision-core.a
+[9/25] Linking CXX executable vision-pt-tests
+[10/25] Automatic MOC for target vision-studio
+[11/25] Linking CXX executable vision-recording-tests
+[12/25] Linking CXX executable vision-core-tests
+[13/25] Linking CXX executable vision-gpu-tests
+[14/25] Building CXX object CMakeFiles/vision-studio.dir/vision-studio_autogen/mocs_compilation.cpp.o
+[15/25] Building CXX object CMakeFiles/vision-studio.dir/src/main.cpp.o
+[16/25] Building CXX object CMakeFiles/vision-studio.dir/src/ui/imagecanvas.cpp.o
+[17/25] Building CXX object CMakeFiles/vision-studio.dir/vision-studio_autogen/EWIEGA46WW/qrc_resources.cpp.o
+[18/25] Automatic MOC for target vision-ui-tests
+[19/24] Building CXX object CMakeFiles/vision-studio.dir/src/ui/icons.cpp.o
+[20/24] Building CXX object CMakeFiles/vision-studio.dir/src/ui/modelviewer.cpp.o
+[21/24] Building CXX object CMakeFiles/vision-studio.dir/src/ui/mainwindow.cpp.o
+[22/24] Linking CXX executable bin/vision-studio
+[23/24] Building CXX object CMakeFiles/vision-ui-tests.dir/src/ui/mainwindow.cpp.o
+[24/24] Linking CXX executable vision-ui-tests

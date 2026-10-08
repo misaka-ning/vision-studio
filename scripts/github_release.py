@@ -40,9 +40,14 @@ import tempfile
 import time
 from urllib.parse import quote
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import release_metadata
+
 
 DEFAULT_REPOSITORY = "misaka-ning/vision-studio"
-VERSION_RE = re.compile(r"(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)\Z")
+# Retention intentionally recognizes stable directories only. Beta publication
+# must not displace a stable backup or make previews automatic cleanup targets.
+VERSION_RE = release_metadata.STABLE_VERSION_RE
 REPOSITORY_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9-]*/[A-Za-z0-9][A-Za-z0-9_.-]*\Z")
 CHECKSUM_RE = re.compile(r"([0-9a-fA-F]{64}) [ *](.+)\Z")
 PROTECTED = {".git", "runtime", "output", "recordings", "preferences.ini", "history.json"}
@@ -58,11 +63,11 @@ class ReleaseError(RuntimeError):
     pass
 
 
-def version_key(version: str) -> tuple[int, int, int]:
-    match = VERSION_RE.fullmatch(version)
-    if not match:
-        raise ReleaseError(f"Expected stable X.Y.Z version, got {version!r}")
-    return tuple(int(part) for part in match.groups())
+def version_key(version: str) -> tuple[int, int, int, int, int]:
+    try:
+        return release_metadata.version_key(version)
+    except ValueError as error:
+        raise ReleaseError(str(error)) from error
 
 
 def sha256(path: Path) -> str:
@@ -144,7 +149,7 @@ def validate_bundle(directory: Path, version: str, require_qa: bool = True) -> l
     version_key(version)
     root = canonical_directory(directory)
     if root.name != version:
-        raise ReleaseError("Release directory name must exactly equal X.Y.Z")
+        raise ReleaseError("Release directory name must exactly equal the application version")
     public = read_manifest(root, "SHA256SUMS")
     sources = read_manifest(root, "SOURCE-SHA256SUMS")
     overlap = public.keys() & sources.keys()
@@ -166,13 +171,20 @@ def validate_bundle(directory: Path, version: str, require_qa: bool = True) -> l
     if (inventory.get("version") != version or inventory.get("application_archive") != app
             or inventory.get("complete_companion") != companion):
         raise ReleaseError("SOURCE-INVENTORY.json does not match this version")
+    if "debian_version" in inventory:
+        try:
+            declared_deb = release_metadata.deb_filename(inventory["debian_version"])
+        except ValueError as error:
+            raise ReleaseError("SOURCE-INVENTORY.json has an invalid Debian version") from error
+        if declared_deb != debs[0]:
+            raise ReleaseError("SOURCE-INVENTORY.json Debian version does not match the DEB")
     # The complete source companion contains the application source archive,
     # SOURCE-SHA256SUMS, and SOURCE-INVENTORY.json. Keep validating the original
     # local copies above; they do not need separate Release attachments.
     assets = [make_asset(root, name) for name in (debs[0], companion, "SHA256SUMS")]
     if require_qa:
         required_reports = ["qa-report.json", "install-qa.json", "ctest-qa.json"]
-        if version_key(version) >= (1, 6, 0):
+        if version_key(version)[:3] >= (1, 6, 0):
             required_reports.append("gpu-qa.json")
         source_report = next((name for name in ("source-bundle-qa.json", "source-qa.json")
                               if (root / name).is_file()), None)
@@ -310,11 +322,16 @@ class GitHub:
 
 
 def cmake_version(text: str) -> str:
-    match = re.search(r"project\s*\(\s*VisionStudio\s+VERSION\s+(\d+\.\d+\.\d+)\b", text,
-                      re.IGNORECASE)
-    if not match:
-        raise ReleaseError("Cannot find VisionStudio version in CMakeLists.txt")
-    return match.group(1)
+    try:
+        return release_metadata.cmake_application_version(text)
+    except ValueError as error:
+        raise ReleaseError(str(error)) from error
+
+
+def check_release_type(value: dict, version: str) -> None:
+    expected = release_metadata.is_prerelease(version)
+    if value.get("tag_name") != f"v{version}" or value.get("prerelease") is not expected:
+        raise ReleaseError("Release tag or prerelease type does not match the application version")
 
 
 def local_tag_commit(project: Path, version: str) -> str:
@@ -363,6 +380,7 @@ def release_after_mutation(github: GitHub, tag: str, draft: bool) -> dict:
 
 def publish(args: argparse.Namespace, github: GitHub) -> dict:
     assets = validate_bundle(args.release_dir, args.version)
+    prerelease = release_metadata.is_prerelease(args.version)
     notes = args.notes_file.resolve(strict=True)
     if not notes.is_file() or not notes.read_text(encoding="utf-8").strip():
         raise ReleaseError("Release notes file is empty")
@@ -372,7 +390,7 @@ def publish(args: argparse.Namespace, github: GitHub) -> dict:
     if existing:
         if not existing.get("draft") or not args.resume_draft:
             raise ReleaseError("Release already exists; only --resume-draft may continue a draft")
-        if (existing.get("tag_name") != tag or existing.get("prerelease")
+        if (existing.get("tag_name") != tag or existing.get("prerelease") is not prerelease
                 or existing.get("body", "").strip() != notes.read_text(encoding="utf-8").strip()):
             raise ReleaseError("Existing draft has different tag, notes, or release type")
         allowed_names = {asset.name for asset in assets}
@@ -380,14 +398,19 @@ def publish(args: argparse.Namespace, github: GitHub) -> dict:
             raise ReleaseError("Existing draft contains unexpected assets; inspect it manually")
         github.verify_assets(existing, assets, allow_missing=True)
     plan = {"success": True, "dry_run": args.dry_run, "repository": github.repository,
-            "tag": tag, "commit": commit, "assets": [item.metadata() for item in assets]}
+            "tag": tag, "commit": commit, "prerelease": prerelease,
+            "latest": not prerelease, "assets": [item.metadata() for item in assets]}
     if args.dry_run:
         return plan
     if existing is None:
-        command(["gh", "release", "create", tag, "--repo", github.repository,
-                 "--verify-tag", "--draft", "--title", f"Vision Studio {tag}",
-                 "--notes-file", str(notes)])
+        create = ["gh", "release", "create", tag, "--repo", github.repository,
+                  "--verify-tag", "--draft", "--title", f"Vision Studio {tag}",
+                  "--notes-file", str(notes)]
+        if prerelease:
+            create += ["--prerelease", "--latest=false"]
+        command(create)
     release = release_after_mutation(github, tag, draft=True)
+    check_release_type(release, args.version)
     verified = github.verify_assets(release, assets, allow_missing=True)
     present = {row["name"] for row in verified}
     for asset in assets:
@@ -398,9 +421,11 @@ def publish(args: argparse.Namespace, github: GitHub) -> dict:
     # A concurrent tag mutation must not publish mismatched code.
     if github.remote_commit(tag) != commit:
         raise ReleaseError("GitHub tag changed during upload; release remains a draft")
-    command(["gh", "release", "edit", tag, "--repo", github.repository,
-             "--draft=false", "--latest"])
+    edit = ["gh", "release", "edit", tag, "--repo", github.repository, "--draft=false"]
+    edit += ["--prerelease", "--latest=false"] if prerelease else ["--latest"]
+    command(edit)
     release = release_after_mutation(github, tag, draft=False)
+    check_release_type(release, args.version)
     plan.update({"url": release["html_url"], "verified_assets": verified,
                  "published": True})
     return plan
@@ -412,9 +437,10 @@ def verify(args: argparse.Namespace, github: GitHub) -> dict:
     release = github.release(tag)
     if release is None or release.get("draft") or not release.get("published_at"):
         raise ReleaseError("A published release is required")
+    check_release_type(release, args.version)
     commit = verify_published_tag(github, args.project_dir.resolve(), args.version)
     return {"success": True, "repository": github.repository, "tag": tag,
-            "commit": commit, "url": release["html_url"],
+            "commit": commit, "url": release["html_url"], "prerelease": release["prerelease"],
             "verified_assets": github.verify_assets(release, assets)}
 
 

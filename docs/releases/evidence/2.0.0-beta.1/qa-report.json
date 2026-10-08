@@ -1,0 +1,2343 @@
+{
+  "success": true,
+  "errors": [],
+  "warnings": [],
+  "details": {
+    "deb": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.0.0-beta.1/vision-studio_2.0.0-beta.1-1_amd64.deb",
+    "deb_sha256": "dd4f23f8cd62c5158f74c44dc5b0d9b7c56b04ef349315b87827823718e0c386",
+    "host": {
+      "distribution": "ubuntu",
+      "version": "22.04",
+      "architecture": "amd64"
+    },
+    "application_version": "2.0.0-beta.1",
+    "control": {
+      "Package": "vision-studio",
+      "Version": "2.0.0~beta.1-1",
+      "Architecture": "amd64",
+      "Section": "graphics",
+      "Priority": "optional",
+      "Maintainer": "misaka_ning <1468549029@qq.com>",
+      "Installed-Size": "1618081",
+      "Depends": "libasound2 (>= 1.0.17), libatk1.0-0 (>= 1.12.4), libatomic1 (>= 4.8), libblas3 | libblas.so.3, libc6 (>= 2.34), libcairo-gobject2 (>= 1.10.0), libcairo2 (>= 1.2.4), libdbus-1-3 (>= 1.9.14), libdrm2 (>= 2.4.38), libegl1, libexpat1 (>= 2.1~beta3), libfontconfig1 (>= 2.12.6), libfreetype6 (>= 2.9.1), libgbm1 (>= 17.1.0~rc2), libgcc-s1 (>= 4.2), libgdk-pixbuf-2.0-0 (>= 2.31.1), libgfortran5 (>= 8), libgl1, libglib2.0-0 (>= 2.33.14), libglx0, libgomp1 (>= 4.9), libgssapi-krb5-2 (>= 1.17), libgtk-3-0 (>= 3.21.5), liblapack3 | liblapack.so.3, libnspr4 (>= 2:4.9-2~), libnss3 (>= 2:3.30), libopencv-core4.5d (>= 4.5.4+dfsg), libopencv-dnn4.5d (>= 4.5.4+dfsg), libopencv-imgproc4.5d (>= 4.5.4+dfsg), libopencv-videoio4.5d (>= 4.5.4+dfsg), libopengl0, libpango-1.0-0 (>= 1.14.0), libpangocairo-1.0-0 (>= 1.14.0), libstdc++6 (>= 10.2), libtiff5 (>= 4.0.3), libwayland-client0 (>= 1.20.0), libwayland-cursor0 (>= 1.8.1), libwayland-egl1 (>= 1.15.0), libx11-6, libx11-xcb1 (>= 2:1.7.5), libxcb-cursor0 (>= 0.0.99), libxcb-glx0, libxcb-icccm4 (>= 0.4.1), libxcb-image0 (>= 0.2.1), libxcb-keysyms1 (>= 0.4.0), libxcb-randr0 (>= 1.12), libxcb-render-util0, libxcb-render0, libxcb-shape0, libxcb-shm0 (>= 1.10), libxcb-sync1, libxcb-xfixes0, libxcb-xkb1, libxcb1 (>= 1.9.2), libxcomposite1 (>= 1:0.4.5), libxdamage1 (>= 1:1.1), libxext6, libxfixes3, libxi6, libxkbcommon-x11-0 (>= 0.5.0), libxkbcommon0 (>= 0.5.0), libxkbfile1 (>= 1:1.1.0), libxrandr2, libxrender1, libxshmfence1, libxtst6, libzstd1 (>= 1.4.0), zlib1g (>= 1:1.2.3.4), python3 (>= 3.10), python3 (<< 3.11), python3.10, python3.10-venv, fontconfig, fonts-noto-cjk",
+      "Description": "Professional local YOLO vision model workspace\nC++ and Qt 6.8.3 desktop application with bundled CPU PyTorch runtime.\nIncludes a local Netron model structure viewer embedded in Qt WebEngine.\nOptional NVIDIA CUDA support is prepared separately per user on request.\nSupports YOLO .pt and ONNX image, video, camera inference and result exports.\nGrayscale input adapts to one or three model channels; side-by-side streams\ncan preview and infer the left or right eye independently.\nBuilt for Ubuntu 22.04 LTS amd64. Runtime assets reside in /opt/VisionStudio\nby default; results and settings are stored separately for each user."
+    },
+    "maintainer_scripts": [],
+    "archive": {
+      "entries": 35143,
+      "uncompressed_file_bytes": 1656919641
+    },
+    "dependencies": {
+      "declared": "libasound2 (>= 1.0.17), libatk1.0-0 (>= 1.12.4), libatomic1 (>= 4.8), libblas3 | libblas.so.3, libc6 (>= 2.34), libcairo-gobject2 (>= 1.10.0), libcairo2 (>= 1.2.4), libdbus-1-3 (>= 1.9.14), libdrm2 (>= 2.4.38), libegl1, libexpat1 (>= 2.1~beta3), libfontconfig1 (>= 2.12.6), libfreetype6 (>= 2.9.1), libgbm1 (>= 17.1.0~rc2), libgcc-s1 (>= 4.2), libgdk-pixbuf-2.0-0 (>= 2.31.1), libgfortran5 (>= 8), libgl1, libglib2.0-0 (>= 2.33.14), libglx0, libgomp1 (>= 4.9), libgssapi-krb5-2 (>= 1.17), libgtk-3-0 (>= 3.21.5), liblapack3 | liblapack.so.3, libnspr4 (>= 2:4.9-2~), libnss3 (>= 2:3.30), libopencv-core4.5d (>= 4.5.4+dfsg), libopencv-dnn4.5d (>= 4.5.4+dfsg), libopencv-imgproc4.5d (>= 4.5.4+dfsg), libopencv-videoio4.5d (>= 4.5.4+dfsg), libopengl0, libpango-1.0-0 (>= 1.14.0), libpangocairo-1.0-0 (>= 1.14.0), libstdc++6 (>= 10.2), libtiff5 (>= 4.0.3), libwayland-client0 (>= 1.20.0), libwayland-cursor0 (>= 1.8.1), libwayland-egl1 (>= 1.15.0), libx11-6, libx11-xcb1 (>= 2:1.7.5), libxcb-cursor0 (>= 0.0.99), libxcb-glx0, libxcb-icccm4 (>= 0.4.1), libxcb-image0 (>= 0.2.1), libxcb-keysyms1 (>= 0.4.0), libxcb-randr0 (>= 1.12), libxcb-render-util0, libxcb-render0, libxcb-shape0, libxcb-shm0 (>= 1.10), libxcb-sync1, libxcb-xfixes0, libxcb-xkb1, libxcb1 (>= 1.9.2), libxcomposite1 (>= 1:0.4.5), libxdamage1 (>= 1:1.1), libxext6, libxfixes3, libxi6, libxkbcommon-x11-0 (>= 0.5.0), libxkbcommon0 (>= 0.5.0), libxkbfile1 (>= 1:1.1.0), libxrandr2, libxrender1, libxshmfence1, libxtst6, libzstd1 (>= 1.4.0), zlib1g (>= 1:1.2.3.4), python3 (>= 3.10), python3 (<< 3.11), python3.10, python3.10-venv, fontconfig, fonts-noto-cjk",
+      "host_required_versions": {
+        "adwaita-icon-theme": "41.0-1ubuntu1",
+        "ca-certificates": "20260601~22.04.1",
+        "coreutils": "8.32-4.1ubuntu1.4",
+        "dconf-gsettings-backend": "0.40.0-3",
+        "dconf-service": "0.40.0-3",
+        "debconf": "1.5.79ubuntu1",
+        "dpkg": "1.21.1ubuntu2.6",
+        "fontconfig": "2.13.1-4.2ubuntu5",
+        "fontconfig-config": "2.13.1-4.2ubuntu5",
+        "fonts-dejavu-core": "2.37-2build1",
+        "fonts-noto-cjk": "1:20220127+repack1-1",
+        "gcc-12-base": "12.3.0-1ubuntu1~22.04.3",
+        "gdal-data": "3.4.1+dfsg-1build4",
+        "gtk-update-icon-cache": "3.24.33-1ubuntu2.2",
+        "hicolor-icon-theme": "0.17-2",
+        "humanity-icon-theme": "0.6.16",
+        "iso-codes": "4.9.0-1",
+        "libacl1": "2.3.1-1",
+        "libaec0": "1.0.6-1",
+        "libaom3": "3.3.0-1ubuntu0.1",
+        "libarmadillo10": "1:10.8.2+dfsg-1",
+        "libarpack2": "3.8.0-1",
+        "libasound2": "1.2.6.1-1ubuntu1.2",
+        "libasound2-data": "1.2.6.1-1ubuntu1.2",
+        "libatk-bridge2.0-0": "2.38.0-3",
+        "libatk1.0-0": "2.36.0-3build1",
+        "libatk1.0-data": "2.36.0-3build1",
+        "libatomic1": "12.3.0-1ubuntu1~22.04.3",
+        "libatspi2.0-0": "2.44.0-3",
+        "libattr1": "1:2.5.1-1ubuntu0.1",
+        "libavahi-client3": "0.8-5ubuntu5.5",
+        "libavahi-common-data": "0.8-5ubuntu5.5",
+        "libavahi-common3": "0.8-5ubuntu5.5",
+        "libavcodec58": "7:4.4.2-0ubuntu0.22.04.1",
+        "libavformat58": "7:4.4.2-0ubuntu0.22.04.1",
+        "libavutil56": "7:4.4.2-0ubuntu0.22.04.1",
+        "libblas3": "3.10.0-2ubuntu1",
+        "libblkid1": "2.37.2-4ubuntu3.6",
+        "libblosc1": "1.21.1+ds2-2",
+        "libbluray2": "1:1.3.1-1",
+        "libbrotli1": "1.0.9-2build6",
+        "libbsd0": "0.11.5-1",
+        "libbz2-1.0": "1.0.8-5ubuntu0.1",
+        "libc6": "2.35-0ubuntu3.15",
+        "libcairo-gobject2": "1.16.0-5ubuntu2.1",
+        "libcairo2": "1.16.0-5ubuntu2.1",
+        "libcap2": "1:2.44-1ubuntu0.22.04.3",
+        "libcap2-bin": "1:2.44-1ubuntu0.22.04.3",
+        "libcfitsio9": "4.0.0-1",
+        "libcharls2": "2.3.4-1",
+        "libchromaprint1": "1.5.1-2",
+        "libcodec2-1.0": "1.0.1-3",
+        "libcolord2": "1.4.6-1",
+        "libcom-err2": "1.46.5-2ubuntu1.2",
+        "libcrypt1": "1:4.4.27-1",
+        "libcups2": "2.4.1op1-1ubuntu4.21",
+        "libcurl3-gnutls": "7.81.0-1ubuntu1.29",
+        "libcurl4": "7.81.0-1ubuntu1.29",
+        "libdatrie1": "0.2.13-2",
+        "libdav1d5": "0.9.2-1",
+        "libdb5.3": "5.3.28+dfsg1-0.8ubuntu3",
+        "libdbus-1-3": "1.12.20-2ubuntu4.1",
+        "libdc1394-25": "2.2.6-4",
+        "libdconf1": "0.40.0-3",
+        "libde265-0": "1.0.8-1ubuntu0.3",
+        "libdeflate0": "1.10-2",
+        "libdrm-amdgpu1": "2.4.113-2~ubuntu0.22.04.1",
+        "libdrm-common": "2.4.113-2~ubuntu0.22.04.1",
+        "libdrm-intel1": "2.4.113-2~ubuntu0.22.04.1",
+        "libdrm-nouveau2": "2.4.113-2~ubuntu0.22.04.1",
+        "libdrm-radeon1": "2.4.113-2~ubuntu0.22.04.1",
+        "libdrm2": "2.4.113-2~ubuntu0.22.04.1",
+        "libdw1": "0.186-1ubuntu0.1",
+        "libedit2": "3.1-20210910-1build1",
+        "libegl-mesa0": "23.2.1-1ubuntu3.1~22.04.4",
+        "libegl1": "1.4.0-1",
+        "libelf1": "0.186-1ubuntu0.1",
+        "libepoxy0": "1.5.10-1",
+        "libexif12": "0.6.24-1ubuntu0.22.04.1",
+        "libexpat1": "2.4.7-1ubuntu0.9",
+        "libffi8": "3.4.2-4",
+        "libfontconfig1": "2.13.1-4.2ubuntu5",
+        "libfreetype6": "2.11.1+dfsg-1ubuntu0.4",
+        "libfreexl1": "1.0.6-1",
+        "libfribidi0": "1.0.8-2ubuntu3.1",
+        "libfyba0": "4.1.1-7",
+        "libgbm1": "23.2.1-1ubuntu3.1~22.04.4",
+        "libgcc-s1": "12.3.0-1ubuntu1~22.04.3",
+        "libgcrypt20": "1.9.4-3ubuntu3.3",
+        "libgd3": "2.3.0-2ubuntu2.3",
+        "libgdal30": "3.4.1+dfsg-1build4",
+        "libgdcm3.0": "3.0.10-1build2",
+        "libgdk-pixbuf-2.0-0": "2.42.8+dfsg-1ubuntu0.5",
+        "libgdk-pixbuf2.0-common": "2.42.8+dfsg-1ubuntu0.5",
+        "libgeos-c1v5": "3.10.2-1",
+        "libgeos3.10.2": "3.10.2-1",
+        "libgeotiff5": "1.7.0-2build1",
+        "libgfortran5": "12.3.0-1ubuntu1~22.04.3",
+        "libgif7": "5.1.9-2ubuntu0.3",
+        "libgl1": "1.4.0-1",
+        "libgl1-mesa-dri": "23.2.1-1ubuntu3.1~22.04.4",
+        "libglapi-mesa": "23.2.1-1ubuntu3.1~22.04.4",
+        "libglib2.0-0": "2.72.4-0ubuntu2.10",
+        "libglvnd0": "1.4.0-1",
+        "libglx-mesa0": "23.2.1-1ubuntu3.1~22.04.4",
+        "libglx0": "1.4.0-1",
+        "libgme0": "0.6.3-2",
+        "libgmp10": "2:6.2.1+dfsg-3ubuntu1",
+        "libgnutls30": "3.7.3-4ubuntu1.9",
+        "libgomp1": "12.3.0-1ubuntu1~22.04.3",
+        "libgpg-error0": "1.43-3",
+        "libgphoto2-6": "2.5.27-1ubuntu0.1",
+        "libgphoto2-port12": "2.5.27-1ubuntu0.1",
+        "libgraphite2-3": "1.3.14-1ubuntu0.1",
+        "libgsm1": "1.0.19-1",
+        "libgssapi-krb5-2": "1.19.2-2ubuntu0.8",
+        "libgstreamer-plugins-base1.0-0": "1.20.1-1ubuntu0.7",
+        "libgstreamer1.0-0": "1.20.3-0ubuntu1.1",
+        "libgtk-3-0": "3.24.33-1ubuntu2.2",
+        "libgtk-3-common": "3.24.33-1ubuntu2.2",
+        "libharfbuzz0b": "2.7.4-1ubuntu3.2",
+        "libhdf4-0-alt": "4.2.15-4",
+        "libhdf5-103-1": "1.10.7+repack-4ubuntu2",
+        "libhdf5-hl-100": "1.10.7+repack-4ubuntu2",
+        "libheif1": "1.12.0-2build1",
+        "libhogweed6": "3.7.3-1build2",
+        "libicu70": "70.1-2",
+        "libidn2-0": "2.3.2-2build1",
+        "libilmbase25": "2.5.7-2",
+        "libjbig0": "2.1-3.1ubuntu0.22.04.1",
+        "libjpeg-turbo8": "2.1.2-0ubuntu1",
+        "libjpeg8": "8c-2ubuntu10",
+        "libjson-c5": "0.15-3~ubuntu1.22.04.2",
+        "libk5crypto3": "1.19.2-2ubuntu0.8",
+        "libkeyutils1": "1.6.1-2ubuntu3",
+        "libkmlbase1": "1.3.0-9",
+        "libkmldom1": "1.3.0-9",
+        "libkmlengine1": "1.3.0-9",
+        "libkrb5-3": "1.19.2-2ubuntu0.8",
+        "libkrb5support0": "1.19.2-2ubuntu0.8",
+        "liblapack3": "3.10.0-2ubuntu1",
+        "liblcms2-2": "2.12~rc1-2ubuntu0.1",
+        "libldap-2.5-0": "2.5.18+dfsg-0ubuntu0.22.04.2",
+        "libllvm15": "1:15.0.7-0ubuntu0.22.04.3",
+        "libltdl7": "2.4.6-15build2",
+        "liblz4-1": "1.9.3-2build2",
+        "liblzma5": "5.2.5-2ubuntu1.1",
+        "libmd0": "1.0.4-1build1",
+        "libmfx1": "22.3.0-1",
+        "libminizip1": "1.1-8build1",
+        "libmount1": "2.37.2-4ubuntu3.6",
+        "libmp3lame0": "3.100-3build2",
+        "libmpdec3": "2.5.1-2build2",
+        "libmpg123-0": "1.29.3-1ubuntu0.1",
+        "libmysqlclient21": "8.0.46-0ubuntu0.22.04.4",
+        "libncursesw6": "6.3-2ubuntu0.3",
+        "libnetcdf19": "1:4.8.1-1",
+        "libnettle8": "3.7.3-1build2",
+        "libnghttp2-14": "1.43.0-1ubuntu0.4",
+        "libnorm1": "1.5.9+dfsg-2",
+        "libnsl2": "1.3.0-2build2",
+        "libnspr4": "2:4.35-0ubuntu0.22.04.1",
+        "libnss3": "2:3.98-0ubuntu0.22.04.4",
+        "libnuma1": "2.0.14-3ubuntu2",
+        "libodbc2": "2.3.9-5ubuntu0.1",
+        "libodbcinst2": "2.3.9-5ubuntu0.1",
+        "libogdi4.1": "4.1.0+ds-5",
+        "libogg0": "1.3.5-0ubuntu3",
+        "libopencv-core4.5d": "4.5.4+dfsg-9ubuntu4",
+        "libopencv-dnn4.5d": "4.5.4+dfsg-9ubuntu4",
+        "libopencv-imgcodecs4.5d": "4.5.4+dfsg-9ubuntu4",
+        "libopencv-imgproc4.5d": "4.5.4+dfsg-9ubuntu4",
+        "libopencv-videoio4.5d": "4.5.4+dfsg-9ubuntu4",
+        "libopenexr25": "2.5.7-1",
+        "libopengl0": "1.4.0-1",
+        "libopenjp2-7": "2.4.0-6ubuntu0.5",
+        "libopenmpt0": "0.6.1-1",
+        "libopus0": "1.3.1-0.1build2",
+        "liborc-0.4-0": "1:0.4.32-2ubuntu0.1",
+        "libp11-kit0": "0.24.0-6ubuntu0.1",
+        "libpango-1.0-0": "1.50.6+ds-2ubuntu1",
+        "libpangocairo-1.0-0": "1.50.6+ds-2ubuntu1",
+        "libpangoft2-1.0-0": "1.50.6+ds-2ubuntu1",
+        "libpciaccess0": "0.16-3",
+        "libpcre2-8-0": "10.39-3ubuntu0.1",
+        "libpcre3": "2:8.39-13ubuntu0.22.04.1",
+        "libpgm-5.3-0": "5.3.128~dfsg-2",
+        "libpixman-1-0": "0.40.0-1ubuntu0.22.04.1",
+        "libpng16-16": "1.6.37-3ubuntu0.6",
+        "libpoppler118": "22.02.0-2ubuntu0.14",
+        "libpq5": "14.24-0ubuntu0.22.04.1",
+        "libproj22": "8.2.1-1",
+        "libprotobuf23": "3.12.4-1ubuntu7.22.04.6",
+        "libpsl5": "0.21.0-1.2build2",
+        "libpython3-stdlib": "3.10.6-1~22.04.1",
+        "libpython3.10-minimal": "3.10.12-1~22.04.18",
+        "libpython3.10-stdlib": "3.10.12-1~22.04.18",
+        "libqhull-r8.0": "2020.2-4",
+        "libquadmath0": "12.3.0-1ubuntu1~22.04.3",
+        "librabbitmq4": "0.10.0-1ubuntu2.2",
+        "libraw1394-11": "2.1.2-2build2",
+        "libreadline8": "8.1.2-1",
+        "librsvg2-2": "2.52.5+dfsg-3ubuntu0.2",
+        "librtmp1": "2.4+20151223.gitfa8646d.1-2build4",
+        "librttopo1": "1.1.0-2",
+        "libsasl2-2": "2.1.27+dfsg2-3ubuntu1.2",
+        "libsasl2-modules-db": "2.1.27+dfsg2-3ubuntu1.2",
+        "libselinux1": "3.3-1build2",
+        "libsensors-config": "1:3.6.0-7ubuntu1",
+        "libsensors5": "1:3.6.0-7ubuntu1",
+        "libshine3": "3.1.1-2",
+        "libsnappy1v5": "1.1.8-1build3",
+        "libsocket++1": "1.12.13+git20131030.5d039ba-1",
+        "libsodium23": "1.0.18-1ubuntu0.22.04.1",
+        "libsoxr0": "0.1.3-4build2",
+        "libspatialite7": "5.0.1-2build2",
+        "libspeex1": "1.2~rc1.2-1.1ubuntu3",
+        "libsqlite3-0": "3.37.2-2ubuntu0.8",
+        "libsrt1.4-gnutls": "1.4.4-4",
+        "libssh-4": "0.9.6-2ubuntu0.22.04.8",
+        "libssh-gcrypt-4": "0.9.6-2ubuntu0.22.04.8",
+        "libssl3": "3.0.2-0ubuntu1.30",
+        "libstdc++6": "12.3.0-1ubuntu1~22.04.3",
+        "libsuperlu5": "5.3.0+dfsg1-2",
+        "libswresample3": "7:4.4.2-0ubuntu0.22.04.1",
+        "libswscale5": "7:4.4.2-0ubuntu0.22.04.1",
+        "libsystemd0": "249.11-0ubuntu3.22",
+        "libsz2": "1.0.6-1",
+        "libtasn1-6": "4.18.0-4ubuntu0.2",
+        "libtbb2": "2020.3-1ubuntu3",
+        "libtbbmalloc2": "2021.5.0-7ubuntu2",
+        "libthai-data": "0.1.29-1build1",
+        "libthai0": "0.1.29-1build1",
+        "libtheora0": "1.1.1+dfsg.1-15ubuntu4",
+        "libtiff5": "4.3.0-6ubuntu0.13",
+        "libtinfo6": "6.3-2ubuntu0.3",
+        "libtirpc-common": "1.3.2-2ubuntu0.1",
+        "libtirpc3": "1.3.2-2ubuntu0.1",
+        "libtwolame0": "0.4.0-2build2",
+        "libudev1": "249.11-0ubuntu3.22",
+        "libudfread0": "1.1.2-1",
+        "libunistring2": "1.0-1",
+        "libunwind8": "1.3.2-2build2.1",
+        "liburiparser1": "0.9.6+dfsg-1",
+        "libusb-1.0-0": "2:1.0.25-1ubuntu2",
+        "libuuid1": "2.37.2-4ubuntu3.6",
+        "libva-drm2": "2.14.0-1",
+        "libva-x11-2": "2.14.0-1",
+        "libva2": "2.14.0-1",
+        "libvdpau1": "1.4-3build2",
+        "libvorbis0a": "1.3.7-1build2",
+        "libvorbisenc2": "1.3.7-1build2",
+        "libvorbisfile3": "1.3.7-1build2",
+        "libvpx7": "1.11.0-2ubuntu2.5",
+        "libwayland-client0": "1.20.0-1ubuntu0.1",
+        "libwayland-cursor0": "1.20.0-1ubuntu0.1",
+        "libwayland-egl1": "1.20.0-1ubuntu0.1",
+        "libwayland-server0": "1.20.0-1ubuntu0.1",
+        "libwebp7": "1.2.2-2ubuntu0.22.04.2",
+        "libwebpmux3": "1.2.2-2ubuntu0.22.04.2",
+        "libx11-6": "2:1.7.5-1ubuntu0.3",
+        "libx11-data": "2:1.7.5-1ubuntu0.3",
+        "libx11-xcb1": "2:1.7.5-1ubuntu0.3",
+        "libx264-163": "2:0.163.3060+git5db6aa6-2build1",
+        "libx265-199": "3.5-2",
+        "libxau6": "1:1.0.9-1build5",
+        "libxcb-cursor0": "0.1.1-4ubuntu1",
+        "libxcb-dri2-0": "1.14-3ubuntu3",
+        "libxcb-dri3-0": "1.14-3ubuntu3",
+        "libxcb-glx0": "1.14-3ubuntu3",
+        "libxcb-icccm4": "0.4.1-1.1build2",
+        "libxcb-image0": "0.4.0-2",
+        "libxcb-keysyms1": "0.4.0-1build3",
+        "libxcb-present0": "1.14-3ubuntu3",
+        "libxcb-randr0": "1.14-3ubuntu3",
+        "libxcb-render-util0": "0.3.9-1build3",
+        "libxcb-render0": "1.14-3ubuntu3",
+        "libxcb-shape0": "1.14-3ubuntu3",
+        "libxcb-shm0": "1.14-3ubuntu3",
+        "libxcb-sync1": "1.14-3ubuntu3",
+        "libxcb-util1": "0.4.0-1build2",
+        "libxcb-xfixes0": "1.14-3ubuntu3",
+        "libxcb-xkb1": "1.14-3ubuntu3",
+        "libxcb1": "1.14-3ubuntu3",
+        "libxcomposite1": "1:0.4.5-1build2",
+        "libxcursor1": "1:1.2.0-2build4",
+        "libxdamage1": "1:1.1.5-2build2",
+        "libxdmcp6": "1:1.1.3-0ubuntu5",
+        "libxerces-c3.2": "3.2.3+debian-3ubuntu0.1",
+        "libxext6": "2:1.3.4-1build1",
+        "libxfixes3": "1:6.0.0-1",
+        "libxi6": "2:1.8-1build1",
+        "libxinerama1": "2:1.1.4-3",
+        "libxkbcommon-x11-0": "1.4.0-1",
+        "libxkbcommon0": "1.4.0-1",
+        "libxkbfile1": "1:1.1.0-1build3",
+        "libxml2": "2.9.13+dfsg-1ubuntu0.13",
+        "libxpm4": "1:3.5.12-1ubuntu0.22.04.4",
+        "libxrandr2": "2:1.5.2-1build1",
+        "libxrender1": "1:0.9.10-1build4",
+        "libxshmfence1": "1.3-1build4",
+        "libxtst6": "2:1.2.3-1build4",
+        "libxvidcore4": "2:1.3.7-1",
+        "libxxf86vm1": "1:1.1.4-1build3",
+        "libzmq5": "4.3.4-2",
+        "libzstd1": "1.4.8+dfsg-3build1",
+        "libzvbi-common": "0.2.35-19",
+        "libzvbi0": "0.2.35-19",
+        "lsb-base": "11.1.0ubuntu4",
+        "media-types": "7.0.0",
+        "mysql-common": "5.8+1.0.8",
+        "ocl-icd-libopencl1": "2.2.14-3",
+        "openssl": "3.0.2-0ubuntu1.30",
+        "perl-base": "5.34.0-3ubuntu1.9",
+        "proj-data": "8.2.1-1",
+        "python3": "3.10.6-1~22.04.1",
+        "python3-minimal": "3.10.6-1~22.04.1",
+        "python3-pip-whl": "22.0.2+dfsg-1ubuntu0.7",
+        "python3-setuptools-whl": "59.6.0-1.2ubuntu0.22.04.3",
+        "python3.10": "3.10.12-1~22.04.18",
+        "python3.10-minimal": "3.10.12-1~22.04.18",
+        "python3.10-venv": "3.10.12-1~22.04.18",
+        "readline-common": "8.1.2-1",
+        "sensible-utils": "0.0.17",
+        "shared-mime-info": "2.1-2",
+        "tar": "1.34+dfsg-1ubuntu0.1.22.04.6",
+        "ubuntu-mono": "20.10-0ubuntu2",
+        "ucf": "3.0043",
+        "unixodbc-common": "2.3.9-5ubuntu0.1",
+        "x11-common": "1:7.7+23ubuntu2",
+        "xkb-data": "2.33-1",
+        "zlib1g": "1:1.2.11.dfsg-2ubuntu9.2"
+      },
+      "closure_packages": 332
+    },
+    "optional_gpu": {
+      "bundled": false,
+      "setup": "per-user explicit request",
+      "torch": "2.9.1+cu128",
+      "onnxruntime": "1.23.2"
+    },
+    "python_runtime": {
+      "count": 57,
+      "distributions": {
+        "torchvision": "0.24.1+cpu",
+        "idna": "3.20",
+        "ipython": "8.39.0",
+        "typing-extensions": "4.16.0",
+        "ultralytics": "8.4.173",
+        "markupsafe": "3.0.3",
+        "cycler": "0.12.1",
+        "tqdm": "4.70.1",
+        "pyyaml": "6.0.3",
+        "pure-eval": "0.2.4",
+        "prompt-toolkit": "3.0.53",
+        "decorator": "5.3.1",
+        "nvidia-ml-py": "13.615.71",
+        "urllib3": "2.8.0",
+        "pygments": "2.21.0",
+        "polars-runtime-32": "1.44.2",
+        "numpy": "2.2.6",
+        "psutil": "7.2.2",
+        "kiwisolver": "1.5.1",
+        "requests": "2.34.2",
+        "contourpy": "1.3.2",
+        "fsspec": "2026.7.0",
+        "pexpect": "4.9.0",
+        "certifi": "2026.7.22",
+        "wcwidth": "0.9.2",
+        "charset-normalizer": "3.5.2",
+        "matplotlib": "3.10.9",
+        "filelock": "3.32.3",
+        "asttokens": "3.0.2",
+        "seaborn": "0.13.2",
+        "tzdata": "2026.5",
+        "jedi": "0.20.0",
+        "fonttools": "4.65.0",
+        "setuptools": "59.6.0",
+        "pandas": "2.3.3",
+        "mpmath": "1.3.0",
+        "parso": "0.8.7",
+        "netron": "9.3.1",
+        "ptyprocess": "0.7.0",
+        "polars": "1.44.2",
+        "exceptiongroup": "1.3.1",
+        "jinja2": "3.1.6",
+        "torch": "2.9.1+cpu",
+        "ultralytics-thop": "2.2.2",
+        "sympy": "1.14.0",
+        "python-dateutil": "2.9.0.post0",
+        "stack-data": "0.6.3",
+        "six": "1.17.0",
+        "pytz": "2026.5",
+        "traitlets": "5.16.1",
+        "executing": "2.2.1",
+        "packaging": "26.3",
+        "networkx": "3.4.2",
+        "opencv-python-headless": "4.11.0.86",
+        "pyparsing": "3.3.3",
+        "matplotlib-inline": "0.2.2",
+        "pillow": "12.3.0"
+      },
+      "lock_matches_runtime": true
+    },
+    "elf": {
+      "count": 314,
+      "runtime_paths": {
+        "libexec/QtWebEngineProcess": [
+          "$ORIGIN/../lib/qt"
+        ],
+        "plugins/wayland-graphics-integration-client/libqt-plugin-wayland-egl.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/wayland-shell-integration/libxdg-shell.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/platformthemes/libqgtk3.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/platformthemes/libqxdgdesktopportal.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/platforms/libqminimal.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/platforms/libqwayland-egl.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/platforms/libqoffscreen.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/platforms/libqxcb.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/platforms/libqwayland-generic.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/imageformats/libqtiff.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/imageformats/libqwebp.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/imageformats/libqsvg.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/imageformats/libqtga.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/imageformats/libqicns.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/imageformats/libqico.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/imageformats/libqwbmp.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/imageformats/libqgif.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/imageformats/libqjpeg.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/platforminputcontexts/libibusplatforminputcontextplugin.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/wayland-decoration-client/libadwaita.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/wayland-decoration-client/libbradient.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/iconengines/libqsvgicon.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/xcbglintegrations/libqxcb-glx-integration.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "plugins/xcbglintegrations/libqxcb-egl-integration.so": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "build/bin/vision-studio": [
+          "$ORIGIN/../../lib/qt"
+        ],
+        "lib/qt/libicuuc.so.73.2": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6QuickWidgets.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6Quick.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6WaylandEglClientHwIntegration.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6Positioning.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6QmlWorkerScript.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6PrintSupport.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6WebEngineWidgets.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6Core.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6QmlMeta.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6OpenGL.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libicui18n.so.73.2": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6WaylandClient.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6Widgets.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6QmlModels.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6XcbQpa.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6WebEngineCore.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6Gui.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6Svg.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6Qml.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6DBus.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libicudata.so.73.2": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6Network.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "lib/qt/libQt6WebChannel.so.6.8.3": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/_C.cpython-310-x86_64-linux-gnu.so": [
+          "$ORIGIN:$ORIGIN/lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/bin/test_dist_autograd": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/bin/FileStoreTest": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/bin/protoc": [
+          "$ORIGIN/../lib64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/bin/test_nativert": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/bin/HashStoreTest": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/bin/test_lazy": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/bin/test_cpp_rpc": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/bin/test_api": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/bin/test_jit": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/bin/TCPStoreTest": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/bin/torch_shm_manager": [
+          "$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/bin/protoc-3.13.0.0": [
+          "$ORIGIN/../lib64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/make_boxed_from_unboxed_functor_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_Half_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_lazy_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_complex_math_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_Synchronized_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_error_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/extension_backend_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_AllocatorConfig_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/reduce_ops_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/dlconvertor_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/memory_overlapping_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/type_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/inline_container_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/thread_init_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/ivalue_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/NamedTensor_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_generic_math_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_SymInt_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_DeadlockDetection_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/cpu_allocator_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/legacy_vmap_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/MaybeOwned_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_typeid_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_string_util_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/kernel_function_legacy_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_ArrayRef_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_logging_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_LeftRight_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/packedtensoraccessor_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_CompileTimeFunctionPointer_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/scalar_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_ssize_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/backend_fallback_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_string_view_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_SizesAndStrides_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_tempfile_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/test_parallel": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/CppSignature_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/tensor_iterator_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/List_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/Dict_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_TypeIndex_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/math_kernel_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_ConstexprCrc_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/half_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/lazy_tensor_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/op_registration_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/kernel_stackbased_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_optional_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/StorageUtils_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/pow_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_bit_cast_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/kernel_lambda_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_Device_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_DeviceGuard_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/mobile_memory_cleanup": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_InlineStreamGuard_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_StreamGuard_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_Scalar_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/basic": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_Enumerate_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_IntrusiveList_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/reportMemoryUsage_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/native_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/memory_format_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/KernelFunction_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_bfloat16_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/scalar_tensor_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_Semaphore_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_cow_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_irange_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_registry_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_intrusive_ptr_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_intrusive_ptr_benchmark": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/undefined_tensor_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/wrapdim_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/weakref_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/kernel_lambda_legacy_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/operators_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_DispatchKeySet_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_small_vector_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_flags_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/IListRef_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/Dimname_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/verify_api_visibility": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_InlineDeviceGuard_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/cpu_profiling_allocator_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/atest": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/cpu_generator_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/cpu_rng_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_Metaprogramming_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_TypeTraits_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/type_ptr_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/quantized_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_Bitset_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/xla_tensor_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_complex_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/broadcast_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_TypeList_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/apply_utils_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/operator_name_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_ordered_preserving_dict_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/op_allowlist_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_accumulate_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_ThreadLocal_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/kernel_function_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/stride_properties_test": [
+          "$ORIGIN:$ORIGIN/../lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_NetworkFlow_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/test/c10_exception_test": [
+          "$ORIGIN:$ORIGIN/../lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/lib/libbackend_with_compiler.so": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/lib/libjitbackend_test.so": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/lib/libshm.so": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/lib/libc10.so": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/lib/libtorchbind_test.so": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/lib/libaoti_custom_ops.so": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/lib/libtorch.so": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/lib/libtorch_python.so": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/torch/lib/libtorch_global_deps.so": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/numpy.libs/libscipy_openblas64_-56d6093b.so": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/numpy/linalg/_umath_linalg.cpython-310-x86_64-linux-gnu.so": [
+          "$ORIGIN/../../numpy.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/numpy/linalg/lapack_lite.cpython-310-x86_64-linux-gnu.so": [
+          "$ORIGIN/../../numpy.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/numpy/fft/_pocketfft_umath.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/numpy/random/_bounded_integers.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/numpy/random/mtrand.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/numpy/random/_sfc64.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/numpy/random/bit_generator.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/numpy/random/_philox.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/numpy/random/_generator.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/numpy/random/_pcg64.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/numpy/random/_mt19937.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/numpy/random/_common.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/numpy/_core/_umath_tests.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/numpy/_core/_rational_tests.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/numpy/_core/_operand_flag_tests.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/numpy/_core/_multiarray_tests.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/numpy/_core/_simd.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/numpy/_core/_struct_ufunc_tests.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/numpy/_core/_multiarray_umath.cpython-310-x86_64-linux-gnu.so": [
+          "$ORIGIN/../../numpy.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libXau-154567c4.so.6.0.0": [],
+        "runtime/lib/python3.10/site-packages/pillow.libs/liblzma-2be87c3e.so.5.8.3": [],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libsharpyuv-0066295b.so.0.1.2": [],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libfreetype-9fc94c80.so.6.20.6": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libxcb-ad31f5a3.so.1.1.0": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libtiff-fc87e79d.so.6.2.0": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libavif-8a7f9d56.so.16.4.2": [],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libharfbuzz-172d1f63.so.0.61421.0": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/liblcms2-dade1fbf.so.2.0.19": [],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libwebpmux-8fb1c9f6.so.3.1.2": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libbrotlicommon-53534446.so.1.2.0": [],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libjpeg-31e2ca52.so.62.4.0": [],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libwebp-51b0b3f7.so.7.2.0": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libzstd-44be1190.so.1.5.7": [],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libbrotlidec-7e5462ba.so.1.2.0": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libopenjp2-b07f72ad.so.2.5.4": [],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libwebpdemux-9fe2abcc.so.2.0.17": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libpng16-abb096d5.so.16.58.0": [],
+        "runtime/lib/python3.10/site-packages/wcwidth/_wcwidth_c.abi3.so": [],
+        "runtime/lib/python3.10/site-packages/torchvision/_C.so": [
+          "/__w/_temp/conda_environment_19247755181/lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torchvision/image.so": [
+          "$ORIGIN:$ORIGIN/../torchvision.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/_polars_runtime_32/_polars_runtime.abi3.so": [],
+        "runtime/lib/python3.10/site-packages/functorch/_C.cpython-310-x86_64-linux-gnu.so": [
+          "$ORIGIN/../torch/lib:/lib/intel64:/lib/intel64_win:/lib/win-x64"
+        ],
+        "runtime/lib/python3.10/site-packages/PIL/_imagingmorph.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/PIL/_avif.cpython-310-x86_64-linux-gnu.so": [
+          "$ORIGIN/../pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/PIL/_imagingtk.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/PIL/_imagingft.cpython-310-x86_64-linux-gnu.so": [
+          "$ORIGIN/../pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/PIL/_imagingcms.cpython-310-x86_64-linux-gnu.so": [
+          "$ORIGIN/../pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/PIL/_webp.cpython-310-x86_64-linux-gnu.so": [
+          "$ORIGIN/../pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/PIL/_imagingmath.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/PIL/_imaging.cpython-310-x86_64-linux-gnu.so": [
+          "$ORIGIN/../pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/charset_normalizer/cd.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/charset_normalizer/md.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/markupsafe/_speedups.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/kiwisolver/_cext.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/fontTools/feaLib/lexer.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/fontTools/cu2qu/cu2qu.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/fontTools/qu2cu/qu2cu.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/fontTools/varLib/iup.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/fontTools/pens/momentsPen.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/fontTools/misc/bezierTools.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/contourpy/_contourpy.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/psutil/_psutil_linux.abi3.so": [],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libswresample-3e7db482.so.4.7.100": [],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libpng16-ef62451c.so.16.44.0": [],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libcrypto-8c1ab3ad.so.1.1": [],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libavformat-d296e685.so.59.27.100": [],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libavcodec-76c43bf0.so.59.37.100": [],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libavutil-734d06dd.so.57.28.100": [],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libvpx-9f572e11.so.9.1.0": [],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libssl-28bef1ac.so.1.1": [],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libswscale-95ddd674.so.6.7.100": [],
+        "runtime/lib/python3.10/site-packages/matplotlib/_c_internal_utils.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/matplotlib/_path.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/matplotlib/ft2font.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/matplotlib/_qhull.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/matplotlib/_image.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/matplotlib/_tri.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/matplotlib/backends/_tkagg.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/matplotlib/backends/_backend_agg.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/torchvision.libs/libsharpyuv.0ad7936e.so.0": [
+          "$ORIGIN/."
+        ],
+        "runtime/lib/python3.10/site-packages/torchvision.libs/libpng16.4ef4b109.so.16": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/torchvision.libs/libjpeg.d246b9ea.so.8": [
+          "$ORIGIN/."
+        ],
+        "runtime/lib/python3.10/site-packages/torchvision.libs/libwebp.121d56b5.so.7": [
+          "$ORIGIN"
+        ],
+        "runtime/lib/python3.10/site-packages/torchvision.libs/libz.cac6d5fc.so.1": [
+          "$ORIGIN/."
+        ],
+        "runtime/lib/python3.10/site-packages/yaml/_yaml.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/cv2/cv2.abi3.so": [
+          "$ORIGIN/../opencv_python_headless.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/sparse.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/arrays.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/properties.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/writers.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/pandas_datetime.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/parsers.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/hashtable.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/indexing.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/sas.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/missing.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/index.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/reshape.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslib.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/pandas_parser.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/lib.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/hashing.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/interval.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/byteswap.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/internals.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/algos.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/json.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/groupby.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/ops_dispatch.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/join.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/ops.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/testing.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/window/aggregations.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/window/indexers.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslibs/base.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslibs/tzconversion.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslibs/parsing.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslibs/offsets.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslibs/vectorized.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslibs/timezones.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslibs/timestamps.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslibs/nattype.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslibs/timedeltas.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslibs/dtypes.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslibs/strptime.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslibs/period.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslibs/ccalendar.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslibs/np_datetime.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslibs/conversion.cpython-310-x86_64-linux-gnu.so": [],
+        "runtime/lib/python3.10/site-packages/pandas/_libs/tslibs/fields.cpython-310-x86_64-linux-gnu.so": []
+      }
+    },
+    "native_dependencies": {
+      "bundled_libraries": [
+        "lib/qt/libQt6Core.so.6.8.3",
+        "lib/qt/libQt6DBus.so.6.8.3",
+        "lib/qt/libQt6Gui.so.6.8.3",
+        "lib/qt/libQt6Network.so.6.8.3",
+        "lib/qt/libQt6OpenGL.so.6.8.3",
+        "lib/qt/libQt6Positioning.so.6.8.3",
+        "lib/qt/libQt6PrintSupport.so.6.8.3",
+        "lib/qt/libQt6Qml.so.6.8.3",
+        "lib/qt/libQt6QmlMeta.so.6.8.3",
+        "lib/qt/libQt6QmlModels.so.6.8.3",
+        "lib/qt/libQt6QmlWorkerScript.so.6.8.3",
+        "lib/qt/libQt6Quick.so.6.8.3",
+        "lib/qt/libQt6QuickWidgets.so.6.8.3",
+        "lib/qt/libQt6Svg.so.6.8.3",
+        "lib/qt/libQt6WaylandClient.so.6.8.3",
+        "lib/qt/libQt6WaylandEglClientHwIntegration.so.6.8.3",
+        "lib/qt/libQt6WebChannel.so.6.8.3",
+        "lib/qt/libQt6WebEngineCore.so.6.8.3",
+        "lib/qt/libQt6WebEngineWidgets.so.6.8.3",
+        "lib/qt/libQt6Widgets.so.6.8.3",
+        "lib/qt/libQt6XcbQpa.so.6.8.3",
+        "lib/qt/libicudata.so.73.2",
+        "lib/qt/libicui18n.so.73.2",
+        "lib/qt/libicuuc.so.73.2",
+        "runtime/lib/python3.10/site-packages/numpy.libs/libscipy_openblas64_-56d6093b.so",
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libavcodec-76c43bf0.so.59.37.100",
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libavformat-d296e685.so.59.27.100",
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libavutil-734d06dd.so.57.28.100",
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libcrypto-8c1ab3ad.so.1.1",
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libpng16-ef62451c.so.16.44.0",
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libssl-28bef1ac.so.1.1",
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libswresample-3e7db482.so.4.7.100",
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libswscale-95ddd674.so.6.7.100",
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libvpx-9f572e11.so.9.1.0",
+        "runtime/lib/python3.10/site-packages/pillow.libs/libXau-154567c4.so.6.0.0",
+        "runtime/lib/python3.10/site-packages/pillow.libs/libavif-8a7f9d56.so.16.4.2",
+        "runtime/lib/python3.10/site-packages/pillow.libs/libbrotlicommon-53534446.so.1.2.0",
+        "runtime/lib/python3.10/site-packages/pillow.libs/libbrotlidec-7e5462ba.so.1.2.0",
+        "runtime/lib/python3.10/site-packages/pillow.libs/libfreetype-9fc94c80.so.6.20.6",
+        "runtime/lib/python3.10/site-packages/pillow.libs/libharfbuzz-172d1f63.so.0.61421.0",
+        "runtime/lib/python3.10/site-packages/pillow.libs/libjpeg-31e2ca52.so.62.4.0",
+        "runtime/lib/python3.10/site-packages/pillow.libs/liblcms2-dade1fbf.so.2.0.19",
+        "runtime/lib/python3.10/site-packages/pillow.libs/liblzma-2be87c3e.so.5.8.3",
+        "runtime/lib/python3.10/site-packages/pillow.libs/libopenjp2-b07f72ad.so.2.5.4",
+        "runtime/lib/python3.10/site-packages/pillow.libs/libpng16-abb096d5.so.16.58.0",
+        "runtime/lib/python3.10/site-packages/pillow.libs/libsharpyuv-0066295b.so.0.1.2",
+        "runtime/lib/python3.10/site-packages/pillow.libs/libtiff-fc87e79d.so.6.2.0",
+        "runtime/lib/python3.10/site-packages/pillow.libs/libwebp-51b0b3f7.so.7.2.0",
+        "runtime/lib/python3.10/site-packages/pillow.libs/libwebpdemux-9fe2abcc.so.2.0.17",
+        "runtime/lib/python3.10/site-packages/pillow.libs/libwebpmux-8fb1c9f6.so.3.1.2",
+        "runtime/lib/python3.10/site-packages/pillow.libs/libxcb-ad31f5a3.so.1.1.0",
+        "runtime/lib/python3.10/site-packages/pillow.libs/libzstd-44be1190.so.1.5.7",
+        "runtime/lib/python3.10/site-packages/torch/lib/libbackend_with_compiler.so",
+        "runtime/lib/python3.10/site-packages/torch/lib/libc10.so",
+        "runtime/lib/python3.10/site-packages/torch/lib/libjitbackend_test.so",
+        "runtime/lib/python3.10/site-packages/torch/lib/libshm.so",
+        "runtime/lib/python3.10/site-packages/torch/lib/libtorch.so",
+        "runtime/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so",
+        "runtime/lib/python3.10/site-packages/torch/lib/libtorch_python.so",
+        "runtime/lib/python3.10/site-packages/torchvision.libs/libjpeg.d246b9ea.so.8",
+        "runtime/lib/python3.10/site-packages/torchvision.libs/libpng16.4ef4b109.so.16",
+        "runtime/lib/python3.10/site-packages/torchvision.libs/libsharpyuv.0ad7936e.so.0",
+        "runtime/lib/python3.10/site-packages/torchvision.libs/libwebp.121d56b5.so.7",
+        "runtime/lib/python3.10/site-packages/torchvision.libs/libz.cac6d5fc.so.1"
+      ],
+      "system_library_packages": {
+        "/usr/lib/libarmadillo.so.10.8.2": [
+          "libarmadillo10"
+        ],
+        "/usr/lib/libdfalt.so.0.0.0": [
+          "libhdf4-0-alt"
+        ],
+        "/usr/lib/libgdal.so.30.0.1": [
+          "libgdal30"
+        ],
+        "/usr/lib/libmfhdfalt.so.0.0.0": [
+          "libhdf4-0-alt"
+        ],
+        "/usr/lib/libogdi.so.4.1": [
+          "libogdi4.1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0": [
+          "libblas3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0": [
+          "liblapack3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2": [
+          "libc6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libEGL.so.1.1.0": [
+          "libegl1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libGL.so.1.7.0": [
+          "libgl1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0": [
+          "libglx0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libGLdispatch.so.0.0.0": [
+          "libglvnd0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libHalf-2_5.so.25.0.6": [
+          "libilmbase25"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libIex-2_5.so.25.0.6": [
+          "libilmbase25"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libIlmImf-2_5.so.25.0.6": [
+          "libopenexr25"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libIlmThread-2_5.so.25.0.6": [
+          "libilmbase25"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libImath-2_5.so.25.0.6": [
+          "libilmbase25"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libOpenCL.so.1.0.0": [
+          "ocl-icd-libopencl1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libOpenGL.so.0.0.0": [
+          "libopengl0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libX11-xcb.so.1.0.0": [
+          "libx11-xcb1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libX11.so.6.4.0": [
+          "libx11-6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libXau.so.6.0.0": [
+          "libxau6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libXcomposite.so.1.0.0": [
+          "libxcomposite1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libXcursor.so.1.0.2": [
+          "libxcursor1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libXdamage.so.1.1.0": [
+          "libxdamage1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0": [
+          "libxdmcp6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libXext.so.6.4.0": [
+          "libxext6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libXfixes.so.3.1.0": [
+          "libxfixes3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libXi.so.6.1.0": [
+          "libxi6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libXinerama.so.1.0.0": [
+          "libxinerama1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libXrandr.so.2.2.0": [
+          "libxrandr2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libXrender.so.1.3.0": [
+          "libxrender1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libXtst.so.6.1.0": [
+          "libxtst6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libaec.so.0.0.12": [
+          "libaec0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libaom.so.3.3.0": [
+          "libaom3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libarpack.so.2.1.0": [
+          "libarpack2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libasound.so.2.0.0": [
+          "libasound2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libatk-1.0.so.0.23609.1": [
+          "libatk1.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libatk-bridge-2.0.so.0.0.0": [
+          "libatk-bridge2.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libatomic.so.1.2.0": [
+          "libatomic1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libatspi.so.0.0.1": [
+          "libatspi2.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libavcodec.so.58.134.100": [
+          "libavcodec58"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libavformat.so.58.76.100": [
+          "libavformat58"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libavutil.so.56.70.100": [
+          "libavutil56"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libblkid.so.1.1.0": [
+          "libblkid1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libblosc.so.1.21.1": [
+          "libblosc1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libbluray.so.2.4.1": [
+          "libbluray2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1.0.9": [
+          "libbrotli1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libbrotlidec.so.1.0.9": [
+          "libbrotli1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libbsd.so.0.11.5": [
+          "libbsd0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libbz2.so.1.0.4": [
+          "libbz2-1.0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libc.so.6": [
+          "libc6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libcairo-gobject.so.2.11600.0": [
+          "libcairo-gobject2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libcairo.so.2.11600.0": [
+          "libcairo2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libcap.so.2.44": [
+          "libcap2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libcfitsio.so.9.4.0.0": [
+          "libcfitsio9"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libcharls.so.2.3.4": [
+          "libcharls2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libchromaprint.so.1.5.1": [
+          "libchromaprint1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libcodec2.so.1.0": [
+          "libcodec2-1.0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libcom_err.so.2.1": [
+          "libcom-err2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libcrypto.so.3": [
+          "libssl3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libcurl-gnutls.so.4.7.0": [
+          "libcurl3-gnutls"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libcurl.so.4.7.0": [
+          "libcurl4"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libdatrie.so.1.4.0": [
+          "libdatrie1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libdav1d.so.5.1.1": [
+          "libdav1d5"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libdbus-1.so.3.19.13": [
+          "libdbus-1-3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libdc1394.so.25.0.0": [
+          "libdc1394-25"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libde265.so.0.1.1": [
+          "libde265-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libdeflate.so.0": [
+          "libdeflate0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libdl.so.2": [
+          "libc6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libdrm.so.2.4.0": [
+          "libdrm2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libdw-0.186.so": [
+          "libdw1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libelf-0.186.so": [
+          "libelf1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libepoxy.so.0.0.0": [
+          "libepoxy0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libexif.so.12.3.4": [
+          "libexif12"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libexpat.so.1.8.7": [
+          "libexpat1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libffi.so.8.1.0": [
+          "libffi8"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libfontconfig.so.1.12.0": [
+          "libfontconfig1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libfreetype.so.6.18.1": [
+          "libfreetype6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libfreexl.so.1.1.0": [
+          "libfreexl1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libfribidi.so.0.4.0": [
+          "libfribidi0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libfyba.so.0.0.0": [
+          "libfyba0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libfygm.so.0.0.0": [
+          "libfyba0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libfyut.so.0.0.0": [
+          "libfyba0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgbm.so.1.0.0": [
+          "libgbm1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1": [
+          "libgcc-s1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgcrypt.so.20.3.4": [
+          "libgcrypt20"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgdcmCommon.so.3.0.10": [
+          "libgdcm3.0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgdcmDICT.so.3.0.10": [
+          "libgdcm3.0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgdcmDSED.so.3.0.10": [
+          "libgdcm3.0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgdcmIOD.so.3.0.10": [
+          "libgdcm3.0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgdcmMSFF.so.3.0.10": [
+          "libgdcm3.0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgdcmjpeg12.so.3.0.10": [
+          "libgdcm3.0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgdcmjpeg16.so.3.0.10": [
+          "libgdcm3.0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgdcmjpeg8.so.3.0.10": [
+          "libgdcm3.0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2404.29": [
+          "libgtk-3-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so.0.4200.8": [
+          "libgdk-pixbuf-2.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgeos.so.3.10.2": [
+          "libgeos3.10.2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgeos_c.so.1.16.0": [
+          "libgeos-c1v5"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgeotiff.so.5.2.0": [
+          "libgeotiff5"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgfortran.so.5.0.0": [
+          "libgfortran5"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgif.so.7.1.0": [
+          "libgif7"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.7200.4": [
+          "libglib2.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.7200.4": [
+          "libglib2.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgme.so.0.6.3": [
+          "libgme0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.7200.4": [
+          "libglib2.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgmp.so.10.4.1": [
+          "libgmp10"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgnutls.so.30.31.0": [
+          "libgnutls30"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.7200.4": [
+          "libglib2.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgomp.so.1.0.0": [
+          "libgomp1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgpg-error.so.0.32.1": [
+          "libgpg-error0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgphoto2.so.6.1.0": [
+          "libgphoto2-6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgphoto2_port.so.12.0.0": [
+          "libgphoto2-port12"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgraphite2.so.3.2.1": [
+          "libgraphite2-3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgsm.so.1.0.19": [
+          "libgsm1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2.2": [
+          "libgssapi-krb5-2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgstapp-1.0.so.0.2001.0": [
+          "libgstreamer-plugins-base1.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgstaudio-1.0.so.0.2001.0": [
+          "libgstreamer-plugins-base1.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgstbase-1.0.so.0.2003.0": [
+          "libgstreamer1.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgstpbutils-1.0.so.0.2001.0": [
+          "libgstreamer-plugins-base1.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgstreamer-1.0.so.0.2003.0": [
+          "libgstreamer1.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgstriff-1.0.so.0.2001.0": [
+          "libgstreamer-plugins-base1.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgsttag-1.0.so.0.2001.0": [
+          "libgstreamer-plugins-base1.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgstvideo-1.0.so.0.2001.0": [
+          "libgstreamer-plugins-base1.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgthread-2.0.so.0.7200.4": [
+          "libglib2.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2404.29": [
+          "libgtk-3-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libharfbuzz.so.0.20704.0": [
+          "libharfbuzz0b"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libhdf5_serial.so.103.3.0": [
+          "libhdf5-103-1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libhdf5_serial_hl.so.100.1.4": [
+          "libhdf5-hl-100"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libheif.so.1.12.0": [
+          "libheif1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libhogweed.so.6.4": [
+          "libhogweed6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libicudata.so.70.1": [
+          "libicu70"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libicuuc.so.70.1": [
+          "libicu70"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libidn2.so.0.3.7": [
+          "libidn2-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libjbig.so.0": [
+          "libjbig0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libjpeg.so.8.2.2": [
+          "libjpeg-turbo8"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libjson-c.so.5.1.0": [
+          "libjson-c5"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libk5crypto.so.3.1": [
+          "libk5crypto3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libkeyutils.so.1.9": [
+          "libkeyutils1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libkmlbase.so.1.3.0": [
+          "libkmlbase1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libkmldom.so.1.3.0": [
+          "libkmldom1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libkmlengine.so.1.3.0": [
+          "libkmlengine1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libkrb5.so.3.3": [
+          "libkrb5-3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libkrb5support.so.0.1": [
+          "libkrb5support0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/liblber-2.5.so.0.1.13": [
+          "libldap-2.5-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/liblcms2.so.2.0.12": [
+          "liblcms2-2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libldap-2.5.so.0.1.13": [
+          "libldap-2.5-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libltdl.so.7.3.1": [
+          "libltdl7"
+        ],
+        "/usr/lib/x86_64-linux-gnu/liblz4.so.1.9.3": [
+          "liblz4-1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/liblzma.so.5.2.5": [
+          "liblzma5"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libm.so.6": [
+          "libc6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libmd.so.0.0.5": [
+          "libmd0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libmfx.so.1.35": [
+          "libmfx1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libminizip.so.1.0.0": [
+          "libminizip1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libmount.so.1.1.0": [
+          "libmount1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libmp3lame.so.0.0.0": [
+          "libmp3lame0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libmpg123.so.0.46.7": [
+          "libmpg123-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libmysqlclient.so.21.2.46": [
+          "libmysqlclient21"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libnetcdf.so.19": [
+          "libnetcdf19"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libnettle.so.8.4": [
+          "libnettle8"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libnghttp2.so.14.20.1": [
+          "libnghttp2-14"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libnorm.so.1": [
+          "libnorm1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libnspr4.so": [
+          "libnspr4"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libnss3.so": [
+          "libnss3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libnssutil3.so": [
+          "libnss3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libnuma.so.1.0.0": [
+          "libnuma1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libodbc.so.2.0.0": [
+          "libodbc2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libodbcinst.so.2.0.0": [
+          "libodbcinst2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libogg.so.0.8.5": [
+          "libogg0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libopencv_core.so.4.5.4d": [
+          "libopencv-core4.5d"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libopencv_dnn.so.4.5.4d": [
+          "libopencv-dnn4.5d"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libopencv_imgcodecs.so.4.5.4d": [
+          "libopencv-imgcodecs4.5d"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.4.5.4d": [
+          "libopencv-imgproc4.5d"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libopencv_videoio.so.4.5.4d": [
+          "libopencv-videoio4.5d"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libopenjp2.so.2.4.0": [
+          "libopenjp2-7"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libopenmpt.so.0.3.3": [
+          "libopenmpt0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libopus.so.0.8.0": [
+          "libopus0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/liborc-0.4.so.0.32.0": [
+          "liborc-0.4-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libp11-kit.so.0.3.0": [
+          "libp11-kit0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libpango-1.0.so.0.5000.6": [
+          "libpango-1.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0.5000.6": [
+          "libpangocairo-1.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0.5000.6": [
+          "libpangoft2-1.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libpcre.so.3.13.3": [
+          "libpcre3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0.10.4": [
+          "libpcre2-8-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libpgm-5.3.so.0.0.128": [
+          "libpgm-5.3-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libpixman-1.so.0.40.0": [
+          "libpixman-1-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libplc4.so": [
+          "libnspr4"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libplds4.so": [
+          "libnspr4"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libpng16.so.16.37.0": [
+          "libpng16-16"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libpoppler.so.118.0.0": [
+          "libpoppler118"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libpq.so.5.14": [
+          "libpq5"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libproj.so.22.2.1": [
+          "libproj22"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libprotobuf.so.23.0.4": [
+          "libprotobuf23"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libpsl.so.5.3.2": [
+          "libpsl5"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libpthread.so.0": [
+          "libc6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libqhull_r.so.8.0.2": [
+          "libqhull-r8.0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libquadmath.so.0.0.0": [
+          "libquadmath0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/librabbitmq.so.4.4.0": [
+          "librabbitmq4"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libraw1394.so.11.1.0": [
+          "libraw1394-11"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libresolv.so.2": [
+          "libc6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/librsvg-2.so.2.48.0": [
+          "librsvg2-2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/librt.so.1": [
+          "libc6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/librtmp.so.1": [
+          "librtmp1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/librttopo.so.1.1.0": [
+          "librttopo1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libsasl2.so.2.0.25": [
+          "libsasl2-2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libselinux.so.1": [
+          "libselinux1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libshine.so.3.0.1": [
+          "libshine3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libsmime3.so": [
+          "libnss3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libsnappy.so.1.1.8": [
+          "libsnappy1v5"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libsodium.so.23.3.0": [
+          "libsodium23"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libsoxr.so.0.1.2": [
+          "libsoxr0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libspatialite.so.7.1.2": [
+          "libspatialite7"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libspeex.so.1.5.0": [
+          "libspeex1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libsqlite3.so.0.8.6": [
+          "libsqlite3-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libsrt-gnutls.so.1.4.4": [
+          "libsrt1.4-gnutls"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libssh-gcrypt.so.4.8.7": [
+          "libssh-gcrypt-4"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libssh.so.4.8.7": [
+          "libssh-4"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libssl.so.3": [
+          "libssl3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30": [
+          "libstdc++6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libsuperlu.so.5.3.0": [
+          "libsuperlu5"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libswresample.so.3.9.100": [
+          "libswresample3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libswscale.so.5.9.100": [
+          "libswscale5"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libsystemd.so.0.32.0": [
+          "libsystemd0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libsz.so.2.0.1": [
+          "libsz2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libtasn1.so.6.6.2": [
+          "libtasn1-6"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libtbb.so.2": [
+          "libtbb2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libthai.so.0.3.1": [
+          "libthai0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libtheoradec.so.1.1.4": [
+          "libtheora0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libtheoraenc.so.1.1.2": [
+          "libtheora0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libtiff.so.5.7.0": [
+          "libtiff5"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libtirpc.so.3.0.0": [
+          "libtirpc3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libtwolame.so.0.0.0": [
+          "libtwolame0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libudev.so.1.7.2": [
+          "libudev1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libudfread.so.0.1.0": [
+          "libudfread0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libunistring.so.2.2.0": [
+          "libunistring2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libunwind.so.8.0.1": [
+          "libunwind8"
+        ],
+        "/usr/lib/x86_64-linux-gnu/liburiparser.so.1.0.29": [
+          "liburiparser1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libusb-1.0.so.0.3.0": [
+          "libusb-1.0-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libuuid.so.1.3.0": [
+          "libuuid1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libva-drm.so.2.1400.0": [
+          "libva-drm2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libva-x11.so.2.1400.0": [
+          "libva-x11-2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libva.so.2.1400.0": [
+          "libva2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libvdpau.so.1.0.0": [
+          "libvdpau1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libvorbis.so.0.4.9": [
+          "libvorbis0a"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libvorbisenc.so.2.0.12": [
+          "libvorbisenc2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libvorbisfile.so.3.3.8": [
+          "libvorbisfile3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libvpx.so.7.0.0": [
+          "libvpx7"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libwayland-client.so.0.20.0": [
+          "libwayland-client0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0.20.0": [
+          "libwayland-cursor0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libwayland-egl.so.1.20.0": [
+          "libwayland-egl1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libwayland-server.so.0.20.0": [
+          "libwayland-server0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libwebp.so.7.1.3": [
+          "libwebp7"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libwebpmux.so.3.0.8": [
+          "libwebpmux3"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libx264.so.163": [
+          "libx264-163"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libx265.so.199": [
+          "libx265-199"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxcb-cursor.so.0.0.0": [
+          "libxcb-cursor0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxcb-glx.so.0.0.0": [
+          "libxcb-glx0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxcb-icccm.so.4.0.0": [
+          "libxcb-icccm4"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxcb-image.so.0.0.0": [
+          "libxcb-image0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxcb-keysyms.so.1.0.0": [
+          "libxcb-keysyms1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxcb-randr.so.0.1.0": [
+          "libxcb-randr0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxcb-render-util.so.0.0.0": [
+          "libxcb-render-util0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxcb-render.so.0.0.0": [
+          "libxcb-render0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxcb-shape.so.0.0.0": [
+          "libxcb-shape0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxcb-shm.so.0.0.0": [
+          "libxcb-shm0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxcb-sync.so.1.0.0": [
+          "libxcb-sync1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxcb-util.so.1.0.0": [
+          "libxcb-util1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxcb-xfixes.so.0.0.0": [
+          "libxcb-xfixes0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxcb-xkb.so.1.0.0": [
+          "libxcb-xkb1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0": [
+          "libxcb1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxerces-c-3.2.so": [
+          "libxerces-c3.2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxkbcommon-x11.so.0.0.0": [
+          "libxkbcommon-x11-0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxkbcommon.so.0.0.0": [
+          "libxkbcommon0"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxkbfile.so.1.0.2": [
+          "libxkbfile1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxml2.so.2.9.13": [
+          "libxml2"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxshmfence.so.1.0.0": [
+          "libxshmfence1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libxvidcore.so.4.3": [
+          "libxvidcore4"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libz.so.1.2.11": [
+          "zlib1g"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libzmq.so.5.2.4": [
+          "libzmq5"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libzstd.so.1.4.8": [
+          "libzstd1"
+        ],
+        "/usr/lib/x86_64-linux-gnu/libzvbi.so.0.13.2": [
+          "libzvbi0"
+        ]
+      },
+      "unresolved": [],
+      "component_loader_contexts": {
+        "runtime/lib/python3.10/site-packages/numpy.libs/libscipy_openblas64_-56d6093b.so": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/numpy.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libXau-154567c4.so.6.0.0": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/liblzma-2be87c3e.so.5.8.3": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libsharpyuv-0066295b.so.0.1.2": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libfreetype-9fc94c80.so.6.20.6": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libxcb-ad31f5a3.so.1.1.0": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libtiff-fc87e79d.so.6.2.0": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libavif-8a7f9d56.so.16.4.2": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libharfbuzz-172d1f63.so.0.61421.0": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/liblcms2-dade1fbf.so.2.0.19": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libwebpmux-8fb1c9f6.so.3.1.2": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libbrotlicommon-53534446.so.1.2.0": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libjpeg-31e2ca52.so.62.4.0": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libwebp-51b0b3f7.so.7.2.0": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libzstd-44be1190.so.1.5.7": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libbrotlidec-7e5462ba.so.1.2.0": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libopenjp2-b07f72ad.so.2.5.4": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libwebpdemux-9fe2abcc.so.2.0.17": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/pillow.libs/libpng16-abb096d5.so.16.58.0": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/pillow.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/torchvision/_C.so": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/torch/lib"
+        ],
+        "runtime/lib/python3.10/site-packages/torchvision/image.so": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/torch/lib"
+        ],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libswresample-3e7db482.so.4.7.100": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/opencv_python_headless.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libpng16-ef62451c.so.16.44.0": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/opencv_python_headless.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libcrypto-8c1ab3ad.so.1.1": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/opencv_python_headless.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libavformat-d296e685.so.59.27.100": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/opencv_python_headless.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libavcodec-76c43bf0.so.59.37.100": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/opencv_python_headless.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libavutil-734d06dd.so.57.28.100": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/opencv_python_headless.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libvpx-9f572e11.so.9.1.0": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/opencv_python_headless.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libssl-28bef1ac.so.1.1": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/opencv_python_headless.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/opencv_python_headless.libs/libswscale-95ddd674.so.6.7.100": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/opencv_python_headless.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/torchvision.libs/libsharpyuv.0ad7936e.so.0": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/torchvision.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/torchvision.libs/libpng16.4ef4b109.so.16": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/torchvision.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/torchvision.libs/libjpeg.d246b9ea.so.8": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/torchvision.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/torchvision.libs/libwebp.121d56b5.so.7": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/torchvision.libs"
+        ],
+        "runtime/lib/python3.10/site-packages/torchvision.libs/libz.cac6d5fc.so.1": [
+          "lib/qt",
+          "runtime/lib/python3.10/site-packages/torchvision.libs"
+        ]
+      }
+    },
+    "apt_simulation": {
+      "exit_code": 0,
+      "stdout": "NOTE: This is only a simulation!\n      apt-get needs root privileges for real execution.\n      Keep also in mind that locking is deactivated,\n      so don't depend on the relevance to the real current situation!\nReading package lists...\nBuilding dependency tree...\nReading state information...\nThe following packages will be upgraded:\n  vision-studio\n1 upgraded, 0 newly installed, 0 to remove and 91 not upgraded.\nInst vision-studio [1.6.0-1] (2.0.0~beta.1-1 local-deb [amd64])\nConf vision-studio (2.0.0~beta.1-1 local-deb [amd64])\n",
+      "stderr": "",
+      "changes_system": false
+    },
+    "smoke": {
+      "uid": 1000,
+      "platform": "offscreen",
+      "read_only_application": true,
+      "isolated_user_state": "/tmp/vision-studio-deb-qa-0arsyuk_/user-state",
+      "results": {
+        "onnx": {
+          "success": true,
+          "exit_code": 0,
+          "elapsed_seconds": 1.06,
+          "report": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "device_index": -1,
+            "device_name": "CPU",
+            "device_notice": "CUDA 初始化失败，已自动使用 CPU：GPU 运行环境尚未准备完成：GPU 环境尚未准备，请在「更多 → 计算环境」中准备 GPU 支持。",
+            "error": "",
+            "inference_ms": 58.353488,
+            "predictions": 5,
+            "qt": "6.8.3",
+            "requested_device": "auto",
+            "success": true
+          }
+        },
+        "pt": {
+          "success": true,
+          "exit_code": 0,
+          "elapsed_seconds": 4.21,
+          "report": {
+            "actual_device": "cpu",
+            "backend": "PyTorch / Ultralytics / CPU",
+            "device_index": -1,
+            "device_name": "CPU",
+            "device_notice": "CUDA 初始化失败，已自动使用 CPU：GPU 运行环境尚未准备完成：GPU 环境尚未准备，请在「更多 → 计算环境」中准备 GPU 支持。",
+            "error": "",
+            "inference_ms": 51.77333403844386,
+            "predictions": 5,
+            "qt": "6.8.3",
+            "requested_device": "auto",
+            "success": true
+          }
+        },
+        "model_display": {
+          "success": true,
+          "exit_code": 0,
+          "elapsed_seconds": 1.98,
+          "report": {
+            "application": "Vision Studio",
+            "cache_preserved": true,
+            "display_modes": {
+              "graph": true,
+              "hierarchy": true,
+              "parameters": true
+            },
+            "error": "",
+            "hierarchy_items": 246,
+            "model": "/tmp/vision-studio-deb-qa-0arsyuk_/extracted/opt/VisionStudio/models/yolov5n.onnx",
+            "netron": "9.3.1",
+            "nodes": 245,
+            "onnx_hint": "想看完整结构，建使用导出的 ONNX。",
+            "onnx_hint_visible": false,
+            "parameter_rows": 141,
+            "qt": "6.8.3",
+            "success": true,
+            "version": "2.0.0-beta.1"
+          },
+          "rendering_flags": "--disable-gpu",
+          "sandbox_disabled_by_test": false
+        },
+        "model_display_pt": {
+          "success": true,
+          "exit_code": 0,
+          "elapsed_seconds": 2.18,
+          "report": {
+            "application": "Vision Studio",
+            "cache_preserved": true,
+            "display_modes": {
+              "graph": true,
+              "hierarchy": true,
+              "parameters": true
+            },
+            "error": "",
+            "hierarchy_items": 314,
+            "model": "/tmp/vision-studio-deb-qa-0arsyuk_/extracted/opt/VisionStudio/models/yolov8n.pt",
+            "netron": "9.3.1",
+            "nodes": 1,
+            "onnx_hint": "想看完整结构，建使用导出的 ONNX。",
+            "onnx_hint_visible": true,
+            "parameter_rows": 359,
+            "qt": "6.8.3",
+            "success": true,
+            "version": "2.0.0-beta.1"
+          },
+          "rendering_flags": "--disable-gpu",
+          "sandbox_disabled_by_test": false
+        },
+        "legacy_pt": {
+          "success": true,
+          "predictions": 5,
+          "backend": "PyTorch / YOLOv5 / CPU",
+          "inference_ms": 27.710005990229547
+        }
+      },
+      "limitation": "This is a non-root extracted-package test; it does not install the DEB or validate a live X11/Wayland session."
+    }
+  },
+  "workdir": "/tmp/vision-studio-deb-qa-0arsyuk_"
+}

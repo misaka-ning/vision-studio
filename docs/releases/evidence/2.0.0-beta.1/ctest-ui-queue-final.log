@@ -1,0 +1,8 @@
+Internal ctest changing into directory: /home/misaka/文档/ChatGPT/yolo/build-beta
+Test project /home/misaka/文档/ChatGPT/yolo/build-beta
+    Start 5: vision-ui-tests
+1/1 Test #5: vision-ui-tests ..................   Passed   16.38 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =  16.38 sec

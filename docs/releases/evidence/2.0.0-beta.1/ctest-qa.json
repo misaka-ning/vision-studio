@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "success": true,
+  "version": "2.0.0-beta.1",
+  "registered_suites": 8,
+  "cpu_phase": {
+    "suites": 6,
+    "failures": 0,
+    "seconds": 114.16,
+    "log": "ctest-cpu.log"
+  },
+  "final_gpu_ui_phase": {
+    "suites": 3,
+    "failures": 0,
+    "seconds": 74.48,
+    "log": "ctest-final-gpu-ui.log"
+  },
+  "suite_union": [
+    "vision-core-tests",
+    "vision-pt-tests",
+    "vision-ui-tests",
+    "vision-modelviewer-tests",
+    "vision-netron-server-tests",
+    "vision-gpu-runtime-tests",
+    "vision-recording-tests",
+    "vision-gpu-tests"
+  ],
+  "note": "Eight registered suites passed across CPU/GPU phases. The final compact layout and /opt/VisionStudio release fallback were rebuilt, then the complete UI suite passed again. Core/runtime operation sources are unchanged; real CUDA tests are explicitly enabled.",
+  "final_release_ui_phase": {
+    "suites": 1,
+    "failures": 0,
+    "seconds": 16.38,
+    "log": "ctest-ui-queue-final.log"
+  },
+  "final_gpu_detail_phase": {
+    "suites": 2,
+    "failures": 0,
+    "skips": 0,
+    "seconds": 59.34,
+    "backend_qttest_passed": 10,
+    "recording_qttest_passed": 14,
+    "log": "gpu-proof/gpu-ctest-detail.log"
+  }
+}

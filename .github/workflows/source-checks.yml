@@ -28,6 +28,8 @@ jobs:
         run: python3 -m py_compile scripts/*.py packaging/*.py docs/release/build_source_archive.py tests/*.py
       - name: Test publish and retention safety with mocked GitHub
         run: python3 -m unittest discover -s tests -p github_release_tests.py -v
+      - name: Test stable and beta package version metadata
+        run: python3 -m unittest discover -s tests -p release_metadata_tests.py -v
       - name: Test GPU environment protection and cancellation without hardware
         run: python3 -m unittest discover -s tests -p gpu_runtime_tests.py -v
       - name: Validate version tags
@@ -51,6 +53,7 @@ jobs:
           assert module.cmake_version(Path('CMakeLists.txt').read_text()) == version, 'Tag and CMake version differ'
           assert Path(f'docs/releases/{version}.md').is_file(), 'Versioned release notes are missing'
           print(f'{tag}: version metadata is consistent')
+          print(f'Debian version: {module.release_metadata.debian_version(version)}')
           PY
       - name: Explain local package publishing
         run: |
@@ -61,4 +64,5 @@ jobs:
           this hardware-free workflow does not claim that GPU inference has passed.
           `scripts/github_release.py publish` uploads validated local artifacts to a draft,
           verifies each asset, and publishes it. GitHub supplies source ZIP/TAR links for tags.
+          Numbered beta tags publish as prereleases without replacing the latest stable release.
           SUMMARY

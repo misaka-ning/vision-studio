@@ -1,0 +1,16 @@
+test_build_default_maps_source_beta_and_retains_semver_directory (release_metadata_tests.ReleaseMetadataTests.test_build_default_maps_source_beta_and_retains_semver_directory) ... ok
+test_build_refuses_debian_and_source_version_mismatch_before_staging (release_metadata_tests.ReleaseMetadataTests.test_build_refuses_debian_and_source_version_mismatch_before_staging) ... ok
+test_cmake_full_version_and_frozen_stable_tags (release_metadata_tests.ReleaseMetadataTests.test_cmake_full_version_and_frozen_stable_tags) ... ok
+test_cmake_refuses_mismatch_duplicate_or_malformed_full_version (release_metadata_tests.ReleaseMetadataTests.test_cmake_refuses_mismatch_duplicate_or_malformed_full_version) ... ok
+test_debian_roundtrip_and_revision (release_metadata_tests.ReleaseMetadataTests.test_debian_roundtrip_and_revision) ... ok
+test_gpu_package_metadata_preserves_full_beta_version (release_metadata_tests.ReleaseMetadataTests.test_gpu_package_metadata_preserves_full_beta_version) ... ok
+test_numeric_beta_precedence_before_final_and_stable_order_unchanged (release_metadata_tests.ReleaseMetadataTests.test_numeric_beta_precedence_before_final_and_stable_order_unchanged) ... ok
+test_real_dpkg_orders_beta_numerically_and_before_final (release_metadata_tests.ReleaseMetadataTests.test_real_dpkg_orders_beta_numerically_and_before_final) ... ok
+test_rejects_debian_format_that_could_sort_beta_after_final (release_metadata_tests.ReleaseMetadataTests.test_rejects_debian_format_that_could_sort_beta_after_final) ... ok
+test_rejects_noncanonical_and_unsupported_application_versions (release_metadata_tests.ReleaseMetadataTests.test_rejects_noncanonical_and_unsupported_application_versions) ... ok
+test_source_inventory_records_beta_application_and_debian_versions (release_metadata_tests.ReleaseMetadataTests.test_source_inventory_records_beta_application_and_debian_versions) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.010s
+
+OK

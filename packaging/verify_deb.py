@@ -27,6 +27,9 @@ import tarfile
 import tempfile
 import time
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+import release_metadata
+
 
 PREFIX = PurePosixPath("opt/VisionStudio")
 REQUIRED = (
@@ -289,6 +292,11 @@ def audit_control(deb, directory, audit):
         audit.require(bool(control.get(key)), f"Required control field missing: {key}")
     audit.require(control.get("Architecture") == "amd64", "Release architecture must be amd64")
     audit.require(control.get("Package") == "vision-studio", "Unexpected package name (expected vision-studio)")
+    try:
+        audit.details["application_version"] = release_metadata.application_version_from_debian(
+            control.get("Version", ""))
+    except ValueError as error:
+        audit.require(False, str(error))
     audit.require(not HOME_REFERENCE.search(json.dumps(control)), "Control metadata contains developer home paths")
     scripts = []
     for script in ("preinst", "postinst", "prerm", "postrm", "config"):
@@ -381,7 +389,8 @@ def audit_python_runtime(app, docs, audit):
 
 def audit_extracted(root, control, closure, audit):
     app = root / str(PREFIX)
-    version = tuple(int(value) for value in re.findall(r"\d+", control.get("Version", "0"))[:3])
+    version = release_metadata.version_key(
+        release_metadata.application_version_from_debian(control.get("Version", "")))[:3]
     if version >= (1, 6, 0):
         for relative in ("scripts/gpu_setup.py", "scripts/gpu_probe.py", "scripts/setup_gpu.sh",
                          "requirements-gpu.txt", "requirements-gpu.lock.txt"):

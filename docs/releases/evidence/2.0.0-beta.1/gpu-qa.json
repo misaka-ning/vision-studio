@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "success": true,
+  "version": "2.0.0-beta.1",
+  "errors": [],
+  "details": {
+    "deb_sha256": "dd4f23f8cd62c5158f74c44dc5b0d9b7c56b04ef349315b87827823718e0c386",
+    "hardware": "NVIDIA GeForce RTX 4060",
+    "cuda_node_events": 364,
+    "backend_tests": {
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0
+    },
+    "recording_tests": {
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0
+    },
+    "recording": {
+      "source_frames_encoded": 8,
+      "source_size": [
+        320,
+        96
+      ],
+      "right_eye_size": [
+        160,
+        96
+      ],
+      "color_mode": "grayscale"
+    },
+    "physical_camera_tested": false
+  },
+  "checks": {
+    "onnx_cuda_nodes": true,
+    "pt_cuda": true,
+    "packaged_onnx_cuda": true,
+    "packaged_pt_cuda": true,
+    "cpu_regression": true,
+    "grayscale_c1_c3": true,
+    "stereo_recording": true
+  },
+  "evidence": [
+    {
+      "file": "gpu-install-qa.json",
+      "bytes": 20663,
+      "sha256": "506e6d37fdc5d5ea71cb4e74cd7652713ad3ad36fd6ee9b5bbb216a4bcb4fdb7"
+    },
+    {
+      "file": "ctest-qa.json",
+      "bytes": 1203,
+      "sha256": "549faf36259e50102011c1b4ecadfc98f8e58c1a5df06d3678968c383dd68797"
+    },
+    {
+      "file": "gpu-proof/backend-recording-qa.json",
+      "bytes": 5337,
+      "sha256": "69a405a5cb6207d7e67656a406e72dc7cc61380dec9f65460b804c2b5e64cdf3"
+    },
+    {
+      "file": "gpu-proof/gpu-ctest-detail.log",
+      "bytes": 3921,
+      "sha256": "b011cffc116428dc570ff887e260f093fb8f99fcd1449f404d41d5134dd34bb1"
+    },
+    {
+      "file": "gpu-proof/onnx-profile/profile-qa.json",
+      "bytes": 6866,
+      "sha256": "2e6e259146c07318e66ff4997cc6aef6f4179f0a7eea97dc3d2fda9ca0c54819"
+    },
+    {
+      "file": "gpu-proof/onnx-profile/node-trace_2026-10-08_11-10-48.json",
+      "bytes": 287561,
+      "sha256": "37f934838ad3b1836b7b50f4fb7efae2952aba8bf7de09806e923aac361c7147"
+    }
+  ],
+  "limits": [
+    "GPU evidence uses RTX 4060 on Ubuntu 22.04 amd64. Right-eye grayscale recording uses a synthetic horizontally joined video; physical camera was not tested.",
+    "Core/backend binaries used for detailed GPU regressions are unchanged by the final UI-only queue layout adjustment; final packaged CUDA/CPU launchers were separately rerun and are bound to this DEB SHA256."
+  ]
+}

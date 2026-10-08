@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "version": "2.0.0-beta.1",
+  "success": true,
+  "scope": "Read-only source file-list inclusion; no archive or DEB built",
+  "files": [
+    {
+      "path": "assets/fluent-dark.qss",
+      "sha256": "6be3c14780500d9f7ff58b67d9e80b0a972d1df7cf64fa5e6877b05c5001794d"
+    },
+    {
+      "path": "assets/fluent-check.svg",
+      "sha256": "aeb320e675efae43c3d04f221d3034c83031c7a682b38ae04ba386e63712703a"
+    },
+    {
+      "path": "assets/chevron-up.svg",
+      "sha256": "3c104a9107118fac5485ccc5b06443a7b84853ba546f58c657200f93eb8a0aca"
+    },
+    {
+      "path": "assets/chevron-down.svg",
+      "sha256": "23e59c0b5ff14617645b164d457d0bbe213588acc49666dddf6a697167d34075"
+    },
+    {
+      "path": "resources.qrc",
+      "sha256": "9e37952e3fc73853c8d95a8e24016661ffea1c4294dadefd05d642b268ffa8d4"
+    },
+    {
+      "path": "packaging/licenses/fluent-qt-design-reference/LICENSE",
+      "sha256": "81e8ae5ef0e5cfe1d9b31d6b31899515994dbb3a8f4f5fd03bcae461e63204d9"
+    },
+    {
+      "path": "packaging/licenses/fluent-qt-design-reference/README.md",
+      "sha256": "5a3c41148c51a78601042d6b9884ba0ca83f804834e856ca6a88f114ce7bbd73"
+    },
+    {
+      "path": "packaging/licenses/fluent-qt-design-reference/REFERENCE-PROVENANCE.json",
+      "sha256": "461433b45c05241ea2ddf4142ee18563a310a26914ba5c3418277e35dc638150"
+    },
+    {
+      "path": "scripts/release_metadata.py",
+      "sha256": "6112d7c4ca8447f2ec751166433470d2dc249461561ccb78abd9d81a09c86b95"
+    },
+    {
+      "path": "packaging/copyright",
+      "sha256": "074e7dae0f7315cea0efcf32faa353b03b0c3ed14800c096dd0c13d2f230d546"
+    }
+  ],
+  "note": "The existing source archive items include assets/, packaging/ and scripts/. The DEB stage recursively copies assets/ and packaging/licenses/; the new QSS/SVG and saved MIT design-reference notices are included without special staging changes. This is a development snapshot of file inclusion; the final source companion and DEB must be validated after UI freeze.",
+  "generated_at": "2026-10-08T02:58:53.860589+00:00",
+  "frozen": false
+}

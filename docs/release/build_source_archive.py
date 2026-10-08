@@ -6,9 +6,12 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import sys
 import tarfile
 
-VERSION = "1.6.0"
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
+import release_metadata
+
 SOURCE_ITEMS = ("src", "tests", "scripts", "packaging", "docs", "assets", "models", "vendor",
                 "CMakeLists.txt", "resources.qrc", "run.sh", "VisionStudio.desktop", "README.md",
                 "LICENSE", "requirements-pt.txt", "requirements-pt.lock.txt", "requirements-gpu.txt",
@@ -37,7 +40,8 @@ def write_json(path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n")
 
 
-def inventory(project, release):
+def inventory(project, release, version):
+    release_metadata.version_key(version)
     provenance = json.loads((release / "sources/DOWNLOAD-PROVENANCE.json").read_text())
     downloads = {Path(row["file"]).name: row for row in provenance}
     rows = []
@@ -57,11 +61,12 @@ def inventory(project, release):
             verification = "official .sha256 checked at download; local archive digest preserved"
         rows.append({"file": "sources/" + name, "bytes": path.stat().st_size,
                      "sha256": checksum, "url": url, "verification": verification})
-    data = {"application": "Vision Studio", "version": VERSION, "debian_version": f"{VERSION}-1",
+    data = {"application": "Vision Studio", "version": version,
+            "debian_version": release_metadata.debian_version(version),
             "maintainer": "misaka_ning <1468549029@qq.com>",
             "application_license": "AGPL-3.0-only",
-            "application_archive": f"vision-studio-{VERSION}-sources.tar.xz",
-            "complete_companion": f"vision-studio-{VERSION}-complete-source.tar.xz",
+            "application_archive": f"vision-studio-{version}-sources.tar.xz",
+            "complete_companion": f"vision-studio-{version}-complete-source.tar.xz",
             "public_checksums": "SHA256SUMS", "source_checksums": "SOURCE-SHA256SUMS",
             "upstream_archives": rows,
             "python_distributions": "packaging/licenses/PYTHON-DISTRIBUTIONS.json",
@@ -134,18 +139,26 @@ def make_archive(destination, entries, prefix, overwrite, preset=3):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-root", type=Path, default=Path("."))
-    parser.add_argument("--release-directory", type=Path, default=Path("output/releases/1.6.0"))
+    parser.add_argument("--release-directory", type=Path,
+                        help="Defaults to <source-root>/output/releases/<application-version>")
     parser.add_argument("--inventory-only", action="store_true")
     parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()
     project = args.source_root.resolve()
-    release = args.release_directory.resolve()
-    names = inventory(project, release)
+    try:
+        version = release_metadata.cmake_application_version(
+            (project / "CMakeLists.txt").read_text(encoding="utf-8"))
+    except (OSError, ValueError) as error:
+        parser.error(str(error))
+    release = (args.release_directory or project / "output/releases" / version).resolve()
+    if release.name != version:
+        parser.error("Release directory name must exactly equal the source application version")
+    names = inventory(project, release, version)
     if args.inventory_only:
         print("Verified source inventory and release dependency lock written")
         return
-    application = release / f"vision-studio-{VERSION}-sources.tar.xz"
-    make_archive(application, file_list(project, SOURCE_ITEMS), f"vision-studio-{VERSION}", args.overwrite)
+    application = release / f"vision-studio-{version}-sources.tar.xz"
+    make_archive(application, file_list(project, SOURCE_ITEMS), f"vision-studio-{version}", args.overwrite)
     split_files = [application, release / "SOURCE-INVENTORY.json",
                    release / "sources/DOWNLOAD-PROVENANCE.json"]
     split_files += [release / "sources" / name for name in names]
@@ -161,9 +174,9 @@ def main():
                 for name in ("对应源码与重建.md", "发行说明.md", "第三方许可清单.md", "requirements-release.lock.txt")]
     entries += [(project / "LICENSE", "LICENSE"),
                 (project / "docs/release/README-SOURCES.md", "README.md")]
-    complete = release / f"vision-studio-{VERSION}-complete-source.tar.xz"
-    make_archive(complete, entries, f"vision-studio-{VERSION}-complete-source", args.overwrite, preset=0)
-    deb = release / f"vision-studio_{VERSION}-1_amd64.deb"
+    complete = release / f"vision-studio-{version}-complete-source.tar.xz"
+    make_archive(complete, entries, f"vision-studio-{version}-complete-source", args.overwrite, preset=0)
+    deb = release / release_metadata.deb_filename(release_metadata.debian_version(version))
     if not deb.is_file():
         raise RuntimeError("The final DEB is required before public SHA256SUMS can be generated")
     files = [deb, complete]

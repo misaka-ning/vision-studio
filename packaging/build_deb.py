@@ -19,6 +19,9 @@ import subprocess
 import sys
 import tempfile
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+import release_metadata
+
 
 PACKAGE = "vision-studio"
 DEFAULT_ROOT = "/opt/VisionStudio"
@@ -143,8 +146,10 @@ def check_inputs(arguments: argparse.Namespace) -> None:
         raise RuntimeError(f"Refusing to overwrite staging directory: {arguments.stage}")
     if arguments.output.exists():
         raise RuntimeError(f"Refusing to overwrite release file: {arguments.output}")
-    if not re.fullmatch(r"[0-9][A-Za-z0-9.+~:-]*", arguments.version):
-        raise RuntimeError("Invalid Debian package version.")
+    try:
+        release_metadata.application_version_from_debian(arguments.version)
+    except ValueError as error:
+        raise RuntimeError(str(error)) from error
 
 
 def bundle_qt(arguments: argparse.Namespace, app: Path) -> dict[str, str]:
@@ -588,7 +593,7 @@ def main() -> int:
                         help="Additional Qt 6.8.3 plugins directory, e.g. a supplemental QtImageFormats install.")
     parser.add_argument("--runtime", type=Path, required=True)
     parser.add_argument("--install-root", default=DEFAULT_ROOT)
-    parser.add_argument("--version", default="1.6.0-1")
+    parser.add_argument("--version", help="Debian Control version derived from CMake by default; beta uses ~beta.N")
     parser.add_argument("--stage", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--copyright", type=Path)
@@ -598,13 +603,22 @@ def main() -> int:
     parser.add_argument("--no-strip", action="store_true", help="Retain staged symbols for diagnostics.")
     arguments = parser.parse_args()
     arguments.source_root = arguments.source_root.resolve()
+    try:
+        source_version = release_metadata.cmake_application_version(
+            (arguments.source_root / "CMakeLists.txt").read_text(encoding="utf-8"))
+        arguments.version = arguments.version or release_metadata.debian_version(source_version)
+        application_version = release_metadata.application_version_from_debian(arguments.version)
+        if application_version != source_version:
+            raise ValueError("Debian package and source application versions differ")
+    except (OSError, ValueError) as error:
+        parser.error(str(error))
     for name in ("binary", "qt_prefix", "runtime"):
         setattr(arguments, name, getattr(arguments, name).resolve())
     arguments.extra_qt_plugins = [path.resolve() for path in arguments.extra_qt_plugins]
     arguments.copyright = (arguments.copyright or arguments.source_root / "packaging/copyright").resolve()
     arguments.stage = (arguments.stage or arguments.source_root / "output/deb-stage" / arguments.version).resolve()
-    arguments.output = (arguments.output or arguments.source_root / "output/releases" / arguments.version.split("-", 1)[0]
-                        / f"{PACKAGE}_{arguments.version}_amd64.deb").resolve()
+    arguments.output = (arguments.output or arguments.source_root / "output/releases" / application_version
+                        / release_metadata.deb_filename(arguments.version)).resolve()
     if not 0 <= arguments.compression_level <= 9:
         parser.error("--compression-level must be between 0 and 9")
     if "\n" in arguments.maintainer or "\r" in arguments.maintainer:

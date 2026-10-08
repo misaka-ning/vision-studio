@@ -1,0 +1,6 @@
+-- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
+-- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
+-- Could NOT find Cups (missing: CUPS_LIBRARIES CUPS_INCLUDE_DIR) 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/misaka/文档/ChatGPT/yolo/build-beta

@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "version": "2.0.0-beta.1",
+  "command": [
+    "ctest",
+    "--test-dir",
+    "/home/misaka/文档/ChatGPT/yolo/build-beta",
+    "-V",
+    "-R",
+    "vision-gpu-tests|vision-recording-tests"
+  ],
+  "started_at": "2026-10-08T11:09:04+0800",
+  "environment": {
+    "QT_QPA_PLATFORM": "offscreen",
+    "VISION_STUDIO_GPU_TESTS": "1",
+    "VISION_STUDIO_GPU_RUNTIME_DIR": "/home/misaka/.local/share/vision-studio/gpu-runtime",
+    "VISION_STUDIO_PYTHON": "/home/misaka/文档/ChatGPT/yolo/build/release-runtime/bin/python3",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONNOUSERSITE": "1",
+    "HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/home",
+    "XDG_CONFIG_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/config",
+    "XDG_DATA_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/data",
+    "XDG_CACHE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/cache",
+    "XDG_STATE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/state",
+    "XDG_RUNTIME_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/runtime",
+    "VISION_STUDIO_DATA_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/app-data",
+    "YOLO_CONFIG_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/ultralytics",
+    "YOLOV5_CONFIG_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/yolov5",
+    "MPLCONFIGDIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/matplotlib",
+    "TORCH_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/torch",
+    "CUDA_CACHE_PATH": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/cuda-cache",
+    "TMPDIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/tmp"
+  },
+  "binaries": [
+    {
+      "path": "build-beta/bin/vision-studio",
+      "sha256": "9d568ec596571bc8ae9933318ab8c718235499cc4d909a207c9c1af186f726ed",
+      "bytes": 983112
+    },
+    {
+      "path": "build-beta/vision-gpu-tests",
+      "sha256": "8ff36531b336cbf58392c2d9001545fa8eff715b00148f4b0ec4ee3aa89e797b",
+      "bytes": 287552
+    },
+    {
+      "path": "build-beta/vision-recording-tests",
+      "sha256": "31a58400cbf0f297b5abcb40534e5bf496b2e5a6df8e8672cf1dee3f56f1441e",
+      "bytes": 431920
+    }
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 59.393,
+  "finished_at": "2026-10-08T11:10:04+0800"
+}

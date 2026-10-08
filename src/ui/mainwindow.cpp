@@ -27,6 +27,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QPlainTextEdit>
+#include <QPalette>
 #include <QPointer>
 #include <QProcess>
 #include <QProcessEnvironment>
@@ -92,10 +93,11 @@ QPushButton *button(const QString &title, const QString &iconName = {}, const ch
 {
     auto *b = new QPushButton(title);
     b->setObjectName(role);
+    b->setProperty("fluentRole", QString::fromLatin1(role));
     b->setCursor(Qt::PointingHandCursor);
     b->setMinimumHeight(36);
     if (!iconName.isEmpty())
-        b->setIcon(ui::icon(iconName, role == QString("primary") ? QColor("#082c29") : QColor("#a9bccc")));
+        b->setIcon(ui::icon(iconName, role == QString("primary") ? QColor("#00374D") : QColor("#D2D2D2")));
     b->setIconSize(QSize(18, 18));
     return b;
 }
@@ -114,7 +116,7 @@ QImage readImage(const QString &path)
 QLabel *section(const QString &title, const QString &number)
 {
     auto *l = text(number + "   " + title, "sectionTitle");
-    l->setMinimumHeight(27);
+    l->setMinimumHeight(20);
     return l;
 }
 void tableStyle(QTableWidget *t)
@@ -204,11 +206,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     auto *workspace = new QWidget;
     workspace->setObjectName("workspace");
     auto *w = new QVBoxLayout(workspace);
-    w->setContentsMargins(24, 20, 24, 0);
-    w->setSpacing(20);
+    w->setContentsMargins(24, 12, 24, 0);
+    w->setSpacing(12);
     auto *header = new QHBoxLayout;
     auto *titles = new QVBoxLayout;
-    titles->setSpacing(5);
+    titles->setSpacing(4);
     auto *crumb = text("VISION STUDIO  /  工作空间", "eyebrow");
     titles->addWidget(crumb);
     pageTitle_ = text("检测工作台", "pageTitle");
@@ -245,7 +247,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     auto *footer = new QFrame;
     footer->setObjectName("footer");
     auto *foot = new QHBoxLayout(footer);
-    foot->setContentsMargins(0, 10, 0, 10);
+    foot->setContentsMargins(0, 6, 0, 6);
     statusLabel_ = text("●  准备就绪 · 选择模型与输入后开始检测", "statusText");
     statusLabel_->setTextInteractionFlags(Qt::TextSelectableByMouse);
     statusLabel_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
@@ -404,98 +406,45 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupStyle()
 {
-    setStyleSheet(R"(
-        QWidget { color: #dce7ee; font-family: 'Noto Sans CJK SC'; font-size: 12px; }
-        QMainWindow, #workspace, #moreContent, #moreViewport { background: #101923; }
-        #sidebar { background: #0b131d; border-right: 1px solid #25313f; }
-        #brand { font-size: 19px; font-weight: 700; color: #f2f7fa; }
-        #brandCaption { color: #607589; font-size: 10px; letter-spacing: 2px; }
-        #eyebrow { color: #63788d; font-size: 10px; font-weight: 600; letter-spacing: 1px; }
-        #pageTitle { font-size: 26px; font-weight: 700; color: #edf4f7; }
-        #muted { color: #8396a8; font-size: 11px; }
-        #tiny, #modelMetadata, #actualDeviceFooter { color: #698095; font-size: 10px; }
-        #sectionTitle { color: #a9b9c7; font-size: 11px; font-weight: 600; }
-        #card, #metricCard { background: #16212e; border: 1px solid #2a3746; border-radius: 10px; }
-        #configInner { background: #16212e; }
-        #metricCard { background: #15212d; }
-        #metricValue { color: #edf4f9; font-size: 25px; font-weight: 700; }
-        #metricUnit { color: #6d859a; font-size: 11px; }
-        #modelName { font-size: 15px; font-weight: 700; color: #e9f4f4; }
-        #localBadge { color: #53d5bd; background: #15322f; border: 1px solid #245447; border-radius: 12px; padding: 5px 10px; font-size: 10px; }
-        #chip { color: #93a9bc; background: #203040; border-radius: 5px; padding: 4px 8px; font-size: 10px; }
-        QPushButton { background: #202d3b; border: 1px solid #354454; border-radius: 6px; padding: 6px 12px; color: #cddbe5; }
-        QPushButton:hover { background: #2b3c4c; border-color: #5a7185; }
-        QPushButton:pressed { background: #354a59; }
-        QPushButton:disabled { color: #53687a; border-color: #283746; background: #17232e; }
-        QPushButton:focus { border: 1px solid #58d5bf; }
-        #primary { background: #47d6bb; color: #092c2b; border: 1px solid #47d6bb; font-weight: 700; }
-        #primary:hover { background: #6ce6cd; border-color: #6ce6cd; }
-        #primary:disabled { background: #1e4c47; color: #668a82; border-color: #2e645c; }
-        #danger { background: #41252c; border-color: #683843; color: #ec9faa; }
-        #nav { text-align: left; background: transparent; border: 1px solid transparent; color: #8297aa; padding: 11px 12px; font-size: 12px; }
-        #nav:hover { background: #152532; color: #d6e4eb; }
-        #nav:checked { color: #50d9bf; background: #17332f; border-color: #234b43; }
-        #nav:focus { border: 1px solid #58d5bf; }
-        #ghost { background: transparent; border: 1px solid #344355; }
-        #toolbar { background: #182431; border-bottom: 1px solid #2a3947; }
-        QComboBox, QSpinBox, QDoubleSpinBox { background: #0f1b28; border: 1px solid #354456; border-radius: 5px; padding: 6px 8px; min-height: 22px; selection-background-color: #265349; }
-        QComboBox:hover, QSpinBox:hover, QDoubleSpinBox:hover { border-color: #567487; }
-        QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus { border-color: #47d6bb; }
-        QComboBox QAbstractItemView { background: #172733; selection-background-color: #254e48; outline: none; }
-        QSpinBox::up-button, QDoubleSpinBox::up-button { subcontrol-origin: border; subcontrol-position: top right; width: 18px; border: none; background: transparent; }
-        QSpinBox::down-button, QDoubleSpinBox::down-button { subcontrol-origin: border; subcontrol-position: bottom right; width: 18px; border: none; background: transparent; }
-        QSpinBox::up-arrow, QDoubleSpinBox::up-arrow { image: url(:/chevron-up.svg); width: 8px; height: 6px; }
-        QSpinBox::down-arrow, QDoubleSpinBox::down-arrow, QComboBox::down-arrow { image: url(:/chevron-down.svg); width: 8px; height: 6px; }
-        QComboBox::drop-down { border: none; width: 20px; background: transparent; }
-        QCheckBox { color: #9bb0c0; spacing: 8px; }
-        QCheckBox::indicator { width: 14px; height: 14px; border: 1px solid #496070; border-radius: 3px; background: #0d1924; }
-        QCheckBox::indicator:checked { background: #47d6bb; border-color: #47d6bb; }
-        QTableWidget, QListWidget { background: transparent; border: none; selection-background-color: #244d48; outline: none; }
-        QTableWidget::item { padding: 6px; border-bottom: 1px solid #23313e; }
-        QTableWidget::item:selected { background: #21463f; color: #b4fae7; }
-        QListWidget::item { padding: 7px; border: 1px solid transparent; border-radius: 5px; }
-        QListWidget::item:selected { background: #20473f; border-color: #316e60; }
-        QHeaderView::section { background: #172534; color: #7f97aa; border: none; padding: 8px; font-size: 10px; text-align: left; }
-        QScrollArea { border: none; background: transparent; }
-        QScrollBar:vertical { background: transparent; width: 5px; margin: 1px; }
-        QScrollBar::handle:vertical { background: #354a5b; min-height: 25px; border-radius: 2px; }
-        QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }
-        QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: transparent; }
-        QScrollBar:horizontal { background: transparent; height: 5px; }
-        QScrollBar::handle:horizontal { background: #354a5b; min-width: 25px; }
-        QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal { width: 0; }
-        QProgressBar { background: #263846; border: none; border-radius: 2px; }
-        QProgressBar::chunk { background: #47d6bb; border-radius: 2px; }
-        #footer { border-top: 1px solid #263746; }
-        #statusText { color: #859cae; font-size: 10px; }
-        QTextBrowser { background: transparent; border: none; color: #b8cbd8; }
-        QToolTip { color: #e1edf3; background: #263947; border: 1px solid #486070; padding: 6px; }
-        QMenu { background: #172733; border: 1px solid #3b5264; padding: 5px; }
-        QMenu::item { padding: 9px 16px; color: #c7dce7; }
-        QMenu::item:selected { background: #244d44; color: #74e2c4; }
-        QSplitter::handle { background: transparent; width: 8px; }
-    )");
+    // Apply the visual layer to the existing widget tree; native actions stay intact.
+    QPalette colors = palette();
+    colors.setColor(QPalette::Window, QColor("#202020"));
+    colors.setColor(QPalette::WindowText, QColor("#F5F5F5"));
+    colors.setColor(QPalette::Base, QColor("#303030"));
+    colors.setColor(QPalette::AlternateBase, QColor("#272727"));
+    colors.setColor(QPalette::Text, QColor("#F5F5F5"));
+    colors.setColor(QPalette::Button, QColor("#333333"));
+    colors.setColor(QPalette::ButtonText, QColor("#F5F5F5"));
+    colors.setColor(QPalette::Highlight, QColor("#354C59"));
+    colors.setColor(QPalette::HighlightedText, Qt::white);
+    colors.setColor(QPalette::PlaceholderText, QColor("#A5A5A5"));
+    colors.setColor(QPalette::Disabled, QPalette::Text, QColor("#858585"));
+    colors.setColor(QPalette::Disabled, QPalette::ButtonText, QColor("#858585"));
+    setPalette(colors);
+    QFile theme(QStringLiteral(":/fluent-dark.qss"));
+    if (theme.open(QIODevice::ReadOnly))
+        setStyleSheet(QString::fromUtf8(theme.readAll()));
 }
 
 QWidget *MainWindow::buildSidebar()
 {
     auto *side = new QWidget;
     side->setObjectName("sidebar");
-    side->setFixedWidth(178);
+    side->setFixedWidth(212);
     auto *l = new QVBoxLayout(side);
-    l->setContentsMargins(14, 28, 14, 22);
+    l->setContentsMargins(12, 24, 12, 20);
     l->setSpacing(8);
     auto *brand = new QHBoxLayout;
     auto *logo = new QLabel;
-    logo->setPixmap(QIcon(":/app-icon.svg").pixmap(36, 36));
+    logo->setPixmap(QIcon(":/app-icon.svg").pixmap(30, 30));
     brand->addWidget(logo);
-    brand->addWidget(text("Vision", "brand"));
+    brand->addWidget(text("Vision Studio", "brand"));
     brand->addStretch();
     l->addLayout(brand);
-    auto *cap = text("STUDIO  /  V1.6", "brandCaption");
+    auto *cap = text("2.0 BETA  ·  本地视觉工作空间", "brandCaption");
     cap->setContentsMargins(4, 4, 0, 0);
     l->addWidget(cap);
-    l->addSpacing(38);
+    l->addSpacing(24);
     l->addWidget(text("工作空间", "eyebrow"));
     l->addSpacing(5);
     const QStringList titles = {"检测工作台", "模型库",   "模型显示", "运行记录",
@@ -514,9 +463,9 @@ QWidget *MainWindow::buildSidebar()
     auto *il = new QVBoxLayout(info);
     il->setContentsMargins(12, 14, 12, 14);
     il->setSpacing(7);
-    il->addWidget(text("●  PRIVATE BY DESIGN", "tiny"));
+    il->addWidget(text("●  本机工作空间", "tiny"));
     auto *t = text("模型与图像\n始终留在本机", "body");
-    t->setStyleSheet("font-size: 11px; color: #a3bac8;");
+    t->setStyleSheet("font-size: 12px; color: #D2D2D2;");
     il->addWidget(t);
     il->addWidget(text("无需账户 · 离线推理", "tiny"));
     l->addWidget(info);
@@ -531,20 +480,20 @@ QWidget *MainWindow::buildWorkbench()
     page->setObjectName("workbenchPage");
     auto *all = new QVBoxLayout(page);
     all->setContentsMargins(0, 0, 0, 0);
-    all->setSpacing(16);
+    all->setSpacing(12);
     auto *metrics = new QHBoxLayout;
     metrics->setSpacing(12);
     auto metric = [&](const QString &label, const QString &symbol, QLabel *&value, const QString &unit)
     {
         auto *f = card("metricCard");
         auto *x = new QVBoxLayout(f);
-        x->setContentsMargins(16, 11, 16, 11);
+        x->setContentsMargins(18, 8, 18, 8);
         x->setSpacing(5);
         auto *top = new QHBoxLayout;
         top->addWidget(text(label, "muted"));
         top->addStretch();
         auto *ic = new QLabel;
-        ic->setPixmap(ui::icon(symbol, QColor("#4fcab5"), 17).pixmap(17, 17));
+        ic->setPixmap(ui::icon(symbol, QColor("#60CDFF"), 17).pixmap(17, 17));
         top->addWidget(ic);
         x->addLayout(top);
         auto *row = new QHBoxLayout;
@@ -560,16 +509,53 @@ QWidget *MainWindow::buildWorkbench()
     metric("识别类别", "model", classMetric_, "classes");
     metric("输入分辨率", "image", sizeMetric_, "px");
     all->addLayout(metrics);
+    auto *inputCommands = card("commandBar");
+    auto *commandLayout = new QVBoxLayout(inputCommands);
+    commandLayout->setContentsMargins(16, 6, 16, 6);
+    commandLayout->setSpacing(6);
+    auto *commands = new QHBoxLayout;
+    commands->setContentsMargins(0, 0, 0, 0);
+    commands->setSpacing(16);
+    commands->addWidget(text("输入源", "sectionTitle"));
+    auto *sources = new QHBoxLayout;
+    sources->setSpacing(8);
+    QStringList names = {"图片", "文件夹", "视频", "摄像头"};
+    QStringList icons = {"image", "folder", "video", "camera"};
+    for (int i = 0; i < 4; ++i)
+    {
+        auto *b = button(names[i], icons[i]);
+        sources->addWidget(b);
+        lockedControls_.append(b);
+        if (i == 0)
+            connect(b, &QPushButton::clicked, this, &MainWindow::chooseImages);
+        if (i == 1)
+            connect(b, &QPushButton::clicked, this, &MainWindow::chooseFolder);
+        if (i == 2)
+            connect(b, &QPushButton::clicked, this, &MainWindow::chooseVideo);
+        if (i == 3)
+            connect(b, &QPushButton::clicked, this, &MainWindow::chooseCamera);
+    }
+    sourceLabel_ = text("尚未选择输入", "tiny");
+    sourceLabel_->setWordWrap(true);
+    sourceLabel_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    sourceLabel_->setMaximumHeight(40);
+    commands->addLayout(sources);
+    commands->addWidget(sourceLabel_, 1);
+    commandLayout->addLayout(commands);
+    all->addWidget(inputCommands);
     auto *columns = new QSplitter;
     columns->setChildrenCollapsible(false);
     columns->setHandleWidth(12);
     auto *config = card();
-    config->setMinimumWidth(246);
-    config->setMaximumWidth(300);
+    config->setMinimumWidth(260);
+    config->setMaximumWidth(320);
     auto *cl = new QVBoxLayout(config);
     cl->setContentsMargins(14, 14, 14, 14);
     cl->setSpacing(10);
-    cl->addWidget(text("推理设备", "sectionTitle"));
+    cl->addWidget(text("检测配置", "sectionTitle"));
+    auto *devices = new QHBoxLayout;
+    devices->setSpacing(12);
+    devices->addWidget(text("推理设备", "sectionTitle"));
     computeDevice_ = new QComboBox;
     computeDevice_->setObjectName("computeDevice");
     computeDevice_->setAccessibleName("推理设备");
@@ -578,20 +564,25 @@ QWidget *MainWindow::buildWorkbench()
     computeDevice_->addItem("NVIDIA GPU", "cuda");
     computeDevice_->setToolTip("自动模式优先使用已就绪的 NVIDIA GPU，无法使用时说明原因并使用 CPU；"
                                "显式选择 NVIDIA GPU 时，不会静默回退到 CPU。");
-    cl->addWidget(computeDevice_);
+    computeDevice_->setMinimumWidth(220);
+    computeDevice_->setMaximumWidth(270);
+    devices->addWidget(computeDevice_);
     gpuDeviceLabel_ = text("GPU 设备", "tiny");
     gpuDeviceIndex_ = new QComboBox;
     gpuDeviceIndex_->setObjectName("gpuDeviceIndex");
     gpuDeviceIndex_->setAccessibleName("GPU 设备编号");
     gpuDeviceIndex_->addItem("GPU 0 · 待检查", 0);
-    cl->addWidget(gpuDeviceLabel_);
-    cl->addWidget(gpuDeviceIndex_);
+    gpuDeviceIndex_->setMinimumWidth(220);
+    gpuDeviceIndex_->setMaximumWidth(300);
+    devices->addWidget(gpuDeviceLabel_);
+    devices->addWidget(gpuDeviceIndex_);
     deviceHint_ = text("正在检查 GPU 环境…", "tiny");
     deviceHint_->setObjectName("deviceEnvironmentHint");
     deviceHint_->setWordWrap(true);
     deviceHint_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
-    deviceHint_->setMaximumHeight(48);
-    cl->addWidget(deviceHint_);
+    deviceHint_->setMaximumHeight(40);
+    devices->addWidget(deviceHint_, 1);
+    commandLayout->addLayout(devices);
     lockedControls_.append(computeDevice_);
     lockedControls_.append(gpuDeviceIndex_);
     const auto deviceChanged = [this]
@@ -615,29 +606,7 @@ QWidget *MainWindow::buildWorkbench()
     auto *fields = new QVBoxLayout(inner);
     fields->setContentsMargins(0, 0, 2, 0);
     fields->setSpacing(9);
-    fields->addWidget(section("输入源", "01"));
-    auto *sources = new QGridLayout;
-    sources->setSpacing(7);
-    QStringList names = {"图片", "文件夹", "视频", "摄像头"};
-    QStringList icons = {"image", "folder", "video", "camera"};
-    for (int i = 0; i < 4; ++i)
-    {
-        auto *b = button(names[i], icons[i]);
-        sources->addWidget(b, i / 2, i % 2);
-        lockedControls_.append(b);
-        if (i == 0)
-            connect(b, &QPushButton::clicked, this, &MainWindow::chooseImages);
-        if (i == 1)
-            connect(b, &QPushButton::clicked, this, &MainWindow::chooseFolder);
-        if (i == 2)
-            connect(b, &QPushButton::clicked, this, &MainWindow::chooseVideo);
-        if (i == 3)
-            connect(b, &QPushButton::clicked, this, &MainWindow::chooseCamera);
-    }
-    fields->addLayout(sources);
-    sourceLabel_ = text("尚未选择输入", "tiny");
-    sourceLabel_->setWordWrap(true);
-    fields->addWidget(sourceLabel_);
+    fields->addWidget(section("输入选项", "01"));
     cameraIndex_ = new QSpinBox;
     cameraIndex_->setObjectName("cameraIndex");
     cameraIndex_->setRange(0, 10);
@@ -799,7 +768,7 @@ QWidget *MainWindow::buildWorkbench()
     center->setMinimumWidth(390);
     auto *ml = new QVBoxLayout(center);
     ml->setContentsMargins(0, 0, 0, 0);
-    ml->setSpacing(12);
+    ml->setSpacing(4);
     auto *canvasFrame = card();
     auto *cf = new QVBoxLayout(canvasFrame);
     cf->setContentsMargins(0, 0, 0, 0);
@@ -807,7 +776,7 @@ QWidget *MainWindow::buildWorkbench()
     auto *toolbar = new QWidget;
     toolbar->setObjectName("toolbar");
     auto *tl = new QHBoxLayout(toolbar);
-    tl->setContentsMargins(14, 9, 12, 9);
+    tl->setContentsMargins(16, 3, 14, 3);
     tl->setSpacing(8);
     canvasTitle_ = text("视觉预览", "sectionTitle");
     tl->addWidget(canvasTitle_, 1);
@@ -818,18 +787,18 @@ QWidget *MainWindow::buildWorkbench()
     showLabels_->setChecked(true);
     tl->addWidget(showLabels_);
     auto *fit = button({}, "fit", "ghost");
-    fit->setFixedSize(30, 30);
-    fit->setMinimumHeight(30);
+    fit->setFixedSize(32, 32);
+    fit->setMinimumHeight(32);
     fit->setToolTip("适应画布 · 双击图像");
     tl->addWidget(fit);
     auto *actual = button("1:1", {}, "ghost");
-    actual->setFixedSize(36, 30);
-    actual->setMinimumHeight(30);
+    actual->setFixedSize(38, 32);
+    actual->setMinimumHeight(32);
     actual->setToolTip("原始像素大小");
     tl->addWidget(actual);
     cf->addWidget(toolbar);
     auto *recordingRow = new QHBoxLayout;
-    recordingRow->setContentsMargins(14, 7, 12, 7);
+    recordingRow->setContentsMargins(14, 2, 12, 2);
     recordingStatus_ = text("视频 / 摄像头检测时可录制", "tiny");
     recordingStatus_->setObjectName("recordingStatus");
     recordingRow->addWidget(recordingStatus_, 1);
@@ -847,7 +816,7 @@ QWidget *MainWindow::buildWorkbench()
     canvas_->setMinimumHeight(280);
     cf->addWidget(canvas_, 1);
     auto *cb = new QHBoxLayout;
-    cb->setContentsMargins(14, 9, 14, 9);
+    cb->setContentsMargins(14, 3, 14, 3);
     cb->addWidget(text("滚轮缩放 · 拖动平移 · 点击目标查看", "tiny"), 1);
     zoomLabel_ = text("100%", "tiny");
     cb->addWidget(zoomLabel_);
@@ -868,10 +837,10 @@ QWidget *MainWindow::buildWorkbench()
                     showNotice("请先停止任务，再更换输入。");
             });
     auto *queueFrame = card();
-    auto *ql = new QVBoxLayout(queueFrame);
-    ql->setContentsMargins(12, 9, 12, 8);
+    auto *ql = new QHBoxLayout(queueFrame);
+    ql->setContentsMargins(12, 6, 12, 6);
     ql->setSpacing(5);
-    auto *qh = new QHBoxLayout;
+    auto *qh = new QVBoxLayout;
     qh->addWidget(text("输入队列", "sectionTitle"), 1);
     auto *clear = button("清空", "cross", "ghost");
     clear->setMinimumHeight(25);
@@ -895,12 +864,12 @@ QWidget *MainWindow::buildWorkbench()
     queue_ = new QListWidget;
     queue_->setFlow(QListView::LeftToRight);
     queue_->setViewMode(QListView::IconMode);
-    queue_->setIconSize(QSize(64, 46));
-    queue_->setGridSize(QSize(97, 78));
+    queue_->setIconSize(QSize(64, 36));
+    queue_->setGridSize(QSize(100, 64));
     queue_->setWrapping(false);
-    queue_->setFixedHeight(84);
+    queue_->setFixedHeight(68);
     queue_->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    ql->addWidget(queue_);
+    ql->addWidget(queue_, 1);
     ml->addWidget(queueFrame);
     connect(queue_, &QListWidget::currentRowChanged, this,
             [this](int row)
@@ -1002,7 +971,7 @@ QWidget *MainWindow::buildWorkbench()
     columns->setStretchFactor(0, 0);
     columns->setStretchFactor(1, 1);
     columns->setStretchFactor(2, 0);
-    columns->setSizes({258, 630, 270});
+    columns->setSizes({280, 660, 270});
     all->addWidget(columns, 1);
     return page;
 }
@@ -1104,7 +1073,7 @@ QWidget *MainWindow::buildModelDisplay()
     controlLayout->setSpacing(10);
     auto *heading = new QHBoxLayout;
     structureModelName_ = text("在模型库中选择模型", "structureModelName");
-    structureModelName_->setStyleSheet("font-size:15px; font-weight:700; color:#e9f4f4;");
+    structureModelName_->setStyleSheet("font-size:16px; font-weight:600; color:#F5F5F5;");
     heading->addWidget(structureModelName_, 1);
     structureStatus_ = text("等待模型", "chip");
     structureStatus_->setObjectName("structureLoadStatus");
@@ -1112,10 +1081,10 @@ QWidget *MainWindow::buildModelDisplay()
     heading->addWidget(text("Netron 9.3.1 · 本地查看", "chip"));
     controlLayout->addLayout(heading);
     structureModelMeta_ = text("支持 ONNX、PyTorch、TorchScript 等模型格式。", "structureModelMeta");
-    structureModelMeta_->setStyleSheet("font-size:11px; color:#8ca4b8;");
+    structureModelMeta_->setStyleSheet("font-size:12px; color:#B8B8B8;");
     controlLayout->addWidget(structureModelMeta_);
     structureHint_ = text("想看完整结构，建使用导出的 ONNX。", "structureOnnxHint");
-    structureHint_->setStyleSheet("font-size:11px; color:#8194a5;");
+    structureHint_->setStyleSheet("font-size:11px; color:#A5A5A5;");
     structureHint_->hide();
     controlLayout->addWidget(structureHint_);
     layout->addWidget(controls);
@@ -1272,8 +1241,8 @@ QWidget *MainWindow::buildMore()
     gpuLog_->setMaximumBlockCount(600);
     gpuLog_->setMaximumHeight(135);
     gpuLog_->setMinimumHeight(90);
-    gpuLog_->setStyleSheet("QPlainTextEdit { background:#0d1824; border:1px solid #304254; "
-                           "border-radius:6px; color:#bcd0df; padding:7px; font-size:11px; }");
+    gpuLog_->setStyleSheet("QPlainTextEdit { background:#202020; border:1px solid #454545; "
+                           "border-radius:4px; color:#D2D2D2; padding:8px; font-size:12px; }");
     gpuLog_->hide();
     gpuLayout->addWidget(gpuLog_);
     connect(gpuCheckButton_, &QPushButton::clicked, this, &MainWindow::checkGpuEnvironment);
@@ -1445,7 +1414,7 @@ void MainWindow::updateRecordingUi()
     const bool recording = recordingRequested_ || recordingActive_;
     recordButton_->setText(recordingStopping_ ? "正在保存…" : (recording ? "结束录制" : "开始录制"));
     recordButton_->setIcon(
-        ui::icon(recording ? "stop" : "record", recording ? QColor("#ffb0b0") : QColor("#a9bccc")));
+        ui::icon(recording ? "stop" : "record", recording ? QColor("#ffb0b0") : QColor("#D2D2D2")));
     recordButton_->setEnabled(busy_ && sourceKind_ != vision::SourceKind::Images && !recordingStopping_ &&
                               !inferenceStopping_ && !failed_);
     recordButton_->setStyleSheet(recording ? "background:#432831; border-color:#8b4855; color:#ffb7b7;" : "");
@@ -1660,7 +1629,7 @@ QWidget *MainWindow::buildGuide()
     auto *html = new QTextBrowser;
     html->setOpenExternalLinks(true);
     html->setHtml(R"(
-    <style>h1{color:#e3f3f1;font-size:24px}h2{color:#56d8bd;font-size:16px;margin-top:26px}p,li{line-height:1.7;color:#a5bacb;font-size:13px}code{color:#c9e4dd}a{color:#56d8bd}</style>
+    <style>h1{color:#F5F5F5;font-size:28px}h2{color:#60CDFF;font-size:16px;margin-top:26px}p,li{line-height:1.8;color:#D2D2D2;font-size:13px}code{color:#D8ECF5}a{color:#60CDFF}</style>
     <h1>让你的视觉模型，真正运行起来。</h1><p>Vision Studio 是一个原生 C++ / Qt 桌面工作台。模型加载、图像处理与推理均在本机完成。</p>
     <h2>01 / 开始你的第一次检测</h2><p>“更多”页的“运行示例”可选择 ONNX / PT 示例。使用自己的模型时，导入 ONNX 或 PT，然后选择图片、文件夹、视频或摄像头，点击“开始检测”。PT 使用本机独立 PyTorch 环境直接推理，无需手动导出。</p>
     <h2>模型库与结构显示</h2><p>在“模型库”点击模型即可全局选用，工作台检测与模型显示使用同一模型。选择后在后台预加载，结构图、层级树、参数表共用一次解析缓存；进入或离开页面、切换展示模式不重复加载。结构图可以缩放、平移并点击节点查看输入输出及参数；层级树可以展开模块，参数表可以查看张量名称、类型与形状，两者支持搜索和详情。普通 PT 的树表示模块包含关系，只有权重的文件按参数名称分组，不补造计算连接。无法解析的文件显示文字说明，可点击“重试加载”。非 ONNX 文件显示：想看完整结构，建使用导出的 ONNX。</p>
@@ -2590,7 +2559,7 @@ void MainWindow::onResult(const vision::InferenceResult &r)
         predictionTable_->setItem(i, 1, conf);
         auto *id = new QTableWidgetItem(QString::number(i + 1).rightJustified(2, '0'));
         id->setTextAlignment(Qt::AlignCenter);
-        id->setForeground(QColor("#678699"));
+        id->setForeground(QColor("#A5A5A5"));
         predictionTable_->setItem(i, 2, id);
     }
     if (sourceKind_ == vision::SourceKind::Images)
@@ -2600,7 +2569,7 @@ void MainWindow::onResult(const vision::InferenceResult &r)
         if (row >= 0)
         {
             queue_->setCurrentRow(row);
-            queue_->item(row)->setForeground(QColor("#57d6bc"));
+            queue_->item(row)->setForeground(QColor("#60CDFF"));
         }
         if (autoExport_->isChecked())
         {
@@ -3059,7 +3028,7 @@ void MainWindow::refreshModelLibrary()
         const QString detail =
             f.exists() ? QString("%1 MB  ·  %2").arg(f.size() / 1048576.0, 0, 'f', 1).arg(modelFormat(p))
                        : "文件已移动或不存在";
-        auto *i = new QListWidgetItem(ui::icon("model", QColor("#53d9bb"), 34),
+        auto *i = new QListWidgetItem(ui::icon("model", QColor("#60CDFF"), 34),
                                       f.fileName() + "\n" + detail + "\n" + p);
         i->setData(Qt::UserRole, p);
         i->setToolTip(p);
@@ -3086,7 +3055,7 @@ void MainWindow::selectRoute(int index)
         navButtons_[i]->setChecked(i == index);
         navButtons_[i]->setIcon(
             ui::icon(QStringList{"work", "model", "graph", "history", "help", "video", "more"}[i],
-                     QColor(i == index ? "#50d9bf" : "#8297aa")));
+                     QColor(i == index ? "#60CDFF" : "#D2D2D2")));
     }
     const QStringList titles = {"检测工作台", "模型库",   "模型显示", "运行记录",
                                 "使用指南",   "录制视频", "更多"};
@@ -3106,7 +3075,7 @@ void MainWindow::showNotice(const QString &s, bool error)
     statusLabel_->setText(statusLabel_->fontMetrics().elidedText(message, Qt::ElideRight,
                                                                  std::max(200, statusLabel_->width())));
     statusLabel_->setToolTip(s);
-    statusLabel_->setStyleSheet(error ? "color:#ef9aab;" : "color:#8ca7b9;");
+    statusLabel_->setStyleSheet(error ? "color:#FFB4BB;" : "color:#B8B8B8;");
 }
 void MainWindow::persist()
 {

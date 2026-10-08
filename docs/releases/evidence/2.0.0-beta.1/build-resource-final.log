@@ -1,0 +1,6 @@
+[1/6] Automatic RCC for resources.qrc
+[2/6] Automatic RCC for resources.qrc
+[3/6] Building CXX object CMakeFiles/vision-ui-tests.dir/vision-ui-tests_autogen/EWIEGA46WW/qrc_resources.cpp.o
+[4/6] Building CXX object CMakeFiles/vision-studio.dir/vision-studio_autogen/EWIEGA46WW/qrc_resources.cpp.o
+[5/6] Linking CXX executable bin/vision-studio
+[6/6] Linking CXX executable vision-ui-tests

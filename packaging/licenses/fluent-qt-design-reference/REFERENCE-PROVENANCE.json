@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/calvinhxx/Fluent-Qt",
+  "tag": "v1.9.2",
+  "commit": "6dfe61e01dff88aa0669b19e7b4faa2d5400e30e",
+  "reviewed_date": "2026-10-08",
+  "scope": "Visual reference only; no upstream library or assets integrated into Vision Studio by this research task.",
+  "source_license": "MIT, Copyright (c) 2026 calvinhxx",
+  "visually_inspected_gallery_images": [
+    {
+      "path": "site/assets/gallery/gallery-home-dark.png",
+      "sha256": "a24d8882ccf61e0e9abb85f91458fc3f306a982868d95bdd5da971cade0847ad"
+    },
+    {
+      "path": "site/assets/gallery/gallery-button-dark.png",
+      "sha256": "f0c29a7dbc02114da18a8ff9cdacda9af3eff419204c57c2b83e627ea906305c"
+    },
+    {
+      "path": "site/assets/gallery/gallery-collections-dark.png",
+      "sha256": "49e756703117ddf20e992fc850b6a4891af8d56a9066680a8a062590780dd372"
+    }
+  ],
+  "compiled_upstream_gallery": false,
+  "browser_gallery_status": "In-app browser unavailable; reviewed screenshots committed in pinned upstream tree.",
+  "research_reference_notices": [
+    {
+      "path": "LICENSE",
+      "sha256": "81e8ae5ef0e5cfe1d9b31d6b31899515994dbb3a8f4f5fd03bcae461e63204d9",
+      "bytes": 1066
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "sha256": "34182251f0fe36092a50d3ae8315a93932985810c6439f9f6143f9db07de20da",
+      "bytes": 5191
+    },
+    {
+      "path": "TRADEMARKS.md",
+      "sha256": "33fe8203b732a9aae596a110a48ae2cce18068a33b77e0417926fc8fc25bd46c",
+      "bytes": 1428
+    },
+    {
+      "path": "third_party/fonts/inter/LICENSE.txt",
+      "sha256": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a",
+      "bytes": 4380
+    },
+    {
+      "path": "third_party/fonts/inter/README.md",
+      "sha256": "da51a1c44d56e94d91e64121565db94fc1281d3fe407739b24fb5cf79eac7c64",
+      "bytes": 846
+    },
+    {
+      "path": "third_party/fonts/noto-sans-sc/LICENSE.txt",
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+      "bytes": 4301
+    },
+    {
+      "path": "third_party/icons/fluentui-system-icons/LICENSE.txt",
+      "sha256": "69bc45dc42b9acb96a69823adbc6ae538374e3c0bde169b855b32c48eaaef52f",
+      "bytes": 1078
+    },
+    {
+      "path": "third_party/icons/fluentui-system-icons/NOTICE.txt",
+      "sha256": "2fb367a84df52c8b6f8401119708014b327f595554d41712d7407151c9ce73ef",
+      "bytes": 3911
+    },
+    {
+      "path": "third_party/icons/fluentui-system-icons/README.md",
+      "sha256": "3771f152f15c555e6e3347ad9ab64d740c5f89184846c2135b90e29e521c995c",
+      "bytes": 847
+    }
+  ],
+  "distributed_reference_notices": [
+    {
+      "path": "LICENSE",
+      "sha256": "81e8ae5ef0e5cfe1d9b31d6b31899515994dbb3a8f4f5fd03bcae461e63204d9",
+      "bytes": 1066
+    }
+  ],
+  "notice_scope": "Only original LICENSE is distributed here; other hashes document upstream notices reviewed during research. Upstream fonts, icons and Gallery assets are not distributed."
+}

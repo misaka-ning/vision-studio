@@ -1,0 +1,71 @@
+Internal ctest changing into directory: /home/misaka/文档/ChatGPT/yolo/build-beta
+UpdateCTestConfiguration  from :/home/misaka/文档/ChatGPT/yolo/build-beta/DartConfiguration.tcl
+Parse Config file:/home/misaka/文档/ChatGPT/yolo/build-beta/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/文档/ChatGPT/yolo/build-beta/DartConfiguration.tcl
+Parse Config file:/home/misaka/文档/ChatGPT/yolo/build-beta/DartConfiguration.tcl
+Test project /home/misaka/文档/ChatGPT/yolo/build-beta
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 2
+    Start 2: vision-recording-tests
+
+2: Test command: /home/misaka/文档/ChatGPT/yolo/build-beta/vision-recording-tests
+2: Environment variables: 
+2:  QT_QPA_PLATFORM=offscreen
+2: Test timeout computed to be: 90
+2: ********* Start testing of RecordingTests *********
+2: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+2: PASS   : RecordingTests::initTestCase()
+2: PASS   : RecordingTests::videoIsAnnotatedPlayableAndPublishedOnlyAtFinish()
+2: PASS   : RecordingTests::grayscaleOddEyePreservesContentAndAddsOnlyEdgePadding()
+2: PASS   : RecordingTests::cameraTimingUsesMeasuredDurationAndDecodesAllFrames()
+2: PASS   : RecordingTests::emptyDiscardAndInvalidDirectoryNeverPublishBrokenClips()
+2: PASS   : RecordingTests::changedResolutionEndsClipWithoutLosingItsPreviousFrames()
+2: PASS   : RecordingTests::workerRecordsEveryFrameAndFinishesAtEof()
+2: PASS   : RecordingTests::gpuRightEyeGrayscaleRecordingPreservesActualDevice()
+2: PASS   : RecordingTests::workerStartAfterFirstPreviewAndCancelClosesOnlyRecordedFrames()
+2: PASS   : RecordingTests::recordingFailureDoesNotInterruptInference()
+2: PASS   : RecordingTests::manualStopKeepsInferenceRunningAndRestartCreatesANewClip()
+2: PASS   : RecordingTests::stoppingDuringOnnxForwardRecordsTheLastCompletedFrame()
+2: PASS   : RecordingTests::stoppingWithPendingRecordingNeverOpensANewClip()
+2: PASS   : RecordingTests::cleanupTestCase()
+2: Totals: 14 passed, 0 failed, 0 skipped, 0 blacklisted, 2707ms
+2: ********* Finished testing of RecordingTests *********
+1/2 Test #2: vision-recording-tests ...........   Passed    2.87 sec
+test 4
+    Start 4: vision-gpu-tests
+
+4: Test command: /home/misaka/文档/ChatGPT/yolo/build-beta/vision-gpu-tests
+4: Environment variables: 
+4:  QT_QPA_PLATFORM=offscreen
+4: Test timeout computed to be: 600
+4: ********* Start testing of GpuBackendTests *********
+4: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+4: PASS   : GpuBackendTests::initTestCase()
+4: PASS   : GpuBackendTests::realModernAndLegacyPtColorAndGrayscale()
+4: PASS   : GpuBackendTests::torchScriptC1AndC3GrayscaleDetectionAndClassification()
+4: PASS   : GpuBackendTests::nativeGrayC1C3Classification()
+4: PASS   : GpuBackendTests::modernAndLegacyRealSingleChannelStems()
+4: PASS   : GpuBackendTests::realOnnxCudaMatchesCpuAndExecutesCudaNodes()
+4: PASS   : GpuBackendTests::onnxC1AndC3GrayPixelsMatchModelInput()
+4: PASS   : GpuBackendTests::onnxCudaCancellationTerminatesRunAndSessionCanRecover()
+4: PASS   : GpuBackendTests::ptCudaCancellationStopsChildAndCudaReloadWorks()
+4: PASS   : GpuBackendTests::cleanupTestCase()
+4: Totals: 10 passed, 0 failed, 0 skipped, 0 blacklisted, 56343ms
+4: ********* Finished testing of GpuBackendTests *********
+2/2 Test #4: vision-gpu-tests .................   Passed   56.47 sec
+
+The following tests passed:
+	vision-recording-tests
+	vision-gpu-tests
+
+100% tests passed, 0 tests failed out of 2
+
+Label Time Summary:
+gpu    =  56.47 sec*proc (1 test)
+
+Total Test time (real) =  59.34 sec
