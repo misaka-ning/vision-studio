@@ -1,0 +1,145 @@
+{
+  "success": true,
+  "capture_timestamp": "2026-10-08T11:22:15.344",
+  "application_version": "2.0.0-beta.1",
+  "geometry_success": true,
+  "reviewed_images": [
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/combo-popup.png",
+      "width": 220,
+      "height": 103,
+      "sha256": "41f650a725ae872ed84d35b85d6d056fa229ca37874c82ba1ca77429e852dbea"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/guide-bottom.png",
+      "width": 1580,
+      "height": 960,
+      "sha256": "857837e894587a5795d4bfbfdeb0cc6b6fecf969d836cd2b6f14517808b0e366"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/guide.png",
+      "width": 1580,
+      "height": 960,
+      "sha256": "c8be5cbb3c39a6def6cf045897e9381748b4f2c5d0d5d0593ea2b097eee518ba"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/history.png",
+      "width": 1580,
+      "height": 960,
+      "sha256": "86acb58388329795ac27ea74bd73094b91f03e8262186c1f00d031fb7307950c"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/model-graph-default.png",
+      "width": 1580,
+      "height": 960,
+      "sha256": "5ec273d7dd297f6a793d382e4dbacd0bf889cc0517008df4adf3b96114669ae8"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/model-graph.png",
+      "width": 1580,
+      "height": 960,
+      "sha256": "ba9f703575195d73e7a703f4f19ba4bea5eff5da36f1f9c26ee75aa202a3c340"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/model-hierarchy-minimum.png",
+      "width": 1260,
+      "height": 820,
+      "sha256": "82bc4beec2cf3a6caf769b594257b0012f104a430d21605c3b61c41fb5f39531"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/model-hierarchy.png",
+      "width": 1580,
+      "height": 960,
+      "sha256": "3aeaf4bfdb3140151a7b7285377c591703611b1c00ada9b2d42958d01ff33cb2"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/model-library.png",
+      "width": 1580,
+      "height": 960,
+      "sha256": "1b2ebe6b589a2660e80ec8f72310daa1db25ac637744bf53e8948ab20032d336"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/model-parameters-minimum.png",
+      "width": 1260,
+      "height": 820,
+      "sha256": "27b2d9de43ba2fef6da3641bef7aa1e68dd001d11684d493052ac7c0682da7d4"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/model-parameters.png",
+      "width": 1580,
+      "height": 960,
+      "sha256": "689608e626f6760139cdfbf5cfa7822a5bb2dfda9f10e6900161e623df00a69b"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/more-minimum-bottom.png",
+      "width": 1260,
+      "height": 820,
+      "sha256": "3a1bd251e1783318532ae6ff27253995b53018471c0168c135f086eded6ac0a4"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/more-minimum.png",
+      "width": 1260,
+      "height": 820,
+      "sha256": "3a1bd251e1783318532ae6ff27253995b53018471c0168c135f086eded6ac0a4"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/more.png",
+      "width": 1580,
+      "height": 960,
+      "sha256": "6ab9bcc592c94ee9e4c96efc44dc270d9bd81dce29317686e349276866ddaca2"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/preview.png",
+      "width": 1580,
+      "height": 960,
+      "sha256": "deaadd41451291c40a1294120a65407438304e2724799d34c9811cfcecd7fd45"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/recordings.png",
+      "width": 1580,
+      "height": 960,
+      "sha256": "d4fc7b92372699480b03a37e945235449d9e835091ad17abe651e383d1098ef1"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/workbench-config-bottom.png",
+      "width": 1580,
+      "height": 960,
+      "sha256": "f1a983b2c8dc96e7533c91a35c1c0b8e5aa0ac7fbd3c6956b2ff6278446ab562"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/workbench-cpu.png",
+      "width": 1580,
+      "height": 960,
+      "sha256": "347bd2f497290832e317073042322d87974dbc070604fb04ac0ffff1ccade4ee"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/workbench-device-popup.png",
+      "width": 1580,
+      "height": 960,
+      "sha256": "7b2973da74203a0a99fc1c33e0c46875b8fc453524d06523c1e9ed0ed05cd494"
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/workbench-minimum.png",
+      "width": 1260,
+      "height": 820,
+      "sha256": "b51b431c1885824a63d3769e11b0a14393059a5a8df9420bbbd40a7e72b33ad6"
+    }
+  ],
+  "review_method": "Actual Qt QWidget and WebEngine screenshots; human visual review plus complete widget/ancestor geometry checks.",
+  "minimum_workbench": "1260x820: canvas and all five detection labels are visible; footer, recording and queue controls do not overlap the canvas.",
+  "readme_candidates": {
+    "preview": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/preview.png",
+    "onnx_graph": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/model-graph.png"
+  },
+  "contrast_and_layout": "Workbench, model library, Netron graph/tree/table, history, guide, recordings, More and device popup retain readable dark surfaces and clear text. More GPU actions are visible at minimum size.",
+  "expected_scroll_behavior": [
+    "Workbench configuration panel scrolls to reveal advanced options.",
+    "Table viewport may show a partially visible last row; normal scrolling reveals it."
+  ],
+  "limitations": [
+    "Physical camera was not exercised.",
+    "The existing empty recordings preview reuses the image canvas drag-image wording; the recordings page explanatory text remains correct. No behavior or copy change was made during visual QA."
+  ],
+  "inference_and_cache_success": true,
+  "raw_report": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/visual-capture-report.json"
+}

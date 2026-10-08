@@ -7,6 +7,7 @@ Source: Complete application source and the paired upstream source archives
 
 Files: src/* tests/* scripts/* packaging/*.py packaging/*.sh
  CMakeLists.txt resources.qrc run.sh README.md docs/* assets/app-icon.svg
+ assets/fluent-dark.qss assets/fluent-check.svg assets/chevron-*.svg
 Copyright: 2026 misaka_ning <1468549029@qq.com> and Vision Studio contributors
 License: AGPL-3.0-only
  The newly written Vision Studio application, tests, helper and packaging code
@@ -15,6 +16,14 @@ License: AGPL-3.0-only
  and in the application source archive's LICENSE file.
 Comment: Third-party notices, copied metadata and upstream source files in docs
  or packaging/licenses retain their own licenses, rather than being relicensed.
+
+Files: packaging/licenses/fluent-qt-design-reference/LICENSE
+Copyright: 2026 calvinhxx
+License: MIT
+ The verbatim MIT license documents the Fluent-Qt v1.9.2 visual design reference.
+ This application does not link FluentQt or distribute its third-party fonts,
+ icons, Gallery or screenshot assets. Reference provenance is preserved beside
+ this license; the application's own QSS and checkmark SVG remain AGPL-3.0-only.
 
 Files: vendor/yolov5/* models/yolov5n.pt models/yolov5n.onnx
  models/source/yolov5n-v6.0-dynamic.onnx assets/bus.jpg

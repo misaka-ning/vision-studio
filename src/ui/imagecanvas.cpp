@@ -335,8 +335,8 @@ void ImageCanvas::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.fillRect(rect(), QColor("#0b1420"));
-    painter.setPen(QPen(QColor("#172333"), 1));
+    painter.fillRect(rect(), QColor("#202020"));
+    painter.setPen(QPen(QColor("#2b2b2b"), 1));
     for (int x = 20; x < width(); x += 24)
         for (int y = 20; y < height(); y += 24)
             painter.drawPoint(x, y);
@@ -345,12 +345,12 @@ void ImageCanvas::paintEvent(QPaintEvent *)
     {
         const QPointF center(width() / 2.0, height() / 2.0 - 26);
         const QRectF icon(center.x() - 34, center.y() - 48, 68, 68);
-        painter.setPen(QPen(QColor("#2c4961"), 1.5));
-        painter.setBrush(QColor("#132334"));
-        painter.drawRoundedRect(icon, 17, 17);
+        painter.setPen(QPen(QColor("#454545"), 1.5));
+        painter.setBrush(QColor("#303030"));
+        painter.drawRoundedRect(icon, 8, 8);
         const QRectF frame = icon.adjusted(17, 19, -17, -19);
         painter.setBrush(Qt::NoBrush);
-        painter.setPen(QPen(QColor("#64c9c0"), 1.8));
+        painter.setPen(QPen(QColor("#60CDFF"), 1.8));
         painter.drawRoundedRect(frame, 3, 3);
         QPainterPath mountains;
         mountains.moveTo(frame.left() + 3, frame.bottom() - 4);
@@ -361,11 +361,11 @@ void ImageCanvas::paintEvent(QPaintEvent *)
         painter.drawPath(mountains);
         painter.drawEllipse(frame.topLeft() + QPointF(8, 7), 2, 2);
         painter.setFont(canvasFont(13, QFont::DemiBold));
-        painter.setPen(QColor("#d3e1ed"));
+        painter.setPen(QColor("#F5F5F5"));
         painter.drawText(QRectF(0, center.y() + 38, width(), 30), Qt::AlignCenter,
                          QStringLiteral("拖入图片，开始视觉推理"));
         painter.setFont(canvasFont(9));
-        painter.setPen(QColor("#748a9f"));
+        painter.setPen(QColor("#B8B8B8"));
         painter.drawText(QRectF(0, center.y() + 77, width(), 22), Qt::AlignCenter,
                          QStringLiteral("或选择图片文件 · PNG / JPG / BMP / WEBP"));
     }
@@ -384,7 +384,7 @@ void ImageCanvas::paintEvent(QPaintEvent *)
         paintAnnotations(painter, m_scale, false);
         painter.restore();
 
-        painter.setPen(QPen(QColor("#415c73"), 1));
+        painter.setPen(QPen(QColor("#626262"), 1));
         painter.setBrush(Qt::NoBrush);
         const QRectF corners = target.adjusted(-5, -5, 5, 5);
         drawCorner(painter, corners.topLeft(), 1, 1);
@@ -398,24 +398,24 @@ void ImageCanvas::paintEvent(QPaintEvent *)
             painter.setFont(canvasFont(9, QFont::DemiBold));
             const qreal badgeWidth = painter.fontMetrics().horizontalAdvance(text) + 24;
             const QRectF badge(18, 18, badgeWidth, 30);
-            painter.setPen(QPen(QColor("#4c657b"), 1));
-            painter.setBrush(QColor("#162636"));
+            painter.setPen(QPen(QColor("#454545"), 1));
+            painter.setBrush(QColor("#272727"));
             painter.drawRoundedRect(badge, 6, 6);
-            painter.setPen(QColor("#b8cbda"));
+            painter.setPen(QColor("#B8B8B8"));
             painter.drawText(badge, Qt::AlignCenter, text);
         }
     }
 
     if (m_dropActive)
     {
-        painter.fillRect(rect(), QColor(45, 212, 191, 18));
-        painter.setPen(QPen(QColor("#2dd4bf"), 2, Qt::DashLine));
+        painter.fillRect(rect(), QColor(96, 205, 255, 18));
+        painter.setPen(QPen(QColor("#60CDFF"), 2, Qt::DashLine));
         painter.setBrush(Qt::NoBrush);
         painter.drawRoundedRect(QRectF(rect()).adjusted(10, 10, -10, -10), 12, 12);
     }
     if (hasFocus())
     {
-        painter.setPen(QPen(QColor("#356572"), 1));
+        painter.setPen(QPen(QColor("#60CDFF"), 1));
         painter.setBrush(Qt::NoBrush);
         painter.drawRect(rect().adjusted(0, 0, -1, -1));
     }

@@ -1,0 +1,6 @@
+[1/8] Automatic MOC for target vision-studio
+[2/7] Automatic MOC for target vision-ui-tests
+[3/6] Building CXX object CMakeFiles/vision-ui-tests.dir/src/ui/mainwindow.cpp.o
+[4/6] Building CXX object CMakeFiles/vision-studio.dir/src/ui/mainwindow.cpp.o
+[5/6] Linking CXX executable vision-ui-tests
+[6/6] Linking CXX executable bin/vision-studio

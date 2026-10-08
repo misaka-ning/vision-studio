@@ -1,1 +1,1 @@
-<RCC><qresource prefix="/"><file alias="app-icon.svg">assets/app-icon.svg</file><file alias="chevron-up.svg">assets/chevron-up.svg</file><file alias="chevron-down.svg">assets/chevron-down.svg</file></qresource></RCC>
+<RCC><qresource prefix="/"><file alias="app-icon.svg">assets/app-icon.svg</file><file alias="chevron-up.svg">assets/chevron-up.svg</file><file alias="chevron-down.svg">assets/chevron-down.svg</file><file alias="fluent-dark.qss">assets/fluent-dark.qss</file><file alias="fluent-check.svg">assets/fluent-check.svg</file></qresource></RCC>

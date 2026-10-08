@@ -310,50 +310,50 @@ QString bridgeScript()
             document.documentElement.style.colorScheme = 'dark';
             const style = document.createElement('style');
             style.textContent = `
-                html, body, #target, .default { background: #0b1420 !important; color: #dce6ef; }
-                #sidebar, #menu, #toolbar, .sidebar, .menu { background-color: #152330 !important; color: #dce6ef; }
-                .sidebar-item, .sidebar-item-name, .sidebar-item-value { color: #dce6ef !important; }
+                html, body, #target, .default { background: #202020 !important; color: #F5F5F5; }
+                #sidebar, #menu, #toolbar, .sidebar, .menu { background-color: #272727 !important; color: #F5F5F5; }
+                .sidebar-item, .sidebar-item-name, .sidebar-item-value { color: #F5F5F5 !important; }
                 .sidebar-item-value, .sidebar-item-selector, .sidebar-find-search {
-                    background: #1d3143 !important; border-color: #30485c !important; color: #dce6ef !important;
+                    background: #303030 !important; border-color: #454545 !important; color: #F5F5F5 !important;
                 }
-                .sidebar-item-value-content { background: #192c3d !important; border-color: #30485c !important; }
-                .sidebar-find-query, .sidebar-find-content li, .sidebar-closebutton { color: #bacbdb; }
-                .sidebar-find-content li.focus { background: #294960; color: #fff; }
-                .sidebar-documentation a { color: #70c9c6; }
-                .menu .menu-command { color: #dce6ef !important; }
-                .menu .menu-command:disabled { color: #6c8295 !important; }
-                .menu .menu-command:focus { background: #286958; }
+                .sidebar-item-value-content { background: #303030 !important; border-color: #454545 !important; }
+                .sidebar-find-query, .sidebar-find-content li, .sidebar-closebutton { color: #B8B8B8; }
+                .sidebar-find-content li.focus { background: #35434a; color: #fff; }
+                .sidebar-documentation a { color: #60CDFF; }
+                .menu .menu-command { color: #F5F5F5 !important; }
+                .menu .menu-command:disabled { color: #808080 !important; }
+                .menu .menu-command:focus { background: #35434a; }
                 .toolbar-select select, .toolbar-path-name-button, .toolbar-path-back-button {
-                    background: #254157; border-color: #365b73; color: #e4edf6;
+                    background: #303030; border-color: #454545; color: #F5F5F5;
                 }
-                .toolbar-icon .stroke { stroke: #b4c9da; }
-                .toolbar-icon .fill { fill: #b4c9da; }
-                .toolbar-icon .border { stroke: #0b1420; }
-                .node path, .node line { stroke: #3b5164; }
-                .node-item path { stroke: #3b5164; }
-                .node-item:not(.node-item-type) > path { fill: #192a39; }
-                .node-item text { fill: #e5eef7 !important; }
+                .toolbar-icon .stroke { stroke: #B8B8B8; }
+                .toolbar-icon .fill { fill: #B8B8B8; }
+                .toolbar-icon .border { stroke: #202020; }
+                .node path, .node line { stroke: #626262; }
+                .node-item path { stroke: #626262; }
+                .node-item:not(.node-item-type) > path { fill: #272727; }
+                .node-item text { fill: #F5F5F5 !important; }
                 .node-item-type text { fill: #fff !important; }
-                .node-item-type-constant > path, .node-item-type-control > path, .node-item-function > path { fill: #23394b !important; }
-                .node-item-type-constant > text, .node-item-type-control > text, .node-item-function > text { fill: #e5eef7 !important; }
-                .node-item-type:hover > path { fill: #35516a !important; }
+                .node-item-type-constant > path, .node-item-type-control > path, .node-item-function > path { fill: #303030 !important; }
+                .node-item-type-constant > text, .node-item-type-control > text, .node-item-function > text { fill: #F5F5F5 !important; }
+                .node-item-type:hover > path { fill: #454545 !important; }
                 .node-item-type:hover text { fill: #fff; }
                 .node-item-undefined > path { fill: #a4323c !important; }
-                .node-argument > text, .edge-label { fill: #d0ddeb !important; }
+                .node-argument > text, .edge-label { fill: #F5F5F5 !important; }
                 .node-argument-list > path, .node-argument-list:hover > path,
                 .node-item-input > path, .node-item-input:hover > path,
                 .node-item-constant > path, .node-item-constant:hover > path,
                 .node-item-function > path, .node-item-function:hover > path,
                 .graph-item-input > path, .graph-item-input:hover > path,
-                .graph-item-output > path, .graph-item-output:hover > path { fill: #23394b !important; }
-                .node-block > .node-block-background { fill: #0b1420 !important; }
-                .node-block .edge-path { stroke: #8aa2b8; }
-                .edge-path { stroke: #8aa2b8; }
-                .edge-label text { fill: #bacbdb; }
-                #arrowhead, #arrowhead-tunnel { fill: #8aa2b8; }
+                .graph-item-output > path, .graph-item-output:hover > path { fill: #303030 !important; }
+                .node-block > .node-block-background { fill: #202020 !important; }
+                .node-block .edge-path { stroke: #B8B8B8; }
+                .edge-path { stroke: #B8B8B8; }
+                .edge-label text { fill: #B8B8B8; }
+                #arrowhead, #arrowhead-tunnel { fill: #B8B8B8; }
                 .select > .node.node-border, .select.edge-path, .select.node-argument > rect,
-                .node-block .select.edge-path { stroke: #38c9a7 !important; }
-                #arrowhead-hover, #arrowhead-select { fill: #38c9a7 !important; }
+                .node-block .select.edge-path { stroke: #60CDFF !important; }
+                #arrowhead-hover, #arrowhead-select { fill: #60CDFF !important; }
                 #logo-github, #logo-netron { display: none !important; }
             `;
             document.head.appendChild(style);
@@ -586,9 +586,12 @@ ModelViewer::ModelViewer(QWidget *parent) : QWidget(parent)
         mode->setCursor(Qt::PointingHandCursor);
         mode->setMinimumHeight(34);
         mode->setStyleSheet(
-            "QPushButton { background:#162737; color:#a7bdd0; border:1px solid #30475a; "
-            "border-radius:7px; padding:6px 15px; } QPushButton:checked { background:#1c4d47; "
-            "color:#72e4c9; border-color:#38c9a7; } QPushButton:hover { border-color:#4c7d8a; }");
+            "QPushButton { background:#303030; color:#B8B8B8; border:1px solid #454545; "
+            "border-radius:4px; padding:6px 15px; } QPushButton:checked { background:#35434a; "
+            "color:#60CDFF; border-color:#60CDFF; } QPushButton:hover { background:#383838; "
+            "border-color:#626262; } QPushButton:checked:hover { background:#3b4d57; "
+            "border-color:#60CDFF; } QPushButton:focus { border-color:#60CDFF; } "
+            "QPushButton:disabled { background:#272727; color:#808080; border-color:#383838; }");
         toolbar->addWidget(mode);
         m_modeButtons.append(mode);
         connect(mode, &QPushButton::clicked, this,
@@ -603,8 +606,8 @@ ModelViewer::ModelViewer(QWidget *parent) : QWidget(parent)
     m_search->setMaximumWidth(340);
     m_search->setMinimumHeight(34);
     m_search->setStyleSheet(
-        "QLineEdit { background:#101e2b; color:#e5eef7; border:1px solid #30475a; "
-        "border-radius:7px; padding:6px 10px; } QLineEdit:focus { border-color:#38c9a7; }");
+        "QLineEdit { background:#303030; color:#F5F5F5; border:1px solid #454545; "
+        "border-radius:4px; padding:6px 10px; } QLineEdit:focus { border-color:#60CDFF; }");
     toolbar->addWidget(m_search);
     layout->addLayout(toolbar);
     m_summary = new QLabel(this);
@@ -612,14 +615,14 @@ ModelViewer::ModelViewer(QWidget *parent) : QWidget(parent)
     m_summary->setTextFormat(Qt::PlainText);
     m_summary->setWordWrap(true);
     m_summary->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
-    m_summary->setStyleSheet("color:#9bb3c8; font-size:12px;");
+    m_summary->setStyleSheet("color:#B8B8B8; font-size:12px;");
     layout->addWidget(m_summary);
     m_hint = new QLabel(this);
     m_hint->setObjectName("modelHierarchyHint");
     m_hint->setWordWrap(true);
     m_hint->setTextFormat(Qt::PlainText);
     m_hint->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
-    m_hint->setStyleSheet("color:#a9c1d4; font-size:12px;");
+    m_hint->setStyleSheet("color:#B8B8B8; font-size:12px;");
     layout->addWidget(m_hint);
     m_stack = new QStackedWidget(this);
     // Netron measures its SVG after three animation frames. Keep its browser visible beneath
@@ -628,15 +631,15 @@ ModelViewer::ModelViewer(QWidget *parent) : QWidget(parent)
     layout->addWidget(m_stack);
     m_statusPage = new QWidget(m_stack);
     m_statusPage->setObjectName("modelViewerStatePage");
-    m_statusPage->setStyleSheet("#modelViewerStatePage { background: #0b1420; border: 1px solid #253747; "
-                                "border-radius: 12px; }");
+    m_statusPage->setStyleSheet("#modelViewerStatePage { background: #272727; border: 1px solid #454545; "
+                                "border-radius: 8px; }");
     auto *statusLayout = new QVBoxLayout(m_statusPage);
     statusLayout->setContentsMargins(36, 40, 36, 40);
     statusLayout->setSpacing(16);
     statusLayout->addStretch();
     m_title = new QLabel(QStringLiteral("查看模型结构"), m_statusPage);
     m_title->setAlignment(Qt::AlignCenter);
-    m_title->setStyleSheet("color: #e4edf6; font-size: 22px; font-weight: 600;");
+    m_title->setStyleSheet("color: #F5F5F5; font-size: 22px; font-weight: 600;");
     statusLayout->addWidget(m_title);
     m_status = new QLabel(m_statusPage);
     m_status->setObjectName("modelViewerStatus");
@@ -644,15 +647,15 @@ ModelViewer::ModelViewer(QWidget *parent) : QWidget(parent)
     m_status->setWordWrap(true);
     m_status->setTextFormat(Qt::PlainText);
     m_status->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    m_status->setStyleSheet("color: #98afc3; font-size: 14px;");
+    m_status->setStyleSheet("color: #B8B8B8; font-size: 14px;");
     statusLayout->addWidget(m_status);
     m_progress = new QProgressBar(m_statusPage);
     m_progress->setRange(0, 0);
     m_progress->setMaximumWidth(300);
     m_progress->setFixedHeight(4);
     m_progress->setTextVisible(false);
-    m_progress->setStyleSheet("QProgressBar { background: #213346; border: 0; border-radius: 2px; } "
-                              "QProgressBar::chunk { background: #38c9a7; }");
+    m_progress->setStyleSheet("QProgressBar { background: #303030; border: 0; border-radius: 2px; } "
+                              "QProgressBar::chunk { background: #60CDFF; }");
     statusLayout->addWidget(m_progress, 0, Qt::AlignHCenter);
     m_retry = new QPushButton(QStringLiteral("重试加载"), m_statusPage);
     m_retry->setObjectName("modelViewerRetry");
@@ -702,14 +705,14 @@ ModelViewer::ModelViewer(QWidget *parent) : QWidget(parent)
     parameterLayout->addWidget(m_parameters);
     m_stack->addWidget(m_parametersPage);
     const QString viewStyle =
-        "QTreeView, QTableView { background:#0b1420; alternate-background-color:#101f2d; color:#e5eef7; "
-        "border:1px solid #2b4053; border-radius:8px; font-size:12px; gridline-color:#263d50; outline:0; } "
+        "QTreeView, QTableView { background:#272727; alternate-background-color:#2c2c2c; color:#F5F5F5; "
+        "border:1px solid #454545; border-radius:8px; font-size:13px; gridline-color:#404040; outline:0; } "
         "QTreeView::item, QTableView::item { padding:6px; } "
-        "QTreeView::item:selected, QTableView::item:selected { background:#235347; color:#eafff7; } "
-        "QTreeView::item:hover, QTableView::item:hover { background:#20394d; } "
-        "QHeaderView::section { background:#182c3d; color:#bcd0df; border:0; border-bottom:1px solid "
-        "#365065; "
-        "padding:8px; font-weight:600; } QTableView QTableCornerButton::section { background:#182c3d; "
+        "QTreeView::item:selected, QTableView::item:selected { background:#35434a; color:#F5F5F5; } "
+        "QTreeView::item:hover, QTableView::item:hover { background:#353535; } "
+        "QHeaderView::section { background:#303030; color:#B8B8B8; border:0; border-bottom:1px solid "
+        "#454545; "
+        "padding:8px; font-weight:600; } QTableView QTableCornerButton::section { background:#303030; "
         "border:0; }";
     m_tree->setStyleSheet(viewStyle);
     m_parameters->setStyleSheet(viewStyle);
@@ -721,7 +724,7 @@ ModelViewer::ModelViewer(QWidget *parent) : QWidget(parent)
     m_details->setTextInteractionFlags(Qt::TextSelectableByMouse);
     m_details->setMinimumHeight(78);
     m_details->setMaximumHeight(140);
-    m_details->setStyleSheet("background:#142536; color:#c9dfed; border:1px solid #2d475b; "
+    m_details->setStyleSheet("background:#303030; color:#F5F5F5; border:1px solid #454545; "
                              "border-radius:8px; padding:10px 14px; font-size:12px;");
     layout->addWidget(m_details);
     connect(m_search, &QLineEdit::textChanged, this,
@@ -1257,7 +1260,7 @@ void ModelViewer::startBrowser(const QUrl &url, quint64 generation)
     m_webView->setObjectName("netronWebView");
     m_webView->setAcceptDrops(false);
     auto *page = new LocalPage(m_profile, url, m_webView);
-    page->setBackgroundColor(QColor("#0b1420"));
+    page->setBackgroundColor(QColor("#202020"));
     m_webView->setPage(page);
     auto *settings = page->settings();
     settings->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows, false);

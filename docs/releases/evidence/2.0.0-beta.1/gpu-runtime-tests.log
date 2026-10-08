@@ -1,0 +1,26 @@
+test_atomic_publication_never_overwrites_unknown_destination (gpu_runtime_tests.GpuRuntimeTests.test_atomic_publication_never_overwrites_unknown_destination) ... ok
+test_cancel_at_candidate_probe_keeps_old_environment (gpu_runtime_tests.GpuRuntimeTests.test_cancel_at_candidate_probe_keeps_old_environment) ... ok
+test_cancel_at_exchange_boundary_restores_old_environment (gpu_runtime_tests.GpuRuntimeTests.test_cancel_at_exchange_boundary_restores_old_environment) ... ok
+test_cancel_at_first_rename_boundary_retracts_runtime (gpu_runtime_tests.GpuRuntimeTests.test_cancel_at_first_rename_boundary_retracts_runtime) ... ok
+test_cancel_during_probe_stops_cuda_child (gpu_runtime_tests.GpuRuntimeTests.test_cancel_during_probe_stops_cuda_child) ... ok
+test_cancel_stops_private_child_process_group (gpu_runtime_tests.GpuRuntimeTests.test_cancel_stops_private_child_process_group) ... ok
+test_complete_lock_uses_hashes_and_expected_cuda_pins (gpu_runtime_tests.GpuRuntimeTests.test_complete_lock_uses_hashes_and_expected_cuda_pins) ... ok
+test_complete_offline_wheelhouse_checks_python_and_publisher_hash (gpu_runtime_tests.GpuRuntimeTests.test_complete_offline_wheelhouse_checks_python_and_publisher_hash) ... ok
+test_default_cuda_links_use_canonical_official_host (gpu_runtime_tests.GpuRuntimeTests.test_default_cuda_links_use_canonical_official_host) ... ok
+test_failed_final_probe_retracts_first_publication (gpu_runtime_tests.GpuRuntimeTests.test_failed_final_probe_retracts_first_publication) ... ok
+test_failed_replacement_probe_restores_old_runtime (gpu_runtime_tests.GpuRuntimeTests.test_failed_replacement_probe_restores_old_runtime) ... ok
+test_failed_rollback_keeps_unique_old_backup_out_of_cleanup (gpu_runtime_tests.GpuRuntimeTests.test_failed_rollback_keeps_unique_old_backup_out_of_cleanup) ... ok
+test_inventory_preserves_ort_third_party_notice (gpu_runtime_tests.GpuRuntimeTests.test_inventory_preserves_ort_third_party_notice) ... ok
+test_missing_runtime_does_not_run_an_interpreter (gpu_runtime_tests.GpuRuntimeTests.test_missing_runtime_does_not_run_an_interpreter) ... ok
+test_probe_cancellation_kills_sigterm_ignoring_grandchild (gpu_runtime_tests.GpuRuntimeTests.test_probe_cancellation_kills_sigterm_ignoring_grandchild) ... ok
+test_ready_runtime_is_reused_without_download (gpu_runtime_tests.GpuRuntimeTests.test_ready_runtime_is_reused_without_download) ... ok
+test_relocation_updates_only_generated_entry_scripts (gpu_runtime_tests.GpuRuntimeTests.test_relocation_updates_only_generated_entry_scripts) ... ok
+test_setup_cancellation_kills_sigterm_ignoring_grandchild (gpu_runtime_tests.GpuRuntimeTests.test_setup_cancellation_kills_sigterm_ignoring_grandchild) ... ok
+test_symlink_directory_is_rejected (gpu_runtime_tests.GpuRuntimeTests.test_symlink_directory_is_rejected) ... ok
+test_unknown_directory_is_preserved (gpu_runtime_tests.GpuRuntimeTests.test_unknown_directory_is_preserved) ... ok
+test_wrong_pins_are_not_a_managed_runtime (gpu_runtime_tests.GpuRuntimeTests.test_wrong_pins_are_not_a_managed_runtime) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 1.126s
+
+OK

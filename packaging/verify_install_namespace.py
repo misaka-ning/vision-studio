@@ -23,6 +23,7 @@ import tempfile
 import time
 
 from verify_deb import Audit, archive_members, deb_fields, valid_model_display
+import release_metadata
 
 
 MOUNT = "/tmp/vision-install-qa"
@@ -150,6 +151,11 @@ def verify(args, workspace, audit):
     control = deb_fields(result.stdout)
     audit.require(control.get("Package") == "vision-studio" and control.get("Architecture") == "amd64",
                   "Unexpected package or architecture")
+    try:
+        application_version = release_metadata.application_version_from_debian(control.get("Version", ""))
+        audit.details["application_version"] = application_version
+    except ValueError as error:
+        audit.require(False, str(error))
     archive_members(args.deb, audit)
     # List control members directly, never execute a package's script. An
     # application requiring maintainer scripts needs a separately reviewed QA.
@@ -218,7 +224,7 @@ def verify(args, workspace, audit):
                        "elapsed_seconds": elapsed, "report": report,
                        "rendering_flags": "--disable-gpu", "sandbox_disabled_by_test": False}
     audit.details["inference"] = smoke
-    version = tuple(int(value) for value in re.findall(r"\d+", control.get("Version", "0"))[:3])
+    version = release_metadata.version_key(application_version)[:3]
     if version >= (1, 6, 0):
         # This namespace has no network/GPU devices. The missing-runtime probe
         # must report unprepared without downloading or changing the CPU tree.

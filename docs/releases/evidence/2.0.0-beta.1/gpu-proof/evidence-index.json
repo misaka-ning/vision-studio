@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "version": "2.0.0-beta.1",
+  "scope": "Fresh source build GPU evidence; final DEB GPU validation is separate",
+  "files": [
+    {
+      "path": "backend-recording-qa.json",
+      "bytes": 5337,
+      "sha256": "69a405a5cb6207d7e67656a406e72dc7cc61380dec9f65460b804c2b5e64cdf3",
+      "proves": "Frozen build-beta GPU backend and recording QA, 10+14 passed, no skips"
+    },
+    {
+      "path": "ctest-run.json",
+      "bytes": 2537,
+      "sha256": "51dcf7516c1fdde99048f3abbdb5bb89779f6517e63782f7ce3ae33581e44ae6",
+      "proves": "Exact CTest command, isolated environment and frozen binary hashes"
+    },
+    {
+      "path": "gpu-ctest-detail.log",
+      "bytes": 3921,
+      "sha256": "b011cffc116428dc570ff887e260f093fb8f99fcd1449f404d41d5134dd34bb1",
+      "proves": "Raw verbose QtTest/CTest evidence including three PT families, C1/C3, CUDA cancellation recovery and right-eye grayscale recording"
+    },
+    {
+      "path": "onnx-profile/profile-qa.json",
+      "bytes": 6866,
+      "sha256": "2e6e259146c07318e66ff4997cc6aef6f4179f0a7eea97dc3d2fda9ca0c54819",
+      "proves": "Fresh real ORT CUDA node profiling and full-version exported results"
+    },
+    {
+      "path": "onnx-profile/smoke.log",
+      "bytes": 238,
+      "sha256": "2bbf6c62f29d92e6d0a5fea0ef6e0a3d7af75ee8a1e2401ea9e65abde7251ef2",
+      "proves": "Raw app stdout/stderr forced CUDA inference"
+    },
+    {
+      "path": "onnx-profile/images/smoke-report.json",
+      "bytes": 305,
+      "sha256": "836e9845cd3c7bd041e55ba6b814afea0f2124f9e340291a11b80f8fedb8443a",
+      "proves": "Actual requested/actual CUDA device and predictions"
+    },
+    {
+      "path": "onnx-profile/node-trace_2026-10-08_11-10-48.json",
+      "bytes": 287561,
+      "sha256": "37f934838ad3b1836b7b50f4fb7efae2952aba8bf7de09806e923aac361c7147",
+      "proves": "Raw fresh ONNX Runtime trace with CUDAExecutionProvider nodes"
+    },
+    {
+      "path": "onnx-profile/images/bus-20261008-111049-120-f1.json",
+      "bytes": 2560,
+      "sha256": "d73de0b126c3803e5d148a6c61deb08458cce2fc6e4f7a3413671763e1722904",
+      "proves": "Real full-version CUDA result export"
+    }
+  ]
+}

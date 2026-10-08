@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "version": "2.0.0-beta.1",
+  "scope": "Fresh frozen application ONNX CUDA profiling, not DEB validation",
+  "command": [
+    "/home/misaka/文档/ChatGPT/yolo/build-beta/bin/vision-studio",
+    "--device",
+    "cuda",
+    "--gpu-index",
+    "0",
+    "--smoke",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/onnx-profile/images"
+  ],
+  "started_at": "2026-10-08T11:10:48+0800",
+  "environment": {
+    "QT_QPA_PLATFORM": "offscreen",
+    "VISION_STUDIO_GPU_RUNTIME_DIR": "/home/misaka/.local/share/vision-studio/gpu-runtime",
+    "VISION_STUDIO_PYTHON": "/home/misaka/文档/ChatGPT/yolo/build/release-runtime/bin/python3",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONNOUSERSITE": "1",
+    "HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/onnx-profile/state/home",
+    "XDG_CONFIG_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/onnx-profile/state/config",
+    "XDG_DATA_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/onnx-profile/state/data",
+    "XDG_CACHE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/onnx-profile/state/cache",
+    "XDG_STATE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/onnx-profile/state/state",
+    "XDG_RUNTIME_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/onnx-profile/state/runtime",
+    "VISION_STUDIO_DATA_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/onnx-profile/state/app-data",
+    "YOLO_CONFIG_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/onnx-profile/state/ultralytics",
+    "YOLOV5_CONFIG_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/onnx-profile/state/yolov5",
+    "MPLCONFIGDIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/onnx-profile/state/matplotlib",
+    "TORCH_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/onnx-profile/state/torch",
+    "CUDA_CACHE_PATH": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/onnx-profile/state/cuda-cache",
+    "TMPDIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/onnx-profile/state/tmp",
+    "VISION_STUDIO_HOME": "/home/misaka/文档/ChatGPT/yolo",
+    "VISION_STUDIO_ORT_PROFILE_PREFIX": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/onnx-profile/node-trace",
+    "QTWEBENGINE_CHROMIUM_FLAGS": "--disable-gpu",
+    "QT_QUICK_BACKEND": "software"
+  },
+  "success": true,
+  "executable": {
+    "path": "build-beta/bin/vision-studio",
+    "sha256": "9d568ec596571bc8ae9933318ab8c718235499cc4d909a207c9c1af186f726ed",
+    "bytes": 983112
+  },
+  "exit_code": 0,
+  "checks": {
+    "smoke_success": true,
+    "cuda_device": true,
+    "actual_cuda_nodes": true,
+    "same_version_export": true
+  },
+  "providers": {
+    "CUDAExecutionProvider": 364
+  },
+  "profile": {
+    "path": "onnx-profile/node-trace_2026-10-08_11-10-48.json",
+    "bytes": 287561,
+    "sha256": "37f934838ad3b1836b7b50f4fb7efae2952aba8bf7de09806e923aac361c7147"
+  },
+  "actual_cuda_smoke": {
+    "actual_device": "cuda",
+    "backend": "ONNX Runtime / CUDA",
+    "device_index": 0,
+    "device_name": "NVIDIA GeForce RTX 4060",
+    "device_notice": "",
+    "error": "",
+    "inference_ms": 9.589154,
+    "predictions": 5,
+    "qt": "6.8.3",
+    "requested_device": "cuda",
+    "success": true
+  },
+  "export_evidence": [
+    {
+      "file": {
+        "path": "onnx-profile/images/bus-20261008-111049-120-f1.json",
+        "bytes": 2560,
+        "sha256": "d73de0b126c3803e5d148a6c61deb08458cce2fc6e4f7a3413671763e1722904"
+      },
+      "metadata": {
+        "actual_device": "cuda",
+        "application": "Vision Studio",
+        "backend": "ONNX Runtime / CUDA",
+        "config": {
+          "color_mode": "rgb",
+          "confidence_threshold": 0.25,
+          "input_channels": 3,
+          "input_size": 640,
+          "nms_iou": 0.44999998807907104,
+          "preprocess": {
+            "color_mode": "rgb",
+            "mean_rgb": [
+              0,
+              0,
+              0
+            ],
+            "mode": "configured",
+            "scale": 0.00392157,
+            "swap_rb": true
+          }
+        },
+        "device_index": 0,
+        "device_name": "NVIDIA GeForce RTX 4060",
+        "device_notice": "",
+        "frame": 1,
+        "height": 1080,
+        "inference_ms": 9.589154,
+        "model": "yolov5n.onnx",
+        "model_file": "/home/misaka/文档/ChatGPT/yolo/models/yolov5n.onnx",
+        "predictions": [
+          {
+            "class_id": 0,
+            "confidence": 0.8113210797309875,
+            "height": 491.25525856018066,
+            "label": "person",
+            "width": 178.21703052520752,
+            "x": 50.96057653427124,
+            "y": 397.24106884002686
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.7569612860679626,
+            "height": 448.6468105316162,
+            "label": "person",
+            "width": 123.39116334915161,
+            "x": 221.85903239250183,
+            "y": 412.81274700164795
+          },
+          {
+            "class_id": 5,
+            "confidence": 0.7007485628128052,
+            "height": 551.2551326751709,
+            "label": "bus",
+            "width": 759.9337577819824,
+            "x": 16.60030746459961,
+            "y": 235.70589351654053
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.6967292428016663,
+            "height": 476.4364356994629,
+            "label": "person",
+            "width": 123.45950174331665,
+            "x": 686.5404982566833,
+            "y": 389.5322971343994
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.28018414974212646,
+            "height": 311.0678987503052,
+            "label": "person",
+            "width": 64.4485033750534,
+            "x": 0,
+            "y": 567.5767951011658
+          }
+        ],
+        "requested_device": "cuda",
+        "source": "/home/misaka/文档/ChatGPT/yolo/assets/bus.jpg",
+        "source_frame_size": {
+          "height": 1080,
+          "width": 810
+        },
+        "stereo_view": "full",
+        "task": "YOLOv5",
+        "timestamp": "2026-10-08T11:10:49.344",
+        "total_ms": 13.803023,
+        "version": "2.0.0-beta.1",
+        "width": 810
+      }
+    }
+  ],
+  "smoke_report": {
+    "path": "onnx-profile/images/smoke-report.json",
+    "bytes": 305,
+    "sha256": "836e9845cd3c7bd041e55ba6b814afea0f2124f9e340291a11b80f8fedb8443a"
+  },
+  "elapsed_seconds": 1.77,
+  "finished_at": "2026-10-08T11:10:50+0800",
+  "raw_log": {
+    "path": "onnx-profile/smoke.log",
+    "bytes": 238,
+    "sha256": "2bbf6c62f29d92e6d0a5fea0ef6e0a3d7af75ee8a1e2401ea9e65abde7251ef2"
+  }
+}

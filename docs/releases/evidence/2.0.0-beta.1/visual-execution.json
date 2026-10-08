@@ -1,0 +1,21 @@
+{
+  "exit_code": 0,
+  "isolated_env": {
+    "HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/user-state/home",
+    "XDG_CONFIG_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/user-state/config",
+    "XDG_CACHE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/user-state/cache",
+    "XDG_DATA_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/user-state/xdg-data",
+    "XDG_RUNTIME_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/user-state/runtime",
+    "VISION_STUDIO_DATA_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/user-state/data",
+    "VISION_STUDIO_HOME": "/home/misaka/文档/ChatGPT/yolo",
+    "VISION_STUDIO_PYTHON": "/home/misaka/文档/ChatGPT/yolo/build/release-runtime/bin/python3",
+    "VISION_STUDIO_GPU_RUNTIME_DIR": "/home/misaka/.local/share/vision-studio/gpu-runtime",
+    "QT_QPA_PLATFORM": "offscreen",
+    "QTWEBENGINE_CHROMIUM_FLAGS": "--disable-gpu",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "gpu_ready_sha256_before": "9463a2964cf3af0410d1a0d8e20e9b4a2c07e4531fe57ddb327a8335f3e32c66",
+  "gpu_ready_sha256_after": "9463a2964cf3af0410d1a0d8e20e9b4a2c07e4531fe57ddb327a8335f3e32c66",
+  "gpu_manifest_unchanged": true,
+  "no_user_app_interaction": true
+}

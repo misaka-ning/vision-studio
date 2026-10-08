@@ -14,7 +14,6 @@ import math
 import os
 from pathlib import Path, PurePosixPath
 import posixpath
-import re
 import shutil
 import signal
 import stat
@@ -23,6 +22,9 @@ import sys
 import tarfile
 import tempfile
 import time
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+import release_metadata
 
 
 PINS = {"schema": 1, "torch_version": "2.9.1+cu128", "torch_cuda": "12.8", "ort_version": "1.23.2"}
@@ -56,10 +58,11 @@ def metadata(deb):
             fields[key] = value.strip()
     if fields.get("Package") != "vision-studio" or fields.get("Architecture") != "amd64":
         raise RuntimeError("Expected a vision-studio amd64 DEB")
-    match = re.fullmatch(r"(?:\d+:)?(\d+\.\d+\.\d+)(?:-[^\s]+)?", fields.get("Version", ""))
-    if not match:
-        raise RuntimeError("DEB has no valid application semantic version")
-    return fields, match.group(1)
+    try:
+        version = release_metadata.application_version_from_debian(fields.get("Version", ""))
+    except ValueError as error:
+        raise RuntimeError("DEB has no valid project application version") from error
+    return fields, version
 
 
 def check_archive(deb):

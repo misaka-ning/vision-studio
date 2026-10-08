@@ -1,0 +1,57 @@
+{
+  "success": true,
+  "version": "2.0.0-beta.1",
+  "errors": [],
+  "embedded_source_files_sha256_verified": 18,
+  "frozen_application_sources_byte_equal": 3031,
+  "application_source": {
+    "file": "vision-studio-2.0.0-beta.1-sources.tar.xz",
+    "bytes": 39390472,
+    "sha256": "e74f73059fcaf0135800ebf5d46f6613b14555b312628d13821caf1a18e32c30"
+  },
+  "complete_source": {
+    "file": "vision-studio-2.0.0-beta.1-complete-source.tar.xz",
+    "bytes": 809632904,
+    "sha256": "de73386af2358a8ca1296726b7c78212fed1e56b77cd1d7e33e07f7d1496bc6b"
+  },
+  "deb_sha256_confirmed": "dd4f23f8cd62c5158f74c44dc5b0d9b7c56b04ef349315b87827823718e0c386",
+  "required_gpu_and_ui_source_files_verified": [
+    "assets/fluent-check.svg",
+    "assets/fluent-dark.qss",
+    "docs/model-hierarchy.png",
+    "docs/preview.png",
+    "packaging/licenses/fluent-qt-design-reference/LICENSE",
+    "packaging/licenses/fluent-qt-design-reference/REFERENCE-PROVENANCE.json",
+    "packaging/verify_gpu_deb.py",
+    "requirements-gpu.lock.txt",
+    "requirements-gpu.txt",
+    "resources.qrc",
+    "scripts/gpu_probe.py",
+    "scripts/gpu_setup.py",
+    "scripts/release_metadata.py",
+    "scripts/setup_gpu.sh",
+    "src/core/gpuruntime.cpp",
+    "src/core/onnxcudabackend.cpp",
+    "src/ui/imagecanvas.cpp",
+    "src/ui/mainwindow.cpp",
+    "src/ui/modelviewer.cpp",
+    "tests/gpu_backend_tests.cpp",
+    "tests/gpu_runtime_tests.py",
+    "tests/release_metadata_tests.py",
+    "vendor/onnxruntime/LICENSE",
+    "vendor/onnxruntime/onnxruntime_c_api.h"
+  ],
+  "note": "All application archive files match frozen source inputs byte for byte. Final package/source verification reports are added to Git after archive creation to avoid recursive self-hashing; product/build sources remain identical.",
+  "schema_version": 1,
+  "frozen_product_files_sha256_verified": 30,
+  "frozen_build_inputs_sha256": "d445220ec962898a0c3a02f971f18493dabf7cc417275a2d810a39308ec74bcd",
+  "frozen_source_inventory_sha256": "1861230356ac9606527c9192f947ecb5ae957bf14efc6f96c37c8efeb463d841",
+  "checks": {
+    "public_and_source_manifests_valid": true,
+    "all_18_embedded_source_files_sha256_valid": true,
+    "all_application_sources_byte_equal": true,
+    "all_30_frozen_product_files_in_archive_and_unchanged": true,
+    "required_gpu_ui_qss_svg_and_mit_notices_present": true,
+    "final_deb_sha256_matches_frozen_build": true
+  }
+}

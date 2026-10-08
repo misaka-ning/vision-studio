@@ -26,10 +26,11 @@ def checksum(data):
 def fixture(project, version="1.5.0"):
     root = project / "output/releases" / version
     root.mkdir(parents=True)
-    deb = f"vision-studio_{version}-1_amd64.deb"
+    deb = release.release_metadata.deb_filename(release.release_metadata.debian_version(version))
     app = f"vision-studio-{version}-sources.tar.xz"
     companion = f"vision-studio-{version}-complete-source.tar.xz"
-    inventory = {"version": version, "application_archive": app, "complete_companion": companion}
+    inventory = {"version": version, "debian_version": release.release_metadata.debian_version(version),
+                 "application_archive": app, "complete_companion": companion}
     data = {deb: b"test deb", app: b"test app source", companion: b"test complete source",
             "SOURCE-INVENTORY.json": json.dumps(inventory).encode(),
             "sources/upstream.tar.xz": b"test upstream source"}
@@ -44,7 +45,7 @@ def fixture(project, version="1.5.0"):
         report = {"success": True, "version": version,
                   "details": {"deb_sha256": checksum(data[deb])}}
         (root / name).write_text(json.dumps(report))
-    if release.version_key(version) >= (1, 6, 0):
+    if release.version_key(version)[:3] >= (1, 6, 0):
         report = {"schema_version": 1, "success": True, "version": version,
                   "details": {"deb_sha256": checksum(data[deb])},
                   "checks": {key: True for key in release.GPU_CHECKS}}
@@ -58,13 +59,15 @@ class FakeGitHub:
     def __init__(self, release_dir, existing=False, draft=False):
         self.root = release_dir
         self.value = ({"id": 42, "tag_name": f"v{release_dir.name}", "draft": draft,
-                       "prerelease": False, "body": "notes", "published_at": None if draft else "today",
+                       "prerelease": release.release_metadata.is_prerelease(release_dir.name),
+                       "body": "notes", "published_at": None if draft else "today",
                        "html_url": "https://github.com/misaka-ning/vision-studio/releases/test"}
                       if existing else None)
         self.rows = []
         self.other_releases = {}
         self.commands = []
         self.next_id = 1
+        self.latest_tag = "v1.6.0"
 
     def release(self, tag):
         if tag == f"v{self.root.name}":
@@ -106,13 +109,15 @@ class FakeGitHub:
         action = argv[2]
         if action == "create":
             self.value = {"id": 42, "tag_name": f"v{self.root.name}", "draft": True,
-                          "prerelease": False, "published_at": None, "body": "notes",
+                          "prerelease": "--prerelease" in argv, "published_at": None, "body": "notes",
                           "html_url": "https://github.com/misaka-ning/vision-studio/releases/test"}
         elif action == "upload":
             self.add_asset(Path(argv[4]))
         elif action == "edit":
             self.value["draft"] = False
             self.value["published_at"] = "today"
+            if "--latest" in argv:
+                self.latest_tag = self.value["tag_name"]
         else:
             raise AssertionError(argv)
         return ""
@@ -151,7 +156,7 @@ class ReleaseTests(unittest.TestCase):
                 github.add_asset(asset.path)
         return github
 
-    def test_versions_use_numeric_order_and_reject_nonstable(self):
+    def test_versions_use_numeric_order_and_reject_unsupported_formats(self):
         self.assertGreater(release.version_key("1.10.0"), release.version_key("1.9.9"))
         for value in ("v1.5.0", "01.5.0", "1.5", "1.5.0-beta", "../1.5.0", "1.5.0;rm"):
             with self.subTest(value=value), self.assertRaises(release.ReleaseError):
@@ -197,6 +202,120 @@ class ReleaseTests(unittest.TestCase):
     def test_verified_gpu_release_still_has_three_manual_assets(self):
         root = fixture(self.project, "1.6.0")
         self.assertEqual(len(release.validate_bundle(root, "1.6.0")), 3)
+
+    def beta_arguments(self):
+        self.args.version = "2.0.0-beta.1"
+        self.args.release_dir = fixture(self.project, self.args.version)
+        return self.args.release_dir
+
+    def test_beta_bundle_uses_safe_filename_and_three_assets(self):
+        root = self.beta_arguments()
+        self.assertEqual({asset.name for asset in release.validate_bundle(root, self.args.version)}, {
+            "vision-studio_2.0.0-beta.1-1_amd64.deb",
+            "vision-studio-2.0.0-beta.1-complete-source.tar.xz", "SHA256SUMS"})
+        old = root / "vision-studio_2.0.0-beta.1-1_amd64.deb"
+        wrong = root / "vision-studio_2.0.0~beta.1-1_amd64.deb"
+        old.rename(wrong)
+        manifest = root / "SHA256SUMS"
+        manifest.write_text(manifest.read_text().replace(old.name, wrong.name))
+        with self.assertRaisesRegex(release.ReleaseError, "exactly one versioned"):
+            release.validate_bundle(root, self.args.version)
+
+    def test_beta_requires_same_full_gpu_qa_as_stable(self):
+        root = self.beta_arguments()
+        (root / "gpu-qa.json").unlink()
+        github = FakeGitHub(root)
+        with self.assertRaises(release.ReleaseError):
+            self.publish(github)
+        self.assertEqual(github.commands, [])
+
+    def test_beta_source_inventory_cannot_claim_a_different_debian_version(self):
+        root = self.beta_arguments()
+        path = root / "SOURCE-INVENTORY.json"
+        inventory = json.loads(path.read_text())
+        old_hash = release.sha256(path)
+        inventory["debian_version"] = "2.0.0-1"
+        path.write_text(json.dumps(inventory))
+        manifest = root / "SOURCE-SHA256SUMS"
+        manifest.write_text(manifest.read_text().replace(old_hash, release.sha256(path)))
+        with self.assertRaisesRegex(release.ReleaseError, "Debian version does not match"):
+            release.validate_bundle(root, root.name)
+
+    def test_beta_publish_is_prerelease_and_preserves_latest_stable(self):
+        root = self.beta_arguments()
+        github = FakeGitHub(root)
+        result = self.publish(github)
+        self.assertTrue(result["published"])
+        self.assertTrue(result["prerelease"])
+        self.assertFalse(result["latest"])
+        self.assertTrue(github.value["prerelease"])
+        self.assertEqual(github.latest_tag, "v1.6.0")
+        for argv in (github.commands[0], github.commands[-1]):
+            self.assertIn("--prerelease", argv)
+            self.assertIn("--latest=false", argv)
+            self.assertNotIn("--latest", argv)
+        self.assertEqual(sum(argv[2] == "upload" for argv in github.commands), 3)
+
+    def test_beta_dry_run_and_published_release_are_never_mutated(self):
+        root = self.beta_arguments()
+        self.args.dry_run = True
+        github = FakeGitHub(root)
+        plan = self.publish(github)
+        self.assertTrue(plan["prerelease"])
+        self.assertFalse(plan["latest"])
+        self.assertEqual(github.commands, [])
+        self.args.resume_draft = True
+        github = FakeGitHub(root, existing=True)
+        with self.assertRaisesRegex(release.ReleaseError, "already exists"):
+            self.publish(github)
+        self.assertEqual(github.commands, [])
+
+    def test_beta_matching_draft_can_resume_without_overwriting_asset(self):
+        root = self.beta_arguments()
+        self.args.resume_draft = True
+        github = FakeGitHub(root, existing=True, draft=True)
+        github.add_asset(root / "SHA256SUMS")
+        self.assertTrue(self.publish(github)["published"])
+        self.assertEqual(github.latest_tag, "v1.6.0")
+        self.assertFalse(any(argv[2] == "create" for argv in github.commands))
+        self.assertEqual(sum(row["name"] == "SHA256SUMS" for row in github.rows), 1)
+
+    def test_beta_and_stable_wrong_draft_types_are_refused(self):
+        beta = self.beta_arguments()
+        self.args.resume_draft = True
+        for root in (beta, self.root):
+            with self.subTest(version=root.name):
+                self.args.version, self.args.release_dir = root.name, root
+                github = FakeGitHub(root, existing=True, draft=True)
+                github.value["prerelease"] = not github.value["prerelease"]
+                with self.assertRaisesRegex(release.ReleaseError, "different tag, notes, or release type"):
+                    self.publish(github)
+                self.assertEqual(github.commands, [])
+
+    def test_beta_verify_accepts_only_published_prerelease_with_matching_assets(self):
+        root = self.beta_arguments()
+        github = FakeGitHub(root, existing=True)
+        for asset in release.validate_bundle(root, root.name):
+            github.add_asset(asset.path)
+        args = argparse.Namespace(version=root.name, release_dir=root,
+                                  project_dir=self.project, legacy=False)
+        self.assertTrue(release.verify(args, github)["prerelease"])
+        github.value["prerelease"] = False
+        with self.assertRaisesRegex(release.ReleaseError, "prerelease type"):
+            release.verify(args, github)
+        self.assertEqual(github.commands, [])
+
+    def test_beta_does_not_displace_or_delete_stable_backups(self):
+        beta = self.beta_arguments()
+        old = fixture(self.project, "1.3.0")
+        middle = fixture(self.project, "1.4.0")
+        github = self.prune_github(old)
+        args = argparse.Namespace(releases_root=self.root.parent, execute=True, project_dir=self.project)
+        plan = release.prune(args, github)
+        self.assertEqual(set(plan["kept"]), {str(self.root), str(middle)})
+        self.assertEqual(plan["removed"], [str(old)])
+        self.assertTrue(beta.is_dir())
+        self.assertFalse(any("beta" in call.args[2] for call in self.published_tag_check.call_args_list))
 
     def test_duplicate_manifest_path_rejected(self):
         path = self.root / "SHA256SUMS"
@@ -275,6 +394,9 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual({row["name"] for row in github.rows}, expected_names)
         self.assertEqual(sum(command[2] == "upload" for command in github.commands), 3)
         self.assertFalse(any("--clobber" in command for command in github.commands))
+        self.assertIn("--latest", github.commands[-1])
+        self.assertNotIn("--prerelease", github.commands[0])
+        self.assertNotIn("--latest=false", github.commands[-1])
 
     def test_existing_published_release_is_never_modified(self):
         github = FakeGitHub(self.root, existing=True)
@@ -403,6 +525,20 @@ class ReleaseTests(unittest.TestCase):
                           [expected, "project(VisionStudio VERSION 1.4.0 LANGUAGES CXX)"]):
             with patch.object(release, "command", side_effect=responses), self.assertRaises(release.ReleaseError):
                 release.verify_tag(github, self.project, "1.5.0")
+
+    def test_beta_tag_requires_full_application_metadata_and_matching_numeric_base(self):
+        beta = "2.0.0-beta.1"
+        expected = "a" * 40
+        github = FakeGitHub(self.root)
+        base = "project(VisionStudio VERSION 2.0.0 LANGUAGES CXX)\n"
+        full = base + 'set(VISION_STUDIO_APP_VERSION "2.0.0-beta.1")'
+        with patch.object(release, "command", side_effect=[expected, full, expected, ""]):
+            self.assertEqual(release.verify_tag(github, self.project, beta), expected)
+        for text in (base, full.replace("VERSION 2.0.0", "VERSION 1.6.0"),
+                     full.replace("beta.1", "beta.2")):
+            with self.subTest(text=text), patch.object(release, "command", side_effect=[expected, text]), \
+                    self.assertRaises(release.ReleaseError):
+                release.verify_tag(github, self.project, beta)
 
     def test_prune_remote_tag_change_protects_snapshot(self):
         old = fixture(self.project, "1.3.0")

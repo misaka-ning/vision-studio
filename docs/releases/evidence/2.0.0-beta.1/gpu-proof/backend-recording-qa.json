@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "version": "2.0.0-beta.1",
+  "success": true,
+  "scope": "Frozen build-beta real GPU backend and recording regressions; does not certify the DEB",
+  "checks": {
+    "ctest_exit_zero": true,
+    "no_failed_or_skipped_cases": true,
+    "all_real_gpu_backend_cases_passed": true,
+    "actual_cuda_right_eye_grayscale_recording": true
+  },
+  "suites": {
+    "RecordingTests": {
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 2707,
+      "passed_cases": [
+        "initTestCase()",
+        "videoIsAnnotatedPlayableAndPublishedOnlyAtFinish()",
+        "grayscaleOddEyePreservesContentAndAddsOnlyEdgePadding()",
+        "cameraTimingUsesMeasuredDurationAndDecodesAllFrames()",
+        "emptyDiscardAndInvalidDirectoryNeverPublishBrokenClips()",
+        "changedResolutionEndsClipWithoutLosingItsPreviousFrames()",
+        "workerRecordsEveryFrameAndFinishesAtEof()",
+        "gpuRightEyeGrayscaleRecordingPreservesActualDevice()",
+        "workerStartAfterFirstPreviewAndCancelClosesOnlyRecordedFrames()",
+        "recordingFailureDoesNotInterruptInference()",
+        "manualStopKeepsInferenceRunningAndRestartCreatesANewClip()",
+        "stoppingDuringOnnxForwardRecordsTheLastCompletedFrame()",
+        "stoppingWithPendingRecordingNeverOpensANewClip()",
+        "cleanupTestCase()"
+      ]
+    },
+    "GpuBackendTests": {
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 56343,
+      "passed_cases": [
+        "initTestCase()",
+        "realModernAndLegacyPtColorAndGrayscale()",
+        "torchScriptC1AndC3GrayscaleDetectionAndClassification()",
+        "nativeGrayC1C3Classification()",
+        "modernAndLegacyRealSingleChannelStems()",
+        "realOnnxCudaMatchesCpuAndExecutesCudaNodes()",
+        "onnxC1AndC3GrayPixelsMatchModelInput()",
+        "onnxCudaCancellationTerminatesRunAndSessionCanRecover()",
+        "ptCudaCancellationStopsChildAndCudaReloadWorks()",
+        "cleanupTestCase()"
+      ]
+    }
+  },
+  "run": {
+    "schema_version": 1,
+    "version": "2.0.0-beta.1",
+    "command": [
+      "ctest",
+      "--test-dir",
+      "/home/misaka/文档/ChatGPT/yolo/build-beta",
+      "-V",
+      "-R",
+      "vision-gpu-tests|vision-recording-tests"
+    ],
+    "started_at": "2026-10-08T11:09:04+0800",
+    "environment": {
+      "QT_QPA_PLATFORM": "offscreen",
+      "VISION_STUDIO_GPU_TESTS": "1",
+      "VISION_STUDIO_GPU_RUNTIME_DIR": "/home/misaka/.local/share/vision-studio/gpu-runtime",
+      "VISION_STUDIO_PYTHON": "/home/misaka/文档/ChatGPT/yolo/build/release-runtime/bin/python3",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHONNOUSERSITE": "1",
+      "HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/home",
+      "XDG_CONFIG_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/config",
+      "XDG_DATA_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/data",
+      "XDG_CACHE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/cache",
+      "XDG_STATE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/state",
+      "XDG_RUNTIME_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/runtime",
+      "VISION_STUDIO_DATA_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/app-data",
+      "YOLO_CONFIG_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/ultralytics",
+      "YOLOV5_CONFIG_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/yolov5",
+      "MPLCONFIGDIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/matplotlib",
+      "TORCH_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/torch",
+      "CUDA_CACHE_PATH": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/cuda-cache",
+      "TMPDIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/gpu-final-proof/tmp"
+    },
+    "binaries": [
+      {
+        "path": "build-beta/bin/vision-studio",
+        "sha256": "9d568ec596571bc8ae9933318ab8c718235499cc4d909a207c9c1af186f726ed",
+        "bytes": 983112
+      },
+      {
+        "path": "build-beta/vision-gpu-tests",
+        "sha256": "8ff36531b336cbf58392c2d9001545fa8eff715b00148f4b0ec4ee3aa89e797b",
+        "bytes": 287552
+      },
+      {
+        "path": "build-beta/vision-recording-tests",
+        "sha256": "31a58400cbf0f297b5abcb40534e5bf496b2e5a6df8e8672cf1dee3f56f1441e",
+        "bytes": 431920
+      }
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 59.393,
+    "finished_at": "2026-10-08T11:10:04+0800"
+  },
+  "raw_log": {
+    "path": "gpu-ctest-detail.log",
+    "sha256": "b011cffc116428dc570ff887e260f093fb8f99fcd1449f404d41d5134dd34bb1"
+  },
+  "coverage_notes": [
+    "Ultralytics YOLOv8/YOLOv5 and TorchScript CPU/CUDA comparison; detection/classification, C1/C3 grayscale, ONNX CUDA nodes, cancellation/recovery",
+    "Actual CUDA right-eye grayscale recording: 8 frames, 320x96 source cropped to 160x96, playable encoded frames and JSON actual-device metadata",
+    "This recording suite proves the right eye on CUDA; independent core tests cover left/right ROI selection, and must be cited separately for left-eye coverage"
+  ]
+}

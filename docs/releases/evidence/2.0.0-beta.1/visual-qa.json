@@ -1,0 +1,373 @@
+{
+    "application_version": "2.0.0-beta.1",
+    "combo_popup": {
+        "context": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/workbench-device-popup.png",
+        "height": 103,
+        "method": "Actual Qt popup grab; context composites only unmodified widget captures at their real positions",
+        "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/combo-popup.png",
+        "width": 220
+    },
+    "critical_geometry": [
+        {
+            "context": "workbench-1580:computeDevice",
+            "fully_within_ancestors": true,
+            "height": 36,
+            "object": "computeDevice",
+            "width": 220,
+            "x": 318,
+            "y": 250
+        },
+        {
+            "context": "workbench-1580:gpuDeviceIndex",
+            "fully_within_ancestors": true,
+            "height": 36,
+            "object": "gpuDeviceIndex",
+            "width": 220,
+            "x": 610,
+            "y": 250
+        },
+        {
+            "context": "workbench-1580:deviceEnvironmentHint",
+            "fully_within_ancestors": true,
+            "height": 36,
+            "object": "deviceEnvironmentHint",
+            "width": 697,
+            "x": 842,
+            "y": 250
+        },
+        {
+            "context": "workbench-1580:inputColorMode",
+            "fully_within_ancestors": true,
+            "height": 36,
+            "object": "inputColorMode",
+            "width": 182,
+            "x": 310,
+            "y": 378
+        },
+        {
+            "context": "workbench-1580:actualDeviceFooter",
+            "fully_within_ancestors": true,
+            "height": 20,
+            "object": "actualDeviceFooter",
+            "width": 310,
+            "x": 1246,
+            "y": 934
+        },
+        {
+            "context": "workbench-1580:start",
+            "fully_within_ancestors": true,
+            "height": 44,
+            "object": "primary",
+            "width": 250,
+            "x": 251,
+            "y": 830
+        },
+        {
+            "context": "workbench-1580:canvas",
+            "fully_within_ancestors": true,
+            "height": 422,
+            "object": "",
+            "width": 744,
+            "x": 529,
+            "y": 384
+        },
+        {
+            "context": "workbench-config-bottom:backend",
+            "fully_within_ancestors": true,
+            "height": 44,
+            "object": "actualDeviceBadge",
+            "width": 241,
+            "x": 251,
+            "y": 776
+        },
+        {
+            "context": "workbench-1260:computeDevice",
+            "fully_within_ancestors": true,
+            "height": 36,
+            "object": "computeDevice",
+            "width": 220,
+            "x": 318,
+            "y": 250
+        },
+        {
+            "context": "workbench-1260:gpuDeviceIndex",
+            "fully_within_ancestors": true,
+            "height": 36,
+            "object": "gpuDeviceIndex",
+            "width": 220,
+            "x": 610,
+            "y": 250
+        },
+        {
+            "context": "workbench-1260:deviceEnvironmentHint",
+            "fully_within_ancestors": true,
+            "height": 36,
+            "object": "deviceEnvironmentHint",
+            "width": 377,
+            "x": 842,
+            "y": 250
+        },
+        {
+            "context": "workbench-1260:inputColorMode",
+            "fully_within_ancestors": true,
+            "height": 36,
+            "object": "inputColorMode",
+            "width": 182,
+            "x": 310,
+            "y": 378
+        },
+        {
+            "context": "workbench-1260:actualDeviceFooter",
+            "fully_within_ancestors": true,
+            "height": 20,
+            "object": "actualDeviceFooter",
+            "width": 310,
+            "x": 926,
+            "y": 794
+        },
+        {
+            "context": "workbench-1260:start",
+            "fully_within_ancestors": true,
+            "height": 44,
+            "object": "primary",
+            "width": 250,
+            "x": 251,
+            "y": 690
+        },
+        {
+            "context": "workbench-1260:canvas",
+            "fully_within_ancestors": true,
+            "height": 282,
+            "object": "",
+            "width": 424,
+            "x": 529,
+            "y": 384
+        },
+        {
+            "context": "model-hierarchy:modelGraphModeButton",
+            "fully_within_ancestors": true,
+            "height": 34,
+            "object": "modelGraphModeButton",
+            "width": 71,
+            "x": 236,
+            "y": 212
+        },
+        {
+            "context": "model-hierarchy:modelHierarchyModeButton",
+            "fully_within_ancestors": true,
+            "height": 34,
+            "object": "modelHierarchyModeButton",
+            "width": 71,
+            "x": 313,
+            "y": 212
+        },
+        {
+            "context": "model-hierarchy:modelParametersModeButton",
+            "fully_within_ancestors": true,
+            "height": 34,
+            "object": "modelParametersModeButton",
+            "width": 71,
+            "x": 390,
+            "y": 212
+        },
+        {
+            "context": "model-hierarchy:modelStructureSearch",
+            "fully_within_ancestors": true,
+            "height": 36,
+            "object": "modelStructureSearch",
+            "width": 340,
+            "x": 1216,
+            "y": 211
+        },
+        {
+            "context": "more-bottom:demo",
+            "fully_within_ancestors": true,
+            "height": 36,
+            "object": "demoButton",
+            "width": 112,
+            "x": 261,
+            "y": 392
+        },
+        {
+            "context": "more-bottom:export",
+            "fully_within_ancestors": true,
+            "height": 36,
+            "object": "exportResultButton",
+            "width": 100,
+            "x": 261,
+            "y": 554
+        }
+    ],
+    "data_directory": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/user-state/data",
+    "device_hint": "GPU 环境已就绪 · 运行时验证所选设备",
+    "fake_business_data": false,
+    "geometry_success": true,
+    "gpu_environment": "GPU 推理环境已就绪\nGPU 0 · NVIDIA GeForce RTX 4060 · 7.6 GB",
+    "graph_focus": {
+        "nodes": 245,
+        "type": "ConcatConcat_19",
+        "zoom": 0.9
+    },
+    "inference": [
+        {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "device_index": -1,
+            "device_name": "CPU",
+            "inference_ms": 81.308576,
+            "model": "yolov5n.onnx",
+            "predictions": 5,
+            "requested_device": "cpu"
+        },
+        {
+            "actual_device": "cuda",
+            "backend": "ONNX Runtime / CUDA",
+            "device_index": 0,
+            "device_name": "NVIDIA GeForce RTX 4060",
+            "inference_ms": 11.785369,
+            "model": "yolov5n.onnx",
+            "predictions": 5,
+            "requested_device": "cuda"
+        }
+    ],
+    "inference_and_cache_success": true,
+    "netron": {
+        "cache_preserved": true,
+        "hierarchy_items": 246,
+        "new_load_signals": 0,
+        "nodes": 245,
+        "parameter_rows": 141
+    },
+    "physical_camera_tested": false,
+    "screenshots": [
+        {
+            "height": 960,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "workbench-cpu",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/workbench-cpu.png",
+            "width": 1580
+        },
+        {
+            "height": 960,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "preview",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/preview.png",
+            "width": 1580
+        },
+        {
+            "height": 960,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "workbench-config-bottom",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/workbench-config-bottom.png",
+            "width": 1580
+        },
+        {
+            "height": 820,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "workbench-minimum",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/workbench-minimum.png",
+            "width": 1260
+        },
+        {
+            "height": 960,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "model-library",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/model-library.png",
+            "width": 1580
+        },
+        {
+            "height": 960,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "model-graph-default",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/model-graph-default.png",
+            "width": 1580
+        },
+        {
+            "height": 960,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "model-graph",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/model-graph.png",
+            "width": 1580
+        },
+        {
+            "height": 960,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "model-hierarchy",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/model-hierarchy.png",
+            "width": 1580
+        },
+        {
+            "height": 960,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "model-parameters",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/model-parameters.png",
+            "width": 1580
+        },
+        {
+            "height": 820,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "model-parameters-minimum",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/model-parameters-minimum.png",
+            "width": 1260
+        },
+        {
+            "height": 820,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "model-hierarchy-minimum",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/model-hierarchy-minimum.png",
+            "width": 1260
+        },
+        {
+            "height": 960,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "history",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/history.png",
+            "width": 1580
+        },
+        {
+            "height": 960,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "guide",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/guide.png",
+            "width": 1580
+        },
+        {
+            "height": 960,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "guide-bottom",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/guide-bottom.png",
+            "width": 1580
+        },
+        {
+            "height": 960,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "recordings",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/recordings.png",
+            "width": 1580
+        },
+        {
+            "height": 960,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "more",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/more.png",
+            "width": 1580
+        },
+        {
+            "height": 820,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "more-minimum",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/more-minimum.png",
+            "width": 1260
+        },
+        {
+            "height": 820,
+            "method": "MainWindow::grab; actual Qt rendering",
+            "name": "more-minimum-bottom",
+            "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-beta-ui/visual-capture/more-minimum-bottom.png",
+            "width": 1260
+        }
+    ],
+    "source": "/home/misaka/文档/ChatGPT/yolo",
+    "success": true,
+    "timestamp": "2026-10-08T11:22:15.344"
+}
