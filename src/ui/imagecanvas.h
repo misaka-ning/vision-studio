@@ -32,6 +32,9 @@ class ImageCanvas final : public QWidget
     void fitToView();
     void actualSize();
     QImage annotatedImage() const;
+    // Pure QImage rendering is safe in a background writer; no QWidget is created.
+    static QImage annotatedResultImage(const vision::InferenceResult &result,
+                                       bool boxesVisible = true, bool labelsVisible = true);
     static vision::InferenceResult createDemoResult();
 
   signals:
@@ -58,6 +61,9 @@ class ImageCanvas final : public QWidget
     void zoomAt(const QPointF &point, double factor);
     int predictionAt(const QPointF &point) const;
     void paintAnnotations(QPainter &painter, qreal scale, bool exporting) const;
+    static void paintResultAnnotations(QPainter &painter, const vision::InferenceResult &result,
+                                       bool boxesVisible, bool labelsVisible, int selected,
+                                       qreal scale, bool exporting);
     static QColor classColor(int classId);
     static QString imageFileFromDrop(const QMimeData *mime);
 

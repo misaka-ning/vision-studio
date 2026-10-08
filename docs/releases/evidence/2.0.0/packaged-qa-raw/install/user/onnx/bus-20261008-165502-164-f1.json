@@ -1,0 +1,90 @@
+{
+    "actual_device": "cpu",
+    "application": "Vision Studio",
+    "backend": "OpenCV DNN / CPU",
+    "config": {
+        "color_mode": "rgb",
+        "confidence_threshold": 0.25,
+        "input_channels": 3,
+        "input_size": 640,
+        "nms_iou": 0.44999998807907104,
+        "preprocess": {
+            "color_mode": "rgb",
+            "mean_rgb": [
+                0,
+                0,
+                0
+            ],
+            "mode": "configured",
+            "scale": 0.00392157,
+            "swap_rb": true
+        }
+    },
+    "device_index": -1,
+    "device_name": "CPU",
+    "device_notice": "CUDA 初始化失败，已自动使用 CPU：GPU 运行环境尚未准备完成：GPU 环境尚未准备，请在「更多 → 计算环境」中准备 GPU 支持。",
+    "frame": 1,
+    "height": 1080,
+    "inference_ms": 50.381074,
+    "model": "yolov5n.onnx",
+    "model_file": "/opt/VisionStudio/models/yolov5n.onnx",
+    "predictions": [
+        {
+            "class_id": 0,
+            "confidence": 0.8113212585449219,
+            "height": 491.2555160522461,
+            "label": "person",
+            "width": 178.21703052520752,
+            "x": 50.9605507850647,
+            "y": 397.24094009399414
+        },
+        {
+            "class_id": 0,
+            "confidence": 0.7569612860679626,
+            "height": 448.64670753479004,
+            "label": "person",
+            "width": 123.39118909835815,
+            "x": 221.85901951789856,
+            "y": 412.8128499984741
+        },
+        {
+            "class_id": 5,
+            "confidence": 0.70074862241745,
+            "height": 551.2556476593018,
+            "label": "bus",
+            "width": 759.9342727661133,
+            "x": 16.600101470947266,
+            "y": 235.7056360244751
+        },
+        {
+            "class_id": 0,
+            "confidence": 0.6967291831970215,
+            "height": 476.43653869628906,
+            "label": "person",
+            "width": 123.45953392982483,
+            "x": 686.5404660701752,
+            "y": 389.5322971343994
+        },
+        {
+            "class_id": 0,
+            "confidence": 0.2801841199398041,
+            "height": 311.06787300109863,
+            "label": "person",
+            "width": 64.4484840631485,
+            "x": 0,
+            "y": 567.576807975769
+        }
+    ],
+    "requested_device": "auto",
+    "source": "/opt/VisionStudio/assets/bus.jpg",
+    "source_frame_size": {
+        "height": 1080,
+        "width": 810
+    },
+    "stereo_view": "full",
+    "task": "YOLOv5",
+    "timestamp": "2026-10-08T16:55:02.165",
+    "total_ms": 55.047306,
+    "version": "2.0.0",
+    "width": 810
+}

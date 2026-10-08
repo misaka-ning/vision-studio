@@ -1,0 +1,151 @@
+{
+  "success": true,
+  "errors": [],
+  "warnings": [],
+  "details": {
+    "deb": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.0.0/vision-studio_2.0.0-1_amd64.deb",
+    "deb_sha256": "2e5a467b07d82cf600eedeec2bd40624a724efccb4715366997ef04f3a4a042e",
+    "application_version": "2.0.0",
+    "archive": {
+      "entries": 35143,
+      "uncompressed_file_bytes": 1656972529
+    },
+    "namespace": {
+      "host_uid": 1000,
+      "installer_namespace_uid": 0,
+      "inference_namespace_uid": 1000,
+      "host_filesystem": "read-only",
+      "network": "isolated/offline",
+      "maintainer_scripts": false,
+      "triggers": false,
+      "skipped_broken_host_tool_aliases": [
+        "/usr/bin/rust-clang",
+        "/usr/bin/rust-lld",
+        "/usr/bin/rust-llvm-dwp"
+      ]
+    },
+    "installation": {
+      "exit_code": 0,
+      "elapsed_seconds": 20.05,
+      "stdout": "Selecting previously unselected package vision-studio.\n(Reading database ... 264931 files and directories currently installed.)\nPreparing to unpack .../vision-install-qa/input.deb ...\nUnpacking vision-studio (2.0.0-1) ...\nSetting up vision-studio (2.0.0-1) ...\n",
+      "stderr": ""
+    },
+    "inference": {
+      "onnx": {
+        "success": true,
+        "exit_code": 0,
+        "elapsed_seconds": 2.12,
+        "report": {
+          "actual_device": "cpu",
+          "backend": "OpenCV DNN / CPU",
+          "device_index": -1,
+          "device_name": "CPU",
+          "device_notice": "CUDA 初始化失败，已自动使用 CPU：GPU 运行环境尚未准备完成：GPU 环境尚未准备，请在「更多 → 计算环境」中准备 GPU 支持。",
+          "error": "",
+          "inference_ms": 50.381074,
+          "predictions": 5,
+          "qt": "6.8.3",
+          "requested_device": "auto",
+          "success": true
+        }
+      },
+      "pt": {
+        "success": true,
+        "exit_code": 0,
+        "elapsed_seconds": 5.22,
+        "report": {
+          "actual_device": "cpu",
+          "backend": "PyTorch / Ultralytics / CPU",
+          "device_index": -1,
+          "device_name": "CPU",
+          "device_notice": "CUDA 初始化失败，已自动使用 CPU：GPU 运行环境尚未准备完成：GPU 环境尚未准备，请在「更多 → 计算环境」中准备 GPU 支持。",
+          "error": "",
+          "inference_ms": 39.76079390849918,
+          "predictions": 5,
+          "qt": "6.8.3",
+          "requested_device": "auto",
+          "success": true
+        }
+      },
+      "model_display": {
+        "success": true,
+        "exit_code": 0,
+        "elapsed_seconds": 3.45,
+        "report": {
+          "application": "Vision Studio",
+          "cache_preserved": true,
+          "display_modes": {
+            "graph": true,
+            "hierarchy": true,
+            "parameters": true
+          },
+          "error": "",
+          "hierarchy_items": 246,
+          "model": "/opt/VisionStudio/models/yolov5n.onnx",
+          "netron": "9.3.1",
+          "nodes": 245,
+          "onnx_hint": "想看完整结构，建使用导出的 ONNX。",
+          "onnx_hint_visible": false,
+          "parameter_rows": 141,
+          "qt": "6.8.3",
+          "success": true,
+          "version": "2.0.0"
+        },
+        "rendering_flags": "--disable-gpu",
+        "sandbox_disabled_by_test": false
+      },
+      "model_display_pt": {
+        "success": true,
+        "exit_code": 0,
+        "elapsed_seconds": 3.26,
+        "report": {
+          "application": "Vision Studio",
+          "cache_preserved": true,
+          "display_modes": {
+            "graph": true,
+            "hierarchy": true,
+            "parameters": true
+          },
+          "error": "",
+          "hierarchy_items": 314,
+          "model": "/opt/VisionStudio/models/yolov8n.pt",
+          "netron": "9.3.1",
+          "nodes": 1,
+          "onnx_hint": "想看完整结构，建使用导出的 ONNX。",
+          "onnx_hint_visible": true,
+          "parameter_rows": 359,
+          "qt": "6.8.3",
+          "success": true,
+          "version": "2.0.0"
+        },
+        "rendering_flags": "--disable-gpu",
+        "sandbox_disabled_by_test": false
+      }
+    },
+    "optional_gpu_unprepared": {
+      "success": true,
+      "elapsed_seconds": 1.32,
+      "report": {
+        "ok": false,
+        "prepared": false,
+        "cuda_available": false,
+        "reason": "GPU 环境尚未准备",
+        "devices": [],
+        "torch_version": "",
+        "torch_cuda": "",
+        "ort_version": "",
+        "driver_version": ""
+      }
+    },
+    "purge": {
+      "exit_code": 0,
+      "elapsed_seconds": 1.98,
+      "stdout": "(Reading database ... 300064 files and directories currently installed.)\nRemoving vision-studio (2.0.0-1) ...\n",
+      "stderr": ""
+    },
+    "user_data_preserved_after_purge": true,
+    "host_dpkg_status_unchanged": true,
+    "host_integration_unchanged": true
+  },
+  "workdir": "/tmp/vision-studio-install-qa-tkfk24h8"
+}

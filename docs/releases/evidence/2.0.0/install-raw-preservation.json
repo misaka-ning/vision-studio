@@ -1,0 +1,279 @@
+{
+  "version": "2.0.0",
+  "mode": "install",
+  "workdir": "/tmp/vision-studio-install-qa-tkfk24h8",
+  "identity": {
+    "device": 66308,
+    "inode": 38835017,
+    "uid": 1000
+  },
+  "files": [
+    {
+      "file": "logs/dpkg.log",
+      "bytes": 1207,
+      "sha256": "7fcfb0eb85dcfe36768996e129cb42ca60b883b13e11495898502271147c6c4a",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/dpkg.log"
+    },
+    {
+      "file": "logs/gpu-unprepared-probe-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/gpu-unprepared-probe-stderr.log"
+    },
+    {
+      "file": "logs/gpu-unprepared-probe-stdout.log",
+      "bytes": 189,
+      "sha256": "1e21598e1e314aff49c7a85a52333422940a3231f8d494e9959bd8d6060980a5",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/gpu-unprepared-probe-stdout.log"
+    },
+    {
+      "file": "logs/install-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/install-stderr.log"
+    },
+    {
+      "file": "logs/install-stdout.log",
+      "bytes": 261,
+      "sha256": "97a0f6955a97153e5575f51e8f6973559b16ac90b78d842dfd975ce12ceca12b",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/install-stdout.log"
+    },
+    {
+      "file": "logs/installed-status-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/installed-status-stderr.log"
+    },
+    {
+      "file": "logs/installed-status-stdout.log",
+      "bytes": 21,
+      "sha256": "9808a6089aef021fe37d633eb5edcf59ccf196ef3150933df87b1831d0f22a3c",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/installed-status-stdout.log"
+    },
+    {
+      "file": "logs/model_display-stderr.log",
+      "bytes": 600,
+      "sha256": "1dcdc2049f11a5f486d744e3afa3b59730a55cf641cb45c1ea0fe319d0055f84",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/model_display-stderr.log"
+    },
+    {
+      "file": "logs/model_display-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/model_display-stdout.log"
+    },
+    {
+      "file": "logs/model_display_pt-stderr.log",
+      "bytes": 595,
+      "sha256": "3766696aecaa4d6b2ff19f0bb06316836d24a823fa278383f30e62f1873cbadf",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/model_display_pt-stderr.log"
+    },
+    {
+      "file": "logs/model_display_pt-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/model_display_pt-stdout.log"
+    },
+    {
+      "file": "logs/namespace-root-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/namespace-root-stderr.log"
+    },
+    {
+      "file": "logs/namespace-root-stdout.log",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/namespace-root-stdout.log"
+    },
+    {
+      "file": "logs/namespace-user-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/namespace-user-stderr.log"
+    },
+    {
+      "file": "logs/namespace-user-stdout.log",
+      "bytes": 5,
+      "sha256": "83c02ac2d48c863dab2ccf6870455aadfc2cec073b8db269b517c879d76aa6d9",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/namespace-user-stdout.log"
+    },
+    {
+      "file": "logs/onnx-stderr.log",
+      "bytes": 595,
+      "sha256": "736fa56b4342492be0775b0e16a6e02bfcd365b15d917516abec25a305f60b7c",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/onnx-stderr.log"
+    },
+    {
+      "file": "logs/onnx-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/onnx-stdout.log"
+    },
+    {
+      "file": "logs/pt-stderr.log",
+      "bytes": 614,
+      "sha256": "d71105ba8089e9505546cf09adcf6857b31e662cdff05a65df3f45fe28cbba72",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/pt-stderr.log"
+    },
+    {
+      "file": "logs/pt-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/pt-stdout.log"
+    },
+    {
+      "file": "logs/purge-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/purge-stderr.log"
+    },
+    {
+      "file": "logs/purge-stdout.log",
+      "bytes": 110,
+      "sha256": "2b9f4af7fd6c639e6c4826c6011fff25d2a03c7ac4d0cc7c5f8ce600eb55643b",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/purge-stdout.log"
+    },
+    {
+      "file": "logs/read-only-user-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/read-only-user-stderr.log"
+    },
+    {
+      "file": "logs/read-only-user-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/read-only-user-stdout.log"
+    },
+    {
+      "file": "user/model_display/model-display-report.json",
+      "bytes": 506,
+      "sha256": "ef0635c8b55159dea0a504cdbdb6b02a4b1788405ae3afaa25dc9c372d803bfd",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/model_display/model-display-report.json"
+    },
+    {
+      "file": "user/model_display/model-display.png",
+      "bytes": 121436,
+      "sha256": "b576db7191017c4289757c3c61b1eed61625caa040891c29e6fb3f07cdef8846",
+      "tracked": null
+    },
+    {
+      "file": "user/model_display/model-hierarchy.png",
+      "bytes": 156488,
+      "sha256": "e2eb13cf7f5331a77d899e882439ce1f4da5db517ffe9de8eb4c404c4094eb28",
+      "tracked": null
+    },
+    {
+      "file": "user/model_display/model-parameters.png",
+      "bytes": 244741,
+      "sha256": "71dc0781c4d4b1a85e694855a90fb18dcd8d4661d326574c325394244dcba3f5",
+      "tracked": null
+    },
+    {
+      "file": "user/data/vision-studio/history.json",
+      "bytes": 1577,
+      "sha256": "224c8657f7c2f983bd9b8e74019b83d4b3eef7b6d41f59fc9b1d52e6caf4ee13",
+      "tracked": null
+    },
+    {
+      "file": "user/data/vision-studio/preferences.ini",
+      "bytes": 471,
+      "sha256": "f200c3580de0201b9029c0ea5b37ced703198906dcdb432707400feb0414ecc9",
+      "tracked": null
+    },
+    {
+      "file": "user/model_display_pt/model-display-report.json",
+      "bytes": 501,
+      "sha256": "80061bb9b52371ede2124e8b95d86db7e06a77c2bd12994ad743940a469a0828",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/model_display_pt/model-display-report.json"
+    },
+    {
+      "file": "user/model_display_pt/model-display.png",
+      "bytes": 136804,
+      "sha256": "6657dd11dcd97062211650f1b8d067b32e3707dc09e46a4ba27ebefde0a0ef17",
+      "tracked": null
+    },
+    {
+      "file": "user/model_display_pt/model-hierarchy.png",
+      "bytes": 169993,
+      "sha256": "5e14572b3f33aa0ec0fb2c1d42962616a5d73f087acbf6c92a3995cb2ae3a4ff",
+      "tracked": null
+    },
+    {
+      "file": "user/model_display_pt/model-parameters.png",
+      "bytes": 231357,
+      "sha256": "3b01d0bc0ca5d3487b241d8d6754c67d4d48a09c50560f008b1b6e5acb64ecf2",
+      "tracked": null
+    },
+    {
+      "file": "user/ultralytics/Ultralytics/settings.json",
+      "bytes": 447,
+      "sha256": "7cd788c6a973a33e4e4046b2ec923817c0cef7175792c8b214a00a9896f71507",
+      "tracked": null
+    },
+    {
+      "file": "user/onnx/bus-20261008-165502-164-f1.csv",
+      "bytes": 275,
+      "sha256": "426f57f2267770893a707ae7695412f519d30aaad53af2e7faf19112d2c09717",
+      "tracked": null
+    },
+    {
+      "file": "user/onnx/bus-20261008-165502-164-f1.json",
+      "bytes": 2662,
+      "sha256": "6a103104ca80e51a880616969adfde254458d5896df8a116b5c63bac7a1429f2",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/onnx/bus-20261008-165502-164-f1.json"
+    },
+    {
+      "file": "user/onnx/bus-20261008-165502-164-f1.png",
+      "bytes": 1756580,
+      "sha256": "a695515485b703a2bc9b0f2e3638b6837866797c0542176d166d312cd0b925a2",
+      "tracked": null
+    },
+    {
+      "file": "user/onnx/smoke-report.json",
+      "bytes": 448,
+      "sha256": "3f0aa384352859b6cea447aa636915f8bdb7249f3cffcce0c739d23ad808b76d",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/onnx/smoke-report.json"
+    },
+    {
+      "file": "user/onnx/workbench.png",
+      "bytes": 397504,
+      "sha256": "d4c4270557441ee43ada41fe203b8257d3706bcb3f5cf5f8e741e30c2b4277be",
+      "tracked": null
+    },
+    {
+      "file": "user/pt/bus-20261008-165507-260-f1.csv",
+      "bytes": 275,
+      "sha256": "cff8fa072279ce6e3808e2a8ae987cdec4554f9b76b40e462c3e2f96bd57aa3f",
+      "tracked": null
+    },
+    {
+      "file": "user/pt/bus-20261008-165507-260-f1.json",
+      "bytes": 2710,
+      "sha256": "526750ed6e01705777d0367ebae9270fc7b8c7e15d08b9898986be80ab1d5f52",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/pt/bus-20261008-165507-260-f1.json"
+    },
+    {
+      "file": "user/pt/bus-20261008-165507-260-f1.png",
+      "bytes": 1755904,
+      "sha256": "4735ba8516794a37fbbeea1ff63e289a000e9779d2f72b247b7344a5734cf2c8",
+      "tracked": null
+    },
+    {
+      "file": "user/pt/smoke-report.json",
+      "bytes": 467,
+      "sha256": "ab982271f9fed5cf2234a6e4bdfb21df39b5703352192c67dbb0ca2f309ff9d6",
+      "tracked": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/pt/smoke-report.json"
+    },
+    {
+      "file": "user/pt/workbench.png",
+      "bytes": 397921,
+      "sha256": "f93afb6e6b11ee8baedb31d2f91fe4de307645ebbe2febf8580e45c03d6fc1b6",
+      "tracked": null
+    }
+  ],
+  "preserved_raw": 44,
+  "raw_bytes": 5383266,
+  "success": true
+}

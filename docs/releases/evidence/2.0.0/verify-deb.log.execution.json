@@ -1,0 +1,24 @@
+{
+  "version": "2.0.0",
+  "command": [
+    "python3",
+    "packaging/verify_deb.py",
+    "/home/misaka/文档/ChatGPT/yolo/output/releases/2.0.0/vision-studio_2.0.0-1_amd64.deb",
+    "--smoke",
+    "--apt-simulate",
+    "--keep-workdir",
+    "--report",
+    "/home/misaka/文档/ChatGPT/yolo/output/releases/2.0.0/qa-report.json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 65.737,
+  "deb_bytes": 377231468,
+  "deb_sha256": "2e5a467b07d82cf600eedeec2bd40624a724efccb4715366997ef04f3a4a042e",
+  "report": "qa-report.json",
+  "reported_deb_sha256": "2e5a467b07d82cf600eedeec2bd40624a724efccb4715366997ef04f3a4a042e",
+  "deb_unchanged": true,
+  "success": true,
+  "workdir": "/tmp/vision-studio-deb-qa-052vntgi",
+  "preserved_raw": 31,
+  "raw_backup": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/packaged-qa-raw/vision-studio-deb-qa-052vntgi"
+}

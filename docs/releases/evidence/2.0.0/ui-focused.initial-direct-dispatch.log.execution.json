@@ -1,0 +1,81 @@
+{
+  "version": "2.0.0",
+  "command": [
+    "/home/misaka/文档/ChatGPT/yolo/build-stable/vision-ui-tests",
+    "inferenceParameterWheelScrollsPanelWithoutChangingValues",
+    "automaticSaveDirectoryButtonOpensConfiguredLocalFolder",
+    "modelLibraryInternalMovesPreserveGlobalSelectionAndPersistAfterRestart",
+    "completedFolderResultsCanBeReviewedAndExported",
+    "importedFolderLargerThanFiftyImagesIsFullyProcessedAndReviewable",
+    "partiallyCompletedFolderResultsRemainReviewableAfterStopping",
+    "completedFolderResultsRemainReviewableAfterLaterImageReadFails",
+    "completedFolderResultsAreInvalidatedWhenModelOrDeviceChanges",
+    "zeroDetectionFolderResultsSurviveReviewAndCancelledRerunClearsThem"
+  ],
+  "started_at": "2026-10-08T16:01:37.989728+08:00",
+  "finished_at": "2026-10-08T16:02:53.184074+08:00",
+  "elapsed_seconds": 75.194,
+  "exit_code": 6,
+  "environment": {
+    "HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/focused/home",
+    "XDG_CONFIG_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/focused/config",
+    "XDG_DATA_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/focused/data",
+    "XDG_CACHE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/focused/cache",
+    "XDG_STATE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/focused/state",
+    "XDG_RUNTIME_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/focused/runtime",
+    "VISION_STUDIO_DATA_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/focused/app-data",
+    "YOLO_CONFIG_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/focused/ultralytics",
+    "YOLOV5_CONFIG_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/focused/yolov5",
+    "MPLCONFIGDIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/focused/matplotlib",
+    "TORCH_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/focused/torch",
+    "CUDA_CACHE_PATH": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/focused/cuda-cache",
+    "TMPDIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/qa-state/focused/tmp",
+    "QT_QPA_PLATFORM": "offscreen",
+    "VISION_STUDIO_HOME": "/home/misaka/文档/ChatGPT/yolo",
+    "VISION_STUDIO_PYTHON": "/home/misaka/文档/ChatGPT/yolo/build/release-runtime/bin/python3",
+    "VISION_STUDIO_GPU_RUNTIME_DIR": "/home/misaka/.local/share/vision-studio/gpu-runtime",
+    "VISION_STUDIO_GPU_TESTS": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONNOUSERSITE": "1",
+    "OMP_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2"
+  },
+  "binaries": [
+    {
+      "file": "build-stable/bin/vision-studio",
+      "bytes": 1037152,
+      "sha256": "a71b3590c5501ce34b983f8fa3b3432bca5920fb048f3506e49037eb7262ed5c"
+    },
+    {
+      "file": "build-stable/vision-core-tests",
+      "bytes": 446016,
+      "sha256": "0a1cab7c589c01e5d81728c86ef510cc5222b6ff9d35caee35cb112c0119a571"
+    },
+    {
+      "file": "build-stable/vision-recording-tests",
+      "bytes": 441120,
+      "sha256": "55378d0e20da49840dbc300ed496d8bf1b656fbd9dad159c88b7a2690cf71361"
+    },
+    {
+      "file": "build-stable/vision-pt-tests",
+      "bytes": 351744,
+      "sha256": "a999eac6b7d1a973df2ad6278184e5fd7a91a0b4dbc819e76657e51f4ca6a8df"
+    },
+    {
+      "file": "build-stable/vision-gpu-tests",
+      "bytes": 287552,
+      "sha256": "14a3ed15c86ac25714bd19a2a5c9972aa089273be9631a367dd774bd3141f417"
+    },
+    {
+      "file": "build-stable/vision-ui-tests",
+      "bytes": 1419424,
+      "sha256": "1a4050f0b7ecc719ff40b599a14cff3d8435e595c21003f307364f8cfcac7be3"
+    },
+    {
+      "file": "build-stable/vision-modelviewer-tests",
+      "bytes": 409024,
+      "sha256": "27a2e535d3563e131288e0ea5a3aa11b956ba493f1835a0bcbfaa731f80caf72"
+    }
+  ]
+}

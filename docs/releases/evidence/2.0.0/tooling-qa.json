@@ -1,0 +1,38 @@
+{
+  "version": "2.0.0",
+  "success": true,
+  "tests": {
+    "github_release_tests.py": {
+      "exit_code": 0,
+      "log": "github_release_tests.log",
+      "tail": [
+        "----------------------------------------------------------------------",
+        "Ran 48 tests in 0.145s",
+        "",
+        "OK"
+      ]
+    },
+    "release_metadata_tests.py": {
+      "exit_code": 0,
+      "log": "release_metadata_tests.log",
+      "tail": [
+        "----------------------------------------------------------------------",
+        "Ran 11 tests in 0.009s",
+        "",
+        "OK"
+      ]
+    },
+    "gpu_runtime_tests.py": {
+      "exit_code": 0,
+      "log": "gpu_runtime_tests.log",
+      "tail": [
+        "----------------------------------------------------------------------",
+        "Ran 21 tests in 1.144s",
+        "",
+        "OK"
+      ]
+    }
+  },
+  "syntax_exit_code": 0,
+  "elapsed_seconds": 1.54
+}

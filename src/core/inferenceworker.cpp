@@ -53,6 +53,68 @@ void InferenceWorker::prepareRecording(const QString &directory)
     m_recordDirectory = directory;
 }
 
+void InferenceWorker::prepare() noexcept
+{
+    const QMutexLocker locker(&m_deliveryMutex);
+    m_pendingImageTicket = 0;
+    m_stop.store(false, std::memory_order_release);
+    m_recordRequested.store(false, std::memory_order_release);
+}
+
+void InferenceWorker::requestStop() noexcept
+{
+    m_stop.store(true, std::memory_order_release);
+    // Keep an active recording's intent until the in-flight result is appended.
+    // Explicit recording stop has its own command. Delivery waits must not hold
+    // cancellation hostage to an unfinished cache or automatic export.
+    const QMutexLocker locker(&m_deliveryMutex);
+    m_deliveryAcknowledged.wakeAll();
+}
+
+void InferenceWorker::setImageResultBackpressureEnabled(bool enabled) noexcept
+{
+    m_imageResultBackpressure.store(enabled, std::memory_order_release);
+}
+
+void InferenceWorker::acknowledgeImageResult(quint64 ticket) noexcept
+{
+    const QMutexLocker locker(&m_deliveryMutex);
+    if (ticket != 0 && ticket == m_pendingImageTicket)
+    {
+        m_pendingImageTicket = 0;
+        m_deliveryAcknowledged.wakeAll();
+    }
+}
+
+bool InferenceWorker::deliverImageResult(InferenceResult result, int completed, int total)
+{
+    if (!m_imageResultBackpressure.load(std::memory_order_acquire))
+    {
+        emit resultReady(std::move(result));
+        emit progress(completed, total);
+        return !stopping();
+    }
+
+    quint64 ticket;
+    {
+        const QMutexLocker locker(&m_deliveryMutex);
+        if (stopping())
+            return false;
+        // Tickets never reset between jobs: a late completion from an older
+        // GUI task cannot acknowledge a result in the next batch.
+        ticket = ++m_nextImageTicket;
+        if (ticket == 0)
+            ticket = ++m_nextImageTicket;
+        m_pendingImageTicket = ticket;
+    }
+    emit imageResultReady(std::move(result), ticket);
+    emit progress(completed, total);
+    const QMutexLocker locker(&m_deliveryMutex);
+    while (m_pendingImageTicket == ticket && !stopping())
+        m_deliveryAcknowledged.wait(&m_deliveryMutex);
+    return !stopping();
+}
+
 void InferenceWorker::run(vision::JobRequest request)
 {
     VideoRecorder recorder;
@@ -135,6 +197,8 @@ void InferenceWorker::run(vision::JobRequest request)
                 QImageReader reader(request.files.at(i));
                 reader.setAutoTransform(true);
                 const QImage image = reader.read();
+                if (stopping())
+                    break;
                 if (image.isNull())
                     throw std::runtime_error(QStringLiteral("无法读取图像 %1：%2")
                                                  .arg(request.files.at(i), reader.errorString())
@@ -145,8 +209,8 @@ void InferenceWorker::run(vision::JobRequest request)
                 result.sourceFrameSize = image.size();
                 if (stopping())
                     break;
-                emit resultReady(std::move(result));
-                emit progress(i + 1, total);
+                if (!deliverImageResult(std::move(result), i + 1, total))
+                    break;
             }
         }
         else

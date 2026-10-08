@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "version": "2.0.0",
+  "success": true,
+  "errors": [],
+  "deb_sha256": "2e5a467b07d82cf600eedeec2bd40624a724efccb4715366997ef04f3a4a042e",
+  "images": [
+    {
+      "source": "/tmp/vision-studio-gpu-deb-qa-t9okr6n7/onnx_cuda/results/workbench.png",
+      "file": "docs/preview.png",
+      "sha256": "7be19d54e2ed1cb6cadcf16678e93f0b7826643990a3842616598688fff4384e"
+    },
+    {
+      "source": "/tmp/vision-studio-install-qa-tkfk24h8/user/model_display/model-display.png",
+      "file": "docs/model-hierarchy.png",
+      "sha256": "b576db7191017c4289757c3c61b1eed61625caa040891c29e6fb3f07cdef8846"
+    }
+  ],
+  "note": "Unedited final packaged application screenshots visually inspected; the graph screenshot is ONNX graph mode, not hierarchy tree. GPU workbench result was verified using actual CUDA; independent startup GPU probe was still running at screenshot capture."
+}

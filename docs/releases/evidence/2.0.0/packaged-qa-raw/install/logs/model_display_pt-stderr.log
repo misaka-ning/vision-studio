@@ -1,0 +1,6 @@
+QRhiGles2: Failed to create temporary context
+QRhiGles2: Failed to create context
+This plugin does not support createPlatformVulkanInstance
+QVulkanInstance: Failed to initialize Vulkan
+Unable to detect GPU vendor.
+{"application":"Vision Studio","cache_preserved":true,"display_modes":{"graph":true,"hierarchy":true,"parameters":true},"error":"","hierarchy_items":314,"model":"/opt/VisionStudio/models/yolov8n.pt","netron":"9.3.1","nodes":1,"onnx_hint":"想看完整结构，建使用导出的 ONNX。","onnx_hint_visible":true,"parameter_rows":359,"qt":"6.8.3","success":true,"version":"2.0.0"}

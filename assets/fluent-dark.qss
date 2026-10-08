@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: AGPL-3.0-only
-   Vision Studio 2.0 Beta. Fluent dark visual treatment for standard Qt Widgets.
+   Vision Studio 2.0. Fluent dark visual treatment for standard Qt Widgets.
    Design reference: calvinhxx/Fluent-Qt v1.9.2; see docs/UI设计.md.
    Native widget classes, signal connections and keyboard behavior are preserved. */
 QWidget { color: #F5F5F5; font-family: 'Noto Sans CJK SC'; font-size: 13px; }

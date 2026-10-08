@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "version": "2.0.0",
+  "success": true,
+  "errors": [],
+  "deb_sha256": "2e5a467b07d82cf600eedeec2bd40624a724efccb4715366997ef04f3a4a042e",
+  "bytes": 377231468,
+  "frozen_binary_sha256": "cae61601981f83dd7d07fd985e2516a2324f0b43d4590c545ecb7fd804908c15",
+  "changes_from_internal_candidate": [
+    {
+      "file": "opt/VisionStudio/docs/足球模型微调.md",
+      "change": "removed"
+    },
+    {
+      "file": "DEBIAN/control",
+      "change": "Installed-Size reduced to account for removed document"
+    }
+  ],
+  "unrelated_files_excluded": [
+    "docs/足球模型微调.md",
+    "scripts/finetune_ball.py",
+    "scripts/run_finetune_ball.sh"
+  ],
+  "note": "All staged regular file contents were compared with the prior internal candidate. Only the unrelated document and its Installed-Size accounting differ; all application and runtime files remain byte-equal. Fresh final DEB QA is required."
+}
