@@ -14,6 +14,7 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QFormLayout>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -118,6 +119,16 @@ QCheckBox *autoExportControl(QWidget *parent)
     for (auto *check : parent->findChildren<QCheckBox *>())
         if (check->text() == QStringLiteral("自动保存每张图片的结果"))
             return check;
+    return nullptr;
+}
+
+QDoubleSpinBox *labelledDoubleSpinBox(QWidget *parent, const QString &label)
+{
+    for (auto *form : parent->findChildren<QFormLayout *>())
+        for (auto *spin : parent->findChildren<QDoubleSpinBox *>())
+            if (auto *caption = qobject_cast<QLabel *>(form->labelForField(spin));
+                caption && caption->text() == label)
+                return spin;
     return nullptr;
 }
 
@@ -670,6 +681,295 @@ class UiTests final : public QObject
         QVERIFY(!exportButton->isEnabled());
         for (auto *metric : metrics)
             QCOMPARE(metric->text(), QStringLiteral("—"));
+    }
+
+    void completedFolderResultsCanBeReviewedAndExported_data()
+    {
+        QTest::addColumn<QString>("colorMode");
+        QTest::newRow("rgb") << QStringLiteral("rgb");
+        QTest::newRow("grayscale") << QStringLiteral("grayscale");
+    }
+
+    void completedFolderResultsCanBeReviewedAndExported()
+    {
+        QFETCH(QString, colorMode);
+        auto *canvas = workbenchCanvas(window_.get());
+        auto *table = predictionTable(window_.get());
+        auto *queue = inputQueue(window_.get());
+        auto *run = findButton(window_.get(), QStringLiteral("开始检测"));
+        auto *exportButton = findButton(window_.get(), QStringLiteral("导出结果"));
+        auto *autoExport = autoExportControl(window_.get());
+        auto *color = window_->findChild<QComboBox *>(QStringLiteral("inputColorMode"));
+        auto *confidence = labelledDoubleSpinBox(window_.get(), QStringLiteral("置信度"));
+        const auto metrics = window_->findChildren<QLabel *>(QStringLiteral("metricValue"));
+        QVERIFY(canvas && table && queue && run && exportButton && autoExport && color && confidence);
+        QCOMPARE(metrics.size(), 4);
+        autoExport->setChecked(false);
+        confidence->setValue(0.25);
+        color->setCurrentIndex(color->findData(colorMode));
+        const QString folder = fixture_->path() + QStringLiteral("/batch");
+        QVERIFY(QDir().mkpath(folder));
+        const QImage original(fixture_->path() + QStringLiteral("/assets/bus.jpg"));
+        QVERIFY(!original.isNull());
+        const QString first = folder + QStringLiteral("/01-full.png");
+        const QString second = folder + QStringLiteral("/02-small.png");
+        QVERIFY(original.save(first));
+        QVERIFY(original.scaled(original.size() / 2, Qt::IgnoreAspectRatio,
+                                Qt::SmoothTransformation).save(second));
+        QVERIFY(chooseDialogFile(findButton(window_.get(), QStringLiteral("文件夹")), folder));
+        QCOMPARE(queue->count(), 2);
+        QCOMPARE(queue->item(0)->toolTip(), first);
+        QCOMPARE(queue->item(1)->toolTip(), second);
+
+        // Observe each displayed result through the existing public canvas and queue.
+        // Starting on the second item makes both worker selections observable.
+        queue->setCurrentRow(1);
+        QVector<vision::InferenceResult> detected(2);
+        QVector<QStringList> detectedMetrics(2);
+        QVector<QStringList> detectedRows(2);
+        QObject resultObserver;
+        const auto observation =
+            connect(queue, &QListWidget::currentRowChanged, &resultObserver,
+                    [&](int row)
+                    {
+                        if (row < 0 || row >= detected.size() || canvas->result().inferenceMs <= 0 ||
+                            canvas->result().source != queue->item(row)->toolTip())
+                            return;
+                        detected[row] = canvas->result();
+                        detectedMetrics[row].clear();
+                        for (auto *metric : metrics)
+                            detectedMetrics[row].append(metric->text());
+                        detectedRows[row].clear();
+                        for (int r = 0; r < table->rowCount(); ++r)
+                            for (int c = 0; c < table->columnCount(); ++c)
+                                detectedRows[row].append(table->item(r, c)->text());
+                    });
+        QSignalSpy starts(window_.get(), &MainWindow::startRequested);
+        QTest::mouseClick(run, Qt::LeftButton);
+        QTRY_VERIFY_WITH_TIMEOUT(!unexpectedDialog_.isEmpty() ||
+                                     (run->isVisible() && exportButton->isEnabled()), 45000);
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+        disconnect(observation);
+        QCOMPARE(starts.size(), 1);
+        const vision::JobRequest request = qvariant_cast<vision::JobRequest>(starts.first().at(0));
+        QCOMPARE(request.files, QStringList({first, second}));
+        QCOMPARE(request.sourceKind, vision::SourceKind::Images);
+        for (int row = 0; row < detected.size(); ++row)
+        {
+            QCOMPARE(detected[row].source, request.files[row]);
+            QVERIFY(detected[row].inferenceMs > 0);
+            QVERIFY(!detected[row].predictions.isEmpty());
+            QCOMPARE(detected[row].image.isGrayscale(), colorMode == QStringLiteral("grayscale"));
+            QVERIFY(!detected[row].originalImage.isGrayscale());
+            QCOMPARE(detectedRows[row].size(), detected[row].predictions.size() * table->columnCount());
+            QCOMPARE(detectedMetrics[row].size(), 4);
+        }
+        QVERIFY(detected[0].image.size() != detected[1].image.size());
+        const QDir automaticResults(fixture_->path() + QStringLiteral("/output/results"));
+        QVERIFY(automaticResults.entryList(QDir::Files).isEmpty());
+        QFile history(fixture_->path() + QStringLiteral("/output/history.json"));
+        QVERIFY(history.open(QIODevice::ReadOnly));
+        const QByteArray completedHistory = history.readAll();
+        history.close();
+        QCOMPARE(QJsonDocument::fromJson(completedHistory).array().size(), 2);
+
+        // Review completed results even when their source file is no longer available,
+        // and preserve the settings used for inference after the controls are edited.
+        QVERIFY(QFile::remove(first));
+        confidence->setValue(0.90);
+        for (int row : {0, 1, 0, 1, 0})
+        {
+            queue->setCurrentRow(row);
+            const auto &actual = canvas->result();
+            const auto &expected = detected[row];
+            QCOMPARE(actual.source, expected.source);
+            QCOMPARE(actual.image, expected.image);
+            QCOMPARE(actual.originalImage, expected.originalImage);
+            QCOMPARE(actual.modelName, expected.modelName);
+            QCOMPARE(actual.backend, expected.backend);
+            QCOMPARE(actual.inferenceMs, expected.inferenceMs);
+            QCOMPARE(actual.totalMs, expected.totalMs);
+            QCOMPARE(actual.device, expected.device);
+            QCOMPARE(actual.predictions.size(), expected.predictions.size());
+            for (int i = 0; i < expected.predictions.size(); ++i)
+            {
+                QCOMPARE(actual.predictions[i].classId, expected.predictions[i].classId);
+                QCOMPARE(actual.predictions[i].label, expected.predictions[i].label);
+                QCOMPARE(actual.predictions[i].confidence, expected.predictions[i].confidence);
+                QCOMPARE(actual.predictions[i].box, expected.predictions[i].box);
+            }
+            QCOMPARE(table->rowCount(), expected.predictions.size());
+            QStringList displayedRows;
+            for (int r = 0; r < table->rowCount(); ++r)
+                for (int c = 0; c < table->columnCount(); ++c)
+                    displayedRows.append(table->item(r, c)->text());
+            QCOMPARE(displayedRows, detectedRows[row]);
+            for (int i = 0; i < metrics.size(); ++i)
+                QCOMPARE(metrics[i]->text(), detectedMetrics[row][i]);
+            QVERIFY(exportButton->isEnabled());
+        }
+
+        const QString exportDirectory = fixture_->path() + QStringLiteral("/review-export");
+        QVERIFY(QDir().mkpath(exportDirectory));
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("更多")), Qt::LeftButton);
+        QVERIFY(chooseDialogFile(exportButton, exportDirectory));
+        const QDir exported(exportDirectory);
+        const auto jsonFiles = exported.entryList({QStringLiteral("*.json")}, QDir::Files);
+        const auto pngFiles = exported.entryList({QStringLiteral("*.png")}, QDir::Files);
+        const auto csvFiles = exported.entryList({QStringLiteral("*.csv")}, QDir::Files);
+        QCOMPARE(jsonFiles.size(), 1);
+        QCOMPARE(pngFiles.size(), 1);
+        QCOMPARE(csvFiles.size(), 1);
+        QFile json(exported.filePath(jsonFiles.first()));
+        QVERIFY(json.open(QIODevice::ReadOnly));
+        const QJsonObject metadata = QJsonDocument::fromJson(json.readAll()).object();
+        QCOMPARE(metadata.value(QStringLiteral("source")).toString(), first);
+        QCOMPARE(metadata.value(QStringLiteral("model_file")).toString(), request.config.modelPath);
+        const QJsonObject config = metadata.value(QStringLiteral("config")).toObject();
+        QCOMPARE(config.value(QStringLiteral("input_size")).toInt(), request.config.inputSize);
+        QCOMPARE(config.value(QStringLiteral("input_channels")).toInt(), 3);
+        QCOMPARE(config.value(QStringLiteral("confidence_threshold")).toDouble(),
+                 double(request.config.confidence));
+        QCOMPARE(config.value(QStringLiteral("nms_iou")).toDouble(), double(request.config.iou));
+        QCOMPARE(config.value(QStringLiteral("color_mode")).toString(), colorMode);
+        const QJsonArray predictions = metadata.value(QStringLiteral("predictions")).toArray();
+        QCOMPARE(predictions.size(), detected[0].predictions.size());
+        for (int i = 0; i < predictions.size(); ++i)
+        {
+            const auto prediction = predictions[i].toObject();
+            const auto &expected = detected[0].predictions[i];
+            QCOMPARE(prediction.value(QStringLiteral("class_id")).toInt(), expected.classId);
+            QCOMPARE(prediction.value(QStringLiteral("label")).toString(), expected.label);
+            QCOMPARE(prediction.value(QStringLiteral("confidence")).toDouble(), double(expected.confidence));
+            QCOMPARE(prediction.value(QStringLiteral("x")).toDouble(), expected.box.x());
+            QCOMPARE(prediction.value(QStringLiteral("y")).toDouble(), expected.box.y());
+            QCOMPARE(prediction.value(QStringLiteral("width")).toDouble(), expected.box.width());
+            QCOMPARE(prediction.value(QStringLiteral("height")).toDouble(), expected.box.height());
+        }
+        ImageCanvas exportRenderer;
+        exportRenderer.setResult(detected[0]);
+        QCOMPARE(QImage(exported.filePath(pngFiles.first())).convertToFormat(QImage::Format_ARGB32),
+                 exportRenderer.annotatedImage().convertToFormat(QImage::Format_ARGB32));
+        QCOMPARE(starts.size(), 1); // Browsing/export must not infer again.
+        QVERIFY(history.open(QIODevice::ReadOnly));
+        QCOMPARE(history.readAll(), completedHistory); // No duplicate history rows while reviewing.
+        history.close();
+        QVERIFY(automaticResults.entryList(QDir::Files).isEmpty());
+
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("检测工作台")), Qt::LeftButton);
+        const QString unprocessed = fixture_->path() + QStringLiteral("/assets/unprocessed.png");
+        QVERIFY(original.save(unprocessed));
+        QVERIFY(dropFile(canvas, unprocessed));
+        QCOMPARE(queue->count(), 3);
+        QCOMPARE(canvas->result().source, unprocessed);
+        QVERIFY(!canvas->result().image.isNull());
+        QVERIFY(canvas->result().predictions.isEmpty());
+        QCOMPARE(table->rowCount(), 0);
+        QVERIFY(!exportButton->isEnabled());
+        queue->setCurrentRow(1);
+        QCOMPARE(canvas->result().predictions.size(), detected[1].predictions.size());
+        QVERIFY(exportButton->isEnabled());
+
+        const QString changedColorMode = colorMode == QStringLiteral("grayscale")
+                                             ? QStringLiteral("rgb") : QStringLiteral("grayscale");
+        color->setCurrentIndex(color->findData(changedColorMode));
+        for (int row : {0, 1, 2, 1})
+        {
+            queue->setCurrentRow(row);
+            QVERIFY(canvas->result().predictions.isEmpty());
+            QCOMPARE(table->rowCount(), 0);
+            QVERIFY(!exportButton->isEnabled());
+            if (!canvas->result().image.isNull())
+                QCOMPARE(canvas->result().image.isGrayscale(),
+                         changedColorMode == QStringLiteral("grayscale"));
+        }
+    }
+
+    void zeroDetectionFolderResultsSurviveReviewAndCancelledRerunClearsThem()
+    {
+        auto *canvas = workbenchCanvas(window_.get());
+        auto *table = predictionTable(window_.get());
+        auto *queue = inputQueue(window_.get());
+        auto *run = findButton(window_.get(), QStringLiteral("开始检测"));
+        auto *stop = findButton(window_.get(), QStringLiteral("停止运行"));
+        auto *exportButton = findButton(window_.get(), QStringLiteral("导出结果"));
+        auto *autoExport = autoExportControl(window_.get());
+        auto *confidence = labelledDoubleSpinBox(window_.get(), QStringLiteral("置信度"));
+        const auto metrics = window_->findChildren<QLabel *>(QStringLiteral("metricValue"));
+        QVERIFY(canvas && table && queue && run && stop && exportButton && autoExport && confidence);
+        QCOMPARE(metrics.size(), 4);
+        autoExport->setChecked(false);
+        confidence->setValue(1.0);
+        const QString folder = fixture_->path() + QStringLiteral("/blank-batch");
+        QVERIFY(QDir().mkpath(folder));
+        QImage firstImage(320, 180, QImage::Format_RGB888);
+        firstImage.fill(QColor(24, 48, 72));
+        QImage secondImage(180, 320, QImage::Format_RGB888);
+        secondImage.fill(QColor(72, 48, 24));
+        const QString first = folder + QStringLiteral("/01-landscape.png");
+        const QString second = folder + QStringLiteral("/02-portrait.png");
+        QVERIFY(firstImage.save(first));
+        QVERIFY(secondImage.save(second));
+        QVERIFY(chooseDialogFile(findButton(window_.get(), QStringLiteral("文件夹")), folder));
+        QCOMPARE(queue->count(), 2);
+        QSignalSpy starts(window_.get(), &MainWindow::startRequested);
+        QTest::mouseClick(run, Qt::LeftButton);
+        QTRY_VERIFY_WITH_TIMEOUT(!unexpectedDialog_.isEmpty() ||
+                                     (run->isVisible() && exportButton->isEnabled()), 45000);
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+        QCOMPARE(starts.size(), 1);
+        for (int row : {0, 1, 0})
+        {
+            queue->setCurrentRow(row);
+            QCOMPARE(canvas->result().source, row == 0 ? first : second);
+            QCOMPARE(canvas->result().image.convertToFormat(QImage::Format_RGB888),
+                     row == 0 ? firstImage : secondImage);
+            QVERIFY(canvas->result().predictions.isEmpty());
+            QVERIFY(canvas->result().inferenceMs > 0);
+            QCOMPARE(table->rowCount(), 0);
+            QCOMPARE(metrics[0]->text(), QStringLiteral("0"));
+            QVERIFY(metrics[1]->text() != QStringLiteral("—"));
+            QCOMPARE(metrics[2]->text(), QStringLiteral("0"));
+            QVERIFY(exportButton->isEnabled()); // Zero detections is a completed result.
+        }
+        const QString exportDirectory = fixture_->path() + QStringLiteral("/zero-export");
+        QVERIFY(QDir().mkpath(exportDirectory));
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("更多")), Qt::LeftButton);
+        QVERIFY(chooseDialogFile(exportButton, exportDirectory));
+        const QDir exported(exportDirectory);
+        const auto jsonFiles = exported.entryList({QStringLiteral("*.json")}, QDir::Files);
+        QCOMPARE(jsonFiles.size(), 1);
+        QFile json(exported.filePath(jsonFiles.first()));
+        QVERIFY(json.open(QIODevice::ReadOnly));
+        const auto metadata = QJsonDocument::fromJson(json.readAll()).object();
+        QCOMPARE(metadata.value(QStringLiteral("source")).toString(), first);
+        QVERIFY(metadata.value(QStringLiteral("predictions")).toArray().isEmpty());
+        QCOMPARE(metadata.value(QStringLiteral("config")).toObject()
+                     .value(QStringLiteral("confidence_threshold")).toDouble(), 1.0);
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("检测工作台")), Qt::LeftButton);
+
+        // Stop through the actual button as soon as a new job is requested, before
+        // any result can replace the old batch. A cancelled rerun must not revive it.
+        const auto cancellation = connect(window_.get(), &MainWindow::startRequested, this,
+                                          [stop] { QTest::mouseClick(stop, Qt::LeftButton); });
+        QTest::mouseClick(run, Qt::LeftButton);
+        QCOMPARE(starts.size(), 2);
+        QTRY_VERIFY_WITH_TIMEOUT(!unexpectedDialog_.isEmpty() || run->isVisible(), 45000);
+        disconnect(cancellation);
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+        for (int row : {1, 0})
+        {
+            queue->setCurrentRow(row);
+            QCOMPARE(canvas->result().source, row == 0 ? first : second);
+            QVERIFY(!canvas->result().image.isNull());
+            QVERIFY(canvas->result().predictions.isEmpty());
+            QCOMPARE(canvas->result().inferenceMs, 0.0);
+            QCOMPARE(table->rowCount(), 0);
+            QCOMPARE(metrics[0]->text(), QStringLiteral("—"));
+            QCOMPARE(metrics[1]->text(), QStringLiteral("—"));
+            QCOMPARE(metrics[2]->text(), QStringLiteral("—"));
+            QVERIFY(!exportButton->isEnabled());
+        }
     }
 
     void grayscalePreviewAndColorSwitchInvalidatePredictions()

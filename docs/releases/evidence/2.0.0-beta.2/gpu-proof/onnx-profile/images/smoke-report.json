@@ -1,0 +1,13 @@
+{
+    "actual_device": "cuda",
+    "backend": "ONNX Runtime / CUDA",
+    "device_index": 0,
+    "device_name": "NVIDIA GeForce RTX 4060",
+    "device_notice": "",
+    "error": "",
+    "inference_ms": 10.554584,
+    "predictions": 5,
+    "qt": "6.8.3",
+    "requested_device": "cuda",
+    "success": true
+}

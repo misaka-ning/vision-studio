@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "version": "2.0.0-beta.2",
+  "review_type": "Read-only review of black-box UI regression coverage and root-executed focused QtTest evidence",
+  "success": true,
+  "execution": {
+    "performed_by": "Root agent",
+    "reviewer_ran_no_additional_build_or_test": true,
+    "command": [
+      "/home/misaka/文档/ChatGPT/yolo/build-beta2/vision-ui-tests",
+      "completedFolderResultsCanBeReviewedAndExported",
+      "zeroDetectionFolderResultsSurviveReviewAndCancelledRerunClearsThem"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds_including_process_setup": 6.668,
+    "qtest_elapsed_ms": 6476,
+    "functional_data_rows_passed": 3,
+    "qtest_totals_including_init_and_cleanup": {
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0
+    },
+    "qt": "6.8.3",
+    "platform": "Ubuntu 22.04 amd64; Qt offscreen platform",
+    "actual_inference": "Real bundled YOLOv5n ONNX through CPU/OpenCV DNN; CPU preference is selected in each UI fixture",
+    "ui_test_binary_sha256": "8ca3b0569f34ad3bfe426b944264eff1960ca9ad58f5ede0660b86c5be636fb9"
+  },
+  "evidence": [
+    {
+      "file": "tests/ui_tests.cpp",
+      "sha256": "60c4d23cf4d8f94d9a1d4e333e13d7d84b5c5d462b3df63f2fa034355e9ead02"
+    },
+    {
+      "file": "docs/releases/evidence/2.0.0-beta.2/batch-focused.log",
+      "sha256": "caefaaa14097d94409aafc1814b5e84715b7e7ae2c52e7ed7f815cfbaeb1026b"
+    },
+    {
+      "file": "docs/releases/evidence/2.0.0-beta.2/batch-focused.log.execution.json",
+      "sha256": "cd54cacd568c4a42ff8a414430a9e26d432f35a9b679fdcb8a4472560d1e49b0"
+    }
+  ],
+  "review_findings": [
+    {
+      "check": "Original user trigger",
+      "passed": true,
+      "basis": "The existing Folder button and real QFileDialog import two distinct-resolution images; Start detection runs the whole folder with automatic exports disabled, then the queue is selected repeatedly after completion."
+    },
+    {
+      "check": "Per-image visible result survives review",
+      "passed": true,
+      "basis": "Both RGB and grayscale rows compare source, exact processed/original QImage pixels, prediction IDs/labels/confidences/boxes, actual backend/device, inference/total time, every prediction-table cell and all four metrics against results observed during the initial real run."
+    },
+    {
+      "check": "Independent snapshots rather than expectation mirroring",
+      "passed": true,
+      "basis": "The observation connection is explicitly disconnected before review. Expected results are captured before the new browsing behavior; no cache map/path, private method, internal storage representation, serialized schema or reflection is used by the tests."
+    },
+    {
+      "check": "Missing source after successful inference",
+      "passed": true,
+      "basis": "The first source image is deleted after successful inference; its exact original and processed pixels, predictions and exported annotation remain available through public UI."
+    },
+    {
+      "check": "Selected source and original inference configuration export",
+      "passed": true,
+      "basis": "Confidence control is changed from 0.25 to 0.90 after completion. Manual export of the reselected first image checks that JSON retains the inference request confidence, IoU/input size/color mode/model file, all prediction fields, and first source path; the generated PNG matches annotations for the captured first result. One PNG, one JSON and one CSV must be produced; CSV contents are not independently asserted."
+    },
+    {
+      "check": "Review has no inference or history/automatic-export side effects",
+      "passed": true,
+      "basis": "startRequested remains at one job, history JSON bytes remain unchanged with two entries, and automatic-result directory contains no files while reviewing and manually exporting."
+    },
+    {
+      "check": "Unprocessed images remain distinct from valid cached results",
+      "passed": true,
+      "basis": "A third unprocessed image is added through the real canvas drop action. It has source pixels but no predictions/table/export; selecting the already processed second item restores its detections."
+    },
+    {
+      "check": "Color-mode change invalidates the completed batch",
+      "passed": true,
+      "basis": "Changing RGB to grayscale and grayscale to RGB clears predictions/table/export availability for every queued image; available preview pixels follow the new mode."
+    },
+    {
+      "check": "Zero detections is a completed and exportable result",
+      "passed": true,
+      "basis": "Two blank images run at confidence 1.0 retain exact pixels, positive measured inference time, zero-object/class metrics, and enabled manual export when reviewed. Selected first result JSON records zero predictions and threshold 1.0."
+    },
+    {
+      "check": "Cancelled rerun does not revive the previous results",
+      "passed": true,
+      "basis": "A second job is started and immediately stopped through the actual Stop button. Both queued images then display unprocessed pixels, zero inference time, placeholder metrics and disabled export rather than the completed prior batch."
+    },
+    {
+      "check": "Existing regressions preserved",
+      "passed": true,
+      "basis": "The pre-existing queueChangeAndClearInvalidateOldResults and grayscalePreviewAndColorSwitchInvalidatePredictions test bodies are unchanged; their execution is part of the separately run full UI suite, not claimed as included in this focused run."
+    }
+  ],
+  "limitations": [
+    "This focused execution validates ONNX CPU behavior; GPU/PT, full UI regression, package and installation checks are recorded separately.",
+    "The cache is exercised within one application session; persistence across application restart is not claimed.",
+    "The pre-fix binary was not executed by this reviewer; failure of the old row-change behavior is established by the source review, not reported as an actual pre-fix test run.",
+    "Offscreen propagateSizeHints warnings appear in the focused log; no QtTest failures or skips occurred."
+  ]
+}

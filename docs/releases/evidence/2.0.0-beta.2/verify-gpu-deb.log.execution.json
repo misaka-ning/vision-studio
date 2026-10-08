@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0-beta.2",
+  "command": [
+    "python3",
+    "packaging/verify_gpu_deb.py",
+    "/home/misaka/文档/ChatGPT/yolo/output/releases/2.0.0-beta.2/vision-studio_2.0.0-beta.2-1_amd64.deb",
+    "--runtime-dir",
+    "/home/misaka/.local/share/vision-studio/gpu-runtime",
+    "--keep-workdir",
+    "--report",
+    "/home/misaka/文档/ChatGPT/yolo/output/releases/2.0.0-beta.2/gpu-install-qa.json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 41.988,
+  "deb_bytes": 377226368,
+  "deb_sha256": "72b4592fe4b7fb114654fc7af73233b4a1f75bef58f5fcc3bf27ca8839fa9abd",
+  "report": "gpu-install-qa.json",
+  "reported_deb_sha256": "72b4592fe4b7fb114654fc7af73233b4a1f75bef58f5fcc3bf27ca8839fa9abd",
+  "success": true,
+  "workdir": "/tmp/vision-studio-gpu-deb-qa-3cpkt3pf"
+}

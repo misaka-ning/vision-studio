@@ -1,0 +1,90 @@
+{
+    "actual_device": "cuda",
+    "application": "Vision Studio",
+    "backend": "ONNX Runtime / CUDA",
+    "config": {
+        "color_mode": "rgb",
+        "confidence_threshold": 0.25,
+        "input_channels": 3,
+        "input_size": 640,
+        "nms_iou": 0.44999998807907104,
+        "preprocess": {
+            "color_mode": "rgb",
+            "mean_rgb": [
+                0,
+                0,
+                0
+            ],
+            "mode": "configured",
+            "scale": 0.00392157,
+            "swap_rb": true
+        }
+    },
+    "device_index": 0,
+    "device_name": "NVIDIA GeForce RTX 4060",
+    "device_notice": "",
+    "frame": 1,
+    "height": 1080,
+    "inference_ms": 10.554584,
+    "model": "yolov5n.onnx",
+    "model_file": "/home/misaka/文档/ChatGPT/yolo/models/yolov5n.onnx",
+    "predictions": [
+        {
+            "class_id": 0,
+            "confidence": 0.8113210797309875,
+            "height": 491.25525856018066,
+            "label": "person",
+            "width": 178.21703052520752,
+            "x": 50.96057653427124,
+            "y": 397.24106884002686
+        },
+        {
+            "class_id": 0,
+            "confidence": 0.7569612860679626,
+            "height": 448.6468105316162,
+            "label": "person",
+            "width": 123.39116334915161,
+            "x": 221.85903239250183,
+            "y": 412.81274700164795
+        },
+        {
+            "class_id": 5,
+            "confidence": 0.7007485628128052,
+            "height": 551.2551326751709,
+            "label": "bus",
+            "width": 759.9337577819824,
+            "x": 16.60030746459961,
+            "y": 235.70589351654053
+        },
+        {
+            "class_id": 0,
+            "confidence": 0.6967292428016663,
+            "height": 476.4364356994629,
+            "label": "person",
+            "width": 123.45950174331665,
+            "x": 686.5404982566833,
+            "y": 389.5322971343994
+        },
+        {
+            "class_id": 0,
+            "confidence": 0.28018414974212646,
+            "height": 311.0678987503052,
+            "label": "person",
+            "width": 64.4485033750534,
+            "x": 0,
+            "y": 567.5767951011658
+        }
+    ],
+    "requested_device": "cuda",
+    "source": "/home/misaka/文档/ChatGPT/yolo/assets/bus.jpg",
+    "source_frame_size": {
+        "height": 1080,
+        "width": 810
+    },
+    "stereo_view": "full",
+    "task": "YOLOv5",
+    "timestamp": "2026-10-08T14:14:11.483",
+    "total_ms": 15.076295,
+    "version": "2.0.0-beta.2",
+    "width": 810
+}

@@ -1,6 +1,7 @@
 #pragma once
 #include "core/visiontypes.h"
 #include <QElapsedTimer>
+#include <QHash>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QMainWindow>
@@ -20,6 +21,7 @@ class QSettings;
 class QTimer;
 class QProcess;
 class QPlainTextEdit;
+class QTemporaryDir;
 class ImageCanvas;
 class ModelViewer;
 namespace cv
@@ -82,6 +84,10 @@ class MainWindow : public QMainWindow
     void startInference();
     void stopInference();
     void onResult(const vision::InferenceResult &result);
+    void displayResult(const vision::InferenceResult &result);
+    void selectQueueImage(int row);
+    void cacheImageResult(const vision::InferenceResult &result);
+    void clearImageResults();
     void onFinished(bool cancelled);
     void setBusy(bool busy);
     void refreshModelLibrary();
@@ -111,6 +117,15 @@ class MainWindow : public QMainWindow
     vision::SourceKind sourceKind_ = vision::SourceKind::Images;
     vision::InferenceResult lastResult_;
     vision::ModelConfig lastConfig_;
+    struct CachedImageResult
+    {
+        vision::InferenceResult result;
+        vision::ModelConfig config;
+        QString snapshotPath;
+    };
+    QHash<QString, CachedImageResult> imageResults_;
+    std::unique_ptr<QTemporaryDir> imageResultDirectory_;
+    bool imageResultCacheWarning_ = false;
     QString lastError_;
     QString actualBackend_, actualDeviceName_, actualDeviceNotice_;
     vision::ComputeDevice actualDevice_ = vision::ComputeDevice::CPU;

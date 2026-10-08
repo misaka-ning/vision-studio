@@ -19,6 +19,7 @@
 #include <QFrame>
 #include <QHeaderView>
 #include <QImageReader>
+#include <QImageWriter>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QKeyEvent>
@@ -46,10 +47,12 @@
 #include <QStandardItemModel>
 #include <QStandardPaths>
 #include <QTableWidget>
+#include <QTemporaryDir>
 #include <QTextBrowser>
 #include <QThread>
 #include <QTimer>
 #include <QUrl>
+#include <QUuid>
 #include <QVBoxLayout>
 #include <algorithm>
 #include <cmath>
@@ -850,6 +853,7 @@ QWidget *MainWindow::buildWorkbench()
     connect(clear, &QPushButton::clicked, this,
             [this]
             {
+                clearImageResults();
                 files_.clear();
                 queue_->clear();
                 sourceKind_ = vision::SourceKind::Images;
@@ -871,31 +875,7 @@ QWidget *MainWindow::buildWorkbench()
     queue_->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     ql->addWidget(queue_, 1);
     ml->addWidget(queueFrame);
-    connect(queue_, &QListWidget::currentRowChanged, this,
-            [this](int row)
-            {
-                if (!busy_ && sourceKind_ == vision::SourceKind::Images && row >= 0 && row < files_.size())
-                {
-                    vision::InferenceResult r;
-                    r.source = files_[row];
-                    r.originalImage = readImage(r.source);
-                    r.image = vision::inputPreviewImage(r.originalImage, currentConfig().colorMode);
-                    if (!r.image.isNull())
-                    {
-                        lastResult_ = {};
-                        canvas_->setResult(r);
-                        canvasTitle_->setText(QFileInfo(r.source).fileName());
-                        sizeMetric_->setText(QString("%1 × %2").arg(r.image.width()).arg(r.image.height()));
-                        countMetric_->setText("—");
-                        latencyMetric_->setText("—");
-                        classMetric_->setText("—");
-                        predictionTable_->setRowCount(0);
-                        emptyResults_->show();
-                        resultInfo_->setText("图片已就绪，点击开始检测。");
-                        exportButton_->setEnabled(false);
-                    }
-                }
-            });
+    connect(queue_, &QListWidget::currentRowChanged, this, &MainWindow::selectQueueImage);
     columns->addWidget(center);
     auto *inspector = card();
     inspector->setMinimumWidth(230);
@@ -1357,10 +1337,113 @@ QWidget *MainWindow::buildRecordings()
     return page;
 }
 
+void MainWindow::clearImageResults()
+{
+    imageResults_.clear();
+    imageResultDirectory_.reset();
+    imageResultCacheWarning_ = false;
+    if (queue_)
+        for (int row = 0; row < queue_->count(); ++row)
+            queue_->item(row)->setForeground(QBrush());
+}
+
+void MainWindow::cacheImageResult(const vision::InferenceResult &result)
+{
+    if (result.image.isNull() || result.demonstration || !files_.contains(result.source))
+        return;
+    CachedImageResult cached{result, lastConfig_, {}};
+    if (!imageResultDirectory_)
+        imageResultDirectory_ = std::make_unique<QTemporaryDir>(
+            QDir::tempPath() + "/vision-studio-image-results-XXXXXX");
+    if (imageResultDirectory_->isValid())
+    {
+        const QString snapshot = imageResultDirectory_->filePath(
+            QUuid::createUuid().toString(QUuid::Id128) + ".png");
+        QSaveFile file(snapshot);
+        if (file.open(QIODevice::WriteOnly))
+        {
+            QImageWriter writer(&file, "PNG");
+            writer.setCompression(11); // Fast lossless snapshots, independent of source-file changes.
+            const QImage &original = result.originalImage.isNull() ? result.image : result.originalImage;
+            if (writer.write(original) && file.commit())
+            {
+                cached.snapshotPath = snapshot;
+                // Keep only metadata in memory; a large folder must not retain every decoded image.
+                cached.result.image = {};
+                cached.result.originalImage = {};
+            }
+        }
+    }
+    if (cached.snapshotPath.isEmpty() && !imageResultCacheWarning_)
+    {
+        imageResultCacheWarning_ = true;
+        showNotice("无法写入临时结果缓存，本轮结果将保存在内存中。请检查临时目录空间或权限。", true);
+    }
+    const auto previous = imageResults_.constFind(result.source);
+    if (previous != imageResults_.cend() && !previous->snapshotPath.isEmpty())
+        QFile::remove(previous->snapshotPath);
+    imageResults_.insert(result.source, std::move(cached));
+}
+
+void MainWindow::selectQueueImage(int row)
+{
+    if (busy_ || sourceKind_ != vision::SourceKind::Images || row < 0 || row >= files_.size())
+        return;
+    const QString source = files_.at(row);
+    const auto cached = imageResults_.constFind(source);
+    bool cacheUnreadable = false;
+    if (cached != imageResults_.cend())
+    {
+        auto result = cached->result;
+        if (!cached->snapshotPath.isEmpty())
+        {
+            result.originalImage = readImage(cached->snapshotPath);
+            result.image = vision::inputPreviewImage(result.originalImage, cached->config.colorMode);
+            if (!result.sourceFrameSize.isEmpty() && result.originalImage.size() != result.sourceFrameSize)
+                result.image = {};
+        }
+        if (!result.image.isNull())
+        {
+            lastConfig_ = cached->config;
+            displayResult(result);
+            return;
+        }
+        cacheUnreadable = true;
+        imageResults_.remove(source);
+        queue_->item(row)->setForeground(QBrush());
+    }
+    vision::InferenceResult preview;
+    preview.source = source;
+    preview.originalImage = readImage(source);
+    preview.image = vision::inputPreviewImage(preview.originalImage, currentConfig().colorMode);
+    lastResult_ = {};
+    if (preview.image.isNull())
+        canvas_->clear();
+    else
+        canvas_->setResult(preview);
+    canvasTitle_->setText(QFileInfo(source).fileName());
+    sizeMetric_->setText(preview.image.isNull()
+                             ? "—"
+                             : QString("%1 × %2").arg(preview.image.width()).arg(preview.image.height()));
+    sizeMetric_->setToolTip("预览与导出图像尺寸");
+    countMetric_->setText("—");
+    latencyMetric_->setText("—");
+    classMetric_->setText("—");
+    predictionTable_->setRowCount(0);
+    emptyResults_->show();
+    emptyResults_->setText("此图片尚无检测结果。");
+    resultInfo_->setText(preview.image.isNull() ? "无法读取此图片，请检查文件是否存在。"
+                                               : "图片已就绪，点击开始检测。");
+    exportButton_->setEnabled(false);
+    if (cacheUnreadable)
+        showNotice("此图片的临时结果缓存无法读取，请重新检测。", true);
+}
+
 void MainWindow::updateInputPreview()
 {
     if (busy_ || !canvas_)
         return;
+    clearImageResults();
     const auto mode = currentConfig().colorMode;
     for (int index = 0; index < queue_->count(); ++index)
     {
@@ -1765,6 +1848,7 @@ void MainWindow::chooseFolder()
         showNotice("该文件夹中没有支持的图片。", true);
         return;
     }
+    clearImageResults();
     files_.clear();
     queue_->clear();
     addFiles(files);
@@ -1775,6 +1859,7 @@ void MainWindow::chooseVideo()
         this, "选择视频", projectRoot_, "视频 (*.mp4 *.avi *.mkv *.mov *.webm *.m4v);;全部文件 (*)");
     if (p.isEmpty())
         return;
+    clearImageResults();
     sourceKind_ = vision::SourceKind::Video;
     streamPath_ = p;
     files_.clear();
@@ -1793,6 +1878,7 @@ void MainWindow::chooseVideo()
 }
 void MainWindow::chooseCamera()
 {
+    clearImageResults();
     sourceKind_ = vision::SourceKind::Camera;
     files_.clear();
     queue_->clear();
@@ -1835,6 +1921,7 @@ void MainWindow::addFiles(const QStringList &input)
 {
     if (sourceKind_ != vision::SourceKind::Images)
     {
+        clearImageResults();
         files_.clear();
         queue_->clear();
     }
@@ -2037,6 +2124,7 @@ void MainWindow::startInference()
     actualDeviceKnown_ = false;
     actualDeviceNotice_.clear();
     completed_ = 0;
+    clearImageResults();
     lastResult_ = {};
     lastConfig_ = req.config;
     predictionTable_->setRowCount(0);
@@ -2487,6 +2575,33 @@ void MainWindow::updateModelMeta(const QString &state)
 }
 void MainWindow::onResult(const vision::InferenceResult &r)
 {
+    if (sourceKind_ == vision::SourceKind::Images)
+        cacheImageResult(r);
+    displayResult(r);
+    if (sourceKind_ == vision::SourceKind::Images)
+    {
+        recordResult(r);
+        const int row = files_.indexOf(r.source);
+        if (row >= 0)
+        {
+            queue_->setCurrentRow(row);
+            queue_->item(row)->setForeground(QColor("#60CDFF"));
+        }
+        if (autoExport_->isChecked())
+        {
+            QString error;
+            if (!writeResult(r, exportDir_, &error))
+            {
+                failed_ = true;
+                worker_->requestStop();
+                showNotice("自动导出失败：" + error, true);
+            }
+        }
+    }
+}
+
+void MainWindow::displayResult(const vision::InferenceResult &r)
+{
     lastResult_ = r;
     actualDeviceKnown_ = true;
     actualDevice_ = r.device;
@@ -2543,6 +2658,7 @@ void MainWindow::onResult(const vision::InferenceResult &r)
     emptyResults_->setVisible(r.predictions.isEmpty());
     emptyResults_->setText("未发现符合阈值的目标\n\n可尝试降低置信度或检查模型配置。");
     predictionTable_->setRowCount(r.predictions.size());
+    predictionTable_->clearSelection();
     for (int i = 0; i < r.predictions.size(); ++i)
     {
         const auto &p = r.predictions[i];
@@ -2562,26 +2678,7 @@ void MainWindow::onResult(const vision::InferenceResult &r)
         id->setForeground(QColor("#A5A5A5"));
         predictionTable_->setItem(i, 2, id);
     }
-    if (sourceKind_ == vision::SourceKind::Images)
-    {
-        recordResult(r);
-        const int row = files_.indexOf(r.source);
-        if (row >= 0)
-        {
-            queue_->setCurrentRow(row);
-            queue_->item(row)->setForeground(QColor("#60CDFF"));
-        }
-        if (autoExport_->isChecked())
-        {
-            QString error;
-            if (!writeResult(r, exportDir_, &error))
-            {
-                failed_ = true;
-                worker_->requestStop();
-                showNotice("自动导出失败：" + error, true);
-            }
-        }
-    }
+    exportButton_->setEnabled(!busy_ && !r.image.isNull() && !r.demonstration);
 }
 void MainWindow::onFinished(bool cancelled)
 {
@@ -2665,6 +2762,7 @@ void MainWindow::runDemo()
     labels_.clear();
     labelsPath_.clear();
     labelButton_->setText("类别标签 · 默认 COCO 80");
+    clearImageResults();
     files_.clear();
     queue_->clear();
     sourceKind_ = vision::SourceKind::Images;
@@ -2697,6 +2795,7 @@ void MainWindow::runPtDemo()
     inputSize_->setValue(640);
     confidence_->setValue(.25);
     iou_->setValue(.45);
+    clearImageResults();
     files_.clear();
     queue_->clear();
     sourceKind_ = vision::SourceKind::Images;

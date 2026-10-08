@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "success": true,
+  "version": "2.0.0-beta.2",
+  "errors": [],
+  "embedded_source_files_sha256_verified": 18,
+  "frozen_application_sources_byte_equal": 3117,
+  "application_source": {
+    "file": "vision-studio-2.0.0-beta.2-sources.tar.xz",
+    "bytes": 39456240,
+    "sha256": "37ff744dc9a2dc0f7973549b9edb4780126d0717911ab76467d6bee2f5549ff6"
+  },
+  "complete_source": {
+    "file": "vision-studio-2.0.0-beta.2-complete-source.tar.xz",
+    "bytes": 809699060,
+    "sha256": "bdec350ec784489d9a2be5cf9c79d7ff0f06636319ab6b7659b987198db9278b"
+  },
+  "deb_sha256_confirmed": "72b4592fe4b7fb114654fc7af73233b4a1f75bef58f5fcc3bf27ca8839fa9abd",
+  "required_application_files_verified": [
+    "CHANGELOG.md",
+    "CMakeLists.txt",
+    "assets/fluent-check.svg",
+    "assets/fluent-dark.qss",
+    "docs/releases/2.0.0-beta.2.md",
+    "packaging/licenses/fluent-qt-design-reference/LICENSE",
+    "requirements-gpu.lock.txt",
+    "requirements-gpu.txt",
+    "resources.qrc",
+    "scripts/gpu_probe.py",
+    "scripts/gpu_setup.py",
+    "scripts/setup_gpu.sh",
+    "src/core/gpuruntime.cpp",
+    "src/core/onnxcudabackend.cpp",
+    "src/ui/mainwindow.cpp",
+    "src/ui/mainwindow.h",
+    "tests/ui_tests.cpp",
+    "vendor/onnxruntime/LICENSE",
+    "vendor/onnxruntime/onnxruntime_c_api.h"
+  ],
+  "note": "Application archive files match frozen inputs byte for byte. This final validation report and frozen manifest are added after archive creation to avoid recursive self-hashing; product and build inputs remain frozen."
+}
