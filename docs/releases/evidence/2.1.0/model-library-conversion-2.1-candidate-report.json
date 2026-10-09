@@ -1,0 +1,99 @@
+{
+  "version": "2.1.0",
+  "stage": "final model-library and conversion metadata integration",
+  "generated_at": "2026-10-09T04:03:58.926948+00:00",
+  "result": "passed",
+  "runtime": {
+    "qt": "6.8.3",
+    "target_opencv": "4.5.4",
+    "device": "CPU",
+    "python": "build-2.1.0/release-runtime/bin/python3"
+  },
+  "raw_logs": [
+    {
+      "path": "output/build-2.1-ui-targets.log",
+      "bytes": 732,
+      "sha256": "3e12314ab04500818d81478a91ef71445049897367aa5caa1c1ff545bc0cfbf3",
+      "result": "passed"
+    },
+    {
+      "path": "output/model-library-2.1-final.log",
+      "bytes": 3970,
+      "sha256": "cd04517ed0119b67673c320df77785fb1b4fff5c9ba0f478f145d3d7133a04be",
+      "result": "passed",
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "duration_ms": 3572
+    },
+    {
+      "path": "output/model-library-2.1-final-edge.log",
+      "bytes": 1691,
+      "sha256": "7ce23c4b4f0f410dccd89b07a672207fae61065abbbafb2baa578b3e442e89b8",
+      "result": "passed",
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "duration_ms": 1409
+    },
+    {
+      "path": "output/conversion-ui-2.1-final.log",
+      "bytes": 333,
+      "sha256": "78b2b8d550b0805b53849e1d746d93b464d1fc565ef56fdaddad6da7df5b4b98",
+      "result": "passed"
+    },
+    {
+      "path": "output/conversion-inference-2.1-final.log",
+      "bytes": 1185,
+      "sha256": "c157d01533ccd000a2fa7e18d74dba7577b1b98ae7fd610a7cbda3bf477d66c9",
+      "result": "passed",
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "duration_ms": 25506
+    }
+  ],
+  "sha256": {
+    "build-2.1.0/bin/vision-studio": "f43f69b4d1957521a11fc80daa2601ea9bc914159acf3a66411f14b40d978d2a",
+    "build-2.1.0/vision-conversion-inference-tests": "05e92bff59473b9d5d299a56fa3b5da8fd4ee8ac80787c74b26b176ae975ae20",
+    "build-2.1.0/vision-ui-tests": "862de30ce4f5148446a6784349d08b4c627f8d4d46784d454c0090b86217bcdf",
+    "build-2.1.0/vision-conversion-ui-tests": "6059a6645dc30e4e5ed6cc1efbdb7144a9734fb4320524cfd88a1b47a395bbf2",
+    "src/ui/mainwindow.h": "f482ca477a85e15bfd51f9c66f6b6f09a56c73d77b884305ad68bed29e40ea4a",
+    "src/ui/mainwindow.cpp": "a5b2a5fca1a8c29111157fadad09a4312440cd7694f1b88439c7ba59e59e6c82",
+    "tests/ui_tests.cpp": "b4e6c770174b1fc9429522795a35bb5b97cf4dba6ce8f4eec788bc926060e8c0",
+    "tests/conversion_inference_tests.cpp": "1470b58ed9262ada0dae39045d0eee5e5c00351455a4c1abcf33c209749ce90e",
+    "scripts/model_convert.py": "3f9030c28ee1ddd2d966d88b0b9469f79d39e174eae4295ea5c2cf90152a0deb"
+  },
+  "conversion_cases": [
+    "modern-c1.pt -> ONNX",
+    "focus-c1.pt -> ONNX",
+    "script-detect-c1.pt -> ONNX",
+    "script-classify-c1.pt -> ONNX",
+    "classify-c3.pt -> TorchScript, retain grayscale",
+    "script-detect-c3.pt -> TorchScript, RGB"
+  ],
+  "checks": [
+    "actual conversion CLI and MainWindow add-model action",
+    "converted presets task/layout/custom names/channels/input size/scale",
+    "same-path forced preset refresh",
+    "source PT vs converted real VisionEngine predictions: classes and labels exact, confidence difference < 0.002, box position and dimensions difference < 0.05",
+    "one-channel automatic grayscale and grayscale preview",
+    "three-channel grayscale preference retained",
+    "profile persisted across app reconstruction; manual labels override native labels",
+    "file size and mtime fingerprint invalidates old profile",
+    "right-click does not change global selection; file manager URL handler captures correct directory",
+    "notes and display names persist through reorder and app reconstruction",
+    "display name <b> content rendered as PlainText in workbench and model page",
+    "remove updates library only and does not re-add bundled models after restart",
+    "missing model and busy model menus preserve selection and mutation constraints"
+  ],
+  "limitations": [
+    "Qt tests use offscreen platform; native context menu event is supplied after QtTest right-click because offscreen does not synthesize it.",
+    "File manager opening is validated via QDesktopServices URL handler rather than visually inspecting an external file manager.",
+    "This report covers CPU conversion and UI integration; full suite, GPU and package installation acceptance are owned by the release coordinator.",
+    "Initial pre-final development failures remain in ignored output/conversion-inference-2.1-integration.log; final logs above cover corrected scale tolerance and the implemented OpenCV 4.5 compatibility rewrite."
+  ]
+}

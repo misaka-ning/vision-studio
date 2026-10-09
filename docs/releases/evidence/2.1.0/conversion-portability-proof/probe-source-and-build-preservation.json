@@ -1,0 +1,35 @@
+{
+  "version": "2.1.0",
+  "actual_preserved_files": [
+    {
+      "file": "docs/releases/evidence/2.1.0/conversion-portability-proof/converted_gpu_probe_v2.cpp",
+      "bytes": 3987,
+      "sha256": "7083d5ce1e8b274cd2c28020df3db97c9549a233f831a0504d7911b866a0db4e"
+    },
+    {
+      "file": "docs/releases/evidence/2.1.0/conversion-portability-proof/converted-gpu-probe-v2-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "docs/releases/evidence/2.1.0/conversion-portability-proof/build-full-conversion-regressions.log",
+      "bytes": 242,
+      "sha256": "a47cd436aeed340c3b8772af9c360f64f01ea8e840a55951f73aeb54b380997d"
+    },
+    {
+      "file": "docs/releases/evidence/2.1.0/conversion-portability-proof/run_portability_full_proof.py",
+      "bytes": 5785,
+      "sha256": "079972cd568c493939f83e68916c38279c7a1422c7f7b60a765e98440ed7b96e"
+    },
+    {
+      "file": "docs/releases/evidence/2.1.0/conversion-portability-proof/run_full_model_conversion_ctest.py",
+      "bytes": 3343,
+      "sha256": "2f8cbad2bab6429acee8656593afe75704a004ba8bc9ae7f07eccfb71a5d32b7"
+    },
+    {
+      "file": "docs/releases/evidence/2.1.0/conversion-portability-proof/converted-gpu-probe-v2-build.log.execution.json",
+      "bytes": 3899,
+      "sha256": "7853231cf6785fb41e3cda27e93a4ba1dc605c480c85500ee67684a9c2efaeec"
+    }
+  ]
+}

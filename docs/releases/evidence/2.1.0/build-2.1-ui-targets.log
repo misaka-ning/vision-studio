@@ -1,0 +1,11 @@
+[1/14] Automatic MOC for target vision-studio
+[2/13] Automatic MOC for target vision-conversion-inference-tests
+[3/12] Automatic MOC for target vision-ui-tests
+[4/11] Building CXX object CMakeFiles/vision-studio.dir/src/main.cpp.o
+[5/11] Building CXX object CMakeFiles/vision-conversion-inference-tests.dir/src/ui/mainwindow.cpp.o
+[6/11] Building CXX object CMakeFiles/vision-studio.dir/src/ui/mainwindow.cpp.o
+[7/11] Building CXX object CMakeFiles/vision-ui-tests.dir/src/ui/mainwindow.cpp.o
+[8/11] Linking CXX executable vision-conversion-inference-tests
+[9/11] Linking CXX executable bin/vision-studio
+[10/11] Building CXX object CMakeFiles/vision-ui-tests.dir/tests/ui_tests.cpp.o
+[11/11] Linking CXX executable vision-ui-tests

@@ -1,0 +1,60 @@
+{
+  "version": "2.1.0",
+  "success": true,
+  "reports": [
+    {
+      "name": "github_release_tests",
+      "command": [
+        "/usr/bin/python3.10",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "github_release_tests.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.194,
+      "log": "github_release_tests.log",
+      "log_sha256": "74d6ebe06731581adeb7fe7b615123738ad84319d27129cb2f3280a5da7efa8d"
+    },
+    {
+      "name": "release_metadata_tests",
+      "command": [
+        "/usr/bin/python3.10",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "release_metadata_tests.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.063,
+      "log": "release_metadata_tests.log",
+      "log_sha256": "2a9650d65d574f823ce18572b87776fb89419964c1c519cd041b9768a314ef05"
+    },
+    {
+      "name": "gpu_runtime_tests",
+      "command": [
+        "/usr/bin/python3.10",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "gpu_runtime_tests.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.125,
+      "log": "gpu_runtime_tests.log",
+      "log_sha256": "29eb56f1a4addf5714af669e0bedb27cff2f94beb8fb9d479b849f633caacc60"
+    }
+  ]
+}

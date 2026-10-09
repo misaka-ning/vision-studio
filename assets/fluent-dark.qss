@@ -3,7 +3,8 @@
    Design reference: calvinhxx/Fluent-Qt v1.9.2; see docs/UI设计.md.
    Native widget classes, signal connections and keyboard behavior are preserved. */
 QWidget { color: #F5F5F5; font-family: 'Noto Sans CJK SC'; font-size: 13px; }
-QMainWindow, #workspace, #moreContent, #moreViewport { background: #202020; }
+QMainWindow, #workspace, #moreContent, #moreViewport,
+#conversionContent, #conversionViewport { background: #202020; }
 #sidebar { background: #202020; border-right: 1px solid #353535; }
 #brand { color: #FFFFFF; font-size: 18px; font-weight: 600; }
 #brandCaption { color: #B8B8B8; font-size: 11px; }
@@ -17,7 +18,7 @@ QMainWindow, #workspace, #moreContent, #moreViewport { background: #202020; }
 #configInner { background: #272727; }
 #metricValue { color: #FFFFFF; font-size: 28px; font-weight: 600; }
 #metricUnit { color: #A5A5A5; font-size: 11px; }
-#modelName, #activeModelName { color: #F5F5F5; font-size: 15px; font-weight: 600; }
+#modelName, #activeModelName, #conversionSourceName { color: #F5F5F5; font-size: 15px; font-weight: 600; }
 #localBadge { color: #A6E3B0; background: #283B2D; border: 1px solid #3D5141; border-radius: 8px; padding: 6px 12px; font-size: 11px; }
 #chip, #actualDeviceBadge, #structureLoadStatus { color: #D2D2D2; background: #333333; border: 1px solid #424242; border-radius: 4px; padding: 5px 9px; font-size: 11px; }
 QPushButton { color: #F5F5F5; background: #333333; border: 1px solid #454545; border-bottom-color: #4A4A4A; border-radius: 4px; padding: 6px 12px; }

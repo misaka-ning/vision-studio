@@ -1,0 +1,16 @@
+{
+  "repository": "misaka-ning/vision-studio",
+  "branch": "codex/model-tools-2.1.0",
+  "commit": "8a40b77e5de99a496dcf19e5c8cc5b2f35da33fb",
+  "tree": "f9307eadbd39b8eb25147b8dfb2f15b112b655c3",
+  "parent": "314e5d0ec3cabe0b673ef17bdb471d153c01b4b6",
+  "local_history_backup": "codex/model-tools-2.1.0-local-2e1162fd",
+  "previous_local_head": "2e1162fd085ec1d9dc08cc32087df51169dfff75",
+  "byte_equal_source_tree": true,
+  "foreign_files_excluded": [
+    "docs/足球模型微调.md",
+    "scripts/evaluate_ball.py",
+    "scripts/finetune_ball.py",
+    "scripts/run_finetune_ball.sh"
+  ]
+}

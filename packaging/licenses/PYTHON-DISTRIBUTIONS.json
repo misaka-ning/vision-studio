@@ -1,5 +1,5 @@
 {
-  "count": 57,
+  "count": 59,
   "runtime": "/opt/VisionStudio/runtime",
   "excluded_from_binary": [
     "pip"
@@ -408,6 +408,20 @@
       }
     },
     {
+      "name": "onnx",
+      "version": "1.17.0",
+      "license_metadata": "Apache License v2.0",
+      "license_classifiers": [],
+      "source_urls": [
+        "Homepage, https://onnx.ai/",
+        "Repository, https://github.com/onnx/onnx"
+      ],
+      "pypi": "https://pypi.org/project/onnx/1.17.0/",
+      "preserved_files": {
+        "onnx-1.17.0.dist-info/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+      }
+    },
+    {
       "name": "opencv-python-headless",
       "version": "4.11.0.86",
       "license_metadata": "Apache 2.0",
@@ -563,6 +577,19 @@
       "preserved_files": {
         "prompt_toolkit-3.0.53.dist-info/licenses/AUTHORS.rst": "d3dc62c6bc8436658495ab89aea37511e7fa9391d282657239c9cfb80dbd42e5",
         "prompt_toolkit-3.0.53.dist-info/licenses/LICENSE": "303574d9bdd85c757d6025017942bf17baeedf2778f62bd7f425d07d880f4c4a"
+      }
+    },
+    {
+      "name": "protobuf",
+      "version": "6.33.0",
+      "license_metadata": "3-Clause BSD License",
+      "license_classifiers": [],
+      "source_urls": [
+        "Home-page, https://developers.google.com/protocol-buffers/"
+      ],
+      "pypi": "https://pypi.org/project/protobuf/6.33.0/",
+      "preserved_files": {
+        "protobuf-6.33.0.dist-info/LICENSE": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d"
       }
     },
     {

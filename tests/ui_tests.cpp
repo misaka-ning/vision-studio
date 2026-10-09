@@ -4,9 +4,12 @@
 
 #include <QAbstractButton>
 #include <QAbstractSpinBox>
+#include <QAction>
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QContextMenuEvent>
+#include <QCryptographicHash>
 #include <QDir>
 #include <QDesktopServices>
 #include <QDoubleSpinBox>
@@ -20,9 +23,11 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QInputDialog>
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
+#include <QMenu>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QPixmap>
@@ -168,6 +173,78 @@ class DirectoryUrlCapture final : public QObject
         ++calls;
     }
 };
+
+QListWidgetItem *modelItem(QListWidget *list, const QString &path)
+{
+    for (int row = 0; row < list->count(); ++row)
+        if (list->item(row)->data(Qt::UserRole).toString() == path)
+            return list->item(row);
+    return nullptr;
+}
+
+QStringList modelOrder(QListWidget *list)
+{
+    QStringList paths;
+    for (int row = 0; row < list->count(); ++row)
+        paths.append(list->item(row)->data(Qt::UserRole).toString());
+    return paths;
+}
+
+QMenu *openModelMenu(QListWidget *list, const QString &path)
+{
+    auto *item = modelItem(list, path);
+    if (!item)
+        return nullptr;
+    list->scrollToItem(item);
+    const QPoint point = list->visualItemRect(item).center();
+    // QtTest sends the right-button input; the offscreen platform does not
+    // synthesize the native context-menu event, so deliver that event as well.
+    QTest::mouseClick(list->viewport(), Qt::RightButton, Qt::NoModifier, point);
+    QContextMenuEvent context(QContextMenuEvent::Mouse, point,
+                               list->viewport()->mapToGlobal(point));
+    QApplication::sendEvent(list->viewport(), &context);
+    for (auto *menu : list->findChildren<QMenu *>(QStringLiteral("modelContextMenu")))
+        if (menu->isVisible())
+            return menu;
+    return nullptr;
+}
+
+bool editModelText(QMenu *menu, const QString &actionName, const QString &value,
+                   bool accept = true, QString *label = nullptr)
+{
+    auto *action = menu ? menu->findChild<QAction *>(actionName) : nullptr;
+    if (!action || !action->isEnabled())
+        return false;
+    bool edited = false;
+    QTimer editor;
+    QObject::connect(&editor, &QTimer::timeout, &editor,
+                     [&]
+                     {
+                         auto *dialog = qobject_cast<QInputDialog *>(QApplication::activeModalWidget());
+                         if (!dialog)
+                             return;
+                         if (label)
+                             *label = dialog->labelText();
+                         dialog->setTextValue(value);
+                         edited = true;
+                         accept ? dialog->accept() : dialog->reject();
+                         editor.stop();
+                     });
+    menu->hide();
+    editor.start(10);
+    action->trigger();
+    editor.stop();
+    menu->close();
+    return edited;
+}
+
+QByteArray modelFileHash(const QString &path)
+{
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly))
+        return {};
+    return QCryptographicHash::hash(file.readAll(), QCryptographicHash::Sha256);
+}
 
 bool activateModel(MainWindow *window, const QString &fileName)
 {
@@ -427,18 +504,21 @@ class UiTests final : public QObject
         QVERIFY(pages);
         QVERIFY(title);
         QVERIFY(demoButton);
-        QCOMPARE(pages->count(), 7);
+        QCOMPARE(pages->count(), 8);
         QCOMPARE(pages->widget(0)->objectName(), QStringLiteral("workbenchPage"));
         QCOMPARE(pages->widget(2)->objectName(), QStringLiteral("modelDisplayPage"));
-        QCOMPARE(pages->widget(6)->objectName(), QStringLiteral("morePage"));
-        QVERIFY(pages->widget(6)->isAncestorOf(demoButton));
-        QVERIFY(pages->widget(6)->isAncestorOf(exportButton));
+        QCOMPARE(pages->widget(5)->objectName(), QStringLiteral("recordingsPage"));
+        QCOMPARE(pages->widget(6)->objectName(), QStringLiteral("modelConversionPage"));
+        QCOMPARE(pages->widget(7)->objectName(), QStringLiteral("morePage"));
+        QVERIFY(pages->widget(7)->isAncestorOf(demoButton));
+        QVERIFY(pages->widget(7)->isAncestorOf(exportButton));
         QVERIFY(!demoButton->isVisible());
         QVERIFY(!exportButton->isVisible());
         for (const auto &route :
              {qMakePair(QStringLiteral("模型库"), 1), qMakePair(QStringLiteral("模型显示"), 2),
               qMakePair(QStringLiteral("运行记录"), 3), qMakePair(QStringLiteral("使用指南"), 4),
-              qMakePair(QStringLiteral("录制视频"), 5), qMakePair(QStringLiteral("更多"), 6),
+              qMakePair(QStringLiteral("录制视频"), 5), qMakePair(QStringLiteral("模型转换"), 6),
+              qMakePair(QStringLiteral("更多"), 7),
               qMakePair(QStringLiteral("检测工作台"), 0)})
         {
             auto *nav = findButton(window_.get(), route.first);
@@ -447,9 +527,9 @@ class UiTests final : public QObject
             QCOMPARE(pages->currentIndex(), route.second);
             QCOMPARE(title->text(), route.first);
             QVERIFY(nav->isChecked());
-            QCOMPARE(demoButton->isVisible(), route.second == 6);
-            QCOMPARE(exportButton->isVisible(), route.second == 6);
-            if (route.second == 6)
+            QCOMPARE(demoButton->isVisible(), route.second == 7);
+            QCOMPARE(exportButton->isVisible(), route.second == 7);
+            if (route.second == 7)
                 window_->saveScreenshot(QStringLiteral(VISION_PROJECT_DIR) +
                                         QStringLiteral("/output/test-screenshots/1.4-more.png"));
         }
@@ -481,10 +561,16 @@ class UiTests final : public QObject
     {
         QFETCH(QString, parameterLabel);
         QFETCH(bool, focused);
-        auto *spin = labelledSpinBox(window_.get(), parameterLabel);
+        auto *workbench = window_->findChild<QWidget *>(QStringLiteral("workbenchPage"));
+        QVERIFY(workbench);
+        auto *spin = labelledSpinBox(workbench, parameterLabel);
         auto *run = findButton(window_.get(), QStringLiteral("开始检测"));
         auto *advanced = findButton(window_.get(), QStringLiteral("预处理设置 ▾"));
         QVERIFY(spin && run && advanced);
+        const QString parameterName = parameterLabel == QStringLiteral("输入尺寸") ? QStringLiteral("inputSize")
+                                      : parameterLabel == QStringLiteral("置信度") ? QStringLiteral("confidence")
+                                                                               : QStringLiteral("nmsIou");
+        QCOMPARE(spin->objectName(), parameterName);
         QTest::mouseClick(advanced, Qt::LeftButton);
         QScrollArea *scroll = nullptr;
         for (QWidget *parent = spin->parentWidget(); parent; parent = parent->parentWidget())
@@ -511,10 +597,16 @@ class UiTests final : public QObject
         const int delta = beforeScroll == bar->maximum() ? 120 : -120;
         const QPoint local = spin->rect().center();
         QVERIFY(scroll->viewport()->rect().contains(spin->mapTo(scroll->viewport(), local)));
+        const QPoint point = spin->mapTo(window_.get(), local);
+        auto *target = window_->childAt(point);
+        qInfo().noquote() << "wheel_routing_evidence:" << spin->objectName()
+                          << "focus=" << focused << "scroll=" << beforeScroll << "/" << bar->maximum()
+                          << "point=" << point << "target=" << (target ? target->metaObject()->className() : "none")
+                          << (target ? target->objectName() : QString());
         // Use Qt's platform wheel delivery so ignored events follow the same
         // parent-scroll routing as an actual wheel over the input control.
         QVERIFY(window_->windowHandle());
-        QTest::wheelEvent(window_->windowHandle(), spin->mapTo(window_.get(), local), QPoint(0, delta));
+        QTest::wheelEvent(window_->windowHandle(), point, QPoint(0, delta));
         QCOMPARE(value(), beforeValue);
         QTRY_VERIFY_WITH_TIMEOUT(bar->value() != beforeScroll, 3000);
 
@@ -634,6 +726,238 @@ class UiTests final : public QObject
         for (const QString &file : expected)
             QVERIFY(QFileInfo::exists(file));
         QVERIFY(!QFileInfo::exists(fixture_->path() + QStringLiteral("/output/history.json")));
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+    }
+
+    void modelContextMenuTargetsPointerWithoutChangingGlobalSelection()
+    {
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型库")), Qt::LeftButton);
+        auto *models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
+        auto *active = window_->findChild<QLabel *>(QStringLiteral("activeModelName"));
+        auto *viewer = window_->findChild<ModelViewer *>(QStringLiteral("modelStructureViewer"));
+        QVERIFY(models && active && viewer);
+        const QString selected = fixture_->path() + QStringLiteral("/models/yolov5n.onnx");
+        const QString target = fixture_->path() + QStringLiteral("/models/yolov8n.pt");
+        QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
+        const QStringList before = modelOrder(models);
+        QSignalSpy starts(window_.get(), &MainWindow::startRequested);
+        auto *menu = openModelMenu(models, target);
+        QVERIFY(menu);
+        QCOMPARE(menu->actions().size(), 4);
+        const QStringList names = {QStringLiteral("modelOpenLocationAction"),
+                                   QStringLiteral("modelNoteAction"),
+                                   QStringLiteral("modelRenameAction"),
+                                   QStringLiteral("modelRemoveAction")};
+        for (int action = 0; action < names.size(); ++action)
+        {
+            QCOMPARE(menu->actions()[action]->objectName(), names[action]);
+            QCOMPARE(menu->actions()[action]->data().toString(), target);
+            QVERIFY(menu->actions()[action]->isEnabled());
+        }
+        QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
+        QCOMPARE(active->text(), QStringLiteral("yolov5n.onnx"));
+        QCOMPARE(viewer->modelPath(), selected);
+        DirectoryUrlCapture capture;
+        menu->actions().first()->trigger();
+        QCOMPARE(capture.calls, 1);
+        QCOMPARE(capture.url.toLocalFile(), QFileInfo(target).absolutePath());
+        QCOMPARE(modelOrder(models), before);
+        QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
+        QCOMPARE(viewer->modelPath(), selected);
+        QCOMPARE(starts.size(), 0);
+        menu->close();
+        QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+        const QPoint blank(models->viewport()->width() - 5, models->viewport()->height() - 5);
+        QVERIFY(!models->itemAt(blank));
+        QContextMenuEvent context(QContextMenuEvent::Mouse, blank,
+                                   models->viewport()->mapToGlobal(blank));
+        QApplication::sendEvent(models->viewport(), &context);
+        QVERIFY(!models->findChild<QMenu *>(QStringLiteral("modelContextMenu")));
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+    }
+
+    void modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart()
+    {
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型库")), Qt::LeftButton);
+        auto *models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
+        auto *viewer = window_->findChild<ModelViewer *>(QStringLiteral("modelStructureViewer"));
+        QVERIFY(models && viewer);
+        const QString selected = fixture_->path() + QStringLiteral("/models/yolov5n.onnx");
+        const QString target = fixture_->path() + QStringLiteral("/models/yolov8n.pt");
+        const QByteArray originalHash = modelFileHash(target);
+        QVERIFY(!originalHash.isEmpty());
+        const QString note = QStringLiteral("灰度足球数据集\n训练实验 v3；验证场景：桌面与室外");
+        const QString alias = QStringLiteral("<b>足球检测 · 灰度 v3</b>");
+        QVERIFY(editModelText(openModelMenu(models, target), QStringLiteral("modelNoteAction"), note));
+        QString label;
+        QVERIFY(editModelText(openModelMenu(models, target), QStringLiteral("modelRenameAction"),
+                              alias, true, &label));
+        QVERIFY(label.contains(QStringLiteral("原始文件名和路径不变")));
+        QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
+        QCOMPARE(viewer->modelPath(), selected);
+        auto *item = modelItem(models, target);
+        QVERIFY(item);
+        QVERIFY(item->text().startsWith(alias + QLatin1Char('\n')));
+        QVERIFY(item->text().contains(QStringLiteral("备注 · 灰度足球数据集")));
+        QVERIFY(item->toolTip().contains(note));
+        QCOMPARE(item->data(Qt::UserRole + 1).toString(), alias);
+        QCOMPARE(item->data(Qt::UserRole + 2).toString(), note);
+        QSettings settings(fixture_->path() + QStringLiteral("/output/preferences.ini"),
+                           QSettings::IniFormat);
+        settings.sync();
+        QCOMPARE(settings.value(QStringLiteral("modelNotes")).toMap().value(target).toString(), note);
+        QCOMPARE(settings.value(QStringLiteral("modelDisplayNames")).toMap().value(target).toString(),
+                 alias);
+        QVERIFY(models->model()->moveRows(QModelIndex(), 0, 1, QModelIndex(), models->count()));
+        const QStringList expectedOrder = modelOrder(models);
+        QCOMPARE(modelItem(models, target)->data(Qt::UserRole + 2).toString(), note);
+        QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
+        QCOMPARE(modelFileHash(target), originalHash);
+        QVERIFY(!QFileInfo::exists(QFileInfo(target).absolutePath() + '/' + alias));
+        window_->close();
+        window_.reset();
+        showNewWindow();
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型库")), Qt::LeftButton);
+        models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
+        viewer = window_->findChild<ModelViewer *>(QStringLiteral("modelStructureViewer"));
+        QVERIFY(models && viewer);
+        QCOMPARE(modelOrder(models), expectedOrder);
+        QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
+        QCOMPARE(modelItem(models, target)->data(Qt::UserRole + 1).toString(), alias);
+        QCOMPARE(modelItem(models, target)->data(Qt::UserRole + 2).toString(), note);
+        models->setCurrentItem(modelItem(models, target));
+        QCOMPARE(window_->findChild<QLabel *>(QStringLiteral("activeModelName"))->text(), alias);
+        QCOMPARE(window_->findChild<QLabel *>(QStringLiteral("structureModelName"))->text(), alias);
+        QCOMPARE(window_->findChild<QLabel *>(QStringLiteral("activeModelName"))->textFormat(), Qt::PlainText);
+        QCOMPARE(window_->findChild<QLabel *>(QStringLiteral("structureModelName"))->textFormat(), Qt::PlainText);
+        QCOMPARE(viewer->modelPath(), target);
+        // Cancel changes nothing; empty input deliberately resets the metadata.
+        QVERIFY(editModelText(openModelMenu(models, target), QStringLiteral("modelRenameAction"),
+                              QStringLiteral("取消的名称"), false));
+        QCOMPARE(modelItem(models, target)->data(Qt::UserRole + 1).toString(), alias);
+        QVERIFY(editModelText(openModelMenu(models, target), QStringLiteral("modelRenameAction"), {}));
+        QVERIFY(editModelText(openModelMenu(models, target), QStringLiteral("modelNoteAction"), {}));
+        QCOMPARE(window_->findChild<QLabel *>(QStringLiteral("activeModelName"))->text(),
+                 QStringLiteral("yolov8n.pt"));
+        QCOMPARE(window_->findChild<QLabel *>(QStringLiteral("structureModelName"))->text(),
+                 QStringLiteral("yolov8n.pt"));
+        QVERIFY(modelItem(models, target)->data(Qt::UserRole + 2).toString().isEmpty());
+        settings.sync();
+        QVERIFY(!settings.value(QStringLiteral("modelDisplayNames")).toMap().contains(target));
+        QVERIFY(!settings.value(QStringLiteral("modelNotes")).toMap().contains(target));
+        QCOMPARE(settings.value(QStringLiteral("activeModel")).toString(), target);
+        QCOMPARE(modelFileHash(target), originalHash);
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+    }
+
+    void modelRemovalPreservesFilesAndDoesNotReAddBundledModelsOnRestart()
+    {
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型库")), Qt::LeftButton);
+        auto *models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
+        QVERIFY(models);
+        const QString selected = fixture_->path() + QStringLiteral("/models/yolov5n.onnx");
+        const QString target = fixture_->path() + QStringLiteral("/models/yolov8n.pt");
+        const QByteArray onnxHash = modelFileHash(selected), ptHash = modelFileHash(target);
+        auto *menu = openModelMenu(models, target);
+        QVERIFY(menu);
+        menu->findChild<QAction *>(QStringLiteral("modelRemoveAction"))->trigger();
+        menu->close();
+        QCOMPARE(models->count(), 1);
+        QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
+        QCOMPARE(window_->findChild<ModelViewer *>(QStringLiteral("modelStructureViewer"))->modelPath(),
+                 selected);
+        QCOMPARE(modelFileHash(target), ptHash);
+        window_->close();
+        window_.reset();
+        showNewWindow();
+        models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
+        QVERIFY(models);
+        QCOMPARE(modelOrder(models), QStringList{selected});
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型库")), Qt::LeftButton);
+        // The existing footer action uses the same removal path as the menu.
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("从列表移除")), Qt::LeftButton);
+        QCOMPARE(models->count(), 0);
+        QCOMPARE(window_->findChild<QLabel *>(QStringLiteral("activeModelName"))->text(),
+                 QStringLiteral("尚未选择模型"));
+        QCOMPARE(window_->findChild<ModelViewer *>(QStringLiteral("modelStructureViewer"))->modelPath(),
+                 QString());
+        QSettings settings(fixture_->path() + QStringLiteral("/output/preferences.ini"),
+                           QSettings::IniFormat);
+        settings.sync();
+        QVERIFY(settings.value(QStringLiteral("models")).toStringList().isEmpty());
+        QVERIFY(settings.value(QStringLiteral("activeModel")).toString().isEmpty());
+        window_->close();
+        window_.reset();
+        showNewWindow();
+        models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
+        QVERIFY(models && models->count() == 0);
+        QCOMPARE(modelFileHash(selected), onnxHash);
+        QCOMPARE(modelFileHash(target), ptHash);
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+    }
+
+    void missingModelContextActionsKeepTheValidGlobalModel()
+    {
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型库")), Qt::LeftButton);
+        auto *models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
+        QVERIFY(models);
+        const QString selected = fixture_->path() + QStringLiteral("/models/yolov5n.onnx");
+        const QString missing = fixture_->path() + QStringLiteral("/models/yolov8n.pt");
+        QVERIFY(QFile::remove(missing));
+        models->setCurrentItem(modelItem(models, missing));
+        QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
+        DirectoryUrlCapture capture;
+        auto *menu = openModelMenu(models, missing);
+        QVERIFY(menu);
+        menu->findChild<QAction *>(QStringLiteral("modelOpenLocationAction"))->trigger();
+        QCOMPARE(capture.calls, 1);
+        QCOMPARE(capture.url.toLocalFile(), QFileInfo(missing).absolutePath());
+        menu->close();
+        QVERIFY(editModelText(openModelMenu(models, missing), QStringLiteral("modelNoteAction"),
+                              QStringLiteral("暂时离线的训练模型")));
+        QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
+        menu = openModelMenu(models, missing);
+        QVERIFY(menu);
+        menu->findChild<QAction *>(QStringLiteral("modelRemoveAction"))->trigger();
+        menu->close();
+        QCOMPARE(modelOrder(models), QStringList{selected});
+        QCOMPARE(window_->findChild<ModelViewer *>(QStringLiteral("modelStructureViewer"))->modelPath(),
+                 selected);
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+    }
+
+    void busyModelContextMenuAllowsLocationAndPreventsMutations()
+    {
+        window_->runPtDemo();
+        auto *stop = findButton(window_.get(), QStringLiteral("停止运行"));
+        auto *run = findButton(window_.get(), QStringLiteral("开始检测"));
+        auto *models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
+        QVERIFY(stop && run && models);
+        QVERIFY(stop->isVisible());
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型库")), Qt::LeftButton);
+        QVERIFY(models->isEnabled());
+        QVERIFY(!models->dragEnabled());
+        QVERIFY(!models->acceptDrops());
+        const QString selected = fixture_->path() + QStringLiteral("/models/yolov8n.pt");
+        const QString target = fixture_->path() + QStringLiteral("/models/yolov5n.onnx");
+        const QStringList before = modelOrder(models);
+        auto *menu = openModelMenu(models, target);
+        QVERIFY(menu);
+        QVERIFY(menu->findChild<QAction *>(QStringLiteral("modelOpenLocationAction"))->isEnabled());
+        for (const QString &name : {QStringLiteral("modelNoteAction"), QStringLiteral("modelRenameAction"),
+                                    QStringLiteral("modelRemoveAction")})
+            QVERIFY(!menu->findChild<QAction *>(name)->isEnabled());
+        DirectoryUrlCapture capture;
+        menu->findChild<QAction *>(QStringLiteral("modelOpenLocationAction"))->trigger();
+        QCOMPARE(capture.calls, 1);
+        menu->findChild<QAction *>(QStringLiteral("modelRemoveAction"))->trigger();
+        QCOMPARE(modelOrder(models), before);
+        QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
+        menu->close();
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("检测工作台")), Qt::LeftButton);
+        QTest::mouseClick(stop, Qt::LeftButton);
+        QTRY_VERIFY_WITH_TIMEOUT(run->isVisible() && run->isEnabled(), 10000);
+        QVERIFY(models->dragEnabled() && models->acceptDrops());
         QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
     }
 

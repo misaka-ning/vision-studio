@@ -1,0 +1,665 @@
+{
+  "schema_version": 2,
+  "version": "2.1.0",
+  "success": true,
+  "errors": [],
+  "registered_suites": 13,
+  "all_suites_passed": 13,
+  "failed": 0,
+  "qt_skipped": 0,
+  "python_skipped": 0,
+  "elapsed_seconds": 415.102,
+  "log": "ctest-all.log",
+  "execution": "ctest-all.log.execution.json",
+  "log_sha256": "ac6cbadf7fbd7d536d39861eee22fba9b5594736c470f4fd18117b8915772714",
+  "qt_suites": [
+    {
+      "ctest_number": 1,
+      "name": "vision-core-tests",
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 419,
+      "evidence_log": "ctest-all.log"
+    },
+    {
+      "ctest_number": 2,
+      "name": "vision-inference-delivery-tests",
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 1277,
+      "evidence_log": "ctest-all.log"
+    },
+    {
+      "ctest_number": 3,
+      "name": "vision-recording-tests",
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 2686,
+      "evidence_log": "ctest-all.log"
+    },
+    {
+      "ctest_number": 4,
+      "name": "vision-pt-tests",
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 76456,
+      "evidence_log": "ctest-all.log"
+    },
+    {
+      "ctest_number": 5,
+      "name": "vision-gpu-tests",
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 53091,
+      "evidence_log": "ctest-all.log"
+    },
+    {
+      "ctest_number": 6,
+      "name": "vision-ui-tests",
+      "passed": 38,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 39549,
+      "evidence_log": "ctest-final-replay.log"
+    },
+    {
+      "ctest_number": 7,
+      "name": "vision-batch-responsiveness-tests",
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 8337,
+      "evidence_log": "ctest-all.log"
+    },
+    {
+      "ctest_number": 8,
+      "name": "vision-modelviewer-tests",
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 12133,
+      "evidence_log": "ctest-all.log"
+    },
+    {
+      "ctest_number": 9,
+      "name": "vision-conversion-ui-tests",
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 668,
+      "evidence_log": "ctest-all.log"
+    },
+    {
+      "ctest_number": 10,
+      "name": "vision-conversion-inference-tests",
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 24999,
+      "evidence_log": "ctest-final-replay.log"
+    }
+  ],
+  "python_suites": [
+    {
+      "ctest_number": 11,
+      "name": "vision-model-conversion-tests",
+      "tests": 20,
+      "skipped": 0,
+      "success": true,
+      "elapsed_seconds": 53.103,
+      "evidence_log": "ctest-final-replay.log"
+    },
+    {
+      "ctest_number": 12,
+      "name": "vision-netron-server-tests",
+      "tests": 11,
+      "skipped": 0,
+      "success": true,
+      "elapsed_seconds": 4.628,
+      "evidence_log": "ctest-all.log"
+    },
+    {
+      "ctest_number": 13,
+      "name": "vision-gpu-runtime-tests",
+      "tests": 21,
+      "skipped": 0,
+      "success": true,
+      "elapsed_seconds": 1.298,
+      "evidence_log": "ctest-all.log"
+    }
+  ],
+  "batch_responsiveness": [
+    {
+      "accepted_after_stop": 1,
+      "accepted_at_stop": 1,
+      "automatic_export": true,
+      "backend": "OpenCV DNN / CPU",
+      "cache_survives_removed_sources": true,
+      "complete_exports": true,
+      "device": "cpu",
+      "heartbeat_ticks": 48,
+      "height": 1080,
+      "maximum_heartbeat_gap_ms": 20,
+      "observed_stop_elapsed_ms": 30,
+      "scheduled_stop_dispatch_ms": 30,
+      "total_images": 3,
+      "width": 1920
+    },
+    {
+      "accepted_after_stop": 1,
+      "accepted_at_stop": 1,
+      "automatic_export": true,
+      "backend": "OpenCV DNN / CPU",
+      "cache_survives_removed_sources": true,
+      "complete_exports": true,
+      "device": "cpu",
+      "heartbeat_ticks": 173,
+      "height": 2160,
+      "maximum_heartbeat_gap_ms": 20,
+      "observed_stop_elapsed_ms": 30,
+      "scheduled_stop_dispatch_ms": 37,
+      "total_images": 3,
+      "width": 3840
+    }
+  ],
+  "bounded_image_delivery": {
+    "maximum_unacknowledged": 1,
+    "stop_elapsed_ms": 50,
+    "delivered": 2,
+    "total_images": 3
+  },
+  "automatic_export_disk_failure_recovery": true,
+  "note": "Final acceptance combines the complete registered thirteen-suite execution with three explicitly identified final replays. All effective thirteen-suite results passed with zero skips; the original full run's UI failures remain preserved. Actual CUDA tests were enabled. Isolated HOME/XDG/TMP/app data and two math threads were used. Physical camera was not tested.",
+  "failed_suite_names": [],
+  "replay_execution": "ctest-final-replay.log.execution.json",
+  "final_replay": {
+    "log": "ctest-final-replay.log",
+    "log_sha256": "a101a51b0e6448d9588a58642829345b85458fbb2c5c2d127f1b31889bfc0218",
+    "registered_suites": 3,
+    "failed": 0,
+    "elapsed_seconds": 118.01
+  },
+  "original_full_run": {
+    "log": "ctest-all.log",
+    "summary_report": "ctest-candidate-qa.json",
+    "passed_suites": 12,
+    "failed_suites": 1,
+    "elapsed_seconds": 297.092
+  },
+  "failure_resolution": "The initial complete thirteen-suite run found stale UI-test assumptions: seven pages rather than eight, and a global label lookup selecting the hidden conversion size control. Navigation assertions were updated and wheel tests now search only workbenchPage and assert control object names. Product code was not changed for these failures. The complete UI suite and both conversion suites were replayed after converter opset17 fixes were frozen; their final results replace only those three suites, while the other ten actual complete-run results are preserved.",
+  "application_unchanged_from_full_build": true,
+  "final_application": {
+    "file": "build-2.1.0/bin/vision-studio",
+    "bytes": 1188136,
+    "sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c"
+  },
+  "frozen_final_files": {
+    "build-2.1.0/bin/vision-studio": {
+      "bytes": 1188136,
+      "sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c"
+    },
+    "build-2.1.0/vision-ui-tests": {
+      "bytes": 1605072,
+      "sha256": "8f6722af3fce90eaef8a2995b6f2e3e1a371cc9f33590843069a6e582d9d1262"
+    },
+    "build-2.1.0/vision-conversion-inference-tests": {
+      "bytes": 1237496,
+      "sha256": "4f997eb2bc7a41825265a805726e439ed3ff9875beb6300cc1ddecd15af71002"
+    },
+    "src/ui/mainwindow.cpp": {
+      "bytes": 166500,
+      "sha256": "a5b2a5fca1a8c29111157fadad09a4312440cd7694f1b88439c7ba59e59e6c82"
+    },
+    "src/ui/modelconversionpage.cpp": {
+      "bytes": 22948,
+      "sha256": "a4fa85a1c24b0987209d7972dc9507f81fbbb146b80c25a766fb5464cb36e84a"
+    },
+    "assets/fluent-dark.qss": {
+      "bytes": 8079,
+      "sha256": "8487fd896584b28d83d47d9052994c4be59b1aa19d050ffea04783b4540ecf8f"
+    },
+    "tests/ui_tests.cpp": {
+      "bytes": 133543,
+      "sha256": "31d7ce689bb5738016ecdd94d2e8a41f6a764ff4ffa1f1c561d7188a0940c520"
+    },
+    "tests/conversion_inference_tests.cpp": {
+      "bytes": 16403,
+      "sha256": "1470b58ed9262ada0dae39045d0eee5e5c00351455a4c1abcf33c209749ce90e"
+    },
+    "scripts/model_convert.py": {
+      "bytes": 46108,
+      "sha256": "261bc78b4c29e897912a772cc5b517e2146a95a9a5555fd272c29c58278e8649"
+    },
+    "tests/model_conversion_tests.py": {
+      "bytes": 24360,
+      "sha256": "202431432d4eca9a9b6fc0b63abfbf61146a5ef230b47625dfef242031c95475"
+    }
+  },
+  "actual_conversion_export_count": 18,
+  "actual_conversion_exports": [
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/tmp/vision-conversion-actual-peoxtm8n/fixtures/modern-c1.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        1,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        6,
+        256
+      ],
+      "max_abs_error": 1.52587890625e-05,
+      "reference": "selected-original-model",
+      "sha256": "46eb93a23479b0849e2c415d354d6777cacefb0b33562cc90bfdf23983a4866f",
+      "source_sha256": "0f7b3c72f7bbf840d73c56d7a14edc4c6e598c47801b58803c27797d266eef02",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/tmp/vision-conversion-actual-peoxtm8n/fixtures/focus-c1.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        1,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        768,
+        7
+      ],
+      "max_abs_error": 1.1444091796875e-05,
+      "reference": "selected-original-model",
+      "sha256": "681f42afacbedbb22ff724c96cd07e8cda81b5211c8b671dd46a28f3d7969f0e",
+      "source_sha256": "18844a6e5dbea2f5bce8e5595b7978b8acb3f3ddd5105d32f631aee4a60b9eb7",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/tmp/vision-conversion-actual-peoxtm8n/fixtures/focus-c1.pt",
+      "format": "torchscript",
+      "opset": null,
+      "input_shape": [
+        1,
+        1,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        768,
+        7
+      ],
+      "max_abs_error": 0.0,
+      "reference": "selected-original-model",
+      "sha256": "b53d96122e8406aadb9efaee16ddea8a818f75db1fa6e39413f15042303fb96d",
+      "source_sha256": "18844a6e5dbea2f5bce8e5595b7978b8acb3f3ddd5105d32f631aee4a60b9eb7",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/tmp/vision-conversion-actual-peoxtm8n/fixtures/focus-c3.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        3,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        768,
+        7
+      ],
+      "max_abs_error": 1.1444091796875e-05,
+      "reference": "selected-original-model",
+      "sha256": "8aa0da91a0256596b0756d6d8831c5989402f7c5daf4fd1a73bb1acd4acb0707",
+      "source_sha256": "be8b53d84dc1ca68f229accd1438f09d828dc36d07571b6b9868e6a176e5bb0b",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/tmp/vision-conversion-actual-peoxtm8n/fixtures/focus-c3.pt",
+      "format": "torchscript",
+      "opset": null,
+      "input_shape": [
+        1,
+        3,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        768,
+        7
+      ],
+      "max_abs_error": 0.0,
+      "reference": "selected-original-model",
+      "sha256": "2219a8f31cd160d7d513905a1fd49b7a974c201c5c8439cc08e8ddefec4ff14a",
+      "source_sha256": "be8b53d84dc1ca68f229accd1438f09d828dc36d07571b6b9868e6a176e5bb0b",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/models/yolov5n.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        3,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        252,
+        85
+      ],
+      "max_abs_error": 0.0001068115234375,
+      "reference": "selected-original-model",
+      "sha256": "e39a39ca644a83edd8baa1c873bab75221c4c1bf38308ce4637a042d1c40bcc7",
+      "source_sha256": "649e089f59b78ac021025de035b2d9c45dc26e544ea252955d0ffcefc1099e2f",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/models/yolov5n.pt",
+      "format": "torchscript",
+      "opset": null,
+      "input_shape": [
+        1,
+        3,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        252,
+        85
+      ],
+      "max_abs_error": 0.0,
+      "reference": "selected-original-model",
+      "sha256": "5b93718eaecd32e6dce576e0d71d3ccb25022623f3329d2e52e1f16cc84ae44f",
+      "source_sha256": "649e089f59b78ac021025de035b2d9c45dc26e544ea252955d0ffcefc1099e2f",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/models/yolov8n.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        3,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        84,
+        84
+      ],
+      "max_abs_error": 0.000110626220703125,
+      "reference": "selected-original-model",
+      "sha256": "4249ed3e05089c13ff17f6d5d73f1f5e96ccd909ec44d14726b82b2f59e60416",
+      "source_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/models/yolov8n.pt",
+      "format": "torchscript",
+      "opset": null,
+      "input_shape": [
+        1,
+        3,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        84,
+        84
+      ],
+      "max_abs_error": 0.0,
+      "reference": "selected-original-model",
+      "sha256": "2602fc21834a062275eac0635225bd9fe9d4045844ddcedc9c45ea8cf69f4ad8",
+      "source_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/tmp/vision-conversion-actual-peoxtm8n/fixtures/classify-c1.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        1,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        3
+      ],
+      "max_abs_error": 2.9802322387695312e-08,
+      "reference": "selected-original-model",
+      "sha256": "d0b0d31c81c505da89f321d16b6d78fe86a41fa8e3cc041d8834a5c2a36a286e",
+      "source_sha256": "4de2dde7ce72c8a94930babfe6f56a7fd759d86d851f466e107932697134e242",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/tmp/vision-conversion-actual-peoxtm8n/fixtures/classify-c3.pt",
+      "format": "torchscript",
+      "opset": null,
+      "input_shape": [
+        1,
+        3,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        3
+      ],
+      "max_abs_error": 0.0,
+      "reference": "selected-original-model",
+      "sha256": "a9f2ec176d3eb828223ec75eeaa8de882f4e1a7464643bd9f0b509853503e1dd",
+      "source_sha256": "590aac837ed2d0b20e0bf12569fc44e6d0d2a85841185323ea476907ebed8b17",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/tmp/vision-conversion-actual-peoxtm8n/fixtures/modern-c3.pt",
+      "format": "onnx",
+      "opset": 17,
+      "input_shape": [
+        1,
+        3,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        6,
+        256
+      ],
+      "max_abs_error": 1.9073486328125e-05,
+      "reference": "selected-original-model",
+      "sha256": "e0cc87dd941d812217e781cc99427757b2d129652f26cc76302e35e84d131a72",
+      "source_sha256": "adabd0222c25a1e995681dad2a086a419e809d222b72c9fd91453b8ca3eab723",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/tmp/vision-conversion-actual-peoxtm8n/fixtures/script-detect-c1.pt",
+      "format": "onnx",
+      "opset": 17,
+      "input_shape": [
+        1,
+        1,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        6,
+        8
+      ],
+      "max_abs_error": 1.2665987014770508e-06,
+      "reference": "selected-original-model",
+      "sha256": "fe08982e69017c000c2ac6bff5a4ef797e4eb28eeb4338f784e440350217eea8",
+      "source_sha256": "8a203600dee9e9b6b6fec4670a483b2e065583e6cfb9d365df598dd0079f5ce0",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/tmp/vision-conversion-actual-peoxtm8n/fixtures/script-detect-c1.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        1,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        6,
+        8
+      ],
+      "max_abs_error": 1.2665987014770508e-06,
+      "reference": "selected-original-model",
+      "sha256": "c087ae7c02fe0af74c13a8edb62261c97021c2de1867fcbca6e3e2912255386e",
+      "source_sha256": "8a203600dee9e9b6b6fec4670a483b2e065583e6cfb9d365df598dd0079f5ce0",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/tmp/vision-conversion-actual-peoxtm8n/fixtures/script-classify-c1.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        1,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        3
+      ],
+      "max_abs_error": 7.62939453125e-06,
+      "reference": "selected-original-model",
+      "sha256": "84db0737904b3fc2e9bab354dd082f2041b6e1bbfc6de2d5ac91fb7b6a3d1b6b",
+      "source_sha256": "add14f492721317c3525ee98c9b265209a7c8f1d0bb944f0b3bdfde14d880049",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/tmp/vision-conversion-actual-peoxtm8n/fixtures/script-detect-c3.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        3,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        6,
+        8
+      ],
+      "max_abs_error": 3.3974647521972656e-06,
+      "reference": "selected-original-model",
+      "sha256": "473187f863a2bc5b0265f7f39b44657808351127839f567e4b4129924731ebcb",
+      "source_sha256": "83c2052ddf164e85d477684737385dd2fcd7f5d2bf4f84511879874a7cd3b246",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/tmp/vision-conversion-actual-peoxtm8n/fixtures/script-classify-c3.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        3,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        3
+      ],
+      "max_abs_error": 2.0503997802734375e-05,
+      "reference": "selected-original-model",
+      "sha256": "f4ea6bd36d197920f9c8bd1473c1c3a9b6d7857f9091dfb373ddc91a6b55ba6e",
+      "source_sha256": "d55e16349114a9e1a67c10a9710965e2a7671dc44029fbc72cf09902ccd92dca",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/tmp/vision-conversion-actual-peoxtm8n/fixtures/classify-c1.pt",
+      "format": "torchscript",
+      "opset": null,
+      "input_shape": [
+        1,
+        1,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        3
+      ],
+      "max_abs_error": 0.0,
+      "reference": "selected-original-model",
+      "sha256": "78fbb47c60d5917383c31680ba3fea63963180053e54b6bcc7ff276fe673855e",
+      "source_sha256": "4de2dde7ce72c8a94930babfe6f56a7fd759d86d851f466e107932697134e242",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    }
+  ]
+}

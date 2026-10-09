@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "version": "2.1.0",
+  "success": false,
+  "errors": [
+    "CTest did not pass every registered suite",
+    "A Qt suite failed, skipped or blacklisted a test"
+  ],
+  "registered_suites": 13,
+  "all_suites_passed": 12,
+  "failed": 1,
+  "qt_skipped": 0,
+  "python_skipped": 0,
+  "elapsed_seconds": 297.092,
+  "log": "ctest-all.log",
+  "execution": "ctest-all.log.execution.json",
+  "log_sha256": "ac6cbadf7fbd7d536d39861eee22fba9b5594736c470f4fd18117b8915772714",
+  "qt_suites": [
+    {
+      "ctest_number": 1,
+      "name": "vision-core-tests",
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 419
+    },
+    {
+      "ctest_number": 2,
+      "name": "vision-inference-delivery-tests",
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 1277
+    },
+    {
+      "ctest_number": 3,
+      "name": "vision-recording-tests",
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 2686
+    },
+    {
+      "ctest_number": 4,
+      "name": "vision-pt-tests",
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 76456
+    },
+    {
+      "ctest_number": 5,
+      "name": "vision-gpu-tests",
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 53091
+    },
+    {
+      "ctest_number": 6,
+      "name": "vision-ui-tests",
+      "passed": 35,
+      "failed": 3,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 56547
+    },
+    {
+      "ctest_number": 7,
+      "name": "vision-batch-responsiveness-tests",
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 8337
+    },
+    {
+      "ctest_number": 8,
+      "name": "vision-modelviewer-tests",
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 12133
+    },
+    {
+      "ctest_number": 9,
+      "name": "vision-conversion-ui-tests",
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 668
+    },
+    {
+      "ctest_number": 10,
+      "name": "vision-conversion-inference-tests",
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0,
+      "elapsed_ms": 24984
+    }
+  ],
+  "python_suites": [
+    {
+      "ctest_number": 11,
+      "name": "vision-model-conversion-tests",
+      "tests": 20,
+      "skipped": 0,
+      "success": true,
+      "elapsed_seconds": 53.392
+    },
+    {
+      "ctest_number": 12,
+      "name": "vision-netron-server-tests",
+      "tests": 11,
+      "skipped": 0,
+      "success": true,
+      "elapsed_seconds": 4.628
+    },
+    {
+      "ctest_number": 13,
+      "name": "vision-gpu-runtime-tests",
+      "tests": 21,
+      "skipped": 0,
+      "success": true,
+      "elapsed_seconds": 1.298
+    }
+  ],
+  "batch_responsiveness": [
+    {
+      "accepted_after_stop": 1,
+      "accepted_at_stop": 1,
+      "automatic_export": true,
+      "backend": "OpenCV DNN / CPU",
+      "cache_survives_removed_sources": true,
+      "complete_exports": true,
+      "device": "cpu",
+      "heartbeat_ticks": 48,
+      "height": 1080,
+      "maximum_heartbeat_gap_ms": 20,
+      "observed_stop_elapsed_ms": 30,
+      "scheduled_stop_dispatch_ms": 30,
+      "total_images": 3,
+      "width": 1920
+    },
+    {
+      "accepted_after_stop": 1,
+      "accepted_at_stop": 1,
+      "automatic_export": true,
+      "backend": "OpenCV DNN / CPU",
+      "cache_survives_removed_sources": true,
+      "complete_exports": true,
+      "device": "cpu",
+      "heartbeat_ticks": 173,
+      "height": 2160,
+      "maximum_heartbeat_gap_ms": 20,
+      "observed_stop_elapsed_ms": 30,
+      "scheduled_stop_dispatch_ms": 37,
+      "total_images": 3,
+      "width": 3840
+    }
+  ],
+  "bounded_image_delivery": {
+    "maximum_unacknowledged": 1,
+    "stop_elapsed_ms": 50,
+    "delivered": 2,
+    "total_images": 3
+  },
+  "automatic_export_disk_failure_recovery": true,
+  "note": "Actual serial Release CTest execution with CUDA explicitly enabled, two math threads and isolated HOME/XDG/TMP/app state. CPU/PyTorch/ONNX conversion and CUDA tests ran against the new version. No physical camera was tested."
+}

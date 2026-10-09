@@ -1,0 +1,550 @@
+{
+  "schema_version": 1,
+  "version": "2.1.0",
+  "success": true,
+  "started_at": "2026-10-09T13:08:47.105595+08:00",
+  "source_sha256": {
+    "scripts/model_convert.py": "7c75f813334c569c212fc25538e388fd3007a6f74a14ea9d013e4efac4a4f298",
+    "scripts/pt_worker.py": "0c632128249d495ad8549ed1d3c3885b2630b21750f7aca18c2d37fdf9dd30b9",
+    "tests/model_conversion_tests.py": "7479dda571f5ace9f363d527d07d4d2834345bc34f4579719eec4217b07b7a4d",
+    "tests/conversion_inference_tests.cpp": "99df0036635d043d346034a8b7d7d7b5c3fdcb18a4073baac99f8b31eebad43a",
+    "build-2.1.0/bin/vision-studio": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c",
+    "build-2.1.0/libvision-core.a": "9b5733a4751ce26b0ddf25a88fb54e3f432134d4731bae1187689adcff2078ed"
+  },
+  "runs": [
+    {
+      "name": "yolov8n-onnx-cpu",
+      "command": [
+        "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/converted_gpu_probe_v2",
+        "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/yolov8n-640.onnx",
+        "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/portability-fix3-proof/yolov8n-metadata.json",
+        "/home/misaka/文档/ChatGPT/yolo/assets/bus.jpg",
+        "cpu"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.074,
+      "model_sha256": "09351f7ae8d1763a5b0953782b286b3658c60017c08023afb93e28f5e544a964",
+      "stdout": "output/v2.1.0/portability-fix3-proof/yolov8n-onnx-cpu.stdout.log",
+      "stderr": "output/v2.1.0/portability-fix3-proof/yolov8n-onnx-cpu.stderr.log",
+      "result": {
+        "actual_device": "cpu",
+        "backend": "OpenCV DNN / CPU",
+        "device_index": -1,
+        "device_name": "CPU",
+        "device_notice": "",
+        "inference_ms": 28.713135,
+        "input_channels": 3,
+        "input_size": 640,
+        "label_count": 80,
+        "model": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/yolov8n-640.onnx",
+        "predictions": [
+          {
+            "class_id": 0,
+            "confidence": 0.9009041786193848,
+            "height": 501.77365493774414,
+            "label": "person",
+            "width": 138.9782009124756,
+            "x": 671.0217990875244,
+            "y": 378.02698516845703
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.8838163018226624,
+            "height": 448.24239349365234,
+            "label": "person",
+            "width": 122.0559253692627,
+            "x": 221.4221134185791,
+            "y": 407.59361457824707
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.87553870677948,
+            "height": 506.7409858703613,
+            "label": "person",
+            "width": 193.72357606887817,
+            "x": 50.35675120353699,
+            "y": 398.09674072265625
+          },
+          {
+            "class_id": 5,
+            "confidence": 0.8421508073806763,
+            "height": 539.2235584259033,
+            "label": "bus",
+            "width": 761.2479457855225,
+            "x": 34.33664417266846,
+            "y": 229.32482814788818
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.4358827471733093,
+            "height": 317.44641494750977,
+            "label": "person",
+            "width": 59.87864685058594,
+            "x": 0.4055500030517578,
+            "y": 550.6465759277344
+          }
+        ],
+        "qt": "6.8.3",
+        "requested_device": "cpu",
+        "success": true
+      }
+    },
+    {
+      "name": "yolov8n-onnx-cuda",
+      "command": [
+        "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/converted_gpu_probe_v2",
+        "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/yolov8n-640.onnx",
+        "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/portability-fix3-proof/yolov8n-metadata.json",
+        "/home/misaka/文档/ChatGPT/yolo/assets/bus.jpg",
+        "cuda"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.573,
+      "model_sha256": "09351f7ae8d1763a5b0953782b286b3658c60017c08023afb93e28f5e544a964",
+      "stdout": "output/v2.1.0/portability-fix3-proof/yolov8n-onnx-cuda.stdout.log",
+      "stderr": "output/v2.1.0/portability-fix3-proof/yolov8n-onnx-cuda.stderr.log",
+      "result": {
+        "actual_device": "cuda",
+        "backend": "ONNX Runtime / CUDA",
+        "device_index": 0,
+        "device_name": "NVIDIA GeForce RTX 4060",
+        "device_notice": "",
+        "inference_ms": 4.177671,
+        "input_channels": 3,
+        "input_size": 640,
+        "label_count": 80,
+        "model": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/yolov8n-640.onnx",
+        "predictions": [
+          {
+            "class_id": 0,
+            "confidence": 0.9009041786193848,
+            "height": 501.77365493774414,
+            "label": "person",
+            "width": 138.9782009124756,
+            "x": 671.0217990875244,
+            "y": 378.02698516845703
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.883816123008728,
+            "height": 448.24239349365234,
+            "label": "person",
+            "width": 122.0559253692627,
+            "x": 221.4221134185791,
+            "y": 407.59366607666016
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.87553870677948,
+            "height": 506.7410373687744,
+            "label": "person",
+            "width": 193.723614692688,
+            "x": 50.35670614242554,
+            "y": 398.0966634750366
+          },
+          {
+            "class_id": 5,
+            "confidence": 0.8421507477760315,
+            "height": 539.2236099243164,
+            "label": "bus",
+            "width": 761.2479972839355,
+            "x": 34.33656692504883,
+            "y": 229.32480239868164
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.4358822703361511,
+            "height": 317.44641494750977,
+            "label": "person",
+            "width": 59.87865972518921,
+            "x": 0.40554356575012207,
+            "y": 550.6465759277344
+          }
+        ],
+        "qt": "6.8.3",
+        "requested_device": "cuda",
+        "success": true
+      },
+      "cuda_traces": [
+        {
+          "file": "output/v2.1.0/portability-fix3-proof/yolov8n-onnx-cuda-nodes_2026-10-09_13-08-47.json",
+          "sha256": "5fdc2521a1e9b7ca536622c484e337881f2f69f502c999d3010df555e4e60a0e",
+          "bytes": 300520
+        }
+      ],
+      "cuda_node_count": 372
+    },
+    {
+      "name": "yolov8n-original-pt-cpu",
+      "command": [
+        "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/converted_gpu_probe_v2",
+        "/home/misaka/文档/ChatGPT/yolo/models/yolov8n.pt",
+        "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/portability-fix3-proof/yolov8n-metadata.json",
+        "/home/misaka/文档/ChatGPT/yolo/assets/bus.jpg",
+        "cpu"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.617,
+      "model_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+      "stdout": "output/v2.1.0/portability-fix3-proof/yolov8n-original-pt-cpu.stdout.log",
+      "stderr": "output/v2.1.0/portability-fix3-proof/yolov8n-original-pt-cpu.stderr.log",
+      "result": {
+        "actual_device": "cpu",
+        "backend": "PyTorch / Ultralytics / CPU",
+        "device_index": -1,
+        "device_name": "CPU",
+        "device_notice": "",
+        "inference_ms": 41.08880693092942,
+        "input_channels": 3,
+        "input_size": 640,
+        "label_count": 80,
+        "model": "/home/misaka/文档/ChatGPT/yolo/models/yolov8n.pt",
+        "predictions": [
+          {
+            "class_id": 0,
+            "confidence": 0.9009041786193848,
+            "height": 501.77374267578125,
+            "label": "person",
+            "width": 138.97821044921875,
+            "x": 671.0217895507812,
+            "y": 378.02691650390625
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.8838161826133728,
+            "height": 448.2424011230469,
+            "label": "person",
+            "width": 122.055908203125,
+            "x": 221.422119140625,
+            "y": 407.5936584472656
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.8755389451980591,
+            "height": 506.7410583496094,
+            "label": "person",
+            "width": 193.7235336303711,
+            "x": 50.35674285888672,
+            "y": 398.0966491699219
+          },
+          {
+            "class_id": 5,
+            "confidence": 0.8421509861946106,
+            "height": 539.2236022949219,
+            "label": "bus",
+            "width": 761.2479667663574,
+            "x": 34.33656692504883,
+            "y": 229.32485961914062
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.4358823001384735,
+            "height": 317.4464111328125,
+            "label": "person",
+            "width": 59.87869739532471,
+            "x": 0.40552425384521484,
+            "y": 550.6465454101562
+          }
+        ],
+        "qt": "6.8.3",
+        "requested_device": "cpu",
+        "success": true
+      }
+    },
+    {
+      "name": "yolov5n-onnx-cpu",
+      "command": [
+        "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/converted_gpu_probe_v2",
+        "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/yolov5n-640.onnx",
+        "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/portability-fix3-proof/yolov5n-metadata.json",
+        "/home/misaka/文档/ChatGPT/yolo/assets/bus.jpg",
+        "cpu"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.111,
+      "model_sha256": "c08938350886a35d49497699aff181040e273cef92809541008a0aa0a9508781",
+      "stdout": "output/v2.1.0/portability-fix3-proof/yolov5n-onnx-cpu.stdout.log",
+      "stderr": "output/v2.1.0/portability-fix3-proof/yolov5n-onnx-cpu.stderr.log",
+      "result": {
+        "actual_device": "cpu",
+        "backend": "OpenCV DNN / CPU",
+        "device_index": -1,
+        "device_name": "CPU",
+        "device_notice": "",
+        "inference_ms": 64.354756,
+        "input_channels": 3,
+        "input_size": 640,
+        "label_count": 80,
+        "model": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/yolov5n-640.onnx",
+        "predictions": [
+          {
+            "class_id": 0,
+            "confidence": 0.8113211989402771,
+            "height": 491.2555160522461,
+            "label": "person",
+            "width": 178.21703052520752,
+            "x": 50.9605507850647,
+            "y": 397.24094009399414
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.756961464881897,
+            "height": 448.64670753479004,
+            "label": "person",
+            "width": 123.39120197296143,
+            "x": 221.85901308059692,
+            "y": 412.8128499984741
+          },
+          {
+            "class_id": 5,
+            "confidence": 0.7007484436035156,
+            "height": 551.2556476593018,
+            "label": "bus",
+            "width": 759.9344272613525,
+            "x": 16.600024223327637,
+            "y": 235.7056360244751
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.6967293620109558,
+            "height": 476.43653869628906,
+            "label": "person",
+            "width": 123.45964980125427,
+            "x": 686.5403501987457,
+            "y": 389.5322456359863
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.28018367290496826,
+            "height": 311.06787300109863,
+            "label": "person",
+            "width": 64.4485033750534,
+            "x": 0,
+            "y": 567.576807975769
+          }
+        ],
+        "qt": "6.8.3",
+        "requested_device": "cpu",
+        "success": true
+      }
+    },
+    {
+      "name": "yolov5n-onnx-cuda",
+      "command": [
+        "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/converted_gpu_probe_v2",
+        "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/yolov5n-640.onnx",
+        "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/portability-fix3-proof/yolov5n-metadata.json",
+        "/home/misaka/文档/ChatGPT/yolo/assets/bus.jpg",
+        "cuda"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.565,
+      "model_sha256": "c08938350886a35d49497699aff181040e273cef92809541008a0aa0a9508781",
+      "stdout": "output/v2.1.0/portability-fix3-proof/yolov5n-onnx-cuda.stdout.log",
+      "stderr": "output/v2.1.0/portability-fix3-proof/yolov5n-onnx-cuda.stderr.log",
+      "result": {
+        "actual_device": "cuda",
+        "backend": "ONNX Runtime / CUDA",
+        "device_index": 0,
+        "device_name": "NVIDIA GeForce RTX 4060",
+        "device_notice": "",
+        "inference_ms": 6.419493,
+        "input_channels": 3,
+        "input_size": 640,
+        "label_count": 80,
+        "model": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/yolov5n-640.onnx",
+        "predictions": [
+          {
+            "class_id": 0,
+            "confidence": 0.811320960521698,
+            "height": 491.25525856018066,
+            "label": "person",
+            "width": 178.2170820236206,
+            "x": 50.9605507850647,
+            "y": 397.24106884002686
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.7569613456726074,
+            "height": 448.64701652526855,
+            "label": "person",
+            "width": 123.39116334915161,
+            "x": 221.8590066432953,
+            "y": 412.8126440048218
+          },
+          {
+            "class_id": 5,
+            "confidence": 0.7007487416267395,
+            "height": 551.2552871704102,
+            "label": "bus",
+            "width": 759.9339122772217,
+            "x": 16.60023021697998,
+            "y": 235.7058162689209
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.6967288851737976,
+            "height": 476.4363327026367,
+            "label": "person",
+            "width": 123.45962405204773,
+            "x": 686.5403759479523,
+            "y": 389.5323486328125
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.28018370270729065,
+            "height": 311.0678987503052,
+            "label": "person",
+            "width": 64.44851624965668,
+            "x": 0,
+            "y": 567.5767951011658
+          }
+        ],
+        "qt": "6.8.3",
+        "requested_device": "cuda",
+        "success": true
+      },
+      "cuda_traces": [
+        {
+          "file": "output/v2.1.0/portability-fix3-proof/yolov5n-onnx-cuda-nodes_2026-10-09_13-08-49.json",
+          "sha256": "36e9378241e072f52d191e4c13ec870771e8f5417d50292bddb8b8858edafc03",
+          "bytes": 288696
+        }
+      ],
+      "cuda_node_count": 358
+    },
+    {
+      "name": "yolov5n-original-pt-cpu",
+      "command": [
+        "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/converted_gpu_probe_v2",
+        "/home/misaka/文档/ChatGPT/yolo/models/yolov5n.pt",
+        "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/portability-fix3-proof/yolov5n-metadata.json",
+        "/home/misaka/文档/ChatGPT/yolo/assets/bus.jpg",
+        "cpu"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.926,
+      "model_sha256": "649e089f59b78ac021025de035b2d9c45dc26e544ea252955d0ffcefc1099e2f",
+      "stdout": "output/v2.1.0/portability-fix3-proof/yolov5n-original-pt-cpu.stdout.log",
+      "stderr": "output/v2.1.0/portability-fix3-proof/yolov5n-original-pt-cpu.stderr.log",
+      "result": {
+        "actual_device": "cpu",
+        "backend": "PyTorch / YOLOv5 / CPU",
+        "device_index": -1,
+        "device_name": "CPU",
+        "device_notice": "",
+        "inference_ms": 28.202134068123996,
+        "input_channels": 3,
+        "input_size": 640,
+        "label_count": 80,
+        "model": "/home/misaka/文档/ChatGPT/yolo/models/yolov5n.pt",
+        "predictions": [
+          {
+            "class_id": 0,
+            "confidence": 0.811320960521698,
+            "height": 491.25531005859375,
+            "label": "person",
+            "width": 178.2170066833496,
+            "x": 50.96059036254883,
+            "y": 397.24102783203125
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.7569612860679626,
+            "height": 448.64666748046875,
+            "label": "person",
+            "width": 123.39114379882812,
+            "x": 221.85906982421875,
+            "y": 412.8128662109375
+          },
+          {
+            "class_id": 5,
+            "confidence": 0.7007485032081604,
+            "height": 551.25537109375,
+            "label": "bus",
+            "width": 759.9341335296631,
+            "x": 16.600229263305664,
+            "y": 235.705810546875
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.6967291235923767,
+            "height": 476.4364929199219,
+            "label": "person",
+            "width": 123.45953369140625,
+            "x": 686.5404663085938,
+            "y": 389.5322570800781
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.28018468618392944,
+            "height": 311.06787109375,
+            "label": "person",
+            "width": 64.44850158691406,
+            "x": 0,
+            "y": 567.5767211914062
+          }
+        ],
+        "qt": "6.8.3",
+        "requested_device": "cpu",
+        "success": true
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "family": "yolov8n",
+      "export": "onnx-cpu",
+      "reference": "original-pt-cpu",
+      "same_count_classes_labels": true,
+      "max_confidence_absolute_error": 4.470348358154297e-07,
+      "max_box_absolute_error_pixels": 9.1552734375e-05,
+      "tolerances": {
+        "confidence": 0.002,
+        "box_pixels": 0.05
+      },
+      "passed": true
+    },
+    {
+      "family": "yolov8n",
+      "export": "onnx-cuda",
+      "reference": "original-pt-cpu",
+      "same_count_classes_labels": true,
+      "max_confidence_absolute_error": 2.384185791015625e-07,
+      "max_box_absolute_error_pixels": 8.7738037109375e-05,
+      "tolerances": {
+        "confidence": 0.002,
+        "box_pixels": 0.05
+      },
+      "passed": true
+    },
+    {
+      "family": "yolov5n",
+      "export": "onnx-cpu",
+      "reference": "original-pt-cpu",
+      "same_count_classes_labels": true,
+      "max_confidence_absolute_error": 1.0132789611816406e-06,
+      "max_box_absolute_error_pixels": 0.000293731689453125,
+      "tolerances": {
+        "confidence": 0.002,
+        "box_pixels": 0.05
+      },
+      "passed": true
+    },
+    {
+      "family": "yolov5n",
+      "export": "onnx-cuda",
+      "reference": "original-pt-cpu",
+      "same_count_classes_labels": true,
+      "max_confidence_absolute_error": 9.834766387939453e-07,
+      "max_box_absolute_error_pixels": 0.0003490447998046875,
+      "tolerances": {
+        "confidence": 0.002,
+        "box_pixels": 0.05
+      },
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "finished_at": "2026-10-09T13:08:52.011514+08:00"
+}

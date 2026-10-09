@@ -24,7 +24,8 @@ QT_MODULES = ("qtbase", "qtsvg", "qtwayland", "qtimageformats", "qtdeclarative",
 REQUIRED_OTHER = ("ultralytics-8.4.173.tar.gz", "ultralytics_thop-2.2.2.tar.gz",
                   "opencv-python-headless-4.11.0.86.tar.gz", "opencv-python-86.tar.gz",
                   "opencv-python-86-Dockerfile_x86_64", "ffmpeg-5.1.6.tar.xz",
-                  "netron-9.3.1-source.tar.gz")
+                  "netron-9.3.1-source.tar.gz", "onnx-1.17.0.tar.gz",
+                  "protobuf-33.0.tar.gz", "protobuf-cpp-3.21.12.tar.gz")
 
 
 def sha256(path):

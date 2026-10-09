@@ -1,0 +1,26 @@
+[1/31] Automatic MOC for target vision-studio
+[2/30] Automatic MOC for target vision-ui-tests
+[3/29] Automatic MOC for target vision-conversion-ui-tests
+[4/28] Automatic MOC for target vision-batch-responsiveness-tests
+[5/27] Automatic RCC for resources.qrc
+[6/27] Automatic MOC for target vision-conversion-inference-tests
+[7/26] Building CXX object CMakeFiles/vision-studio.dir/vision-studio_autogen/EWIEGA46WW/qrc_resources.cpp.o
+[8/26] Automatic RCC for resources.qrc
+[9/26] Building CXX object CMakeFiles/vision-studio.dir/src/ui/modelconversionpage.cpp.o
+[10/26] Building CXX object CMakeFiles/vision-ui-tests.dir/src/ui/modelconversionpage.cpp.o
+[11/26] Building CXX object CMakeFiles/vision-ui-tests.dir/vision-ui-tests_autogen/EWIEGA46WW/qrc_resources.cpp.o
+[12/26] Linking CXX executable bin/vision-studio
+[13/26] Automatic RCC for resources.qrc
+[14/26] Linking CXX executable vision-ui-tests
+[15/26] Building CXX object CMakeFiles/vision-batch-responsiveness-tests.dir/src/ui/modelconversionpage.cpp.o
+[16/26] Building CXX object CMakeFiles/vision-batch-responsiveness-tests.dir/vision-batch-responsiveness-tests_autogen/EWIEGA46WW/qrc_resources.cpp.o
+[17/26] Automatic RCC for resources.qrc
+[18/26] Building CXX object CMakeFiles/vision-conversion-ui-tests.dir/src/ui/modelconversionpage.cpp.o
+[19/26] Building CXX object CMakeFiles/vision-conversion-ui-tests.dir/vision-conversion-ui-tests_autogen/EWIEGA46WW/qrc_resources.cpp.o
+[20/26] Linking CXX executable vision-conversion-ui-tests
+[21/26] Automatic RCC for resources.qrc
+[22/26] Building CXX object CMakeFiles/vision-conversion-inference-tests.dir/src/ui/modelconversionpage.cpp.o
+[23/26] Building CXX object CMakeFiles/vision-conversion-inference-tests.dir/vision-conversion-inference-tests_autogen/EWIEGA46WW/qrc_resources.cpp.o
+[24/26] Building CXX object CMakeFiles/vision-batch-responsiveness-tests.dir/src/ui/mainwindow.cpp.o
+[25/26] Linking CXX executable vision-conversion-inference-tests
+[26/26] Linking CXX executable vision-batch-responsiveness-tests

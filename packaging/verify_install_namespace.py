@@ -223,8 +223,26 @@ def verify(args, workspace, audit):
         smoke[name] = {"success": passed, "exit_code": result.returncode,
                        "elapsed_seconds": elapsed, "report": report,
                        "rendering_flags": "--disable-gpu", "sandbox_disabled_by_test": False}
-    audit.details["inference"] = smoke
     version = release_metadata.version_key(application_version)[:3]
+    if version >= (2, 1, 0):
+        for format in ("onnx", "torchscript"):
+            name = "conversion_" + format
+            result, elapsed = namespace.run(
+                ["/usr/bin/vision-studio", "--smoke-conversion", MOUNT + "/user/" + name,
+                 "--conversion-format", format], name, readonly=True, timeout=180)
+            output = workspace / "user" / name
+            path = output / "conversion-smoke-report.json"
+            report = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {}
+            metadata = report.get("conversion", {})
+            artifact = output / ("converted." + format)
+            passed = (result.returncode == 0 and report.get("success") is True
+                      and report.get("actual_inference") is True and report.get("prediction_count", 0) > 0
+                      and metadata.get("format") == format and artifact.is_file()
+                      and sha256(artifact) == metadata.get("sha256"))
+            audit.require(passed, "Installed offline read-only model conversion failed: " + result.stderr[-1800:])
+            smoke[name] = {"success": passed, "exit_code": result.returncode,
+                           "elapsed_seconds": elapsed, "report": report}
+    audit.details["inference"] = smoke
     if version >= (1, 6, 0):
         # This namespace has no network/GPU devices. The missing-runtime probe
         # must report unprepared without downloading or changing the CPU tree.

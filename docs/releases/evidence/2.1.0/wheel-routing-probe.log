@@ -1,0 +1,21 @@
+********* Start testing of UiTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : UiTests::initTestCase()
+PASS   : UiTests::realInferenceSelectionAndNavigation()
+QINFO  : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(input-size-unfocused) wheel_routing_evidence: conversionImageSize focus= false scroll= 0 / 373 point= QPoint(555,507) target= ImageCanvas 
+FAIL!  : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(input-size-unfocused) 'bar->value() != beforeScroll' returned FALSE. ()
+   Loc: [/home/misaka/文档/ChatGPT/yolo/tests/ui_tests.cpp(605)]
+QINFO  : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(input-size-focused) wheel_routing_evidence: conversionImageSize focus= true scroll= 0 / 373 point= QPoint(555,507) target= ImageCanvas 
+FAIL!  : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(input-size-focused) 'bar->value() != beforeScroll' returned FALSE. ()
+   Loc: [/home/misaka/文档/ChatGPT/yolo/tests/ui_tests.cpp(605)]
+QINFO  : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(confidence-unfocused) wheel_routing_evidence: confidence focus= false scroll= 125 / 510 point= QPoint(401,653) target= QLineEdit qt_spinbox_lineedit
+PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(confidence-unfocused)
+QINFO  : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(confidence-focused) wheel_routing_evidence: confidence focus= true scroll= 125 / 510 point= QPoint(401,653) target= QLineEdit qt_spinbox_lineedit
+PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(confidence-focused)
+QINFO  : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(nms-iou-unfocused) wheel_routing_evidence: nmsIou focus= false scroll= 149 / 510 point= QPoint(401,677) target= QLineEdit qt_spinbox_lineedit
+PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(nms-iou-unfocused)
+QINFO  : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(nms-iou-focused) wheel_routing_evidence: nmsIou focus= true scroll= 149 / 510 point= QPoint(401,677) target= QLineEdit qt_spinbox_lineedit
+PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(nms-iou-focused)
+PASS   : UiTests::cleanupTestCase()
+Totals: 7 passed, 2 failed, 0 skipped, 0 blacklisted, 20844ms
+********* Finished testing of UiTests *********

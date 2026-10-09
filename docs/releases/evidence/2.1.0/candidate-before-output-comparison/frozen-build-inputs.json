@@ -1,0 +1,16 @@
+{
+  "version": "2.1.0",
+  "source_commit": "3db5e54dd44093f4f91ac7c462455e0b4c91fc84",
+  "clean_source_root": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/clean-source-inputs",
+  "application_sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c",
+  "actual_runtime_distributions": 59,
+  "foreign_files_excluded": [
+    "docs/足球模型微调.md",
+    "scripts/finetune_ball.py",
+    "scripts/evaluate_ball.py",
+    "scripts/run_finetune_ball.sh"
+  ],
+  "runtime_info_sha256": "7f1ad753adf21445ccee507df06534cdbafc055e1aeec312836c8178299c9895",
+  "original_license_hashes_verified": true,
+  "launcher_note": "Home launcher selects adjacent versioned CPU runtime, preserving shared runtime. run.sh is not part of the DEB installed launcher."
+}

@@ -1,0 +1,232 @@
+{
+  "version": "2.1.0",
+  "command": [
+    "python3",
+    "packaging/verify_deb.py",
+    "/home/misaka/\u6587\u6863/ChatGPT/yolo/output/releases/2.1.0/vision-studio_2.1.0-1_amd64.deb",
+    "--smoke",
+    "--apt-simulate",
+    "--keep-workdir",
+    "--report",
+    "/home/misaka/\u6587\u6863/ChatGPT/yolo/output/releases/2.1.0/qa-report.json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 79.328,
+  "deb_sha256": "615c0f0cc28bdfabcd6ec4c324daf665bf11b7e8bb3990f60b041520d88e6bd9",
+  "success": true,
+  "errors": [],
+  "report": "qa-report.json",
+  "workdir": "/tmp/vision-studio-deb-qa-190e5ot_",
+  "raw_files": [
+    {
+      "file": "user-state/conversion_onnx-stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc",
+      "tracked": "packaged-qa-raw/qa/user-state/conversion_onnx-stderr.log"
+    },
+    {
+      "file": "user-state/conversion_onnx-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/qa/user-state/conversion_onnx-stdout.log"
+    },
+    {
+      "file": "user-state/conversion_torchscript-stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc",
+      "tracked": "packaged-qa-raw/qa/user-state/conversion_torchscript-stderr.log"
+    },
+    {
+      "file": "user-state/conversion_torchscript-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/qa/user-state/conversion_torchscript-stdout.log"
+    },
+    {
+      "file": "user-state/legacy-stderr.log",
+      "bytes": 80,
+      "sha256": "4fa2e3f1beb42698e532de4b8540d923b084fb5ba244370830a2d521ffc83b25",
+      "tracked": "packaged-qa-raw/qa/user-state/legacy-stderr.log"
+    },
+    {
+      "file": "user-state/model_display-stderr.log",
+      "bytes": 644,
+      "sha256": "fdcc24e6cdeb8a24c085ed4399a6b34972b7c6afc37844f3fe670a85467edd1c",
+      "tracked": "packaged-qa-raw/qa/user-state/model_display-stderr.log"
+    },
+    {
+      "file": "user-state/model_display-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/qa/user-state/model_display-stdout.log"
+    },
+    {
+      "file": "user-state/model_display_pt-stderr.log",
+      "bytes": 639,
+      "sha256": "31aaa278606cdab0cdf16ba5bc4b194a1dab52dc3f80eac51777ae4f2f374fcc",
+      "tracked": "packaged-qa-raw/qa/user-state/model_display_pt-stderr.log"
+    },
+    {
+      "file": "user-state/model_display_pt-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/qa/user-state/model_display_pt-stdout.log"
+    },
+    {
+      "file": "user-state/onnx-stderr.log",
+      "bytes": 595,
+      "sha256": "c24e2c4ee4406c6c33caa60197eb95b81b09db94245577dd000afff1f6a23e81",
+      "tracked": "packaged-qa-raw/qa/user-state/onnx-stderr.log"
+    },
+    {
+      "file": "user-state/onnx-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/qa/user-state/onnx-stdout.log"
+    },
+    {
+      "file": "user-state/pt-stderr.log",
+      "bytes": 614,
+      "sha256": "d1d29184fd23d89484fb40d2d806497b7459717a98b1339ee4ea732833f80fe1",
+      "tracked": "packaged-qa-raw/qa/user-state/pt-stderr.log"
+    },
+    {
+      "file": "user-state/pt-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/qa/user-state/pt-stdout.log"
+    },
+    {
+      "file": "user-state/model_display/model-display-report.json",
+      "bytes": 550,
+      "sha256": "fbca82990cc8aa00984819b78d4501439e83b817a1e75b00d6a76c873afb9cb8",
+      "tracked": "packaged-qa-raw/qa/user-state/model_display/model-display-report.json"
+    },
+    {
+      "file": "user-state/model_display/model-display.png",
+      "bytes": 126103,
+      "sha256": "56aa279913b4d638606ca16c82fef21e5fc6b4adf28d34cdff1c89602101da77"
+    },
+    {
+      "file": "user-state/model_display/model-hierarchy.png",
+      "bytes": 161355,
+      "sha256": "9cc63b4dfa5900663f4f9ca3178737549a73875ed1ac5b6e4e4aa4757232f7f3"
+    },
+    {
+      "file": "user-state/model_display/model-parameters.png",
+      "bytes": 249424,
+      "sha256": "c776e46abcaba4e843b1eadbf94119833092cefb78e99b461a52ad5d3db51c38"
+    },
+    {
+      "file": "user-state/data/vision-studio/history.json",
+      "bytes": 1665,
+      "sha256": "527f1c95f22454e2092727f051c72da8846b5c27be418f2da4526de43d01f759"
+    },
+    {
+      "file": "user-state/conversion_torchscript/conversion-smoke-report.json",
+      "bytes": 5926,
+      "sha256": "95c22999a1d969de8fe90ab0975b20ac8abcf1f8e72875295bb0a4b4984722a1",
+      "tracked": "packaged-qa-raw/qa/user-state/conversion_torchscript/conversion-smoke-report.json"
+    },
+    {
+      "file": "user-state/conversion_torchscript/model-conversion.png",
+      "bytes": 189580,
+      "sha256": "f40891fdb0e8c820937570f50e07fdf6e9b6e54950294879b28b850153e031e0"
+    },
+    {
+      "file": "user-state/model_display_pt/model-display-report.json",
+      "bytes": 545,
+      "sha256": "205fad1de434330d96ce1045ecaef3f78283c725f2b42738e03896c3f95052c4",
+      "tracked": "packaged-qa-raw/qa/user-state/model_display_pt/model-display-report.json"
+    },
+    {
+      "file": "user-state/model_display_pt/model-display.png",
+      "bytes": 141951,
+      "sha256": "816b9a19f8298da46fe0a039aa807921427c3aa27ad06654bcd79ede8db23c2d"
+    },
+    {
+      "file": "user-state/model_display_pt/model-hierarchy.png",
+      "bytes": 175120,
+      "sha256": "d92b64a02e44c9760c3f6cbb65d6f2c919fd2b6d5f7a7b3d61c8ae99f756292f"
+    },
+    {
+      "file": "user-state/model_display_pt/model-parameters.png",
+      "bytes": 236314,
+      "sha256": "08ba173e704487478ecf52dd250382c647f7d206d6107ddf812df149d1b71d3a"
+    },
+    {
+      "file": "user-state/ultralytics/Ultralytics/settings.json",
+      "bytes": 463,
+      "sha256": "dd46344441c6d1eff4a10c6e0ecca65e5b977f6d7e7d2cb6833299f68a7379e8"
+    },
+    {
+      "file": "user-state/matplotlib/fontlist-v390.json",
+      "bytes": 115885,
+      "sha256": "9cddcd4536432423eda97686fcdfab676edf29c96935017b0c792064526cb59d"
+    },
+    {
+      "file": "user-state/onnx/bus-20261009-123017-273-f1.csv",
+      "bytes": 275,
+      "sha256": "426f57f2267770893a707ae7695412f519d30aaad53af2e7faf19112d2c09717"
+    },
+    {
+      "file": "user-state/onnx/bus-20261009-123017-273-f1.json",
+      "bytes": 2750,
+      "sha256": "e8aa7fb39e1bcffae1f450cb03dad55c084b4f3b7446fd995098d4247d445aca"
+    },
+    {
+      "file": "user-state/onnx/bus-20261009-123017-273-f1.png",
+      "bytes": 1756580,
+      "sha256": "a695515485b703a2bc9b0f2e3638b6837866797c0542176d166d312cd0b925a2"
+    },
+    {
+      "file": "user-state/onnx/smoke-report.json",
+      "bytes": 448,
+      "sha256": "eb792c0dc8672c7ae3807a5a6167fa957036ef73e56b90b2a4bf7a837614c141",
+      "tracked": "packaged-qa-raw/qa/user-state/onnx/smoke-report.json"
+    },
+    {
+      "file": "user-state/onnx/workbench.png",
+      "bytes": 399767,
+      "sha256": "2ecb31fd540c6e6272047892843cf1d62d118180f384fea14b435a1139ab159b"
+    },
+    {
+      "file": "user-state/conversion_onnx/conversion-smoke-report.json",
+      "bytes": 5874,
+      "sha256": "7827a119a03a1b68744613135b1f50093cd40d0e10e0244d194303aef3e69ea0",
+      "tracked": "packaged-qa-raw/qa/user-state/conversion_onnx/conversion-smoke-report.json"
+    },
+    {
+      "file": "user-state/conversion_onnx/model-conversion.png",
+      "bytes": 180412,
+      "sha256": "c4df7f38ed25c250a82081e9882400a3999558e6136543dd81f336f40761784a"
+    },
+    {
+      "file": "user-state/pt/bus-20261009-123021-281-f1.csv",
+      "bytes": 275,
+      "sha256": "cff8fa072279ce6e3808e2a8ae987cdec4554f9b76b40e462c3e2f96bd57aa3f"
+    },
+    {
+      "file": "user-state/pt/bus-20261009-123021-281-f1.json",
+      "bytes": 2798,
+      "sha256": "94467e762fff8e593ce9b73799186992a7aa5a537419b3fc3770dd48d231fd7c"
+    },
+    {
+      "file": "user-state/pt/bus-20261009-123021-281-f1.png",
+      "bytes": 1755904,
+      "sha256": "4735ba8516794a37fbbeea1ff63e289a000e9779d2f72b247b7344a5734cf2c8"
+    },
+    {
+      "file": "user-state/pt/smoke-report.json",
+      "bytes": 467,
+      "sha256": "dcfa7f289af1e7ee6d882793d90f9071fde5f621a84f125102778117db233b1d",
+      "tracked": "packaged-qa-raw/qa/user-state/pt/smoke-report.json"
+    },
+    {
+      "file": "user-state/pt/workbench.png",
+      "bytes": 400163,
+      "sha256": "ffee54e383289a23d7634d5898ca0cef9d2f542dd5e8c9b4cdaf642d54ad7747"
+    }
+  ],
+  "raw_backup": "/home/misaka/\u6587\u6863/ChatGPT/yolo/output/v2.1.0/packaged-qa-raw/qa"
+}

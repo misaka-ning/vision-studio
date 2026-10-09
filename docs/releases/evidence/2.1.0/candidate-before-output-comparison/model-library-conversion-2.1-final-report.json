@@ -1,0 +1,142 @@
+{
+  "version": "2.1.0",
+  "stage": "final full UI suite and actual conversion-to-inference replay after all source fixes were frozen",
+  "generated_at": "2026-10-09T04:23:35.863224+00:00",
+  "result": "passed",
+  "runtime": {
+    "qt": "6.8.3",
+    "target_opencv": "4.5.4",
+    "device": "CPU",
+    "python": "build-2.1.0/release-runtime/bin/python3"
+  },
+  "raw_logs": [
+    {
+      "path": "ctest-final-replay.log",
+      "bytes": 24840,
+      "sha256": "a101a51b0e6448d9588a58642829345b85458fbb2c5c2d127f1b31889bfc0218",
+      "result": "passed",
+      "scope": "Complete vision-ui-tests, vision-conversion-inference-tests and vision-model-conversion-tests final replay"
+    },
+    {
+      "path": "ctest-final-replay.log.execution.json",
+      "bytes": 5925,
+      "sha256": "fd98abe56ed43ac2ff177201fd3da1715c98f38ca580623e6d5092ee272e565d",
+      "result": "passed",
+      "scope": "Frozen before/after binary and source hashes, environment and actual command"
+    }
+  ],
+  "sha256": {
+    "build-2.1.0/bin/vision-studio": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c",
+    "build-2.1.0/vision-conversion-inference-tests": "4f997eb2bc7a41825265a805726e439ed3ff9875beb6300cc1ddecd15af71002",
+    "build-2.1.0/vision-ui-tests": "8f6722af3fce90eaef8a2995b6f2e3e1a371cc9f33590843069a6e582d9d1262",
+    "build-2.1.0/vision-conversion-ui-tests": "857d44b8455a35a0d34b3f8df2c082b50ab4e02ff1c1b7db094817029b33e218",
+    "src/ui/mainwindow.h": "f482ca477a85e15bfd51f9c66f6b6f09a56c73d77b884305ad68bed29e40ea4a",
+    "src/ui/mainwindow.cpp": "a5b2a5fca1a8c29111157fadad09a4312440cd7694f1b88439c7ba59e59e6c82",
+    "tests/ui_tests.cpp": "31d7ce689bb5738016ecdd94d2e8a41f6a764ff4ffa1f1c561d7188a0940c520",
+    "tests/conversion_inference_tests.cpp": "1470b58ed9262ada0dae39045d0eee5e5c00351455a4c1abcf33c209749ce90e",
+    "scripts/model_convert.py": "261bc78b4c29e897912a772cc5b517e2146a95a9a5555fd272c29c58278e8649"
+  },
+  "conversion_cases": [
+    "modern-c1.pt -> ONNX",
+    "focus-c1.pt -> ONNX",
+    "script-detect-c1.pt -> ONNX",
+    "script-classify-c1.pt -> ONNX",
+    "classify-c3.pt -> TorchScript, retain grayscale",
+    "script-detect-c3.pt -> TorchScript, RGB"
+  ],
+  "checks": [
+    "actual conversion CLI and MainWindow add-model action",
+    "converted presets task/layout/custom names/channels/input size/scale",
+    "same-path forced preset refresh",
+    "source PT vs converted real VisionEngine predictions: classes and labels exact, confidence difference < 0.002, box position and dimensions difference < 0.05",
+    "one-channel automatic grayscale and grayscale preview",
+    "three-channel grayscale preference retained",
+    "profile persisted across app reconstruction; manual labels override native labels",
+    "file size and mtime fingerprint invalidates old profile",
+    "right-click does not change global selection; file manager URL handler captures correct directory",
+    "notes and display names persist through reorder and app reconstruction",
+    "display name <b> content rendered as PlainText in workbench and model page",
+    "remove updates library only and does not re-add bundled models after restart",
+    "missing model and busy model menus preserve selection and mutation constraints"
+  ],
+  "limitations": [
+    "Qt tests use the offscreen platform; a native context event is supplied after the test right-click because offscreen does not synthesize it.",
+    "Opening the file manager is validated through a QDesktopServices URL capture rather than visually inspecting an external manager.",
+    "This report covers CPU conversion and UI integration. The independent final CUDA node trace is stored at gpu-proof/onnx-profile/profile-qa.json; physical camera was not tested.",
+    "Earlier focused logs and development failures remain retained as candidate history and do not provide the final frozen-source binding."
+  ],
+  "candidate_report": {
+    "file": "model-library-conversion-2.1-candidate-report.json",
+    "sha256": "5d5560cb8422b89d5fa689310455de00ad601f6edcc7420e171f7361d7a0e3ab",
+    "scope": "Earlier focused model library and six-row conversion integration evidence; final authority is the complete frozen-source replay below."
+  },
+  "final_ui_suite": {
+    "ctest_number": 6,
+    "name": "vision-ui-tests",
+    "passed": 38,
+    "failed": 0,
+    "skipped": 0,
+    "blacklisted": 0,
+    "duration_ms": 39549
+  },
+  "final_actual_conversion_inference_suite": {
+    "ctest_number": 10,
+    "name": "vision-conversion-inference-tests",
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "blacklisted": 0,
+    "duration_ms": 24999,
+    "functional_rows": [
+      "modern-gray-onnx",
+      "legacy-focus-gray-onnx",
+      "script-gray-detection-onnx",
+      "script-gray-classification-onnx",
+      "modern-c3-classification-torchscript-preserves-gray",
+      "script-color-detection-torchscript"
+    ]
+  },
+  "frozen_source_and_binary_binding": {
+    "build-2.1.0/bin/vision-studio": {
+      "bytes": 1188136,
+      "sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c"
+    },
+    "build-2.1.0/vision-ui-tests": {
+      "bytes": 1605072,
+      "sha256": "8f6722af3fce90eaef8a2995b6f2e3e1a371cc9f33590843069a6e582d9d1262"
+    },
+    "build-2.1.0/vision-conversion-inference-tests": {
+      "bytes": 1237496,
+      "sha256": "4f997eb2bc7a41825265a805726e439ed3ff9875beb6300cc1ddecd15af71002"
+    },
+    "src/ui/mainwindow.cpp": {
+      "bytes": 166500,
+      "sha256": "a5b2a5fca1a8c29111157fadad09a4312440cd7694f1b88439c7ba59e59e6c82"
+    },
+    "src/ui/modelconversionpage.cpp": {
+      "bytes": 22948,
+      "sha256": "a4fa85a1c24b0987209d7972dc9507f81fbbb146b80c25a766fb5464cb36e84a"
+    },
+    "assets/fluent-dark.qss": {
+      "bytes": 8079,
+      "sha256": "8487fd896584b28d83d47d9052994c4be59b1aa19d050ffea04783b4540ecf8f"
+    },
+    "tests/ui_tests.cpp": {
+      "bytes": 133543,
+      "sha256": "31d7ce689bb5738016ecdd94d2e8a41f6a764ff4ffa1f1c561d7188a0940c520"
+    },
+    "tests/conversion_inference_tests.cpp": {
+      "bytes": 16403,
+      "sha256": "1470b58ed9262ada0dae39045d0eee5e5c00351455a4c1abcf33c209749ce90e"
+    },
+    "scripts/model_convert.py": {
+      "bytes": 46108,
+      "sha256": "261bc78b4c29e897912a772cc5b517e2146a95a9a5555fd272c29c58278e8649"
+    },
+    "tests/model_conversion_tests.py": {
+      "bytes": 24360,
+      "sha256": "202431432d4eca9a9b6fc0b63abfbf61146a5ef230b47625dfef242031c95475"
+    }
+  },
+  "final_replay_explanation": "The complete UI suite and all six actual CLI-to-MainWindow-to-VisionEngine conversion rows were rerun on the frozen final converter, rather than updating the earlier focused report hashes without execution. The UI suite also verified all model context-menu actions, global selection, reorder, restart metadata persistence and PlainText aliases. The original full-suite UI failures were stale navigation count and global test-control lookup; only tests were changed for those failures. The initial complete run plus three full final replays provide thirteen-suite final coverage."
+}

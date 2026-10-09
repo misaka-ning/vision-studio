@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "version": "2.1.0",
+  "success": true,
+  "errors": [],
+  "frozen_build_inputs": {
+    "version": "2.1.0",
+    "source_commit": "8a40b77e5de99a496dcf19e5c8cc5b2f35da33fb",
+    "source_tree": "f9307eadbd39b8eb25147b8dfb2f15b112b655c3",
+    "clean_source_root": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/clean-source-verified",
+    "application_sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c",
+    "helper_sha256": "7c75f813334c569c212fc25538e388fd3007a6f74a14ea9d013e4efac4a4f298",
+    "actual_runtime_distributions": 59,
+    "foreign_files_excluded": [
+      "docs/足球模型微调.md",
+      "scripts/finetune_ball.py",
+      "scripts/evaluate_ball.py",
+      "scripts/run_finetune_ball.sh"
+    ],
+    "runtime_info_sha256": "15b239dc233e80b4ddaa8b22f87f07fb71bfe4d90332985a708bce04d6019f1b",
+    "original_license_hashes_verified": true,
+    "transport": "Official GitHub Git-data API over verified TLS; exact local/remote source tree and commit equality."
+  },
+  "reports": [
+    {
+      "file": "ctest-qa.json",
+      "sha256": "a9acc31cf27d7379785bc2844be96523250d5722b21b2499671ad9b82c93e613",
+      "bytes": 36046
+    },
+    {
+      "file": "qa-report.json",
+      "sha256": "f719aaf3a9dec3647bb3df243a2c79237c77857fded6253f41d9f12968beeee3",
+      "bytes": 115902
+    },
+    {
+      "file": "install-qa.json",
+      "sha256": "fd87cbce647d0431b9de19ca361b34290f7713122796b3af23287fd017887d7e",
+      "bytes": 17920
+    },
+    {
+      "file": "gpu-install-qa.json",
+      "sha256": "ff11efc30b9a1832eae7208d26717a55fb17f1a2fd8c054b728076ec88e16a0f",
+      "bytes": 20609
+    },
+    {
+      "file": "gpu-qa.json",
+      "sha256": "8f8e359b43489a738ecebccb23079dd64a32649f97c9c711d3388705268bcd67",
+      "bytes": 16770
+    },
+    {
+      "file": "conversion-qa.json",
+      "sha256": "cd1c0dca4a4d6a7da9280a44f0be85432a44ead791b8f597c045cb17ebd4c9a3",
+      "bytes": 41763
+    },
+    {
+      "file": "source-bundle-qa.json",
+      "sha256": "f5025b75201d8cd7307c794ff0fcab1a13611088fbf9adac9220a61c0330de16",
+      "bytes": 937
+    },
+    {
+      "file": "package-binding-independent-qa.json",
+      "sha256": "7a724e107bc836177e9f64538cb4f4b3790b240a6660a1ce819f1e55be61d1c0",
+      "bytes": 7156
+    }
+  ],
+  "public_manifest_sha256": "2c987e49b74265ea67ec92153aa63909832094b874c74eda08ad20b88e88e75a",
+  "manual_assets": 3,
+  "application_source_files": 3429,
+  "embedded_source_files_verified": 21,
+  "notes": "All package and source gates passed on final DEB. Package/source evidence appended to Git after source archive freeze, avoiding recursive self hashing. Source inputs came from byte-verified official remote commit."
+}

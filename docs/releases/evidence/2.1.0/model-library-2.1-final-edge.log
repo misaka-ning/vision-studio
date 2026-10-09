@@ -1,0 +1,18 @@
+********* Start testing of UiTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : UiTests::initTestCase()
+QWARN  : UiTests::missingModelContextActionsKeepTheValidGlobalModel() This plugin does not support raise()
+QWARN  : UiTests::missingModelContextActionsKeepTheValidGlobalModel() This plugin does not support grabbing the keyboard
+QWARN  : UiTests::missingModelContextActionsKeepTheValidGlobalModel() This plugin does not support raise()
+QWARN  : UiTests::missingModelContextActionsKeepTheValidGlobalModel() This plugin does not support grabbing the keyboard
+QWARN  : UiTests::missingModelContextActionsKeepTheValidGlobalModel() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::missingModelContextActionsKeepTheValidGlobalModel() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::missingModelContextActionsKeepTheValidGlobalModel() This plugin does not support raise()
+QWARN  : UiTests::missingModelContextActionsKeepTheValidGlobalModel() This plugin does not support grabbing the keyboard
+PASS   : UiTests::missingModelContextActionsKeepTheValidGlobalModel()
+QWARN  : UiTests::busyModelContextMenuAllowsLocationAndPreventsMutations() This plugin does not support raise()
+QWARN  : UiTests::busyModelContextMenuAllowsLocationAndPreventsMutations() This plugin does not support grabbing the keyboard
+PASS   : UiTests::busyModelContextMenuAllowsLocationAndPreventsMutations()
+PASS   : UiTests::cleanupTestCase()
+Totals: 4 passed, 0 failed, 0 skipped, 0 blacklisted, 1409ms
+********* Finished testing of UiTests *********

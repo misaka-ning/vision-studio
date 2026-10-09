@@ -1,11 +1,11 @@
 {
   "application": "Vision Studio",
-  "version": "2.0.0",
-  "debian_version": "2.0.0-1",
+  "version": "2.1.0",
+  "debian_version": "2.1.0-1",
   "maintainer": "misaka_ning <1468549029@qq.com>",
   "application_license": "AGPL-3.0-only",
-  "application_archive": "vision-studio-2.0.0-sources.tar.xz",
-  "complete_companion": "vision-studio-2.0.0-complete-source.tar.xz",
+  "application_archive": "vision-studio-2.1.0-sources.tar.xz",
+  "complete_companion": "vision-studio-2.1.0-complete-source.tar.xz",
   "public_checksums": "SHA256SUMS",
   "source_checksums": "SOURCE-SHA256SUMS",
   "upstream_archives": [
@@ -112,6 +112,27 @@
       "bytes": 5176979,
       "sha256": "612d8a064d0c7e166b47208c41bb8ac2ae7f95d5a5f0d659e3f41d82c3cd5507",
       "url": "https://codeload.github.com/lutzroeder/netron/tar.gz/refs/tags/v9.3.1",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/onnx-1.17.0.tar.gz",
+      "bytes": 12165120,
+      "sha256": "48ca1a91ff73c1d5e3ea2eef20ae5d0e709bb8a2355ed798ffc2169753013fd3",
+      "url": "https://files.pythonhosted.org/packages/9a/54/0e385c26bf230d223810a9c7d06628d954008a5e5e4b73ee26ef02327282/onnx-1.17.0.tar.gz",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/protobuf-33.0.tar.gz",
+      "bytes": 6872665,
+      "sha256": "cbc536064706b628dcfe507bef386ef3e2214d563657612296f1781aa155ee07",
+      "url": "https://github.com/protocolbuffers/protobuf/releases/download/v33.0/protobuf-33.0.tar.gz",
+      "verification": "checked against preserved download provenance"
+    },
+    {
+      "file": "sources/protobuf-cpp-3.21.12.tar.gz",
+      "bytes": 4842303,
+      "sha256": "4eab9b524aa5913c6fffb20b2a8abf5ef7f95a80bc0701f3a6dbb4c607f73460",
+      "url": "https://github.com/protocolbuffers/protobuf/releases/download/v21.12/protobuf-cpp-3.21.12.tar.gz",
       "verification": "checked against preserved download provenance"
     }
   ],

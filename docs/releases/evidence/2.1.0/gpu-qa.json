@@ -1,0 +1,477 @@
+{
+  "schema_version": 1,
+  "version": "2.1.0",
+  "success": true,
+  "errors": [],
+  "generated_at_utc": "2026-10-09T05:43:02.426277+00:00",
+  "aggregation_scope": "Read-only validation of completed effective CTest coverage, original CUDA node trace, final DEB payload, and four actual packaged CPU/CUDA cases with preserved raw logs and result exports; no new inference executed.",
+  "checks": {
+    "onnx_cuda_nodes": true,
+    "pt_cuda": true,
+    "packaged_onnx_cuda": true,
+    "packaged_pt_cuda": true,
+    "cpu_regression": true,
+    "grayscale_c1_c3": true,
+    "stereo_recording": true
+  },
+  "details": {
+    "deb_sha256": "0184d32ad28493259e7888b793c74d761666d0657aca7f0c5ceafcbcb2b8ba57",
+    "deb_bytes": 386669464,
+    "final_application_sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c",
+    "packaged_application_sha256": "1c954b1933492b34c0e106f345f750ba62906fc5f5da975c46231939697d6ed7",
+    "hardware": "NVIDIA GeForce RTX 4060",
+    "cuda_node_events": 364,
+    "all_ctest_suites": 13,
+    "all_ctest_failed": 0,
+    "all_ctest_skipped": 0,
+    "qt_suites": [
+      {
+        "name": "vision-core-tests",
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "vision-inference-delivery-tests",
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "vision-recording-tests",
+        "passed": 14,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "vision-pt-tests",
+        "passed": 31,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "vision-gpu-tests",
+        "passed": 10,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "vision-ui-tests",
+        "passed": 38,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "vision-batch-responsiveness-tests",
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "vision-modelviewer-tests",
+        "passed": 16,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "vision-conversion-ui-tests",
+        "passed": 8,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "vision-conversion-inference-tests",
+        "passed": 14,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "ctest_strategy": "complete baseline with explicitly bound accepted replay sources",
+    "converted_full_model_regressions": {
+      "functional_rows": [
+        "modern-gray-onnx",
+        "legacy-focus-gray-onnx",
+        "script-gray-detection-onnx",
+        "script-gray-classification-onnx",
+        "modern-c3-classification-torchscript-preserves-gray",
+        "script-color-detection-torchscript",
+        "full-yolov8n-640-onnx-cpu",
+        "full-yolov5n-640-onnx-cpu",
+        "full-yolov8n-640-onnx-cuda",
+        "full-yolov5n-640-onnx-cuda",
+        "full-yolov8n-640-torchscript-cuda",
+        "full-yolov5n-640-torchscript-cuda"
+      ],
+      "qt_passed": 14,
+      "actual_cuda_rows": [
+        "full-yolov5n-640-onnx-cuda",
+        "full-yolov5n-640-torchscript-cuda",
+        "full-yolov8n-640-onnx-cuda",
+        "full-yolov8n-640-torchscript-cuda"
+      ],
+      "accepted_log": "conversion-portability-proof/ctest-full-model-conversion.log"
+    },
+    "packaged_cases": {
+      "onnx_cuda": {
+        "requested_device": "cuda",
+        "actual_device": "cuda",
+        "backend": "ONNX Runtime / CUDA",
+        "device_index": 0,
+        "device_name": "NVIDIA GeForce RTX 4060",
+        "predictions": 5,
+        "inference_ms": 10.279602,
+        "export_version": "2.1.0",
+        "elapsed_seconds": 1.668
+      },
+      "pt_cuda": {
+        "requested_device": "cuda",
+        "actual_device": "cuda",
+        "backend": "PyTorch / Ultralytics / CUDA",
+        "device_index": 0,
+        "device_name": "NVIDIA GeForce RTX 4060",
+        "predictions": 5,
+        "inference_ms": 3.0572540126740932,
+        "export_version": "2.1.0",
+        "elapsed_seconds": 3.071
+      },
+      "onnx_cpu": {
+        "requested_device": "cpu",
+        "actual_device": "cpu",
+        "backend": "OpenCV DNN / CPU",
+        "device_index": -1,
+        "device_name": "CPU",
+        "predictions": 5,
+        "inference_ms": 52.999426,
+        "export_version": "2.1.0",
+        "elapsed_seconds": 1.118
+      },
+      "pt_cpu": {
+        "requested_device": "cpu",
+        "actual_device": "cpu",
+        "backend": "PyTorch / Ultralytics / CPU",
+        "device_index": -1,
+        "device_name": "CPU",
+        "predictions": 5,
+        "inference_ms": 40.42731807567179,
+        "export_version": "2.1.0",
+        "elapsed_seconds": 4.074
+      }
+    },
+    "physical_camera_tested": false
+  },
+  "case_evidence": {
+    "pt_cuda": [
+      "GpuBackendTests::realModernAndLegacyPtColorAndGrayscale",
+      "GpuBackendTests::ptCudaCancellationStopsChildAndCudaReloadWorks"
+    ],
+    "grayscale_c1_c3": [
+      "CoreTests::grayscaleThreeChannelsReplicateOneIntensity",
+      "PtBackendTests::grayscaleSingleChannelIsInferredFromTorchScriptConv",
+      "PtBackendTests::grayscaleThreeChannelsAreEqualAndUseBgrToGrayWeights",
+      "GpuBackendTests::torchScriptC1AndC3GrayscaleDetectionAndClassification",
+      "GpuBackendTests::nativeGrayC1C3Classification",
+      "GpuBackendTests::modernAndLegacyRealSingleChannelStems",
+      "GpuBackendTests::onnxC1AndC3GrayPixelsMatchModelInput"
+    ],
+    "stereo_recording": [
+      "RecordingTests::gpuRightEyeGrayscaleRecordingPreservesActualDevice"
+    ],
+    "cpu_regression": [
+      "PtBackendTests::realCheckpointLoadsNamesAndProcessesConsecutiveImages",
+      "GpuBackendTests::realOnnxCudaMatchesCpuAndExecutesCudaNodes"
+    ]
+  },
+  "source_test_sha256": {
+    "tests/gpu_backend_tests.cpp": "8137a757d8d7b66bc32b3dbf78dac482b000bc62e557f3cc4dddb173c19ba220",
+    "tests/recording_tests.cpp": "16853f404850eaff91de3eb7d38bb155840192c04f1b017c5334712b3a39bc0c",
+    "tests/core_tests.cpp": "f67c842c755c0d10cd63787e8d5791da73a576bd4ca83be3bfe448ef325b54c4",
+    "tests/pt_backend_tests.cpp": "0533912aa0aa592e96ce60cba48287e691f2d5f3ecf5bc731cf8b0bd624ace76"
+  },
+  "frozen_final_files": {
+    "build-2.1.0/bin/vision-studio": {
+      "bytes": 1188136,
+      "sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c"
+    },
+    "build-2.1.0/vision-ui-tests": {
+      "bytes": 1605072,
+      "sha256": "8f6722af3fce90eaef8a2995b6f2e3e1a371cc9f33590843069a6e582d9d1262"
+    },
+    "src/ui/mainwindow.cpp": {
+      "sha256": "a5b2a5fca1a8c29111157fadad09a4312440cd7694f1b88439c7ba59e59e6c82",
+      "bytes": 166500
+    },
+    "src/ui/modelconversionpage.cpp": {
+      "sha256": "a4fa85a1c24b0987209d7972dc9507f81fbbb146b80c25a766fb5464cb36e84a",
+      "bytes": 22948
+    },
+    "assets/fluent-dark.qss": {
+      "bytes": 8079,
+      "sha256": "8487fd896584b28d83d47d9052994c4be59b1aa19d050ffea04783b4540ecf8f"
+    },
+    "tests/ui_tests.cpp": {
+      "bytes": 133543,
+      "sha256": "31d7ce689bb5738016ecdd94d2e8a41f6a764ff4ffa1f1c561d7188a0940c520"
+    },
+    "scripts/model_convert.py": {
+      "bytes": 51026,
+      "sha256": "7c75f813334c569c212fc25538e388fd3007a6f74a14ea9d013e4efac4a4f298"
+    },
+    "tests/model_conversion_tests.py": {
+      "bytes": 29431,
+      "sha256": "7479dda571f5ace9f363d527d07d4d2834345bc34f4579719eec4217b07b7a4d"
+    },
+    "tests/conversion_inference_tests.cpp": {
+      "sha256": "99df0036635d043d346034a8b7d7d7b5c3fdcb18a4073baac99f8b31eebad43a",
+      "bytes": 19646
+    },
+    "scripts/pt_worker.py": {
+      "sha256": "0c632128249d495ad8549ed1d3c3885b2630b21750f7aca18c2d37fdf9dd30b9",
+      "bytes": 32165
+    },
+    "src/ui/mainwindow.h": {
+      "sha256": "f482ca477a85e15bfd51f9c66f6b6f09a56c73d77b884305ad68bed29e40ea4a",
+      "bytes": 8692
+    },
+    "src/ui/modelconversionpage.h": {
+      "sha256": "d58d129fa47ee268ca9397587e35fb8c7a82e54e2448ba6f29a8434be9580c44",
+      "bytes": 1915
+    },
+    "build-2.1.0/libvision-core.a": {
+      "bytes": 531456,
+      "sha256": "9b5733a4751ce26b0ddf25a88fb54e3f432134d4731bae1187689adcff2078ed"
+    },
+    "build-2.1.0/vision-conversion-inference-tests": {
+      "bytes": 1241984,
+      "sha256": "6d4b539975face4497b3ad687f6277a15aa66d8f7a65c237b2b7466640514d9b"
+    },
+    "build-2.1.0/vision-core-tests": {
+      "bytes": 446016,
+      "sha256": "17278e548cb962b95cdcda143a17e988e63b30a41b4c066fc61c7eb62f2ed36a"
+    },
+    "build-2.1.0/vision-inference-delivery-tests": {
+      "bytes": 381840,
+      "sha256": "255a4f63904abf86badc0886fcbb342b52f601778c7332c7b8f19360dc285bac"
+    },
+    "build-2.1.0/vision-recording-tests": {
+      "bytes": 441120,
+      "sha256": "81262674bb55b5c8cb71dea530a3bdb98c1edb40e5e1294d0bc22fdea2bd33da"
+    },
+    "build-2.1.0/vision-pt-tests": {
+      "bytes": 351744,
+      "sha256": "9ad7bebdba83e3eeae246570d42b847f51106a9f1f3dc2ec864ca9f09e09f2ea"
+    },
+    "build-2.1.0/vision-gpu-tests": {
+      "bytes": 287552,
+      "sha256": "aadb9ddf1e8f73c6bf279204533bcc3ecc98258fdc215ebe9619a85f5f72eff2"
+    },
+    "build-2.1.0/vision-batch-responsiveness-tests": {
+      "bytes": 1253000,
+      "sha256": "87e13025f2733cbda902be90db86716da87b714da211336d883b58bca4f8f047"
+    },
+    "build-2.1.0/vision-modelviewer-tests": {
+      "bytes": 409024,
+      "sha256": "27a2e535d3563e131288e0ea5a3aa11b956ba493f1835a0bcbfaa731f80caf72"
+    },
+    "build-2.1.0/vision-conversion-ui-tests": {
+      "bytes": 191208,
+      "sha256": "857d44b8455a35a0d34b3f8df2c082b50ab4e02ff1c1b7db094817029b33e218"
+    }
+  },
+  "evidence": [
+    {
+      "file": "conversion-portability-proof/ctest-backend-conversion-final.log",
+      "bytes": 16107,
+      "sha256": "08ea369898eb9450cf41d9f224b864b9de9323edd58db65cbfdb722b83093a0d"
+    },
+    {
+      "file": "conversion-portability-proof/ctest-backend-conversion-final.log.execution.json",
+      "bytes": 4923,
+      "sha256": "6145f40abfca466272f6bdf8c06c3a186e51012c863253f1202be38ced362086"
+    },
+    {
+      "file": "conversion-portability-proof/ctest-full-model-conversion.log",
+      "bytes": 3210,
+      "sha256": "54586578995046f3aeb9e9367e2ffb62fdba0c1a8627d07d2b6148b1277e6c3c"
+    },
+    {
+      "file": "conversion-portability-proof/ctest-full-model-conversion.log.execution.json",
+      "bytes": 6696,
+      "sha256": "8541850e457de70e6df0e8bbb8485824808b8d05afe3f228bb240dcf8b2ff668"
+    },
+    {
+      "file": "ctest-all.log",
+      "bytes": 55137,
+      "sha256": "ac6cbadf7fbd7d536d39861eee22fba9b5594736c470f4fd18117b8915772714"
+    },
+    {
+      "file": "ctest-all.log.execution.json",
+      "bytes": 4669,
+      "sha256": "7e11fa13d6c2f1c86fea1082e214e396f17037fca3f30ef901757aa5b236cc06"
+    },
+    {
+      "file": "ctest-candidate-qa.json",
+      "bytes": 4307,
+      "sha256": "566573a6633366c2ab58bb8aa628a8fdde8b3c7f028ede3fe8bc1b82a8056df5"
+    },
+    {
+      "file": "ctest-final-replay.log",
+      "bytes": 24840,
+      "sha256": "a101a51b0e6448d9588a58642829345b85458fbb2c5c2d127f1b31889bfc0218"
+    },
+    {
+      "file": "ctest-final-replay.log.execution.json",
+      "bytes": 5925,
+      "sha256": "fd98abe56ed43ac2ff177201fd3da1715c98f38ca580623e6d5092ee272e565d"
+    },
+    {
+      "file": "ctest-qa.json",
+      "bytes": 36046,
+      "sha256": "a9acc31cf27d7379785bc2844be96523250d5722b21b2499671ad9b82c93e613"
+    },
+    {
+      "file": "gpu-install-qa.json",
+      "bytes": 20609,
+      "sha256": "ff11efc30b9a1832eae7208d26717a55fb17f1a2fd8c054b728076ec88e16a0f"
+    },
+    {
+      "file": "gpu-proof/onnx-profile/images/bus-20261009-121859-912-f1.csv",
+      "bytes": 275,
+      "sha256": "426f57f2267770893a707ae7695412f519d30aaad53af2e7faf19112d2c09717"
+    },
+    {
+      "file": "gpu-proof/onnx-profile/images/bus-20261009-121859-912-f1.json",
+      "bytes": 2553,
+      "sha256": "0adda21450b2654cde5966dbb48bb2fbc922e843513f1f229507b819461f3de0"
+    },
+    {
+      "file": "gpu-proof/onnx-profile/images/bus-20261009-121859-912-f1.png",
+      "bytes": 1756576,
+      "sha256": "e8fc25906fe4f7efbfab9f23fb62d0e0b2da13fec4aa9fd04cb5c6076deb08b8"
+    },
+    {
+      "file": "gpu-proof/onnx-profile/images/smoke-report.json",
+      "bytes": 305,
+      "sha256": "c164fb7f96d92f5715e56d99c0422d0965cc7e850b378cb417651064bc47a657"
+    },
+    {
+      "file": "gpu-proof/onnx-profile/images/workbench.png",
+      "bytes": 386832,
+      "sha256": "a80deeb9f7b2cea5280855214beb0e4f7d76bbde1011fa9e8602aeed9362f2d9"
+    },
+    {
+      "file": "gpu-proof/onnx-profile/node-trace_2026-10-09_12-18-59.json",
+      "bytes": 288294,
+      "sha256": "401f1ba31aa759c87cd2b5e6ee04f976193c674698cb5008946bbc1be63b1aae"
+    },
+    {
+      "file": "gpu-proof/onnx-profile/profile-qa.json",
+      "bytes": 8956,
+      "sha256": "d176ff2abfdea099e9204ffee177f60d8fd5efe2dfdb0a2a9f2a6443a22aefb8"
+    },
+    {
+      "file": "gpu-proof/onnx-profile/smoke.log",
+      "bytes": 238,
+      "sha256": "fb91873af047815fedc69c2001372606fc47dc569073863e50af53af4288778b"
+    },
+    {
+      "file": "gpu-raw-preservation.json",
+      "bytes": 7459,
+      "sha256": "86fb218e46725a291083ae75bbd1bc4096433fa953abd10424c5bca2915939e4"
+    },
+    {
+      "file": "packaged-qa-raw/gpu/onnx_cpu/results/bus-20261009-134036-736-f1.json",
+      "bytes": 2582,
+      "sha256": "9feb135b1cccddde277287871171bd2c9f74cafd164cd7d0f5f36abe6925e31d"
+    },
+    {
+      "file": "packaged-qa-raw/gpu/onnx_cpu/results/smoke-report.json",
+      "bytes": 282,
+      "sha256": "e2931e51f2887f9d77d6ca7dafe333cd7391e49dd08271863d3129b3666783a9"
+    },
+    {
+      "file": "packaged-qa-raw/gpu/onnx_cpu/stderr.log",
+      "bytes": 429,
+      "sha256": "c69110857ce60cae35990e9fdc6085f5ce13aae8dd8459867b9b864890183364"
+    },
+    {
+      "file": "packaged-qa-raw/gpu/onnx_cpu/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-qa-raw/gpu/onnx_cuda/results/bus-20261009-134032-495-f1.json",
+      "bytes": 2610,
+      "sha256": "59653f2c395bf3505f138b249939d3b92d70ad0d2937e311f0b91f70e03dec82"
+    },
+    {
+      "file": "packaged-qa-raw/gpu/onnx_cuda/results/smoke-report.json",
+      "bytes": 306,
+      "sha256": "eec1a01a4f38108985a8eeaac62ac96bc4dbee769a21aeba712bbaf106dc7874"
+    },
+    {
+      "file": "packaged-qa-raw/gpu/onnx_cuda/stderr.log",
+      "bytes": 453,
+      "sha256": "d91354f1b166dd2791d1796f0f84f769628a6327b901934ae947e65fc014b7b0"
+    },
+    {
+      "file": "packaged-qa-raw/gpu/onnx_cuda/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-qa-raw/gpu/pt_cpu/results/bus-20261009-134040-957-f1.json",
+      "bytes": 2630,
+      "sha256": "b98c34b8a5cf89a2e4cf584645c31e6f0314e6752f594d48b910243005e9cb6d"
+    },
+    {
+      "file": "packaged-qa-raw/gpu/pt_cpu/results/smoke-report.json",
+      "bytes": 301,
+      "sha256": "fa439a92ef4d6f727cb54d6fe2219c489fb976ab7a81a5332ba575238409d9a9"
+    },
+    {
+      "file": "packaged-qa-raw/gpu/pt_cpu/stderr.log",
+      "bytes": 448,
+      "sha256": "0b64e92b94e7ce15a989b3ebeeffc11bf88ec1c41b8db929e92774a52a05e2ec"
+    },
+    {
+      "file": "packaged-qa-raw/gpu/pt_cpu/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-qa-raw/gpu/pt_cuda/results/bus-20261009-134035-618-f1.json",
+      "bytes": 2650,
+      "sha256": "70bd1f71ab4cd394baf30a48d7376e6bfec151e6dc55fd4c3aa9ce6fb4cdc980"
+    },
+    {
+      "file": "packaged-qa-raw/gpu/pt_cuda/results/smoke-report.json",
+      "bytes": 324,
+      "sha256": "cfec1126217628d6d28e1b0bf08ed134c491efd44513b63ab571dd938ae22dd9"
+    },
+    {
+      "file": "packaged-qa-raw/gpu/pt_cuda/stderr.log",
+      "bytes": 471,
+      "sha256": "fcc45f89543c8ae438528b1b81932067bbb256e4f81fa5981191032b9e53f86d"
+    },
+    {
+      "file": "packaged-qa-raw/gpu/pt_cuda/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "verify-gpu-deb.log",
+      "bytes": 230,
+      "sha256": "5c26958e3e2e4380bce1d9466ee0ac0de2712f601f03bd9b34a355ea5a5f71c8"
+    },
+    {
+      "file": "verify-gpu-deb.log.execution.json",
+      "bytes": 8033,
+      "sha256": "db458a7f3cfc6f8a0a1401f98baa81b39767467be442c4af0def3e1ad7ca15e5"
+    }
+  ],
+  "limits": [
+    "Evidence covers the actual available GPU/runtime and Ubuntu amd64 environment, not all GPUs/drivers.",
+    "Stereo recording uses a generated side-by-side video; no physical camera was tested.",
+    "Packaged GPU smoke uses a private read-only DEB extraction as an ordinary user; installation namespace acceptance is reported separately."
+  ]
+}

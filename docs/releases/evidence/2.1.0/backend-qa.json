@@ -1,0 +1,774 @@
+{
+  "type": "model-conversion-backend-qa",
+  "success": true,
+  "runtime": "/home/misaka/文档/ChatGPT/yolo/build-2.1.0/release-runtime/bin/python3",
+  "libraries": {
+    "torch": "2.9.1+cpu",
+    "onnx": "1.17.0",
+    "cv2": "4.11.0.86",
+    "protobuf": "6.33.0",
+    "ultralytics": "8.4.173"
+  },
+  "source_files": {
+    "scripts/model_convert.py": "7c75f813334c569c212fc25538e388fd3007a6f74a14ea9d013e4efac4a4f298",
+    "tests/model_conversion_tests.py": "7479dda571f5ace9f363d527d07d4d2834345bc34f4579719eec4217b07b7a4d"
+  },
+  "sources_unchanged": true,
+  "tests": {
+    "total": 20,
+    "passed": 20,
+    "failed": 0,
+    "skipped": 0,
+    "elapsed_seconds": 55.891,
+    "process_elapsed_seconds": 55.928,
+    "exit_code": 0
+  },
+  "verification_scope": "18 real exports; full public modern YOLOv8n and legacy YOLOv5n use input640. All ONNX outputs are checked and numerically compared to selected eager PT in both Python OpenCV4.11 and an independently compiled system C++ OpenCV4.5.4 CPU probe. TorchScript saved graphs retain detection-cache buffer identities and force traced convolution TF32=false. Separate actual CUDA same-device eager/full bus comparisons supplement this CPU suite.",
+  "actual_conversions": [
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/backend-qa-state/tmp/vision-conversion-actual-yim0hqa4/fixtures/modern-c1.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        1,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        6,
+        256
+      ],
+      "max_abs_error": 1.52587890625e-05,
+      "reference": "selected-original-model",
+      "system_opencv": {
+        "opencv_version": "4.5.4",
+        "max_abs_error": 1.52587890625e-05,
+        "finite": true,
+        "shape": [
+          1,
+          6,
+          256
+        ]
+      },
+      "portable_detection_buffers": [],
+      "traced_convolution_allow_tf32": [],
+      "sha256": "1f87a621857e5b2033ec95f648f53b68b6d3c31e4bc2b28830a6be5f2c74b2e1",
+      "source_sha256": "0f7b3c72f7bbf840d73c56d7a14edc4c6e598c47801b58803c27797d266eef02",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/backend-qa-state/tmp/vision-conversion-actual-yim0hqa4/fixtures/focus-c1.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        1,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        768,
+        7
+      ],
+      "max_abs_error": 1.1444091796875e-05,
+      "reference": "selected-original-model",
+      "system_opencv": {
+        "opencv_version": "4.5.4",
+        "max_abs_error": 1.1444091796875e-05,
+        "finite": true,
+        "shape": [
+          1,
+          768,
+          7
+        ]
+      },
+      "portable_detection_buffers": [],
+      "traced_convolution_allow_tf32": [],
+      "sha256": "4d2612a9c77b5b9a76e49744bf1fbba6faa3bc5e6f8d0d85c91cdaaf56fb418f",
+      "source_sha256": "18844a6e5dbea2f5bce8e5595b7978b8acb3f3ddd5105d32f631aee4a60b9eb7",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/backend-qa-state/tmp/vision-conversion-actual-yim0hqa4/fixtures/focus-c1.pt",
+      "format": "torchscript",
+      "opset": null,
+      "input_shape": [
+        1,
+        1,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        768,
+        7
+      ],
+      "max_abs_error": 0.0,
+      "reference": "selected-original-model",
+      "system_opencv": null,
+      "portable_detection_buffers": [
+        "network.model.2._vision_static_stride",
+        "network.model.2._vision_static_grid_0",
+        "network.model.2._vision_static_anchor_grid_0"
+      ],
+      "traced_convolution_allow_tf32": [
+        false,
+        false,
+        false
+      ],
+      "sha256": "7d263b520355268890cb214e70288438c9a5e527f989eb387686fae352e5ea86",
+      "source_sha256": "18844a6e5dbea2f5bce8e5595b7978b8acb3f3ddd5105d32f631aee4a60b9eb7",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/backend-qa-state/tmp/vision-conversion-actual-yim0hqa4/fixtures/focus-c3.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        3,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        768,
+        7
+      ],
+      "max_abs_error": 1.1444091796875e-05,
+      "reference": "selected-original-model",
+      "system_opencv": {
+        "opencv_version": "4.5.4",
+        "max_abs_error": 1.1444091796875e-05,
+        "finite": true,
+        "shape": [
+          1,
+          768,
+          7
+        ]
+      },
+      "portable_detection_buffers": [],
+      "traced_convolution_allow_tf32": [],
+      "sha256": "af94abba846e9c67657993312e00517d10128a7ed21a90417868699bf0f62c12",
+      "source_sha256": "be8b53d84dc1ca68f229accd1438f09d828dc36d07571b6b9868e6a176e5bb0b",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/backend-qa-state/tmp/vision-conversion-actual-yim0hqa4/fixtures/focus-c3.pt",
+      "format": "torchscript",
+      "opset": null,
+      "input_shape": [
+        1,
+        3,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        768,
+        7
+      ],
+      "max_abs_error": 0.0,
+      "reference": "selected-original-model",
+      "system_opencv": null,
+      "portable_detection_buffers": [
+        "network.model.2._vision_static_stride",
+        "network.model.2._vision_static_grid_0",
+        "network.model.2._vision_static_anchor_grid_0"
+      ],
+      "traced_convolution_allow_tf32": [
+        false,
+        false,
+        false
+      ],
+      "sha256": "93bab3636ae043a7f232dad03860fb6b886451536aca32cb86a65c6cf3908aa2",
+      "source_sha256": "be8b53d84dc1ca68f229accd1438f09d828dc36d07571b6b9868e6a176e5bb0b",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/models/yolov5n.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        3,
+        640,
+        640
+      ],
+      "output_shape": [
+        1,
+        25200,
+        85
+      ],
+      "max_abs_error": 0.003265380859375,
+      "reference": "selected-original-model",
+      "system_opencv": {
+        "opencv_version": "4.5.4",
+        "max_abs_error": 0.002227783203125,
+        "finite": true,
+        "shape": [
+          1,
+          25200,
+          85
+        ]
+      },
+      "portable_detection_buffers": [],
+      "traced_convolution_allow_tf32": [],
+      "sha256": "c08938350886a35d49497699aff181040e273cef92809541008a0aa0a9508781",
+      "source_sha256": "649e089f59b78ac021025de035b2d9c45dc26e544ea252955d0ffcefc1099e2f",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/models/yolov5n.pt",
+      "format": "torchscript",
+      "opset": null,
+      "input_shape": [
+        1,
+        3,
+        640,
+        640
+      ],
+      "output_shape": [
+        1,
+        25200,
+        85
+      ],
+      "max_abs_error": 0.0,
+      "reference": "selected-original-model",
+      "system_opencv": null,
+      "portable_detection_buffers": [
+        "network.model.24._vision_static_stride",
+        "network.model.24._vision_static_grid_0",
+        "network.model.24._vision_static_grid_1",
+        "network.model.24._vision_static_grid_2",
+        "network.model.24._vision_static_anchor_grid_0",
+        "network.model.24._vision_static_anchor_grid_1",
+        "network.model.24._vision_static_anchor_grid_2"
+      ],
+      "traced_convolution_allow_tf32": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "sha256": "0ea89104b80e8cf60ad33c956ea351b7cbe78947013f9f041d76edc7e020b9e3",
+      "source_sha256": "649e089f59b78ac021025de035b2d9c45dc26e544ea252955d0ffcefc1099e2f",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/models/yolov8n.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        3,
+        640,
+        640
+      ],
+      "output_shape": [
+        1,
+        84,
+        8400
+      ],
+      "max_abs_error": 0.0008544921875,
+      "reference": "selected-original-model",
+      "system_opencv": {
+        "opencv_version": "4.5.4",
+        "max_abs_error": 0.0007171630859375,
+        "finite": true,
+        "shape": [
+          1,
+          84,
+          8400
+        ]
+      },
+      "portable_detection_buffers": [],
+      "traced_convolution_allow_tf32": [],
+      "sha256": "09351f7ae8d1763a5b0953782b286b3658c60017c08023afb93e28f5e544a964",
+      "source_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/models/yolov8n.pt",
+      "format": "torchscript",
+      "opset": null,
+      "input_shape": [
+        1,
+        3,
+        640,
+        640
+      ],
+      "output_shape": [
+        1,
+        84,
+        8400
+      ],
+      "max_abs_error": 0.0,
+      "reference": "selected-original-model",
+      "system_opencv": null,
+      "portable_detection_buffers": [
+        "network.model.22._vision_static_anchors",
+        "network.model.22._vision_static_strides",
+        "network.model.22._vision_static_stride"
+      ],
+      "traced_convolution_allow_tf32": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "sha256": "fbc5101dfc56e5a498a1d296e092fecfa0882852166bdb8235b5e5cef28188e2",
+      "source_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/backend-qa-state/tmp/vision-conversion-actual-yim0hqa4/fixtures/classify-c1.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        1,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        3
+      ],
+      "max_abs_error": 2.9802322387695312e-08,
+      "reference": "selected-original-model",
+      "system_opencv": {
+        "opencv_version": "4.5.4",
+        "max_abs_error": 5.960464477539063e-08,
+        "finite": true,
+        "shape": [
+          1,
+          3
+        ]
+      },
+      "portable_detection_buffers": [],
+      "traced_convolution_allow_tf32": [],
+      "sha256": "d0b0d31c81c505da89f321d16b6d78fe86a41fa8e3cc041d8834a5c2a36a286e",
+      "source_sha256": "4de2dde7ce72c8a94930babfe6f56a7fd759d86d851f466e107932697134e242",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/backend-qa-state/tmp/vision-conversion-actual-yim0hqa4/fixtures/classify-c3.pt",
+      "format": "torchscript",
+      "opset": null,
+      "input_shape": [
+        1,
+        3,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        3
+      ],
+      "max_abs_error": 0.0,
+      "reference": "selected-original-model",
+      "system_opencv": null,
+      "portable_detection_buffers": [],
+      "traced_convolution_allow_tf32": [
+        false,
+        false
+      ],
+      "sha256": "95d084c6f6f97970b20cf93531cc4018e5db552e422faa75f0cfff566c7567b5",
+      "source_sha256": "590aac837ed2d0b20e0bf12569fc44e6d0d2a85841185323ea476907ebed8b17",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/backend-qa-state/tmp/vision-conversion-actual-yim0hqa4/fixtures/modern-c3.pt",
+      "format": "onnx",
+      "opset": 17,
+      "input_shape": [
+        1,
+        3,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        6,
+        256
+      ],
+      "max_abs_error": 1.9073486328125e-05,
+      "reference": "selected-original-model",
+      "system_opencv": {
+        "opencv_version": "4.5.4",
+        "max_abs_error": 1.52587890625e-05,
+        "finite": true,
+        "shape": [
+          1,
+          6,
+          256
+        ]
+      },
+      "portable_detection_buffers": [],
+      "traced_convolution_allow_tf32": [],
+      "sha256": "5f0182663475773950255a873c340f2957f864b499aa553f2bebba1c81aebc83",
+      "source_sha256": "adabd0222c25a1e995681dad2a086a419e809d222b72c9fd91453b8ca3eab723",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/backend-qa-state/tmp/vision-conversion-actual-yim0hqa4/fixtures/script-detect-c1.pt",
+      "format": "onnx",
+      "opset": 17,
+      "input_shape": [
+        1,
+        1,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        6,
+        8
+      ],
+      "max_abs_error": 1.2665987014770508e-06,
+      "reference": "selected-original-model",
+      "system_opencv": {
+        "opencv_version": "4.5.4",
+        "max_abs_error": 1.2665987014770508e-06,
+        "finite": true,
+        "shape": [
+          1,
+          6,
+          8
+        ]
+      },
+      "portable_detection_buffers": [],
+      "traced_convolution_allow_tf32": [],
+      "sha256": "fe08982e69017c000c2ac6bff5a4ef797e4eb28eeb4338f784e440350217eea8",
+      "source_sha256": "8a203600dee9e9b6b6fec4670a483b2e065583e6cfb9d365df598dd0079f5ce0",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/backend-qa-state/tmp/vision-conversion-actual-yim0hqa4/fixtures/script-detect-c1.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        1,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        6,
+        8
+      ],
+      "max_abs_error": 1.2665987014770508e-06,
+      "reference": "selected-original-model",
+      "system_opencv": {
+        "opencv_version": "4.5.4",
+        "max_abs_error": 1.2665987014770508e-06,
+        "finite": true,
+        "shape": [
+          1,
+          6,
+          8
+        ]
+      },
+      "portable_detection_buffers": [],
+      "traced_convolution_allow_tf32": [],
+      "sha256": "c087ae7c02fe0af74c13a8edb62261c97021c2de1867fcbca6e3e2912255386e",
+      "source_sha256": "8a203600dee9e9b6b6fec4670a483b2e065583e6cfb9d365df598dd0079f5ce0",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/backend-qa-state/tmp/vision-conversion-actual-yim0hqa4/fixtures/script-classify-c1.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        1,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        3
+      ],
+      "max_abs_error": 7.62939453125e-06,
+      "reference": "selected-original-model",
+      "system_opencv": {
+        "opencv_version": "4.5.4",
+        "max_abs_error": 7.62939453125e-06,
+        "finite": true,
+        "shape": [
+          1,
+          3
+        ]
+      },
+      "portable_detection_buffers": [],
+      "traced_convolution_allow_tf32": [],
+      "sha256": "84db0737904b3fc2e9bab354dd082f2041b6e1bbfc6de2d5ac91fb7b6a3d1b6b",
+      "source_sha256": "add14f492721317c3525ee98c9b265209a7c8f1d0bb944f0b3bdfde14d880049",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/backend-qa-state/tmp/vision-conversion-actual-yim0hqa4/fixtures/script-detect-c3.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        3,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        6,
+        8
+      ],
+      "max_abs_error": 3.3974647521972656e-06,
+      "reference": "selected-original-model",
+      "system_opencv": {
+        "opencv_version": "4.5.4",
+        "max_abs_error": 3.3974647521972656e-06,
+        "finite": true,
+        "shape": [
+          1,
+          6,
+          8
+        ]
+      },
+      "portable_detection_buffers": [],
+      "traced_convolution_allow_tf32": [],
+      "sha256": "473187f863a2bc5b0265f7f39b44657808351127839f567e4b4129924731ebcb",
+      "source_sha256": "83c2052ddf164e85d477684737385dd2fcd7f5d2bf4f84511879874a7cd3b246",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/backend-qa-state/tmp/vision-conversion-actual-yim0hqa4/fixtures/script-classify-c3.pt",
+      "format": "onnx",
+      "opset": 12,
+      "input_shape": [
+        1,
+        3,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        3
+      ],
+      "max_abs_error": 2.0503997802734375e-05,
+      "reference": "selected-original-model",
+      "system_opencv": {
+        "opencv_version": "4.5.4",
+        "max_abs_error": 2.0503997802734375e-05,
+        "finite": true,
+        "shape": [
+          1,
+          3
+        ]
+      },
+      "portable_detection_buffers": [],
+      "traced_convolution_allow_tf32": [],
+      "sha256": "f4ea6bd36d197920f9c8bd1473c1c3a9b6d7857f9091dfb373ddc91a6b55ba6e",
+      "source_sha256": "d55e16349114a9e1a67c10a9710965e2a7671dc44029fbc72cf09902ccd92dca",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/backend-qa-state/tmp/vision-conversion-actual-yim0hqa4/fixtures/classify-c1.pt",
+      "format": "torchscript",
+      "opset": null,
+      "input_shape": [
+        1,
+        1,
+        64,
+        64
+      ],
+      "output_shape": [
+        1,
+        3
+      ],
+      "max_abs_error": 0.0,
+      "reference": "selected-original-model",
+      "system_opencv": null,
+      "portable_detection_buffers": [],
+      "traced_convolution_allow_tf32": [
+        false,
+        false
+      ],
+      "sha256": "d862c9a9ee18ad5a2082e6bd0dcbbf8b525c281d1661859b5122c60f5bfbc18f",
+      "source_sha256": "4de2dde7ce72c8a94930babfe6f56a7fd759d86d851f466e107932697134e242",
+      "source_unchanged": true,
+      "original_user_state_unchanged": true,
+      "job_removed": true
+    }
+  ],
+  "largest_absolute_error": 0.003265380859375,
+  "largest_system_opencv_absolute_error": 0.002227783203125,
+  "raw_log": {
+    "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/backend-unittest.log",
+    "sha256": "09cdae422babb2be09d74d3d7048d32a15a5322591953b93f559d8d7af3f1d49",
+    "bytes": 16960
+  },
+  "focused_full640_log": {
+    "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/focused-full640-system-opencv.log",
+    "sha256": "120681aa7a710bac62cb7e7441336b144667b0af2ff223845ee24253db42d499"
+  },
+  "cuda_raw_reference_proof": {
+    "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/torchscript-cpu-cuda-result.json",
+    "sha256": "15a08b991dfa2bc9eaaa78dfb4d66d51acae8a1c685382919c77255bd60dc51e",
+    "scope": "two full models x actual bus and gradient, selected eager CPU/CUDA FP32 same-device output comparison"
+  },
+  "finished_at": "2026-10-09T05:08:05.351590+00:00"
+}

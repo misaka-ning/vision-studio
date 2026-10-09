@@ -1,0 +1,33 @@
+{
+  "components": "ONNX export and embedded/separate protobuf; original release notices",
+  "files": [
+    {
+      "original_archive": "onnx-1.17.0.tar.gz",
+      "member": "onnx-1.17.0/LICENSE",
+      "file": "packaging/licenses/model-conversion/onnx-1.17.0-LICENSE",
+      "bytes": 11560,
+      "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5"
+    },
+    {
+      "original_archive": "onnx-1.17.0.tar.gz",
+      "member": "onnx-1.17.0/third_party/pybind11/LICENSE",
+      "file": "packaging/licenses/model-conversion/onnx-1.17.0-third_party__pybind11__LICENSE",
+      "bytes": 1713,
+      "sha256": "5494773a5dcf654c0c3c844fbb11cfc4f898ea0ea44cf467f29e5c99097da6e7"
+    },
+    {
+      "original_archive": "protobuf-33.0.tar.gz",
+      "member": "protobuf-33.0/LICENSE",
+      "file": "packaging/licenses/model-conversion/protobuf-33.0-LICENSE",
+      "bytes": 1732,
+      "sha256": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d"
+    },
+    {
+      "original_archive": "protobuf-cpp-3.21.12.tar.gz",
+      "member": "protobuf-3.21.12/LICENSE",
+      "file": "packaging/licenses/model-conversion/protobuf-cpp-3.21.12-LICENSE",
+      "bytes": 1732,
+      "sha256": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d"
+    }
+  ]
+}

@@ -22,3 +22,4 @@
 # Keep vendored upstream files byte-for-byte as distributed.
 docs/releases/evidence/** -text -whitespace
 vendor/** -text
+packaging/licenses/model-conversion/** -text -whitespace

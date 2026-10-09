@@ -9,4 +9,11 @@ export QT_QPA_PLATFORM_PLUGIN_PATH="$qt_prefix/plugins/platforms"
 if [[ ! -x "$project_dir/build/bin/vision-studio" ]]; then
     "$project_dir/scripts/build.sh"
 fi
+# A versioned home-directory build can carry its own CPU environment while
+# older builds and the user's shared runtime remain available.
+versioned_binary="$(readlink -f -- "$project_dir/build/bin/vision-studio")"
+versioned_python="$(dirname -- "$versioned_binary")/../runtime/bin/python"
+if [[ -z "${VISION_STUDIO_PYTHON:-}" && -x "$versioned_python" ]]; then
+    export VISION_STUDIO_PYTHON="$versioned_python"
+fi
 exec "$project_dir/build/bin/vision-studio" "$@"

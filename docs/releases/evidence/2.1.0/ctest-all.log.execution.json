@@ -1,0 +1,110 @@
+{
+  "version": "2.1.0",
+  "stage": "final incremental build and complete registered CTest acceptance",
+  "command": [
+    "ctest",
+    "--test-dir",
+    "/home/misaka/文档/ChatGPT/yolo/build-2.1.0",
+    "-V",
+    "-j",
+    "1",
+    "--no-tests=error"
+  ],
+  "started_at": "2026-10-09T12:08:11.573217+08:00",
+  "finished_at": "2026-10-09T12:13:08.665006+08:00",
+  "elapsed_seconds": 297.092,
+  "exit_code": 8,
+  "environment": {
+    "HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/home",
+    "XDG_CONFIG_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/config",
+    "XDG_DATA_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/data",
+    "XDG_CACHE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/cache",
+    "XDG_STATE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/state",
+    "XDG_RUNTIME_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/runtime",
+    "VISION_STUDIO_DATA_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/app-data",
+    "YOLO_CONFIG_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/ultralytics",
+    "YOLOV5_CONFIG_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/yolov5",
+    "MPLCONFIGDIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/matplotlib",
+    "TORCH_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/torch",
+    "CUDA_CACHE_PATH": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/cuda-cache",
+    "TMPDIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-qa-state/tmp",
+    "QT_QPA_PLATFORM": "offscreen",
+    "QTWEBENGINE_CHROMIUM_FLAGS": "--disable-gpu",
+    "QT_QUICK_BACKEND": "software",
+    "VISION_STUDIO_HOME": "/home/misaka/文档/ChatGPT/yolo",
+    "VISION_STUDIO_PYTHON": "/home/misaka/文档/ChatGPT/yolo/build-2.1.0/release-runtime/bin/python3",
+    "VISION_STUDIO_CONVERSION_PYTHON": "/home/misaka/文档/ChatGPT/yolo/build-2.1.0/release-runtime/bin/python3",
+    "VISION_STUDIO_GPU_RUNTIME_DIR": "/home/misaka/.local/share/vision-studio/gpu-runtime",
+    "VISION_STUDIO_GPU_TESTS": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONNOUSERSITE": "1",
+    "OMP_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2",
+    "NUMEXPR_NUM_THREADS": "2",
+    "YOLO_AUTOINSTALL": "false",
+    "YOLOv5_AUTOINSTALL": "false"
+  },
+  "log": {
+    "file": "docs/releases/evidence/2.1.0/ctest-all.log",
+    "bytes": 55137,
+    "sha256": "ac6cbadf7fbd7d536d39861eee22fba9b5594736c470f4fd18117b8915772714"
+  },
+  "binaries": [
+    {
+      "file": "build-2.1.0/bin/vision-studio",
+      "bytes": 1188136,
+      "sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c"
+    },
+    {
+      "file": "build-2.1.0/vision-core-tests",
+      "bytes": 446016,
+      "sha256": "17278e548cb962b95cdcda143a17e988e63b30a41b4c066fc61c7eb62f2ed36a"
+    },
+    {
+      "file": "build-2.1.0/vision-inference-delivery-tests",
+      "bytes": 381840,
+      "sha256": "255a4f63904abf86badc0886fcbb342b52f601778c7332c7b8f19360dc285bac"
+    },
+    {
+      "file": "build-2.1.0/vision-recording-tests",
+      "bytes": 441120,
+      "sha256": "81262674bb55b5c8cb71dea530a3bdb98c1edb40e5e1294d0bc22fdea2bd33da"
+    },
+    {
+      "file": "build-2.1.0/vision-pt-tests",
+      "bytes": 351744,
+      "sha256": "9ad7bebdba83e3eeae246570d42b847f51106a9f1f3dc2ec864ca9f09e09f2ea"
+    },
+    {
+      "file": "build-2.1.0/vision-gpu-tests",
+      "bytes": 287552,
+      "sha256": "aadb9ddf1e8f73c6bf279204533bcc3ecc98258fdc215ebe9619a85f5f72eff2"
+    },
+    {
+      "file": "build-2.1.0/vision-ui-tests",
+      "bytes": 1604856,
+      "sha256": "1862670b5e292a241bf8083a2c5f09789d026135426a539dc4318534777de275"
+    },
+    {
+      "file": "build-2.1.0/vision-batch-responsiveness-tests",
+      "bytes": 1253000,
+      "sha256": "87e13025f2733cbda902be90db86716da87b714da211336d883b58bca4f8f047"
+    },
+    {
+      "file": "build-2.1.0/vision-modelviewer-tests",
+      "bytes": 409024,
+      "sha256": "27a2e535d3563e131288e0ea5a3aa11b956ba493f1835a0bcbfaa731f80caf72"
+    },
+    {
+      "file": "build-2.1.0/vision-conversion-ui-tests",
+      "bytes": 191208,
+      "sha256": "857d44b8455a35a0d34b3f8df2c082b50ab4e02ff1c1b7db094817029b33e218"
+    },
+    {
+      "file": "build-2.1.0/vision-conversion-inference-tests",
+      "bytes": 1237496,
+      "sha256": "4f997eb2bc7a41825265a805726e439ed3ff9875beb6300cc1ddecd15af71002"
+    }
+  ]
+}

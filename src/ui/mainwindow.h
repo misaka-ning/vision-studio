@@ -5,6 +5,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QMainWindow>
+#include <QVariantMap>
 #include <memory>
 class QComboBox;
 class QDoubleSpinBox;
@@ -25,6 +26,7 @@ class QPlainTextEdit;
 class QTemporaryDir;
 class ImageCanvas;
 class ModelViewer;
+class ModelConversionPage;
 namespace cv
 {
 class VideoCapture;
@@ -80,7 +82,10 @@ class MainWindow : public QMainWindow
     void chooseCamera();
     void importModel();
     void importLabels();
-    void setModel(const QString &path);
+    void setModel(const QString &path, bool force = false);
+    bool rememberConvertedModel(const QString &path, const QJsonObject &metadata);
+    QJsonObject convertedModelProfile(const QString &path) const;
+    bool applyConvertedModelProfile(const QString &path);
     void addFiles(const QStringList &files);
     void startInference();
     void stopInference();
@@ -93,6 +98,12 @@ class MainWindow : public QMainWindow
     void onFinished(bool cancelled);
     void setBusy(bool busy);
     void refreshModelLibrary();
+    void showModelContextMenu(const QPoint &position);
+    void openModelLocation(const QString &path);
+    void editModelNote(const QString &path);
+    void renameLibraryModel(const QString &path);
+    void removeLibraryModel(const QString &path);
+    QString modelDisplayName(const QString &path) const;
     void refreshHistory();
     void recordResult(const vision::InferenceResult &result, bool writeToDisk = true);
     void exportResult();
@@ -124,6 +135,7 @@ class MainWindow : public QMainWindow
     vision::ModelConfig currentConfig() const;
     QString projectRoot_, dataRoot_, modelPath_, labelsPath_, streamPath_, exportDir_, smokeDir_;
     QStringList files_, labels_, models_;
+    QVariantMap modelDisplayNames_, modelNotes_, convertedModelProfiles_;
     QStringList nativeLabels_;
     vision::SourceKind sourceKind_ = vision::SourceKind::Images;
     vision::InferenceResult lastResult_;
@@ -194,6 +206,7 @@ class MainWindow : public QMainWindow
     ImageCanvas *canvas_ = nullptr;
     ImageCanvas *recordingCanvas_ = nullptr;
     ModelViewer *modelViewer_ = nullptr;
+    ModelConversionPage *modelConversion_ = nullptr;
     QLabel *structureModelName_ = nullptr, *structureModelMeta_ = nullptr, *structureHint_ = nullptr,
            *structureStatus_ = nullptr;
     QList<QWidget *> lockedControls_;

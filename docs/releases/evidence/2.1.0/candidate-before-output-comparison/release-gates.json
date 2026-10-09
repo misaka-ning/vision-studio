@@ -1,0 +1,32 @@
+{
+  "version": "2.1.0",
+  "success": true,
+  "deb_sha256": "615c0f0cc28bdfabcd6ec4c324daf665bf11b7e8bb3990f60b041520d88e6bd9",
+  "reports": [
+    {
+      "file": "qa-report.json",
+      "sha256": "db9ae0e8223588e0cb0ff9ce39e50f8365a658e9c3350250cb472aa963cc8fb5"
+    },
+    {
+      "file": "install-qa.json",
+      "sha256": "9a3dab192416c4a51e429087a65b2585d529a9506d902b4658ef8525e7030cc7"
+    },
+    {
+      "file": "ctest-qa.json",
+      "sha256": "cd61a81570604d0bee678d7c09135103f75d32f9b339c9b9dfae97a7273599dd"
+    },
+    {
+      "file": "gpu-qa.json",
+      "sha256": "5726b122a2e4c250f923a56c7a5e74e31bb934c8ab27c425da7751505954ccc5"
+    },
+    {
+      "file": "source-bundle-qa.json",
+      "sha256": "335a8251a31a33c1cbcc997383fac13dc59fca19c176a21ef70088e6c6e1fff5"
+    },
+    {
+      "file": "conversion-qa.json",
+      "sha256": "06b8879a0c565fe185f8a433706238ee0149d44e69353ae2ab9d3ac4c5284f04"
+    }
+  ],
+  "physical_camera_tested": false
+}

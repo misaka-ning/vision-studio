@@ -1,0 +1,90 @@
+{
+    "actual_device": "cuda",
+    "application": "Vision Studio",
+    "backend": "PyTorch / Ultralytics / CUDA",
+    "config": {
+        "color_mode": "rgb",
+        "confidence_threshold": 0.25,
+        "input_channels": 3,
+        "input_size": 640,
+        "nms_iou": 0.44999998807907104,
+        "preprocess": {
+            "color_mode": "rgb",
+            "mean_rgb": [
+                0,
+                0,
+                0
+            ],
+            "mode": "model_native",
+            "scale": 0.00392156862745098,
+            "swap_rb": true
+        }
+    },
+    "device_index": 0,
+    "device_name": "NVIDIA GeForce RTX 4060",
+    "device_notice": "",
+    "frame": 1,
+    "height": 1080,
+    "inference_ms": 2.7617779560387135,
+    "model": "yolov8n.pt",
+    "model_file": "/tmp/vision-studio-gpu-deb-qa-m2el9zjv/root/opt/VisionStudio/models/yolov8n.pt",
+    "predictions": [
+        {
+            "class_id": 0,
+            "confidence": 0.9009041786193848,
+            "height": 501.773681640625,
+            "label": "person",
+            "width": 138.97821044921875,
+            "x": 671.0217895507812,
+            "y": 378.0269775390625
+        },
+        {
+            "class_id": 0,
+            "confidence": 0.8838161826133728,
+            "height": 448.2424011230469,
+            "label": "person",
+            "width": 122.055908203125,
+            "x": 221.422119140625,
+            "y": 407.5936584472656
+        },
+        {
+            "class_id": 0,
+            "confidence": 0.8755385279655457,
+            "height": 506.740966796875,
+            "label": "person",
+            "width": 193.72353744506836,
+            "x": 50.35676956176758,
+            "y": 398.09674072265625
+        },
+        {
+            "class_id": 5,
+            "confidence": 0.8421508073806763,
+            "height": 539.2234954833984,
+            "label": "bus",
+            "width": 761.2479515075684,
+            "x": 34.33664321899414,
+            "y": 229.3249053955078
+        },
+        {
+            "class_id": 0,
+            "confidence": 0.4358821511268616,
+            "height": 317.4464111328125,
+            "label": "person",
+            "width": 59.878671646118164,
+            "x": 0.4055500030517578,
+            "y": 550.6466064453125
+        }
+    ],
+    "requested_device": "cuda",
+    "source": "/tmp/vision-studio-gpu-deb-qa-m2el9zjv/root/opt/VisionStudio/assets/bus.jpg",
+    "source_frame_size": {
+        "height": 1080,
+        "width": 810
+    },
+    "stereo_view": "full",
+    "task": "YOLOv8 / 11",
+    "timestamp": "2026-10-09T12:29:58.551",
+    "total_ms": 96.639715,
+    "version": "2.1.0",
+    "width": 810
+}
