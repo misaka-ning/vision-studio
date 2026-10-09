@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "version": "2.1.0",
+  "success": true,
+  "errors": [],
+  "deb_sha256_confirmed": "0184d32ad28493259e7888b793c74d761666d0657aca7f0c5ceafcbcb2b8ba57",
+  "embedded_source_files_sha256_verified": 21,
+  "frozen_application_sources_byte_equal": 3429,
+  "foreign_user_files_excluded": [
+    "docs/足球模型微调.md",
+    "scripts/evaluate_ball.py",
+    "scripts/finetune_ball.py",
+    "scripts/run_finetune_ball.sh"
+  ],
+  "clean_export": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/clean-source-verified",
+  "application_source_sha256": "8be83fe112a780005c770c90c028af2fdbd8e51dc36994a2c445541bda44d78f",
+  "complete_source_sha256": "cb6983e349ce98f9e242d0da87f6555b2b125bf7387df8a2e03a6450c774f2ef",
+  "note": "Source archive equals clean committed source export and explicit actual runtime metadata. Final package/source QA reports are added to Git after archive freeze to avoid recursive self hashing."
+}

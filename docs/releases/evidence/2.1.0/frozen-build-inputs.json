@@ -1,0 +1,18 @@
+{
+  "version": "2.1.0",
+  "source_commit": "8a40b77e5de99a496dcf19e5c8cc5b2f35da33fb",
+  "source_tree": "f9307eadbd39b8eb25147b8dfb2f15b112b655c3",
+  "clean_source_root": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/clean-source-verified",
+  "application_sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c",
+  "helper_sha256": "7c75f813334c569c212fc25538e388fd3007a6f74a14ea9d013e4efac4a4f298",
+  "actual_runtime_distributions": 59,
+  "foreign_files_excluded": [
+    "docs/足球模型微调.md",
+    "scripts/finetune_ball.py",
+    "scripts/evaluate_ball.py",
+    "scripts/run_finetune_ball.sh"
+  ],
+  "runtime_info_sha256": "15b239dc233e80b4ddaa8b22f87f07fb71bfe4d90332985a708bce04d6019f1b",
+  "original_license_hashes_verified": true,
+  "transport": "Official GitHub Git-data API over verified TLS; exact local/remote source tree and commit equality."
+}
