@@ -1,21 +1,26 @@
-# Vision Studio 2.0.0 完整源码包
+# Vision Studio 2.1.0 完整源码包
 
-维护者：misaka_ning <1468549029@qq.com>。应用新代码按 AGPL-3.0-only 发布；第三方资源保留其原始许可。
+维护者：misaka_ning <1468549029@qq.com>。新代码按 AGPL-3.0-only 发布，第三方保留原始许可。
 
-此目录内 `vision-studio-2.0.0-sources.tar.xz` 包含完整应用源码、测试、构建及打包脚本、许可证、文档、示例模型和 YOLOv5 兼容源码。`sources/` 保留与离线 CPU 二进制配套的 15 份原始上游源码与构建输入：Qt 6.8.3 八个模块、Netron 9.3.1、Ultralytics、THOP、OpenCV、OpenCV wheel 构建项目及 FFmpeg；同时提供构建配方。八个 Qt 模块为 qtbase、qtsvg、qtwayland、qtimageformats、qtdeclarative、qtwebchannel、qtpositioning、qtwebengine；QtWebEngine 原始归档包含对应 Chromium 源码。具体文件身份见 `SOURCE-INVENTORY.json`。
+`vision-studio-2.1.0-sources.tar.xz` 包含应用源码、测试、构建与打包脚本、UI 资源、文档、许可、示例模型和 YOLOv5 兼容源码，不包含用户设置、模型输出、训练资料、虚拟环境或缓存。完整包中的 `sources/` 保存 18 份原始上游源码／构建输入，具体身份见 `SOURCE-INVENTORY.json`，内部校验见 `SOURCE-SHA256SUMS`。
 
-本版为 2.0 正式发行，新增参数滚轮保护、批量停止响应改进、保存目录入口与模型库排序持久化，并保留 Fluent 界面及批量结果回看，沿用 1.6.0 的推理、GPU 配置、依赖和 15 份上游源码／构建输入，保持原始上游字节不变。应用归档包含受限图片结果交付与取消、后台结果缓存／标注／自动导出／历史写入、模型排序保存、参数滚轮保护、回看与清理处理、正式版本元数据、发布保护与相应回归测试；配套应用归档、源码清单和校验文件按 2.0.0 重新生成，不能用旧 Beta 应用源码包替代。应用版本为 `2.0.0`，Debian 包版本为 `2.0.0-1`。
+原 15 份材料保持字节，包括 Qt 6.8.3 八模块、Netron 9.3.1、Ultralytics、THOP、OpenCV、wheel 构建源码／配方和 FFmpeg；Qt 模块为 qtbase、qtsvg、qtwayland、qtimageformats、qtdeclarative、qtwebchannel、qtpositioning、qtwebengine，后者包含 Chromium。新增加 ONNX 1.17.0 源发行、Python protobuf 6.33.0 对应完整 v33.0 源码、ONNX wheel 静态 C++ protobuf 3.21.12 源码。原始 ONNX、pybind11 与两份 protobuf LICENSE 保存于应用 `packaging/licenses/model-conversion/`。
 
-GPU 配置脚本为 `scripts/gpu_setup.py`、`scripts/gpu_probe.py` 和 `scripts/setup_gpu.sh`；`requirements-gpu.txt` 与 `requirements-gpu.lock.txt` 固定完整版本和官方 wheel SHA256。`vendor/onnxruntime/` 保留 C++ 使用的官方 C API 头文件、来源记录及 MIT 原始许可。可选环境使用 PyTorch `2.9.1+cu128`、Torchvision `0.24.1+cu128` 和 ONNX Runtime 1.23.2。GPU 二进制不随 DEB 或完整源码包分发，由用户通过配置工具从官方源下载至个人数据目录；NVIDIA 组件保留自身许可，实际运行时另保存原始通知和许可清单。
+本轮为模型库右键管理与后台 PT → ONNX／TorchScript 转换，包含显示名称与备注持久化、保留文件的列表移除、后台取消和输出保护，以及转换元数据入库后自动应用任务、类别、输入尺寸和通道的处理。此前推理、Fluent 界面、批量回看、灰度、左右目、录制与停止机制保持；本版不是只替换旧包的版本字符串，不能由旧应用源码归档替代。应用版本 `2.1.0`，Debian 包版本 `2.1.0-1`。
 
-解压应用源码后，可将旁边的原始归档目录关联到应用源码目录供重建 Qt 使用：
+发行 CPU runtime 的 59 项版本由实际 dist-info 生成，包含 PyTorch 2.9.1+cpu、headless OpenCV、Netron、ONNX 1.17.0 和 Python protobuf 6.33.0；正式重建使用 `docs/release/requirements-release.lock.txt` 配合 `pip --no-deps`。开发依赖锁保留开发 OpenCV 配置，不能替代正式运行时锁。ONNX 内静态 C++ protobuf 3.21.12 与 Python protobuf 6.33.0 是不同负载，不表示 Python 环境同时安装两版。
+
+可选 GPU 脚本、探针、完整版本／SHA256 锁和 C++ ONNX Runtime API 头文件及 MIT 通知保留。CUDA wheel 不随 DEB 或完整源码包分发，由用户配置到个人目录，保留各自上游通知与许可；GPU 环境不与离线 CPU／Netron／转换环境混淆。
+
+在完整包根目录先核验，再解压应用源码并关联旁边的上游目录：
 
 ```bash
-tar -xf vision-studio-2.0.0-sources.tar.xz
-cd vision-studio-2.0.0
+sha256sum -c SOURCE-SHA256SUMS
+tar -xf vision-studio-2.1.0-sources.tar.xz
+cd vision-studio-2.1.0
 ln -s ../sources sources
 ```
 
-在当前完整源码目录执行 `sha256sum -c SOURCE-SHA256SUMS`，可核验内部应用归档和各份上游源码。阅读应用目录中的 `README.md` 与 `docs/release/对应源码与重建.md`；外层 `docs/` 也提供发行说明、许可摘要及重建说明。应用源码没有包含机器缓存、个人设置或虚拟环境；发行用 Python 依赖锁记录在 `docs/release/requirements-release.lock.txt`。
+阅读应用 `README.md` 和 `docs/release/对应源码与重建.md`。外层 `docs/` 也提供发行说明、许可摘要与重建材料。Qt／Chromium 原 SDK 和源码通知保持，Python 清单按本版实际环境重收，文件身份由清单及哈希确定。
 
-发布这次版本时，仅提供 3 个手动附件：`vision-studio_2.0.0-1_amd64.deb`、`vision-studio-2.0.0-complete-source.tar.xz` 和 `SHA256SUMS`。GitHub 另有自动生成的 Source code (zip) / Source code (tar.gz)，不能替代完整源码包。完整包保留内部应用与上游原始归档，用户不需要逐个访问上游站点才能取得本次配套源码；正式 GPU 与安装验收证据保存于仓库 `docs/releases/evidence/2.0.0/`，不作为额外 Release 附件。
+仅提供三个手动附件：`vision-studio_2.1.0-1_amd64.deb`、`vision-studio-2.1.0-complete-source.tar.xz`、`SHA256SUMS`。GitHub 自动 Source code ZIP／tar.gz 不含完整上游材料，不能替代对应源码包。QA 与原始日志保存在仓库 `docs/releases/evidence/2.1.0/`，未执行检查不声明通过，归档生成后的独立源码核验报告随标签保存并作为发布门禁，不零散上传附件。

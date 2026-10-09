@@ -1,0 +1,19 @@
+Creating new Ultralytics Settings v0.0.8 file ✅ 
+View Ultralytics Settings with 'yolo settings' or at '/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/portability-fix3/gpu-env/ultralytics/Ultralytics/settings.json'
+Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/usage/settings.
+{"raw_cpu_cuda_worst_index": [0, 3, 8141], "cpu_value": 436.42547607421875, "cuda_value": 436.4239501953125, "cuda_original_cuda_max_abs": 0.0, "cuda_original_cuda_allclose": true}
+{"cuda_diff_scores": 0.0}
+{"unoptimized_cuda_eager_max_abs": 0.0, "unoptimized_allclose": true}
+{"cuda_eager_max_abs": 0.0, "model": "yolov8n", "input": "bus", "shape": [1, 84, 8400], "cpu_original_max_abs": 0.0, "cuda_original_max_abs": 0.00152587890625, "buffer_names": ["network.model.22._vision_static_anchors", "network.model.22._vision_static_strides", "network.model.22._vision_static_stride"], "cuda_buffers": true}
+{"raw_cpu_cuda_worst_index": [0, 2, 8212], "cpu_value": 406.4319763183594, "cuda_value": 406.43255615234375, "cuda_original_cuda_max_abs": 0.0, "cuda_original_cuda_allclose": true}
+{"cuda_diff_scores": 0.0}
+{"unoptimized_cuda_eager_max_abs": 0.0, "unoptimized_allclose": true}
+{"cuda_eager_max_abs": 0.0, "model": "yolov8n", "input": "gradient", "shape": [1, 84, 8400], "cpu_original_max_abs": 0.0, "cuda_original_max_abs": 0.000579833984375, "buffer_names": ["network.model.22._vision_static_anchors", "network.model.22._vision_static_strides", "network.model.22._vision_static_stride"], "cuda_buffers": true}
+{"raw_cpu_cuda_worst_index": [0, 24671, 2], "cpu_value": 257.5392150878906, "cuda_value": 257.53741455078125, "cuda_original_cuda_max_abs": 0.0, "cuda_original_cuda_allclose": true}
+{"cuda_diff_scores": 0.0}
+{"unoptimized_cuda_eager_max_abs": 0.0, "unoptimized_allclose": true}
+{"cuda_eager_max_abs": 0.0, "model": "yolov5n", "input": "bus", "shape": [1, 25200, 85], "cpu_original_max_abs": 0.0, "cuda_original_max_abs": 0.001800537109375, "buffer_names": ["network.model.24._vision_static_stride", "network.model.24._vision_static_grid_0", "network.model.24._vision_static_grid_1", "network.model.24._vision_static_grid_2", "network.model.24._vision_static_anchor_grid_0", "network.model.24._vision_static_anchor_grid_1", "network.model.24._vision_static_anchor_grid_2"], "cuda_buffers": true}
+{"raw_cpu_cuda_worst_index": [0, 24574, 2], "cpu_value": 218.7451629638672, "cuda_value": 218.74691772460938, "cuda_original_cuda_max_abs": 0.0, "cuda_original_cuda_allclose": true}
+{"cuda_diff_scores": 0.0}
+{"unoptimized_cuda_eager_max_abs": 0.0, "unoptimized_allclose": true}
+{"cuda_eager_max_abs": 0.0, "model": "yolov5n", "input": "gradient", "shape": [1, 25200, 85], "cpu_original_max_abs": 0.0, "cuda_original_max_abs": 0.0017547607421875, "buffer_names": ["network.model.24._vision_static_stride", "network.model.24._vision_static_grid_0", "network.model.24._vision_static_grid_1", "network.model.24._vision_static_grid_2", "network.model.24._vision_static_anchor_grid_0", "network.model.24._vision_static_anchor_grid_1", "network.model.24._vision_static_anchor_grid_2"], "cuda_buffers": true}

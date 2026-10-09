@@ -1,0 +1,109 @@
+{
+  "version": "2.1.0",
+  "stage": "Final affected backend CTest replay after full640 ONNX and portable TorchScript fixes",
+  "command": [
+    "ctest",
+    "--test-dir",
+    "/home/misaka/文档/ChatGPT/yolo/build-2.1.0",
+    "-V",
+    "-j",
+    "1",
+    "--no-tests=error",
+    "-R",
+    "^vision-model-conversion-tests$"
+  ],
+  "environment": {
+    "QT_ACCESSIBILITY": "1",
+    "XDG_CONFIG_DIRS": "/etc/xdg/xdg-ubuntu:/etc/xdg",
+    "XDG_MENU_PREFIX": "gnome-",
+    "XDG_SESSION_DESKTOP": "ubuntu",
+    "XDG_SESSION_TYPE": "x11",
+    "HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/full-model-conversion-qa-state/home",
+    "XDG_CURRENT_DESKTOP": "ubuntu:GNOME",
+    "XDG_SESSION_CLASS": "user",
+    "QT_IM_MODULE": "fcitx",
+    "XDG_RUNTIME_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/full-model-conversion-qa-state/runtime",
+    "XDG_DATA_DIRS": "/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop",
+    "XDG_CONFIG_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/full-model-conversion-qa-state/config",
+    "XDG_DATA_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/full-model-conversion-qa-state/data",
+    "XDG_CACHE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/full-model-conversion-qa-state/cache",
+    "XDG_STATE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/full-model-conversion-qa-state/state",
+    "VISION_STUDIO_DATA_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/full-model-conversion-qa-state/app-data",
+    "YOLO_CONFIG_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/full-model-conversion-qa-state/ultralytics",
+    "YOLOV5_CONFIG_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/full-model-conversion-qa-state/yolov5",
+    "MPLCONFIGDIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/full-model-conversion-qa-state/matplotlib",
+    "TORCH_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/full-model-conversion-qa-state/torch",
+    "CUDA_CACHE_PATH": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/full-model-conversion-qa-state/cuda-cache",
+    "TMPDIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/full-model-conversion-qa-state/tmp",
+    "QT_QPA_PLATFORM": "offscreen",
+    "QT_QUICK_BACKEND": "software",
+    "VISION_STUDIO_HOME": "/home/misaka/文档/ChatGPT/yolo",
+    "VISION_STUDIO_PYTHON": "/home/misaka/文档/ChatGPT/yolo/build-2.1.0/release-runtime/bin/python3",
+    "VISION_STUDIO_CONVERSION_PYTHON": "/home/misaka/文档/ChatGPT/yolo/build-2.1.0/release-runtime/bin/python3",
+    "VISION_STUDIO_GPU_RUNTIME_DIR": "/home/misaka/.local/share/vision-studio/gpu-runtime",
+    "VISION_STUDIO_GPU_TESTS": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONNOUSERSITE": "1",
+    "OMP_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2",
+    "NUMEXPR_NUM_THREADS": "2",
+    "YOLO_AUTOINSTALL": "false",
+    "YOLOv5_AUTOINSTALL": "false"
+  },
+  "started_at": "2026-10-09T13:18:31.274064+08:00",
+  "files_before": {
+    "scripts/model_convert.py": {
+      "bytes": 51026,
+      "sha256": "7c75f813334c569c212fc25538e388fd3007a6f74a14ea9d013e4efac4a4f298"
+    },
+    "tests/model_conversion_tests.py": {
+      "bytes": 29431,
+      "sha256": "7479dda571f5ace9f363d527d07d4d2834345bc34f4579719eec4217b07b7a4d"
+    },
+    "build-2.1.0/bin/vision-studio": {
+      "bytes": 1188136,
+      "sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c"
+    },
+    "build-2.1.0/vision-conversion-inference-tests": {
+      "bytes": 1241984,
+      "sha256": "6d4b539975face4497b3ad687f6277a15aa66d8f7a65c237b2b7466640514d9b"
+    },
+    "build-2.1.0/libvision-core.a": {
+      "bytes": 531456,
+      "sha256": "9b5733a4751ce26b0ddf25a88fb54e3f432134d4731bae1187689adcff2078ed"
+    }
+  },
+  "exit_code": 0,
+  "elapsed_seconds": 56.295,
+  "finished_at": "2026-10-09T13:19:27.571563+08:00",
+  "files_after": {
+    "scripts/model_convert.py": {
+      "bytes": 51026,
+      "sha256": "7c75f813334c569c212fc25538e388fd3007a6f74a14ea9d013e4efac4a4f298"
+    },
+    "tests/model_conversion_tests.py": {
+      "bytes": 29431,
+      "sha256": "7479dda571f5ace9f363d527d07d4d2834345bc34f4579719eec4217b07b7a4d"
+    },
+    "build-2.1.0/bin/vision-studio": {
+      "bytes": 1188136,
+      "sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c"
+    },
+    "build-2.1.0/vision-conversion-inference-tests": {
+      "bytes": 1241984,
+      "sha256": "6d4b539975face4497b3ad687f6277a15aa66d8f7a65c237b2b7466640514d9b"
+    },
+    "build-2.1.0/libvision-core.a": {
+      "bytes": 531456,
+      "sha256": "9b5733a4751ce26b0ddf25a88fb54e3f432134d4731bae1187689adcff2078ed"
+    }
+  },
+  "log": {
+    "file": "docs/releases/evidence/2.1.0/conversion-portability-proof/ctest-backend-conversion-final.log",
+    "bytes": 16107,
+    "sha256": "08ea369898eb9450cf41d9f224b864b9de9323edd58db65cbfdb722b83093a0d"
+  },
+  "unchanged": true,
+  "success": true
+}

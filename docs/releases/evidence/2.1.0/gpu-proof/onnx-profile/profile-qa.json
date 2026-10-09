@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "version": "2.1.0",
+  "success": true,
+  "errors": [],
+  "scope": "Fresh final application ONNX CUDA node profiling after the complete CTest pass; package validation is separate",
+  "command": [
+    "/home/misaka/文档/ChatGPT/yolo/build-2.1.0/bin/vision-studio",
+    "--device",
+    "cuda",
+    "--gpu-index",
+    "0",
+    "--smoke",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-onnx-profile/images"
+  ],
+  "started_at": "2026-10-09T12:18:59.046534+08:00",
+  "finished_at": "2026-10-09T12:19:00.563222+08:00",
+  "elapsed_seconds": 1.521,
+  "environment": {
+    "HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-onnx-profile/state/home",
+    "XDG_CONFIG_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-onnx-profile/state/config",
+    "XDG_DATA_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-onnx-profile/state/data",
+    "XDG_CACHE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-onnx-profile/state/cache",
+    "XDG_STATE_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-onnx-profile/state/state",
+    "XDG_RUNTIME_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-onnx-profile/state/runtime",
+    "VISION_STUDIO_DATA_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-onnx-profile/state/app-data",
+    "YOLO_CONFIG_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-onnx-profile/state/ultralytics",
+    "YOLOV5_CONFIG_DIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-onnx-profile/state/yolov5",
+    "MPLCONFIGDIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-onnx-profile/state/matplotlib",
+    "TORCH_HOME": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-onnx-profile/state/torch",
+    "CUDA_CACHE_PATH": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-onnx-profile/state/cuda-cache",
+    "TMPDIR": "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0-conversion/final-onnx-profile/state/tmp",
+    "QT_QPA_PLATFORM": "offscreen",
+    "QTWEBENGINE_CHROMIUM_FLAGS": "--disable-gpu",
+    "QT_QUICK_BACKEND": "software",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONNOUSERSITE": "1",
+    "OMP_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2",
+    "NUMEXPR_NUM_THREADS": "2",
+    "VISION_STUDIO_HOME": "/home/misaka/文档/ChatGPT/yolo",
+    "VISION_STUDIO_PYTHON": "/home/misaka/文档/ChatGPT/yolo/build-2.1.0/release-runtime/bin/python3",
+    "VISION_STUDIO_CONVERSION_PYTHON": "/home/misaka/文档/ChatGPT/yolo/build-2.1.0/release-runtime/bin/python3",
+    "VISION_STUDIO_GPU_RUNTIME_DIR": "/home/misaka/.local/share/vision-studio/gpu-runtime",
+    "VISION_STUDIO_ORT_PROFILE_PREFIX": "/home/misaka/文档/ChatGPT/yolo/docs/releases/evidence/2.1.0/gpu-proof/onnx-profile/node-trace"
+  },
+  "executable": {
+    "path": "build-2.1.0/bin/vision-studio",
+    "bytes": 1188136,
+    "sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c"
+  },
+  "ctest_application_sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c",
+  "model": {
+    "path": "models/yolov5n.onnx",
+    "bytes": 7903550,
+    "sha256": "60c130eb3cd8e3f378673ea71c8b54da8afa0c051d82a1ea1490c36bbf10c820"
+  },
+  "input": {
+    "path": "assets/bus.jpg",
+    "bytes": 487438,
+    "sha256": "33b198a1d2839bb9ac4c65d61f9e852196793cae9a0781360859425f6022b69c"
+  },
+  "exit_code": 0,
+  "timed_out": false,
+  "checks": {
+    "process_success": true,
+    "smoke_success": true,
+    "requested_cuda": true,
+    "actual_cuda": true,
+    "actual_cuda_nodes": true,
+    "same_version_export": true,
+    "export_matches_smoke": true,
+    "binary_unchanged": true,
+    "gpu_ready_unchanged": true,
+    "workbench_screenshot": true,
+    "complete_export_files": true
+  },
+  "providers": {
+    "CUDAExecutionProvider": 364
+  },
+  "actual_cuda_smoke": {
+    "actual_device": "cuda",
+    "backend": "ONNX Runtime / CUDA",
+    "device_index": 0,
+    "device_name": "NVIDIA GeForce RTX 4060",
+    "device_notice": "",
+    "error": "",
+    "inference_ms": 9.836714,
+    "predictions": 5,
+    "qt": "6.8.3",
+    "requested_device": "cuda",
+    "success": true
+  },
+  "profile": {
+    "path": "gpu-proof/onnx-profile/node-trace_2026-10-09_12-18-59.json",
+    "bytes": 288294,
+    "sha256": "401f1ba31aa759c87cd2b5e6ee04f976193c674698cb5008946bbc1be63b1aae"
+  },
+  "raw_log": {
+    "path": "gpu-proof/onnx-profile/smoke.log",
+    "bytes": 238,
+    "sha256": "fb91873af047815fedc69c2001372606fc47dc569073863e50af53af4288778b"
+  },
+  "smoke_report": {
+    "path": "gpu-proof/onnx-profile/images/smoke-report.json",
+    "bytes": 305,
+    "sha256": "c164fb7f96d92f5715e56d99c0422d0965cc7e850b378cb417651064bc47a657"
+  },
+  "export_evidence": [
+    {
+      "file": {
+        "path": "gpu-proof/onnx-profile/images/bus-20261009-121859-912-f1.json",
+        "bytes": 2553,
+        "sha256": "0adda21450b2654cde5966dbb48bb2fbc922e843513f1f229507b819461f3de0"
+      },
+      "metadata": {
+        "actual_device": "cuda",
+        "application": "Vision Studio",
+        "backend": "ONNX Runtime / CUDA",
+        "config": {
+          "color_mode": "rgb",
+          "confidence_threshold": 0.25,
+          "input_channels": 3,
+          "input_size": 640,
+          "nms_iou": 0.44999998807907104,
+          "preprocess": {
+            "color_mode": "rgb",
+            "mean_rgb": [
+              0,
+              0,
+              0
+            ],
+            "mode": "configured",
+            "scale": 0.00392157,
+            "swap_rb": true
+          }
+        },
+        "device_index": 0,
+        "device_name": "NVIDIA GeForce RTX 4060",
+        "device_notice": "",
+        "frame": 1,
+        "height": 1080,
+        "inference_ms": 9.836714,
+        "model": "yolov5n.onnx",
+        "model_file": "/home/misaka/文档/ChatGPT/yolo/models/yolov5n.onnx",
+        "predictions": [
+          {
+            "class_id": 0,
+            "confidence": 0.8113210797309875,
+            "height": 491.25525856018066,
+            "label": "person",
+            "width": 178.21703052520752,
+            "x": 50.96057653427124,
+            "y": 397.24106884002686
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.7569612860679626,
+            "height": 448.6468105316162,
+            "label": "person",
+            "width": 123.39116334915161,
+            "x": 221.85903239250183,
+            "y": 412.81274700164795
+          },
+          {
+            "class_id": 5,
+            "confidence": 0.7007485628128052,
+            "height": 551.2551326751709,
+            "label": "bus",
+            "width": 759.9337577819824,
+            "x": 16.60030746459961,
+            "y": 235.70589351654053
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.6967292428016663,
+            "height": 476.4364356994629,
+            "label": "person",
+            "width": 123.45950174331665,
+            "x": 686.5404982566833,
+            "y": 389.5322971343994
+          },
+          {
+            "class_id": 0,
+            "confidence": 0.28018414974212646,
+            "height": 311.0678987503052,
+            "label": "person",
+            "width": 64.4485033750534,
+            "x": 0,
+            "y": 567.5767951011658
+          }
+        ],
+        "requested_device": "cuda",
+        "source": "/home/misaka/文档/ChatGPT/yolo/assets/bus.jpg",
+        "source_frame_size": {
+          "height": 1080,
+          "width": 810
+        },
+        "stereo_view": "full",
+        "task": "YOLOv5",
+        "timestamp": "2026-10-09T12:18:59.912",
+        "total_ms": 14.008441,
+        "version": "2.1.0",
+        "width": 810
+      }
+    }
+  ],
+  "workbench_screenshot": {
+    "path": "gpu-proof/onnx-profile/images/workbench.png",
+    "bytes": 386832,
+    "sha256": "a80deeb9f7b2cea5280855214beb0e4f7d76bbde1011fa9e8602aeed9362f2d9"
+  },
+  "export_artifacts": [
+    {
+      "path": "gpu-proof/onnx-profile/images/bus-20261009-121859-912-f1.csv",
+      "bytes": 275,
+      "sha256": "426f57f2267770893a707ae7695412f519d30aaad53af2e7faf19112d2c09717"
+    },
+    {
+      "path": "gpu-proof/onnx-profile/images/bus-20261009-121859-912-f1.png",
+      "bytes": 1756576,
+      "sha256": "e8fc25906fe4f7efbfab9f23fb62d0e0b2da13fec4aa9fd04cb5c6076deb08b8"
+    }
+  ],
+  "gpu_runtime_ready_before": {
+    "path": "/home/misaka/.local/share/vision-studio/gpu-runtime/ready.json",
+    "bytes": 2434,
+    "sha256": "9463a2964cf3af0410d1a0d8e20e9b4a2c07e4531fe57ddb327a8335f3e32c66"
+  },
+  "gpu_runtime_ready_after": {
+    "path": "/home/misaka/.local/share/vision-studio/gpu-runtime/ready.json",
+    "bytes": 2434,
+    "sha256": "9463a2964cf3af0410d1a0d8e20e9b4a2c07e4531fe57ddb327a8335f3e32c66"
+  },
+  "limits": [
+    "Single RGB ONNX sample on the available GPU; no physical camera or package-install claim."
+  ]
+}

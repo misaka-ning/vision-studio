@@ -9,6 +9,9 @@ torchvision==0.24.1+cpu
 ultralytics==8.4.173
 # Local model structure viewer; bundled with release runtime.
 netron==9.3.1
+# FP32 ONNX export uses the legacy torch exporter; no optional export frameworks.
+onnx==1.17.0
+protobuf==6.33.0
 # Legacy YOLOv5 v7.0 checkpoint modules use pkg_resources plus these libraries.
 setuptools==59.6.0
 pandas==2.3.3

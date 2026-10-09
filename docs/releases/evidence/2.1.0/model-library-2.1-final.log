@@ -1,0 +1,35 @@
+********* Start testing of UiTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : UiTests::initTestCase()
+QWARN  : UiTests::modelLibraryInternalMovesPreserveGlobalSelectionAndPersistAfterRestart() This plugin does not support propagateSizeHints()
+PASS   : UiTests::modelLibraryInternalMovesPreserveGlobalSelectionAndPersistAfterRestart()
+QWARN  : UiTests::modelContextMenuTargetsPointerWithoutChangingGlobalSelection() This plugin does not support raise()
+QWARN  : UiTests::modelContextMenuTargetsPointerWithoutChangingGlobalSelection() This plugin does not support grabbing the keyboard
+PASS   : UiTests::modelContextMenuTargetsPointerWithoutChangingGlobalSelection()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support raise()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support grabbing the keyboard
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support raise()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support grabbing the keyboard
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support raise()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support grabbing the keyboard
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support raise()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support grabbing the keyboard
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support raise()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support grabbing the keyboard
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+PASS   : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart()
+QWARN  : UiTests::modelRemovalPreservesFilesAndDoesNotReAddBundledModelsOnRestart() This plugin does not support raise()
+QWARN  : UiTests::modelRemovalPreservesFilesAndDoesNotReAddBundledModelsOnRestart() This plugin does not support grabbing the keyboard
+PASS   : UiTests::modelRemovalPreservesFilesAndDoesNotReAddBundledModelsOnRestart()
+PASS   : UiTests::cleanupTestCase()
+Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 3572ms
+********* Finished testing of UiTests *********

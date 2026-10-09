@@ -1,0 +1,6 @@
+{
+  "version": "2.1.0",
+  "status": "interrupted",
+  "reason": "Coordinator changed conversion page dark viewport/background stylesheet during initial acceptance; this partial CTest is candidate evidence only, not final acceptance.",
+  "time": "2026-10-09T04:08:11.486154+00:00"
+}

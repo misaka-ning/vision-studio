@@ -1,0 +1,46 @@
+Internal ctest changing into directory: /home/misaka/文档/ChatGPT/yolo/build-2.1.0
+UpdateCTestConfiguration  from :/home/misaka/文档/ChatGPT/yolo/build-2.1.0/DartConfiguration.tcl
+Parse Config file:/home/misaka/文档/ChatGPT/yolo/build-2.1.0/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/文档/ChatGPT/yolo/build-2.1.0/DartConfiguration.tcl
+Parse Config file:/home/misaka/文档/ChatGPT/yolo/build-2.1.0/DartConfiguration.tcl
+Test project /home/misaka/文档/ChatGPT/yolo/build-2.1.0
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 10
+    Start 10: vision-conversion-inference-tests
+
+10: Test command: /home/misaka/文档/ChatGPT/yolo/build-2.1.0/vision-conversion-inference-tests
+10: Environment variables: 
+10:  QT_QPA_PLATFORM=offscreen
+10:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+10: Test timeout computed to be: 300
+10: ********* Start testing of ConversionInferenceTests *********
+10: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+10: PASS   : ConversionInferenceTests::initTestCase()
+10: PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(modern-gray-onnx)
+10: PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(legacy-focus-gray-onnx)
+10: PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(script-gray-detection-onnx)
+10: PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(script-gray-classification-onnx)
+10: PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(modern-c3-classification-torchscript-preserves-gray)
+10: PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(script-color-detection-torchscript)
+10: PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov8n-640-onnx-cpu)
+10: PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov5n-640-onnx-cpu)
+10: PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov8n-640-onnx-cuda)
+10: PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov5n-640-onnx-cuda)
+10: PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov8n-640-torchscript-cuda)
+10: PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov5n-640-torchscript-cuda)
+10: PASS   : ConversionInferenceTests::cleanupTestCase()
+10: Totals: 14 passed, 0 failed, 0 skipped, 0 blacklisted, 62418ms
+10: ********* Finished testing of ConversionInferenceTests *********
+1/1 Test #10: vision-conversion-inference-tests ...   Passed   62.67 sec
+
+The following tests passed:
+	vision-conversion-inference-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =  62.67 sec

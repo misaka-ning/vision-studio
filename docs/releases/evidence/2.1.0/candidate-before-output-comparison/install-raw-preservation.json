@@ -1,0 +1,300 @@
+{
+  "version": "2.1.0",
+  "mode": "install",
+  "workdir": "/tmp/vision-studio-install-qa-y633ozzl",
+  "identity": {
+    "device": 66308,
+    "inode": 37224521,
+    "uid": 1000
+  },
+  "files": [
+    {
+      "file": "user/model_display/model-display-report.json",
+      "bytes": 506,
+      "sha256": "7f1cb938c685f6c454f02eb3f083da1efe0fadcb6d49d6d140d1a8c96829d46f",
+      "tracked": "packaged-qa-raw/install/user/model_display/model-display-report.json"
+    },
+    {
+      "file": "user/model_display/model-display.png",
+      "bytes": 123511,
+      "sha256": "843fbc247613199f67bac55a609420120d7c2b71890133fb8527ca3f6ef0b842"
+    },
+    {
+      "file": "user/model_display/model-hierarchy.png",
+      "bytes": 158655,
+      "sha256": "6767adb10ce94c4f7fd291401abad4ec97ba91e9052091f3feb401da1ebd995d"
+    },
+    {
+      "file": "user/model_display/model-parameters.png",
+      "bytes": 246752,
+      "sha256": "6d59f0f5a7e46019e9bf80fa33778bf6e8961ede60cfe33303eaedf9454b0b6e"
+    },
+    {
+      "file": "user/data/vision-studio/history.json",
+      "bytes": 1578,
+      "sha256": "1841c6dc8741362ade466229a889b59f804c6615285e948337e50e7ae98bbe66"
+    },
+    {
+      "file": "user/conversion_torchscript/conversion-smoke-report.json",
+      "bytes": 5820,
+      "sha256": "7bc3b0f129dab18e58e3bc11674b151c96e5cb66996ed197cd0e06a2edc95778",
+      "tracked": "packaged-qa-raw/install/user/conversion_torchscript/conversion-smoke-report.json"
+    },
+    {
+      "file": "user/conversion_torchscript/model-conversion.png",
+      "bytes": 182911,
+      "sha256": "9159a5ba8a268d00bfb231d62e54d92f390ddc73074860e1407991c355aa8072"
+    },
+    {
+      "file": "user/model_display_pt/model-display-report.json",
+      "bytes": 501,
+      "sha256": "c4c485739118578ac0b58c1ec4b17cc6df3e89e954757073e340c521a0b4156a",
+      "tracked": "packaged-qa-raw/install/user/model_display_pt/model-display-report.json"
+    },
+    {
+      "file": "user/model_display_pt/model-display.png",
+      "bytes": 139041,
+      "sha256": "12912805ae08cab4abb3c364e410da2a3e70620ebb926557bd0ae4d41636cf69"
+    },
+    {
+      "file": "user/model_display_pt/model-hierarchy.png",
+      "bytes": 172187,
+      "sha256": "7e2cb3296b1fc76e219f8f96595cf0ab2c2052f30f79fa838a284cba7f8d179f"
+    },
+    {
+      "file": "user/model_display_pt/model-parameters.png",
+      "bytes": 233312,
+      "sha256": "b6c0ebcc8a4847546296ba21870afb9a37a5220404180471ee0c88df50be5b4c"
+    },
+    {
+      "file": "user/ultralytics/Ultralytics/settings.json",
+      "bytes": 447,
+      "sha256": "7cd788c6a973a33e4e4046b2ec923817c0cef7175792c8b214a00a9896f71507"
+    },
+    {
+      "file": "user/onnx/bus-20261009-123008-970-f1.csv",
+      "bytes": 275,
+      "sha256": "426f57f2267770893a707ae7695412f519d30aaad53af2e7faf19112d2c09717"
+    },
+    {
+      "file": "user/onnx/bus-20261009-123008-970-f1.json",
+      "bytes": 2662,
+      "sha256": "e40990326835251491888abd1bd67f808f94fdfb73304ee2ce4e90c7add39e2b"
+    },
+    {
+      "file": "user/onnx/bus-20261009-123008-970-f1.png",
+      "bytes": 1756580,
+      "sha256": "a695515485b703a2bc9b0f2e3638b6837866797c0542176d166d312cd0b925a2"
+    },
+    {
+      "file": "user/onnx/smoke-report.json",
+      "bytes": 448,
+      "sha256": "6ff871784e610d110874415c8f90a83d779f38a661ffeb03cb536197d3839df3",
+      "tracked": "packaged-qa-raw/install/user/onnx/smoke-report.json"
+    },
+    {
+      "file": "user/onnx/workbench.png",
+      "bytes": 399571,
+      "sha256": "557658532a1f67f5fbe59c6eab60acb2153681f66a63f9a20b15a0fdcd577a9f"
+    },
+    {
+      "file": "user/conversion_onnx/conversion-smoke-report.json",
+      "bytes": 5768,
+      "sha256": "2b37ceca492195fde6a8fd335bdbb5a2129dbd8f4eed889dcd29370dfe3c36b0",
+      "tracked": "packaged-qa-raw/install/user/conversion_onnx/conversion-smoke-report.json"
+    },
+    {
+      "file": "user/conversion_onnx/model-conversion.png",
+      "bytes": 174616,
+      "sha256": "ea468b14ec8184e6c87737533ddbeb6d646d965184bdba17628c3cd7a0823283"
+    },
+    {
+      "file": "user/pt/bus-20261009-123014-306-f1.csv",
+      "bytes": 275,
+      "sha256": "cff8fa072279ce6e3808e2a8ae987cdec4554f9b76b40e462c3e2f96bd57aa3f"
+    },
+    {
+      "file": "user/pt/bus-20261009-123014-306-f1.json",
+      "bytes": 2711,
+      "sha256": "f4f151b6f10dadbf7d463408c0cf70c0bb68ebe3cc7d3a3a6ea9dc875e483b68"
+    },
+    {
+      "file": "user/pt/bus-20261009-123014-306-f1.png",
+      "bytes": 1755904,
+      "sha256": "4735ba8516794a37fbbeea1ff63e289a000e9779d2f72b247b7344a5734cf2c8"
+    },
+    {
+      "file": "user/pt/smoke-report.json",
+      "bytes": 468,
+      "sha256": "55f422ed8e115dfdfdc328055365e2d984ec3e4c4cfa6ace63c384b48aaf30c3",
+      "tracked": "packaged-qa-raw/install/user/pt/smoke-report.json"
+    },
+    {
+      "file": "user/pt/workbench.png",
+      "bytes": 399620,
+      "sha256": "13a7a355820ff973b75d0be162feeeae3e4bf1860a112bc07ac82ba5bff813e5"
+    },
+    {
+      "file": "logs/conversion_onnx-stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc",
+      "tracked": "packaged-qa-raw/install/logs/conversion_onnx-stderr.log"
+    },
+    {
+      "file": "logs/conversion_onnx-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/install/logs/conversion_onnx-stdout.log"
+    },
+    {
+      "file": "logs/conversion_torchscript-stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc",
+      "tracked": "packaged-qa-raw/install/logs/conversion_torchscript-stderr.log"
+    },
+    {
+      "file": "logs/conversion_torchscript-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/install/logs/conversion_torchscript-stdout.log"
+    },
+    {
+      "file": "logs/dpkg.log",
+      "bytes": 1207,
+      "sha256": "8cb7d0c433c81d04648fd3bc9c216172edb98fe4f3a3a8961bbe0f8ded99a497",
+      "tracked": "packaged-qa-raw/install/logs/dpkg.log"
+    },
+    {
+      "file": "logs/gpu-unprepared-probe-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/install/logs/gpu-unprepared-probe-stderr.log"
+    },
+    {
+      "file": "logs/gpu-unprepared-probe-stdout.log",
+      "bytes": 189,
+      "sha256": "1e21598e1e314aff49c7a85a52333422940a3231f8d494e9959bd8d6060980a5",
+      "tracked": "packaged-qa-raw/install/logs/gpu-unprepared-probe-stdout.log"
+    },
+    {
+      "file": "logs/install-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/install/logs/install-stderr.log"
+    },
+    {
+      "file": "logs/install-stdout.log",
+      "bytes": 261,
+      "sha256": "cbd3263bcfc3689f84326ca09088570991853bbfc70a88bdfd7fc8e9fb9c4edd",
+      "tracked": "packaged-qa-raw/install/logs/install-stdout.log"
+    },
+    {
+      "file": "logs/installed-status-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/install/logs/installed-status-stderr.log"
+    },
+    {
+      "file": "logs/installed-status-stdout.log",
+      "bytes": 21,
+      "sha256": "9808a6089aef021fe37d633eb5edcf59ccf196ef3150933df87b1831d0f22a3c",
+      "tracked": "packaged-qa-raw/install/logs/installed-status-stdout.log"
+    },
+    {
+      "file": "logs/model_display-stderr.log",
+      "bytes": 600,
+      "sha256": "ceb56883ca854d9721e04cb3a4cbfa8525296873a63a3e650e7f89d1f88dc1b6",
+      "tracked": "packaged-qa-raw/install/logs/model_display-stderr.log"
+    },
+    {
+      "file": "logs/model_display-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/install/logs/model_display-stdout.log"
+    },
+    {
+      "file": "logs/model_display_pt-stderr.log",
+      "bytes": 595,
+      "sha256": "2d5d250a076170bea889e08597f226f65855d72be140862f7871742bed6292bd",
+      "tracked": "packaged-qa-raw/install/logs/model_display_pt-stderr.log"
+    },
+    {
+      "file": "logs/model_display_pt-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/install/logs/model_display_pt-stdout.log"
+    },
+    {
+      "file": "logs/namespace-root-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/install/logs/namespace-root-stderr.log"
+    },
+    {
+      "file": "logs/namespace-root-stdout.log",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "tracked": "packaged-qa-raw/install/logs/namespace-root-stdout.log"
+    },
+    {
+      "file": "logs/namespace-user-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/install/logs/namespace-user-stderr.log"
+    },
+    {
+      "file": "logs/namespace-user-stdout.log",
+      "bytes": 5,
+      "sha256": "83c02ac2d48c863dab2ccf6870455aadfc2cec073b8db269b517c879d76aa6d9",
+      "tracked": "packaged-qa-raw/install/logs/namespace-user-stdout.log"
+    },
+    {
+      "file": "logs/onnx-stderr.log",
+      "bytes": 595,
+      "sha256": "73feb5c09ffffb53320a41db694f79fb059cc0ecc92f467834a08ca68d6545da",
+      "tracked": "packaged-qa-raw/install/logs/onnx-stderr.log"
+    },
+    {
+      "file": "logs/onnx-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/install/logs/onnx-stdout.log"
+    },
+    {
+      "file": "logs/pt-stderr.log",
+      "bytes": 615,
+      "sha256": "2b1fbc6ee4e186e86c663679d049d5c2fe4dbd0297d72f68036a0510704e17bc",
+      "tracked": "packaged-qa-raw/install/logs/pt-stderr.log"
+    },
+    {
+      "file": "logs/pt-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/install/logs/pt-stdout.log"
+    },
+    {
+      "file": "logs/purge-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/install/logs/purge-stderr.log"
+    },
+    {
+      "file": "logs/purge-stdout.log",
+      "bytes": 110,
+      "sha256": "aa29f64f48f68f7426b62fabfa612f91fb839e02e448a7b11bf6204957f4ae3a",
+      "tracked": "packaged-qa-raw/install/logs/purge-stdout.log"
+    },
+    {
+      "file": "logs/read-only-user-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/install/logs/read-only-user-stderr.log"
+    },
+    {
+      "file": "logs/read-only-user-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/install/logs/read-only-user-stdout.log"
+    }
+  ]
+}

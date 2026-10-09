@@ -1,0 +1,440 @@
+{
+  "version": "2.1.0",
+  "stage": "Unchanged complete UI validation plus final twelve-row CPU/CUDA conversion integration and full640 original-model numerical replay",
+  "generated_at": "2026-10-09T05:22:47.978034+00:00",
+  "result": "passed",
+  "runtime": {
+    "qt": "6.8.3",
+    "target_opencv": "4.5.4",
+    "device": "CPU and actual NVIDIA CUDA",
+    "python": "build-2.1.0/release-runtime/bin/python3"
+  },
+  "raw_logs": [
+    {
+      "path": "ctest-final-replay.log",
+      "bytes": 24840,
+      "sha256": "a101a51b0e6448d9588a58642829345b85458fbb2c5c2d127f1b31889bfc0218",
+      "result": "passed",
+      "scope": "Only the UI suite remains accepted from this earlier actual three-suite replay. Its application, UI test binary and UI sources are unchanged. The earlier converter-related two suites are superseded by the two newer replays."
+    },
+    {
+      "path": "conversion-portability-proof/ctest-full-model-conversion.log",
+      "bytes": 3210,
+      "sha256": "54586578995046f3aeb9e9367e2ffb62fdba0c1a8627d07d2b6148b1277e6c3c",
+      "result": "passed",
+      "scope": "All twelve real conversion-to-MainWindow-to-VisionEngine data rows, including full640 modern/legacy ONNX CPU/CUDA and TorchScript CUDA, run on the final frozen converter and expanded test binary."
+    },
+    {
+      "path": "conversion-portability-proof/ctest-backend-conversion-final.log",
+      "bytes": 16107,
+      "sha256": "08ea369898eb9450cf41d9f224b864b9de9323edd58db65cbfdb722b83093a0d",
+      "result": "passed",
+      "scope": "All twenty actual backend safety/conversion tests replayed with the final frozen converter; eighteen exports include both full640 generations and real system OpenCV4.5.4 numerical checks."
+    },
+    {
+      "path": "ctest-final-replay.log.execution.json",
+      "bytes": 5925,
+      "sha256": "fd98abe56ed43ac2ff177201fd3da1715c98f38ca580623e6d5092ee272e565d",
+      "result": "passed",
+      "scope": "Actual command, isolated environment, frozen before/after files"
+    },
+    {
+      "path": "conversion-portability-proof/ctest-full-model-conversion.log.execution.json",
+      "bytes": 6696,
+      "sha256": "8541850e457de70e6df0e8bbb8485824808b8d05afe3f228bb240dcf8b2ff668",
+      "result": "passed",
+      "scope": "Actual command, isolated environment, frozen before/after files"
+    },
+    {
+      "path": "conversion-portability-proof/ctest-backend-conversion-final.log.execution.json",
+      "bytes": 4923,
+      "sha256": "6145f40abfca466272f6bdf8c06c3a186e51012c863253f1202be38ced362086",
+      "result": "passed",
+      "scope": "Actual command, isolated environment, frozen before/after files"
+    }
+  ],
+  "sha256": {
+    "build-2.1.0/bin/vision-studio": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c",
+    "build-2.1.0/vision-conversion-inference-tests": "6d4b539975face4497b3ad687f6277a15aa66d8f7a65c237b2b7466640514d9b",
+    "build-2.1.0/vision-ui-tests": "8f6722af3fce90eaef8a2995b6f2e3e1a371cc9f33590843069a6e582d9d1262",
+    "build-2.1.0/vision-conversion-ui-tests": "857d44b8455a35a0d34b3f8df2c082b50ab4e02ff1c1b7db094817029b33e218",
+    "src/ui/mainwindow.h": "f482ca477a85e15bfd51f9c66f6b6f09a56c73d77b884305ad68bed29e40ea4a",
+    "src/ui/mainwindow.cpp": "a5b2a5fca1a8c29111157fadad09a4312440cd7694f1b88439c7ba59e59e6c82",
+    "tests/ui_tests.cpp": "31d7ce689bb5738016ecdd94d2e8a41f6a764ff4ffa1f1c561d7188a0940c520",
+    "tests/conversion_inference_tests.cpp": "99df0036635d043d346034a8b7d7d7b5c3fdcb18a4073baac99f8b31eebad43a",
+    "scripts/model_convert.py": "7c75f813334c569c212fc25538e388fd3007a6f74a14ea9d013e4efac4a4f298",
+    "tests/model_conversion_tests.py": "7479dda571f5ace9f363d527d07d4d2834345bc34f4579719eec4217b07b7a4d"
+  },
+  "conversion_cases": [
+    "modern-gray-onnx",
+    "legacy-focus-gray-onnx",
+    "script-gray-detection-onnx",
+    "script-gray-classification-onnx",
+    "modern-c3-classification-torchscript-preserves-gray",
+    "script-color-detection-torchscript",
+    "full-yolov8n-640-onnx-cpu",
+    "full-yolov5n-640-onnx-cpu",
+    "full-yolov8n-640-onnx-cuda",
+    "full-yolov5n-640-onnx-cuda",
+    "full-yolov8n-640-torchscript-cuda",
+    "full-yolov5n-640-torchscript-cuda"
+  ],
+  "checks": [
+    "actual conversion CLI and MainWindow add-model action",
+    "converted presets task/layout/custom names/channels/input size/scale",
+    "same-path forced preset refresh",
+    "source PT vs converted real VisionEngine predictions: classes and labels exact, confidence difference < 0.002, box position and dimensions difference < 0.05",
+    "one-channel automatic grayscale and grayscale preview",
+    "three-channel grayscale preference retained",
+    "profile persisted across app reconstruction; manual labels override native labels",
+    "file size and mtime fingerprint invalidates old profile",
+    "right-click does not change global selection; file manager URL handler captures correct directory",
+    "notes and display names persist through reorder and app reconstruction",
+    "display name <b> content rendered as PlainText in workbench and model page",
+    "remove updates library only and does not re-add bundled models after restart",
+    "missing model and busy model menus preserve selection and mutation constraints",
+    "full640 real bus YOLOv8n and YOLOv5n ONNX CPU (system OpenCV4.5.4) and CUDA (ONNX Runtime) compare all output boxes, classes, labels and confidence to the selected original PT",
+    "full640 real bus YOLOv8n and YOLOv5n TorchScript CUDA compare output boxes/classes/labels/confidence to original PT CPU and assert actual CUDA backend",
+    "independent full640 ONNX actual CUDAExecutionProvider node traces and original PT CPU numerical comparisons"
+  ],
+  "limitations": [
+    "Qt UI tests use the offscreen platform; a native context event is supplied after the test right-click because offscreen does not synthesize it.",
+    "Opening the file manager is validated through a QDesktopServices URL capture rather than visually inspecting an external manager.",
+    "The complete UI suite remains accepted from its earlier execution because all relevant UI/application source and binary hashes remain unchanged. Both converter suites were independently replayed after the late full-model portability fixes.",
+    "No physical camera was tested. Earlier positive-count converter/package reports remain preserved in candidate-before-output-comparison and are superseded by the new numerical full-model checks."
+  ],
+  "candidate_report": {
+    "file": "candidate-before-output-comparison/model-library-conversion-2.1-final-report.json",
+    "sha256": "5e59a4b82bdb66df8ce9ed22284a419d178c20cc574db7423d3d9f49cde40840",
+    "scope": "Earlier six-row conversion evidence on a superseded converter; preserved candidate history"
+  },
+  "final_ui_suite": {
+    "ctest_number": 6,
+    "name": "vision-ui-tests",
+    "passed": 38,
+    "failed": 0,
+    "skipped": 0,
+    "blacklisted": 0,
+    "duration_ms": 39549
+  },
+  "final_actual_conversion_inference_suite": {
+    "ctest_number": 10,
+    "name": "vision-conversion-inference-tests",
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0,
+    "blacklisted": 0,
+    "elapsed_ms": 62418,
+    "evidence_log": "conversion-portability-proof/ctest-full-model-conversion.log",
+    "functional_rows": [
+      "modern-gray-onnx",
+      "legacy-focus-gray-onnx",
+      "script-gray-detection-onnx",
+      "script-gray-classification-onnx",
+      "modern-c3-classification-torchscript-preserves-gray",
+      "script-color-detection-torchscript",
+      "full-yolov8n-640-onnx-cpu",
+      "full-yolov5n-640-onnx-cpu",
+      "full-yolov8n-640-onnx-cuda",
+      "full-yolov5n-640-onnx-cuda",
+      "full-yolov8n-640-torchscript-cuda",
+      "full-yolov5n-640-torchscript-cuda"
+    ]
+  },
+  "frozen_source_and_binary_binding": {
+    "build-2.1.0/bin/vision-studio": {
+      "bytes": 1188136,
+      "sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c"
+    },
+    "build-2.1.0/vision-ui-tests": {
+      "bytes": 1605072,
+      "sha256": "8f6722af3fce90eaef8a2995b6f2e3e1a371cc9f33590843069a6e582d9d1262"
+    },
+    "src/ui/mainwindow.cpp": {
+      "sha256": "a5b2a5fca1a8c29111157fadad09a4312440cd7694f1b88439c7ba59e59e6c82",
+      "bytes": 166500
+    },
+    "src/ui/modelconversionpage.cpp": {
+      "sha256": "a4fa85a1c24b0987209d7972dc9507f81fbbb146b80c25a766fb5464cb36e84a",
+      "bytes": 22948
+    },
+    "assets/fluent-dark.qss": {
+      "bytes": 8079,
+      "sha256": "8487fd896584b28d83d47d9052994c4be59b1aa19d050ffea04783b4540ecf8f"
+    },
+    "tests/ui_tests.cpp": {
+      "bytes": 133543,
+      "sha256": "31d7ce689bb5738016ecdd94d2e8a41f6a764ff4ffa1f1c561d7188a0940c520"
+    },
+    "scripts/model_convert.py": {
+      "bytes": 51026,
+      "sha256": "7c75f813334c569c212fc25538e388fd3007a6f74a14ea9d013e4efac4a4f298"
+    },
+    "tests/model_conversion_tests.py": {
+      "bytes": 29431,
+      "sha256": "7479dda571f5ace9f363d527d07d4d2834345bc34f4579719eec4217b07b7a4d"
+    },
+    "tests/conversion_inference_tests.cpp": {
+      "sha256": "99df0036635d043d346034a8b7d7d7b5c3fdcb18a4073baac99f8b31eebad43a",
+      "bytes": 19646
+    },
+    "scripts/pt_worker.py": {
+      "sha256": "0c632128249d495ad8549ed1d3c3885b2630b21750f7aca18c2d37fdf9dd30b9",
+      "bytes": 32165
+    },
+    "src/ui/mainwindow.h": {
+      "sha256": "f482ca477a85e15bfd51f9c66f6b6f09a56c73d77b884305ad68bed29e40ea4a",
+      "bytes": 8692
+    },
+    "src/ui/modelconversionpage.h": {
+      "sha256": "d58d129fa47ee268ca9397587e35fb8c7a82e54e2448ba6f29a8434be9580c44",
+      "bytes": 1915
+    },
+    "build-2.1.0/libvision-core.a": {
+      "bytes": 531456,
+      "sha256": "9b5733a4751ce26b0ddf25a88fb54e3f432134d4731bae1187689adcff2078ed"
+    },
+    "build-2.1.0/vision-conversion-inference-tests": {
+      "bytes": 1241984,
+      "sha256": "6d4b539975face4497b3ad687f6277a15aa66d8f7a65c237b2b7466640514d9b"
+    },
+    "build-2.1.0/vision-core-tests": {
+      "bytes": 446016,
+      "sha256": "17278e548cb962b95cdcda143a17e988e63b30a41b4c066fc61c7eb62f2ed36a"
+    },
+    "build-2.1.0/vision-inference-delivery-tests": {
+      "bytes": 381840,
+      "sha256": "255a4f63904abf86badc0886fcbb342b52f601778c7332c7b8f19360dc285bac"
+    },
+    "build-2.1.0/vision-recording-tests": {
+      "bytes": 441120,
+      "sha256": "81262674bb55b5c8cb71dea530a3bdb98c1edb40e5e1294d0bc22fdea2bd33da"
+    },
+    "build-2.1.0/vision-pt-tests": {
+      "bytes": 351744,
+      "sha256": "9ad7bebdba83e3eeae246570d42b847f51106a9f1f3dc2ec864ca9f09e09f2ea"
+    },
+    "build-2.1.0/vision-gpu-tests": {
+      "bytes": 287552,
+      "sha256": "aadb9ddf1e8f73c6bf279204533bcc3ecc98258fdc215ebe9619a85f5f72eff2"
+    },
+    "build-2.1.0/vision-batch-responsiveness-tests": {
+      "bytes": 1253000,
+      "sha256": "87e13025f2733cbda902be90db86716da87b714da211336d883b58bca4f8f047"
+    },
+    "build-2.1.0/vision-modelviewer-tests": {
+      "bytes": 409024,
+      "sha256": "27a2e535d3563e131288e0ea5a3aa11b956ba493f1835a0bcbfaa731f80caf72"
+    },
+    "build-2.1.0/vision-conversion-ui-tests": {
+      "bytes": 191208,
+      "sha256": "857d44b8455a35a0d34b3f8df2c082b50ab4e02ff1c1b7db094817029b33e218"
+    }
+  },
+  "final_replay_explanation": "The original complete thirteen-suite execution had twelve successful suites and one UI-test failure caused by stale navigation-count and globally scoped wheel-control lookup assertions. Those test-only assumptions were fixed and the complete UI suite passed; its application and UI dependencies remain unchanged. A later targeted full640 bus numerical check exposed genuine converter defects: OpenCV4.5.4 reversed constant-left Sub, and TorchScript CPU-traced static detection caches/TF32 flags were not portable to CUDA. Those converter defects were fixed. Only the two affected conversion suites were then replayed on the final converter: twelve real C++ UI/Core data rows and twenty backend tests. Earlier converter positive-count passes are preserved as candidates and superseded by these numerical/device checks. The accepted raw evidence and current dependency bindings are listed for each replay separately.",
+  "schema_version": 2,
+  "success": true,
+  "final_backend_suite": {
+    "ctest_number": 11,
+    "name": "vision-model-conversion-tests",
+    "tests": 20,
+    "skipped": 0,
+    "success": true,
+    "elapsed_seconds": 56.236,
+    "evidence_log": "conversion-portability-proof/ctest-backend-conversion-final.log"
+  },
+  "accepted_replays": [
+    {
+      "log": "ctest-final-replay.log",
+      "execution": "ctest-final-replay.log.execution.json",
+      "accepted_suite_numbers": [
+        6
+      ],
+      "explanation": "Only the UI suite remains accepted from this earlier actual three-suite replay. Its application, UI test binary and UI sources are unchanged. The earlier converter-related two suites are superseded by the two newer replays.",
+      "log_sha256": "a101a51b0e6448d9588a58642829345b85458fbb2c5c2d127f1b31889bfc0218",
+      "registered_suites": 3,
+      "failed": 0,
+      "elapsed_seconds": 118.01,
+      "validated_current_files": {
+        "build-2.1.0/bin/vision-studio": {
+          "bytes": 1188136,
+          "sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c"
+        },
+        "build-2.1.0/vision-ui-tests": {
+          "bytes": 1605072,
+          "sha256": "8f6722af3fce90eaef8a2995b6f2e3e1a371cc9f33590843069a6e582d9d1262"
+        },
+        "src/ui/mainwindow.cpp": {
+          "bytes": 166500,
+          "sha256": "a5b2a5fca1a8c29111157fadad09a4312440cd7694f1b88439c7ba59e59e6c82"
+        },
+        "src/ui/modelconversionpage.cpp": {
+          "bytes": 22948,
+          "sha256": "a4fa85a1c24b0987209d7972dc9507f81fbbb146b80c25a766fb5464cb36e84a"
+        },
+        "assets/fluent-dark.qss": {
+          "bytes": 8079,
+          "sha256": "8487fd896584b28d83d47d9052994c4be59b1aa19d050ffea04783b4540ecf8f"
+        },
+        "tests/ui_tests.cpp": {
+          "bytes": 133543,
+          "sha256": "31d7ce689bb5738016ecdd94d2e8a41f6a764ff4ffa1f1c561d7188a0940c520"
+        }
+      }
+    },
+    {
+      "log": "conversion-portability-proof/ctest-full-model-conversion.log",
+      "execution": "conversion-portability-proof/ctest-full-model-conversion.log.execution.json",
+      "accepted_suite_numbers": [
+        10
+      ],
+      "explanation": "All twelve real conversion-to-MainWindow-to-VisionEngine data rows, including full640 modern/legacy ONNX CPU/CUDA and TorchScript CUDA, run on the final frozen converter and expanded test binary.",
+      "log_sha256": "54586578995046f3aeb9e9367e2ffb62fdba0c1a8627d07d2b6148b1277e6c3c",
+      "registered_suites": 1,
+      "failed": 0,
+      "elapsed_seconds": 62.674,
+      "validated_current_files": {
+        "scripts/model_convert.py": {
+          "sha256": "7c75f813334c569c212fc25538e388fd3007a6f74a14ea9d013e4efac4a4f298",
+          "bytes": 51026
+        },
+        "tests/model_conversion_tests.py": {
+          "sha256": "7479dda571f5ace9f363d527d07d4d2834345bc34f4579719eec4217b07b7a4d",
+          "bytes": 29431
+        },
+        "tests/conversion_inference_tests.cpp": {
+          "sha256": "99df0036635d043d346034a8b7d7d7b5c3fdcb18a4073baac99f8b31eebad43a",
+          "bytes": 19646
+        },
+        "scripts/pt_worker.py": {
+          "sha256": "0c632128249d495ad8549ed1d3c3885b2630b21750f7aca18c2d37fdf9dd30b9",
+          "bytes": 32165
+        },
+        "src/ui/mainwindow.cpp": {
+          "sha256": "a5b2a5fca1a8c29111157fadad09a4312440cd7694f1b88439c7ba59e59e6c82",
+          "bytes": 166500
+        },
+        "src/ui/mainwindow.h": {
+          "sha256": "f482ca477a85e15bfd51f9c66f6b6f09a56c73d77b884305ad68bed29e40ea4a",
+          "bytes": 8692
+        },
+        "src/ui/modelconversionpage.cpp": {
+          "sha256": "a4fa85a1c24b0987209d7972dc9507f81fbbb146b80c25a766fb5464cb36e84a",
+          "bytes": 22948
+        },
+        "src/ui/modelconversionpage.h": {
+          "sha256": "d58d129fa47ee268ca9397587e35fb8c7a82e54e2448ba6f29a8434be9580c44",
+          "bytes": 1915
+        },
+        "build-2.1.0/bin/vision-studio": {
+          "sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c",
+          "bytes": 1188136
+        },
+        "build-2.1.0/libvision-core.a": {
+          "sha256": "9b5733a4751ce26b0ddf25a88fb54e3f432134d4731bae1187689adcff2078ed",
+          "bytes": 531456
+        },
+        "build-2.1.0/vision-conversion-inference-tests": {
+          "sha256": "6d4b539975face4497b3ad687f6277a15aa66d8f7a65c237b2b7466640514d9b",
+          "bytes": 1241984
+        }
+      }
+    },
+    {
+      "log": "conversion-portability-proof/ctest-backend-conversion-final.log",
+      "execution": "conversion-portability-proof/ctest-backend-conversion-final.log.execution.json",
+      "accepted_suite_numbers": [
+        11
+      ],
+      "explanation": "All twenty actual backend safety/conversion tests replayed with the final frozen converter; eighteen exports include both full640 generations and real system OpenCV4.5.4 numerical checks.",
+      "log_sha256": "08ea369898eb9450cf41d9f224b864b9de9323edd58db65cbfdb722b83093a0d",
+      "registered_suites": 1,
+      "failed": 0,
+      "elapsed_seconds": 56.295,
+      "validated_current_files": {
+        "scripts/model_convert.py": {
+          "bytes": 51026,
+          "sha256": "7c75f813334c569c212fc25538e388fd3007a6f74a14ea9d013e4efac4a4f298"
+        },
+        "tests/model_conversion_tests.py": {
+          "bytes": 29431,
+          "sha256": "7479dda571f5ace9f363d527d07d4d2834345bc34f4579719eec4217b07b7a4d"
+        },
+        "build-2.1.0/bin/vision-studio": {
+          "bytes": 1188136,
+          "sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c"
+        },
+        "build-2.1.0/vision-conversion-inference-tests": {
+          "bytes": 1241984,
+          "sha256": "6d4b539975face4497b3ad687f6277a15aa66d8f7a65c237b2b7466640514d9b"
+        },
+        "build-2.1.0/libvision-core.a": {
+          "bytes": 531456,
+          "sha256": "9b5733a4751ce26b0ddf25a88fb54e3f432134d4731bae1187689adcff2078ed"
+        }
+      }
+    }
+  ],
+  "full_model_onnx_proof": {
+    "file": "conversion-portability-proof/portability-onnx-full-model-qa.json",
+    "sha256": "bec0218e63a031735a3fddb405166a7a1dae49a9fafefb3b8d9783d994a69d71",
+    "comparisons": [
+      {
+        "family": "yolov8n",
+        "export": "onnx-cpu",
+        "reference": "original-pt-cpu",
+        "same_count_classes_labels": true,
+        "max_confidence_absolute_error": 4.470348358154297e-07,
+        "max_box_absolute_error_pixels": 9.1552734375e-05,
+        "tolerances": {
+          "confidence": 0.002,
+          "box_pixels": 0.05
+        },
+        "passed": true
+      },
+      {
+        "family": "yolov8n",
+        "export": "onnx-cuda",
+        "reference": "original-pt-cpu",
+        "same_count_classes_labels": true,
+        "max_confidence_absolute_error": 2.384185791015625e-07,
+        "max_box_absolute_error_pixels": 8.7738037109375e-05,
+        "tolerances": {
+          "confidence": 0.002,
+          "box_pixels": 0.05
+        },
+        "passed": true
+      },
+      {
+        "family": "yolov5n",
+        "export": "onnx-cpu",
+        "reference": "original-pt-cpu",
+        "same_count_classes_labels": true,
+        "max_confidence_absolute_error": 1.0132789611816406e-06,
+        "max_box_absolute_error_pixels": 0.000293731689453125,
+        "tolerances": {
+          "confidence": 0.002,
+          "box_pixels": 0.05
+        },
+        "passed": true
+      },
+      {
+        "family": "yolov5n",
+        "export": "onnx-cuda",
+        "reference": "original-pt-cpu",
+        "same_count_classes_labels": true,
+        "max_confidence_absolute_error": 9.834766387939453e-07,
+        "max_box_absolute_error_pixels": 0.0003490447998046875,
+        "tolerances": {
+          "confidence": 0.002,
+          "box_pixels": 0.05
+        },
+        "passed": true
+      }
+    ],
+    "cuda_node_counts": {
+      "yolov8n-onnx-cuda": 372,
+      "yolov5n-onnx-cuda": 358
+    }
+  }
+}

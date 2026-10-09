@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "version": "2.1.0",
+  "command": [
+    "/usr/bin/c++",
+    "-std=c++17",
+    "-O3",
+    "-DNDEBUG",
+    "-fPIC",
+    "-DQT_NO_DEBUG",
+    "-DQT_CORE_LIB",
+    "-DQT_GUI_LIB",
+    "-I/home/misaka/文档/ChatGPT/yolo/src",
+    "-I/usr/include/opencv4",
+    "-I/home/misaka/Qt/6.8.3/gcc_64/include",
+    "-I/home/misaka/Qt/6.8.3/gcc_64/include/QtCore",
+    "-I/home/misaka/Qt/6.8.3/gcc_64/include/QtGui",
+    "-I/home/misaka/Qt/6.8.3/gcc_64/mkspecs/linux-g++",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/converted_gpu_probe_v2.cpp",
+    "-o",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/converted_gpu_probe_v2",
+    "-Wl,-rpath,/home/misaka/Qt/6.8.3/gcc_64/lib",
+    "/home/misaka/文档/ChatGPT/yolo/build-2.1.0/libvision-core.a",
+    "/home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Gui.so.6.8.3",
+    "/home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6.8.3",
+    "-lopencv_stitching",
+    "-lopencv_alphamat",
+    "-lopencv_aruco",
+    "-lopencv_barcode",
+    "-lopencv_bgsegm",
+    "-lopencv_bioinspired",
+    "-lopencv_ccalib",
+    "-lopencv_dnn_objdetect",
+    "-lopencv_dnn_superres",
+    "-lopencv_dpm",
+    "-lopencv_face",
+    "-lopencv_freetype",
+    "-lopencv_fuzzy",
+    "-lopencv_hdf",
+    "-lopencv_hfs",
+    "-lopencv_img_hash",
+    "-lopencv_intensity_transform",
+    "-lopencv_line_descriptor",
+    "-lopencv_mcc",
+    "-lopencv_quality",
+    "-lopencv_rapid",
+    "-lopencv_reg",
+    "-lopencv_rgbd",
+    "-lopencv_saliency",
+    "-lopencv_shape",
+    "-lopencv_stereo",
+    "-lopencv_structured_light",
+    "-lopencv_phase_unwrapping",
+    "-lopencv_superres",
+    "-lopencv_optflow",
+    "-lopencv_surface_matching",
+    "-lopencv_tracking",
+    "-lopencv_highgui",
+    "-lopencv_datasets",
+    "-lopencv_text",
+    "-lopencv_plot",
+    "-lopencv_ml",
+    "-lopencv_videostab",
+    "-lopencv_videoio",
+    "-lopencv_viz",
+    "-lopencv_wechat_qrcode",
+    "-lopencv_ximgproc",
+    "-lopencv_video",
+    "-lopencv_xobjdetect",
+    "-lopencv_objdetect",
+    "-lopencv_calib3d",
+    "-lopencv_imgcodecs",
+    "-lopencv_features2d",
+    "-lopencv_dnn",
+    "-lopencv_flann",
+    "-lopencv_xphoto",
+    "-lopencv_photo",
+    "-lopencv_imgproc",
+    "-lopencv_core"
+  ],
+  "started_at": "2026-10-09T13:13:20.163435+08:00",
+  "files_before": {
+    "output/v2.1.0/converted_gpu_probe_v2.cpp": {
+      "bytes": 3987,
+      "sha256": "7083d5ce1e8b274cd2c28020df3db97c9549a233f831a0504d7911b866a0db4e"
+    },
+    "build-2.1.0/libvision-core.a": {
+      "bytes": 531456,
+      "sha256": "9b5733a4751ce26b0ddf25a88fb54e3f432134d4731bae1187689adcff2078ed"
+    },
+    "build-2.1.0/bin/vision-studio": {
+      "bytes": 1188136,
+      "sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c"
+    }
+  },
+  "prior_probe_binary_sha256": "b8ffb63e903ffecd13c80b4bab12245b9b67fa948426c5a29b2fbe495abec138",
+  "exit_code": 0,
+  "elapsed_seconds": 1.456,
+  "finished_at": "2026-10-09T13:13:21.621011+08:00",
+  "files_after": {
+    "output/v2.1.0/converted_gpu_probe_v2.cpp": {
+      "bytes": 3987,
+      "sha256": "7083d5ce1e8b274cd2c28020df3db97c9549a233f831a0504d7911b866a0db4e"
+    },
+    "build-2.1.0/libvision-core.a": {
+      "bytes": 531456,
+      "sha256": "9b5733a4751ce26b0ddf25a88fb54e3f432134d4731bae1187689adcff2078ed"
+    },
+    "build-2.1.0/bin/vision-studio": {
+      "bytes": 1188136,
+      "sha256": "3270961b1b74a1350d572cdf3f9c6f38ee4789d278143e2d5d803a246a8dcd5c"
+    }
+  },
+  "probe_binary": {
+    "file": "output/v2.1.0/converted_gpu_probe_v2",
+    "bytes": 236224,
+    "sha256": "b8ffb63e903ffecd13c80b4bab12245b9b67fa948426c5a29b2fbe495abec138"
+  },
+  "log": {
+    "file": "docs/releases/evidence/2.1.0/conversion-portability-proof/converted-gpu-probe-v2-build.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "inputs_unchanged": true,
+  "same_probe_binary": true
+}

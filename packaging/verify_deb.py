@@ -335,6 +335,10 @@ def audit_python_runtime(app, docs, audit):
     for name in ("torch", "torchvision", "ultralytics", "numpy", "opencv-python-headless", "pandas", "seaborn", "tqdm", "netron"):
         audit.require(name in packages, f"Required runtime Python distribution missing: {name}")
     audit.require(packages.get("netron") == "9.3.1", "The deployed Netron viewer version differs from pinned 9.3.1")
+    if release_metadata.version_key(audit.details["application_version"])[:3] >= (2, 1, 0):
+        for name, version in (("onnx", "1.17.0"), ("protobuf", "6.33.0")):
+            audit.require(packages.get(name) == version,
+                          f"Model conversion requires {name}=={version} in the bundled runtime")
     audit.require("opencv-python" not in packages and "opencv-contrib-python" not in packages,
                   "Graphical OpenCV wheel is present instead of the intended headless runtime")
     audit.require(all("+cpu" in packages.get(name, "") for name in ("torch", "torchvision")),
@@ -391,6 +395,8 @@ def audit_extracted(root, control, closure, audit):
     app = root / str(PREFIX)
     version = release_metadata.version_key(
         release_metadata.application_version_from_debian(control.get("Version", "")))[:3]
+    if version >= (2, 1, 0):
+        audit.require((app / "scripts/model_convert.py").is_file(), "Model conversion helper missing")
     if version >= (1, 6, 0):
         for relative in ("scripts/gpu_setup.py", "scripts/gpu_probe.py", "scripts/setup_gpu.sh",
                          "requirements-gpu.txt", "requirements-gpu.lock.txt"):
@@ -593,6 +599,27 @@ def smoke_tests(app, workspace, audit):
                          "elapsed_seconds": round(time.monotonic() - started, 2), "report": report,
                          "rendering_flags": env["QTWEBENGINE_CHROMIUM_FLAGS"],
                          "sandbox_disabled_by_test": False}
+    if release_metadata.version_key(release_metadata.application_version_from_debian(
+            audit.details["control"]["Version"]))[:3] >= (2, 1, 0):
+        for format in ("onnx", "torchscript"):
+            name = "conversion_" + format
+            output = state / name
+            started = time.monotonic()
+            process = command([str(app / "run-installed.sh"), "--smoke-conversion", str(output),
+                               "--conversion-format", format], env=env, timeout=180, check=False)
+            (state / f"{name}-stdout.log").write_text(process.stdout, encoding="utf-8")
+            (state / f"{name}-stderr.log").write_text(process.stderr, encoding="utf-8")
+            report_file = output / "conversion-smoke-report.json"
+            report = json.loads(report_file.read_text()) if report_file.is_file() else {}
+            artifact = report.get("conversion", {})
+            artifact_file = Path(artifact.get("output", ""))
+            passed = (process.returncode == 0 and report.get("success") is True
+                      and report.get("actual_inference") is True and report.get("prediction_count", 0) > 0
+                      and artifact.get("format") == format
+                      and artifact_file.is_file() and hashlib.sha256(artifact_file.read_bytes()).hexdigest() == artifact.get("sha256"))
+            audit.require(passed, "Read-only packaged model conversion/inference failed: " + process.stderr[-1800:])
+            results[name] = {"success": passed, "exit_code": process.returncode,
+                             "elapsed_seconds": round(time.monotonic() - started, 2), "report": report}
     image = base64.b64encode((app / "assets/bus.jpg").read_bytes()).decode("ascii")
     request = {"id": 1, "command": "infer", "image": image, "input_size": 640, "confidence": 0.25, "iou": 0.45}
     helper_env = dict(env)

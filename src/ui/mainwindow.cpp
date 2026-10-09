@@ -4,6 +4,8 @@
 #include "icons.h"
 #include "imagecanvas.h"
 #include "modelviewer.h"
+#include "modelconversionpage.h"
+#include <QAction>
 #include <QApplication>
 #include <QCheckBox>
 #include <QCloseEvent>
@@ -20,12 +22,14 @@
 #include <QHeaderView>
 #include <QImageReader>
 #include <QImageWriter>
+#include <QInputDialog>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QKeyEvent>
 #include <QLabel>
 #include <QListWidget>
 #include <QMenu>
+#include <QMouseEvent>
 #include <QMessageBox>
 #include <QPlainTextEdit>
 #include <QPalette>
@@ -64,6 +68,54 @@
 
 namespace
 {
+class ModelLibraryList final : public QListWidget
+{
+  public:
+    using QListWidget::QListWidget;
+    void setLibraryBusy(bool busy)
+    {
+        busy_ = busy;
+        setDragEnabled(!busy);
+        setAcceptDrops(!busy);
+    }
+
+  protected:
+    void mousePressEvent(QMouseEvent *event) override
+    {
+        // A context action targets the item under the pointer without selecting
+        // a different global inference model, including while inference runs.
+        if (busy_ || event->button() == Qt::RightButton)
+            event->accept();
+        else
+            QListWidget::mousePressEvent(event);
+    }
+    void mouseReleaseEvent(QMouseEvent *event) override
+    {
+        if (busy_ || event->button() == Qt::RightButton)
+            event->accept();
+        else
+            QListWidget::mouseReleaseEvent(event);
+    }
+    void mouseDoubleClickEvent(QMouseEvent *event) override
+    {
+        if (busy_ || event->button() == Qt::RightButton)
+            event->accept();
+        else
+            QListWidget::mouseDoubleClickEvent(event);
+    }
+    void keyPressEvent(QKeyEvent *event) override
+    {
+        if (busy_ && event->key() != Qt::Key_Menu &&
+            !(event->key() == Qt::Key_F10 && event->modifiers() == Qt::ShiftModifier))
+            event->accept();
+        else
+            QListWidget::keyPressEvent(event);
+    }
+
+  private:
+    bool busy_ = false;
+};
+
 template <typename Base> class WheelSafeSpinBox final : public Base
 {
   public:
@@ -105,6 +157,7 @@ QLabel *text(const QString &value, const char *name = "body")
 {
     auto *w = new QLabel(value);
     w->setObjectName(name);
+    w->setTextFormat(Qt::PlainText);
     return w;
 }
 QPushButton *button(const QString &title, const QString &iconName = {}, const char *role = "secondary")
@@ -166,11 +219,55 @@ QString cleanName(const QString &s)
 }
 bool isPtModel(const QString &path)
 {
-    return QFileInfo(path).suffix().compare("pt", Qt::CaseInsensitive) == 0;
+    const QString suffix = QFileInfo(path).suffix().toLower();
+    return suffix == "pt" || suffix == "torchscript";
 }
 QString modelFormat(const QString &path)
 {
+    if (QFileInfo(path).suffix().compare("torchscript", Qt::CaseInsensitive) == 0)
+        return "TorchScript";
     return isPtModel(path) ? QString("PT") : QString("ONNX");
+}
+QStringList convertedModelLabels(const QJsonObject &metadata)
+{
+    QStringList result;
+    const auto names = metadata.value("names").toObject();
+    if (names.isEmpty() || names.size() > 100000)
+        return {};
+    for (int index = 0; index < names.size(); ++index)
+    {
+        const QJsonValue value = names.value(QString::number(index));
+        if (!value.isString() || value.toString().trimmed().isEmpty() || value.toString().size() > 1000)
+            return {};
+        result.append(value.toString());
+    }
+    return result;
+}
+bool validConvertedModelMetadata(const QString &path, const QJsonObject &metadata)
+{
+    const QString format = metadata.value("format").toString();
+    const QString suffix = QFileInfo(path).suffix().toLower();
+    if ((format != "onnx" || suffix != "onnx") &&
+        (format != "torchscript" || (suffix != "torchscript" && suffix != "pt")))
+        return false;
+    if (QFileInfo(metadata.value("output").toString()).absoluteFilePath() != QFileInfo(path).absoluteFilePath())
+        return false;
+    const QString task = metadata.value("task").toString(), layout = metadata.value("layout").toString();
+    if ((task != "detect" || (layout != "v5" && layout != "v8")) &&
+        (task != "classify" || layout != "classify"))
+        return false;
+    const double channels = metadata.value("input_channels").toDouble(-1);
+    if ((channels != 1 && channels != 3) || metadata.value("ch").toDouble(-1) != channels ||
+        convertedModelLabels(metadata).isEmpty() || metadata.value("precision").toString() != "fp32" ||
+        !metadata.value("nms").isBool() || metadata.value("nms").toBool() ||
+        metadata.value("dynamic").toBool())
+        return false;
+    const auto shape = metadata.value("shape").toArray();
+    if (shape.size() != 4 || shape[0].toDouble(-1) != 1 || shape[1].toDouble(-1) != channels)
+        return false;
+    const double size = shape[2].toDouble(-1);
+    return size >= 32 && size <= 4096 && size == int(size) && int(size) % 32 == 0 &&
+           shape[3].toDouble(-1) == size;
 }
 bool atomicWrite(const QString &path, const QByteArray &data, QString *error = nullptr)
 {
@@ -209,6 +306,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     settings_ = new QSettings(dataRoot_ + "/preferences.ini", QSettings::IniFormat, this);
     exportDir_ = settings_->value("exportDirectory", dataRoot_ + "/results").toString();
     models_ = settings_->value("models").toStringList();
+    const bool hasSavedModelLibrary = settings_->contains("models");
+    modelDisplayNames_ = settings_->value("modelDisplayNames").toMap();
+    modelNotes_ = settings_->value("modelNotes").toMap();
+    convertedModelProfiles_ = settings_->value("convertedModelProfiles").toMap();
     QFile h(dataRoot_ + "/history.json");
     if (h.open(QIODevice::ReadOnly))
         history_ = QJsonDocument::fromJson(h.readAll()).array();
@@ -260,6 +361,22 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     pages_->addWidget(buildHistory());
     pages_->addWidget(buildGuide());
     pages_->addWidget(buildRecordings());
+    modelConversion_ = new ModelConversionPage(dataRoot_);
+    pages_->addWidget(modelConversion_);
+    connect(modelConversion_, &ModelConversionPage::chooseLibraryRequested, this, [this] { selectRoute(1); });
+    connect(modelConversion_, &ModelConversionPage::convertedModelReady, this, [this](const QString &path) {
+        if (busy_) {
+            showNotice("请先结束检测，再将转换结果加入模型库。", true);
+            return;
+        }
+        if (!rememberConvertedModel(path, modelConversion_->completedMetadata()))
+            return;
+        setModel(path, true);
+        selectRoute(1);
+    });
+    connect(modelConversion_, &ModelConversionPage::busyChanged, this, [this](bool active) {
+        if (!active && closing_) QTimer::singleShot(0, this, &QWidget::close);
+    });
     pages_->addWidget(buildMore());
     w->addWidget(pages_, 1);
     auto *footer = new QFrame;
@@ -308,15 +425,31 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     const QString savedLabelsPath = settings_->value("labelsPath").toString();
     const QString bundled = projectRoot_ + "/models/yolov5n.onnx";
     const QString saved = settings_->value("activeModel").toString();
-    if (!saved.isEmpty() && QFileInfo::exists(saved))
+    if (!saved.isEmpty() && QFileInfo(saved).isFile() &&
+        (!hasSavedModelLibrary || models_.contains(saved)))
         setModel(saved);
-    else if (QFileInfo::exists(bundled))
-        setModel(bundled);
-    for (const QString &name : {QStringLiteral("yolov8n.pt"), QStringLiteral("yolov5n.pt")})
+    else
     {
-        const QString example = projectRoot_ + "/models/" + name;
-        if (QFileInfo(example).isFile() && !models_.contains(example))
-            models_.append(example);
+        QString next;
+        for (const QString &candidate : models_)
+            if (QFileInfo(candidate).isFile())
+            {
+                next = candidate;
+                break;
+            }
+        if (!next.isEmpty())
+            setModel(next);
+        else if (!hasSavedModelLibrary && QFileInfo(bundled).isFile())
+            setModel(bundled);
+    }
+    if (!hasSavedModelLibrary)
+    {
+        for (const QString &name : {QStringLiteral("yolov8n.pt"), QStringLiteral("yolov5n.pt")})
+        {
+            const QString example = projectRoot_ + "/models/" + name;
+            if (QFileInfo(example).isFile() && !models_.contains(example))
+                models_.append(example);
+        }
     }
     taskBox_->setCurrentIndex(qBound(0, savedTask, 2));
     inputSize_->setValue(savedInput);
@@ -347,6 +480,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
         labelButton_->setText(QString("类别标签 · %1 个").arg(labels_.size()));
         labelButton_->setToolTip(labelsPath_);
     }
+    applyConvertedModelProfile(modelPath_);
     const QString sample = projectRoot_ + "/assets/bus.jpg";
     if (QFileInfo::exists(sample))
         addFiles({sample});
@@ -362,6 +496,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     selectRoute(0);
     updateTaskUi();
     updateDeviceUi();
+    persist();
     QTimer::singleShot(0, this, &MainWindow::checkGpuEnvironment);
     auto shortcut = [this](const QKeySequence &keys, auto action)
     {
@@ -391,7 +526,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     shortcut(QKeySequence(Qt::Key_Escape),
              [this]
              {
-                 if (busy_)
+                 if (modelConversion_ && modelConversion_->isBusy() && pages_->currentIndex() == 6)
+                     modelConversion_->cancel();
+                 else if (busy_)
                      stopInference();
                  else
                  {
@@ -469,8 +606,8 @@ QWidget *MainWindow::buildSidebar()
     l->addWidget(text("工作空间", "eyebrow"));
     l->addSpacing(5);
     const QStringList titles = {"检测工作台", "模型库",   "模型显示", "运行记录",
-                                "使用指南",   "录制视频", "更多"};
-    const QStringList icons = {"work", "model", "graph", "history", "help", "video", "more"};
+                                "使用指南",   "录制视频", "模型转换", "更多"};
+    const QStringList icons = {"work", "model", "graph", "history", "help", "video", "convert", "more"};
     for (int i = 0; i < titles.size(); ++i)
     {
         auto *b = button(titles[i], icons[i], "nav");
@@ -709,7 +846,7 @@ QWidget *MainWindow::buildWorkbench()
     form->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
     inputSize_ = new WheelSafeSpinBox<QSpinBox>;
     inputSize_->setObjectName("inputSize");
-    inputSize_->setRange(32, 2048);
+    inputSize_->setRange(32, 4096);
     inputSize_->setSingleStep(32);
     inputSize_->setValue(640);
     inputSize_->setSuffix(" px");
@@ -1011,9 +1148,8 @@ QWidget *MainWindow::buildModels()
     fl->setSpacing(12);
     fl->addWidget(text("集中管理你的模型", "modelName"));
     fl->addWidget(text("点击模型即全局选用：检测工作台与模型显示同步，模型结构会在后台预加载。", "muted"));
-    modelList_ = new QListWidget;
+    modelList_ = new ModelLibraryList;
     modelList_->setObjectName("globalModelList");
-    lockedControls_.append(modelList_);
     modelList_->setIconSize(QSize(34, 34));
     modelList_->setDragEnabled(true);
     modelList_->setAcceptDrops(true);
@@ -1023,7 +1159,10 @@ QWidget *MainWindow::buildModels()
     modelList_->setDragDropOverwriteMode(false);
     modelList_->setSelectionMode(QAbstractItemView::SingleSelection);
     modelList_->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    modelList_->setToolTip("拖动模型调整顺序；顺序自动保存，当前全局选用模型保持不变。");
+    modelList_->setToolTip("点击全局选用；拖动调整顺序；右键打开位置、添加备注、重命名或从列表移除。");
+    modelList_->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(modelList_, &QListWidget::customContextMenuRequested, this,
+            &MainWindow::showModelContextMenu);
     connect(modelList_->model(), &QAbstractItemModel::rowsAboutToBeMoved, this,
             [this] { modelListReordering_ = true; });
     connect(modelList_->model(), &QAbstractItemModel::rowsMoved, this,
@@ -1069,24 +1208,7 @@ QWidget *MainWindow::buildModels()
             {
                 auto *i = modelList_->currentItem();
                 if (i)
-                {
-                    const QString p = i->data(Qt::UserRole).toString();
-                    models_.removeAll(p);
-                    refreshModelLibrary();
-                    if (p == modelPath_)
-                    {
-                        QString next;
-                        for (const QString &candidate : models_)
-                            if (QFileInfo(candidate).isFile())
-                            {
-                                next = candidate;
-                                break;
-                            }
-                        setModel(next);
-                    }
-                    persist();
-                    showNotice("已从模型库移除，原始模型文件保留。");
-                }
+                    removeLibraryModel(i->data(Qt::UserRole).toString());
             });
     l->addWidget(frame, 1);
     auto *notes = card();
@@ -1165,7 +1287,7 @@ QWidget *MainWindow::buildModelDisplay()
 void MainWindow::displayModelStructure()
 {
     const QString &path = modelPath_;
-    structureModelName_->setText(path.isEmpty() ? "在模型库中选择模型" : QFileInfo(path).fileName());
+    structureModelName_->setText(path.isEmpty() ? "在模型库中选择模型" : modelDisplayName(path));
     structureModelName_->setToolTip(path);
     structureModelMeta_->setText(path.isEmpty() ? "检测工作台与模型显示使用同一个全局模型。"
                                                 : QFileInfo(path).suffix().toUpper() + " · " + path);
@@ -2079,11 +2201,57 @@ void MainWindow::importModel()
 {
     const QString p =
         QFileDialog::getOpenFileName(this, "导入视觉模型", projectRoot_ + "/models",
-                                     "视觉模型 (*.onnx *.pt);;ONNX 模型 (*.onnx);;PyTorch 模型 (*.pt)");
+                                     "视觉模型 (*.onnx *.pt *.torchscript);;ONNX 模型 (*.onnx);;"
+                                     "PyTorch / TorchScript 模型 (*.pt *.torchscript)");
     if (!p.isEmpty())
         setModel(p);
 }
-void MainWindow::setModel(const QString &path)
+bool MainWindow::rememberConvertedModel(const QString &path, const QJsonObject &metadata)
+{
+    const QFileInfo file(path);
+    if (!file.isFile() || file.isSymLink() || !validConvertedModelMetadata(file.absoluteFilePath(), metadata) ||
+        metadata.value("bytes").toDouble(-1) != double(file.size()))
+    {
+        showNotice("转换结果的模型元数据或文件大小不匹配，请重新转换后再加入模型库。", true);
+        return false;
+    }
+    convertedModelProfiles_.insert(file.absoluteFilePath(),
+        QVariantMap{{"fileSize", file.size()}, {"fileModifiedMs", file.lastModified().toMSecsSinceEpoch()},
+                    {"metadata", metadata.toVariantMap()}});
+    persist();
+    return true;
+}
+QJsonObject MainWindow::convertedModelProfile(const QString &path) const
+{
+    const QFileInfo file(path);
+    const auto profile = convertedModelProfiles_.value(file.absoluteFilePath()).toMap();
+    if (!file.isFile() || file.isSymLink() || profile.value("fileSize").toLongLong() != file.size() ||
+        profile.value("fileModifiedMs").toLongLong() != file.lastModified().toMSecsSinceEpoch())
+        return {};
+    const auto metadata = QJsonObject::fromVariantMap(profile.value("metadata").toMap());
+    return validConvertedModelMetadata(file.absoluteFilePath(), metadata) ? metadata : QJsonObject{};
+}
+bool MainWindow::applyConvertedModelProfile(const QString &path)
+{
+    const auto metadata = convertedModelProfile(path);
+    if (metadata.isEmpty())
+        return false;
+    nativeLabels_ = convertedModelLabels(metadata);
+    modelInputChannels_ = metadata.value("input_channels").toInt();
+    taskBox_->setCurrentIndex(metadata.value("task").toString() == "classify"
+                                  ? int(vision::ModelTask::Classification)
+                                  : int(metadata.value("layout").toString() == "v5"
+                                            ? vision::ModelTask::YoloV5 : vision::ModelTask::YoloV8));
+    inputSize_->setValue(metadata.value("shape").toArray()[2].toInt());
+    if (modelInputChannels_ == 1)
+        inputColorMode_->setCurrentIndex(inputColorMode_->findData("grayscale"));
+    scale_->setValue(1.0 / 255.0);
+    meanR_->setValue(0);
+    meanG_->setValue(0);
+    meanB_->setValue(0);
+    return true;
+}
+void MainWindow::setModel(const QString &path, bool force)
 {
     if (busy_)
         return;
@@ -2092,6 +2260,7 @@ void MainWindow::setModel(const QString &path)
         actualDeviceKnown_ = false;
         actualDeviceNotice_.clear();
         modelPath_.clear();
+        if (modelConversion_) modelConversion_->setSourceModel({});
         modelInputChannels_ = 0;
         nativeLabels_.clear();
         modelName_->setText("尚未选择模型");
@@ -2106,10 +2275,12 @@ void MainWindow::setModel(const QString &path)
     QFileInfo f(path);
     if (!f.isFile())
     {
+        refreshModelLibrary();
         showNotice("模型文件不存在：" + path, true);
         return;
     }
-    if (modelPath_ == f.absoluteFilePath())
+    if (modelPath_ == f.absoluteFilePath() && !force &&
+        (!convertedModelProfiles_.contains(modelPath_) || !convertedModelProfile(modelPath_).isEmpty()))
         return;
     const bool convertedBgr =
         isPtModel(f.absoluteFilePath()) && inputColorMode_->currentData().toString() == "bgr";
@@ -2118,7 +2289,8 @@ void MainWindow::setModel(const QString &path)
     actualDeviceNotice_.clear();
     modelInputChannels_ = 0;
     nativeLabels_.clear();
-    modelName_->setText(f.fileName());
+    modelName_->setText(modelDisplayName(modelPath_));
+    if (modelConversion_) modelConversion_->setSourceModel(modelPath_, modelDisplayName(modelPath_));
     updateModelMeta("已选择");
     modelName_->setToolTip(modelPath_);
     if (!models_.contains(modelPath_))
@@ -2128,6 +2300,7 @@ void MainWindow::setModel(const QString &path)
         taskBox_->setCurrentIndex(0);
     else if (n.contains("yolov8") || n.contains("yolo11"))
         taskBox_->setCurrentIndex(1);
+    applyConvertedModelProfile(modelPath_);
     updateTaskUi();
     updateInputPreview();
     persist();
@@ -2187,10 +2360,14 @@ vision::ModelConfig MainWindow::currentConfig() const
     c.device = computeMode(computeDevice_->currentData().toString());
     c.deviceIndex = gpuDeviceIndex_->currentData().toInt();
     c.task = static_cast<vision::ModelTask>(taskBox_->currentIndex());
-    c.labels = labels_.isEmpty() ? ((isPtModel(modelPath_) || c.task == vision::ModelTask::Classification)
-                                        ? QStringList{}
-                                        : vision::cocoLabels())
-                                 : labels_;
+    if (!labels_.isEmpty())
+        c.labels = labels_;
+    else if (isPtModel(modelPath_))
+        c.labels = {};
+    else if (!convertedModelProfile(modelPath_).isEmpty())
+        c.labels = nativeLabels_;
+    else
+        c.labels = c.task == vision::ModelTask::Classification ? QStringList{} : vision::cocoLabels();
     c.inputSize = inputSize_->value();
     c.confidence = confidence_->value();
     c.iou = iou_->value();
@@ -2288,6 +2465,7 @@ void MainWindow::setBusy(bool busy)
         inferenceStopping_ = false;
     for (auto *c : lockedControls_)
         c->setEnabled(!busy);
+    static_cast<ModelLibraryList *>(modelList_)->setLibraryBusy(busy);
     demoButton_->setEnabled(!busy);
     runButton_->setVisible(!busy);
     stopButton_->setVisible(busy);
@@ -2346,7 +2524,9 @@ void MainWindow::updateTaskUi()
         labelButton_->setText(pt ? (nativeLabels_.isEmpty()
                                         ? "类别标签 · 模型自动读取"
                                         : QString("类别标签 · 内置 %1 类").arg(nativeLabels_.size()))
-                                 : (classification ? "类别标签 · 数字类别" : "类别标签 · 默认 COCO 80"));
+                                 : (!convertedModelProfile(modelPath_).isEmpty()
+                                        ? QString("类别标签 · 转换模型 %1 类").arg(nativeLabels_.size())
+                                        : (classification ? "类别标签 · 数字类别" : "类别标签 · 默认 COCO 80")));
     else
         labelButton_->setText(QString("类别标签 · %1 个").arg(labels_.size()));
     updateDeviceUi();
@@ -3267,6 +3447,134 @@ void MainWindow::refreshHistory()
         }
     }
 }
+QString MainWindow::modelDisplayName(const QString &path) const
+{
+    const QString name = modelDisplayNames_.value(path).toString().trimmed();
+    return name.isEmpty() ? QFileInfo(path).fileName() : name;
+}
+void MainWindow::showModelContextMenu(const QPoint &position)
+{
+    auto *item = modelList_->itemAt(position);
+    if (!item && position.x() < 0 && position.y() < 0)
+        item = modelList_->currentItem();
+    if (!item)
+        return;
+    const QString path = item->data(Qt::UserRole).toString();
+    auto *menu = new QMenu(modelList_);
+    menu->setObjectName("modelContextMenu");
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+    auto addAction = [this, menu, path](const QString &title, const QString &icon,
+                                      const char *name, auto handler, bool mutation)
+    {
+        auto *action = menu->addAction(ui::icon(icon, QColor("#D2D2D2")), title);
+        action->setObjectName(name);
+        action->setData(path);
+        action->setEnabled(!mutation || !busy_);
+        connect(action, &QAction::triggered, this, [this, path, handler] { (this->*handler)(path); });
+        return action;
+    };
+    addAction("打开模型位置", "folder", "modelOpenLocationAction", &MainWindow::openModelLocation,
+              false);
+    addAction(modelNotes_.value(path).toString().isEmpty() ? "添加备注" : "修改备注", "note",
+              "modelNoteAction", &MainWindow::editModelNote, true);
+    addAction("重命名", "edit", "modelRenameAction", &MainWindow::renameLibraryModel, true);
+    addAction("从列表移除", "cross", "modelRemoveAction", &MainWindow::removeLibraryModel, true);
+    const QPoint anchor = position.x() < 0 && position.y() < 0
+                              ? modelList_->visualItemRect(item).center()
+                              : position;
+    menu->popup(modelList_->viewport()->mapToGlobal(anchor));
+}
+void MainWindow::openModelLocation(const QString &path)
+{
+    const QString directory = QFileInfo(path).absolutePath();
+    if (!QFileInfo(directory).isDir())
+    {
+        showNotice("模型所在文件夹不存在：" + directory, true);
+        return;
+    }
+    if (!QDesktopServices::openUrl(QUrl::fromLocalFile(directory)))
+        showNotice("无法打开模型文件夹：" + directory, true);
+}
+void MainWindow::editModelNote(const QString &path)
+{
+    if (busy_ || !models_.contains(path))
+        return;
+    QInputDialog dialog(this);
+    dialog.setObjectName("modelNoteDialog");
+    dialog.setWindowTitle("模型备注");
+    dialog.setInputMode(QInputDialog::TextInput);
+    dialog.setOption(QInputDialog::UsePlainTextEditForTextInput);
+    dialog.setLabelText(modelDisplayName(path) + "\n添加实验说明、数据集或用途；留空可清除备注。");
+    for (auto *label : dialog.findChildren<QLabel *>())
+        label->setTextFormat(Qt::PlainText);
+    dialog.setTextValue(modelNotes_.value(path).toString());
+    dialog.setOkButtonText("保存");
+    dialog.setCancelButtonText("取消");
+    dialog.resize(520, 260);
+    if (dialog.exec() != QDialog::Accepted || busy_ || !models_.contains(path))
+        return;
+    const QString note = dialog.textValue().trimmed();
+    if (note.isEmpty())
+        modelNotes_.remove(path);
+    else
+        modelNotes_.insert(path, note);
+    persist();
+    refreshModelLibrary();
+    showNotice(note.isEmpty() ? "模型备注已清除。" : "模型备注已保存。");
+}
+void MainWindow::renameLibraryModel(const QString &path)
+{
+    if (busy_ || !models_.contains(path))
+        return;
+    QInputDialog dialog(this);
+    dialog.setObjectName("modelRenameDialog");
+    dialog.setWindowTitle("重命名模型");
+    dialog.setInputMode(QInputDialog::TextInput);
+    dialog.setLabelText("模型库中的显示名称（原始文件名和路径不变）\n留空可恢复原始文件名：" +
+                        QFileInfo(path).fileName());
+    for (auto *label : dialog.findChildren<QLabel *>())
+        label->setTextFormat(Qt::PlainText);
+    dialog.setTextValue(modelDisplayNames_.value(path).toString());
+    dialog.setOkButtonText("保存");
+    dialog.setCancelButtonText("取消");
+    dialog.resize(520, 180);
+    if (dialog.exec() != QDialog::Accepted || busy_ || !models_.contains(path))
+        return;
+    const QString name = dialog.textValue().simplified();
+    if (name.isEmpty())
+        modelDisplayNames_.remove(path);
+    else
+        modelDisplayNames_.insert(path, name);
+    persist();
+    refreshModelLibrary();
+    if (path == modelPath_)
+    {
+        modelName_->setText(modelDisplayName(path));
+        if (modelConversion_) modelConversion_->setSourceModel(path, modelDisplayName(path));
+        displayModelStructure();
+    }
+    showNotice(name.isEmpty() ? "已恢复模型的原始文件名显示。" : "模型显示名称已保存。");
+}
+void MainWindow::removeLibraryModel(const QString &path)
+{
+    if (busy_ || !models_.contains(path))
+        return;
+    models_.removeAll(path);
+    refreshModelLibrary();
+    if (path == modelPath_)
+    {
+        QString next;
+        for (const QString &candidate : models_)
+            if (QFileInfo(candidate).isFile())
+            {
+                next = candidate;
+                break;
+            }
+        setModel(next);
+    }
+    persist();
+    showNotice("已从模型库移除，原始模型文件保留。");
+}
 void MainWindow::refreshModelLibrary()
 {
     if (!modelList_)
@@ -3279,11 +3587,21 @@ void MainWindow::refreshModelLibrary()
         const QString detail =
             f.exists() ? QString("%1 MB  ·  %2").arg(f.size() / 1048576.0, 0, 'f', 1).arg(modelFormat(p))
                        : "文件已移动或不存在";
-        auto *i = new QListWidgetItem(ui::icon("model", QColor("#60CDFF"), 34),
-                                      f.fileName() + "\n" + detail + "\n" + p);
+        const QString note = modelNotes_.value(p).toString();
+        QString caption = modelDisplayName(p) + "\n" + detail + "\n" + p;
+        if (!note.isEmpty())
+        {
+            const QString compactNote = note.simplified();
+            caption += "\n备注 · " + compactNote.left(140) +
+                       (compactNote.size() > 140 ? QStringLiteral("…") : QString());
+        }
+        auto *i = new QListWidgetItem(ui::icon("model", QColor("#60CDFF"), 34), caption);
         i->setData(Qt::UserRole, p);
-        i->setToolTip(p);
-        i->setSizeHint(QSize(100, 94));
+        i->setData(Qt::UserRole + 1, modelDisplayName(p));
+        i->setData(Qt::UserRole + 2, note);
+        i->setToolTip(modelDisplayName(p) + "\n原始文件：" + f.fileName() + "\n" + p +
+                       (note.isEmpty() ? QString() : "\n备注：" + note));
+        i->setSizeHint(QSize(100, note.isEmpty() ? 94 : 118));
         modelList_->addItem(i);
         if (p == modelPath_)
             modelList_->setCurrentItem(i);
@@ -3305,15 +3623,16 @@ void MainWindow::selectRoute(int index)
     {
         navButtons_[i]->setChecked(i == index);
         navButtons_[i]->setIcon(
-            ui::icon(QStringList{"work", "model", "graph", "history", "help", "video", "more"}[i],
+            ui::icon(QStringList{"work", "model", "graph", "history", "help", "video", "convert", "more"}[i],
                      QColor(i == index ? "#60CDFF" : "#D2D2D2")));
     }
     const QStringList titles = {"检测工作台", "模型库",   "模型显示", "运行记录",
-                                "使用指南",   "录制视频", "更多"};
+                                "使用指南",   "录制视频", "模型转换", "更多"};
     const QStringList descriptions = {
         "从输入到洞察，让每一次视觉推理清晰可见。",   "管理本地模型，让每一个实验都有清晰的起点。",
         "查看网络结构、输入输出与层参数。",           "回看每一次推理，沉淀可追溯的运行数据。",
         "从模型配置到结果导出，掌握完整的工作流程。", "查看、播放和导出已保存的检测录像。",
+        "将当前模型导出为 ONNX 或 TorchScript，保留原始文件。",
         "示例体验与检测结果导出，集中在这里。"};
     pageTitle_->setText(titles[index]);
     pageSubtitle_->setText(descriptions[index]);
@@ -3333,6 +3652,9 @@ void MainWindow::persist()
     if (!settings_)
         return;
     settings_->setValue("models", models_);
+    settings_->setValue("modelDisplayNames", modelDisplayNames_);
+    settings_->setValue("modelNotes", modelNotes_);
+    settings_->setValue("convertedModelProfiles", convertedModelProfiles_);
     settings_->setValue("activeModel", modelPath_);
     settings_->setValue("exportDirectory", exportDir_);
     settings_->setValue("labels", labels_);
@@ -3359,6 +3681,13 @@ void MainWindow::persist()
 }
 void MainWindow::closeEvent(QCloseEvent *e)
 {
+    if (modelConversion_ && modelConversion_->isBusy())
+    {
+        closing_ = true;
+        modelConversion_->cancel();
+        e->ignore();
+        return;
+    }
     if (gpuSetupProcess_)
     {
         closing_ = true;
@@ -3383,6 +3712,12 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
 {
     if (e->key() == Qt::Key_Escape)
     {
+        if (modelConversion_ && modelConversion_->isBusy() && pages_->currentIndex() == 6)
+        {
+            modelConversion_->cancel();
+            e->accept();
+            return;
+        }
         stopInference();
         e->accept();
         return;

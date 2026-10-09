@@ -8,6 +8,35 @@
 
 暂无变更；后续新变更在此记录，发行时移入对应版本。
 
+## 2.1.0 — 2026-10-09
+
+### 模型库管理
+
+- 模型条目新增右键菜单：打开模型位置、添加／修改备注、重命名显示名称、从列表移除。右键针对点击的条目，不会先把它选为全局模型。
+- 显示名称与备注持久保存，重启恢复；留空恢复原始名称或清除备注。重命名不修改磁盘文件名、路径、类别或权重，移除列表项保留模型文件。
+- 保留拖动排序与全局选择；移除当前项时选择仍存在的模型，无可用模型时清空选择。
+
+### 模型转换
+
+- 新增「模型转换」页，位于「录制视频」之后、「更多」之前，默认使用模型库全局模型。
+- 支持兼容的现代 Ultralytics 与旧版 YOLOv5 完整 PT，以及标准 TorchScript 来源，导出 ONNX 或 TorchScript；读取 C1／C3，固定 CPU FP32、batch=1、正方形输入、不含 NMS，ONNX 可选 Opset 12／17。
+- 后台进程提供阶段日志、进度与取消，来源保留、已有输出拒绝覆盖；完成后打开输出目录，或明确点击「加入模型库」选用结果。
+- 保留任务、类别、形状及通道元数据，TorchScript 保存 `config.txt`。不提供 ONNX 还原原始训练检查点，裸权重或未知自定义网络仍需架构定义。
+- 转换结果明确加入模型库后记录配置，选用时应用任务、类别、尺寸与默认归一化；手工标签优先，C1 自动选择灰度，C3 仍需按训练预处理选择颜色模式。
+- 为旧版 OpenCV 的静态形状与广播限制进行标准 ONNX 等价规约；保存前执行图检查及转换环境 Python OpenCV 的输出比较，系统 C++／GPU 后端仍需实际验证。
+- 将常量左侧减法写为标准 ONNX 等价乘加，修复系统 OpenCV 4.5.4 对完整导出模型的框坐标计算。TorchScript 检测缓存注册为随设备移动的 buffer，跟踪和 CUDA 推理保持严格 FP32，避免缓存设备不匹配与 TF32 精度变化。
+- CPU 发行环境新增 ONNX 1.17.0／protobuf 6.33.0，复用 PyTorch 2.9.1；转换不需要 ONNX Script、ONNX Slim 或独立 ONNX Runtime，不改变推理设备选择。
+
+### 验证与发布
+
+有效开发验收为 13 套通过、0 失败、0 跳过，由完整基线、UI 复验及最终受影响转换复验汇总，并非一次整套通过。最终 UI 38 项，C++ 转换推理 14 项／62.674 秒，Python 转换 20 项／56.295 秒通过，含 18 次真实导出，见 [ctest-qa.json](docs/releases/evidence/2.1.0/ctest-qa.json)。
+
+完整 YOLOv8n／YOLOv5n 固定 640 输入的 ONNX CPU／CUDA 框、类别与置信度已按容差对照原 PT；TorchScript 原始 FP32 输出与 CUDA buffer 迁移核验通过。实际记录见 [ONNX 对照](docs/releases/evidence/2.1.0/conversion-portability-proof/portability-onnx-full-model-qa.json)、[TorchScript 对照](docs/releases/evidence/2.1.0/conversion-portability-proof/portability-torchscript-raw-qa.json)；早期候选与发现问题时的原始记录保留。
+
+最终 DEB、安装、CPU／CUDA、只读转换及对应源码验收须在发行前完成，报告绑定本版最终文件，未通过不发布；不以开发验收或旧版报告替代。范围与同版证据见 [2.1.0 发布说明](docs/releases/2.1.0.md)，源码核验保持独立发布门禁。
+
+正式标签为 `v2.1.0`，交付 DEB、完整对应源码包与 `SHA256SUMS` 三个手动附件。远端核验后本地保留 2.1.0 与 2.0.0，历史远端标签与资产保持不变。
+
 ## [2.0.0](https://github.com/misaka-ning/vision-studio/releases/tag/v2.0.0) — 2026-10-08
 
 2.0 系列正式发行的本轮开发集中完成以下四项操作改进；Fluent 界面、批量结果回看、CPU／NVIDIA GPU、模型输入输出和个人数据约定保留。

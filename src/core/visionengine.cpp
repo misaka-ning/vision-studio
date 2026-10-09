@@ -444,7 +444,7 @@ void VisionEngine::load(const ModelConfig &requestedConfig)
     if (!QFileInfo(config.modelPath).isFile())
         fail(QStringLiteral("找不到模型：%1").arg(config.modelPath));
     const QString suffix = QFileInfo(config.modelPath).suffix().toLower();
-    if (suffix == "pt")
+    if (suffix == "pt" || suffix == "torchscript")
     {
         auto backend = std::make_unique<PtBackend>();
         backend->setCancellationCheck(m_cancellationCheck);
@@ -454,7 +454,7 @@ void VisionEngine::load(const ModelConfig &requestedConfig)
         return;
     }
     if (suffix != "onnx")
-        fail(QStringLiteral("请选择 .onnx 或 .pt 模型文件。"));
+        fail(QStringLiteral("请选择 .onnx、.pt 或 .torchscript 模型文件。"));
     QFile modelFile(config.modelPath);
     if (!modelFile.open(QIODevice::ReadOnly))
         fail(QStringLiteral("无法读取模型：%1").arg(modelFile.errorString()));

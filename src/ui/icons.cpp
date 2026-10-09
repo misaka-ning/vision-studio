@@ -33,6 +33,25 @@ QIcon icon(const QString &name, QColor color, int size)
         for (const auto &point : {QPointF(5, 6), QPointF(5, 18), QPointF(19, 12)})
             a.drawRoundedRect(QRectF(point.x() - 3, point.y() - 3, 6, 6), 1, 1);
     }
+    else if (name == "convert")
+    {
+        a.drawLine(4, 7, 20, 7);
+        a.drawPolyline(QPolygonF{{16, 3}, {20, 7}, {16, 11}});
+        a.drawLine(20, 17, 4, 17);
+        a.drawPolyline(QPolygonF{{8, 13}, {4, 17}, {8, 21}});
+    }
+    else if (name == "note")
+    {
+        a.drawRoundedRect(QRectF(4, 3, 16, 18), 2, 2);
+        a.drawLine(8, 7, 16, 7);
+        a.drawLine(8, 11, 16, 11);
+        a.drawLine(8, 15, 12, 15);
+    }
+    else if (name == "edit")
+    {
+        a.drawPolygon(QPolygonF{{5, 16}, {16, 5}, {20, 9}, {9, 20}, {4, 21}});
+        a.drawLine(13, 8, 17, 12);
+    }
     else if (name == "more")
     {
         a.setBrush(color);

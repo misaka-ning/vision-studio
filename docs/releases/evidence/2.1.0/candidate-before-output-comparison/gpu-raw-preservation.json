@@ -1,0 +1,208 @@
+{
+  "version": "2.1.0",
+  "mode": "gpu",
+  "workdir": "/tmp/vision-studio-gpu-deb-qa-m2el9zjv",
+  "identity": {
+    "device": 66308,
+    "inode": 37224525,
+    "uid": 1000
+  },
+  "files": [
+    {
+      "file": "onnx_cuda/stderr.log",
+      "bytes": 453,
+      "sha256": "4c64c83eae005ad80bf0f00bb082dfd14236c574c5534f40b8ae7a114b6da8b6",
+      "tracked": "packaged-qa-raw/gpu/onnx_cuda/stderr.log"
+    },
+    {
+      "file": "onnx_cuda/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/gpu/onnx_cuda/stdout.log"
+    },
+    {
+      "file": "onnx_cuda/data/vision-studio/history.json",
+      "bytes": 680,
+      "sha256": "20728413d0e2940228baec96143acf5e1e5a03c14bff321a5f91860495e3564a"
+    },
+    {
+      "file": "onnx_cuda/results/bus-20261009-122955-554-f1.csv",
+      "bytes": 275,
+      "sha256": "426f57f2267770893a707ae7695412f519d30aaad53af2e7faf19112d2c09717"
+    },
+    {
+      "file": "onnx_cuda/results/bus-20261009-122955-554-f1.json",
+      "bytes": 2609,
+      "sha256": "33b1fc9ad6fe713e8070f874f12eb64a1528ad3474bf48339d8bb6572f8c23b7",
+      "tracked": "packaged-qa-raw/gpu/onnx_cuda/results/bus-20261009-122955-554-f1.json"
+    },
+    {
+      "file": "onnx_cuda/results/bus-20261009-122955-554-f1.png",
+      "bytes": 1756576,
+      "sha256": "e8fc25906fe4f7efbfab9f23fb62d0e0b2da13fec4aa9fd04cb5c6076deb08b8"
+    },
+    {
+      "file": "onnx_cuda/results/smoke-report.json",
+      "bytes": 306,
+      "sha256": "13fce164c192821c90c07a6dbb8a17bde431e49a2c036829c3965e105f350533",
+      "tracked": "packaged-qa-raw/gpu/onnx_cuda/results/smoke-report.json"
+    },
+    {
+      "file": "onnx_cuda/results/workbench.png",
+      "bytes": 386721,
+      "sha256": "ababc30c0d6f4525ee8b520d6ac702bc4ad6e4a932a87cd61840b101725ac5bf"
+    },
+    {
+      "file": "pt_cuda/stderr.log",
+      "bytes": 471,
+      "sha256": "dab1a80fdc560a98019e79316322b8ec4e67c856a5c7e5db2c2fafba6d6a2994",
+      "tracked": "packaged-qa-raw/gpu/pt_cuda/stderr.log"
+    },
+    {
+      "file": "pt_cuda/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/gpu/pt_cuda/stdout.log"
+    },
+    {
+      "file": "pt_cuda/data/vision-studio/history.json",
+      "bytes": 701,
+      "sha256": "96edb4ffe8a5baa634972856d66224b7fef844a4275389bea90b45ea111645e2"
+    },
+    {
+      "file": "pt_cuda/results/bus-20261009-122958-551-f1.csv",
+      "bytes": 275,
+      "sha256": "cff8fa072279ce6e3808e2a8ae987cdec4554f9b76b40e462c3e2f96bd57aa3f"
+    },
+    {
+      "file": "pt_cuda/results/bus-20261009-122958-551-f1.json",
+      "bytes": 2649,
+      "sha256": "9b0a8c0975506d825ef1fc7660c78841c2e1ab68bfb5769f374454bb5e805c93",
+      "tracked": "packaged-qa-raw/gpu/pt_cuda/results/bus-20261009-122958-551-f1.json"
+    },
+    {
+      "file": "pt_cuda/results/bus-20261009-122958-551-f1.png",
+      "bytes": 1755942,
+      "sha256": "7310b266125ec51b537d2a3144dbe21e18fe0410f4907dcde3f3c9158f9ba05a"
+    },
+    {
+      "file": "pt_cuda/results/smoke-report.json",
+      "bytes": 324,
+      "sha256": "b414852a403c068570f9b4902340a2867e5d99e8007061b7d2ef4ab55a0a0747",
+      "tracked": "packaged-qa-raw/gpu/pt_cuda/results/smoke-report.json"
+    },
+    {
+      "file": "pt_cuda/results/workbench.png",
+      "bytes": 385755,
+      "sha256": "8c341d829dae553d2c66eed853e805e44bd8e2c7572fa94f33b6a4350015775f"
+    },
+    {
+      "file": "pt_cuda/ultralytics/Ultralytics/settings.json",
+      "bytes": 471,
+      "sha256": "043a43273f9daf79a4c3e58a785ccd09992662b117f77152155ef835b9d84465"
+    },
+    {
+      "file": "pt_cuda/matplotlib/fontlist-v390.json",
+      "bytes": 115885,
+      "sha256": "1ca67709ec3d187e6ae634d0e0acaf9cf2e0745ba7c22c0771fc88054f456f0a"
+    },
+    {
+      "file": "onnx_cpu/stderr.log",
+      "bytes": 429,
+      "sha256": "d7f0a8ab95843dbea058df02cf2e215f264e35f768ef0c3f4b307c3ca1e25131",
+      "tracked": "packaged-qa-raw/gpu/onnx_cpu/stderr.log"
+    },
+    {
+      "file": "onnx_cpu/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/gpu/onnx_cpu/stdout.log"
+    },
+    {
+      "file": "onnx_cpu/data/vision-studio/history.json",
+      "bytes": 656,
+      "sha256": "c64eb7ee9bae3576fc0d56db1f2b056eb0034c73aad968bd08da189a1c88cac2"
+    },
+    {
+      "file": "onnx_cpu/results/bus-20261009-122959-623-f1.csv",
+      "bytes": 275,
+      "sha256": "426f57f2267770893a707ae7695412f519d30aaad53af2e7faf19112d2c09717"
+    },
+    {
+      "file": "onnx_cpu/results/bus-20261009-122959-623-f1.json",
+      "bytes": 2582,
+      "sha256": "ede1fd3224795ea697484e6511d44c9194345943212a18a20db5ec2882b8e541",
+      "tracked": "packaged-qa-raw/gpu/onnx_cpu/results/bus-20261009-122959-623-f1.json"
+    },
+    {
+      "file": "onnx_cpu/results/bus-20261009-122959-623-f1.png",
+      "bytes": 1756580,
+      "sha256": "a695515485b703a2bc9b0f2e3638b6837866797c0542176d166d312cd0b925a2"
+    },
+    {
+      "file": "onnx_cpu/results/smoke-report.json",
+      "bytes": 282,
+      "sha256": "b2f843fe3e0dd122958bacc6442161e5e5b0618178101fc5b9f15a13333afdfd",
+      "tracked": "packaged-qa-raw/gpu/onnx_cpu/results/smoke-report.json"
+    },
+    {
+      "file": "onnx_cpu/results/workbench.png",
+      "bytes": 383683,
+      "sha256": "0ff8d89a4c66fa69c7e3de6e850703fcdbaae7c8183b919944d18c0a81b4f7dc"
+    },
+    {
+      "file": "pt_cpu/stderr.log",
+      "bytes": 448,
+      "sha256": "380b72633220d589dce5050df986673b1939f87b93322211aba1c0f4a198e11b",
+      "tracked": "packaged-qa-raw/gpu/pt_cpu/stderr.log"
+    },
+    {
+      "file": "pt_cpu/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked": "packaged-qa-raw/gpu/pt_cpu/stdout.log"
+    },
+    {
+      "file": "pt_cpu/data/vision-studio/history.json",
+      "bytes": 678,
+      "sha256": "1f2a5c707f275b083c2450e23fb7381d6371e85992dc1dcdc2743099fd1f377d"
+    },
+    {
+      "file": "pt_cpu/results/bus-20261009-123004-149-f1.csv",
+      "bytes": 275,
+      "sha256": "cff8fa072279ce6e3808e2a8ae987cdec4554f9b76b40e462c3e2f96bd57aa3f"
+    },
+    {
+      "file": "pt_cpu/results/bus-20261009-123004-149-f1.json",
+      "bytes": 2630,
+      "sha256": "a28daaca1bf8c15d1131d14e7bc9895d58dd5a34a1a5e01d8078086bef1f98d9",
+      "tracked": "packaged-qa-raw/gpu/pt_cpu/results/bus-20261009-123004-149-f1.json"
+    },
+    {
+      "file": "pt_cpu/results/bus-20261009-123004-149-f1.png",
+      "bytes": 1755904,
+      "sha256": "4735ba8516794a37fbbeea1ff63e289a000e9779d2f72b247b7344a5734cf2c8"
+    },
+    {
+      "file": "pt_cpu/results/smoke-report.json",
+      "bytes": 301,
+      "sha256": "16e5cce11020fe3732d4987492011d37075294e33aa7edd9899b229056801bd3",
+      "tracked": "packaged-qa-raw/gpu/pt_cpu/results/smoke-report.json"
+    },
+    {
+      "file": "pt_cpu/results/workbench.png",
+      "bytes": 383683,
+      "sha256": "5a1259e552f3afed03b6fa4ca9dc332b661892b2d84d60bf1f8f90c05fd92f77"
+    },
+    {
+      "file": "pt_cpu/ultralytics/Ultralytics/settings.json",
+      "bytes": 470,
+      "sha256": "82a48fbde96bb47095e3622bee6add7fa8e3830953ab52699e3d850a387628de"
+    },
+    {
+      "file": "pt_cpu/matplotlib/fontlist-v390.json",
+      "bytes": 115885,
+      "sha256": "232730a8bb1f8d08e8b3376d2c34a35af6402b7e2eac7429f7a21875020da7a5"
+    }
+  ]
+}

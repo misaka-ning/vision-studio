@@ -1,0 +1,1 @@
+{"success": true, "version": "2.1.0", "checks": {"packaged_onnx_cuda": true, "packaged_pt_cuda": true, "cpu_regression": true}, "errors": [], "report": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.1.0/gpu-install-qa.json"}

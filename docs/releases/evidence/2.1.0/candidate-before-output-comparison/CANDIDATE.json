@@ -1,0 +1,11 @@
+{
+  "version": "2.1.0",
+  "candidate_only": true,
+  "published": false,
+  "blocked_by": [
+    "OpenCV 4.5.4 reverses constant-left Sub in full YOLOv8 export",
+    "TorchScript cached CPU anchors conflict with CUDA input"
+  ],
+  "failure_evidence": "../conversion-gpu-proof/conversion-gpu-qa.json",
+  "earlier_tests_scope": "Earlier positive-count smoke and tiny-model comparison passed, but the later full-output CPU/CUDA comparison found these defects. They are not final release acceptance."
+}

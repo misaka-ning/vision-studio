@@ -1,0 +1,13 @@
+{
+    "actual_device": "cpu",
+    "backend": "PyTorch / Ultralytics / CPU",
+    "device_index": -1,
+    "device_name": "CPU",
+    "device_notice": "",
+    "error": "",
+    "inference_ms": 55.43374188710004,
+    "predictions": 5,
+    "qt": "6.8.3",
+    "requested_device": "cpu",
+    "success": true
+}
