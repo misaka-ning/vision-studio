@@ -1,5 +1,9 @@
 # Vision Studio
 
+📺 **[B 站视频介绍 · 点击观看](https://www.bilibili.com/video/BV1s8pe6cEXb/)**
+
+欢迎来 B 站看看我的 Vision Studio 项目介绍！如果觉得有帮助，欢迎**点赞、投币、收藏**支持，也欢迎在评论区交流使用体验和改进建议。
+
 **基于 C++17 / Qt 6.8 的本地 YOLO 推理、模型可视化与转换工具。** 支持 ONNX / PT 模型、图片与视频检测、摄像头输入、灰度与左右目处理、标注视频录制，以及结构图、层级树和参数表。
 
 [下载发行版](https://github.com/misaka-ning/vision-studio/releases) · [更新日志](CHANGELOG.md) · [使用指南](docs/使用指南.md) · [报告问题](https://github.com/misaka-ning/vision-studio/issues)
