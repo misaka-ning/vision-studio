@@ -25,11 +25,13 @@ jobs:
         with:
           persist-credentials: false
       - name: Check Python syntax
-        run: python3 -m py_compile scripts/*.py packaging/*.py docs/release/build_source_archive.py tests/*.py
+        run: python3 -m py_compile scripts/*.py packaging/*.py packaging/windows/*.py docs/release/build_source_archive.py tests/*.py
       - name: Test publish and retention safety with mocked GitHub
         run: python3 -m unittest discover -s tests -p github_release_tests.py -v
       - name: Test stable and beta package version metadata
         run: python3 -m unittest discover -s tests -p release_metadata_tests.py -v
+      - name: Test Windows supplement publication safety
+        run: python3 -m unittest discover -s tests -p windows_release_tests.py -v
       - name: Test GPU environment protection and cancellation without hardware
         run: python3 -m unittest discover -s tests -p gpu_runtime_tests.py -v
       - name: Validate version tags

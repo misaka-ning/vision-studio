@@ -1,0 +1,16 @@
+test_changed_linux_asset_is_rejected (windows_release_tests.WindowsReleaseTests.test_changed_linux_asset_is_rejected) ... ok
+test_changed_windows_asset_is_never_overwritten (windows_release_tests.WindowsReleaseTests.test_changed_windows_asset_is_never_overwritten) ... ok
+test_cli_output_uses_utf8_on_windows (windows_release_tests.WindowsReleaseTests.test_cli_output_uses_utf8_on_windows) ... ok
+test_dry_run_does_not_upload_or_edit (windows_release_tests.WindowsReleaseTests.test_dry_run_does_not_upload_or_edit) ... ok
+test_final_installer_tampering_is_rejected (windows_release_tests.WindowsReleaseTests.test_final_installer_tampering_is_rejected) ... ok
+test_missing_install_check_is_rejected (windows_release_tests.WindowsReleaseTests.test_missing_install_check_is_rejected) ... ok
+test_notes_changed_since_baseline_is_rejected (windows_release_tests.WindowsReleaseTests.test_notes_changed_since_baseline_is_rejected) ... ok
+test_publishes_three_windows_files_and_preserves_linux (windows_release_tests.WindowsReleaseTests.test_publishes_three_windows_files_and_preserves_linux) ... ok
+test_retry_is_idempotent (windows_release_tests.WindowsReleaseTests.test_retry_is_idempotent) ... ok
+test_verify_requires_public_notes (windows_release_tests.WindowsReleaseTests.test_verify_requires_public_notes) ... ok
+test_wrong_source_tag_is_rejected (windows_release_tests.WindowsReleaseTests.test_wrong_source_tag_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.256s
+
+OK

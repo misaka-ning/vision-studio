@@ -8,7 +8,7 @@
 
 [下载发行版](https://github.com/misaka-ning/vision-studio/releases) · [更新日志](CHANGELOG.md) · [使用指南](docs/使用指南.md) · [报告问题](https://github.com/misaka-ning/vision-studio/issues)
 
-当前版本：**2.1.0**，新增模型库右键管理与 PT → ONNX / TorchScript 转换。界面保留 [Fluent-Qt](https://github.com/calvinhxx/Fluent-Qt) 风格。CPU／NVIDIA GPU、ONNX／PT、灰度和左右目处理沿用现有约定。发行平台：**Ubuntu 22.04 LTS amd64**。应用代码采用 **AGPL-3.0-only**。
+当前版本：**2.1.0**，新增模型库右键管理与 PT → ONNX / TorchScript 转换。界面保留 [Fluent-Qt](https://github.com/calvinhxx/Fluent-Qt) 风格。CPU／NVIDIA GPU、ONNX／PT、灰度和左右目处理沿用现有约定。发行平台：**Ubuntu 22.04 LTS amd64、Windows x64**（已在 Windows 11 验收）。应用代码采用 **AGPL-3.0-only**。
 
 ![V2.0 Fluent 风格检测工作台：RTX 4060 实际 CUDA 推理](docs/preview.png)
 

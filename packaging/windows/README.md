@@ -43,4 +43,4 @@ Windows C++ OpenCV 4.12.0 的视频插件标识 FFmpeg 4.4.6，Python OpenCV 4.1
 
 对最终安装包至少核验：安装到中文和含空格的目录、默认目录展开、开始菜单／桌面入口、隔离开发环境后的 ONNX／PT 推理、模型三种视图、ONNX／TorchScript 导出后实际推理、录像解码、升级与卸载保留用户数据、文件清单与安装包 SHA256。GPU 单独在 NVIDIA 硬件上实测，不用 CPU 结果代替。
 
-当前 Windows 打包流程独立于 Linux `github_release.py` 的三个附件规则；若后续要将 Windows 包纳入正式公开发行，需要同步维护多平台发布规则，不能修改历史核心附件或复用同名资产覆盖内容。
+Windows 补充包通过 `scripts/github_release.py append-windows` 上传到同版 Release，另附 Windows 应用源码 ZIP 与 `SHA256SUMS-windows-x64`。Linux 原来的三个附件与 `vX.Y.Z` 标签不变，Windows 实际源码通过 `windows/X.Y.Z-1` 追溯。补充发布前后都检查原附件 ID、大小、SHA256 与原标签，已存在的同名 Windows 文件只核验、绝不覆盖；QA 继续随仓库保存。完整规则见 [版本管理](../../docs/版本管理.md)。

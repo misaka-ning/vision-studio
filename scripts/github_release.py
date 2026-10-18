@@ -28,6 +28,7 @@ from __future__ import annotations
 import argparse
 from dataclasses import dataclass
 import hashlib
+import io
 import json
 import os
 from pathlib import Path, PurePosixPath
@@ -36,8 +37,10 @@ import shutil
 import stat
 import subprocess
 import sys
+import tarfile
 import tempfile
 import time
+import zipfile
 from urllib.parse import quote
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -214,7 +217,7 @@ def validate_bundle(directory: Path, version: str, require_qa: bool = True) -> l
 
 
 def command(arguments: list[str], cwd: Path | None = None) -> str:
-    result = subprocess.run(arguments, cwd=cwd, text=True, stdout=subprocess.PIPE,
+    result = subprocess.run(arguments, cwd=cwd, text=True, encoding="utf-8", stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE, check=False)
     if result.returncode:
         raise ReleaseError(f"Command failed ({result.returncode}): {arguments[0]} "
@@ -234,7 +237,7 @@ class GitHub:
 
     def release(self, tag: str) -> dict | None:
         result = subprocess.run(["gh", "api", f"repos/{self.repository}/releases/tags/{quote(tag, safe='')}"],
-                                text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                text=True, encoding="utf-8", stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                 check=False)
         if result.returncode:
             if "(HTTP 404)" not in result.stderr:
@@ -444,6 +447,141 @@ def verify(args: argparse.Namespace, github: GitHub) -> dict:
             "verified_assets": github.verify_assets(release, assets)}
 
 
+def windows_bundle(args: argparse.Namespace) -> tuple[list[Asset], dict]:
+    """Audit the immutable Windows supplement without changing Linux delivery."""
+    version_key(args.version)
+    root = canonical_directory(args.release_dir)
+    evidence = args.project_dir / "docs/releases/evidence" / args.version / "windows"
+    baseline = json.loads((evidence / "release-before-windows.json").read_text(encoding="utf-8-sig"))
+    qa = json.loads((evidence / "windows-package-qa.json").read_text(encoding="utf-8"))
+    install_qa = json.loads((evidence / "installer-qa.json").read_text(encoding="utf-8"))
+    installer = f"vision-studio-{args.version}-windows-x64-setup.exe"
+    source = f"vision-studio-{args.version}-windows-sources.zip"
+    manifest = "SHA256SUMS-windows-x64"
+    entries = read_manifest(root, manifest)
+    if set(entries) != {installer, source}:
+        raise ReleaseError("Windows manifest must list exactly the installer and Windows source ZIP")
+    assets = [make_asset(root, name) for name in (installer, source, manifest)]
+    if any(asset.size >= 2 * 1024**3 for asset in assets):
+        raise ReleaseError("Every GitHub asset must be smaller than 2 GiB")
+    if (qa.get("success") is not True or qa.get("version") != args.version
+            or qa.get("package_revision") != "windows.1"
+            or qa.get("installer", {}).get("sha256") != entries[installer]
+            or qa.get("source_snapshot", {}).get("sha256") != entries[source]
+            or install_qa.get("success") is not True
+            or install_qa.get("sha256") != entries[installer]):
+        raise ReleaseError("Windows QA must bind the final installer and source ZIP")
+    required = {"install-custom-directory", "all-payload-paths-and-sizes", "installed-onnx-cpu",
+                "installed-pt-cpu", "installed-model-views", "installed-conversion-onnx",
+                "installed-conversion-torchscript", "installed-onnx-cuda", "installed-pt-cuda",
+                "upgrade-reinstall", "upgrade-preserves-user-files", "uninstall",
+                "uninstall-preserves-user-files"}
+    passed = {check["name"] for check in install_qa.get("checks", []) if check.get("passed") is True}
+    if not required.issubset(passed):
+        raise ReleaseError("Windows installation acceptance is incomplete")
+    source_tag = f"windows/{args.version}-1"
+    # Compare the delivered snapshot with the separate, annotated provenance tag.
+    # Git may normalize CRLF; the ZIP retains original distributed bytes.
+    result = subprocess.run(["git", "archive", "--format=tar", source_tag], cwd=args.project_dir,
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    if result.returncode:
+        raise ReleaseError("Windows source provenance tag is missing")
+    with zipfile.ZipFile(root / source) as archive, tarfile.open(fileobj=io.BytesIO(result.stdout)) as tree:
+        prefix = f"vision-studio-{args.version}-windows-sources/"
+        snapshot = json.loads(archive.read(prefix + "WINDOWS-SOURCE-SNAPSHOT.json"))
+        names = set()
+        for record in snapshot["files"]:
+            path = record["path"]
+            if path in names or ".." in PurePosixPath(path).parts or path.startswith("/"):
+                raise ReleaseError("Unsafe or duplicate source snapshot path")
+            names.add(path)
+            data = archive.read(prefix + path)
+            if hashlib.sha256(data).hexdigest() != record["sha256"]:
+                raise ReleaseError(f"Corrupt source snapshot: {path}")
+            if path == ".gitattributes":
+                continue  # Added byte-preservation rules after freezing the package.
+            committed = tree.extractfile(path)
+            if committed is None or committed.read().replace(b"\r\n", b"\n") != data.replace(b"\r\n", b"\n"):
+                raise ReleaseError(f"Windows source tag differs from delivered source: {path}")
+        if len(archive.namelist()) != len(names) + 1:
+            raise ReleaseError("Unexpected files in Windows source snapshot")
+    return assets, baseline
+
+
+def windows_release(args: argparse.Namespace, github: GitHub) -> dict:
+    assets, baseline = windows_bundle(args)
+    tag = f"v{args.version}"
+    source_tag = f"windows/{args.version}-1"
+    source_commit = command(["git", "rev-parse", f"{source_tag}^{{commit}}"], args.project_dir).strip()
+    if github.remote_commit(source_tag) != source_commit:
+        raise ReleaseError("Windows source provenance tag must be pushed first")
+    release = github.release(tag)
+    if not release or release.get("draft") or not release.get("published_at"):
+        raise ReleaseError("Windows supplement requires an already published release")
+    check_release_type(release, args.version)
+    if release["id"] != baseline["release_id"] or baseline["tag_name"] != tag:
+        raise ReleaseError("Windows supplement baseline refers to another release")
+
+    def preserve_existing(value: dict) -> list[dict]:
+        if github.remote_commit(tag) != baseline["tag_commit"]:
+            raise ReleaseError("Original release tag changed")
+        rows = {row["name"]: row for row in github.assets(value)}
+        checked = []
+        for original in baseline["assets"]:
+            row = rows.get(original["name"])
+            if (not row or row["id"] != original["id"] or row["size"] != original["size"]
+                    or row.get("digest") != original["digest"] or row.get("state") != "uploaded"):
+                raise ReleaseError(f"Original release asset changed: {original['name']}")
+            checked.append({"name": row["name"], "bytes": row["size"], "digest": row["digest"]})
+        return checked
+
+    protected = preserve_existing(release)
+    verified = github.verify_assets(release, assets, allow_missing=args.operation == "append-windows")
+    plan = {"success": True, "operation": args.operation, "tag": tag, "source_tag": source_tag,
+            "source_commit": source_commit, "url": release["html_url"],
+            "protected_assets": protected, "assets": [asset.metadata() for asset in assets]}
+    if args.operation == "verify-windows":
+        if f"<!-- windows-{args.version}-1 -->" not in (release.get("body") or ""):
+            raise ReleaseError("Windows release notes are missing")
+        plan["verified_assets"] = verified
+        return plan
+    notes = args.notes_file.read_text(encoding="utf-8").strip()
+    marker = f"<!-- windows-{args.version}-1 -->"
+    if marker not in notes or f"/tree/{source_commit}/" not in notes:
+        raise ReleaseError("Windows notes must identify the supplement and committed source evidence")
+    body = release.get("body") or ""
+    original_body = baseline["body"] or ""
+    expected_body = original_body.rstrip() + "\n\n---\n\n" + notes + "\n"
+    if body not in (original_body, expected_body):
+        raise ReleaseError("Release notes changed since baseline; inspect before appending")
+    if args.dry_run:
+        plan["dry_run"] = True
+        return plan
+    existing = {row["name"] for row in verified}
+    for asset in assets:
+        if asset.name not in existing:
+            command(["gh", "release", "upload", tag, str(asset.path), "--repo", github.repository])
+    plan["verified_assets"] = github.verify_assets(release, assets)
+    preserve_existing(release)
+    latest = github.release(tag)
+    if not latest or (latest.get("body") or "") != body:
+        raise ReleaseError("Release notes changed during upload; supplementary assets remain verified")
+    # Append only after all three supplementary files have verified successfully.
+    if body != expected_body:
+        with tempfile.TemporaryDirectory(prefix="vision-windows-notes-") as temporary:
+            path = Path(temporary) / "notes.md"
+            path.write_text(expected_body, encoding="utf-8")
+            command(["gh", "release", "edit", tag, "--repo", github.repository, "--notes-file", str(path)])
+    after = github.release(tag)
+    if not after or after.get("body") != expected_body:
+        raise ReleaseError("Windows release notes were not saved as expected")
+    check_release_type(after, args.version)
+    plan["protected_assets"] = preserve_existing(after)
+    if github.remote_commit(source_tag) != source_commit:
+        raise ReleaseError("Windows source provenance tag changed during upload")
+    return plan
+
+
 def cleanup_root(path: Path) -> Path:
     root = canonical_directory(path)
     if root.name != "releases":
@@ -567,6 +705,15 @@ def parser() -> argparse.ArgumentParser:
             item.add_argument("--resume-draft", action="store_true")
         else:
             item.add_argument("--legacy", action="store_true", help="Verify critical archives/manifests without newer QA reports")
+    for operation in ("append-windows", "verify-windows"):
+        item = sub.add_parser(operation, help="Add or audit an immutable Windows supplement")
+        item.add_argument("--repo", default=DEFAULT_REPOSITORY)
+        item.add_argument("--version", required=True)
+        item.add_argument("--release-dir", required=True, type=Path)
+        item.add_argument("--project-dir", type=Path, default=Path(__file__).resolve().parent.parent)
+        if operation == "append-windows":
+            item.add_argument("--notes-file", required=True, type=Path)
+            item.add_argument("--dry-run", action="store_true")
     item = sub.add_parser("prune")
     item.add_argument("--repo", default=DEFAULT_REPOSITORY)
     item.add_argument("--releases-root", required=True, type=Path)
@@ -580,7 +727,8 @@ def main() -> int:
     args = parser().parse_args()
     try:
         github = GitHub(args.repo)
-        result = {"publish": publish, "verify": verify, "prune": prune}[args.operation](args, github)
+        result = {"publish": publish, "verify": verify, "prune": prune,
+                  "append-windows": windows_release, "verify-windows": windows_release}[args.operation](args, github)
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
     except (ReleaseError, OSError, ValueError, KeyError) as error:
