@@ -7,10 +7,11 @@ test_missing_install_check_is_rejected (windows_release_tests.WindowsReleaseTest
 test_notes_changed_since_baseline_is_rejected (windows_release_tests.WindowsReleaseTests.test_notes_changed_since_baseline_is_rejected) ... ok
 test_publishes_three_windows_files_and_preserves_linux (windows_release_tests.WindowsReleaseTests.test_publishes_three_windows_files_and_preserves_linux) ... ok
 test_retry_is_idempotent (windows_release_tests.WindowsReleaseTests.test_retry_is_idempotent) ... ok
+test_retry_repairs_crlf_only_notes_without_reupload (windows_release_tests.WindowsReleaseTests.test_retry_repairs_crlf_only_notes_without_reupload) ... ok
 test_verify_requires_public_notes (windows_release_tests.WindowsReleaseTests.test_verify_requires_public_notes) ... ok
 test_wrong_source_tag_is_rejected (windows_release_tests.WindowsReleaseTests.test_wrong_source_tag_is_rejected) ... ok
 
 ----------------------------------------------------------------------
-Ran 11 tests in 0.256s
+Ran 12 tests in 0.271s
 
 OK

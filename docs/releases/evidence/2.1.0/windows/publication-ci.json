@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "runner": "ubuntu-24.04",
+  "source_commit": "ed8fef68aa222f20209b13624c799ce37f112c34",
+  "workflow_run": "https://github.com/misaka-ning/vision-studio/actions/runs/39102758876",
+  "checks": {
+    "python_syntax": true,
+    "linux_release_and_retention_safety": {"passed": 48, "failed": 0},
+    "stable_beta_version_metadata": {"passed": 11, "failed": 0},
+    "windows_supplement_publication_safety": {"passed": 12, "failed": 0},
+    "gpu_environment_safety_without_hardware": {"passed": 21, "failed": 0}
+  },
+  "scope": "Source and publication tooling. Actual Windows installation and CPU/CUDA inference evidence is recorded separately and bound to the final installer SHA256.",
+  "windows_local_linux_tests": "43/48 passed; 5 require POSIX descriptor-based rmtree or symbolic-link privileges unavailable on this Windows host. All 48 passed on the Ubuntu runner. Original Windows failure output is retained in linux-release-tests-on-windows.log.",
+  "raw_log": "publication-ci-final.log"
+}

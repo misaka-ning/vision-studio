@@ -1,0 +1,281 @@
+source-checks	Set up job	﻿2026-10-18T05:59:25.3971278Z Current runner version: '2.337.0'
+source-checks	Set up job	2026-10-18T05:59:25.3997125Z ##[group]Runner Image Provisioner
+source-checks	Set up job	2026-10-18T05:59:25.3998252Z Hosted Compute Agent
+source-checks	Set up job	2026-10-18T05:59:25.3998805Z Version: 20261012.601
+source-checks	Set up job	2026-10-18T05:59:25.3999411Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+source-checks	Set up job	2026-10-18T05:59:25.4000128Z Build Date: 2026-10-12T17:48:21Z
+source-checks	Set up job	2026-10-18T05:59:25.4000751Z Worker ID: {7f572655-0a7c-4a67-9384-4728192dcf50}
+source-checks	Set up job	2026-10-18T05:59:25.4001388Z Region: westus3
+source-checks	Set up job	2026-10-18T05:59:25.4001949Z Cloud: Azure
+source-checks	Set up job	2026-10-18T05:59:25.4002452Z ##[endgroup]
+source-checks	Set up job	2026-10-18T05:59:25.4004249Z ##[group]Operating System
+source-checks	Set up job	2026-10-18T05:59:25.4004852Z Ubuntu
+source-checks	Set up job	2026-10-18T05:59:25.4005340Z 24.04.5
+source-checks	Set up job	2026-10-18T05:59:25.4005856Z LTS
+source-checks	Set up job	2026-10-18T05:59:25.4006337Z ##[endgroup]
+source-checks	Set up job	2026-10-18T05:59:25.4006856Z ##[group]Runner Image
+source-checks	Set up job	2026-10-18T05:59:25.4007413Z Image: ubuntu-24.04
+source-checks	Set up job	2026-10-18T05:59:25.4008057Z Version: 20261012.334.1
+source-checks	Set up job	2026-10-18T05:59:25.4009064Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+source-checks	Set up job	2026-10-18T05:59:25.4010702Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+source-checks	Set up job	2026-10-18T05:59:25.4011574Z ##[endgroup]
+source-checks	Set up job	2026-10-18T05:59:25.4012614Z ##[group]GITHUB_TOKEN Permissions
+source-checks	Set up job	2026-10-18T05:59:25.4014741Z Contents: read
+source-checks	Set up job	2026-10-18T05:59:25.4015304Z Metadata: read
+source-checks	Set up job	2026-10-18T05:59:25.4015904Z ##[endgroup]
+source-checks	Set up job	2026-10-18T05:59:25.4018121Z Secret source: Actions
+source-checks	Set up job	2026-10-18T05:59:25.4019121Z Cache mode: write
+source-checks	Set up job	2026-10-18T05:59:25.4019961Z Prepare workflow directory
+source-checks	Set up job	2026-10-18T05:59:25.4386597Z Prepare all required actions
+source-checks	Set up job	2026-10-18T05:59:25.4435166Z Getting action download info
+source-checks	Set up job	2026-10-18T05:59:25.7200601Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+source-checks	Set up job	2026-10-18T05:59:25.8990564Z Complete job name: source-checks
+source-checks	Checkout source	﻿2026-10-18T05:59:25.9696145Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+source-checks	Checkout source	2026-10-18T05:59:25.9697414Z with:
+source-checks	Checkout source	2026-10-18T05:59:25.9698258Z   persist-credentials: false
+source-checks	Checkout source	2026-10-18T05:59:25.9698880Z   repository: misaka-ning/vision-studio
+source-checks	Checkout source	2026-10-18T05:59:25.9702798Z   token: ***
+source-checks	Checkout source	2026-10-18T05:59:25.9703303Z   ssh-strict: true
+source-checks	Checkout source	2026-10-18T05:59:25.9703776Z   ssh-user: git
+source-checks	Checkout source	2026-10-18T05:59:25.9704273Z   clean: true
+source-checks	Checkout source	2026-10-18T05:59:25.9704762Z   sparse-checkout-cone-mode: true
+source-checks	Checkout source	2026-10-18T05:59:25.9705304Z   fetch-depth: 1
+source-checks	Checkout source	2026-10-18T05:59:25.9705862Z   fetch-tags: false
+source-checks	Checkout source	2026-10-18T05:59:25.9706341Z   show-progress: true
+source-checks	Checkout source	2026-10-18T05:59:25.9706848Z   lfs: false
+source-checks	Checkout source	2026-10-18T05:59:25.9707321Z   submodules: false
+source-checks	Checkout source	2026-10-18T05:59:25.9707826Z   set-safe-directory: true
+source-checks	Checkout source	2026-10-18T05:59:25.9708869Z ##[endgroup]
+source-checks	Checkout source	2026-10-18T05:59:26.0853446Z Syncing repository: misaka-ning/vision-studio
+source-checks	Checkout source	2026-10-18T05:59:26.0855614Z ##[group]Getting Git version info
+source-checks	Checkout source	2026-10-18T05:59:26.0856849Z Working directory is '/home/runner/work/vision-studio/vision-studio'
+source-checks	Checkout source	2026-10-18T05:59:26.0858722Z [command]/usr/bin/git version
+source-checks	Checkout source	2026-10-18T05:59:26.0921971Z git version 2.55.0
+source-checks	Checkout source	2026-10-18T05:59:26.0944951Z ##[endgroup]
+source-checks	Checkout source	2026-10-18T05:59:26.0961674Z Temporarily overriding HOME='/home/runner/work/_temp/607c951f-e470-4b06-add6-9cfbe5d73fab' before making global git config changes
+source-checks	Checkout source	2026-10-18T05:59:26.0963721Z Adding repository directory to the temporary git global config as a safe directory
+source-checks	Checkout source	2026-10-18T05:59:26.0968636Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/vision-studio/vision-studio
+source-checks	Checkout source	2026-10-18T05:59:26.1020131Z Deleting the contents of '/home/runner/work/vision-studio/vision-studio'
+source-checks	Checkout source	2026-10-18T05:59:26.1026036Z ##[group]Initializing the repository
+source-checks	Checkout source	2026-10-18T05:59:26.1032718Z [command]/usr/bin/git init /home/runner/work/vision-studio/vision-studio
+source-checks	Checkout source	2026-10-18T05:59:26.1125273Z hint: Using 'master' as the name for the initial branch. This default branch name
+source-checks	Checkout source	2026-10-18T05:59:26.1127142Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+source-checks	Checkout source	2026-10-18T05:59:26.1129436Z hint: to use in all of your new repositories, which will suppress this warning,
+source-checks	Checkout source	2026-10-18T05:59:26.1130514Z hint: call:
+source-checks	Checkout source	2026-10-18T05:59:26.1131178Z hint:
+source-checks	Checkout source	2026-10-18T05:59:26.1132210Z hint: 	git config --global init.defaultBranch <name>
+source-checks	Checkout source	2026-10-18T05:59:26.1133040Z hint:
+source-checks	Checkout source	2026-10-18T05:59:26.1133830Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+source-checks	Checkout source	2026-10-18T05:59:26.1135086Z hint: 'development'. The just-created branch can be renamed via this command:
+source-checks	Checkout source	2026-10-18T05:59:26.1135855Z hint:
+source-checks	Checkout source	2026-10-18T05:59:26.1136459Z hint: 	git branch -m <name>
+source-checks	Checkout source	2026-10-18T05:59:26.1137195Z hint:
+source-checks	Checkout source	2026-10-18T05:59:26.1138513Z hint: Disable this message with "git config set advice.defaultBranchName false"
+source-checks	Checkout source	2026-10-18T05:59:26.1140293Z Initialized empty Git repository in /home/runner/work/vision-studio/vision-studio/.git/
+source-checks	Checkout source	2026-10-18T05:59:26.1141907Z [command]/usr/bin/git remote add origin https://github.com/misaka-ning/vision-studio
+source-checks	Checkout source	2026-10-18T05:59:26.1188163Z ##[endgroup]
+source-checks	Checkout source	2026-10-18T05:59:26.1189733Z ##[group]Disabling automatic garbage collection
+source-checks	Checkout source	2026-10-18T05:59:26.1192371Z [command]/usr/bin/git config --local gc.auto 0
+source-checks	Checkout source	2026-10-18T05:59:26.1220351Z ##[endgroup]
+source-checks	Checkout source	2026-10-18T05:59:26.1221720Z ##[group]Setting up auth
+source-checks	Checkout source	2026-10-18T05:59:26.1227126Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+source-checks	Checkout source	2026-10-18T05:59:26.1254561Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+source-checks	Checkout source	2026-10-18T05:59:26.1562091Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+source-checks	Checkout source	2026-10-18T05:59:26.1596877Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+source-checks	Checkout source	2026-10-18T05:59:26.1800781Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+source-checks	Checkout source	2026-10-18T05:59:26.1836743Z ##[endgroup]
+source-checks	Checkout source	2026-10-18T05:59:26.1838210Z ##[group]Fetching the repository
+source-checks	Checkout source	2026-10-18T05:59:26.1847801Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +c2bdad6d4bedb428ca21d7b58e42133cc668d43e:refs/remotes/pull/8/merge
+source-checks	Checkout source	2026-10-18T05:59:28.8071321Z From https://github.com/misaka-ning/vision-studio
+source-checks	Checkout source	2026-10-18T05:59:28.8074228Z  * [new ref]         c2bdad6d4bedb428ca21d7b58e42133cc668d43e -> pull/8/merge
+source-checks	Checkout source	2026-10-18T05:59:28.8080312Z ##[endgroup]
+source-checks	Checkout source	2026-10-18T05:59:28.8082721Z ##[group]Determining the checkout info
+source-checks	Checkout source	2026-10-18T05:59:28.8085386Z ##[endgroup]
+source-checks	Checkout source	2026-10-18T05:59:28.8087099Z [command]/usr/bin/git sparse-checkout disable
+source-checks	Checkout source	2026-10-18T05:59:28.8129827Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+source-checks	Checkout source	2026-10-18T05:59:28.8156930Z ##[group]Checking out the ref
+source-checks	Checkout source	2026-10-18T05:59:28.8161416Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/8/merge
+source-checks	Checkout source	2026-10-18T05:59:29.2832530Z Note: switching to 'refs/remotes/pull/8/merge'.
+source-checks	Checkout source	2026-10-18T05:59:29.2833421Z 
+source-checks	Checkout source	2026-10-18T05:59:29.2833807Z You are in 'detached HEAD' state. You can look around, make experimental
+source-checks	Checkout source	2026-10-18T05:59:29.2834771Z changes and commit them, and you can discard any commits you make in this
+source-checks	Checkout source	2026-10-18T05:59:29.2835797Z state without impacting any branches by switching back to a branch.
+source-checks	Checkout source	2026-10-18T05:59:29.2836385Z 
+source-checks	Checkout source	2026-10-18T05:59:29.2836840Z If you want to create a new branch to retain commits you create, you may
+source-checks	Checkout source	2026-10-18T05:59:29.2837799Z do so (now or later) by using -c with the switch command. Example:
+source-checks	Checkout source	2026-10-18T05:59:29.2838573Z 
+source-checks	Checkout source	2026-10-18T05:59:29.2838821Z   git switch -c <new-branch-name>
+source-checks	Checkout source	2026-10-18T05:59:29.2839209Z 
+source-checks	Checkout source	2026-10-18T05:59:29.2839441Z Or undo this operation with:
+source-checks	Checkout source	2026-10-18T05:59:29.2839770Z 
+source-checks	Checkout source	2026-10-18T05:59:29.2839959Z   git switch -
+source-checks	Checkout source	2026-10-18T05:59:29.2840222Z 
+source-checks	Checkout source	2026-10-18T05:59:29.2840684Z Turn off this advice by setting config variable advice.detachedHead to false
+source-checks	Checkout source	2026-10-18T05:59:29.2841315Z 
+source-checks	Checkout source	2026-10-18T05:59:29.2842283Z HEAD is now at c2bdad6 Merge c96829b498c2e70574967021a316770434d28e7c into 660e82b4642010b325bc03f0109a7c14c79eb6ff
+source-checks	Checkout source	2026-10-18T05:59:29.2856456Z ##[endgroup]
+source-checks	Checkout source	2026-10-18T05:59:29.2903676Z [command]/usr/bin/git log -1 --format=%H
+source-checks	Checkout source	2026-10-18T05:59:29.2925907Z c2bdad6d4bedb428ca21d7b58e42133cc668d43e
+source-checks	Checkout source	2026-10-18T05:59:29.2934095Z ##[group]Removing auth
+source-checks	Checkout source	2026-10-18T05:59:29.2937401Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+source-checks	Checkout source	2026-10-18T05:59:29.2963296Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+source-checks	Checkout source	2026-10-18T05:59:29.3145281Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+source-checks	Checkout source	2026-10-18T05:59:29.3169536Z http.https://github.com/.extraheader
+source-checks	Checkout source	2026-10-18T05:59:29.3176441Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+source-checks	Checkout source	2026-10-18T05:59:29.3205056Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+source-checks	Checkout source	2026-10-18T05:59:29.3381375Z ##[endgroup]
+source-checks	Check Python syntax	﻿2026-10-18T05:59:29.3573528Z ##[group]Run python3 -m py_compile scripts/*.py packaging/*.py packaging/windows/*.py docs/release/build_source_archive.py tests/*.py
+source-checks	Check Python syntax	2026-10-18T05:59:29.3574743Z ^[[36;1mpython3 -m py_compile scripts/*.py packaging/*.py packaging/windows/*.py docs/release/build_source_archive.py tests/*.py^[[0m
+source-checks	Check Python syntax	2026-10-18T05:59:29.3755043Z shell: /usr/bin/bash -e {0}
+source-checks	Check Python syntax	2026-10-18T05:59:29.3755493Z ##[endgroup]
+source-checks	Test publish and retention safety with mocked GitHub	﻿2026-10-18T05:59:29.5010469Z ##[group]Run python3 -m unittest discover -s tests -p github_release_tests.py -v
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.5011109Z ^[[36;1mpython3 -m unittest discover -s tests -p github_release_tests.py -v^[[0m
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.5050836Z shell: /usr/bin/bash -e {0}
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.5051189Z ##[endgroup]
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6107259Z test_auth_network_and_list_permission_errors_do_not_become_missing (github_release_tests.GitHubReadTests.test_auth_network_and_list_permission_errors_do_not_become_missing) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6112323Z test_by_tag_404_finds_draft_through_paginated_list (github_release_tests.GitHubReadTests.test_by_tag_404_finds_draft_through_paginated_list) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6114013Z test_by_tag_published_does_not_need_list (github_release_tests.GitHubReadTests.test_by_tag_published_does_not_need_list) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6118398Z test_duplicate_tag_drafts_across_pages_are_rejected (github_release_tests.GitHubReadTests.test_duplicate_tag_drafts_across_pages_are_rejected) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6122136Z test_missing_and_malformed_lists_are_distinct (github_release_tests.GitHubReadTests.test_missing_and_malformed_lists_are_distinct) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6125211Z test_mutation_read_auth_error_is_not_retried (github_release_tests.GitHubReadTests.test_mutation_read_auth_error_is_not_retried) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6132765Z test_mutation_reads_retry_only_within_short_bound (github_release_tests.GitHubReadTests.test_mutation_reads_retry_only_within_short_bound) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6142825Z test_published_tag_checks_local_commit_and_version_without_head (github_release_tests.GitHubReadTests.test_published_tag_checks_local_commit_and_version_without_head) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6224215Z test_beta_and_stable_wrong_draft_types_are_refused (github_release_tests.ReleaseTests.test_beta_and_stable_wrong_draft_types_are_refused) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6278748Z test_beta_bundle_uses_safe_filename_and_three_assets (github_release_tests.ReleaseTests.test_beta_bundle_uses_safe_filename_and_three_assets) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6392211Z test_beta_does_not_displace_or_delete_stable_backups (github_release_tests.ReleaseTests.test_beta_does_not_displace_or_delete_stable_backups) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6469527Z test_beta_dry_run_and_published_release_are_never_mutated (github_release_tests.ReleaseTests.test_beta_dry_run_and_published_release_are_never_mutated) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6523588Z test_beta_matching_draft_can_resume_without_overwriting_asset (github_release_tests.ReleaseTests.test_beta_matching_draft_can_resume_without_overwriting_asset) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6570592Z test_beta_publish_is_prerelease_and_preserves_latest_stable (github_release_tests.ReleaseTests.test_beta_publish_is_prerelease_and_preserves_latest_stable) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6611411Z test_beta_requires_same_full_gpu_qa_as_stable (github_release_tests.ReleaseTests.test_beta_requires_same_full_gpu_qa_as_stable) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6643975Z test_beta_source_inventory_cannot_claim_a_different_debian_version (github_release_tests.ReleaseTests.test_beta_source_inventory_cannot_claim_a_different_debian_version) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6662903Z test_beta_tag_requires_full_application_metadata_and_matching_numeric_base (github_release_tests.ReleaseTests.test_beta_tag_requires_full_application_metadata_and_matching_numeric_base) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6749848Z test_beta_verify_accepts_only_published_prerelease_with_matching_assets (github_release_tests.ReleaseTests.test_beta_verify_accepts_only_published_prerelease_with_matching_assets) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6857071Z test_draft_unexpected_asset_or_digest_mismatch_protects_release (github_release_tests.ReleaseTests.test_draft_unexpected_asset_or_digest_mismatch_protects_release) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6895921Z test_draft_verified_before_publish_and_no_overwrite (github_release_tests.ReleaseTests.test_draft_verified_before_publish_and_no_overwrite) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6931860Z test_dry_run_does_not_create_or_upload (github_release_tests.ReleaseTests.test_dry_run_does_not_create_or_upload) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.6951361Z test_duplicate_manifest_path_rejected (github_release_tests.ReleaseTests.test_duplicate_manifest_path_rejected) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.7013620Z test_existing_draft_requires_explicit_resume (github_release_tests.ReleaseTests.test_existing_draft_requires_explicit_resume) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.7051759Z test_existing_published_release_is_never_modified (github_release_tests.ReleaseTests.test_existing_published_release_is_never_modified) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.7099171Z test_failed_or_other_deb_qa_rejected (github_release_tests.ReleaseTests.test_failed_or_other_deb_qa_rejected) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.7284439Z test_gpu_release_rejects_unverified_packaged_cuda (github_release_tests.ReleaseTests.test_gpu_release_rejects_unverified_packaged_cuda) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.7323943Z test_gpu_release_requires_real_gpu_report (github_release_tests.ReleaseTests.test_gpu_release_requires_real_gpu_report) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.7386637Z test_gpu_report_must_match_deb_and_version (github_release_tests.ReleaseTests.test_gpu_report_must_match_deb_and_version) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.7411559Z test_inventory_version_rejected_even_with_matching_hash (github_release_tests.ReleaseTests.test_inventory_version_rejected_even_with_matching_hash) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.7427117Z test_manifest_traversal_rejected (github_release_tests.ReleaseTests.test_manifest_traversal_rejected) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.7444369Z test_missing_and_corrupt_checksums_rejected (github_release_tests.ReleaseTests.test_missing_and_corrupt_checksums_rejected) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.7477332Z test_passing_bundle_has_expected_archives_and_qa (github_release_tests.ReleaseTests.test_passing_bundle_has_expected_archives_and_qa) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.7625795Z test_prune_numeric_versions_preserves_latest_two_and_unknown_files (github_release_tests.ReleaseTests.test_prune_numeric_versions_preserves_latest_two_and_unknown_files) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.7731468Z test_prune_remote_tag_change_protects_snapshot (github_release_tests.ReleaseTests.test_prune_remote_tag_change_protects_snapshot) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.8084601Z test_prune_retained_draft_missing_or_prerelease_protects_all_old_versions (github_release_tests.ReleaseTests.test_prune_retained_draft_missing_or_prerelease_protects_all_old_versions) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.8555134Z test_prune_retained_release_missing_or_corrupt_asset_protects_all_old_versions (github_release_tests.ReleaseTests.test_prune_retained_release_missing_or_corrupt_asset_protects_all_old_versions) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.8569678Z test_prune_root_scope_and_repository_are_restricted (github_release_tests.ReleaseTests.test_prune_root_scope_and_repository_are_restricted) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.8590231Z test_prune_symlink_version_is_rejected_and_target_preserved (github_release_tests.ReleaseTests.test_prune_symlink_version_is_rejected_and_target_preserved) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.8747542Z test_prune_unpublished_checksum_bad_or_userdata_cannot_delete (github_release_tests.ReleaseTests.test_prune_unpublished_checksum_bad_or_userdata_cannot_delete) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.8779770Z test_public_checksum_manifest_cannot_require_an_unattached_split_archive (github_release_tests.ReleaseTests.test_public_checksum_manifest_cannot_require_an_unattached_split_archive) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.8795830Z test_remote_missing_digest_downloads_and_hashes (github_release_tests.ReleaseTests.test_remote_missing_digest_downloads_and_hashes) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.8809786Z test_remote_state_size_and_digest_all_required (github_release_tests.ReleaseTests.test_remote_state_size_and_digest_all_required) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.8830280Z test_symlink_source_rejected (github_release_tests.ReleaseTests.test_symlink_source_rejected) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.8846692Z test_tag_version_commit_and_dirty_checks (github_release_tests.ReleaseTests.test_tag_version_commit_and_dirty_checks) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.8968542Z test_three_asset_publish_still_checks_unuploaded_source_and_required_qa (github_release_tests.ReleaseTests.test_three_asset_publish_still_checks_unuploaded_source_and_required_qa) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.9023292Z test_three_asset_verify_rejects_wrong_published_content_without_modification (github_release_tests.ReleaseTests.test_three_asset_verify_rejects_wrong_published_content_without_modification) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.9064033Z test_verified_gpu_release_still_has_three_manual_assets (github_release_tests.ReleaseTests.test_verified_gpu_release_still_has_three_manual_assets) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.9076812Z test_versions_use_numeric_order_and_reject_unsupported_formats (github_release_tests.ReleaseTests.test_versions_use_numeric_order_and_reject_unsupported_formats) ... ok
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.9077597Z 
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.9077843Z ----------------------------------------------------------------------
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.9078455Z Ran 48 tests in 0.298s
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.9078637Z 
+source-checks	Test publish and retention safety with mocked GitHub	2026-10-18T05:59:29.9078737Z OK
+source-checks	Test stable and beta package version metadata	﻿2026-10-18T05:59:29.9254474Z ##[group]Run python3 -m unittest discover -s tests -p release_metadata_tests.py -v
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:29.9255132Z ^[[36;1mpython3 -m unittest discover -s tests -p release_metadata_tests.py -v^[[0m
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:29.9305784Z shell: /usr/bin/bash -e {0}
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:29.9306164Z ##[endgroup]
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:30.0108051Z test_build_default_maps_source_beta_and_retains_semver_directory (release_metadata_tests.ReleaseMetadataTests.test_build_default_maps_source_beta_and_retains_semver_directory) ... ok
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:30.0124334Z test_build_refuses_debian_and_source_version_mismatch_before_staging (release_metadata_tests.ReleaseMetadataTests.test_build_refuses_debian_and_source_version_mismatch_before_staging) ... ok
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:30.0126211Z test_cmake_full_version_and_frozen_stable_tags (release_metadata_tests.ReleaseMetadataTests.test_cmake_full_version_and_frozen_stable_tags) ... ok
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:30.0128045Z test_cmake_refuses_mismatch_duplicate_or_malformed_full_version (release_metadata_tests.ReleaseMetadataTests.test_cmake_refuses_mismatch_duplicate_or_malformed_full_version) ... ok
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:30.0129393Z test_debian_roundtrip_and_revision (release_metadata_tests.ReleaseMetadataTests.test_debian_roundtrip_and_revision) ... ok
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:30.0133069Z test_gpu_package_metadata_preserves_full_beta_version (release_metadata_tests.ReleaseMetadataTests.test_gpu_package_metadata_preserves_full_beta_version) ... ok
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:30.0134832Z test_numeric_beta_precedence_before_final_and_stable_order_unchanged (release_metadata_tests.ReleaseMetadataTests.test_numeric_beta_precedence_before_final_and_stable_order_unchanged) ... ok
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:30.0177063Z test_real_dpkg_orders_beta_numerically_and_before_final (release_metadata_tests.ReleaseMetadataTests.test_real_dpkg_orders_beta_numerically_and_before_final) ... ok
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:30.0179101Z test_rejects_debian_format_that_could_sort_beta_after_final (release_metadata_tests.ReleaseMetadataTests.test_rejects_debian_format_that_could_sort_beta_after_final) ... ok
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:30.0180395Z test_rejects_noncanonical_and_unsupported_application_versions (release_metadata_tests.ReleaseMetadataTests.test_rejects_noncanonical_and_unsupported_application_versions) ... ok
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:30.0206920Z test_source_inventory_records_beta_application_and_debian_versions (release_metadata_tests.ReleaseMetadataTests.test_source_inventory_records_beta_application_and_debian_versions) ... ok
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:30.0207710Z 
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:30.0207984Z ----------------------------------------------------------------------
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:30.0208371Z Ran 11 tests in 0.014s
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:30.0208531Z 
+source-checks	Test stable and beta package version metadata	2026-10-18T05:59:30.0208636Z OK
+source-checks	Test Windows supplement publication safety	﻿2026-10-18T05:59:30.0378760Z ##[group]Run python3 -m unittest discover -s tests -p windows_release_tests.py -v
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.0379412Z ^[[36;1mpython3 -m unittest discover -s tests -p windows_release_tests.py -v^[[0m
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.0420848Z shell: /usr/bin/bash -e {0}
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.0421186Z ##[endgroup]
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.1311301Z test_changed_linux_asset_is_rejected (windows_release_tests.WindowsReleaseTests.test_changed_linux_asset_is_rejected) ... ok
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.1359269Z test_changed_windows_asset_is_never_overwritten (windows_release_tests.WindowsReleaseTests.test_changed_windows_asset_is_never_overwritten) ... ok
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.1523787Z test_cli_output_uses_utf8_on_windows (windows_release_tests.WindowsReleaseTests.test_cli_output_uses_utf8_on_windows) ... ok
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.1551414Z test_dry_run_does_not_upload_or_edit (windows_release_tests.WindowsReleaseTests.test_dry_run_does_not_upload_or_edit) ... ok
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.1571864Z test_final_installer_tampering_is_rejected (windows_release_tests.WindowsReleaseTests.test_final_installer_tampering_is_rejected) ... ok
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.1594440Z test_missing_install_check_is_rejected (windows_release_tests.WindowsReleaseTests.test_missing_install_check_is_rejected) ... ok
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.1621106Z test_notes_changed_since_baseline_is_rejected (windows_release_tests.WindowsReleaseTests.test_notes_changed_since_baseline_is_rejected) ... ok
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.1651092Z test_publishes_three_windows_files_and_preserves_linux (windows_release_tests.WindowsReleaseTests.test_publishes_three_windows_files_and_preserves_linux) ... ok
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.1693796Z test_retry_is_idempotent (windows_release_tests.WindowsReleaseTests.test_retry_is_idempotent) ... ok
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.1752023Z test_verify_requires_public_notes (windows_release_tests.WindowsReleaseTests.test_verify_requires_public_notes) ... ok
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.1785399Z test_wrong_source_tag_is_rejected (windows_release_tests.WindowsReleaseTests.test_wrong_source_tag_is_rejected) ... ok
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.1786123Z 
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.1786291Z ----------------------------------------------------------------------
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.1786642Z Ran 11 tests in 0.059s
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.1786791Z 
+source-checks	Test Windows supplement publication safety	2026-10-18T05:59:30.1786934Z OK
+source-checks	Test GPU environment protection and cancellation without hardware	﻿2026-10-18T05:59:30.1952742Z ##[group]Run python3 -m unittest discover -s tests -p gpu_runtime_tests.py -v
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.1953309Z ^[[36;1mpython3 -m unittest discover -s tests -p gpu_runtime_tests.py -v^[[0m
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.1992994Z shell: /usr/bin/bash -e {0}
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.1993280Z ##[endgroup]
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.2778636Z test_atomic_publication_never_overwrites_unknown_destination (gpu_runtime_tests.GpuRuntimeTests.test_atomic_publication_never_overwrites_unknown_destination) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.2809441Z test_cancel_at_candidate_probe_keeps_old_environment (gpu_runtime_tests.GpuRuntimeTests.test_cancel_at_candidate_probe_keeps_old_environment) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.2820206Z test_cancel_at_exchange_boundary_restores_old_environment (gpu_runtime_tests.GpuRuntimeTests.test_cancel_at_exchange_boundary_restores_old_environment) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.2827343Z test_cancel_at_first_rename_boundary_retracts_runtime (gpu_runtime_tests.GpuRuntimeTests.test_cancel_at_first_rename_boundary_retracts_runtime) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.5983071Z test_cancel_during_probe_stops_cuda_child (gpu_runtime_tests.GpuRuntimeTests.test_cancel_during_probe_stops_cuda_child) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.9134467Z test_cancel_stops_private_child_process_group (gpu_runtime_tests.GpuRuntimeTests.test_cancel_stops_private_child_process_group) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.9139909Z test_complete_lock_uses_hashes_and_expected_cuda_pins (gpu_runtime_tests.GpuRuntimeTests.test_complete_lock_uses_hashes_and_expected_cuda_pins) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.9149395Z test_complete_offline_wheelhouse_checks_python_and_publisher_hash (gpu_runtime_tests.GpuRuntimeTests.test_complete_offline_wheelhouse_checks_python_and_publisher_hash) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.9154324Z test_default_cuda_links_use_canonical_official_host (gpu_runtime_tests.GpuRuntimeTests.test_default_cuda_links_use_canonical_official_host) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.9182995Z test_failed_final_probe_retracts_first_publication (gpu_runtime_tests.GpuRuntimeTests.test_failed_final_probe_retracts_first_publication) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.9212972Z test_failed_replacement_probe_restores_old_runtime (gpu_runtime_tests.GpuRuntimeTests.test_failed_replacement_probe_restores_old_runtime) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.9226889Z test_failed_rollback_keeps_unique_old_backup_out_of_cleanup (gpu_runtime_tests.GpuRuntimeTests.test_failed_rollback_keeps_unique_old_backup_out_of_cleanup) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.9358245Z test_inventory_preserves_ort_third_party_notice (gpu_runtime_tests.GpuRuntimeTests.test_inventory_preserves_ort_third_party_notice) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:30.9363609Z test_missing_runtime_does_not_run_an_interpreter (gpu_runtime_tests.GpuRuntimeTests.test_missing_runtime_does_not_run_an_interpreter) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:31.2513958Z test_probe_cancellation_kills_sigterm_ignoring_grandchild (gpu_runtime_tests.GpuRuntimeTests.test_probe_cancellation_kills_sigterm_ignoring_grandchild) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:31.2527525Z test_ready_runtime_is_reused_without_download (gpu_runtime_tests.GpuRuntimeTests.test_ready_runtime_is_reused_without_download) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:31.2537303Z test_relocation_updates_only_generated_entry_scripts (gpu_runtime_tests.GpuRuntimeTests.test_relocation_updates_only_generated_entry_scripts) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:31.5690055Z test_setup_cancellation_kills_sigterm_ignoring_grandchild (gpu_runtime_tests.GpuRuntimeTests.test_setup_cancellation_kills_sigterm_ignoring_grandchild) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:31.5696540Z test_symlink_directory_is_rejected (gpu_runtime_tests.GpuRuntimeTests.test_symlink_directory_is_rejected) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:31.5702684Z test_unknown_directory_is_preserved (gpu_runtime_tests.GpuRuntimeTests.test_unknown_directory_is_preserved) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:31.5713506Z test_wrong_pins_are_not_a_managed_runtime (gpu_runtime_tests.GpuRuntimeTests.test_wrong_pins_are_not_a_managed_runtime) ... ok
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:31.5715413Z 
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:31.5715944Z ----------------------------------------------------------------------
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:31.5717616Z Ran 21 tests in 1.294s
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:31.5718268Z 
+source-checks	Test GPU environment protection and cancellation without hardware	2026-10-18T05:59:31.5718518Z OK
+source-checks	Explain local package publishing	﻿2026-10-18T05:59:31.5951503Z ##[group]Run cat >> "$GITHUB_STEP_SUMMARY" <<'SUMMARY'
+source-checks	Explain local package publishing	2026-10-18T05:59:31.5951912Z ^[[36;1mcat >> "$GITHUB_STEP_SUMMARY" <<'SUMMARY'^[[0m
+source-checks	Explain local package publishing	2026-10-18T05:59:31.5952407Z ^[[36;1mThis workflow validates source syntax, release tooling safety, GPU setup safety, and tag metadata.^[[0m
+source-checks	Explain local package publishing	2026-10-18T05:59:31.5953225Z ^[[36;1mThe Qt 6.8.3 DEB and full upstream source companion are built and tested locally.^[[0m
+source-checks	Explain local package publishing	2026-10-18T05:59:31.5953868Z ^[[36;1mActual CUDA acceptance uses a local NVIDIA GPU and a report bound to the final DEB;^[[0m
+source-checks	Explain local package publishing	2026-10-18T05:59:31.5954412Z ^[[36;1mthis hardware-free workflow does not claim that GPU inference has passed.^[[0m
+source-checks	Explain local package publishing	2026-10-18T05:59:31.5954957Z ^[[36;1m`scripts/github_release.py publish` uploads validated local artifacts to a draft,^[[0m
+source-checks	Explain local package publishing	2026-10-18T05:59:31.5955533Z ^[[36;1mverifies each asset, and publishes it. GitHub supplies source ZIP/TAR links for tags.^[[0m
+source-checks	Explain local package publishing	2026-10-18T05:59:31.5956131Z ^[[36;1mNumbered beta tags publish as prereleases without replacing the latest stable release.^[[0m
+source-checks	Explain local package publishing	2026-10-18T05:59:31.5956584Z ^[[36;1mSUMMARY^[[0m
+source-checks	Explain local package publishing	2026-10-18T05:59:31.5996201Z shell: /usr/bin/bash -e {0}
+source-checks	Explain local package publishing	2026-10-18T05:59:31.5996489Z ##[endgroup]
+source-checks	Post Checkout source	﻿2026-10-18T05:59:31.6190874Z Post job cleanup.
+source-checks	Post Checkout source	2026-10-18T05:59:31.6997079Z [command]/usr/bin/git version
+source-checks	Post Checkout source	2026-10-18T05:59:31.7040161Z git version 2.55.0
+source-checks	Post Checkout source	2026-10-18T05:59:31.7085966Z Temporarily overriding HOME='/home/runner/work/_temp/b03860c8-2038-498b-863a-c76133f15b2e' before making global git config changes
+source-checks	Post Checkout source	2026-10-18T05:59:31.7086872Z Adding repository directory to the temporary git global config as a safe directory
+source-checks	Post Checkout source	2026-10-18T05:59:31.7092828Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/vision-studio/vision-studio
+source-checks	Post Checkout source	2026-10-18T05:59:31.7132918Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+source-checks	Post Checkout source	2026-10-18T05:59:31.7167086Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+source-checks	Post Checkout source	2026-10-18T05:59:31.7380688Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+source-checks	Post Checkout source	2026-10-18T05:59:31.7411417Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+source-checks	Complete job	﻿2026-10-18T05:59:31.7814230Z Cleaning up orphan processes
+source-checks	Complete job	2026-10-18T05:59:31.8134255Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
