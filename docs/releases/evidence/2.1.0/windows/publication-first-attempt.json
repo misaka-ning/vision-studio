@@ -1,0 +1,8 @@
+{
+  "success": false,
+  "phase": "release_notes_post_write_verification",
+  "error": "Windows release notes were not saved as expected",
+  "cause": "On Windows, the temporary notes file translated LF to CRLF. The published Markdown content matched, but the exact string verification correctly reported a mismatch.",
+  "recovery": "Write the notes file with explicit LF and recognize only the equivalent CRLF form during retry. All uploaded asset contents are reused without replacement. Final success is recorded separately in remote-verification.json.",
+  "artifact_changes": false
+}
