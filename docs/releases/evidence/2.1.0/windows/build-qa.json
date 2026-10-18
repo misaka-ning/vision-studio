@@ -1,0 +1,90 @@
+{
+  "application_version": "2.1.0",
+  "package_revision": "windows.1",
+  "date": "2026-10-18",
+  "platform": "Windows 11 x64, build 26200",
+  "scope": "Pre-package build and functionality evidence on the current Windows host; final installer evidence is recorded separately after packaging.",
+  "qt": "6.8.3",
+  "opencv_cpp": "4.12.0",
+  "python": "3.11.17",
+  "cpu_runtime": "PyTorch 2.9.1+cpu / torchvision 0.24.1+cpu",
+  "gpu_runtime": "PyTorch 2.9.1+cu128 / ONNX Runtime 1.23.2 / CUDA 12.8",
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "driver": "572.83",
+  "tests": {
+    "core": {
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "log": "core-tests.txt"
+    },
+    "recording_unicode_and_cuda": {
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "log": "recording-tests.txt"
+    },
+    "conversion_ui": {
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "log": "conversion-ui-tests.txt"
+    },
+    "selected_conversion_safety": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "log": "conversion-safety.txt"
+    }
+  },
+  "real_models": {
+    "onnx_cpu": {
+      "model": "yolov5n.onnx",
+      "predictions": 5,
+      "passed": true
+    },
+    "pt_cpu": {
+      "model": "yolov8n.pt",
+      "predictions": 5,
+      "passed": true
+    },
+    "onnx_cuda": {
+      "model": "yolov5n.onnx",
+      "predictions": 5,
+      "passed": true,
+      "cuda_profile_kernel_events": 364,
+      "cuda_profile_unique_nodes": 182
+    },
+    "pt_cuda": {
+      "model": "yolov8n.pt",
+      "predictions": 5,
+      "passed": true
+    },
+    "netron": {
+      "graph_nodes": 245,
+      "hierarchy_items": 246,
+      "parameter_rows": 141,
+      "cache_preserved": true,
+      "passed": true
+    },
+    "modern_pt_to_onnx": {
+      "predictions_after_cpp_inference": 5,
+      "passed": true
+    },
+    "legacy_pt_to_torchscript": {
+      "predictions_after_pt_inference": 5,
+      "passed": true
+    }
+  },
+  "fixed_during_acceptance": [
+    "Windows temporary recordings require the hidden attribute instead of a leading dot alone.",
+    "Windows converter fsync requires a writable file handle; publication uses a no-replace wide-character move.",
+    "Windows package environment paths require the wide-character environment API for Unicode installation folders.",
+    "Use Inno Setup 7 for long original WebEngine license paths."
+  ],
+  "limitations": [
+    "No clean virtual machine or additional Windows version was tested.",
+    "The original Linux evidence is preserved and is not being replaced by these Windows checks.",
+    "No signing certificate was supplied; the installer is unsigned."
+  ]
+}

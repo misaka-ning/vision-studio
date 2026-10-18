@@ -31,12 +31,40 @@
 #include <QTimer>
 #include <QUrl>
 #include <QVBoxLayout>
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#else
 #include <sys/stat.h>
 #include <unistd.h>
+#endif
 
 namespace
 {
 constexpr qsizetype protocolLimit = 1024 * 1024;
+bool directoryIdentity(const QString &path, quint64 &inode, quint64 &device)
+{
+#ifdef Q_OS_WIN
+    const HANDLE handle = CreateFileW(reinterpret_cast<LPCWSTR>(path.utf16()), FILE_READ_ATTRIBUTES,
+        FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING,
+        FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT, nullptr);
+    if (handle == INVALID_HANDLE_VALUE) return false;
+    BY_HANDLE_FILE_INFORMATION info{};
+    const bool valid = GetFileInformationByHandle(handle, &info) &&
+        (info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) &&
+        !(info.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT);
+    CloseHandle(handle);
+    if (!valid) return false;
+    inode = (quint64(info.nFileIndexHigh) << 32) | info.nFileIndexLow;
+    device = info.dwVolumeSerialNumber;
+#else
+    struct stat info{};
+    if (::lstat(QFile::encodeName(path).constData(), &info) != 0 || !S_ISDIR(info.st_mode) ||
+        info.st_uid != ::geteuid()) return false;
+    inode = info.st_ino;
+    device = info.st_dev;
+#endif
+    return true;
+}
 QLabel *label(const QString &value, const char *role)
 {
     auto *result = new QLabel(value);
@@ -319,12 +347,12 @@ void ModelConversionPage::start()
     pendingOutput_.clear(); stderrOutput_.clear(); jobTemp_.clear();
     receivedResult_ = cancelling_ = protocolError_ = false;
     QTemporaryDir work(QFileInfo(output_).absolutePath() + "/.vision-studio-convert-XXXXXX");
-    struct stat workInfo{};
-    if (!work.isValid() || ::lstat(QFile::encodeName(work.path()).constData(), &workInfo) != 0) {
+    quint64 inode = 0, device = 0;
+    if (!work.isValid() || !directoryIdentity(work.path(), inode, device)) {
         fail("无法创建本次转换的临时目录。"); return;
     }
     work.setAutoRemove(false);
-    jobTemp_ = work.path(); jobTempInode_ = workInfo.st_ino; jobTempDevice_ = workInfo.st_dev;
+    jobTemp_ = work.path(); jobTempInode_ = inode; jobTempDevice_ = device;
     log_->clear();
     status_->setText("正在转换…");
     summary_->setText("转换模型：" + QFileInfo(runningSource_).fileName() + "\n输出：" + output_);
@@ -442,9 +470,9 @@ void ModelConversionPage::cleanupJob()
     const quint64 inode = jobTempInode_, device = jobTempDevice_;
     jobTemp_.clear();
     QThreadPool::globalInstance()->start(QRunnable::create([path, inode, device] {
-        struct stat info{};
-        if (::lstat(QFile::encodeName(path).constData(), &info) == 0 && S_ISDIR(info.st_mode) &&
-            info.st_uid == ::geteuid() && quint64(info.st_ino) == inode && quint64(info.st_dev) == device)
+        quint64 currentInode = 0, currentDevice = 0;
+        if (directoryIdentity(path, currentInode, currentDevice) &&
+            currentInode == inode && currentDevice == device)
             QDir(path).removeRecursively();
     }));
 }

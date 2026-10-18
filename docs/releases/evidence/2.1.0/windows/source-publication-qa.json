@@ -1,0 +1,11 @@
+{
+  "success": true,
+  "source_archive": "vision-studio-2.1.0-windows-sources.zip",
+  "sha256": "1ed27bc1a186094e95e56e4e4a4868c15bceaa046b981028b548b55f74f4f73a",
+  "snapshot_files": 3580,
+  "application_and_packaging_sources_match": true,
+  "post_package_metadata_changes": [
+    ".gitattributes"
+  ],
+  "explanation": "Only Git byte-preservation attributes changed after packaging. Original upstream license and PowerShell bytes are preserved on checkout."
+}

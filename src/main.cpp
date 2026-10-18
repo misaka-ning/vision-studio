@@ -16,6 +16,9 @@
 #include <QPushButton>
 #include <QTimer>
 #include <stdexcept>
+#ifdef Q_OS_WIN
+#include <cstdlib>
+#endif
 int main(int argc, char **argv)
 {
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
@@ -23,9 +26,29 @@ int main(int argc, char **argv)
     app.setApplicationName("Vision Studio");
     app.setOrganizationName("VisionStudio");
     app.setApplicationVersion(QStringLiteral(VISION_STUDIO_APP_VERSION));
+#ifdef Q_OS_WIN
+    // Packaged builds find their own runtime after installation or relocation.
+    const QDir package(QCoreApplication::applicationDirPath() + "/..");
+    if (QFileInfo::exists(package.filePath("windows-install.json")))
+    {
+        if (!qEnvironmentVariableIsSet("VISION_STUDIO_HOME"))
+            _wputenv_s(L"VISION_STUDIO_HOME", reinterpret_cast<const wchar_t *>(package.absolutePath().utf16()));
+        qputenv("VISION_STUDIO_SYSTEM_INSTALL", "1");
+        if (!qEnvironmentVariableIsSet("VISION_STUDIO_PYTHON"))
+            _wputenv_s(L"VISION_STUDIO_PYTHON", reinterpret_cast<const wchar_t *>(package.filePath("runtime/python.exe").utf16()));
+        qputenv("PYTHONNOUSERSITE", "1");
+        qputenv("PYTHONDONTWRITEBYTECODE", "1");
+        qputenv("PYTHONUTF8", "1");
+        qputenv("PYTHONIOENCODING", "utf-8");
+    }
+#endif
     app.setWindowIcon(QIcon(":/app-icon.svg"));
     app.setStyle("Fusion");
+#ifdef Q_OS_WIN
+    app.setFont(QFont("Microsoft YaHei UI", 10));
+#else
     app.setFont(QFont("Noto Sans CJK SC", 10));
+#endif
     QCommandLineParser parser;
     parser.setApplicationDescription("Vision Studio · 本地 YOLO 视觉推理工作台");
     parser.addHelpOption();

@@ -1,0 +1,107 @@
+test_auth_network_and_list_permission_errors_do_not_become_missing (github_release_tests.GitHubReadTests.test_auth_network_and_list_permission_errors_do_not_become_missing) ... ok
+test_by_tag_404_finds_draft_through_paginated_list (github_release_tests.GitHubReadTests.test_by_tag_404_finds_draft_through_paginated_list) ... ok
+test_by_tag_published_does_not_need_list (github_release_tests.GitHubReadTests.test_by_tag_published_does_not_need_list) ... ok
+test_duplicate_tag_drafts_across_pages_are_rejected (github_release_tests.GitHubReadTests.test_duplicate_tag_drafts_across_pages_are_rejected) ... ok
+test_missing_and_malformed_lists_are_distinct (github_release_tests.GitHubReadTests.test_missing_and_malformed_lists_are_distinct) ... ok
+test_mutation_read_auth_error_is_not_retried (github_release_tests.GitHubReadTests.test_mutation_read_auth_error_is_not_retried) ... ok
+test_mutation_reads_retry_only_within_short_bound (github_release_tests.GitHubReadTests.test_mutation_reads_retry_only_within_short_bound) ... ok
+test_published_tag_checks_local_commit_and_version_without_head (github_release_tests.GitHubReadTests.test_published_tag_checks_local_commit_and_version_without_head) ... ok
+test_beta_and_stable_wrong_draft_types_are_refused (github_release_tests.ReleaseTests.test_beta_and_stable_wrong_draft_types_are_refused) ... ok
+test_beta_bundle_uses_safe_filename_and_three_assets (github_release_tests.ReleaseTests.test_beta_bundle_uses_safe_filename_and_three_assets) ... ok
+test_beta_does_not_displace_or_delete_stable_backups (github_release_tests.ReleaseTests.test_beta_does_not_displace_or_delete_stable_backups) ... ERROR
+test_beta_dry_run_and_published_release_are_never_mutated (github_release_tests.ReleaseTests.test_beta_dry_run_and_published_release_are_never_mutated) ... ok
+test_beta_matching_draft_can_resume_without_overwriting_asset (github_release_tests.ReleaseTests.test_beta_matching_draft_can_resume_without_overwriting_asset) ... ok
+test_beta_publish_is_prerelease_and_preserves_latest_stable (github_release_tests.ReleaseTests.test_beta_publish_is_prerelease_and_preserves_latest_stable) ... ok
+test_beta_requires_same_full_gpu_qa_as_stable (github_release_tests.ReleaseTests.test_beta_requires_same_full_gpu_qa_as_stable) ... ok
+test_beta_source_inventory_cannot_claim_a_different_debian_version (github_release_tests.ReleaseTests.test_beta_source_inventory_cannot_claim_a_different_debian_version) ... ok
+test_beta_tag_requires_full_application_metadata_and_matching_numeric_base (github_release_tests.ReleaseTests.test_beta_tag_requires_full_application_metadata_and_matching_numeric_base) ... ok
+test_beta_verify_accepts_only_published_prerelease_with_matching_assets (github_release_tests.ReleaseTests.test_beta_verify_accepts_only_published_prerelease_with_matching_assets) ... ok
+test_draft_unexpected_asset_or_digest_mismatch_protects_release (github_release_tests.ReleaseTests.test_draft_unexpected_asset_or_digest_mismatch_protects_release) ... ok
+test_draft_verified_before_publish_and_no_overwrite (github_release_tests.ReleaseTests.test_draft_verified_before_publish_and_no_overwrite) ... ok
+test_dry_run_does_not_create_or_upload (github_release_tests.ReleaseTests.test_dry_run_does_not_create_or_upload) ... ok
+test_duplicate_manifest_path_rejected (github_release_tests.ReleaseTests.test_duplicate_manifest_path_rejected) ... ok
+test_existing_draft_requires_explicit_resume (github_release_tests.ReleaseTests.test_existing_draft_requires_explicit_resume) ... ok
+test_existing_published_release_is_never_modified (github_release_tests.ReleaseTests.test_existing_published_release_is_never_modified) ... ok
+test_failed_or_other_deb_qa_rejected (github_release_tests.ReleaseTests.test_failed_or_other_deb_qa_rejected) ... ok
+test_gpu_release_rejects_unverified_packaged_cuda (github_release_tests.ReleaseTests.test_gpu_release_rejects_unverified_packaged_cuda) ... ok
+test_gpu_release_requires_real_gpu_report (github_release_tests.ReleaseTests.test_gpu_release_requires_real_gpu_report) ... ok
+test_gpu_report_must_match_deb_and_version (github_release_tests.ReleaseTests.test_gpu_report_must_match_deb_and_version) ... ok
+test_inventory_version_rejected_even_with_matching_hash (github_release_tests.ReleaseTests.test_inventory_version_rejected_even_with_matching_hash) ... ok
+test_manifest_traversal_rejected (github_release_tests.ReleaseTests.test_manifest_traversal_rejected) ... ok
+test_missing_and_corrupt_checksums_rejected (github_release_tests.ReleaseTests.test_missing_and_corrupt_checksums_rejected) ... ok
+test_passing_bundle_has_expected_archives_and_qa (github_release_tests.ReleaseTests.test_passing_bundle_has_expected_archives_and_qa) ... ok
+test_prune_numeric_versions_preserves_latest_two_and_unknown_files (github_release_tests.ReleaseTests.test_prune_numeric_versions_preserves_latest_two_and_unknown_files) ... ERROR
+test_prune_remote_tag_change_protects_snapshot (github_release_tests.ReleaseTests.test_prune_remote_tag_change_protects_snapshot) ... FAIL
+test_prune_retained_draft_missing_or_prerelease_protects_all_old_versions (github_release_tests.ReleaseTests.test_prune_retained_draft_missing_or_prerelease_protects_all_old_versions) ... ok
+test_prune_retained_release_missing_or_corrupt_asset_protects_all_old_versions (github_release_tests.ReleaseTests.test_prune_retained_release_missing_or_corrupt_asset_protects_all_old_versions) ... ok
+test_prune_root_scope_and_repository_are_restricted (github_release_tests.ReleaseTests.test_prune_root_scope_and_repository_are_restricted) ... ok
+test_prune_symlink_version_is_rejected_and_target_preserved (github_release_tests.ReleaseTests.test_prune_symlink_version_is_rejected_and_target_preserved) ... ERROR
+test_prune_unpublished_checksum_bad_or_userdata_cannot_delete (github_release_tests.ReleaseTests.test_prune_unpublished_checksum_bad_or_userdata_cannot_delete) ... ok
+test_public_checksum_manifest_cannot_require_an_unattached_split_archive (github_release_tests.ReleaseTests.test_public_checksum_manifest_cannot_require_an_unattached_split_archive) ... ok
+test_remote_missing_digest_downloads_and_hashes (github_release_tests.ReleaseTests.test_remote_missing_digest_downloads_and_hashes) ... ok
+test_remote_state_size_and_digest_all_required (github_release_tests.ReleaseTests.test_remote_state_size_and_digest_all_required) ... ok
+test_symlink_source_rejected (github_release_tests.ReleaseTests.test_symlink_source_rejected) ... ERROR
+test_tag_version_commit_and_dirty_checks (github_release_tests.ReleaseTests.test_tag_version_commit_and_dirty_checks) ... ok
+test_three_asset_publish_still_checks_unuploaded_source_and_required_qa (github_release_tests.ReleaseTests.test_three_asset_publish_still_checks_unuploaded_source_and_required_qa) ... ok
+test_three_asset_verify_rejects_wrong_published_content_without_modification (github_release_tests.ReleaseTests.test_three_asset_verify_rejects_wrong_published_content_without_modification) ... ok
+test_verified_gpu_release_still_has_three_manual_assets (github_release_tests.ReleaseTests.test_verified_gpu_release_still_has_three_manual_assets) ... ok
+test_versions_use_numeric_order_and_reject_unsupported_formats (github_release_tests.ReleaseTests.test_versions_use_numeric_order_and_reject_unsupported_formats) ... ok
+
+======================================================================
+ERROR: test_beta_does_not_displace_or_delete_stable_backups (github_release_tests.ReleaseTests.test_beta_does_not_displace_or_delete_stable_backups)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\vision-studio\tests\github_release_tests.py", line 314, in test_beta_does_not_displace_or_delete_stable_backups
+    plan = release.prune(args, github)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\vision-studio\scripts\github_release.py", line 670, in prune
+    raise ReleaseError("This platform does not provide safe descriptor-based rmtree")
+github_release.ReleaseError: This platform does not provide safe descriptor-based rmtree
+
+======================================================================
+ERROR: test_prune_numeric_versions_preserves_latest_two_and_unknown_files (github_release_tests.ReleaseTests.test_prune_numeric_versions_preserves_latest_two_and_unknown_files)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\vision-studio\tests\github_release_tests.py", line 478, in test_prune_numeric_versions_preserves_latest_two_and_unknown_files
+    result = release.prune(args, github)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\vision-studio\scripts\github_release.py", line 670, in prune
+    raise ReleaseError("This platform does not provide safe descriptor-based rmtree")
+github_release.ReleaseError: This platform does not provide safe descriptor-based rmtree
+
+======================================================================
+ERROR: test_prune_symlink_version_is_rejected_and_target_preserved (github_release_tests.ReleaseTests.test_prune_symlink_version_is_rejected_and_target_preserved)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\vision-studio\tests\github_release_tests.py", line 503, in test_prune_symlink_version_is_rejected_and_target_preserved
+    (root / "1.3.0").symlink_to(self.project, target_is_directory=True)
+  File "E:\vision-studio\build-windows\python\Lib\pathlib.py", line 1198, in symlink_to
+    os.symlink(target, self, target_is_directory)
+OSError: [WinError 1314] 客户端没有所需的特权。: 'C:\\Users\\14685\\AppData\\Local\\Temp\\vision-release-tests-fjl80cww' -> 'C:\\Users\\14685\\AppData\\Local\\Temp\\vision-release-tests-fjl80cww\\output\\releases\\1.3.0'
+
+======================================================================
+ERROR: test_symlink_source_rejected (github_release_tests.ReleaseTests.test_symlink_source_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\vision-studio\tests\github_release_tests.py", line 334, in test_symlink_source_rejected
+    file.symlink_to(self.project / "CMakeLists.txt")
+  File "E:\vision-studio\build-windows\python\Lib\pathlib.py", line 1198, in symlink_to
+    os.symlink(target, self, target_is_directory)
+OSError: [WinError 1314] 客户端没有所需的特权。: 'C:\\Users\\14685\\AppData\\Local\\Temp\\vision-release-tests-493fgdzt\\CMakeLists.txt' -> 'C:\\Users\\14685\\AppData\\Local\\Temp\\vision-release-tests-493fgdzt\\output\\releases\\1.5.0\\sources\\upstream.tar.xz'
+
+======================================================================
+FAIL: test_prune_remote_tag_change_protects_snapshot (github_release_tests.ReleaseTests.test_prune_remote_tag_change_protects_snapshot)
+----------------------------------------------------------------------
+github_release.ReleaseError: This platform does not provide safe descriptor-based rmtree
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\vision-studio\tests\github_release_tests.py", line 549, in test_prune_remote_tag_change_protects_snapshot
+    with self.assertRaisesRegex(release.ReleaseError, "Tag moved"):
+AssertionError: "Tag moved" does not match "This platform does not provide safe descriptor-based rmtree"
+
+----------------------------------------------------------------------
+Ran 48 tests in 1.718s
+
+FAILED (failures=1, errors=4)

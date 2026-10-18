@@ -1,0 +1,8 @@
+# Windows x64 / CPython 3.11. Exact official wheel hashes.
+# CPU dependencies are cloned from the bundled offline runtime.
+torch==2.9.1+cu128 --hash=sha256:633005a3700e81b5be0df2a7d3c1d48aced23ed927653797a3bd2b144a3aeeb6
+torchvision==0.24.1+cu128 --hash=sha256:6d836745bd3130ef8f3569c9f0d9d70103b5e2e9fa058310bcac5f63bcf2d043
+onnxruntime-gpu==1.23.2 --hash=sha256:054282614c2fc9a4a27d74242afbae706a410f1f63cc35bc72f99709029a5ba4
+coloredlogs==15.0.1 --hash=sha256:612ee75c546f53e92e70049c9dbfcc18c935a2b9a53b66085ce9ef6a6e5c0934
+flatbuffers==25.9.23 --hash=sha256:255538574d6cb6d0a79a17ec8bc0d30985913b87513a01cce8bcdb6b4c44d0e2
+humanfriendly==10.0 --hash=sha256:1697e1a8a8f550fd43c2865cd84542fc175a61dcb779b6fee18cf6b6ccba1477

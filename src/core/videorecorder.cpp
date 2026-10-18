@@ -18,6 +18,9 @@
 #include <limits>
 #include <opencv2/imgproc.hpp>
 #include <stdexcept>
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#endif
 
 namespace vision
 {
@@ -176,6 +179,14 @@ bool VideoRecorder::start(const QString &directory, const InferenceResult &first
             discard();
             return failure(error, "本机无法创建 MJPEG / AVI 录制，请检查输出目录与视频编码环境。");
         }
+#ifdef Q_OS_WIN
+        // Set this after FFmpeg opens the file: Windows rejects truncating a
+        // hidden file with the CRT's normal write mode.
+        const auto temporaryName = reinterpret_cast<LPCWSTR>(m_temporaryPath.utf16());
+        const DWORD attributes = GetFileAttributesW(temporaryName);
+        if (attributes != INVALID_FILE_ATTRIBUTES)
+            SetFileAttributesW(temporaryName, attributes | FILE_ATTRIBUTE_HIDDEN);
+#endif
         m_active = true;
         m_timer.start();
         return true;
@@ -389,6 +400,12 @@ bool VideoRecorder::finish(RecordingSummary *summary, QString *error)
             discard();
             return failure(error, "无法发布最终录制文件，请检查目录访问权限。");
         }
+#ifdef Q_OS_WIN
+        const auto finalName = reinterpret_cast<LPCWSTR>(m_path.utf16());
+        const DWORD attributes = GetFileAttributesW(finalName);
+        if (attributes != INVALID_FILE_ATTRIBUTES)
+            SetFileAttributesW(finalName, attributes & ~FILE_ATTRIBUTE_HIDDEN);
+#endif
         if (summary)
             *summary = {m_path, metadataPath, m_frames, fps, m_frames / fps, m_contentSize, m_encodedSize};
         m_temporaryPath.clear();

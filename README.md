@@ -8,7 +8,7 @@
 
 [下载发行版](https://github.com/misaka-ning/vision-studio/releases) · [更新日志](CHANGELOG.md) · [使用指南](docs/使用指南.md) · [报告问题](https://github.com/misaka-ning/vision-studio/issues)
 
-当前版本：**2.1.0**，新增模型库右键管理与 PT → ONNX / TorchScript 转换。界面保留 [Fluent-Qt](https://github.com/calvinhxx/Fluent-Qt) 风格。CPU／NVIDIA GPU、ONNX／PT、灰度和左右目处理沿用现有约定。发行平台：**Ubuntu 22.04 LTS amd64**。应用代码采用 **AGPL-3.0-only**。
+当前版本：**2.1.0**，新增模型库右键管理与 PT → ONNX / TorchScript 转换。界面保留 [Fluent-Qt](https://github.com/calvinhxx/Fluent-Qt) 风格。CPU／NVIDIA GPU、ONNX／PT、灰度和左右目处理沿用现有约定。发行平台：**Ubuntu 22.04 LTS amd64、Windows x64**（已在 Windows 11 验收）。应用代码采用 **AGPL-3.0-only**。
 
 ![V2.0 Fluent 风格检测工作台：RTX 4060 实际 CUDA 推理](docs/preview.png)
 
@@ -75,6 +75,24 @@ PT 支持兼容的 Ultralytics YOLOv8 / YOLO11 完整检查点、随附 YOLOv5 v
 转换器针对旧版 OpenCV 的部分静态形状与广播限制做等价规约，输出仍为标准 ONNX，保存前检查图并比较 Python OpenCV CPU 输出。系统 C++ OpenCV、真实图片及 GPU 后端仍需分别验证。裸权重或未知自定义网络需要原始定义，本版不提供 ONNX → PT 图转换或原始训练检查点还原；固定输入跟踪不保留任意动态控制流或训练功能。取消时保留源文件与已有输出；若完整结果已在取消请求前写出，界面提示完成或保留，详见 [转换步骤](docs/使用指南.md#转换模型)。
 
 ## 从源码构建
+
+### Windows 本地开发
+
+本机已使用 Qt 6.8.3 MSVC 2022 64 位 SDK、MSVC x64 和 OpenCV 4.12.0 Windows 动态库完成构建及真实 ONNX CPU 示例验证。Qt 需安装 WebEngine、WebChannel、Svg 及其配套模块。请在 Visual Studio x64 开发者终端中执行，按实际安装位置调整路径：
+
+```powershell
+cmake -S . -B build-windows -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DCMAKE_PREFIX_PATH=D:/Qt/6.8.3/msvc2022_64 -DOpenCV_DIR=D:/Opencv-C++/opencv/build/x64/vc16/lib
+cmake --build build-windows --target vision-studio --parallel 4
+D:/Qt/6.8.3/msvc2022_64/bin/windeployqt.exe --release build-windows/bin/vision-studio.exe
+# 将相应 OpenCV 的 opencv_world DLL 和 videoio_ffmpeg DLL 复制到 build-windows/bin
+./build-windows/bin/vision-studio.exe --demo --device cpu
+```
+
+开发构建可直接双击 `build-windows/bin/vision-studio.exe`，但该目录仍依赖项目资源。需要分发时使用 [Windows 完整打包流程](packaging/windows/README.md)，生成包含 Qt、OpenCV、独立 Python、PT／Netron／转换依赖、模型与文档的单文件安装器。默认安装到 `C:\Users\用户名\VisionStudio`，可自选目录，无需接收者配置开发环境。用户数据独立保存在 `%LOCALAPPDATA%\vision-studio`，卸载保留个人文件。
+
+Windows 使用独立的 CUDA wheel 哈希锁和 GPU 准备流程，首次准备需要网络及兼容的 NVIDIA 显卡驱动；不复用 Linux runtime，不安装或修改驱动。CPU、模型显示与转换可在安装后离线使用。Windows 验收材料单独保存在 `docs/releases/evidence/2.1.0/windows/`，不替代或修改现有 Linux 发行证据。
+
+### Linux
 
 依赖 CMake ≥ 3.21、C++17 编译器、Ninja、Qt 6.8.3 SDK，以及 OpenCV Core / Imgproc / Imgcodecs / Videoio / DNN。Qt 模块为 Core、Gui、Widgets、Svg、Network、WebChannel、WebEngineWidgets，测试还需要 Test；WebEngine 需要配套的 Quick / Qml / Positioning 模块及资源。
 

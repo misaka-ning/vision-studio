@@ -1,0 +1,23 @@
+{
+  "description": "Exact FFmpeg versions identified in the Windows OpenCV video plugins; original upstream release archives retained.",
+  "ffmpeg": [
+    {
+      "version": "4.4.5",
+      "archive": "ffmpeg-4.4.5.tar.xz",
+      "url": "https://ffmpeg.org/releases/ffmpeg-4.4.5.tar.xz",
+      "sha256": "f9514e0d3515aee5a271283df71636e1d1ff7274b15853bcd84e144be416ab07",
+      "binary": "runtime/Lib/site-packages/cv2/opencv_videoio_ffmpeg4110_64.dll",
+      "binary_sha256": "f0460320ac08c074bdf6d5a19f5c13d204e585e85030fdd40e20a3c0b3adeb67"
+    },
+    {
+      "version": "4.4.6",
+      "archive": "ffmpeg-4.4.6.tar.xz",
+      "url": "https://ffmpeg.org/releases/ffmpeg-4.4.6.tar.xz",
+      "sha256": "2290461f467c08ab801731ed412d8e724a5511d6c33173654bd9c1d2e25d0617",
+      "binary": "bin/opencv_videoio_ffmpeg4120_64.dll",
+      "binary_sha256": "a0f01e4ee5e97b4a513cd70f01fafadc0dd187ba5d1293cb7fc6b77e7d17c631"
+    }
+  ],
+  "opencv_wrapper_source": "https://github.com/opencv/opencv/tree/4.12.0/modules/videoio/src",
+  "opencv_build_recipe": "https://github.com/opencv/opencv_3rdparty/tree/ea9240e39bc0d6a69d2b1f0ba4513bdc7612a41e"
+}

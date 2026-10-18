@@ -13,6 +13,9 @@
 #include <mutex>
 #include <stdexcept>
 #include <thread>
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#endif
 
 namespace vision
 {
@@ -106,7 +109,16 @@ struct OnnxCudaBackend::Impl
 
     void preload(const GpuRuntimePaths &runtime, int deviceIndex)
     {
+#ifdef Q_OS_WIN
+        // ORT's provider DLLs resolve CUDA/cuDNN from the managed torch/lib.
+        // Keep these directory registrations for the lifetime of the process.
+        SetDefaultDllDirectories(LOAD_LIBRARY_SEARCH_DEFAULT_DIRS);
+        for (const QString &directory : runtime.libraryDirectories)
+            AddDllDirectory(reinterpret_cast<LPCWSTR>(directory.utf16()));
+        auto driver = openLibrary(QStringLiteral("nvcuda.dll"));
+#else
         auto driver = openLibrary(QStringLiteral("libcuda.so.1"));
+#endif
         auto cuInit = reinterpret_cast<int (*)(unsigned int)>(driver->resolve("cuInit"));
         auto cuDeviceGetByPCIBusId =
             reinterpret_cast<int (*)(int *, const char *)>(driver->resolve("cuDeviceGetByPCIBusId"));
@@ -117,9 +129,15 @@ struct OnnxCudaBackend::Impl
 
         // SONAME order follows the CUDA 12/cuDNN 9 wheel ELF dependencies:
         // cuSPARSE needs nvJitLink; cuBLAS needs cuBLASLt; cuSOLVER needs both.
+#ifdef Q_OS_WIN
+        const QStringList cudaLibraries = {
+            "cudart64_12.dll", "nvJitLink_120_0.dll", "nvrtc64_120_0.dll", "cublasLt64_12.dll",
+            "cublas64_12.dll", "cufft64_11.dll", "curand64_10.dll", "cusparse64_12.dll", "cusolver64_11.dll"};
+#else
         const QStringList cudaLibraries = {
             "libcudart.so.12", "libnvJitLink.so.12", "libnvrtc.so.12", "libcublasLt.so.12",
             "libcublas.so.12", "libcufft.so.11", "libcurand.so.10", "libcusparse.so.12", "libcusolver.so.11"};
+#endif
         QLibrary *cudart = nullptr;
         for (const QString &soname : cudaLibraries)
         {
@@ -127,7 +145,7 @@ struct OnnxCudaBackend::Impl
             if (path.isEmpty())
                 fail(QStringLiteral("GPU 环境缺少 %1；请重新准备 GPU 环境。").arg(soname));
             libraries.push_back(openLibrary(path));
-            if (soname == "libcudart.so.12")
+            if (soname == "libcudart.so.12" || soname == "cudart64_12.dll")
                 cudart = libraries.back().get();
         }
         auto cudaGetDeviceCount = reinterpret_cast<int (*)(int *)>(cudart->resolve("cudaGetDeviceCount"));
@@ -148,10 +166,17 @@ struct OnnxCudaBackend::Impl
 
         // cuDNN lazily opens its components by SONAME. Preload them from the
         // same managed environment, rather than depending on system CUDA.
+#ifdef Q_OS_WIN
+        const QStringList cudnnLibraries = {
+            "cudnn_graph64_9.dll", "cudnn_ops64_9.dll", "cudnn_cnn64_9.dll",
+            "cudnn_engines_runtime_compiled64_9.dll", "cudnn_engines_precompiled64_9.dll",
+            "cudnn_heuristic64_9.dll", "cudnn_adv64_9.dll", "cudnn64_9.dll"};
+#else
         const QStringList cudnnLibraries = {
             "libcudnn_graph.so.9", "libcudnn_ops.so.9", "libcudnn_cnn.so.9",
             "libcudnn_engines_runtime_compiled.so.9", "libcudnn_engines_precompiled.so.9",
             "libcudnn_heuristic.so.9", "libcudnn_adv.so.9", "libcudnn.so.9"};
+#endif
         for (const QString &soname : cudnnLibraries)
         {
             const QString path = findLibrary(runtime.libraryDirectories, soname);
@@ -294,10 +319,15 @@ void OnnxCudaBackend::load(const ModelConfig &config, const QByteArray &model)
     impl->check(api->SetIntraOpNumThreads(options.get(), 4));
     impl->check(api->SetInterOpNumThreads(options.get(), 1));
     impl->check(api->SetSessionGraphOptimizationLevel(options.get(), ORT_ENABLE_ALL));
-    const QByteArray profilePrefix = qEnvironmentVariable("VISION_STUDIO_ORT_PROFILE_PREFIX").toUtf8();
-    if (!profilePrefix.isEmpty())
+    const QString profilePath = qEnvironmentVariable("VISION_STUDIO_ORT_PROFILE_PREFIX");
+#ifdef Q_OS_WIN
+    const std::wstring profilePrefix = profilePath.toStdWString();
+#else
+    const QByteArray profilePrefix = profilePath.toUtf8();
+#endif
+    if (!profilePath.isEmpty())
     {
-        impl->check(api->EnableProfiling(options.get(), profilePrefix.constData()));
+        impl->check(api->EnableProfiling(options.get(), profilePrefix.data()));
         impl->profiling = true;
     }
     OrtCUDAProviderOptionsV2 *rawCuda = nullptr;
