@@ -552,7 +552,7 @@ def windows_release(args: argparse.Namespace, github: GitHub) -> dict:
     body = release.get("body") or ""
     original_body = baseline["body"] or ""
     expected_body = original_body.rstrip() + "\n\n---\n\n" + notes + "\n"
-    if body not in (original_body, expected_body):
+    if body not in (original_body, expected_body, expected_body.replace("\n", "\r\n")):
         raise ReleaseError("Release notes changed since baseline; inspect before appending")
     if args.dry_run:
         plan["dry_run"] = True
@@ -570,7 +570,7 @@ def windows_release(args: argparse.Namespace, github: GitHub) -> dict:
     if body != expected_body:
         with tempfile.TemporaryDirectory(prefix="vision-windows-notes-") as temporary:
             path = Path(temporary) / "notes.md"
-            path.write_text(expected_body, encoding="utf-8")
+            path.write_text(expected_body, encoding="utf-8", newline="\n")
             command(["gh", "release", "edit", tag, "--repo", github.repository, "--notes-file", str(path)])
     after = github.release(tag)
     if not after or after.get("body") != expected_body:

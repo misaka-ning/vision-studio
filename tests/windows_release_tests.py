@@ -97,6 +97,7 @@ class WindowsReleaseTests(unittest.TestCase):
             self.rows.append({"id": len(self.rows) + 10, "name": path.name, "size": path.stat().st_size,
                               "digest": "sha256:" + release.sha256(path), "state": "uploaded"})
         elif arguments[2] == "edit":
+            self.assertNotIn(b"\r\n", Path(arguments[-1]).read_bytes())
             self.release_value["body"] = Path(arguments[-1]).read_text(encoding="utf-8")
         return ""
 
@@ -123,6 +124,14 @@ class WindowsReleaseTests(unittest.TestCase):
         self.args.dry_run = True
         self.assertTrue(self.publish()["dry_run"])
         self.assertEqual(self.commands, [])
+
+    def test_retry_repairs_crlf_only_notes_without_reupload(self):
+        self.publish()
+        self.release_value["body"] = self.release_value["body"].replace("\n", "\r\n")
+        self.commands.clear()
+        self.publish()
+        self.assertEqual([command[2] for command in self.commands], ["edit"])
+        self.assertNotIn("\r\n", self.release_value["body"])
 
     def test_changed_linux_asset_is_rejected(self):
         self.rows[0]["digest"] = "sha256:" + "d" * 64
