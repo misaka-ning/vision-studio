@@ -138,7 +138,7 @@ class JobDirectory:
                 and self.path.name.startswith(JOB_PREFIX) and self.path.is_dir() and not self.path.is_symlink(),
                 "invalid_work_directory", "转换临时目录必须是输出父目录内的本轮真实目录。")
         value = self.path.lstat()
-        require(value.st_uid == os.geteuid() and not any(self.path.iterdir()),
+        require((os.name == "nt" or value.st_uid == os.geteuid()) and not any(self.path.iterdir()),
                 "invalid_work_directory", "转换临时目录必须属于当前用户且为空；不会清理已有资料。")
         self.identity = (value.st_dev, value.st_ino, value.st_uid)
 
@@ -151,7 +151,9 @@ class JobDirectory:
         value = self.path.lstat()
         require((value.st_dev, value.st_ino, value.st_uid) == self.identity and stat.S_ISDIR(value.st_mode),
                 "work_directory_changed", "转换临时目录已被替换，已拒绝清理。")
-        require(shutil.rmtree.avoids_symlink_attacks, "unsupported_filesystem", "当前平台缺少安全的临时目录清理接口。")
+        # Windows rmtree removes directory junctions without following them (Python >= 3.8).
+        require(os.name == "nt" or shutil.rmtree.avoids_symlink_attacks,
+                "unsupported_filesystem", "当前平台缺少安全的临时目录清理接口。")
         shutil.rmtree(self.path)
 
 
@@ -841,11 +843,25 @@ def export_torchscript(traced, example, path, metadata, output_shape, torch):
 
 def publish_no_replace(staged, output):
     require(staged.is_file() and not staged.is_symlink(), "verification_failed", "缺少已验证的临时模型。")
-    with staged.open("rb") as stream:
+    with staged.open("r+b" if os.name == "nt" else "rb") as stream:
         os.fsync(stream.fileno())
     # Anchor the destination directory before linking, so a rename/symlink
     # swap after this check cannot redirect the committed file elsewhere.
     require(output.parent.resolve() == output.parent, "invalid_output_directory", "输出父目录身份发生变化。")
+    if os.name == "nt":
+        import ctypes
+        from ctypes import wintypes
+        kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+        move = kernel.MoveFileExW
+        move.argtypes = [wintypes.LPCWSTR, wintypes.LPCWSTR, wintypes.DWORD]
+        move.restype = wintypes.BOOL
+        # No REPLACE_EXISTING: the final commit must never overwrite a user file.
+        if not move(str(staged), str(output), 0x8):  # MOVEFILE_WRITE_THROUGH
+            code = ctypes.get_last_error()
+            if code in (80, 183):
+                raise ConversionError("output_exists", "输出文件已被创建，请选择新文件名；已有内容没有覆盖。")
+            raise ConversionError("publication_failed", "无法保存转换文件：" + str(ctypes.WinError(code)))
+        return
     descriptor = os.open(output.parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
     try:
         os.link(staged, output.name, dst_dir_fd=descriptor, follow_symlinks=False)

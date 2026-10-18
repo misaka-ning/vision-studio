@@ -1,0 +1,46 @@
+[
+  {
+    "name": "torch",
+    "version": "2.9.1+cu128",
+    "filename": "torch-2.9.1+cu128-cp311-cp311-win_amd64.whl",
+    "sha256": "633005a3700e81b5be0df2a7d3c1d48aced23ed927653797a3bd2b144a3aeeb6",
+    "index": "https://download.pytorch.org/whl/cu128/torch/",
+    "url": "https://download.pytorch.org/whl/cu128/torch-2.9.1%2Bcu128-cp311-cp311-win_amd64.whl"
+  },
+  {
+    "name": "torchvision",
+    "version": "0.24.1+cu128",
+    "filename": "torchvision-0.24.1+cu128-cp311-cp311-win_amd64.whl",
+    "sha256": "6d836745bd3130ef8f3569c9f0d9d70103b5e2e9fa058310bcac5f63bcf2d043",
+    "index": "https://download.pytorch.org/whl/cu128/torchvision/",
+    "url": "https://download.pytorch.org/whl/cu128/torchvision-0.24.1%2Bcu128-cp311-cp311-win_amd64.whl"
+  },
+  {
+    "name": "onnxruntime-gpu",
+    "version": "1.23.2",
+    "filename": "onnxruntime_gpu-1.23.2-cp311-cp311-win_amd64.whl",
+    "sha256": "054282614c2fc9a4a27d74242afbae706a410f1f63cc35bc72f99709029a5ba4",
+    "url": "https://files.pythonhosted.org/packages/a9/5c/dba7c009e73dcce02e7f714574345b5e607c5c75510eb8d7bef682b45e5d/onnxruntime_gpu-1.23.2-cp311-cp311-win_amd64.whl"
+  },
+  {
+    "name": "coloredlogs",
+    "version": "15.0.1",
+    "filename": "coloredlogs-15.0.1-py2.py3-none-any.whl",
+    "sha256": "612ee75c546f53e92e70049c9dbfcc18c935a2b9a53b66085ce9ef6a6e5c0934",
+    "url": "https://files.pythonhosted.org/packages/a7/06/3d6badcf13db419e25b07041d9c7b4a2c331d3f4e7134445ec5df57714cd/coloredlogs-15.0.1-py2.py3-none-any.whl"
+  },
+  {
+    "name": "flatbuffers",
+    "version": "25.9.23",
+    "filename": "flatbuffers-25.9.23-py2.py3-none-any.whl",
+    "sha256": "255538574d6cb6d0a79a17ec8bc0d30985913b87513a01cce8bcdb6b4c44d0e2",
+    "url": "https://files.pythonhosted.org/packages/ee/1b/00a78aa2e8fbd63f9af08c9c19e6deb3d5d66b4dda677a0f61654680ee89/flatbuffers-25.9.23-py2.py3-none-any.whl"
+  },
+  {
+    "name": "humanfriendly",
+    "version": "10.0",
+    "filename": "humanfriendly-10.0-py2.py3-none-any.whl",
+    "sha256": "1697e1a8a8f550fd43c2865cd84542fc175a61dcb779b6fee18cf6b6ccba1477",
+    "url": "https://files.pythonhosted.org/packages/f0/0f/310fb31e39e2d734ccaa2c0fb981ee41f7bd5056ce9bc29b2248bd569169/humanfriendly-10.0-py2.py3-none-any.whl"
+  }
+]

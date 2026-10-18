@@ -1,0 +1,13 @@
+{
+    "actual_device": "cuda",
+    "backend": "PyTorch / Ultralytics / CUDA",
+    "device_index": 0,
+    "device_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "device_notice": "",
+    "error": "",
+    "inference_ms": 4.162199999882432,
+    "predictions": 5,
+    "qt": "6.8.3",
+    "requested_device": "cuda",
+    "success": true
+}

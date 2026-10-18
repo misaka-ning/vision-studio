@@ -1,0 +1,6 @@
+WARNING user config directory 'E:\vision-studio\build-windows\qa-data\ultralytics\Ultralytics' is not writable, using 'E:\vision-studio\Ultralytics'. Set YOLO_CONFIG_DIR to override.
+Creating new Ultralytics Settings v0.0.8 file  
+View Ultralytics Settings with 'yolo settings' or at 'E:\vision-studio\Ultralytics\settings.json'
+Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/usage/settings.
+2.9.1+cpu 0.24.1+cpu 8.4.173 4.11.0
+CPU imports OK

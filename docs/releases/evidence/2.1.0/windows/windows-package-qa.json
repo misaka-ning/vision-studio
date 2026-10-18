@@ -1,0 +1,49 @@
+{
+  "success": true,
+  "version": "2.1.0",
+  "package_revision": "windows.1",
+  "date": "2026-10-18",
+  "installer": {
+    "file": "vision-studio-2.1.0-windows-x64-setup.exe",
+    "bytes": 411996451,
+    "sha256": "8bb8eb7da78235f29312aa43aa5b58c2451fae883c9761a8631ac3da2ed68858",
+    "signature": "unsigned"
+  },
+  "source_snapshot": {
+    "file": "vision-studio-2.1.0-windows-sources.zip",
+    "bytes": 52221333,
+    "sha256": "1ed27bc1a186094e95e56e4e4a4868c15bceaa046b981028b548b55f74f4f73a",
+    "also_embedded_in_installer": true
+  },
+  "custom_install_qa_checks": 13,
+  "default_install": {
+    "path": "C:\\Users\\14685\\VisionStudio",
+    "without_dir_override": true,
+    "cpu_smoke_success": true
+  },
+  "preservation": [
+    "preferences.ini",
+    "history.json",
+    "external user model",
+    "user file in installation tree"
+  ],
+  "coverage": [
+    "Windows Unicode and space installation path",
+    "all 40298 payload paths and sizes",
+    "critical file SHA256",
+    "CPU ONNX and PT",
+    "CUDA ONNX and PT",
+    "Netron graph/hierarchy/parameters/cache",
+    "modern PT to ONNX and C++ inference",
+    "legacy PT to TorchScript and PT inference",
+    "upgrade/reinstall",
+    "uninstall preserves user file SHA256"
+  ],
+  "limitations": [
+    "Tested on current Windows 11 x64 host; no clean VM or Windows 10 host tested.",
+    "Physical webcam not tested; synthetic video/recording/CUDA cases passed.",
+    "Optional GPU preparation requires initial download and compatible existing NVIDIA driver.",
+    "Unsigned installer. Existing Linux release assets and tags were not modified."
+  ],
+  "evidence": "docs/releases/evidence/2.1.0/windows"
+}

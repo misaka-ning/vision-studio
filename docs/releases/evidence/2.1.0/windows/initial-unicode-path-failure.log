@@ -1,0 +1,10 @@
+install-custom-directory is still running.
+install-custom-directory is still running.
+install-custom-directory passed.
+installed-onnx-cpu failed: 2
+At E:\vision-studio\packaging\windows\verify_installer.ps1:24 char:36
++ ... ocess.ExitCode -ne 0) { throw "$Label failed: $($process.ExitCode)" }
++                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (installed-onnx-cpu failed: 2:String) [], RuntimeException
+    + FullyQualifiedErrorId : installed-onnx-cpu failed: 2
+ 

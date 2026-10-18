@@ -54,7 +54,11 @@ GpuRuntimePaths gpuRuntimePaths()
 {
     GpuRuntimePaths paths;
     paths.directory = gpuRuntimeDirectory();
+#ifdef Q_OS_WIN
+    paths.python = QDir(paths.directory).filePath(QStringLiteral("python.exe"));
+#else
     paths.python = QDir(paths.directory).filePath(QStringLiteral("bin/python"));
+#endif
     QFile ready(QDir(paths.directory).filePath(QStringLiteral("ready.json")));
     if (!ready.open(QIODevice::ReadOnly) || ready.size() > 65536)
     {
@@ -78,6 +82,17 @@ GpuRuntimePaths gpuRuntimePaths()
         paths.error = QStringLiteral("GPU 环境缺少可运行的 Python，请重新准备 GPU 支持。");
         return paths;
     }
+#ifdef Q_OS_WIN
+    const QDir packages(QDir(paths.directory).filePath(QStringLiteral("Lib/site-packages")));
+    const QDir ort(packages.filePath(QStringLiteral("onnxruntime/capi")));
+    const QString library = ort.filePath(QStringLiteral("onnxruntime.dll"));
+    if (QFileInfo(library).isFile())
+    {
+        paths.onnxLibrary = library;
+        paths.libraryDirectories << ort.absolutePath()
+                                 << packages.filePath(QStringLiteral("torch/lib"));
+    }
+#else
     const QDir lib(QDir(paths.directory).filePath(QStringLiteral("lib")));
     const QStringList pythonDirectories = lib.entryList({QStringLiteral("python3.*")}, QDir::Dirs | QDir::NoDotAndDotDot);
     for (const QString &pythonDirectory : pythonDirectories)
@@ -101,6 +116,7 @@ GpuRuntimePaths gpuRuntimePaths()
         }
         break;
     }
+#endif
     paths.libraryDirectories.removeDuplicates();
     if (paths.onnxLibrary.isEmpty())
     {

@@ -1,0 +1,20 @@
+********* Start testing of ConversionUiTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-llp64 shared (dynamic) release build; by MSVC 2022), windows 11
+PASS   : ConversionUiTests::initTestCase()
+QWARN  : ConversionUiTests::formatAndUnsupportedSource() QFontDatabase: Cannot find font directory D:/Qt/6.8.3/msvc2022_64/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+QWARN  : ConversionUiTests::formatAndUnsupportedSource() This plugin does not support propagateSizeHints()
+PASS   : ConversionUiTests::formatAndUnsupportedSource()
+QWARN  : ConversionUiTests::successKeepsJobSourceAndUsesLatestSelectionNextTime() This plugin does not support propagateSizeHints()
+PASS   : ConversionUiTests::successKeepsJobSourceAndUsesLatestSelectionNextTime()
+QWARN  : ConversionUiTests::existingOutputIsNeverOverwritten() This plugin does not support propagateSizeHints()
+PASS   : ConversionUiTests::existingOutputIsNeverOverwritten()
+QWARN  : ConversionUiTests::cancelIsResponsiveAndKeepsUnrelatedDirectories() This plugin does not support propagateSizeHints()
+PASS   : ConversionUiTests::cancelIsResponsiveAndKeepsUnrelatedDirectories()
+QWARN  : ConversionUiTests::completedArtifactCanStillCancelStuckWorker() This plugin does not support propagateSizeHints()
+PASS   : ConversionUiTests::completedArtifactCanStillCancelStuckWorker()
+QWARN  : ConversionUiTests::workerCannotRedirectCleanupToAnotherDirectory() This plugin does not support propagateSizeHints()
+PASS   : ConversionUiTests::workerCannotRedirectCleanupToAnotherDirectory()
+PASS   : ConversionUiTests::cleanupTestCase()
+Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 3929ms
+********* Finished testing of ConversionUiTests *********

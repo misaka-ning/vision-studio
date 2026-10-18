@@ -1,0 +1,15 @@
+install-custom-directory is still running.
+install-custom-directory is still running.
+install-custom-directory passed.
+installed-onnx-cpu passed.
+installed-pt-cpu passed.
+installed-model-views passed.
+installed-conversion-onnx passed.
+installed-conversion-torchscript passed.
+installed-onnx-cuda passed.
+installed-pt-cuda passed.
+upgrade-reinstall is still running.
+upgrade-reinstall is still running.
+upgrade-reinstall passed.
+uninstall passed.
+E:\vision-studio\build-windows\installer-qa-final\installer-qa.json

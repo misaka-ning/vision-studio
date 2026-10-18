@@ -7,6 +7,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QSignalSpy>
+#include <QStandardPaths>
 #include <QTemporaryDir>
 #include <QTest>
 #include <QTimer>
@@ -60,7 +61,13 @@ if mode=='result_hang': time.sleep(60)
         hadPython_=qEnvironmentVariableIsSet("VISION_STUDIO_PYTHON");
         previousHelper_=qgetenv("VISION_STUDIO_CONVERSION_WORKER"); previousPython_=qgetenv("VISION_STUDIO_PYTHON");
         qputenv("VISION_STUDIO_CONVERSION_WORKER",helper_.toUtf8());
+#ifdef Q_OS_WIN
+        const QString python = qEnvironmentVariable("VISION_STUDIO_TEST_PYTHON",
+                                                     QStandardPaths::findExecutable("python.exe"));
+        qputenv("VISION_STUDIO_PYTHON", python.toUtf8());
+#else
         qputenv("VISION_STUDIO_PYTHON","/usr/bin/python3.10");
+#endif
         page_=std::make_unique<ModelConversionPage>(temporary_->path());
         page_->resize(1100,850); page_->show(); page_->setSourceModel(source_,"实验模型");
     }

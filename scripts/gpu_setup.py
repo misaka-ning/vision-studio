@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import argparse
 import ctypes
-import fcntl
+import sys
+if sys.platform != "win32":
+    import fcntl
 import hashlib
 import json
 import os
@@ -13,7 +15,6 @@ import re
 import shutil
 import signal
 import subprocess
-import sys
 import tempfile
 
 from gpu_probe import INSTALLER, PINS, default_runtime, owned_runtime, probe, terminate_private_group
@@ -336,6 +337,10 @@ def setup(runtime: Path, base_python: Path, wheelhouse: Path | None = None) -> N
 
 
 def main() -> int:
+    if os.name == "nt":
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from gpu_windows import setup_main
+        return setup_main()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--runtime-dir", type=Path, default=default_runtime())
     parser.add_argument("--base-python", type=Path, default=Path("/usr/bin/python3.10"))

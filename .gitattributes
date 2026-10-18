@@ -23,3 +23,6 @@
 docs/releases/evidence/** -text -whitespace
 vendor/** -text
 packaging/licenses/model-conversion/** -text -whitespace
+packaging/windows/licenses/** -text -whitespace
+packaging/windows/ChineseSimplified.isl -text -whitespace
+packaging/windows/*.ps1 -text -whitespace

@@ -1,0 +1,75 @@
+{
+  "installer": "E:\\vision-studio\\output\\windows-2.1.0\\vision-studio-2.1.0-windows-x64-setup.exe",
+  "success": true,
+  "tested_at": "2026-10-18T12:54:37.4004433+08:00",
+  "scope": "Current Windows host, custom Unicode/space path, isolated developer PATH; no clean VM claimed.",
+  "sha256": "8bb8eb7da78235f29312aa43aa5b58c2451fae883c9761a8631ac3da2ed68858",
+  "checks": [
+    {
+      "passed": true,
+      "name": "install-custom-directory",
+      "exit_code": 0
+    },
+    {
+      "passed": true,
+      "critical_sha256_files": 13,
+      "name": "all-payload-paths-and-sizes",
+      "files": 40298
+    },
+    {
+      "passed": true,
+      "name": "installed-onnx-cpu",
+      "exit_code": 0
+    },
+    {
+      "passed": true,
+      "name": "installed-pt-cpu",
+      "exit_code": 0
+    },
+    {
+      "passed": true,
+      "name": "installed-model-views",
+      "exit_code": 0
+    },
+    {
+      "passed": true,
+      "name": "installed-conversion-onnx",
+      "exit_code": 0
+    },
+    {
+      "passed": true,
+      "name": "installed-conversion-torchscript",
+      "exit_code": 0
+    },
+    {
+      "passed": true,
+      "name": "installed-onnx-cuda",
+      "exit_code": 0
+    },
+    {
+      "passed": true,
+      "name": "installed-pt-cuda",
+      "exit_code": 0
+    },
+    {
+      "passed": true,
+      "name": "upgrade-reinstall",
+      "exit_code": 0
+    },
+    {
+      "passed": true,
+      "name": "upgrade-preserves-user-files"
+    },
+    {
+      "passed": true,
+      "name": "uninstall",
+      "exit_code": 0
+    },
+    {
+      "passed": true,
+      "name": "uninstall-preserves-user-files"
+    }
+  ],
+  "data_path": "E:\\vision-studio\\build-windows\\installer-qa-final\\personal-data",
+  "installed_path": "E:\\vision-studio\\build-windows\\installer-qa-final\\安装路径 Space\\VisionStudio"
+}

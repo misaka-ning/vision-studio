@@ -1,0 +1,21 @@
+{
+  "application": "2.1.0",
+  "package_revision": "windows.1",
+  "qt": "6.8.3",
+  "opencv_cpp": "4.12.0",
+  "python": {
+    "version": "3.11.17",
+    "build": "20261013",
+    "archive": "cpython-3.11.17+20261013-x86_64-pc-windows-msvc-install_only_stripped.tar.gz",
+    "sha256": "54a38c5e7cc1a5fd2b0182b495f29606dc1455d18ebfd3b5bf0a3c09253b5031",
+    "url": "https://github.com/astral-sh/python-build-standalone/releases/tag/20261013"
+  },
+  "compiler": "MSVC 19.50 x64",
+  "windows_sdk": "10.0.26100.0",
+  "installer_compiler": {
+    "name": "Inno Setup",
+    "version": "7.1.0 x64",
+    "sha256": "0362a383ed217d4c4239b5933866dd96d3eb2102737da92f80f6057a4b40df2f",
+    "url": "https://github.com/jrsoftware/issrc/releases/tag/is-7_1_0"
+  }
+}

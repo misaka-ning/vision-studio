@@ -20,6 +20,10 @@ class ProbeCancelled(BaseException):
 
 
 def terminate_private_group(process):
+    if os.name == "nt":
+        process.kill()
+        process.communicate(timeout=2)
+        return
     previous = signal.pthread_sigmask(signal.SIG_BLOCK, {signal.SIGTERM, signal.SIGINT})
     try:
         try:
@@ -41,7 +45,8 @@ def terminate_private_group(process):
 
 def managed_command(command, *, env=None, timeout=120):
     process = subprocess.Popen(command, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                               text=True, start_new_session=True)
+                               text=True, start_new_session=os.name != "nt",
+                               creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
     try:
         stdout, stderr = process.communicate(timeout=timeout)
         return subprocess.CompletedProcess(command, process.returncode, stdout, stderr)
@@ -185,6 +190,10 @@ def probe(runtime: Path, *, candidate: bool = False) -> dict:
 
 
 def main() -> int:
+    if os.name == "nt":
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from gpu_windows import probe_main
+        return probe_main()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--runtime-dir", type=Path, default=default_runtime())
     parser.add_argument("--candidate", action="store_true", help=argparse.SUPPRESS)

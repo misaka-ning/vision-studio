@@ -1,0 +1,22 @@
+{"event": "progress", "message": "复制独立基础环境；保留原 CPU 环境。", "percent": 5}
+{"event": "progress", "message": "下载并核验 Windows CUDA 依赖（首次约 3 GB）。", "percent": 15}
+Looking in links: e:\vision-studio\build-windows\gpu-wheels
+Processing .\build-windows\gpu-wheels\torch-2.9.1+cu128-cp311-cp311-win_amd64.whl (from -r E:\vision-studio\requirements-gpu-windows.lock.txt (line 3))
+Processing .\build-windows\gpu-wheels\torchvision-0.24.1+cu128-cp311-cp311-win_amd64.whl (from -r E:\vision-studio\requirements-gpu-windows.lock.txt (line 4))
+Processing .\build-windows\gpu-wheels\onnxruntime_gpu-1.23.2-cp311-cp311-win_amd64.whl (from -r E:\vision-studio\requirements-gpu-windows.lock.txt (line 5))
+Processing .\build-windows\gpu-wheels\coloredlogs-15.0.1-py2.py3-none-any.whl (from -r E:\vision-studio\requirements-gpu-windows.lock.txt (line 6))
+Processing .\build-windows\gpu-wheels\flatbuffers-25.9.23-py2.py3-none-any.whl (from -r E:\vision-studio\requirements-gpu-windows.lock.txt (line 7))
+Processing .\build-windows\gpu-wheels\humanfriendly-10.0-py2.py3-none-any.whl (from -r E:\vision-studio\requirements-gpu-windows.lock.txt (line 8))
+Installing collected packages: flatbuffers, torchvision, torch, onnxruntime-gpu, humanfriendly, coloredlogs
+  WARNING: The scripts torchfrtrace.exe and torchrun.exe are installed in 'E:\vision-studio\build-windows\.qa-gpu-runtime.staging-cqjbup3y\Scripts' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script onnxruntime_test.exe is installed in 'E:\vision-studio\build-windows\.qa-gpu-runtime.staging-cqjbup3y\Scripts' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script humanfriendly.exe is installed in 'E:\vision-studio\build-windows\.qa-gpu-runtime.staging-cqjbup3y\Scripts' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script coloredlogs.exe is installed in 'E:\vision-studio\build-windows\.qa-gpu-runtime.staging-cqjbup3y\Scripts' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+
+Successfully installed coloredlogs-15.0.1 flatbuffers-25.9.23 humanfriendly-10.0 onnxruntime-gpu-1.23.2 torch-2.9.1+cu128 torchvision-0.24.1+cu128
+{"event": "progress", "message": "执行真实 PyTorch 和 ONNX CUDA 自检。", "percent": 85}
+{"event": "ready", "message": "GPU 环境自检通过。", "runtime_dir": "E:\\vision-studio\\build-windows\\qa-gpu-runtime", "backup_dir": ""}
