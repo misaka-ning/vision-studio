@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "version": "2.2.0",
+  "success": true,
+  "errors": [],
+  "generated_at_utc": "2026-10-19T10:16:46.732164+00:00",
+  "scope": "Read-only aggregation of actual CUDA profiles, complete effective regressions, and four final-package CPU/CUDA cases; no extra inference executed by this aggregation.",
+  "checks": {
+    "onnx_cuda_nodes": true,
+    "pt_cuda": true,
+    "packaged_onnx_cuda": true,
+    "packaged_pt_cuda": true,
+    "cpu_regression": true,
+    "grayscale_c1_c3": true,
+    "stereo_recording": true
+  },
+  "details": {
+    "deb_sha256": "8ef059801bcef7f24189cba16bdaf66551fafb3f48ceb6b042bfb12f522226ac",
+    "deb_bytes": 386748572,
+    "packaged_binary_sha256": "420b0c7a4c5925d82a308d1be2bca83f00d37503f8e3991b514b54f7c153d1ba",
+    "production_unstripped_binary_sha256": "16b4b17abacabd65ccc88849418af89930e35cd35ec42cdfeb1c07eb71843184",
+    "hardware": "NVIDIA GeForce RTX 4060 / driver 595.99.02",
+    "ctest_report": "ctest-qa.json",
+    "packaged_report": "packaged-gpu-qa.json",
+    "cuda_profiles": [
+      {
+        "file": "regression-01/artifacts/onnx-cuda-0_2026-10-19_18-01-09.json",
+        "sha256": "df9813f17f79d208ef2146a80d1a9dcf98af9a67d8a514f18806945907b5ab38",
+        "cuda_node_events": 364
+      },
+      {
+        "file": "regression-01/artifacts/onnx-cuda-1_2026-10-19_18-01-10.json",
+        "sha256": "8b1b9a18ba1b8b2a3aee796c25391c31a5f7766e390b25648fbe537c99b00feb",
+        "cuda_node_events": 364
+      }
+    ]
+  }
+}

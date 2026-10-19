@@ -1,0 +1,16 @@
+{
+  "version": "2.2.0",
+  "source_freeze_commit": "5098cdd697bc5c392d414295a5c4234651e73825",
+  "source_date_epoch": 1792404472,
+  "clean_source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.2.0/clean-source",
+  "foreign_user_files_excluded": [
+    "docs/足球模型微调.md",
+    "scripts/evaluate_ball.py",
+    "scripts/finetune_ball.py",
+    "scripts/run_finetune_ball.sh"
+  ],
+  "production_binary_sha256": "16b4b17abacabd65ccc88849418af89930e35cd35ec42cdfeb1c07eb71843184",
+  "code_inputs_match_ctest_report": true,
+  "runtime_metadata_sha256": "15b239dc233e80b4ddaa8b22f87f07fb71bfe4d90332985a708bce04d6019f1b",
+  "frozen_at_utc": "2026-10-19T10:08:59.048531+00:00"
+}

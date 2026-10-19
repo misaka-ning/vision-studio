@@ -1,0 +1,181 @@
+{
+  "application_version": "2.2.0",
+  "cases": [
+    {
+      "completed": 3,
+      "exported_json": 3,
+      "filter": "",
+      "mode": 0,
+      "name": "whole-folder-3-selected-middle",
+      "original_class_ids": [
+        0,
+        5
+      ],
+      "outside_range_unprocessed": true,
+      "queue_count": 3,
+      "review_matches_export": true,
+      "selected_row": 1,
+      "submitted_count": 3,
+      "success": true,
+      "total_predictions": 12
+    },
+    {
+      "completed": 2,
+      "exported_json": 2,
+      "filter": "",
+      "mode": 1,
+      "name": "tail-3-selected-middle",
+      "original_class_ids": [
+        0,
+        5
+      ],
+      "outside_range_unprocessed": true,
+      "queue_count": 3,
+      "review_matches_export": true,
+      "selected_row": 1,
+      "submitted_count": 2,
+      "success": true,
+      "total_predictions": 8
+    },
+    {
+      "completed": 1,
+      "exported_json": 1,
+      "filter": "",
+      "mode": 2,
+      "name": "current-3-selected-middle",
+      "original_class_ids": [
+        0,
+        5
+      ],
+      "outside_range_unprocessed": true,
+      "queue_count": 3,
+      "review_matches_export": true,
+      "selected_row": 1,
+      "submitted_count": 1,
+      "success": true,
+      "total_predictions": 4
+    },
+    {
+      "completed": 61,
+      "exported_json": 61,
+      "filter": "0,5",
+      "mode": 0,
+      "name": "whole-folder-61-selected-51",
+      "original_class_ids": [
+        0,
+        5
+      ],
+      "outside_range_unprocessed": true,
+      "queue_count": 61,
+      "review_matches_export": true,
+      "selected_row": 50,
+      "submitted_count": 61,
+      "success": true,
+      "total_predictions": 244
+    },
+    {
+      "completed": 11,
+      "exported_json": 11,
+      "filter": "0,5",
+      "mode": 1,
+      "name": "tail-61-selected-51",
+      "original_class_ids": [
+        0,
+        5
+      ],
+      "outside_range_unprocessed": true,
+      "queue_count": 61,
+      "review_matches_export": true,
+      "selected_row": 50,
+      "submitted_count": 11,
+      "success": true,
+      "total_predictions": 44
+    },
+    {
+      "completed": 1,
+      "exported_json": 1,
+      "filter": "0,5",
+      "mode": 2,
+      "name": "current-61-selected-51",
+      "original_class_ids": [
+        0,
+        5
+      ],
+      "outside_range_unprocessed": true,
+      "queue_count": 61,
+      "review_matches_export": true,
+      "selected_row": 50,
+      "submitted_count": 1,
+      "success": true,
+      "total_predictions": 4
+    },
+    {
+      "completed": 3,
+      "exported_json": 3,
+      "filter": "32",
+      "mode": 0,
+      "name": "class32-zero-match",
+      "original_class_ids": [],
+      "outside_range_unprocessed": true,
+      "queue_count": 3,
+      "review_matches_export": true,
+      "selected_row": 0,
+      "submitted_count": 3,
+      "success": true,
+      "total_predictions": 0
+    },
+    {
+      "filter": "-1",
+      "inline_hint": "类别 ID 必须是从 0 开始的非负整数，用逗号或空格分隔。无效值：-1",
+      "invalid_start_blocked": true,
+      "name": "negative-id-blocked",
+      "success": true
+    },
+    {
+      "filter": "80",
+      "inline_hint": "类别 ID 80 超出当前模型范围：0～79（共 80 类）。",
+      "invalid_start_blocked": true,
+      "name": "out-of-range-id-blocked",
+      "success": true
+    },
+    {
+      "completed": 1,
+      "exported_json": 1,
+      "filter": "0,5",
+      "mode": 1,
+      "name": "stop-tail-61-selected-11",
+      "original_class_ids": [
+        0,
+        5
+      ],
+      "outside_range_unprocessed": true,
+      "progress_no_growth_after_stop": true,
+      "queue_count": 61,
+      "review_matches_export": true,
+      "selected_row": 10,
+      "stop_elapsed_ms": 465,
+      "submitted_count": 51,
+      "success": true,
+      "total_predictions": 4
+    }
+  ],
+  "driver": "LD_PRELOAD QApplication::exec + public Qt widgets/drop events",
+  "elapsed_ms": 9111,
+  "error": "",
+  "executable": "/tmp/vision-studio-gpu-deb-qa-cpky9udq/root/opt/VisionStudio/build/bin/vision-studio",
+  "executable_sha256": "420b0c7a4c5925d82a308d1be2bca83f00d37503f8e3991b514b54f7c153d1ba",
+  "maximum_gui_heartbeat_gap_ms": 638,
+  "qt": "6.8.3",
+  "recorded_at": "2026-10-19T10:12:29.144Z",
+  "schema_version": 1,
+  "success": true,
+  "version": "2.2.0",
+  "errors": [],
+  "details": {
+    "deb_sha256": "8ef059801bcef7f24189cba16bdaf66551fafb3f48ceb6b042bfb12f522226ac",
+    "deb_bytes": 386748572,
+    "packaged_binary_sha256": "420b0c7a4c5925d82a308d1be2bca83f00d37503f8e3991b514b54f7c153d1ba",
+    "application_tree_read_only": true,
+    "scope": "Actual final DEB executable through Qt public controls, real CPU inference, native target tables and native saved results; separate QA instrumentation only."
+  }
+}
