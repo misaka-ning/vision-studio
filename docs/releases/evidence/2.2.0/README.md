@@ -1,5 +1,7 @@
 # Vision Studio 2.2.0 验收证据
 
+正式发布及远端文件复核见 [PUBLICATION.md](PUBLICATION.md)。这些发布后回执补充到 `main`，已冻结的 `v2.2.0` 标签和三个发行附件保持原样。
+
 目标环境为 Ubuntu 22.04.5 amd64、GCC 11、C++17 / Qt 6.8.3、OpenCV DNN 4.5.4。CUDA 实测为 NVIDIA GeForce RTX 4060、驱动 595.99.02，使用已准备的用户 GPU 环境，不修改驱动。CPU runtime 为 Python 3.10 / PyTorch 2.9.1+cpu，沿用 59 项依赖，无新增运行依赖。
 
 ## 软件回归
