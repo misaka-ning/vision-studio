@@ -8,13 +8,14 @@
 
 [下载发行版](https://github.com/misaka-ning/vision-studio/releases) · [更新日志](CHANGELOG.md) · [使用指南](docs/使用指南.md) · [报告问题](https://github.com/misaka-ning/vision-studio/issues)
 
-当前版本：**2.1.0**，新增模型库右键管理与 PT → ONNX / TorchScript 转换。界面保留 [Fluent-Qt](https://github.com/calvinhxx/Fluent-Qt) 风格。CPU／NVIDIA GPU、ONNX／PT、灰度和左右目处理沿用现有约定。发行平台：**Ubuntu 22.04 LTS amd64、Windows x64**（已在 Windows 11 验收）。应用代码采用 **AGPL-3.0-only**。
+当前版本：**2.2.0**，新增文件夹检测范围选择与原始类别 ID 筛选。界面保留 [Fluent-Qt](https://github.com/calvinhxx/Fluent-Qt) 风格。CPU／NVIDIA GPU、ONNX／PT、灰度和左右目处理沿用现有约定。本次发行平台：**Ubuntu 22.04 LTS amd64**；Windows 已发布安装包仍为 2.1.0 补充版，本版不宣称完成 Windows 2.2.0 验收。应用代码采用 **AGPL-3.0-only**。
 
-![V2.0 Fluent 风格检测工作台：RTX 4060 实际 CUDA 推理](docs/preview.png)
+![2.2.0 Fluent 检测工作台：64 张队列中仅检测当前第 51 张，保留原始类别 ID 0、5](docs/preview-2.2.0.png)
 
 ## 功能
 
-- **检测工作台**：图片队列、批量图片、视频和摄像头输入，YOLO 检测与单标签图像分类，置信度和 NMS IoU 阈值可调；输入尺寸、置信度和 NMS IoU 不受鼠标滚轮误改，文件夹结果保存放在后台，停止时不受保存队列阻塞。批量完成后可点击队列图片回看本轮标注、目标列表和指标，并导出所选图片的结果。
+- **检测工作台**：图片队列、批量图片、视频和摄像头输入；开始按钮上方可选择「检测整个文件夹」「从当前图片向后检测」「只检测当前图片」，开始时冻结队列范围和顺序。YOLO 检测与单标签图像分类，置信度和 NMS IoU 阈值可调；输入尺寸、置信度和 NMS IoU 不受鼠标滚轮误改，文件夹结果保存放在后台，停止时不受保存队列阻塞。批量完成后可点击队列图片回看本轮标注、目标列表和指标，并导出所选图片的结果。
+- **类别筛选**：独立输入原始类别 ID，留空为全部，支持 `32`、`0,2,32`、空格和中文逗号，自动去重；后台读取模型实际类别范围，非法 ID 通过行内提示阻止开始。检测框、表格、数量、导出与录像使用同一筛选结果，不重编号；分类任务禁用该控件。COCO ID 32 是 sports ball，涵盖多种球类，并非只识别足球。
 - **模型库**：导入 ONNX / PT / TorchScript，可拖动排序并在重启后保留；右键打开模型位置、编辑备注、更改显示名称或从列表移除。显示名称与备注持久保存，重命名不改原始文件名与内容，移除保留文件；全局选用统一决定工作台、模型显示与转换页默认来源。
 - **模型显示**：Netron 结构图、可展开层级树、参数表；后台预加载并缓存，切换页面与模式复用解析结果，树与表支持搜索和详情。
 - **灰度与双目输入**：灰度按模型的 1 / 3 通道适配；单设备水平左右拼接视频或摄像头可只处理左目或右目。预览和导出显示实际所选画面与颜色模式。
@@ -31,17 +32,17 @@
 
 ## 下载与安装
 
-从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下命令用于 2.1.0 正式发布后安装。每版只上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
+从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下命令用于 2.2.0 正式发布后安装。每版只上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
 
 页面另外显示 GitHub 自动提供的 **Source code (zip)** 和 **Source code (tar.gz)** 两个源码入口，它们由平台生成，不能从 Release 中移除。下载三个手动附件后，先校验，再安装：
 
 ```bash
 sha256sum -c SHA256SUMS
-sudo apt install ./vision-studio_2.1.0-1_amd64.deb
+sudo apt install ./vision-studio_2.2.0-1_amd64.deb
 vision-studio
 ```
 
-2.1.0 正式包的 Debian 版本为 `2.1.0-1`，高于 `2.0.0-1` 及此前 Beta，可用以上 APT 命令直接升级。先结束检测、录像与模型转换，导出需要永久保存的结果，退出旧程序再安装；升级保留个人设置、模型、运行记录、导出、录像与已准备的 GPU 环境。本轮临时回看缓存不会跨程序重启保留。
+2.2.0 正式包的 Debian 版本为 `2.2.0-1`，高于 `2.1.0-1`、`2.0.0-1` 及此前 Beta，可用以上 APT 命令直接升级。先结束检测、录像与模型转换，导出需要永久保存的结果，退出旧程序再安装；升级保留个人设置、模型、运行记录、导出、录像与已准备的 GPU 环境。本轮临时回看缓存不会跨程序重启保留。
 
 也可从应用菜单启动 **Vision Studio**。首次体验可打开「更多 → 运行示例」，再导入自己的模型。
 
@@ -78,7 +79,7 @@ PT 支持兼容的 Ultralytics YOLOv8 / YOLO11 完整检查点、随附 YOLOv5 v
 
 ### Windows 本地开发
 
-本机已使用 Qt 6.8.3 MSVC 2022 64 位 SDK、MSVC x64 和 OpenCV 4.12.0 Windows 动态库完成构建及真实 ONNX CPU 示例验证。Qt 需安装 WebEngine、WebChannel、Svg 及其配套模块。请在 Visual Studio x64 开发者终端中执行，按实际安装位置调整路径：
+Windows 2.1.0 已在对应环境使用 Qt 6.8.3 MSVC 2022 64 位 SDK、MSVC x64 和 OpenCV 4.12.0 Windows 动态库完成构建及真实 ONNX CPU 示例验证；以下是源码构建方法，不代表本轮已验收 Windows 2.2.0。Qt 需安装 WebEngine、WebChannel、Svg 及其配套模块。请在 Visual Studio x64 开发者终端中执行，按实际安装位置调整路径：
 
 ```powershell
 cmake -S . -B build-windows -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DCMAKE_PREFIX_PATH=D:/Qt/6.8.3/msvc2022_64 -DOpenCV_DIR=D:/Opencv-C++/opencv/build/x64/vc16/lib
@@ -130,29 +131,17 @@ GPU 依赖使用独立的 `requirements-gpu.txt`／`requirements-gpu.lock.txt`�
 
 ## 验证与发行
 
-2.1.0 的开发验收有效结果为 **13 套通过、0 失败、0 跳过**，由完整基线、UI 复验及转换修复后的受影响测试复验汇总，未描述为一次整套通过。UI 为 38 项通过；最终 C++ 转换推理 14 项通过、62.674 秒，Python 转换 20 项通过、56.295 秒，包含 18 次真实导出。完整记录与各轮原始日志见 [ctest-qa.json](docs/releases/evidence/2.1.0/ctest-qa.json)。
+2.2.0 的实际范围、原始测试日志、最终 DEB、安装、CPU／CUDA 与对应源码检查保存在 [本版验收证据](docs/releases/evidence/2.2.0/)；发行说明见 [2.2.0](docs/releases/2.2.0.md)。只有本版最终文件完成适用核验后才发布，开发构建或旧版报告不代替安装包验收。物理摄像头和 Windows 2.2.0 不作为已测试项目。
 
-转换补齐旧版 OpenCV 常量左侧减法的标准 ONNX 等价规约，TorchScript 检测缓存随设备移动并保持严格 FP32。完整 YOLOv8n 与 YOLOv5n 固定 640 输入的 ONNX CPU／CUDA 检测结果按容差对照原 PT，TorchScript 原始输出与 CUDA 缓存迁移核验均通过。范围与限制见 [ONNX 完整模型对照](docs/releases/evidence/2.1.0/conversion-portability-proof/portability-onnx-full-model-qa.json) 和 [TorchScript 原始输出对照](docs/releases/evidence/2.1.0/conversion-portability-proof/portability-torchscript-raw-qa.json)。
-
-发行前必须完成最终 DEB 普通用户只读运行与转换、APT 模拟、隔离安装／卸载、CPU／CUDA 推理及源码归档核验；报告绑定最终文件，未通过不发布。实际范围及原始日志保存到 `docs/releases/evidence/2.1.0/`，并列入 [2.1.0 发布说明](docs/releases/2.1.0.md)，开发验收不能替代安装包验收。
-
-最终对应源码另有独立 `source-bundle-qa.json` 随标签保存，未通过不发布；报告与冻结清单在归档后加入仓库，避免递归自校验。新增转换依赖、原始源码与通知一同交付。
-
-历史记录保留在 [2.0.0](docs/releases/2.0.0.md)、[Beta.2](docs/releases/2.0.0-beta.2.md)、[Beta.1](docs/releases/2.0.0-beta.1.md) 和 [1.6.0](docs/releases/1.6.0.md) 及各自证据目录，不改写原报告与发行文件。工作台与结构图沿用 V2.0 视觉基线；模型转换截图来自本版真实导出及 CPU 推理，来源记录见 [conversion-preview.json](docs/releases/evidence/2.1.0/conversion-preview.json)。
+同一配置下逐图更新结果，停止前未重算的图片与范围外有效缓存保留；修改模型、预处理、阈值、设备、类别名称映射或类别筛选会清除不兼容的缓存。缓存不跨重启保存，永久保存请使用导出。范围及筛选组合、超过 50 张、停止后回看、零匹配与原始 ID 保留均属于本版验证范围。
 
 ```bash
 ./build/bin/vision-studio --smoke /tmp/vision-studio-onnx-smoke
 ./build/bin/vision-studio --smoke-pt /tmp/vision-studio-pt-smoke
 ./build/bin/vision-studio --smoke-model /tmp/vision-studio-model-smoke
-./build/bin/vision-studio --smoke-model /tmp/vision-studio-pt-model-smoke \
-  --display-model "$PWD/models/yolov8n.pt"
 ```
 
-模型显示自检生成结构图、层级树、参数表截图及含内容数量、模式和缓存复用状态的报告。无显示器时可以使用 `QT_QPA_PLATFORM=offscreen`；正常桌面启动保留 WebEngine sandbox。
-
-打包、对应源码及上游重建说明见 [打包说明](packaging/README.md) 和 [对应源码与重建](docs/release/对应源码与重建.md)。完整源码包内已有应用源码拆分归档、`SOURCE-SHA256SUMS`、`SOURCE-INVENTORY.json` 及上游源码、许可和原始通知，可解压后获取。GitHub 自动生成的 Source code ZIP／tar.gz 来自 Git 标签，不能替代 Release 中的完整对应源码包。
-
-源码主线为 `main`，正式标签为 `vX.Y.Z`，预发布标签为 `vX.Y.Z-beta.N`。每个新版必须按 [版本管理](docs/版本管理.md) 完成测试、源码与标签推送，并使用 `scripts/github_release.py` 发布和校验 Release；远端核验后本地保留最新两个正式版的发行与独立构建副本；2.1.0 发布并核验后为 2.1.0 与 2.0.0，本地 1.6.0 副本逐版核验后清理。旧 Beta 副本逐版精确核验后单独清理，历史版本可通过标签和 Release 获取，原归档保持不变。
+发布按 [版本管理](docs/版本管理.md) 执行：源码与带说明标签 `v2.2.0` 推送，三个手动附件远端核验成功后才清理旧发行／独立构建副本。最新两版为 2.2.0 与 2.1.0；用户设置、模型、录像、共享 SDK／runtime 及未备份资料保留。历史 [2.1.0](docs/releases/2.1.0.md)、[2.0.0](docs/releases/2.0.0.md) 及其原始证据和归档保持不变。
 
 ## 文档、贡献与许可
 

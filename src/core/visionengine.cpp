@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QSet>
+#include <QScopeGuard>
 #include <algorithm>
 #include <cmath>
 #include <numeric>
@@ -166,6 +167,68 @@ int onnxInputChannels(const QByteArray &model)
     return int(dimensions[1]);
 }
 
+QVector<QVector<int>> onnxOutputShapes(const QByteArray &model)
+{
+    QVector<QVector<int>> result;
+    ProtoReader graphReader(protoMessage(model, 7));
+    ProtoField field;
+    while (graphReader.next(field))
+    {
+        if (field.number != 12 || field.wire != 2)
+            continue;
+        const auto shape = protoMessage(protoMessage(protoMessage(field.bytes, 2), 1), 2);
+        QVector<int> dimensions;
+        ProtoReader shapeReader(shape);
+        ProtoField dimension;
+        while (shapeReader.next(dimension))
+        {
+            if (dimension.number != 1 || dimension.wire != 2)
+                continue;
+            int value = 0;
+            ProtoReader dimensionReader(dimension.bytes);
+            ProtoField item;
+            while (dimensionReader.next(item))
+                if (item.number == 1 && item.wire == 0 && item.value <= 0x7fffffff)
+                    value = int(item.value);
+            dimensions.append(value);
+        }
+        result.append(dimensions);
+    }
+    return result;
+}
+
+int onnxDeclaredClassCount(const QByteArray &model, ModelTask task)
+{
+    int count = 0;
+    for (const auto &shape : onnxOutputShapes(model))
+    {
+        // YOLOv5 may additionally expose raw multi-scale feature heads.
+        if (task == ModelTask::YoloV5 && shape.size() == 5 && shape[0] == 1 && shape[1] == 3)
+            continue;
+        int candidate = 0;
+        if (task == ModelTask::Classification)
+        {
+            if ((shape.size() == 2 || (shape.size() == 4 && shape[2] == 1 && shape[3] == 1)) &&
+                shape[0] == 1)
+                candidate = shape[1];
+        }
+        else if (shape.size() == 3 && shape[0] == 1)
+            candidate = shape[task == ModelTask::YoloV5 ? 2 : 1] -
+                        (task == ModelTask::YoloV5 ? 5 : 4);
+        if (candidate <= 0 || candidate > 100000 || count)
+            return 0; // Unknown/unsupported output is checked against real tensors at inference.
+        count = candidate;
+    }
+    return count;
+}
+
+void validateFilter(const ModelConfig &config)
+{
+    QString message;
+    if (!validateClassFilter(config.classFilter, config.modelClassCount, config.task, &message))
+        fail(message);
+}
+
 QString shapeOf(const cv::Mat &tensor)
 {
     QStringList sizes;
@@ -290,8 +353,10 @@ QVector<Prediction> decodeDetection(const cv::Mat &output, const ModelConfig &co
     const int channels = output.size[v5 ? 2 : 1];
     const int proposals = output.size[v5 ? 1 : 2];
     const int classes = channels - (v5 ? 5 : 4);
-    const int expectedClasses = config.labels.isEmpty() ? 80 : int(config.labels.size());
-    if (classes != expectedClasses || proposals <= 0 || proposals > 2000000)
+    const int expectedClasses = config.modelClassCount > 0 ? config.modelClassCount : classes;
+    if (classes <= 0 || classes > 100000 || classes != expectedClasses ||
+        (!config.labels.isEmpty() && config.labels.size() != classes) ||
+        proposals <= 0 || proposals > 2000000)
     {
         fail(QStringLiteral(
                  "模型输出 %1 与所选 %2 格式或 %3 个标签不匹配。"
@@ -327,7 +392,8 @@ QVector<Prediction> decodeDetection(const cv::Mat &output, const ModelConfig &co
             }
         }
         score *= objectness;
-        if (id < 0 || score < config.confidence)
+        if (id < 0 || score < config.confidence ||
+            (!config.classFilter.isEmpty() && !config.classFilter.contains(id)))
             continue;
         const float x = value(n, 0), y = value(n, 1);
         const float width = value(n, 2), height = value(n, 3);
@@ -425,6 +491,7 @@ void VisionEngine::load(const ModelConfig &requestedConfig)
 {
     ModelConfig config = requestedConfig;
     unload();
+    auto resetOnFailure = qScopeGuard([this] { unload(); });
     if (config.device != ComputeDevice::Auto && config.device != ComputeDevice::CPU &&
         config.device != ComputeDevice::CUDA)
         fail(QStringLiteral("计算设备设置无效。"));
@@ -443,6 +510,8 @@ void VisionEngine::load(const ModelConfig &requestedConfig)
         fail(QStringLiteral("预处理缩放系数必须为正数，均值必须是有限数值。"));
     if (!QFileInfo(config.modelPath).isFile())
         fail(QStringLiteral("找不到模型：%1").arg(config.modelPath));
+    if (config.task == ModelTask::Classification && !config.classFilter.isEmpty())
+        validateFilter(config);
     const QString suffix = QFileInfo(config.modelPath).suffix().toLower();
     if (suffix == "pt" || suffix == "torchscript")
     {
@@ -451,6 +520,7 @@ void VisionEngine::load(const ModelConfig &requestedConfig)
         backend->load(config);
         m_config = backend->config();
         m_pt = std::move(backend);
+        resetOnFailure.dismiss();
         return;
     }
     if (suffix != "onnx")
@@ -462,6 +532,10 @@ void VisionEngine::load(const ModelConfig &requestedConfig)
     if (modelBytes.isEmpty())
         fail(QStringLiteral("模型文件为空。"));
     config.inputChannels = onnxInputChannels(modelBytes);
+    // Never use the UI's label names or a previous model's count as the source of truth.
+    config.modelClassCount = onnxDeclaredClassCount(modelBytes, config.task);
+    if (config.modelClassCount > 0)
+        validateFilter(config);
     if (config.colorMode == InputColorMode::Color && config.inputChannels != 3)
         fail(QStringLiteral("此模型需要 1 通道输入，请将输入通道模式切换为「灰度」。"));
     if (config.colorMode == InputColorMode::Grayscale)
@@ -477,6 +551,17 @@ void VisionEngine::load(const ModelConfig &requestedConfig)
             config.deviceName = cuda->deviceName();
             m_config = config;
             m_cuda = std::move(cuda);
+            if (m_config.modelClassCount <= 0 && !m_config.classFilter.isEmpty())
+            {
+                const auto filter = m_config.classFilter;
+                m_config.classFilter.clear();
+                QImage probe(config.inputSize, config.inputSize, QImage::Format_RGB888);
+                probe.fill(Qt::black);
+                infer(probe);
+                m_config.classFilter = filter;
+                validateFilter(m_config);
+            }
+            resetOnFailure.dismiss();
             return;
         }
         catch (const std::exception &error)
@@ -484,6 +569,7 @@ void VisionEngine::load(const ModelConfig &requestedConfig)
             if (config.device == ComputeDevice::CUDA ||
                 (m_cancellationCheck && m_cancellationCheck()))
                 throw;
+            m_cuda.reset();
             config.deviceNotice = QStringLiteral("CUDA 初始化失败，已自动使用 CPU：%1")
                                       .arg(QString::fromUtf8(error.what()).left(1500));
         }
@@ -497,12 +583,69 @@ void VisionEngine::load(const ModelConfig &requestedConfig)
         net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
         m_config = config;
         m_net = std::move(net);
+        if (m_config.modelClassCount <= 0 && !m_config.classFilter.isEmpty())
+        {
+            const auto filter = m_config.classFilter;
+            m_config.classFilter.clear();
+            QImage probe(config.inputSize, config.inputSize, QImage::Format_RGB888);
+            probe.fill(Qt::black);
+            infer(probe);
+            m_config.classFilter = filter;
+            validateFilter(m_config);
+        }
     }
     catch (const cv::Exception &error)
     {
         fail(QStringLiteral("OpenCV 无法加载此 ONNX 模型。请使用静态 FP32、batch=1 的兼容导出。\n%1")
                  .arg(QString::fromUtf8(error.what())));
     }
+    resetOnFailure.dismiss();
+}
+
+ModelConfig VisionEngine::inspectModel(const ModelConfig &requested, std::function<bool()> cancelled)
+{
+    ModelConfig probe = requested;
+    probe.classFilter.clear();
+    probe.labels.clear();
+    probe.modelClassCount = 0;
+    probe.device = ComputeDevice::CPU;
+    probe.deviceIndex = 0;
+    probe.colorMode = InputColorMode::Grayscale; // Allows both C1 and C3 metadata inspection.
+    probe.swapRB = true;
+    probe.scale = 1.0 / 255.0;
+    probe.meanR = probe.meanG = probe.meanB = 0;
+    if (cancelled && cancelled())
+        fail(QStringLiteral("模型信息读取已取消。"));
+    if (QFileInfo(probe.modelPath).suffix().compare("onnx", Qt::CaseInsensitive) == 0)
+    {
+        QFile file(probe.modelPath);
+        if (!file.open(QIODevice::ReadOnly))
+            fail(QStringLiteral("无法读取模型类别信息：%1").arg(file.errorString()));
+        const auto bytes = file.readAll();
+        probe.inputChannels = onnxInputChannels(bytes);
+        const auto shapes = onnxOutputShapes(bytes);
+        // These are the actual declared axes, rather than the names in a labels file.
+        for (const auto &shape : shapes)
+            if (shape.size() == 2 || (shape.size() == 4 && shape[2] == 1 && shape[3] == 1))
+                probe.task = ModelTask::Classification;
+            else if (shape.size() == 3 && shape[1] > 1000 && shape[2] > 5 && shape[2] < shape[1])
+                probe.task = ModelTask::YoloV5;
+            else if (shape.size() == 3 && shape[2] > 1000 && shape[1] > 4 && shape[1] < shape[2])
+                probe.task = ModelTask::YoloV8;
+        probe.modelClassCount = onnxDeclaredClassCount(bytes, probe.task);
+        if (probe.modelClassCount > 0)
+            return probe;
+    }
+    VisionEngine engine;
+    engine.setCancellationCheck(std::move(cancelled));
+    engine.load(probe);
+    if (engine.config().modelClassCount <= 0)
+    {
+        QImage image(probe.inputSize, probe.inputSize, QImage::Format_RGB888);
+        image.fill(Qt::black);
+        engine.infer(image);
+    }
+    return engine.config();
 }
 
 InferenceResult VisionEngine::infer(const QImage &image, const QString &source)
@@ -574,7 +717,8 @@ InferenceResult VisionEngine::infer(const QImage &image, const QString &source)
             const bool auxiliaryV5 =
                 m_config.task == ModelTask::YoloV5 && tensor.dims == 5 && tensor.size[0] == 1 &&
                 tensor.size[1] == 3 &&
-                tensor.size[4] == (m_config.labels.isEmpty() ? 85 : m_config.labels.size() + 5);
+                tensor.size[4] > 5 && tensor.size[4] <= 100005 &&
+                (m_config.modelClassCount <= 0 || tensor.size[4] == m_config.modelClassCount + 5);
             if (auxiliaryV5)
                 continue;
             if (primary)
@@ -589,12 +733,26 @@ InferenceResult VisionEngine::infer(const QImage &image, const QString &source)
             primary->convertTo(output, CV_32F);
         else
             output = primary->isContinuous() ? *primary : primary->clone();
+        const int actualClasses = m_config.task == ModelTask::Classification
+                                      ? (output.dims >= 2 ? output.size[1] : 0)
+                                      : (output.dims == 3
+                                             ? output.size[m_config.task == ModelTask::YoloV5 ? 2 : 1] -
+                                                   (m_config.task == ModelTask::YoloV5 ? 5 : 4)
+                                             : 0);
+        if (m_config.modelClassCount > 0 && actualClasses != m_config.modelClassCount)
+            fail(QStringLiteral("模型实际输出类别数 %1 与模型声明 %2 不一致，已停止推理。")
+                     .arg(actualClasses).arg(m_config.modelClassCount));
+        if (actualClasses > 0 && actualClasses <= 100000)
+            m_config.modelClassCount = actualClasses;
+        validateFilter(m_config);
         InferenceResult result;
         result.image = preview;
         result.originalImage = image;
         result.source = source;
         result.modelName = QFileInfo(m_config.modelPath).fileName();
         result.task = m_config.task;
+        result.classFilter = m_config.classFilter;
+        result.modelClassCount = m_config.modelClassCount;
         result.backend = backendName();
         result.requestedDevice = m_config.device;
         result.device = m_config.resolvedDevice;

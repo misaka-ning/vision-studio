@@ -353,6 +353,9 @@ bool VideoRecorder::finish(RecordingSummary *summary, QString *error)
         QJsonArray times;
         for (qint64 time : m_frameTimes)
             times.append(double(time));
+        QJsonArray classFilter;
+        for (int id : m_firstFrame.classFilter)
+            classFilter.append(id);
         const QJsonObject metadata{
             {"schema_version", 1},
             {"application", "Vision Studio"},
@@ -375,6 +378,8 @@ bool VideoRecorder::finish(RecordingSummary *summary, QString *error)
             {"source", m_firstFrame.source},
             {"model", m_firstFrame.modelName},
             {"model_file", m_config.modelPath},
+            {"class_filter", classFilter},
+            {"model_class_count", m_firstFrame.modelClassCount},
             {"backend", m_firstFrame.backend},
             {"requested_device", computeDeviceKey(m_firstFrame.requestedDevice)},
             {"actual_device", computeDeviceKey(m_firstFrame.device)},

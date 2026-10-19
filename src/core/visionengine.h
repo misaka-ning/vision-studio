@@ -19,6 +19,10 @@ class VisionEngine final
     VisionEngine(const VisionEngine &) = delete;
     VisionEngine &operator=(const VisionEngine &) = delete;
     void load(const ModelConfig &config);
+    // Potentially loads a trusted PT checkpoint: call from a worker, never the UI thread.
+    // The returned count is derived from the model, independently of user label mappings.
+    static ModelConfig inspectModel(const ModelConfig &config,
+                                   std::function<bool()> cancellationCheck = {});
     void unload();
     InferenceResult infer(const QImage &image, const QString &source = {});
     bool loaded() const noexcept;

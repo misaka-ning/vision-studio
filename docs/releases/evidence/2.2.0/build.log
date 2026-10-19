@@ -1,0 +1,16 @@
+[1/21] Automatic MOC for target vision-studio
+[2/20] Automatic MOC for target vision-ui-tests
+[3/19] Automatic MOC for target vision-batch-responsiveness-tests
+[4/18] Automatic MOC for target vision-conversion-inference-tests
+[5/17] Automatic MOC for target vision-scope-filter-ui-tests
+[6/16] Building CXX object CMakeFiles/vision-scope-filter-ui-tests.dir/tests/scope_filter_ui_tests.cpp.o
+[7/16] Building CXX object CMakeFiles/vision-batch-responsiveness-tests.dir/src/ui/mainwindow.cpp.o
+[8/16] Building CXX object CMakeFiles/vision-ui-tests.dir/src/ui/mainwindow.cpp.o
+[9/16] Building CXX object CMakeFiles/vision-studio.dir/src/ui/mainwindow.cpp.o
+[10/16] Linking CXX executable vision-batch-responsiveness-tests
+[11/16] Linking CXX executable vision-ui-tests
+[12/16] Linking CXX executable bin/vision-studio
+[13/16] Building CXX object CMakeFiles/vision-scope-filter-ui-tests.dir/src/ui/mainwindow.cpp.o
+[14/16] Linking CXX executable vision-scope-filter-ui-tests
+[15/16] Building CXX object CMakeFiles/vision-conversion-inference-tests.dir/src/ui/mainwindow.cpp.o
+[16/16] Linking CXX executable vision-conversion-inference-tests

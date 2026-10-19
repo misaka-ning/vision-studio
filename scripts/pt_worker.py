@@ -259,7 +259,7 @@ def primary_tensor(output):
     raise ValueError("模型输出不是支持的 YOLO 原始张量或分类张量。")
 
 
-def raw_predictions(output, image, geometry, labels, layout, confidence, iou):
+def raw_predictions(output, image, geometry, labels, layout, confidence, iou, class_filter=()):
     output = primary_tensor(output)
     if output.ndim != 3 or output.shape[0] != 1:
         raise ValueError("检测输出需要 [1,N,5+C] 或 [1,4+C,N]，分割/姿态/端到端输出尚不受支持。")
@@ -283,6 +283,9 @@ def raw_predictions(output, image, geometry, labels, layout, confidence, iou):
     scores, class_ids = probabilities.max(1)
     scores = scores * objectness
     selected = (scores >= confidence) & (rows[:, 2] > 0) & (rows[:, 3] > 0)
+    if class_filter:
+        allowed = torch.tensor(class_filter, dtype=class_ids.dtype)
+        selected &= (class_ids[:, None] == allowed[None, :]).any(1)
     rows, scores, class_ids = rows[selected], scores[selected], class_ids[selected]
     if len(rows) > 30000:
         strongest = scores.argsort(descending=True)[:30000]
@@ -326,6 +329,7 @@ def classification_predictions(output, labels):
 
 class NativeYolo:
     def __init__(self, path, model, checkpoint, color_mode, device):
+        self.class_filter = []
         from ultralytics import YOLO
         from ultralytics.engine.model import Model as UltralyticsModel
 
@@ -349,6 +353,10 @@ class NativeYolo:
         if self.task not in ("detect", "classify"):
             raise ValueError(f"此 .pt 模型是 {self.task} 任务；当前支持目标检测与分类，尚不支持分割/姿态/旋转框。")
         self.labels = labels_list(self.model.names)
+        head = self.model.model.model[-1]
+        declared_classes = getattr(head, "nc", len(self.labels))
+        if not isinstance(declared_classes, int) or declared_classes != len(self.labels):
+            raise ValueError("模型检测头类别数与内置类别元数据不一致。")
         self.device = device
         self.model.to(device)
         self.model.model.float().eval()
@@ -375,6 +383,7 @@ class NativeYolo:
         # Its Results coordinates then refer to our padded tensor; invert the
         # exact resize below instead of treating them as original-image pixels.
         results = self.model.predict(source=source, imgsz=size, conf=confidence, iou=iou,
+                                     classes=self.class_filter or None,
                                      device=str(self.device), half=False, max_det=300, rect=False, agnostic_nms=False,
                                      verbose=False, save=False, show=False, stream=False)
         if len(results) != 1:
@@ -411,6 +420,7 @@ class NativeYolo:
 
 class LegacyYolo:
     def __init__(self, path, existing_model=None, color_mode="color", device=None):
+        self.class_filter = []
         self.device = device if device is not None else torch.device("cpu")
         if existing_model is None:
             if not install_legacy_path():
@@ -440,6 +450,9 @@ class LegacyYolo:
             if isinstance(module, torch.nn.Upsample) and not hasattr(module, "recompute_scale_factor"):
                 module.recompute_scale_factor = None
         self.labels = labels_list(self.model.names)
+        head_classes = getattr(self.model.model[-1], "nc", None)
+        if head_classes != len(self.labels):
+            raise ValueError("YOLOv5 检测头类别数与内置类别元数据不一致。")
         self.task = "detect"
         self.backend = "PyTorch / YOLOv5 / " + ("CUDA" if self.device.type == "cuda" else "CPU")
         self.layout = "v5"
@@ -451,11 +464,13 @@ class LegacyYolo:
         tensor, geometry = letterbox(image, size, self.color_mode, self.input_channels)
         tensor = tensor.to(self.device)
         output, inference_ms = forward_timed(self.model, tensor, self.device)
-        return raw_predictions(output, image, geometry, self.labels, "v5", confidence, iou), inference_ms
+        return raw_predictions(output, image, geometry, self.labels, "v5", confidence, iou,
+                               self.class_filter), inference_ms
 
 
 class TorchScriptYolo:
     def __init__(self, path, task, size, supplied_labels, color_mode, device):
+        self.class_filter = []
         self.device = device
         extra = {"config.txt": ""}
         self.model = torch.jit.load(str(path), map_location="cpu", _extra_files=extra).to(device).float().eval()
@@ -467,7 +482,8 @@ class TorchScriptYolo:
         self.task = metadata.get("task", "classify" if task == "classify" else "detect")
         if self.task not in ("detect", "classify"):
             raise ValueError("此 TorchScript 模型任务尚不受支持；请选择检测或分类模型。")
-        self.labels = labels_list(metadata.get("names", supplied_labels))
+        # User label files are a display mapping, never evidence of model class count.
+        self.labels = labels_list(metadata.get("names", metadata.get("classes")))
         self.layout = "v5" if task == "v5" else "v8"
         self.color_mode = color_mode
         self.input_channels = script_input_channels(self.model, metadata, color_mode)
@@ -496,7 +512,8 @@ class TorchScriptYolo:
         tensor = tensor.to(self.device)
         output, inference_ms = forward_timed(self.model, tensor, self.device)
         predictions = classification_predictions(output, self.labels) if self.task == "classify" \
-            else raw_predictions(output, image, geometry, self.labels, self.layout, confidence, iou)
+            else raw_predictions(output, image, geometry, self.labels, self.layout, confidence, iou,
+                                 self.class_filter)
         return predictions, inference_ms
 
 
@@ -534,6 +551,7 @@ def main():
     parser.add_argument("--task", choices=("detect", "v5", "classify"), default="detect")
     parser.add_argument("--size", type=int, default=640)
     parser.add_argument("--labels", default="[]")
+    parser.add_argument("--class-filter", default="[]")
     parser.add_argument("--color-mode", choices=("color", "grayscale"), default="color")
     parser.add_argument("--device", choices=("cpu", "cuda"), default="cpu")
     parser.add_argument("--device-index", type=int, default=0)
@@ -558,6 +576,14 @@ def main():
             raise ValueError("模型输入尺寸必须在 16 至 4096 之间。")
         device = checked_device(arguments.device, arguments.device_index)
         backend = load_model(arguments, device)
+        class_filter = json.loads(arguments.class_filter)
+        if not isinstance(class_filter, list) or any(isinstance(value, bool) or not isinstance(value, int)
+                                                    or value < 0 or value >= len(backend.labels)
+                                                    for value in class_filter):
+            raise ValueError("类别筛选必须是模型有效范围内的非负整数 ID 列表。")
+        if backend.task != "detect" and class_filter:
+            raise ValueError("类别筛选仅用于目标检测；分类任务不支持此筛选。")
+        backend.class_filter = list(dict.fromkeys(class_filter))
         if backend.task == "detect" and arguments.size % 32:
             raise ValueError(".pt 检测模型输入尺寸必须是 32 的倍数；请调整输入尺寸后重新加载。")
         if device.type == "cuda":
@@ -570,6 +596,7 @@ def main():
         reply({"ok": True, "event": "ready", "protocol": 1, "task": backend.task,
                "layout": backend.layout,
                "input_channels": backend.input_channels,
+               "class_count": len(backend.labels),
                "model_path": str(backend.source_path),
                "labels": backend.labels, "backend": backend.backend,
                "device": device.type,

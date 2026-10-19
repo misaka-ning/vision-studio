@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="4"
+	timestamp="2026-10-19T17:58:37"
+	>
+	<testcase name="vision-netron-server-tests" classname="vision-netron-server-tests" time="4.23341" status="run">
+		<system-out>test_concurrent_sessions_have_different_ephemeral_ports (__main__.NetronServerTests) ... ok
+test_eof_and_sigterm_close_session (__main__.NetronServerTests) ... ok
+test_external_data_stays_within_model_directory (__main__.NetronServerTests) ... ok
+test_invalid_command_releases_port (__main__.NetronServerTests) ... ok
+test_invalid_path_directory_and_arguments_emit_errors (__main__.NetronServerTests) ... ok
+test_missing_module_and_wrong_version_are_clear_errors (__main__.NetronServerTests) ... ok
+test_pickle_payload_is_never_deserialized_or_framework_imported (__main__.NetronServerTests) ... ok
+test_real_onnx_static_assets_model_bytes_and_json_quit (__main__.NetronServerTests) ... ok
+test_real_pt_raw_bytes_and_plain_quit (__main__.NetronServerTests) ... ok
+test_slow_http_client_does_not_block_quit (__main__.NetronServerTests) ... ok
+test_unknown_suffix_and_corrupt_bytes_are_served_without_parsing (__main__.NetronServerTests) ... ok
+
+----------------------------------------------------------------------
+Ran 11 te...
+The rest of the test output was removed since it exceeds the threshold of 1024 bytes.
+</system-out>
+	</testcase>
+</testsuite>

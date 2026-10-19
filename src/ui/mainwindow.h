@@ -7,7 +7,9 @@
 #include <QMainWindow>
 #include <QVariantMap>
 #include <memory>
+#include <atomic>
 class QComboBox;
+class QLineEdit;
 class QDoubleSpinBox;
 class QSpinBox;
 class QCheckBox;
@@ -38,6 +40,7 @@ class InferenceWorker;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+    friend class ScopeFilterUiTests;
   public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
@@ -122,6 +125,14 @@ class MainWindow : public QMainWindow
     void persist();
     void selectRoute(int index);
     void updateSourceUi();
+    void updateRangeUi();
+    void updateClassFilterUi();
+    void updateStartEligibility();
+    QStringList selectedImageRange(QString *error = nullptr) const;
+    void inspectSelectedModel();
+    QString inferenceFingerprint(const QString &modelIdentity = {}) const;
+    QString modelFileIdentity() const;
+    void invalidateConfiguredResults();
     void updateTaskUi();
     void updateDeviceUi();
     void checkGpuEnvironment();
@@ -145,6 +156,7 @@ class MainWindow : public QMainWindow
         vision::InferenceResult result;
         vision::ModelConfig config;
         QString snapshotPath;
+        QString sourceIdentity;
     };
     QHash<QString, CachedImageResult> imageResults_;
     std::shared_ptr<QTemporaryDir> imageResultDirectory_;
@@ -172,6 +184,14 @@ class MainWindow : public QMainWindow
     QString playbackPath_;
     QSize playbackContentSize_;
     int completed_ = 0, modelInputChannels_ = 0;
+    int modelClassCount_ = 0, taskRangeFirst_ = 0, taskRangeLast_ = 0;
+    bool initializing_ = true, modelInspectionPending_ = false;
+    QString classFilterError_, modelInspectionError_, inspectedModelIdentity_, imageConfigFingerprint_;
+    QStringList taskRangeFiles_;
+    QString activeModelIdentity_, activeImageFingerprint_;
+    QHash<QString, QString> taskSourceIdentities_;
+    quint64 modelInspectionGeneration_ = 0;
+    std::shared_ptr<std::atomic_bool> modelInspectionCancellation_;
     QSettings *settings_ = nullptr;
     QThread *workerThread_ = nullptr;
     vision::InferenceWorker *worker_ = nullptr;
@@ -196,6 +216,10 @@ class MainWindow : public QMainWindow
     QTableWidget *predictionTable_ = nullptr, *historyTable_ = nullptr;
     QTableWidget *recordingsTable_ = nullptr;
     QComboBox *taskBox_ = nullptr, *inputColorMode_ = nullptr, *stereoView_ = nullptr;
+    QComboBox *detectionRange_ = nullptr;
+    QLineEdit *classFilter_ = nullptr;
+    QWidget *detectionRangePanel_ = nullptr;
+    QLabel *rangeHint_ = nullptr, *classFilterHint_ = nullptr;
     QComboBox *computeDevice_ = nullptr, *gpuDeviceIndex_ = nullptr;
     QLabel *gpuDeviceLabel_ = nullptr;
     QSpinBox *inputSize_ = nullptr, *cameraIndex_ = nullptr;

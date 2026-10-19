@@ -345,14 +345,16 @@ class ConversionInferenceTests final : public QObject
         file.close();
         showWindow();
         // Same bytes with a different mtime must not receive the old class preset.
-        QVERIFY(namedButton(window_.get(), "类别标签 · 默认 COCO 80"));
+        // Actual model metadata still resolves two classes; never assume COCO 80.
+        QTRY_VERIFY_WITH_TIMEOUT(namedButton(window_.get(), "类别标签 · 数字 2 类"), 15000);
         window_->close();
         window_.reset();
         QVERIFY(file.open(QIODevice::Append));
         QCOMPARE(file.write("changed"), qint64(7));
         file.close();
         showWindow();
-        QVERIFY(namedButton(window_.get(), "类别标签 · 默认 COCO 80"));
+        QVERIFY(!namedButton(window_.get(), "类别标签 · 转换模型 2 类"));
+        QVERIFY(!namedButton(window_.get(), "类别标签 · 默认 COCO 80"));
     }
     static QList<QByteArray> environmentKeys()
     {

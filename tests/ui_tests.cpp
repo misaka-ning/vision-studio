@@ -1308,10 +1308,9 @@ class UiTests final : public QObject
         history.close();
         QCOMPARE(QJsonDocument::fromJson(completedHistory).array().size(), 2);
 
-        // Review completed results even when their source file is no longer available,
-        // and preserve the settings used for inference after the controls are edited.
+        // Same-configuration results remain reviewable from their accepted
+        // snapshots, even after the original source has been removed.
         QVERIFY(QFile::remove(first));
-        confidence->setValue(0.90);
         for (int row : {0, 1, 0, 1, 0})
         {
             queue->setCurrentRow(row);
@@ -1404,6 +1403,21 @@ class UiTests final : public QObject
         queue->setCurrentRow(1);
         QCOMPARE(canvas->result().predictions.size(), detected[1].predictions.size());
         QVERIFY(exportButton->isEnabled());
+
+        // A changed inference threshold is a different configuration. The
+        // previously accepted results must no longer be shown or exported.
+        confidence->setValue(0.90);
+        for (int row : {0, 1, 0, 1})
+        {
+            queue->setCurrentRow(row);
+            QCOMPARE(canvas->result().inferenceMs, 0.0);
+            QVERIFY(canvas->result().predictions.isEmpty());
+            QCOMPARE(table->rowCount(), 0);
+            for (int metric = 0; metric < 3; ++metric)
+                QCOMPARE(metrics[metric]->text(), QStringLiteral("—"));
+            QVERIFY(!exportButton->isEnabled());
+        }
+        QCOMPARE(starts.size(), 1);
 
         const QString changedColorMode = colorMode == QStringLiteral("grayscale")
                                              ? QStringLiteral("rgb") : QStringLiteral("grayscale");
@@ -1790,7 +1804,7 @@ class UiTests final : public QObject
         QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
     }
 
-    void zeroDetectionFolderResultsSurviveReviewAndCancelledRerunClearsThem()
+    void zeroDetectionFolderResultsSurviveReviewAndCancelledRerunPreservesThem()
     {
         auto *canvas = workbenchCanvas(window_.get());
         auto *table = predictionTable(window_.get());
@@ -1854,7 +1868,8 @@ class UiTests final : public QObject
         QTest::mouseClick(findButton(window_.get(), QStringLiteral("检测工作台")), Qt::LeftButton);
 
         // Stop through the actual button as soon as a new job is requested, before
-        // any result can replace the old batch. A cancelled rerun must not revive it.
+        // any result can replace the old batch. Same-configuration accepted results
+        // stay valid when the rerun is cancelled before producing a new image.
         const auto cancellation = connect(window_.get(), &MainWindow::startRequested, this,
                                           [stop] { QTest::mouseClick(stop, Qt::LeftButton); });
         QTest::mouseClick(run, Qt::LeftButton);
@@ -1868,12 +1883,12 @@ class UiTests final : public QObject
             QCOMPARE(canvas->result().source, row == 0 ? first : second);
             QVERIFY(!canvas->result().image.isNull());
             QVERIFY(canvas->result().predictions.isEmpty());
-            QCOMPARE(canvas->result().inferenceMs, 0.0);
+            QVERIFY(canvas->result().inferenceMs > 0);
             QCOMPARE(table->rowCount(), 0);
-            QCOMPARE(metrics[0]->text(), QStringLiteral("—"));
-            QCOMPARE(metrics[1]->text(), QStringLiteral("—"));
-            QCOMPARE(metrics[2]->text(), QStringLiteral("—"));
-            QVERIFY(!exportButton->isEnabled());
+            QCOMPARE(metrics[0]->text(), QStringLiteral("0"));
+            QVERIFY(metrics[1]->text() != QStringLiteral("—"));
+            QCOMPARE(metrics[2]->text(), QStringLiteral("0"));
+            QVERIFY(exportButton->isEnabled());
         }
     }
 

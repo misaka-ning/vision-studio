@@ -1,0 +1,38 @@
+Internal ctest changing into directory: /tmp/vision-studio-2.2.0-build
+UpdateCTestConfiguration  from :/tmp/vision-studio-2.2.0-build/DartConfiguration.tcl
+Parse Config file:/tmp/vision-studio-2.2.0-build/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/tmp/vision-studio-2.2.0-build/DartConfiguration.tcl
+Parse Config file:/tmp/vision-studio-2.2.0-build/DartConfiguration.tcl
+Test project /tmp/vision-studio-2.2.0-build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 11
+    Start 11: vision-conversion-inference-tests
+
+11: Test command: /tmp/vision-studio-2.2.0-build/vision-conversion-inference-tests
+11: Environment variables: 
+11:  QT_QPA_PLATFORM=offscreen
+11:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+11: Test timeout computed to be: 300
+11: ********* Start testing of ConversionInferenceTests *********
+11: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+11: FAIL!  : ConversionInferenceTests::initTestCase() 'QFileInfo(runtime_).isExecutable()' returned FALSE. (The prepared conversion runtime is required.)
+11:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/conversion_inference_tests.cpp(62)]
+11: PASS   : ConversionInferenceTests::cleanupTestCase()
+11: Totals: 1 passed, 1 failed, 0 skipped, 0 blacklisted, 0ms
+11: ********* Finished testing of ConversionInferenceTests *********
+1/1 Test #11: vision-conversion-inference-tests ...***Failed    0.12 sec
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =   0.12 sec
+
+The following tests FAILED:
+	 11 - vision-conversion-inference-tests (Failed)
+Errors while running CTest
+Output from these tests are in: /tmp/vision-studio-2.2.0-build/Testing/Temporary/LastTest.log
+Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.

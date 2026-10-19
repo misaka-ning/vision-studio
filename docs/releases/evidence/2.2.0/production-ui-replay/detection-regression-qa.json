@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "version": "2.2.0",
+  "success": true,
+  "errors": [],
+  "generated_at_utc": "2026-10-19T09:58:15.673082+00:00",
+  "scope": "Actual selected CTest regression execution; not DEB, install, source or release acceptance",
+  "selected_tests": [
+    "vision-ui-tests"
+  ],
+  "real_cuda_requested": false,
+  "binary": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.2.0-release/bin/vision-studio",
+  "binary_sha256": "16b4b17abacabd65ccc88849418af89930e35cd35ec42cdfeb1c07eb71843184",
+  "build_directory": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.2.0-release",
+  "runs": [
+    {
+      "name": "vision-ui-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.2.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-ui\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.2.0/production-ui-replay/vision-ui-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 41.088,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 38,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-ui-tests.log",
+      "log_sha256": "b034dd6bd17213999eab1dce8a73af1b2947bff98d02de4ba6be236a27ae910a",
+      "junit": "vision-ui-tests.xml",
+      "feature_evidence": []
+    }
+  ],
+  "artifacts_directory": "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.2.0/production-ui-replay/artifacts",
+  "coverage_note": "Feature coverage is defined by the actual assertions in the selected suites. A successful suite is not a measurement of performance or proof of unexecuted cases."
+}

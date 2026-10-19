@@ -1,5 +1,6 @@
 #include "core/inferenceworker.h"
 #include "core/videorecorder.h"
+#include "core/visionengine.h"
 
 #include <QDir>
 #include <QFile>
@@ -91,6 +92,38 @@ class RecordingTests final : public QObject
         qRegisterMetaType<vision::InferenceResult>();
         qRegisterMetaType<vision::ModelConfig>();
         qRegisterMetaType<vision::JobRequest>();
+    }
+
+    void realClassFilteredResultIsRecordedWithOriginalIdMetadata()
+    {
+        QTemporaryDir directory;
+        QVERIFY(directory.isValid());
+        vision::ModelConfig config;
+        config.modelPath = QStringLiteral(VISION_PROJECT_DIR) + "/models/yolov5n.onnx";
+        config.task = vision::ModelTask::YoloV5;
+        config.classFilter = {5};
+        vision::VisionEngine engine;
+        engine.load(config);
+        auto frame = engine.infer(QImage(QStringLiteral(VISION_PROJECT_DIR) + "/assets/bus.jpg"));
+        QCOMPARE(frame.modelClassCount, 80);
+        QVERIFY(!frame.predictions.isEmpty());
+        for (const auto &prediction : frame.predictions)
+            QCOMPARE(prediction.classId, 5);
+        vision::VideoRecorder recorder;
+        QString error;
+        QVERIFY2(recorder.start(directory.path(), frame, 10, false, config, &error), qPrintable(error));
+        for (int index = 0; index < 3; ++index)
+        {
+            frame.frameNumber = index + 1;
+            QVERIFY2(recorder.append(frame, &error), qPrintable(error));
+        }
+        vision::RecordingSummary summary;
+        QVERIFY2(recorder.finish(&summary, &error), qPrintable(error));
+        QCOMPARE(decodedFrames(summary.path), 3);
+        const auto json = metadata(summary.metadataPath);
+        QCOMPARE(json.value("class_filter").toArray(), QJsonArray({5}));
+        QCOMPARE(json.value("model_class_count").toInt(), 80);
+        QVERIFY(vision::VideoRecorder::annotatedFrame(frame) != frame.image);
     }
 
     void videoIsAnnotatedPlayableAndPublishedOnlyAtFinish()

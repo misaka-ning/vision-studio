@@ -1,0 +1,398 @@
+{
+  "schema_version": 1,
+  "version": "2.2.0",
+  "success": true,
+  "errors": [],
+  "generated_at_utc": "2026-10-19T10:05:38.789134+00:00",
+  "scope": "Actual 14-suite regression with complete affected-suite replays, plus production-resource-path UI acceptance. DEB acceptance is recorded separately.",
+  "qt_tests_passed": 226,
+  "python_tests_passed": 52,
+  "failed": 0,
+  "skipped": 0,
+  "blacklisted": 0,
+  "suites": [
+    {
+      "name": "vision-scope-filter-ui-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 38,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "skipped": false,
+      "log": "regression-01/vision-scope-filter-ui-tests.log",
+      "log_sha256": "50e1c4aaab3e8f7fe33a35e9ee3c042a8a74badb68c3a4b10e8c4d38e1a33064",
+      "junit": "regression-01/vision-scope-filter-ui-tests.xml",
+      "python_tests": 0
+    },
+    {
+      "name": "vision-core-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 39,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "skipped": false,
+      "log": "regression-01/vision-core-tests.log",
+      "log_sha256": "c19f6f3470ba777838b5327fd454f96c9ebbe87288abfc59992dfc1c8a0b3752",
+      "junit": "regression-01/vision-core-tests.xml",
+      "python_tests": 0
+    },
+    {
+      "name": "vision-inference-delivery-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "skipped": false,
+      "log": "regression-01/vision-inference-delivery-tests.log",
+      "log_sha256": "1a3d65d980350c2e342b24c4ff02afd3753bbb37c140c29c1155c5718fc5265e",
+      "junit": "regression-01/vision-inference-delivery-tests.xml",
+      "python_tests": 0
+    },
+    {
+      "name": "vision-recording-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 15,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "skipped": false,
+      "log": "regression-01/vision-recording-tests.log",
+      "log_sha256": "9f64d4f7a3d2383a2abaa132e2e1614383f9fafeecf69a8247753c3ff066a3d8",
+      "junit": "regression-01/vision-recording-tests.xml",
+      "python_tests": 0
+    },
+    {
+      "name": "vision-pt-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 36,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "skipped": false,
+      "log": "regression-01/vision-pt-tests.log",
+      "log_sha256": "02843fde19fc32da8a0baa34716279e7b71d1da5204aec746f16e497484f32d9",
+      "junit": "regression-01/vision-pt-tests.xml",
+      "python_tests": 0
+    },
+    {
+      "name": "vision-ui-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 38,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "skipped": false,
+      "log": "ui-replay/vision-ui-tests.log",
+      "log_sha256": "d2f9bcdcb55af0963d54b0d20f59228913ea46b589f76a32447d3cb282130c5c",
+      "junit": "ui-replay/vision-ui-tests.xml",
+      "python_tests": 0
+    },
+    {
+      "name": "vision-batch-responsiveness-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 5,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "skipped": false,
+      "log": "regression-01/vision-batch-responsiveness-tests.log",
+      "log_sha256": "d56959bad5611d159fd2f3fa0d0224dc7eadf864ce8ec05328283ee0663b8704",
+      "junit": "regression-01/vision-batch-responsiveness-tests.xml",
+      "python_tests": 0
+    },
+    {
+      "name": "vision-modelviewer-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 16,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "skipped": false,
+      "log": "regression-01/vision-modelviewer-tests.log",
+      "log_sha256": "1df6197fcd4ed6160c6b70e9acc2fd69bd219bb6b4613b0d73529f8d162d451a",
+      "junit": "regression-01/vision-modelviewer-tests.xml",
+      "python_tests": 0
+    },
+    {
+      "name": "vision-conversion-ui-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 8,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "skipped": false,
+      "log": "regression-01/vision-conversion-ui-tests.log",
+      "log_sha256": "866084ebe19ae8e35f0a79c744affb01568882353d69b45d1414cf607868f20a",
+      "junit": "regression-01/vision-conversion-ui-tests.xml",
+      "python_tests": 0
+    },
+    {
+      "name": "vision-conversion-inference-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 14,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "skipped": false,
+      "log": "conversion-final/ctest.log",
+      "log_sha256": "4eca2034d10263c15f66960d3310b8efe99c0d3c34add3363c051aba341fa96b",
+      "junit": "conversion-final/result.xml",
+      "python_tests": 0
+    },
+    {
+      "name": "vision-model-conversion-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [],
+      "skipped": false,
+      "log": "regression-01/vision-model-conversion-tests.log",
+      "log_sha256": "24366431aced44797c703b6a1775e47abee7f96547168457cfdf6cbbc4434363",
+      "junit": "regression-01/vision-model-conversion-tests.xml",
+      "python_tests": 20
+    },
+    {
+      "name": "vision-netron-server-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [],
+      "skipped": false,
+      "log": "regression-01/vision-netron-server-tests.log",
+      "log_sha256": "c85aba96fb94af1db581f34eaf33c93266d5f9cbab8712bff3e1196d31be1442",
+      "junit": "regression-01/vision-netron-server-tests.xml",
+      "python_tests": 11
+    },
+    {
+      "name": "vision-gpu-runtime-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [],
+      "skipped": false,
+      "log": "regression-01/vision-gpu-runtime-tests.log",
+      "log_sha256": "e567174a8ce1fc5de16cf5bce0514bf2ae4bda4e9de6f759bd9f5b29a0a03443",
+      "junit": "regression-01/vision-gpu-runtime-tests.xml",
+      "python_tests": 21
+    },
+    {
+      "name": "vision-gpu-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 11,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "skipped": false,
+      "log": "regression-01/vision-gpu-tests.log",
+      "log_sha256": "e340a0a9ec322e3d3aa268aecba7445198f10483b8dd578195301846289582c8",
+      "junit": "regression-01/vision-gpu-tests.xml",
+      "python_tests": 0
+    }
+  ],
+  "production_ui_suites": [
+    {
+      "name": "vision-scope-filter-ui-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 38,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "skipped": false,
+      "log": "production-ui/vision-scope-filter-ui-tests.log",
+      "log_sha256": "fabc9fabe3d04e7b98c6aa8757a62bb2374dde89e49f75b420171cb290d7e849",
+      "junit": "production-ui/vision-scope-filter-ui-tests.xml",
+      "python_tests": 0
+    },
+    {
+      "name": "vision-ui-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 38,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "skipped": false,
+      "log": "production-ui-replay/vision-ui-tests.log",
+      "log_sha256": "b034dd6bd17213999eab1dce8a73af1b2947bff98d02de4ba6be236a27ae910a",
+      "junit": "production-ui-replay/vision-ui-tests.xml",
+      "python_tests": 0
+    },
+    {
+      "name": "vision-batch-responsiveness-tests",
+      "success": true,
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 5,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "skipped": false,
+      "log": "production-ui/vision-batch-responsiveness-tests.log",
+      "log_sha256": "d3ee7fffbbb87f7e7bd8bdbd71d10ac00f1922f76c70e623b6c617ce6e2f5e0e",
+      "junit": "production-ui/vision-batch-responsiveness-tests.xml",
+      "python_tests": 0
+    }
+  ],
+  "production_binary_sha256": "16b4b17abacabd65ccc88849418af89930e35cd35ec42cdfeb1c07eb71843184",
+  "development_binary_sha256": "c685d9656fb9756230127a034c8734e5c95937c7167f2d4b86025ce967a01ea6",
+  "cuda_profiles": [
+    {
+      "file": "regression-01/artifacts/onnx-cuda-0_2026-10-19_18-01-09.json",
+      "sha256": "df9813f17f79d208ef2146a80d1a9dcf98af9a67d8a514f18806945907b5ab38",
+      "cuda_node_events": 364
+    },
+    {
+      "file": "regression-01/artifacts/onnx-cuda-1_2026-10-19_18-01-10.json",
+      "sha256": "8b1b9a18ba1b8b2a3aee796c25391c31a5f7766e390b25648fbe537c99b00feb",
+      "cuda_node_events": 364
+    }
+  ],
+  "hardware": "NVIDIA GeForce RTX 4060 / driver 595.99.02",
+  "source_code_input_sha256": {
+    "CMakeLists.txt": "0113c8bf3da135ef9edb0c618c6565e0b20174cc48f7b78efbb811c4f2b68f54",
+    "resources.qrc": "9e37952e3fc73853c8d95a8e24016661ffea1c4294dadefd05d642b268ffa8d4",
+    "scripts/model_convert.py": "b0262cff2c0fee9063b8df55bdea1be5e922b6b4bbf3280796a89c90cfc44bda",
+    "scripts/pt_worker.py": "2752326ee741385441187aa1b6e0b6bd2cee8c507f0f3e5e09587d0a68095c9e",
+    "scripts/qa_detection_scope_220.py": "94544da7fd3ffeb22f7529b9a11859585a7770120e31c5c9d0443c4463b49d87",
+    "src/core/gpuruntime.cpp": "ecf98b813385e77e87093d2e90dfcf26eefced5b8bbf6a2ee9a5d1315898b694",
+    "src/core/gpuruntime.h": "13e9c5024fdd30b5784fb690a74229025cea45c24ae5f517954e15948aaf1994",
+    "src/core/inferenceworker.cpp": "db67509f9f96011a519a5b66031ba66617123adea2e43a782b7122defe391ccd",
+    "src/core/inferenceworker.h": "96cbfc0f2abcead572539ae6bf29b275b4a1abf5f46c77d6103e65719b938965",
+    "src/core/onnxcudabackend.cpp": "03f8df8cd9c8a8b585b7d85b46db162946ffbf2fd75d6500644c606409e274d0",
+    "src/core/onnxcudabackend.h": "be31b2cc4103a6b4615a4f2c350ba15fe46386711c4ca8c1df7ecc4107e5cec4",
+    "src/core/ptbackend.cpp": "c80aef86e797bea47db6417fa27940e98c35d8e2151675671ddd113faa3dc49d",
+    "src/core/ptbackend.h": "6a558223d45596b5e014facd6ea558dfff61842f7af9a781e044b0be6ebf8d23",
+    "src/core/videorecorder.cpp": "697897667d1b16b3856ff3751b7a03c426bef1277758390bd2a5f224e5d48ce5",
+    "src/core/videorecorder.h": "500f8000bef9d6b86b2ea5817a05c7c679266460400c12e9558a1dbe7327ed22",
+    "src/core/visionengine.cpp": "78710b559ade349dc3a7179f2adbab8e5d60e6a5afdf27301d23e5c194247f9b",
+    "src/core/visionengine.h": "2194073f1290e4ff731dc7c34fe58a61ae57755807b54da35f1cfead4c17a0e1",
+    "src/core/visiontypes.h": "a97b1d7f4060559db6422a08f0eb1534bd634c61e6c7ece590852a8e8ee90504",
+    "src/main.cpp": "37a7ae84a67f7aa6e560f22ae24f5b75e7b35dbd577e815030a3a2ecacad9fbb",
+    "src/ui/icons.cpp": "384fc8ec0dbe338fee161285921bb5ed2757fba30bfff879d0910b61dcc0c4fe",
+    "src/ui/icons.h": "4325b5739b35dfbf9b470923bd72bd05a25ed350771cd4aa4477467ad995be98",
+    "src/ui/imagecanvas.cpp": "18b8f9b766038ae3d063a1e7c5b730ff729462d746d2d734cf76f24e6c7b30d7",
+    "src/ui/imagecanvas.h": "646ff03a605b748021d1f0bffbe1e5999e9ae3bb5c21af60df0fe0a9fa698de0",
+    "src/ui/mainwindow.cpp": "0319bb53ee0e33e154977f5cb090c541127f1349da9610db173726ac4cfe2545",
+    "src/ui/mainwindow.h": "6318c2be240483a191d2cdb412aa5282b36b2ede4e8cba8954c6115b527f6249",
+    "src/ui/modelconversionpage.cpp": "b95916e71da00642cf0a1a570248ddbd0d92eb453df362570b7886176c51388e",
+    "src/ui/modelconversionpage.h": "d58d129fa47ee268ca9397587e35fb8c7a82e54e2448ba6f29a8434be9580c44",
+    "src/ui/modelviewer.cpp": "bca6a7c57da5b109f29fcd2c9ddf6f98ad31ecf81e4f053a7bda912c61158b72",
+    "src/ui/modelviewer.h": "2b939e9aa06a58ae972842477e0bf96dd1caed76be66acb4f5bca5ea23c2491f",
+    "tests/batch_responsiveness_tests.cpp": "962851b1b4c317566dcc2536896232a8ecffe758067fb749cdf76efce6198c1f",
+    "tests/conversion_inference_tests.cpp": "71d76557ee923518a904e7e61c4950bbec9f24f423daf44823329dff4d375b67",
+    "tests/conversion_ui_tests.cpp": "e83edbcfc615318946c0cc9b95c7641e83a08eef1cf6667285fb2459cfd3ad8d",
+    "tests/core_tests.cpp": "daf13f4d0ef188196152462cbe18c959de019dccdccaaad08f8d317fc8873a96",
+    "tests/generate_modelviewer_fixtures.py": "891d194431d3e9162e0a2f209580b79b1aaa7a19f13ec9c949e1dca810a8f130",
+    "tests/github_release_tests.py": "7078cbba99f945b8b87faac18fd1b44926e4e0ed7ca7ab179d4c81b136476b70",
+    "tests/gpu_backend_tests.cpp": "eb209f7dfd60de0fbe3921228b25c4eee239fd258b0a520e442649e2d112423c",
+    "tests/gpu_runtime_tests.py": "b3054c926a5dafa8904f33866c1591763dbcc213f205d9467dde3f49da58cf4d",
+    "tests/inference_delivery_tests.cpp": "abbdc67aaec9ac626f92514a72962b1f5717e1852142ee9e244ca1a282206c8e",
+    "tests/model_conversion_tests.py": "7479dda571f5ace9f363d527d07d4d2834345bc34f4579719eec4217b07b7a4d",
+    "tests/modelviewer_tests.cpp": "24ca41968bf50a250cf99fcec28890bd52c25305ac11eb86446c2df884c697fc",
+    "tests/netron_server_tests.py": "a4967760d0585a6341fb8f245addf0d3679992c18c97dad0cde1f8718245e688",
+    "tests/pt_backend_tests.cpp": "ed624bfea9c5b23cdee57620c3f5388ec648ade0dc1731d1e60a2aca30f55b2d",
+    "tests/recording_tests.cpp": "24da43c5a406fb17b5782df438ba5b85f46793f0dedfd5eb12b52b3cf37e1011",
+    "tests/release_metadata_tests.py": "335c08eed6c2c20fca845edfa67c74bf1944c91714dbcc5432732d29c2766962",
+    "tests/scope_filter_ui_tests.cpp": "4e79907500dd3cc1e1f3c6c2002b2a180b1428e0964d3fdff4b9d52f9ace401d",
+    "tests/ui_tests.cpp": "34a0b8d69b93f0dc2d9efaafa629d6c53c65f08e31331b0ea7d43958f9f6517d",
+    "tests/windows_release_tests.py": "62404d6a7055caf928bbbe5dcc7628da821f6119f9d0f2bb6f49a990983bd653"
+  },
+  "test_binary_sha256": {
+    "vision-scope-filter-ui-tests": "d1f5dc0762351caed91542cedf0fb0a1ed100a9683e7001e8873cf8592dba4c2",
+    "vision-core-tests": "a980c8b1886adbafa30ae01c7ec921f25c2299513c2bf1c05ad984b0f02a1178",
+    "vision-inference-delivery-tests": "533aa6f92486f7316ff09d9eb0c7fc092910670c94d6f58db4387383a5f8d1f0",
+    "vision-recording-tests": "9e9fc453e19e13c91046e7d3216ab6c7fec41dda1fae1b42009ee497f696e56a",
+    "vision-pt-tests": "c71eb1fb213e69b2876aee80105d3e992da5a5522bf5611507031dfe4ef9bed4",
+    "vision-ui-tests": "5d65c895a0d7764911f8145d7121b972fe09a905ce585105f05a2d610c52590c",
+    "vision-batch-responsiveness-tests": "9803ed9ca030e941625fa79d227cfd863c829480d147a7847189f3bfe625edce",
+    "vision-modelviewer-tests": "3fd3ca6dbbf0c9c0421372790989b2862bab310946f33d6c83b1ffc9fc3ea9fd",
+    "vision-conversion-ui-tests": "7076ab90f3b1e80322d3338d3f9d4d1041f882e19e411da4ffc05a7eeed10c2f",
+    "vision-conversion-inference-tests": "9792ca947cfa94c60756e8bfdc365791be1243dbf89349d3e5b559b757abf9f8",
+    "vision-gpu-tests": "ad4a2f236180da53f5c41ea931bb0d84bbe1ec036957fc66d23d4ee9971a40ee"
+  },
+  "superseded_runs": [
+    {
+      "path": "regression-01/detection-regression-qa.json",
+      "reason": "UI expectations assumed cached results survived changed thresholds; conversion runtime default referenced an unavailable old build directory. Actual failures retained. Full UI replay and full conversion replay replace only these two suites."
+    },
+    {
+      "path": "production-ui/detection-regression-qa.json",
+      "reason": "Production-source test initially found old installed PT helper at /opt and outdated threshold-cache expectations; explicit current helper and full corrected UI replay pass."
+    },
+    {
+      "path": "conversion-replay/ctest.log",
+      "reason": "Old converted-model test assumed COCO80 after preset invalidation. Updated to actual two-class metadata and reran the entire 14-case suite."
+    }
+  ],
+  "limitations": [
+    "No physical camera hardware acceptance",
+    "No Windows 2.2.0 build or installation",
+    "Timing observations are local regression measurements, not performance guarantees"
+  ]
+}
