@@ -1,0 +1,1745 @@
+{
+  "schema_version": 1,
+  "mode": "read-only-audit-no-user-directory-mutations",
+  "release_version": "2.0.0",
+  "source_archive": {
+    "path": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.0.0/vision-studio-2.0.0-sources.tar.xz",
+    "sha256": "7a3de9f0b98a87d7844910260a3c9f3c3bee155c53141a0483b4b297af260452",
+    "members": 3229
+  },
+  "directories": {
+    "source-inputs": {
+      "actual_count": 3230,
+      "reference_count": 3229,
+      "exact_matching_count": 3229,
+      "changed": [],
+      "extra": [
+        {
+          "path": "scripts/__pycache__/release_metadata.cpython-314.pyc",
+          "kind": "file",
+          "sha256": "8841f5a94c85ed2d7c49c68204bf3bee01e89170b4ff85a4718909c5df430fd3",
+          "bytes": 6435
+        }
+      ],
+      "missing": [],
+      "exact": false,
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/source-inputs",
+      "all_local_content_backed_up": false,
+      "alternate_committed_backups": [],
+      "unresolved_local_content": [],
+      "logical_bytes": 87901728,
+      "reproducible_generated_extras": [
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/source-inputs/scripts/release_metadata.py",
+          "source_sha256": "6112d7c4ca8447f2ec751166433470d2dc249461561ccb78abd9d81a09c86b95",
+          "cached_file": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/source-inputs/scripts/__pycache__/release_metadata.cpython-314.pyc",
+          "cached_sha256": "8841f5a94c85ed2d7c49c68204bf3bee01e89170b4ff85a4718909c5df430fd3",
+          "runtime_magic_matches": true,
+          "flags": 0,
+          "timestamp_header": 1791430637,
+          "size_header": 3717,
+          "co_filename": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/source-inputs/scripts/release_metadata.py",
+          "compiled_code_equal": true,
+          "byte_for_byte_reconstructed": true,
+          "method": "compile backed-up source in memory with stored co_filename and original timestamp/size header; do not execute cache or write generated files"
+        }
+      ],
+      "all_local_content_backed_up_or_exactly_reconstructed": true,
+      "regular_file_count": 3230,
+      "symlink_count": 0
+    },
+    "package-source-inputs": {
+      "actual_count": 3227,
+      "reference_count": 3229,
+      "exact_matching_count": 3179,
+      "changed": [
+        {
+          "path": "CHANGELOG.md",
+          "actual": {
+            "kind": "file",
+            "sha256": "d9062af2384497ddb771d0614c76fa10d11b2188ba39134a82626c0b47365074",
+            "bytes": 16728
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "14ff4482a89524da5afb50e731441b616945d60b5a2cfdba6faa946a4f20afa5",
+            "bytes": 17540
+          }
+        },
+        {
+          "path": "README.md",
+          "actual": {
+            "kind": "file",
+            "sha256": "0f7966b54bbc10a1a5b99e67190af423c6cd18d7615e26b232317fdacba08138",
+            "bytes": 12687
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "e6f89810829cd8b898f21295dcd1932feb70918a66545a7a2ab0c0c2767583cb",
+            "bytes": 13227
+          }
+        },
+        {
+          "path": "docs/preview.png",
+          "actual": {
+            "kind": "file",
+            "sha256": "5e8b259cb03c97a324f9ced86abddfb2f13794681020f395500e88850ea652d2",
+            "bytes": 384352
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "7be19d54e2ed1cb6cadcf16678e93f0b7826643990a3842616598688fff4384e",
+            "bytes": 384666
+          }
+        },
+        {
+          "path": "docs/releases/2.0.0.md",
+          "actual": {
+            "kind": "file",
+            "sha256": "f6ff286653cb65f972dd889f9bc55799d950d8caf3d66721128863aa9cba10fa",
+            "bytes": 5907
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "b3341227d7dfdac78e41a863e25cfeeb0f97213d13d858f6f784c5d7946a4296",
+            "bytes": 7249
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/build-deb.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "f03155ee9151b44190d2b50d82202922434a87067585d6634499ec6fb8719cfd",
+            "bytes": 806
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "fe0a5a2ce7d8b4bf3b4b0593609487250e1c51930303465aab6aba3b2dd44ee3",
+            "bytes": 970
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/gpu-install-qa.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "b3820eb2b85bbb3c3359e76a88dd3da9b2af0a868f094e13581811dab529604c",
+            "bytes": 20603
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "8e6e532420f9c5594b7f15e20974eb609967643be33745f06531bf093709af9e",
+            "bytes": 20606
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/gpu-raw-preservation.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "8d9d1ff83a557773956656b67185150a065eb33b39e85abbad89112a094fef79",
+            "bytes": 9247
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "c19f3a0b74ff85d69790abcf4bece47d266da1e82af486ad74827cc81d427fc3",
+            "bytes": 9247
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/install-qa.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "0cfe67c3d51823c0e29677ae7dc16b05e9a3791e61d7f90016f4255793888c98",
+            "bytes": 4975
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "9fae96f5578a3a41fdff0d850f42121f4c357a685109c4fbebffdff4ee4c3664",
+            "bytes": 4975
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/install-raw-preservation.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "5de5b83dbdf47fd17a81f1a9a7df449f3b4720a97a9db8f53b8c7e6bad672103",
+            "bytes": 10887
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "7259c074635794e97ec59cefb5557dcf670b53a805521fefb119167adb62231f",
+            "bytes": 10887
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cpu/results/smoke-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "7b1ae8ac917d1550ca7f2d9a51e69974dd365be08277eab4cf09b642cac43525",
+            "bytes": 282
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "a4394fd9248c16e051bca32e9f62de6297885b1020916d1628cb9569603b3cdd",
+            "bytes": 282
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cpu/stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "4cd3fd883d7c6dd831abeaaa57646a49a7baf32ea8dba5865789f977cd1b4021",
+            "bytes": 429
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "fb6e26414f6bade0ce12f4c5d78ee048d68dfdee819c5c5bba0427f51c9edec2",
+            "bytes": 429
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cuda/results/smoke-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "41bc3d042bda5fdd799479e05607e20147550503d584321e264f95a5c9c1abb1",
+            "bytes": 306
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "84d3457c10978aec9ef757335d535e257727e9d6aa3e475503ee764097282393",
+            "bytes": 306
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cuda/stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "470c57c34c0b412adb29e41f33c67892b45e511f2a80f4bb5926288ff46baf89",
+            "bytes": 453
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "c3550601086cd57d232d83c6bcd1ae78355cb9afbd5331dc77a65ad744b630d7",
+            "bytes": 453
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cpu/results/smoke-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "70ba233c033776402b7676e250060dece9a16d1f96e5cda391ccc531e36e996b",
+            "bytes": 301
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "f7a3cb613f7fce91514a255e4634fd408025c26ae3a82c21e94c486b9853ff3a",
+            "bytes": 301
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cpu/stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "ce77a9b50dc5d567cd5c04471039d6a39c3710c5e2989524397cfca34b41f08c",
+            "bytes": 448
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "761b5884974083a00e3615a03a7df84d04e0648db5849715af0db1f18b5ce22a",
+            "bytes": 448
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cuda/results/smoke-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "9c14375bf4943a3892d155cbe0b90cb03cabce9f6b76a83eb6c5c0ebfb32cb6c",
+            "bytes": 323
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "5f6381e75100dc10ed7760f9641e030c3626e8213ea58570a2059f34c3dd4d8d",
+            "bytes": 323
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cuda/stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "1310c7344344f019c6d6d9ce35de204030f80e930ed03b4b5d5751835a20aed0",
+            "bytes": 470
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "fd5b3922cc18876ef74819a6101cea770c8b129b992eea17b9f7a8e853565304",
+            "bytes": 470
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/dpkg.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "4f8f0a1cc160325d578040c435aa944698956a90f1f5309a991b54245cfe2b02",
+            "bytes": 1207
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "7fcfb0eb85dcfe36768996e129cb42ca60b883b13e11495898502271147c6c4a",
+            "bytes": 1207
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/onnx-stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "f0a7cb779e983ba193a78152a5c06d555eef73b53554ec2c0bead7f4d8a0a4a0",
+            "bytes": 595
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "736fa56b4342492be0775b0e16a6e02bfcd365b15d917516abec25a305f60b7c",
+            "bytes": 595
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/pt-stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "4ec9be632a11d9caaa18100bea3e1cbb23ff50a3e633c4e25b34772c06c57bbd",
+            "bytes": 614
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "d71105ba8089e9505546cf09adcf6857b31e662cdff05a65df3f45fe28cbba72",
+            "bytes": 614
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/purge-stdout.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "4ec8fd2fb08ce2295aa80c599b339633bf9324ade5855655ce8931f76125dd01",
+            "bytes": 110
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "2b9f4af7fd6c639e6c4826c6011fff25d2a03c7ac4d0cc7c5f8ce600eb55643b",
+            "bytes": 110
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/onnx/smoke-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "2cf30336af22d1bd75935f311c65f870efc8809ad8b32a092cc2f1072c436f4d",
+            "bytes": 448
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "3f0aa384352859b6cea447aa636915f8bdb7249f3cffcce0c739d23ad808b76d",
+            "bytes": 448
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/pt/smoke-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "fd776ce4b9e3f2f5053353aad0cabb294b4fa51ff904bd47ed4282d8882c0234",
+            "bytes": 467
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "ab982271f9fed5cf2234a6e4bdfb21df39b5703352192c67dbb0ca2f309ff9d6",
+            "bytes": 467
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display-stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "dcef7733d115302f700114fc3ae688037c8c451ff6bda863a95b60ef4b52acbf",
+            "bytes": 644
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "6b69d922ad80dccabd8346a2215e6ffa0fb875485eb1f217a0cc44b15d0c9176",
+            "bytes": 644
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display/model-display-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "28a02a1499b225466d25ba2a9b5a89ab9ca365fcff26860ca0e0dec44f1c34f9",
+            "bytes": 550
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "409fbb5988ee648a995125b5bf8baeed6b3ebd36e759a2c7137ac0ebaa81a4fa",
+            "bytes": 550
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display_pt-stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "49385c323113eaa4a292cf1297d135bfd3a946c45a13a0cc3802d22c1c842063",
+            "bytes": 639
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "27f193ad37fb2b830b3fa888704af2a92bc8d0c694bcb66c8cf323c4b6979c93",
+            "bytes": 639
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display_pt/model-display-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "5f089c37590f92487fe60880106658e372a2968b537966850140ab3b469d47f9",
+            "bytes": 545
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "21eab04825c52e83d8e1afdd82c6eabc1d478795eb7606f6d6a29e8cd38bd1f0",
+            "bytes": 545
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/onnx-stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "f63f2bdb9111d731eece2285ded108af8656c88d77dbfa4ed82cbc4f525e57a0",
+            "bytes": 594
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "40f30c598ca6ecf4abe2866c14a63a2837e7829147f1cd0a67f5759dd15c37c6",
+            "bytes": 595
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/onnx/smoke-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "3a30fc9a35eecbb51f3bfcafc05e16bfe3c4cb211c366c5d1b8b382f3b442d2b",
+            "bytes": 447
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "22f8d304cb0d36c7353fcb8fdf7f48e4ef9b0a961b3dd19dd944326192158a48",
+            "bytes": 448
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/pt-stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "3451daa658ef431e5316f30b1914b70323aff6b1cdca83650ef2f3c0c230925e",
+            "bytes": 614
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "c68fc2a46ffb555c3a7dd50ae940780d5d02d72023186f6ae1ce39687a3b35e5",
+            "bytes": 614
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/pt/smoke-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "cfb29b66afb2c5621870a5b1a627ab1439463c469220f53fe607706972a3a681",
+            "bytes": 467
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "68530cde9fbdd98d9ace73bf2417cd6380d0c7e5080b376f66a9bb650509e372",
+            "bytes": 467
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/qa-raw-preservation.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "0d2b3adeb4d7cbed1f36b282df5ae98c00a025e3362b1d47a03ce46923e4e2f0",
+            "bytes": 7590
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "01b80b08b7691ad511a0af3ed1aec665b46486a7958389e2e31032ed682d23f7",
+            "bytes": 7590
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/qa-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "0d80dc788a4f52e9580f896a29912f5b5afd8751b71b6419bc61e00e63fea54b",
+            "bytes": 101645
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "53b949683f3af7bff1cb3cdce3e16327d0434321c2c3bd40af57a78153180c43",
+            "bytes": 101649
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/quality-review.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "731917f29f86aeb7da1ce8b2cc2b43701a74b475c668109d302281344e74073b",
+            "bytes": 14585
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "70e7b129dedff7572f26f627ffe2d502f5ae24e5140dccb15b15422f92003d0e",
+            "bytes": 17429
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/readme-images.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "3c2e7864f6f82e965aa78f1a1c361e00b675da6ac9bf907779ee1b1ecdebe2e5",
+            "bytes": 904
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "f7c025b8385a3e02498ead0cc9db1557bfce0a70515bb1b27da2acdf41d251e2",
+            "bytes": 904
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/verify-deb.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "5b896592836e3c073ee6b63004e45a0affdb599a9ad3cb78b91eee76889bb777",
+            "bytes": 180
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "3e721185fc4cef6c025d3f75e5e05c44a551caf14c26bf36e1714460101bdd35",
+            "bytes": 180
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/verify-deb.log.execution.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "91db367cd741097236673ade7a76d66293157cb83322538a83a96548246d9471",
+            "bytes": 851
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "a9f395ec2420ce0c70b838fa6b548a3232b4d7cfcde903da22cff9425ac8bcc3",
+            "bytes": 851
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/verify-gpu-deb.log.execution.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "4e5f99e912f122307081ddb195b060284743052f8ffa6bed42a39fb96960d278",
+            "bytes": 916
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "f261a3f9edb6380ff3d0251dbfca9a36cdaae2f9a44731ab4d44ae22d0d97c4d",
+            "bytes": 916
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/verify-install.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "f2b8383d616637bf763acb3b68ebff535daee70a81c4b26659bfb2bc2a0d80ea",
+            "bytes": 169
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "a6aa9a59c8cdfa6f53e6264e947bc6ddeb8c863e4b536e5f97a21da17a9a06f6",
+            "bytes": 169
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/verify-install.log.execution.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "0efa16b6920791ee8c691bf2000ab6f01355586f2407eaa268ddad66483c9f96",
+            "bytes": 838
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "a1af4a35c4cd5678802d203049255eea47ed6be6f877f9fae3452492584763f5",
+            "bytes": 838
+          }
+        }
+      ],
+      "extra": [
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cpu/results/bus-20261008-164525-350-f1.json",
+          "kind": "file",
+          "sha256": "71b9823ceb74b62df93644442456816d72ffc26a46de25792deb3ce2d5db08ea",
+          "bytes": 2582
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cuda/results/bus-20261008-164521-282-f1.json",
+          "kind": "file",
+          "sha256": "53c0b2750b2ac48f20aef314284444b437ad7c3f4a9c7e7642b5d2b4f63595ba",
+          "bytes": 2609
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cpu/results/bus-20261008-164529-801-f1.json",
+          "kind": "file",
+          "sha256": "82d9adcf7494278ffc12debdd15e5a7991a1b260faa35ac7faabb99ef1815ca9",
+          "bytes": 2630
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cuda/results/bus-20261008-164524-273-f1.json",
+          "kind": "file",
+          "sha256": "7bc3228cc75b7a58a7d920b7a8cfae734666182eef26f05aa13f5994fb491ab2",
+          "bytes": 2648
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/onnx/bus-20261008-164533-403-f1.json",
+          "kind": "file",
+          "sha256": "ffaf2ea3850e325545055aff87c4f3242e6a95b927cc54b69c30992a1288c685",
+          "bytes": 2662
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/pt/bus-20261008-164538-707-f1.json",
+          "kind": "file",
+          "sha256": "990aaf6549402dd8850843e0faef33fde1a2059b04f6a6dff07af8b30eb419d7",
+          "bytes": 2710
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/onnx/bus-20261008-164541-938-f1.json",
+          "kind": "file",
+          "sha256": "1840f68f812584c4bdd8dcdd6c1fcaf868529973abe6756cceeee923a7316a33",
+          "bytes": 2749
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/pt/bus-20261008-164546-017-f1.json",
+          "kind": "file",
+          "sha256": "918365c6d7b39ef0e0a3cba51f92d9ac965e1fa760c0f7124e0cdc0ac3ffb530",
+          "bytes": 2798
+        }
+      ],
+      "missing": [
+        {
+          "path": "docs/releases/evidence/2.0.0/gpu-qa.json",
+          "kind": "file",
+          "sha256": "31f62c99685d8c2175e8ea99476e77dee0574558548c06962d513cfb8772d7c7",
+          "bytes": 10247
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/package-isolation-qa.json",
+          "kind": "file",
+          "sha256": "8f65df98f1981cb4c24c9daed84347c0db9ab67be9e3a8f8174461877b51cd8b",
+          "bytes": 932
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cpu/results/bus-20261008-165454-238-f1.json",
+          "kind": "file",
+          "sha256": "7a5d3d369671f6c06393875dd8aef161073f691ea9723cf1818028d3ab436cd9",
+          "bytes": 2582
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cuda/results/bus-20261008-165449-892-f1.json",
+          "kind": "file",
+          "sha256": "1e920737e9d0e8030bb680ccd3e97b86d4ccc0d52d1ab165aab872267eae88e8",
+          "bytes": 2610
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cpu/results/bus-20261008-165458-415-f1.json",
+          "kind": "file",
+          "sha256": "66e828a06860116444c95d45282d48fd5b6dfa85492110a9111a8f50a32f2c12",
+          "bytes": 2630
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cuda/results/bus-20261008-165453-067-f1.json",
+          "kind": "file",
+          "sha256": "de18aa875ad2ddaf18cd1e86292e0d6edb7cf755b164fdbf2a42426ced7b93d6",
+          "bytes": 2649
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/onnx/bus-20261008-165502-164-f1.json",
+          "kind": "file",
+          "sha256": "6a103104ca80e51a880616969adfde254458d5896df8a116b5c63bac7a1429f2",
+          "bytes": 2662
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/pt/bus-20261008-165507-260-f1.json",
+          "kind": "file",
+          "sha256": "526750ed6e01705777d0367ebae9270fc7b8c7e15d08b9898986be80ab1d5f52",
+          "bytes": 2710
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/onnx/bus-20261008-165509-487-f1.json",
+          "kind": "file",
+          "sha256": "f5d871ff2ee2f814948fb487abfd6a77203c66012b8a29ea66da49ec7d4bc454",
+          "bytes": 2750
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/pt/bus-20261008-165513-471-f1.json",
+          "kind": "file",
+          "sha256": "302472e34d9da03401528f1bb6b7efb3feb103a226e086c175938026feac4d70",
+          "bytes": 2798
+        }
+      ],
+      "exact": false,
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs",
+      "all_local_content_backed_up": false,
+      "alternate_committed_backups": [],
+      "unresolved_local_content": [
+        {
+          "path": "CHANGELOG.md",
+          "actual": {
+            "kind": "file",
+            "sha256": "d9062af2384497ddb771d0614c76fa10d11b2188ba39134a82626c0b47365074",
+            "bytes": 16728
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "14ff4482a89524da5afb50e731441b616945d60b5a2cfdba6faa946a4f20afa5",
+            "bytes": 17540
+          }
+        },
+        {
+          "path": "README.md",
+          "actual": {
+            "kind": "file",
+            "sha256": "0f7966b54bbc10a1a5b99e67190af423c6cd18d7615e26b232317fdacba08138",
+            "bytes": 12687
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "e6f89810829cd8b898f21295dcd1932feb70918a66545a7a2ab0c0c2767583cb",
+            "bytes": 13227
+          }
+        },
+        {
+          "path": "docs/preview.png",
+          "actual": {
+            "kind": "file",
+            "sha256": "5e8b259cb03c97a324f9ced86abddfb2f13794681020f395500e88850ea652d2",
+            "bytes": 384352
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "7be19d54e2ed1cb6cadcf16678e93f0b7826643990a3842616598688fff4384e",
+            "bytes": 384666
+          }
+        },
+        {
+          "path": "docs/releases/2.0.0.md",
+          "actual": {
+            "kind": "file",
+            "sha256": "f6ff286653cb65f972dd889f9bc55799d950d8caf3d66721128863aa9cba10fa",
+            "bytes": 5907
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "b3341227d7dfdac78e41a863e25cfeeb0f97213d13d858f6f784c5d7946a4296",
+            "bytes": 7249
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/build-deb.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "f03155ee9151b44190d2b50d82202922434a87067585d6634499ec6fb8719cfd",
+            "bytes": 806
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "fe0a5a2ce7d8b4bf3b4b0593609487250e1c51930303465aab6aba3b2dd44ee3",
+            "bytes": 970
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/gpu-install-qa.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "b3820eb2b85bbb3c3359e76a88dd3da9b2af0a868f094e13581811dab529604c",
+            "bytes": 20603
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "8e6e532420f9c5594b7f15e20974eb609967643be33745f06531bf093709af9e",
+            "bytes": 20606
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/gpu-raw-preservation.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "8d9d1ff83a557773956656b67185150a065eb33b39e85abbad89112a094fef79",
+            "bytes": 9247
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "c19f3a0b74ff85d69790abcf4bece47d266da1e82af486ad74827cc81d427fc3",
+            "bytes": 9247
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/install-qa.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "0cfe67c3d51823c0e29677ae7dc16b05e9a3791e61d7f90016f4255793888c98",
+            "bytes": 4975
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "9fae96f5578a3a41fdff0d850f42121f4c357a685109c4fbebffdff4ee4c3664",
+            "bytes": 4975
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/install-raw-preservation.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "5de5b83dbdf47fd17a81f1a9a7df449f3b4720a97a9db8f53b8c7e6bad672103",
+            "bytes": 10887
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "7259c074635794e97ec59cefb5557dcf670b53a805521fefb119167adb62231f",
+            "bytes": 10887
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cpu/results/smoke-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "7b1ae8ac917d1550ca7f2d9a51e69974dd365be08277eab4cf09b642cac43525",
+            "bytes": 282
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "a4394fd9248c16e051bca32e9f62de6297885b1020916d1628cb9569603b3cdd",
+            "bytes": 282
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cpu/stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "4cd3fd883d7c6dd831abeaaa57646a49a7baf32ea8dba5865789f977cd1b4021",
+            "bytes": 429
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "fb6e26414f6bade0ce12f4c5d78ee048d68dfdee819c5c5bba0427f51c9edec2",
+            "bytes": 429
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cuda/results/smoke-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "41bc3d042bda5fdd799479e05607e20147550503d584321e264f95a5c9c1abb1",
+            "bytes": 306
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "84d3457c10978aec9ef757335d535e257727e9d6aa3e475503ee764097282393",
+            "bytes": 306
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cuda/stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "470c57c34c0b412adb29e41f33c67892b45e511f2a80f4bb5926288ff46baf89",
+            "bytes": 453
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "c3550601086cd57d232d83c6bcd1ae78355cb9afbd5331dc77a65ad744b630d7",
+            "bytes": 453
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cpu/results/smoke-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "70ba233c033776402b7676e250060dece9a16d1f96e5cda391ccc531e36e996b",
+            "bytes": 301
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "f7a3cb613f7fce91514a255e4634fd408025c26ae3a82c21e94c486b9853ff3a",
+            "bytes": 301
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cpu/stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "ce77a9b50dc5d567cd5c04471039d6a39c3710c5e2989524397cfca34b41f08c",
+            "bytes": 448
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "761b5884974083a00e3615a03a7df84d04e0648db5849715af0db1f18b5ce22a",
+            "bytes": 448
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cuda/results/smoke-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "9c14375bf4943a3892d155cbe0b90cb03cabce9f6b76a83eb6c5c0ebfb32cb6c",
+            "bytes": 323
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "5f6381e75100dc10ed7760f9641e030c3626e8213ea58570a2059f34c3dd4d8d",
+            "bytes": 323
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cuda/stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "1310c7344344f019c6d6d9ce35de204030f80e930ed03b4b5d5751835a20aed0",
+            "bytes": 470
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "fd5b3922cc18876ef74819a6101cea770c8b129b992eea17b9f7a8e853565304",
+            "bytes": 470
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/dpkg.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "4f8f0a1cc160325d578040c435aa944698956a90f1f5309a991b54245cfe2b02",
+            "bytes": 1207
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "7fcfb0eb85dcfe36768996e129cb42ca60b883b13e11495898502271147c6c4a",
+            "bytes": 1207
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/onnx-stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "f0a7cb779e983ba193a78152a5c06d555eef73b53554ec2c0bead7f4d8a0a4a0",
+            "bytes": 595
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "736fa56b4342492be0775b0e16a6e02bfcd365b15d917516abec25a305f60b7c",
+            "bytes": 595
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/pt-stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "4ec9be632a11d9caaa18100bea3e1cbb23ff50a3e633c4e25b34772c06c57bbd",
+            "bytes": 614
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "d71105ba8089e9505546cf09adcf6857b31e662cdff05a65df3f45fe28cbba72",
+            "bytes": 614
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/purge-stdout.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "4ec8fd2fb08ce2295aa80c599b339633bf9324ade5855655ce8931f76125dd01",
+            "bytes": 110
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "2b9f4af7fd6c639e6c4826c6011fff25d2a03c7ac4d0cc7c5f8ce600eb55643b",
+            "bytes": 110
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/onnx/smoke-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "2cf30336af22d1bd75935f311c65f870efc8809ad8b32a092cc2f1072c436f4d",
+            "bytes": 448
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "3f0aa384352859b6cea447aa636915f8bdb7249f3cffcce0c739d23ad808b76d",
+            "bytes": 448
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/pt/smoke-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "fd776ce4b9e3f2f5053353aad0cabb294b4fa51ff904bd47ed4282d8882c0234",
+            "bytes": 467
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "ab982271f9fed5cf2234a6e4bdfb21df39b5703352192c67dbb0ca2f309ff9d6",
+            "bytes": 467
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display-stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "dcef7733d115302f700114fc3ae688037c8c451ff6bda863a95b60ef4b52acbf",
+            "bytes": 644
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "6b69d922ad80dccabd8346a2215e6ffa0fb875485eb1f217a0cc44b15d0c9176",
+            "bytes": 644
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display/model-display-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "28a02a1499b225466d25ba2a9b5a89ab9ca365fcff26860ca0e0dec44f1c34f9",
+            "bytes": 550
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "409fbb5988ee648a995125b5bf8baeed6b3ebd36e759a2c7137ac0ebaa81a4fa",
+            "bytes": 550
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display_pt-stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "49385c323113eaa4a292cf1297d135bfd3a946c45a13a0cc3802d22c1c842063",
+            "bytes": 639
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "27f193ad37fb2b830b3fa888704af2a92bc8d0c694bcb66c8cf323c4b6979c93",
+            "bytes": 639
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display_pt/model-display-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "5f089c37590f92487fe60880106658e372a2968b537966850140ab3b469d47f9",
+            "bytes": 545
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "21eab04825c52e83d8e1afdd82c6eabc1d478795eb7606f6d6a29e8cd38bd1f0",
+            "bytes": 545
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/onnx-stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "f63f2bdb9111d731eece2285ded108af8656c88d77dbfa4ed82cbc4f525e57a0",
+            "bytes": 594
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "40f30c598ca6ecf4abe2866c14a63a2837e7829147f1cd0a67f5759dd15c37c6",
+            "bytes": 595
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/onnx/smoke-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "3a30fc9a35eecbb51f3bfcafc05e16bfe3c4cb211c366c5d1b8b382f3b442d2b",
+            "bytes": 447
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "22f8d304cb0d36c7353fcb8fdf7f48e4ef9b0a961b3dd19dd944326192158a48",
+            "bytes": 448
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/pt-stderr.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "3451daa658ef431e5316f30b1914b70323aff6b1cdca83650ef2f3c0c230925e",
+            "bytes": 614
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "c68fc2a46ffb555c3a7dd50ae940780d5d02d72023186f6ae1ce39687a3b35e5",
+            "bytes": 614
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/pt/smoke-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "cfb29b66afb2c5621870a5b1a627ab1439463c469220f53fe607706972a3a681",
+            "bytes": 467
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "68530cde9fbdd98d9ace73bf2417cd6380d0c7e5080b376f66a9bb650509e372",
+            "bytes": 467
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/qa-raw-preservation.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "0d2b3adeb4d7cbed1f36b282df5ae98c00a025e3362b1d47a03ce46923e4e2f0",
+            "bytes": 7590
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "01b80b08b7691ad511a0af3ed1aec665b46486a7958389e2e31032ed682d23f7",
+            "bytes": 7590
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/qa-report.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "0d80dc788a4f52e9580f896a29912f5b5afd8751b71b6419bc61e00e63fea54b",
+            "bytes": 101645
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "53b949683f3af7bff1cb3cdce3e16327d0434321c2c3bd40af57a78153180c43",
+            "bytes": 101649
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/quality-review.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "731917f29f86aeb7da1ce8b2cc2b43701a74b475c668109d302281344e74073b",
+            "bytes": 14585
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "70e7b129dedff7572f26f627ffe2d502f5ae24e5140dccb15b15422f92003d0e",
+            "bytes": 17429
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/readme-images.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "3c2e7864f6f82e965aa78f1a1c361e00b675da6ac9bf907779ee1b1ecdebe2e5",
+            "bytes": 904
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "f7c025b8385a3e02498ead0cc9db1557bfce0a70515bb1b27da2acdf41d251e2",
+            "bytes": 904
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/verify-deb.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "5b896592836e3c073ee6b63004e45a0affdb599a9ad3cb78b91eee76889bb777",
+            "bytes": 180
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "3e721185fc4cef6c025d3f75e5e05c44a551caf14c26bf36e1714460101bdd35",
+            "bytes": 180
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/verify-deb.log.execution.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "91db367cd741097236673ade7a76d66293157cb83322538a83a96548246d9471",
+            "bytes": 851
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "a9f395ec2420ce0c70b838fa6b548a3232b4d7cfcde903da22cff9425ac8bcc3",
+            "bytes": 851
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/verify-gpu-deb.log.execution.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "4e5f99e912f122307081ddb195b060284743052f8ffa6bed42a39fb96960d278",
+            "bytes": 916
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "f261a3f9edb6380ff3d0251dbfca9a36cdaae2f9a44731ab4d44ae22d0d97c4d",
+            "bytes": 916
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/verify-install.log",
+          "actual": {
+            "kind": "file",
+            "sha256": "f2b8383d616637bf763acb3b68ebff535daee70a81c4b26659bfb2bc2a0d80ea",
+            "bytes": 169
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "a6aa9a59c8cdfa6f53e6264e947bc6ddeb8c863e4b536e5f97a21da17a9a06f6",
+            "bytes": 169
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/verify-install.log.execution.json",
+          "actual": {
+            "kind": "file",
+            "sha256": "0efa16b6920791ee8c691bf2000ab6f01355586f2407eaa268ddad66483c9f96",
+            "bytes": 838
+          },
+          "reference": {
+            "kind": "file",
+            "sha256": "a1af4a35c4cd5678802d203049255eea47ed6be6f877f9fae3452492584763f5",
+            "bytes": 838
+          }
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cpu/results/bus-20261008-164525-350-f1.json",
+          "kind": "file",
+          "sha256": "71b9823ceb74b62df93644442456816d72ffc26a46de25792deb3ce2d5db08ea",
+          "bytes": 2582
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cuda/results/bus-20261008-164521-282-f1.json",
+          "kind": "file",
+          "sha256": "53c0b2750b2ac48f20aef314284444b437ad7c3f4a9c7e7642b5d2b4f63595ba",
+          "bytes": 2609
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cpu/results/bus-20261008-164529-801-f1.json",
+          "kind": "file",
+          "sha256": "82d9adcf7494278ffc12debdd15e5a7991a1b260faa35ac7faabb99ef1815ca9",
+          "bytes": 2630
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cuda/results/bus-20261008-164524-273-f1.json",
+          "kind": "file",
+          "sha256": "7bc3228cc75b7a58a7d920b7a8cfae734666182eef26f05aa13f5994fb491ab2",
+          "bytes": 2648
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/onnx/bus-20261008-164533-403-f1.json",
+          "kind": "file",
+          "sha256": "ffaf2ea3850e325545055aff87c4f3242e6a95b927cc54b69c30992a1288c685",
+          "bytes": 2662
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/pt/bus-20261008-164538-707-f1.json",
+          "kind": "file",
+          "sha256": "990aaf6549402dd8850843e0faef33fde1a2059b04f6a6dff07af8b30eb419d7",
+          "bytes": 2710
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/onnx/bus-20261008-164541-938-f1.json",
+          "kind": "file",
+          "sha256": "1840f68f812584c4bdd8dcdd6c1fcaf868529973abe6756cceeee923a7316a33",
+          "bytes": 2749
+        },
+        {
+          "path": "docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/pt/bus-20261008-164546-017-f1.json",
+          "kind": "file",
+          "sha256": "918365c6d7b39ef0e0a3cba51f92d9ac965e1fa760c0f7124e0cdc0ac3ffb530",
+          "bytes": 2798
+        }
+      ],
+      "logical_bytes": 87878086,
+      "cross_path_git_and_deb_backup_checks_completed": true,
+      "regular_file_count": 3227,
+      "symlink_count": 0
+    },
+    "deb-stage/2.0.0-1": {
+      "actual_count": 30167,
+      "reference_count": 30167,
+      "exact_matching_count": 30167,
+      "changed": [],
+      "extra": [],
+      "missing": [],
+      "exact": true,
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/deb-stage/2.0.0-1",
+      "deb_path": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.0.0/vision-studio_2.0.0-1_amd64.deb",
+      "deb_sha256": "2e5a467b07d82cf600eedeec2bd40624a724efccb4715366997ef04f3a4a042e",
+      "control_version": "2.0.0-1",
+      "control": {
+        "actual_count": 1,
+        "reference_count": 1,
+        "exact_matching_count": 1,
+        "changed": [],
+        "extra": [],
+        "missing": [],
+        "exact": true
+      },
+      "all_local_content_backed_up": true,
+      "regular_file_count": 30139,
+      "symlink_count": 29,
+      "logical_bytes": 1656974966
+    },
+    "review/delivery-build": {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/review/delivery-build",
+      "classification": "CMake/Ninja-generated-2.0.0-development-test-build",
+      "cmake_project_version": "2.0.0",
+      "cmake_source_directory": "/home/misaka/文档/ChatGPT/yolo",
+      "ninja_contains_application_version_2_0_0": true,
+      "file_count": 87,
+      "logical_bytes": 6751977,
+      "protected_user_directories": [],
+      "symlinks": [],
+      "unknown_files": [],
+      "qa_or_user_results": [],
+      "testing_files": [],
+      "source_paths_present_in_v2_0_0_tag": {
+        "src/core/gpuruntime.cpp": true,
+        "src/core/onnxcudabackend.cpp": true,
+        "src/core/ptbackend.cpp": true,
+        "src/core/visionengine.cpp": true,
+        "src/core/inferenceworker.cpp": true,
+        "src/core/videorecorder.cpp": true,
+        "src/ui/mainwindow.cpp": true,
+        "src/ui/icons.cpp": true,
+        "src/ui/imagecanvas.cpp": true,
+        "src/ui/modelviewer.cpp": true,
+        "tests/batch_responsiveness_tests.cpp": true,
+        "tests/inference_delivery_tests.cpp": true,
+        "CMakeLists.txt": true,
+        "resources.qrc": true
+      },
+      "pure_generated_build_recreatable_from_archived_sources": true,
+      "byte_for_byte_reproducibility_claimed": false,
+      "note": "Build products and CMake/Ninja configuration are regenerated from backed-up source and SDK. Binary byte identity is not claimed; no test-result logs or user files are present.",
+      "manifest": {
+        "cmake_install.cmake": {
+          "sha256": "e5734f2b27a5834367e1fa33fae5c215e1475d2376dbfa18c0c83909e7c32644",
+          "bytes": 2708
+        },
+        ".ninja_deps": {
+          "sha256": "479246280f6853f14783ebe35919cc0d152318720342fc2d12b190d660121f02",
+          "bytes": 102580
+        },
+        "libvision-core.a": {
+          "sha256": "f76c9010f6a05086b70fa001810b981fbbcca3fa4353381d405fb0322d420342",
+          "bytes": 531200
+        },
+        "DartConfiguration.tcl": {
+          "sha256": "63f347b34280ecae151a59f75ae830802ecaf943293f51b014cea63ad9377a14",
+          "bytes": 2541
+        },
+        "build.ninja": {
+          "sha256": "76b75a64f56963b7267dc48ca0b5f9621378e062c5cc0554f5be614e0870e4ad",
+          "bytes": 293356
+        },
+        "CTestTestfile.cmake": {
+          "sha256": "13510eb31f3a9297d5b8166931fcca784f671ec9be3f755064ead49bd63f38fa",
+          "bytes": 4196
+        },
+        "vision-inference-delivery-tests": {
+          "sha256": "f45469bd7d82766170da2343488aa03d207b89ee20e576f239b00a34a6d61646",
+          "bytes": 381840
+        },
+        ".ninja_log": {
+          "sha256": "39a90196d757bcbe1c21808f1bed1df231a69132e103f4a03d13b32cdd0c5bfe",
+          "bytes": 5318
+        },
+        "vision-batch-responsiveness-tests": {
+          "sha256": "196fcb27852549d7675a893a88c78e88292a8ff402e6ee8ef66a37724e0f4bc3",
+          "bytes": 1124240
+        },
+        "CMakeCache.txt": {
+          "sha256": "c63c56a970f4cddf3e5643f6ed29c6fe2a95ea212bfd74218243eb1105435887",
+          "bytes": 70747
+        },
+        ".qt/QtDeployTargets.cmake": {
+          "sha256": "2e15908829e2f348eec721fbcbb8cdbccf61b754f989d6b07e46f99ba3305021",
+          "bytes": 2064
+        },
+        ".qt/QtDeploySupport.cmake": {
+          "sha256": "4a8206e880b828b745bbe7304f9aa5a0a654b3ea418592e1a1d977597c7769fb",
+          "bytes": 2821
+        },
+        "CMakeFiles/clean_additional.cmake": {
+          "sha256": "6e8acf03931cbdb0220cef48e4cdc3963257d6951eea9a3aebdb8a7ec8068ecd",
+          "bytes": 1750
+        },
+        "CMakeFiles/TargetDirectories.txt": {
+          "sha256": "4c2fdbb16ac4bcfe9732b5dd14db73a279b4d40150d1e40dbaeebe80a8e2a720",
+          "bytes": 7266
+        },
+        "CMakeFiles/cmake.check_cache": {
+          "sha256": "a26189e394421da57f45706a07713c5720acd200a41711b0c0c590c3c63371c4",
+          "bytes": 85
+        },
+        "CMakeFiles/CMakeOutput.log": {
+          "sha256": "9e0b344d0409c77f2c781d5c6f2031be8a10951c41d12caf23cb282e18a4b09b",
+          "bytes": 25097
+        },
+        "CMakeFiles/rules.ninja": {
+          "sha256": "e4bee7a9016b72dd9a926dc1a259aa93ed83171b72f245172c4401dc3be8916d",
+          "bytes": 7939
+        },
+        "CMakeFiles/vision-gpu-tests_autogen.dir/AutogenInfo.json": {
+          "sha256": "3a5d0dfb064733a12b4e52d6b9c90a45ee7b10d22a555d2e127145ac42fb108c",
+          "bytes": 97139
+        },
+        "CMakeFiles/vision-recording-tests_autogen.dir/AutogenInfo.json": {
+          "sha256": "69316b1450b361f8d4ed68723fb9429809ce7f49fab57ec670a7f52a5a3a66c0",
+          "bytes": 96918
+        },
+        "CMakeFiles/vision-core.dir/src/core/gpuruntime.cpp.o": {
+          "sha256": "47825d3af66ee0e3a187b3dece531f30066cf37ab6a559b6d8bcae5565ea029e",
+          "bytes": 33264
+        },
+        "CMakeFiles/vision-core.dir/src/core/videorecorder.cpp.o": {
+          "sha256": "c2b7c5bb261b19e05efde8ef47f0ff3858fdbaade74af5ecb0bbebd722e5ed13",
+          "bytes": 75632
+        },
+        "CMakeFiles/vision-core.dir/src/core/visionengine.cpp.o": {
+          "sha256": "f6e4a92347256d3519078427ea5a69480e5622d51a58c6b28633de5d7f57a2f2",
+          "bytes": 121072
+        },
+        "CMakeFiles/vision-core.dir/src/core/inferenceworker.cpp.o": {
+          "sha256": "5b7a8d047e1f27bb45bdf266e878af45bce7e3ddb46db5e836efd242761d3702",
+          "bytes": 51720
+        },
+        "CMakeFiles/vision-core.dir/src/core/ptbackend.cpp.o": {
+          "sha256": "e981014a5076ad935b52d2683ae046ce1e6f474ef1a75a94a47f3991ec771dc4",
+          "bytes": 107136
+        },
+        "CMakeFiles/vision-core.dir/src/core/onnxcudabackend.cpp.o": {
+          "sha256": "f4fd97581d106a24af7b292a8afaee0c575f733c9e3ba8aea7970efb0de5cd54",
+          "bytes": 72368
+        },
+        "CMakeFiles/vision-core.dir/vision-core_autogen/mocs_compilation.cpp.o": {
+          "sha256": "2029cfe158640c09012367f41783f680fd69f89734f83a59cd5374bcd24275a0",
+          "bytes": 54224
+        },
+        "CMakeFiles/vision-core-tests_autogen.dir/AutogenInfo.json": {
+          "sha256": "47ff8d8cbfec20030987284871c2cf964c695c674f9c229f3c876ecb5413f7f1",
+          "bytes": 96598
+        },
+        "CMakeFiles/vision-batch-responsiveness-tests_autogen.dir/ParseCache.txt": {
+          "sha256": "82e2225e6f0b476a3b2ee11d3565ee23e4cd59015d3d6299f7df71f2be7e1edb",
+          "bytes": 115207
+        },
+        "CMakeFiles/vision-batch-responsiveness-tests_autogen.dir/AutoRcc_resources_EWIEGA46WW_Lock.lock": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "CMakeFiles/vision-batch-responsiveness-tests_autogen.dir/AutoRcc_resources_EWIEGA46WW_Used.txt": {
+          "sha256": "c549885e4103e7dde49bc13e025c50b893a3a764e6cc4c3abe442efb17d5f782",
+          "bytes": 69
+        },
+        "CMakeFiles/vision-batch-responsiveness-tests_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json": {
+          "sha256": "71e56e3649be5d61b8b5213af566c10e633cb8dea481b45549ad2671925940bb",
+          "bytes": 1713
+        },
+        "CMakeFiles/vision-batch-responsiveness-tests_autogen.dir/AutogenUsed.txt": {
+          "sha256": "2172d1dc82882968b32b8dfb2cde941babaaa302d5dd8ff9c42d722e14b73644",
+          "bytes": 69
+        },
+        "CMakeFiles/vision-batch-responsiveness-tests_autogen.dir/AutogenInfo.json": {
+          "sha256": "82cafc5fbd54628ab4d457bd901fde33a2848680cabb2dfe5d97f91550bae770",
+          "bytes": 99692
+        },
+        "CMakeFiles/vision-inference-delivery-tests.dir/tests/inference_delivery_tests.cpp.o": {
+          "sha256": "4fc864468b8bad628976edc43968b60566262db843f30d733fc86183082a7a12",
+          "bytes": 134256
+        },
+        "CMakeFiles/vision-inference-delivery-tests.dir/vision-inference-delivery-tests_autogen/mocs_compilation.cpp.o": {
+          "sha256": "daeb5e8eeb9a87b17fa9fba6185b98f8b614c27bf66c705883778fc1783b70b0",
+          "bytes": 944
+        },
+        "CMakeFiles/vision-core_autogen.dir/ParseCache.txt": {
+          "sha256": "2b85e0ae2355af557e4984842d0ac549e15b8b5962297043fa82874ade55aa37",
+          "bytes": 21010
+        },
+        "CMakeFiles/vision-core_autogen.dir/AutogenUsed.txt": {
+          "sha256": "fba03ba6a788710348d057239fa261412b14972b1def517f6d1ac04791139597",
+          "bytes": 69
+        },
+        "CMakeFiles/vision-core_autogen.dir/AutogenInfo.json": {
+          "sha256": "19a31362e94a3c1b29d63f6e7ca8d684d50b372b40b0ce4a589c0754f97beb4c",
+          "bytes": 97181
+        },
+        "CMakeFiles/vision-ui-tests_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json": {
+          "sha256": "1f685734fde2c11a942a4df476f12bee2a567492a4d48928fd219193f3c23ff9",
+          "bytes": 1641
+        },
+        "CMakeFiles/vision-ui-tests_autogen.dir/AutogenInfo.json": {
+          "sha256": "26052dddde2b9f421e3fc8afaf7e6107805e2653a86db91732deda42f351a247",
+          "bytes": 99262
+        },
+        "CMakeFiles/3.22.1/CMakeCXXCompiler.cmake": {
+          "sha256": "2b45b213952e8ff33366da3750a3a8ccdc914d32dde4b4cbb2051e959ab192ee",
+          "bytes": 5439
+        },
+        "CMakeFiles/3.22.1/CMakeSystem.cmake": {
+          "sha256": "d4ab78dec65371debf381837e24ed1110bb190e0df942eaabe673de66cfd8b79",
+          "bytes": 402
+        },
+        "CMakeFiles/3.22.1/CMakeDetermineCompilerABI_CXX.bin": {
+          "sha256": "e2e968bb6ffef2f6cdb281d8fbf6964dac7ad65ca39384d46fcaa1f6107870b7",
+          "bytes": 15992
+        },
+        "CMakeFiles/3.22.1/CompilerIdCXX/a.out": {
+          "sha256": "33335d5a7d9ec56e273ddf34d3cf56c2c06255523d4f4ec29f9589e039a77eb9",
+          "bytes": 16096
+        },
+        "CMakeFiles/3.22.1/CompilerIdCXX/CMakeCXXCompilerId.cpp": {
+          "sha256": "bd1f2250416e16ed26d6db1890f822a01d487df29d20e87407ef4ce72c314ba0",
+          "bytes": 24597
+        },
+        "CMakeFiles/vision-inference-delivery-tests_autogen.dir/ParseCache.txt": {
+          "sha256": "5cba03c79f9e9c215e2add4eb1717450fe4399e51104fa78f768ab3b397ab0b9",
+          "bytes": 41928
+        },
+        "CMakeFiles/vision-inference-delivery-tests_autogen.dir/AutogenUsed.txt": {
+          "sha256": "f5738b440d33925383a7a7b4b6f4c522f74683193ad2032450d5a0ed7aee2990",
+          "bytes": 69
+        },
+        "CMakeFiles/vision-inference-delivery-tests_autogen.dir/AutogenInfo.json": {
+          "sha256": "ee11aa0ca7e0c2e140970e85ec80371e3e0023c3c2ce93395f9c3b58567c6df9",
+          "bytes": 96853
+        },
+        "CMakeFiles/d/99c1b2e4398585f1d765bab3347d54314d85c8591f80d6fa1b17739281ab8dde.d": {
+          "sha256": "5b03d4c3769ab3336aa7f5aabdfb9948b8a55cd45c21426e7f537817cf1005d1",
+          "bytes": 113966
+        },
+        "CMakeFiles/d/e084fee7b225a97a23cb89fdaa1c8bbe1321ad49d053c3b4c63b3edc83b5587c.d": {
+          "sha256": "0852f84f51992a2860988692d619bdf48cf7d7fcb9cc57310add3fb15633aec1",
+          "bytes": 116351
+        },
+        "CMakeFiles/d/125ac14ee2261b178977b788dbaf1b4cd9fb4bbe1aec9c00a6b51a28a808a5ae.d": {
+          "sha256": "121ee3d4c29bc69b5e7ef8a69260485b823c2d90f5115f926b1630a366716dd7",
+          "bytes": 89361
+        },
+        "CMakeFiles/vision-batch-responsiveness-tests.dir/tests/batch_responsiveness_tests.cpp.o": {
+          "sha256": "db9e472df9766ab8880f68a79689c53ce5ea42c3908b58c971ef741c07ce57be",
+          "bytes": 180448
+        },
+        "CMakeFiles/vision-batch-responsiveness-tests.dir/src/ui/mainwindow.cpp.o": {
+          "sha256": "6e9ab79747df8e63972162f1a2761ca745c69437b9f561f631a0276d5820e3db",
+          "bytes": 763520
+        },
+        "CMakeFiles/vision-batch-responsiveness-tests.dir/src/ui/modelviewer.cpp.o": {
+          "sha256": "313de3c4fc40b2802664b62526a0bf7f456f983822dceab7a9a38eadea0664d2",
+          "bytes": 226608
+        },
+        "CMakeFiles/vision-batch-responsiveness-tests.dir/src/ui/imagecanvas.cpp.o": {
+          "sha256": "948b6b560af1d7a847af6ee4829b0a8c67a664317440f03fac0d0a0ca0c84d5b",
+          "bytes": 111112
+        },
+        "CMakeFiles/vision-batch-responsiveness-tests.dir/src/ui/icons.cpp.o": {
+          "sha256": "01536174a3e58b6535ac8a08e39b5947fd6d0eb2073d5e952d5f4a60818f9ad3",
+          "bytes": 28336
+        },
+        "CMakeFiles/vision-batch-responsiveness-tests.dir/vision-batch-responsiveness-tests_autogen/mocs_compilation.cpp.o": {
+          "sha256": "35ab1c6f3b19ade2d11bcec4688abc4f0399f09b656b13cd10216e739a1e2bc6",
+          "bytes": 68360
+        },
+        "CMakeFiles/vision-batch-responsiveness-tests.dir/vision-batch-responsiveness-tests_autogen/EWIEGA46WW/qrc_resources.cpp.o": {
+          "sha256": "bf1c090dd6a085c001b18a489274f6ffa62670202ca0588cc2a717c2e22786b2",
+          "bytes": 7064
+        },
+        "CMakeFiles/vision-pt-tests_autogen.dir/AutogenInfo.json": {
+          "sha256": "f75ae15061c9d19e830f1a5773e3d28050fe20c128672ab8463b1cf8d22375e8",
+          "bytes": 97000
+        },
+        "CMakeFiles/vision-modelviewer-tests_autogen.dir/AutogenInfo.json": {
+          "sha256": "1a9c9771ef2f02bc30070e89533aed5174df4d9a182f97677e353ae7be7f8dcc",
+          "bytes": 99188
+        },
+        "CMakeFiles/vision-studio_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json": {
+          "sha256": "8e0fed6263cc422f53963765b9ecc88026f00cc6f2142f02e443c7115ad526aa",
+          "bytes": 1633
+        },
+        "CMakeFiles/vision-studio_autogen.dir/AutogenInfo.json": {
+          "sha256": "1c58b3bbba602e5c1ec25fea7aa79f28ab94d85e122d504639906078f63f2b11",
+          "bytes": 98060
+        },
+        "vision-inference-delivery-tests_autogen/moc_predefs.h": {
+          "sha256": "3ef8f6465c86adfd30156326ede715929c61862e679e10388d1ad0d729be7130",
+          "bytes": 16212
+        },
+        "vision-inference-delivery-tests_autogen/timestamp": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "vision-inference-delivery-tests_autogen/mocs_compilation.cpp": {
+          "sha256": "3a980c470f20620fec75ec0a390d792f1dcc9ba7d99f4ec5fc30ff04b3b16412",
+          "bytes": 173
+        },
+        "vision-inference-delivery-tests_autogen/deps": {
+          "sha256": "5799f26f157381c7615146e78ebc3fabf7eb1af8168def0e4bfb5ae70ac6decc",
+          "bytes": 112766
+        },
+        "vision-inference-delivery-tests_autogen/include/inference_delivery_tests.moc": {
+          "sha256": "faa131a519bd31c1af2a0d8cc8bd53f52b5e80094d83739cb6910b37bd2e3edf",
+          "bytes": 5259
+        },
+        "vision-inference-delivery-tests_autogen/include/inference_delivery_tests.moc.d": {
+          "sha256": "5d2d015ca4dd4a775874d4d47eef267bcfd2e31f971afc3a03d7db34657bd895",
+          "bytes": 41162
+        },
+        "vision-batch-responsiveness-tests_autogen/moc_predefs.h": {
+          "sha256": "65247b07bf8882751fdc1a5a0b8bea6de7de69f7caf1778de87bda080598589a",
+          "bytes": 16620
+        },
+        "vision-batch-responsiveness-tests_autogen/timestamp": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "vision-batch-responsiveness-tests_autogen/mocs_compilation.cpp": {
+          "sha256": "17ec4bd695d325fd2671d2735e54b5bfec795a222ced4ae8e2122a3cf80370c7",
+          "bytes": 185
+        },
+        "vision-batch-responsiveness-tests_autogen/deps": {
+          "sha256": "00487beba5434c136e44d9e82806c02ca421d8e8578a7e50c0326df970a8dd76",
+          "bytes": 115252
+        },
+        "vision-batch-responsiveness-tests_autogen/include/batch_responsiveness_tests.moc": {
+          "sha256": "34434fb7ba210c653df41ccd28cdb37b380f69e594adb0b70c5e3b2d1f51c64c",
+          "bytes": 5351
+        },
+        "vision-batch-responsiveness-tests_autogen/include/batch_responsiveness_tests.moc.d": {
+          "sha256": "5637b6c5bca79b15051ae5b1d3f6da1fff56194dbeedbc3e7f402876bc173ab0",
+          "bytes": 47309
+        },
+        "vision-batch-responsiveness-tests_autogen/EWIEGA46WW/qrc_resources.cpp": {
+          "sha256": "9ab2f9680147bd8c4d4dc8fdc5958f68940b10b10cc53e6873f2ee458a7100e6",
+          "bytes": 19611
+        },
+        "vision-batch-responsiveness-tests_autogen/YPKJ5OE7LN/moc_modelviewer.cpp.d": {
+          "sha256": "328a1bc90a6d89ebf348de697fdba33c08ab461db3ca61cd19660e65452886a3",
+          "bytes": 21929
+        },
+        "vision-batch-responsiveness-tests_autogen/YPKJ5OE7LN/moc_mainwindow.cpp": {
+          "sha256": "7dd5ef1b05519e567d7c70577c5f17a5c945a76225f57e97e9c8b4b165cc9246",
+          "bytes": 4924
+        },
+        "vision-batch-responsiveness-tests_autogen/YPKJ5OE7LN/moc_imagecanvas.cpp.d": {
+          "sha256": "d3f0007cc2aac6131855b13780f77e694011c23a9de91471a982cbaf7ef55468",
+          "bytes": 21380
+        },
+        "vision-batch-responsiveness-tests_autogen/YPKJ5OE7LN/moc_imagecanvas.cpp": {
+          "sha256": "ae939674057169f0ae7ae9df914e879eb1092c678166c457ef9aebaed95cebe0",
+          "bytes": 6189
+        },
+        "vision-batch-responsiveness-tests_autogen/YPKJ5OE7LN/moc_mainwindow.cpp.d": {
+          "sha256": "983568290c6d7b1d82eac3b9354bf777dbe856271f01c59ea2fb11cd71bb1220",
+          "bytes": 22419
+        },
+        "vision-batch-responsiveness-tests_autogen/YPKJ5OE7LN/moc_modelviewer.cpp": {
+          "sha256": "118b5372f47ff4236cd3635c5dae6585f2489cf652ffb844bf3854ee456e3ab9",
+          "bytes": 8870
+        },
+        "vision-core_autogen/moc_predefs.h": {
+          "sha256": "80a1ccc5a48d2258536903cf317297e92857c44505540a263d5bfc1de681c685",
+          "bytes": 16002
+        },
+        "vision-core_autogen/timestamp": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "vision-core_autogen/mocs_compilation.cpp": {
+          "sha256": "3143c6f2612c3d211782e5be85dfd9a9574dd33777d39f5c36c77c63b3b3980f",
+          "bytes": 106
+        },
+        "vision-core_autogen/deps": {
+          "sha256": "32a7b922b38a04d68a85773ebd2ba33502e4d4802215d2cf544a2040be23a977",
+          "bytes": 88770
+        },
+        "vision-core_autogen/PRMOGMWJPH/moc_inferenceworker.cpp": {
+          "sha256": "1c47c9ed752fd4e6b370ce2186294f97cca383f6bd9a633d41491feb051411a3",
+          "bytes": 16194
+        },
+        "vision-core_autogen/PRMOGMWJPH/moc_inferenceworker.cpp.d": {
+          "sha256": "64837d217fd331073a64cda25b1e8dafca50f10cdc41775e6a7008f19258de42",
+          "bytes": 19979
+        }
+      }
+    }
+  },
+  "allowed_exact_cleanup": [
+    "/home/misaka/文档/ChatGPT/yolo/output/deb-stage/2.0.0-1",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/source-inputs",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/review/delivery-build"
+  ],
+  "must_preserve": [
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs"
+  ],
+  "publication_gate": "No deletion performed or authorized by this audit alone. Root must first complete and verify the new 2.2.0 GitHub publication and original 2.0.0 remote backups.",
+  "local_user_directory_mutations": [],
+  "must_preserve_files": [
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/CHANGELOG.md",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/README.md",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/preview.png",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/2.0.0.md",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/build-deb.log",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/gpu-install-qa.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/gpu-raw-preservation.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/install-qa.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/install-raw-preservation.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cpu/results/smoke-report.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cpu/stderr.log",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cuda/results/smoke-report.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cuda/stderr.log",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cpu/results/smoke-report.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cpu/stderr.log",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cuda/results/smoke-report.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cuda/stderr.log",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/dpkg.log",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/onnx-stderr.log",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/pt-stderr.log",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/install/logs/purge-stdout.log",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/onnx/smoke-report.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/pt/smoke-report.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display-stderr.log",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display/model-display-report.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display_pt-stderr.log",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/model_display_pt/model-display-report.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/onnx-stderr.log",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/onnx/smoke-report.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/pt-stderr.log",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/pt/smoke-report.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/qa-raw-preservation.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/qa-report.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/quality-review.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/readme-images.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/verify-deb.log",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/verify-deb.log.execution.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/verify-gpu-deb.log.execution.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/verify-install.log",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/verify-install.log.execution.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cpu/results/bus-20261008-164525-350-f1.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/onnx_cuda/results/bus-20261008-164521-282-f1.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cpu/results/bus-20261008-164529-801-f1.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/gpu/pt_cuda/results/bus-20261008-164524-273-f1.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/onnx/bus-20261008-164533-403-f1.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/install/user/pt/bus-20261008-164538-707-f1.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/onnx/bus-20261008-164541-938-f1.json",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs/docs/releases/evidence/2.0.0/packaged-qa-raw/qa/user-state/pt/bus-20261008-164546-017-f1.json"
+  ],
+  "notes": [
+    "Source archive reference checked by actual member content SHA256, not filenames or release metadata alone.",
+    "DEB payload and DEBIAN control compared by regular-file SHA256, byte count, link targets, extra and missing paths.",
+    "Different package-source-inputs files were checked against Git v2.0.0, main and historical commits at the same path, committed cross-path matching SHA256, new 2.2 frozen application_source_members, and original DEB exact payload. Unresolved files must not be assumed backed up.",
+    "An extra Python 3.14 cache in source-inputs was proved byte-for-byte regenerable in memory from the archived release_metadata.py; only /tmp audit outputs were written."
+  ],
+  "audited_at_utc": "2026-10-19T10:22:48.664254+00:00"
+}

@@ -1,0 +1,11 @@
+test_child_inode_replacement_is_blocked (__main__.ExactCleanupTests.test_child_inode_replacement_is_blocked) ... ok
+test_directory_swap_to_symlink_is_blocked (__main__.ExactCleanupTests.test_directory_swap_to_symlink_is_blocked) ... ok
+test_dotted_paths_and_symlinks_are_removed_without_following (__main__.ExactCleanupTests.test_dotted_paths_and_symlinks_are_removed_without_following) ... ok
+test_extra_file_blocks_before_any_deletion (__main__.ExactCleanupTests.test_extra_file_blocks_before_any_deletion) ... ok
+test_root_inode_replacement_is_blocked (__main__.ExactCleanupTests.test_root_inode_replacement_is_blocked) ... ok
+test_stable_identity_allows_only_external_hardlink_count_changes (__main__.ExactCleanupTests.test_stable_identity_allows_only_external_hardlink_count_changes) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.003s
+
+OK

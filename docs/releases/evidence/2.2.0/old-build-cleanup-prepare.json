@@ -1,0 +1,65 @@
+{
+  "success": true,
+  "dry_run": true,
+  "targets": [
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/deb-stage/2.0.0-1",
+      "files_and_links": 30168,
+      "logical_bytes": 1656974966,
+      "root_identity": {
+        "dev": 66308,
+        "ino": 25590384,
+        "mode": 509,
+        "mtime_ns": 1791449441311001804
+      }
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/source-inputs",
+      "files_and_links": 3230,
+      "logical_bytes": 87901728,
+      "root_identity": {
+        "dev": 66308,
+        "ino": 25720542,
+        "mode": 509,
+        "mtime_ns": 1791450636453027613
+      }
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/review/delivery-build",
+      "files_and_links": 87,
+      "logical_bytes": 6751977,
+      "root_identity": {
+        "dev": 66308,
+        "ino": 25583954,
+        "mode": 509,
+        "mtime_ns": 1791447040969387493
+      }
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.0-stable/package-source-inputs",
+      "files_and_links": 3227,
+      "logical_bytes": 87878086,
+      "root_identity": {
+        "dev": 66308,
+        "ino": 25584653,
+        "mode": 509,
+        "mtime_ns": 1791449402818897712
+      }
+    }
+  ],
+  "unique_files_required": 48,
+  "preserve_to": "/home/misaka/文档/ChatGPT/yolo/output/legacy-qa-preserved/2.0.0-prepublication",
+  "verification": {
+    "source_members_matching": 3229,
+    "package_common_matching": 3179,
+    "unique_preserved_required": 48,
+    "deb_stage_payload_and_control_exact": true
+  },
+  "remote_receipts": {
+    "release_verify": "output/releases/2.2.0/release-verify.json",
+    "release_verify_sha256": "bc14666e2b12e64b825fe0a75a1c8431275430c4703bec9e979b80bfa87cac56",
+    "prune_receipt": "output/releases/2.2.0/prune-preview.json",
+    "prune_receipt_sha256": "c381d40fa4d4bc74492f55c0dbc545a95bc53b4f8453b2ff9d059993490f0409"
+  },
+  "plan": "/tmp/vision220-old-code-cleanup-plan.json"
+}

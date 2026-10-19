@@ -1,0 +1,254 @@
+{
+  "success": true,
+  "timestamp_utc": "2026-10-19T10:24:45.406412+00:00",
+  "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.2.0",
+  "target": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.2.0",
+  "files": [
+    {
+      "path": "source-freeze.json",
+      "bytes": 683,
+      "sha256": "ce107135748a850c0bac3c93c690fce4ab939bf184dd367879829d5ec8c88f98"
+    },
+    {
+      "path": "install-qa.log",
+      "bytes": 136,
+      "sha256": "e874c55cddcb29be48c097bd78f2df89ec2aa947ec45c9c8f8043fb107fccf08"
+    },
+    {
+      "path": "SOURCE-INVENTORY.json",
+      "bytes": 8027,
+      "sha256": "90cde872239b5520012b8a956b2954805cc4fdb6b3e4f8f668a2b0f85a927b46"
+    },
+    {
+      "path": "vision-studio_2.2.0-1_amd64.deb.manifest.json",
+      "bytes": 5252,
+      "sha256": "a16a9c332c4dee5b11f682bedd4046776137066ac9f4732e873345476bc4bcae"
+    },
+    {
+      "path": "release-publish.json",
+      "bytes": 1580,
+      "sha256": "65343ea503bcca618eda8770a3731f70454bf606f5be32b643a6d523896c42ac"
+    },
+    {
+      "path": "qa-report.log",
+      "bytes": 147,
+      "sha256": "f5bca1c402131fd6c6c7b859fbb3c0a48f7cfd8901662c75e89bccd48d73b0d7"
+    },
+    {
+      "path": "SOURCE-SHA256SUMS",
+      "bytes": 2206,
+      "sha256": "2123f703f9e25011abfd53883f3c03312f5cb3c4a092a5d4ecf419e75a394dad"
+    },
+    {
+      "path": "packaged-scope-filter-qa.json",
+      "bytes": 4790,
+      "sha256": "a9ba2aa48ca898048b293abc1a1155549df9e8f0eee4aa875225c86dfd34ab50"
+    },
+    {
+      "path": "ctest-qa.json",
+      "bytes": 16263,
+      "sha256": "f8608861323babda6e2854bd3df89ea8fffab51cdd1d04161a23dce8c6445ea4"
+    },
+    {
+      "path": "install-qa.json",
+      "bytes": 17928,
+      "sha256": "740758e68a94fe6809449be55f15e7127b0ae5413704c3d9ebea5fdd1ddcae69"
+    },
+    {
+      "path": "latest-release.json",
+      "bytes": 614,
+      "sha256": "ed6e02207242367a502fcd9ea6f1674d8e78ef8d307328e480238e2bcaa5f5c9"
+    },
+    {
+      "path": "vision-studio-2.2.0-sources.tar.xz",
+      "bytes": 49177248,
+      "sha256": "9b8c9ad87658be95f1294086f92cf96975949968759777fd8b59c56c9fae6452"
+    },
+    {
+      "path": "release-verify.json",
+      "bytes": 1006,
+      "sha256": "bc14666e2b12e64b825fe0a75a1c8431275430c4703bec9e979b80bfa87cac56"
+    },
+    {
+      "path": "build-source.log",
+      "bytes": 127,
+      "sha256": "332c578a18a4c1a601c4485f89c040641f6fa8a516fb176d015e54c1f9f56507"
+    },
+    {
+      "path": "release-plan.json",
+      "bytes": 717,
+      "sha256": "71b572d3f4a958bc8f158705fd07d09df1dc023039f36dc7f25bbfa6589857b6"
+    },
+    {
+      "path": "old-2.0-hardlink-aliases.json",
+      "bytes": 8605,
+      "sha256": "3d80256bb8aa7d632aec7fb90d62325162a85995272ac8ac5b17c2a9b4c066f8"
+    },
+    {
+      "path": "release-publish.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "packaged-gpu-qa.log",
+      "bytes": 238,
+      "sha256": "9023d53ed5f66c7cc76a232f0fe7881f8612297dc7e012c26f32cf3eeedfda1f"
+    },
+    {
+      "path": "vision-studio_2.2.0-1_amd64.deb.sha256",
+      "bytes": 98,
+      "sha256": "d44e1a2848fce2a11daface659b1195180a71a961e16cf66182b3ebb0dc3bc5a"
+    },
+    {
+      "path": "vision-studio-2.2.0-complete-source.tar.xz",
+      "bytes": 843193300,
+      "sha256": "8e65c6f10810fdfd73385e8f8ab0088f7099cf6758876741653aacfb6b9c4e5d"
+    },
+    {
+      "path": "source-bundle-qa.log",
+      "bytes": 448,
+      "sha256": "1c154e1c518b6ba6c027cc7d60a938907f3314bb363d9de20cb4c2eb0b586bfa"
+    },
+    {
+      "path": "packaged-gpu-qa.json",
+      "bytes": 21081,
+      "sha256": "66dafc136a4438cbb75963c200cd690f58b4932aa59d1e08b6b82fa7d931b510"
+    },
+    {
+      "path": "final-build.log",
+      "bytes": 22,
+      "sha256": "8c35b1682f73592d30612d7b0fabdb384fcfff35cb5a076cb48b85b1368aa794"
+    },
+    {
+      "path": "source-bundle-qa.json",
+      "bytes": 2074448,
+      "sha256": "91bb4e97ad118f10146c7a0ddb663cab0a44986c334ed318b570c4b72e359c1a"
+    },
+    {
+      "path": "build-deb.log",
+      "bytes": 676,
+      "sha256": "ef3538fc56dbbbfd673b9a914c04f18ed57b7846585c2916678316c0133000c6"
+    },
+    {
+      "path": "SHA256SUMS",
+      "bytes": 207,
+      "sha256": "c3ebcbe78dd33699eab40a477d81ef0b35c7a3d48c3566cb2b4bda4543592fa0"
+    },
+    {
+      "path": "conversion-qa.json",
+      "bytes": 13852,
+      "sha256": "e644351b611b4c2c73baaf3071020cb225827aae336225c845df8b52ba27cb26"
+    },
+    {
+      "path": "gpu-qa.json",
+      "bytes": 1486,
+      "sha256": "5d69d5d58c1c7c048e6d7ea50e5fc1d81e5e327844a9bdd2df2c9670ebf8a5f2"
+    },
+    {
+      "path": "vision-studio_2.2.0-1_amd64.deb",
+      "bytes": 386748572,
+      "sha256": "8ef059801bcef7f24189cba16bdaf66551fafb3f48ceb6b042bfb12f522226ac"
+    },
+    {
+      "path": "qa-report.json",
+      "bytes": 119523,
+      "sha256": "10cc0925c8e594d8bb0b1b595ad0cba49819f287758a7fd60c9669e3e2dcb7d7"
+    },
+    {
+      "path": "sources/onnx-1.17.0.tar.gz",
+      "bytes": 12165120,
+      "sha256": "48ca1a91ff73c1d5e3ea2eef20ae5d0e709bb8a2355ed798ffc2169753013fd3"
+    },
+    {
+      "path": "sources/ultralytics-8.4.173.tar.gz",
+      "bytes": 1267669,
+      "sha256": "cfb50c462a9138a187f7e5957ad2c91e3e757f6f0569da0c896574282d553840"
+    },
+    {
+      "path": "sources/qtpositioning-everywhere-src-6.8.3.tar.xz",
+      "bytes": 663612,
+      "sha256": "6ab69a7e71a7795aab9ca2798eea126e36df55159a771ebd2f37cad3da63e9d3"
+    },
+    {
+      "path": "sources/qtwayland-everywhere-src-6.8.3.tar.xz",
+      "bytes": 1141132,
+      "sha256": "20fe385887d21190165a3180c17dcfc8b9a0e1da4ec76865b6334bdc709994b0"
+    },
+    {
+      "path": "sources/qtdeclarative-everywhere-src-6.8.3.tar.xz",
+      "bytes": 36503988,
+      "sha256": "1f03a2b8f5588b4face7da87926e9b2c1372b3a32157c52df07a75067a9db1af"
+    },
+    {
+      "path": "sources/DOWNLOAD-PROVENANCE.json",
+      "bytes": 6931,
+      "sha256": "e92f113f288b6809e4911092ab59ce87d871a21707811e9813d05f98b36ba312"
+    },
+    {
+      "path": "sources/qtsvg-everywhere-src-6.8.3.tar.xz",
+      "bytes": 2009072,
+      "sha256": "35eb516460f00f264eb504baa253432384351cf23fb9980a5857190e8deef438"
+    },
+    {
+      "path": "sources/netron-9.3.1-source.tar.gz",
+      "bytes": 5176979,
+      "sha256": "612d8a064d0c7e166b47208c41bb8ac2ae7f95d5a5f0d659e3f41d82c3cd5507"
+    },
+    {
+      "path": "sources/ultralytics_thop-2.2.2.tar.gz",
+      "bytes": 39543,
+      "sha256": "149a89c26c2be35b709fa25951f4644dea13d63017025569a193159a5908e3ed"
+    },
+    {
+      "path": "sources/qtbase-everywhere-src-6.8.3.tar.xz",
+      "bytes": 48426536,
+      "sha256": "56001b905601bb9023d399f3ba780d7fa940f3e4861e496a7c490331f49e0b80"
+    },
+    {
+      "path": "sources/qtwebengine-everywhere-src-6.8.3.tar.xz",
+      "bytes": 566553436,
+      "sha256": "df4e19ba2b3a540551b6f998d62597377ffa688c1cff564589b7da2e2bf87337"
+    },
+    {
+      "path": "sources/opencv-python-86.tar.gz",
+      "bytes": 1126800,
+      "sha256": "8f8f21b10e60ecaf22241e39ad04b1ac2766925d471e1c5ddc4ed397f0099e91"
+    },
+    {
+      "path": "sources/opencv-python-86-Dockerfile_x86_64",
+      "bytes": 6363,
+      "sha256": "19d7609f4beef721d40d526b350d094af791d84fb9b572f2c95d9161943912dc"
+    },
+    {
+      "path": "sources/ffmpeg-5.1.6.tar.xz",
+      "bytes": 10021428,
+      "sha256": "f4fa066278f7a47feab316fef905f4db0d5e9b589451949740f83972b30901bd"
+    },
+    {
+      "path": "sources/opencv-python-headless-4.11.0.86.tar.gz",
+      "bytes": 95177929,
+      "sha256": "996eb282ca4b43ec6a3972414de0e2331f5d9cda2b41091a49739c19fb843798"
+    },
+    {
+      "path": "sources/protobuf-33.0.tar.gz",
+      "bytes": 6872665,
+      "sha256": "cbc536064706b628dcfe507bef386ef3e2214d563657612296f1781aa155ee07"
+    },
+    {
+      "path": "sources/qtimageformats-everywhere-src-6.8.3.tar.xz",
+      "bytes": 2035140,
+      "sha256": "049bfb99845e4801672aca07c3c4fc4c140f932a3a33faa899419579e33ef1c8"
+    },
+    {
+      "path": "sources/protobuf-cpp-3.21.12.tar.gz",
+      "bytes": 4842303,
+      "sha256": "4eab9b524aa5913c6fffb20b2a8abf5ef7f95a80bc0701f3a6dbb4c607f73460"
+    },
+    {
+      "path": "sources/qtwebchannel-everywhere-src-6.8.3.tar.xz",
+      "bytes": 209372,
+      "sha256": "967046b2650b7fc7b27547522e998e35d62291d795b20d9497e4bcc714831262"
+    }
+  ],
+  "method": "Exact SHA256 verified copy; immutable large archives/DEB share hardlinks, other files copied independently. No SDK, runtime or working source linked."
+}
