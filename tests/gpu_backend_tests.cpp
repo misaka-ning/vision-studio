@@ -2,7 +2,9 @@
 #include "core/visionengine.h"
 
 #include <QDir>
+#include <QDebug>
 #include <QFile>
+#include <QFileInfo>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -11,6 +13,7 @@
 #include <QTemporaryDir>
 #include <QtTest>
 #include <atomic>
+#include <algorithm>
 #include <cmath>
 #include <stdexcept>
 #include <thread>
@@ -72,35 +75,102 @@ class GpuBackendTests final : public QObject
         }
     }
 
-    QString scriptFixture(int channels, bool detection)
+    QString scriptFixture(int channels, bool detection, int classCount = 2, int selectedClass = 0)
     {
-        const QString path = temporary.path() + QString("/gpu-%1-%2.pt").arg(channels).arg(detection);
+        const QString path = temporary.path() + QString("/gpu-%1-%2-%3-%4.pt")
+                                                  .arg(channels).arg(detection).arg(classCount).arg(selectedClass);
         const QString code =
             "import sys,json,torch\n"
-            "c=int(sys.argv[2]); detect=sys.argv[3]=='1'\n"
+            "c=int(sys.argv[2]); detect=sys.argv[3]=='1'; nc=int(sys.argv[4]); selected=int(sys.argv[5])\n"
             "class Probe(torch.nn.Module):\n"
             " def __init__(self):\n"
             "  super().__init__(); self.conv=torch.nn.Conv2d(c,3,1,bias=False)\n"
             "  with torch.no_grad(): self.conv.weight.fill_(1./c)\n"
-            "  boxes=torch.zeros(1,6,1); boxes[0,:4,0]=torch.tensor([32.,32.,16.,16.])\n"
+            "  boxes=torch.zeros(1,4+nc,1); boxes[0,:4,0]=torch.tensor([32.,32.,16.,16.])\n"
             "  self.register_buffer('boxes',boxes)\n"
             "  self.register_buffer('multipliers',torch.tensor([[1.,2.,3.]]))\n"
             " def forward(self,x):\n"
             "  means=self.conv(x).mean(dim=(2,3))\n"
             "  if detect:\n"
-            "   out=self.boxes.clone(); out[:,4,0]=.75+means[:,0]*.01; return out\n"
+            "   out=self.boxes.clone(); out[:,4+selected,0]=.75+means[:,0]*.01; return out\n"
             "  return means*self.multipliers\n"
             "m=torch.jit.trace(Probe().eval(),torch.zeros(1,c,64,64))\n"
-            "info={'task':'detect' if detect else 'classify','input_channels':c,'names':['probe','other'] if detect else ['a','b','c']}\n"
+            "info={'task':'detect' if detect else 'classify','input_channels':c,'names':['class-'+str(i) for i in range(nc)] if detect else ['a','b','c']}\n"
             "torch.jit.save(m,sys.argv[1],_extra_files={'config.txt':json.dumps(info)})\n";
         QProcess process;
-        process.start(python, {"-B", "-c", code, path, QString::number(channels), detection ? "1" : "0"});
+        process.start(python, {"-B", "-c", code, path, QString::number(channels), detection ? "1" : "0",
+                                QString::number(classCount), QString::number(selectedClass)});
         if (!process.waitForFinished(60000) || process.exitCode() != 0)
             throw std::runtime_error(process.readAllStandardError().constData());
         return path;
     }
 
   private slots:
+    void classFilterCpuAndCudaKeepIdenticalOriginalIds()
+    {
+        const QImage actual(project + "/assets/bus.jpg");
+        QVERIFY(!actual.isNull());
+        const QStringList paths = {project + "/models/yolov5n.onnx",
+                                    project + "/models/yolov8n.pt", project + "/models/yolov5n.pt",
+                                    scriptFixture(3, true, 33, 32)};
+        for (const QString &path : paths)
+        {
+            const bool script = path.startsWith(temporary.path());
+            auto cpuConfig = config(path, vision::ComputeDevice::CPU);
+            if (script)
+            {
+                cpuConfig.inputSize = 64;
+                cpuConfig.colorMode = vision::InputColorMode::Grayscale;
+            }
+            const QVector<QVector<int>> filters = script
+                ? QVector<QVector<int>>{{}, {32}, {0, 32}, {1}}
+                : QVector<QVector<int>>{{}, {32}, {0, 5}};
+            for (const auto &filter : filters)
+            {
+                cpuConfig.classFilter = filter;
+                auto gpuConfig = cpuConfig;
+                gpuConfig.device = vision::ComputeDevice::CUDA;
+                vision::VisionEngine cpu, gpu;
+                cpu.load(cpuConfig);
+                gpu.load(gpuConfig);
+                const auto expected = cpu.infer(actual);
+                const auto actualGpu = gpu.infer(actual);
+                QCOMPARE(actualGpu.device, vision::ComputeDevice::CUDA);
+                QCOMPARE(actualGpu.classFilter, filter);
+                QCOMPARE(actualGpu.modelClassCount, script ? 33 : 80);
+                const auto classIds = [](const vision::InferenceResult &result) {
+                    QSet<int> distinct;
+                    for (const auto &prediction : result.predictions) distinct.insert(prediction.classId);
+                    auto values = distinct.values();
+                    std::sort(values.begin(), values.end());
+                    QJsonArray ids;
+                    for (int id : values) ids.append(id);
+                    return ids;
+                };
+                QJsonArray requestedIds;
+                for (int id : filter) requestedIds.append(id);
+                const QString filterCase = filter.isEmpty() ? "all" : filter.size() > 1 ? "multi"
+                                           : filter.first() == 32 ? "32" : "zero";
+                qInfo().noquote() << "CLASS_FILTER_EVIDENCE"
+                    << QJsonDocument(QJsonObject{
+                        {"model", QFileInfo(path).fileName()}, {"case", filterCase},
+                        {"filter", requestedIds}, {"model_class_count", actualGpu.modelClassCount},
+                        {"cpu_backend", expected.backend}, {"cuda_backend", actualGpu.backend},
+                        {"actual_cuda_device", actualGpu.deviceName},
+                        {"cpu_count", expected.predictions.size()}, {"cuda_count", actualGpu.predictions.size()},
+                        {"cpu_original_ids", classIds(expected)}, {"cuda_original_ids", classIds(actualGpu)},
+                        {"zero_match", expected.predictions.isEmpty() && actualGpu.predictions.isEmpty()}
+                    }).toJson(QJsonDocument::Compact);
+                for (const auto &prediction : actualGpu.predictions)
+                    QVERIFY(filter.isEmpty() || filter.contains(prediction.classId));
+                if (expected.predictions.isEmpty())
+                    QVERIFY(actualGpu.predictions.isEmpty());
+                else
+                    comparable(expected, actualGpu);
+            }
+        }
+    }
+
     void initTestCase()
     {
         if (qEnvironmentVariable("VISION_STUDIO_GPU_TESTS") != "1")
@@ -249,11 +319,29 @@ class GpuBackendTests final : public QObject
             QFile profile(temporary.filePath(name));
             QVERIFY(profile.open(QIODevice::ReadOnly));
             const auto events = QJsonDocument::fromJson(profile.readAll()).array();
-            bool cudaNode = false;
+            int cudaNodeEvents = 0;
+            QSet<QString> cudaNodes;
             for (const auto &event : events)
-                cudaNode |= event.toObject().value("args").toObject().value("provider").toString() ==
-                            "CUDAExecutionProvider";
-            QVERIFY2(cudaNode, "No real CUDA execution-provider node was recorded in an ONNX profile.");
+                if (event.toObject().value("args").toObject().value("provider").toString() ==
+                    "CUDAExecutionProvider")
+                {
+                    ++cudaNodeEvents;
+                    cudaNodes.insert(event.toObject().value("name").toString());
+                }
+            qInfo().noquote() << "ORT_PROFILE_EVIDENCE"
+                << QJsonDocument(QJsonObject{{"profile", name}, {"cuda_node_events", cudaNodeEvents},
+                                              {"distinct_cuda_nodes", cudaNodes.size()}})
+                       .toJson(QJsonDocument::Compact);
+            QVERIFY2(cudaNodeEvents > 0,
+                     "No real CUDA execution-provider node was recorded in an ONNX profile.");
+            const QString artifacts = qEnvironmentVariable("VISION_STUDIO_QA_ARTIFACTS");
+            if (!artifacts.isEmpty())
+            {
+                QVERIFY2(QDir().mkpath(artifacts), qPrintable("Cannot create requested QA directory: " + artifacts));
+                const QString destination = QDir(artifacts).absoluteFilePath(name);
+                QVERIFY2(QFile::copy(profile.fileName(), destination), qPrintable("Cannot save CUDA profile: " + destination));
+                qInfo().noquote() << "ORT_PROFILE_SAVED" << destination;
+            }
         }
     }
 

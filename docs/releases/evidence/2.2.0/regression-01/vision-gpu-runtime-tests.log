@@ -1,0 +1,30 @@
+Internal ctest changing into directory: /tmp/vision-studio-2.2.0-build
+UpdateCTestConfiguration  from :/tmp/vision-studio-2.2.0-build/DartConfiguration.tcl
+Parse Config file:/tmp/vision-studio-2.2.0-build/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/tmp/vision-studio-2.2.0-build/DartConfiguration.tcl
+Parse Config file:/tmp/vision-studio-2.2.0-build/DartConfiguration.tcl
+Test project /tmp/vision-studio-2.2.0-build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 14
+    Start 14: vision-gpu-runtime-tests
+
+14: Test command: /opt/VisionStudio/runtime/bin/python "/home/misaka/.codex/worktrees/ef0b/yolo/tests/gpu_runtime_tests.py"
+14: Test timeout computed to be: 60
+14: .....................
+14: ----------------------------------------------------------------------
+14: Ran 21 tests in 1.081s
+14: 
+14: OK
+1/1 Test #14: vision-gpu-runtime-tests .........   Passed    1.13 sec
+
+The following tests passed:
+	vision-gpu-runtime-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   1.13 sec

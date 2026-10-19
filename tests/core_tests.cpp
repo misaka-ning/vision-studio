@@ -1,6 +1,7 @@
 #include "core/inferenceworker.h"
 #include "core/visionengine.h"
 #include <QFile>
+#include <QDir>
 #include <QTemporaryDir>
 #include <QtTest>
 #include <algorithm>
@@ -248,6 +249,130 @@ class CoreTests : public QObject
         QVERIFY(result.inferenceMs >= 0);
     }
   private slots:
+    void classFilterParsingAndValidation()
+    {
+        QVector<int> ids;
+        QString error;
+        QVERIFY(vision::parseClassFilter(QString(), &ids, &error));
+        QVERIFY(ids.isEmpty());
+        QVERIFY(vision::parseClassFilter(QStringLiteral("0, 2，32  2\t0"), &ids, &error));
+        QCOMPARE(ids, QVector<int>({0, 2, 32}));
+        QVERIFY(vision::validateClassFilter(ids, 80, vision::ModelTask::YoloV8, &error));
+        QVERIFY(!vision::validateClassFilter(ids, 3, vision::ModelTask::YoloV8, &error));
+        QVERIFY(error.contains("32"));
+        QVERIFY(!vision::validateClassFilter(ids, 0, vision::ModelTask::YoloV8, &error));
+        QVERIFY(!vision::validateClassFilter(ids, 80, vision::ModelTask::Classification, &error));
+        for (const QString &invalid : {QString("-1"), QString("1.2"), QString("x"), QString("+2"),
+                                       QString("1e2"), QString("2147483648"), QString("0,-2")})
+        {
+            QVERIFY2(!vision::parseClassFilter(invalid, &ids, &error), qPrintable(invalid));
+            QVERIFY(!error.isEmpty());
+            QVERIFY(ids.isEmpty());
+        }
+        QVERIFY(vision::validateClassFilter({}, 0, vision::ModelTask::Classification, &error));
+    }
+
+    void classFilterUsesActualOnnxClassCountAndOriginalIds()
+    {
+        const auto path = fixture::model(directory.path(), "filter-two-class", {1, 6, 12},
+                                         fixture::v8Predictions());
+        auto value = config(path, vision::ModelTask::YoloV8);
+        value.labels.clear();
+        value.modelClassCount = 80; // A previous UI model's count cannot redefine this network.
+        const auto inspected = vision::VisionEngine::inspectModel(value);
+        QCOMPARE(inspected.modelClassCount, 2);
+        vision::VisionEngine engine;
+        value.classFilter = {1};
+        engine.load(value);
+        QCOMPARE(engine.config().modelClassCount, 2);
+        const auto result = engine.infer(image());
+        QCOMPARE(result.predictions.size(), 1);
+        QCOMPARE(result.predictions[0].classId, 1);
+        QCOMPARE(result.predictions[0].label, QStringLiteral("类别 1"));
+        QCOMPARE(result.classFilter, QVector<int>({1}));
+        QCOMPARE(result.modelClassCount, 2);
+        value.classFilter = {32};
+        QVERIFY_EXCEPTION_THROWN(engine.load(value), std::runtime_error);
+        QVERIFY(!engine.loaded());
+    }
+
+    void classFilter32IsNotRenumberedAndZeroMatchSucceeds()
+    {
+        QVector<float> values(84 * 2, 0.f);
+        for (int proposal = 0; proposal < 2; ++proposal)
+        {
+            values[proposal] = proposal ? 48 : 16;
+            values[2 + proposal] = 32;
+            values[4 + proposal] = 12;
+            values[6 + proposal] = 12;
+        }
+        values[(4 + 32) * 2] = .9f;
+        values[(4 + 2) * 2 + 1] = .85f;
+        auto value = config(fixture::model(directory.path(), "filter-coco-ids", {1, 84, 2}, values),
+                            vision::ModelTask::YoloV8);
+        value.labels.clear();
+        vision::VisionEngine engine;
+        value.classFilter = {32};
+        engine.load(value);
+        auto result = engine.infer(image());
+        QCOMPARE(result.predictions.size(), 1);
+        QCOMPARE(result.predictions[0].classId, 32);
+        QCOMPARE(result.predictions[0].label, QString("sports ball"));
+        value.classFilter = {32, 2};
+        engine.load(value);
+        QCOMPARE(engine.infer(image()).predictions.size(), 2);
+        value.classFilter = {79};
+        engine.load(value);
+        QVERIFY(engine.infer(image()).predictions.isEmpty());
+        value.classFilter.clear();
+        engine.load(value);
+        QCOMPARE(engine.infer(image()).predictions.size(), 2);
+    }
+
+    void realOnnxClassFilterMatchesUnfilteredSubset()
+    {
+        const QString project = QDir(QStringLiteral(VISION_TEST_DIR)).absoluteFilePath("..");
+        auto value = config(project + "/models/yolov5n.onnx", vision::ModelTask::YoloV5);
+        value.labels.clear();
+        value.inputSize = 640;
+        value.confidence = .25f;
+        const QImage actual(project + "/assets/bus.jpg");
+        QVERIFY(!actual.isNull());
+        vision::VisionEngine engine;
+        engine.load(value);
+        QCOMPARE(engine.config().modelClassCount, 80);
+        const auto all = engine.infer(actual);
+        QVERIFY(!all.predictions.isEmpty());
+        for (const QVector<int> &filter : {QVector<int>{32}, QVector<int>{0, 5}, QVector<int>{5}})
+        {
+            value.classFilter = filter;
+            engine.load(value);
+            const auto filtered = engine.infer(actual);
+            QVector<vision::Prediction> expected;
+            for (const auto &prediction : all.predictions)
+                if (filter.contains(prediction.classId))
+                    expected.append(prediction);
+            QCOMPARE(filtered.predictions.size(), expected.size());
+            for (int i = 0; i < expected.size(); ++i)
+            {
+                QCOMPARE(filtered.predictions[i].classId, expected[i].classId);
+                QVERIFY(std::abs(filtered.predictions[i].confidence - expected[i].confidence) < .0001f);
+            }
+        }
+        value.classFilter = {80};
+        QVERIFY_EXCEPTION_THROWN(engine.load(value), std::runtime_error);
+    }
+
+    void classificationRejectsDetectionClassFilter()
+    {
+        auto value = config(fixture::model(directory.path(), "classification-filter", {1, 3},
+                                           {.1f, .2f, .7f}), vision::ModelTask::Classification);
+        value.classFilter = {0};
+        vision::VisionEngine engine;
+        QVERIFY_EXCEPTION_THROWN(engine.load(value), std::runtime_error);
+        QVERIFY(!engine.loaded());
+    }
+
     void initTestCase()
     {
         QVERIFY(directory.isValid());

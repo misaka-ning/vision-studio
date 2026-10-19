@@ -1,0 +1,22 @@
+test_blacklist_is_visible (__main__.RunnerTests.test_blacklist_is_visible) ... ok
+test_cli_retains_venv_entry_and_feature_records_with_mocked_ctest (__main__.RunnerTests.test_cli_retains_venv_entry_and_feature_records_with_mocked_ctest) ... QA TOOLING SELF-TEST ONLY. CTest is mocked in one CLI unit case; no application/model acceptance is claimed.
+Running vision-tooling-unit
+{"name": "vision-tooling-unit", "success": true, "elapsed_seconds": 0.01}
+{"success": true, "errors": [], "report": "/tmp/qa-runner-tool-unit-vxa7sf9g/output/detection-regression-qa.json"}
+ok
+test_internal_skip_is_visible (__main__.RunnerTests.test_internal_skip_is_visible) ... ok
+test_invalid_xml_rejects_parse (__main__.RunnerTests.test_invalid_xml_rejects_parse) ... ok
+test_measured_success (__main__.RunnerTests.test_measured_success) ... ok
+test_missing_case_is_visible (__main__.RunnerTests.test_missing_case_is_visible) ... ok
+test_python_unittest_positive_skip_summaries (__main__.RunnerTests.test_python_unittest_positive_skip_summaries) ... ok
+test_qt_failure_is_visible (__main__.RunnerTests.test_qt_failure_is_visible) ... ok
+test_real_child_capture_and_hash (__main__.RunnerTests.test_real_child_capture_and_hash) ... ok
+test_real_unittest_skip_returns_zero_but_is_incomplete (__main__.RunnerTests.test_real_unittest_skip_returns_zero_but_is_incomplete) ... ok
+test_xml_failure_is_visible (__main__.RunnerTests.test_xml_failure_is_visible) ... ok
+test_xml_skip_is_visible (__main__.RunnerTests.test_xml_skip_is_visible) ... ok
+test_zero_skip_summaries_are_complete (__main__.RunnerTests.test_zero_skip_summaries_are_complete) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.041s
+
+OK

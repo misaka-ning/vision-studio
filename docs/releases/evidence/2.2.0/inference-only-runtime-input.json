@@ -1,0 +1,8 @@
+{
+  "purpose": "2.2.0 isolated real inference-only test environment, CPU distributions linked read-only, ONNX absent; not a release runtime",
+  "base": "/opt/VisionStudio/runtime",
+  "excluded": [
+    "onnx-1.17.0.dist-info",
+    "onnx"
+  ]
+}

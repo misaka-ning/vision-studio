@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="8"
+	timestamp="2026-10-19T17:54:09"
+	>
+	<testcase name="vision-batch-responsiveness-tests" classname="vision-batch-responsiveness-tests" time="8.54216" status="run">
+		<system-out>********* Start testing of BatchResponsivenessTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : BatchResponsivenessTests::initTestCase()
+QWARN  : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(1920x1080-rgb-random) This plugin does not support propagateSizeHints()
+QINFO  : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(1920x1080-rgb-random) batch_responsiveness_evidence: {"accepted_after_stop":1,"accepted_at_stop":1,"automatic_export":true,"backend":"OpenCV DNN / CPU","cache_survives_removed_sources":true,"complete_exports":true,"device":"cpu","heartbeat_ticks":50,"height":1080,"maximum_heartbeat_gap_ms":16,"observed_stop_elapsed_ms":30,"scheduled_stop_dispatch_ms":40,"total_images":3,"width":1920}
+PASS   : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(1920x1080-rgb-random)
+QWA...
+The rest of the test output was removed since it exceeds the threshold of 1024 bytes.
+</system-out>
+	</testcase>
+</testsuite>

@@ -174,6 +174,126 @@ class PtBackendTests final : public QObject
         }
     }
 
+    void realPtClassFilterMatchesOriginalIds_data()
+    {
+        QTest::addColumn<QString>("filename");
+        QTest::newRow("modern-yolov8") << QString("yolov8n.pt");
+        QTest::newRow("legacy-yolov5") << QString("yolov5n.pt");
+    }
+
+    void realPtClassFilterMatchesOriginalIds()
+    {
+        QFETCH(QString, filename);
+        auto value = config(project + "/models/" + filename);
+        vision::VisionEngine engine;
+        engine.load(value);
+        QCOMPARE(engine.config().modelClassCount, 80);
+        const QImage actual(imagePath);
+        const auto all = engine.infer(actual);
+        QVERIFY(!all.predictions.isEmpty());
+        for (const QVector<int> &filter : {QVector<int>{32}, QVector<int>{0, 5}, QVector<int>{5}})
+        {
+            value.classFilter = filter;
+            engine.load(value);
+            const auto filtered = engine.infer(actual);
+            QCOMPARE(filtered.classFilter, filter);
+            QCOMPARE(filtered.modelClassCount, 80);
+            QVector<vision::Prediction> expected;
+            for (const auto &prediction : all.predictions)
+                if (filter.contains(prediction.classId))
+                    expected.append(prediction);
+            QCOMPARE(filtered.predictions.size(), expected.size());
+            for (int index = 0; index < expected.size(); ++index)
+            {
+                QCOMPARE(filtered.predictions[index].classId, expected[index].classId);
+                QCOMPARE(filtered.predictions[index].label, expected[index].label);
+                QVERIFY(std::abs(filtered.predictions[index].confidence - expected[index].confidence) < .0001f);
+            }
+        }
+        value.classFilter = {80};
+        QVERIFY(!failureMessage(engine, value).isEmpty());
+        QVERIFY(!engine.loaded());
+    }
+
+    void torchScriptClassFilterUsesModelMetadataAndRejectsClassification()
+    {
+        const QString path = channelFixture(3, true);
+        auto value = config(path);
+        value.inputSize = 64;
+        value.colorMode = vision::InputColorMode::Grayscale;
+        value.modelClassCount = 80; // Stale UI state cannot redefine this two-class model.
+        const auto metadata = vision::VisionEngine::inspectModel(value);
+        QCOMPARE(metadata.modelClassCount, 2);
+        QCOMPARE(metadata.task, vision::ModelTask::YoloV8);
+        vision::VisionEngine engine;
+        QImage actual(64, 64, QImage::Format_RGB888);
+        actual.fill(Qt::white);
+        value.classFilter = {0};
+        engine.load(value);
+        QCOMPARE(engine.config().modelClassCount, 2);
+        QCOMPARE(engine.infer(actual).predictions.size(), 1);
+        value.classFilter = {1};
+        engine.load(value);
+        QVERIFY(engine.infer(actual).predictions.isEmpty());
+        value.classFilter = {32};
+        QVERIFY(!failureMessage(engine, value).isEmpty());
+        QVERIFY(!engine.loaded());
+        value.modelPath = channelFixture(3, false);
+        value.task = vision::ModelTask::YoloV8; // Backend must also reject an actual classification task.
+        value.classFilter = {0};
+        QVERIFY(failureMessage(engine, value).contains(QStringLiteral("分类")));
+        QVERIFY(!engine.loaded());
+    }
+
+    void modelInspectionIgnoresUserLabelsAndFiltering()
+    {
+        auto value = config();
+        value.labels = {"this is not a model class count"};
+        value.classFilter = {999};
+        value.modelClassCount = 1;
+        const auto actual = vision::VisionEngine::inspectModel(value);
+        QCOMPARE(actual.modelClassCount, 80);
+        QCOMPARE(actual.labels.size(), 80);
+        QVERIFY(actual.classFilter.isEmpty());
+        QCOMPARE(actual.task, vision::ModelTask::YoloV8);
+    }
+
+    void torchScriptClass32RemainsOriginalId()
+    {
+        const QString path = temporary.path() + "/class-32.torchscript";
+        QProcess generator;
+        generator.start(python, {"-B", "-c", QStringLiteral(
+            "import sys,json,torch\n"
+            "class Probe(torch.nn.Module):\n"
+            " def __init__(self):\n"
+            "  super().__init__(); self.conv=torch.nn.Conv2d(3,37,1)\n"
+            "  with torch.no_grad():\n"
+            "   self.conv.weight.zero_(); self.conv.bias.zero_()\n"
+            "   self.conv.bias[:4]=torch.tensor([32.,32.,16.,16.]); self.conv.bias[36]=.9\n"
+            " def forward(self,x): return self.conv(x).mean(dim=(2,3)).unsqueeze(-1)\n"
+            "m=torch.jit.trace(Probe().eval(),torch.zeros(1,3,64,64))\n"
+            "meta={'task':'detect','names':{str(i):'class-'+str(i) for i in range(33)},'input_channels':3}\n"
+            "torch.jit.save(m,sys.argv[1],_extra_files={'config.txt':json.dumps(meta)})\n"), path});
+        QVERIFY(generator.waitForFinished(60000));
+        QCOMPARE(generator.exitCode(), 0);
+        auto value = config(path);
+        value.inputSize = 64;
+        value.classFilter = {32};
+        vision::VisionEngine engine;
+        engine.load(value);
+        QCOMPARE(engine.config().modelClassCount, 33);
+        const auto selected = engine.infer(QImage(imagePath));
+        QCOMPARE(selected.predictions.size(), 1);
+        QCOMPARE(selected.predictions[0].classId, 32);
+        QCOMPARE(selected.predictions[0].label, QString("class-32"));
+        value.classFilter = {0, 2};
+        engine.load(value);
+        QVERIFY(engine.infer(QImage(imagePath)).predictions.isEmpty());
+        value.classFilter = {33};
+        QVERIFY(!failureMessage(engine, value).isEmpty());
+        QVERIFY(!engine.loaded());
+    }
+
     void init()
     {
         qputenv("VISION_STUDIO_PYTHON", python.toUtf8());

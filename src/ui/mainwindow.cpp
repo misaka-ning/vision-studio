@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "core/gpuruntime.h"
 #include "core/inferenceworker.h"
+#include "core/visionengine.h"
 #include "icons.h"
 #include "imagecanvas.h"
 #include "modelviewer.h"
@@ -11,6 +12,8 @@
 #include <QCloseEvent>
 #include <QComboBox>
 #include <QDateTime>
+#include <QDataStream>
+#include <QCryptographicHash>
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
@@ -27,6 +30,7 @@
 #include <QJsonObject>
 #include <QKeyEvent>
 #include <QLabel>
+#include <QLineEdit>
 #include <QListWidget>
 #include <QMenu>
 #include <QMouseEvent>
@@ -269,6 +273,12 @@ bool validConvertedModelMetadata(const QString &path, const QJsonObject &metadat
     return size >= 32 && size <= 4096 && size == int(size) && int(size) % 32 == 0 &&
            shape[3].toDouble(-1) == size;
 }
+QString fileIdentity(const QString &path)
+{
+    const QFileInfo file(path);
+    return file.isFile() ? file.absoluteFilePath() + "|" + QString::number(file.size()) + "|" +
+                              QString::number(file.lastModified().toMSecsSinceEpoch()) : QString();
+}
 bool atomicWrite(const QString &path, const QByteArray &data, QString *error = nullptr)
 {
     QSaveFile f(path);
@@ -389,6 +399,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     statusLabel_->setMaximumHeight(20);
     foot->addWidget(statusLabel_, 1);
     progress_ = new QProgressBar;
+    progress_->setObjectName("detectionProgress");
     progress_->setFixedSize(180, 5);
     progress_->setTextVisible(false);
     progress_->hide();
@@ -473,6 +484,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
         gpuDeviceIndex_->setCurrentIndex(gpuDeviceIndex_->findData(savedDeviceIndex));
     }
     autoExport_->setChecked(savedAuto);
+    classFilter_->setText(settings_->value("classFilter").toString());
     labels_ = savedLabels;
     labelsPath_ = savedLabelsPath;
     if (!labels_.isEmpty())
@@ -496,6 +508,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     selectRoute(0);
     updateTaskUi();
     updateDeviceUi();
+    initializing_ = false;
+    updateRangeUi();
+    updateClassFilterUi();
+    inspectSelectedModel();
     persist();
     QTimer::singleShot(0, this, &MainWindow::checkGpuEnvironment);
     auto shortcut = [this](const QKeySequence &keys, auto action)
@@ -539,6 +555,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 }
 MainWindow::~MainWindow()
 {
+    if (modelInspectionCancellation_)
+        modelInspectionCancellation_->store(true);
     for (QProcess *process : {gpuProbeProcess_, gpuSetupProcess_})
         if (process)
         {
@@ -819,6 +837,7 @@ QWidget *MainWindow::buildWorkbench()
     connect(modelButton_, &QPushButton::clicked, this, &MainWindow::importModel);
     lockedControls_.append(modelButton_);
     taskBox_ = new QComboBox;
+    taskBox_->setObjectName("modelTask");
     taskBox_->addItems({"YOLOv5 · 目标检测", "YOLOv8 / 11 · 目标检测", "图像分类"});
     taskBox_->setToolTip("按模型实际输出选择格式，分割、姿态与含 NMS 的模型暂不支持");
     fields->addWidget(taskBox_);
@@ -833,12 +852,37 @@ QWidget *MainWindow::buildWorkbench()
                          {
                              labels_.clear();
                              labelsPath_.clear();
+                             invalidateConfiguredResults();
                              updateTaskUi();
                              persist();
                              showNotice("已恢复模型默认类别。");
                          });
     labelButton_->setMenu(labelMenu);
     lockedControls_.append(labelButton_);
+    auto *filterForm = new QFormLayout;
+    filterForm->setContentsMargins(0, 0, 0, 0);
+    classFilter_ = new QLineEdit;
+    classFilter_->setObjectName("classFilter");
+    classFilter_->setAccessibleName("类别筛选 ID");
+    classFilter_->setPlaceholderText("全部类别，或 0,2,32");
+    classFilter_->setMaxLength(4096);
+    classFilter_->setToolTip("按模型原始 class_id 筛选，ID 从 0 开始；逗号、中文逗号或空格分隔。\n"
+                             "类别标签只映射名称，不改变 ID。COCO 的 ID 32 是 sports ball，包含多种运动球，筛选它不等于只识别足球。");
+    filterForm->addRow("类别筛选", classFilter_);
+    fields->addLayout(filterForm);
+    classFilterHint_ = text("留空检测全部类别", "tiny");
+    classFilterHint_->setObjectName("classFilterHint");
+    classFilterHint_->setWordWrap(true);
+    classFilterHint_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    fields->addWidget(classFilterHint_);
+    lockedControls_.append(classFilter_);
+    connect(classFilter_, &QLineEdit::textChanged, this, [this] {
+        if (!initializing_ && !busy_ && !modelInspectionPending_ &&
+            inspectedModelIdentity_ != modelFileIdentity()) inspectSelectedModel();
+        updateClassFilterUi();
+        if (!initializing_ && !busy_) invalidateConfiguredResults();
+        persist();
+    });
     fields->addSpacing(7);
     fields->addWidget(section("推理参数", "03"));
     auto *form = new QFormLayout;
@@ -929,7 +973,29 @@ QWidget *MainWindow::buildWorkbench()
     fields->addStretch();
     scroll->setWidget(inner);
     cl->addWidget(scroll, 1);
+    detectionRangePanel_ = new QWidget;
+    detectionRangePanel_->setObjectName("detectionRangePanel");
+    auto *rangeLayout = new QVBoxLayout(detectionRangePanel_);
+    rangeLayout->setContentsMargins(0, 0, 0, 0);
+    rangeLayout->setSpacing(5);
+    auto *rangeForm = new QFormLayout;
+    rangeForm->setContentsMargins(0, 0, 0, 0);
+    detectionRange_ = new QComboBox;
+    detectionRange_->setObjectName("detectionRange");
+    detectionRange_->setAccessibleName("检测范围");
+    detectionRange_->addItems({"检测整个文件夹", "从当前图片向后检测", "只检测当前图片"});
+    detectionRange_->setToolTip("点击开始时固定本次范围和队列顺序；检测整个文件夹始终从第一张开始。");
+    rangeForm->addRow("检测范围", detectionRange_);
+    rangeLayout->addLayout(rangeForm);
+    rangeHint_ = text("请先添加图片", "tiny");
+    rangeHint_->setObjectName("detectionRangeHint");
+    rangeHint_->setWordWrap(true);
+    rangeLayout->addWidget(rangeHint_);
+    cl->addWidget(detectionRangePanel_);
+    lockedControls_.append(detectionRange_);
+    connect(detectionRange_, &QComboBox::currentIndexChanged, this, [this] { updateRangeUi(); });
     runButton_ = button("开始检测", "play", "primary");
+    runButton_->setObjectName("startDetectionButton");
     runButton_->setMinimumHeight(44);
     cl->addWidget(runButton_);
     connect(runButton_, &QPushButton::clicked, this, &MainWindow::startInference);
@@ -1038,6 +1104,7 @@ QWidget *MainWindow::buildWorkbench()
             });
     ql->addLayout(qh);
     queue_ = new QListWidget;
+    queue_->setObjectName("inputQueue");
     queue_->setFlow(QListView::LeftToRight);
     queue_->setViewMode(QListView::IconMode);
     queue_->setIconSize(QSize(64, 36));
@@ -1048,6 +1115,7 @@ QWidget *MainWindow::buildWorkbench()
     ql->addWidget(queue_, 1);
     ml->addWidget(queueFrame);
     connect(queue_, &QListWidget::currentRowChanged, this, &MainWindow::selectQueueImage);
+    connect(queue_, &QListWidget::itemSelectionChanged, this, [this] { updateRangeUi(); });
     columns->addWidget(center);
     auto *inspector = card();
     inspector->setMinimumWidth(230);
@@ -1063,11 +1131,11 @@ QWidget *MainWindow::buildWorkbench()
     resultInfo_->setWordWrap(true);
     rl->addWidget(resultInfo_);
     predictionTable_ = new QTableWidget(0, 3);
-    predictionTable_->setHorizontalHeaderLabels({"类别", "置信度", "编号"});
+    predictionTable_->setHorizontalHeaderLabels({"类别", "置信度", "类别 ID"});
     tableStyle(predictionTable_);
     predictionTable_->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     predictionTable_->setColumnWidth(1, 78);
-    predictionTable_->setColumnWidth(2, 38);
+    predictionTable_->setColumnWidth(2, 58);
     rl->addWidget(predictionTable_, 1);
     emptyResults_ = text("等待检测\n\n目标详情将在运行后呈现。", "muted");
     emptyResults_->setAlignment(Qt::AlignCenter);
@@ -1092,7 +1160,22 @@ QWidget *MainWindow::buildWorkbench()
                 else
                     predictionTable_->clearSelection();
             });
-    connect(taskBox_, &QComboBox::currentIndexChanged, this, [this] { updateTaskUi(); });
+    connect(taskBox_, &QComboBox::currentIndexChanged, this, [this] {
+        updateTaskUi();
+        if (!initializing_ && !busy_) {
+            invalidateConfiguredResults();
+            inspectSelectedModel();
+        }
+    });
+    const auto parametersChanged = [this] {
+        if (!initializing_ && !busy_) {
+            invalidateConfiguredResults();
+            persist();
+        }
+    };
+    connect(inputSize_, &QSpinBox::valueChanged, this, parametersChanged);
+    for (auto *control : {confidence_, iou_, scale_, meanR_, meanG_, meanB_})
+        connect(control, &QDoubleSpinBox::valueChanged, this, parametersChanged);
     connect(inputColorMode_, &QComboBox::currentIndexChanged, this,
             [this]
             {
@@ -1527,6 +1610,7 @@ void MainWindow::clearImageResults()
     imageResults_.clear();
     imageResultDirectory_.reset();
     imageResultCacheWarning_ = false;
+    imageConfigFingerprint_.clear();
     if (queue_)
         for (int row = 0; row < queue_->count(); ++row)
             queue_->item(row)->setForeground(QBrush());
@@ -1538,7 +1622,11 @@ void MainWindow::cacheImageResult(const vision::InferenceResult &result)
         return;
     // The UI immediately keeps the accepted result. The bounded background writer
     // replaces its pixels with a lossless snapshot only after a successful commit.
-    imageResults_.insert(result.source, CachedImageResult{result, lastConfig_, {}});
+    // The file may be replaced externally while inference is running. Never
+    // relabel an already loaded model or image with the replacement's identity.
+    imageConfigFingerprint_ = activeImageFingerprint_;
+    imageResults_.insert(result.source, CachedImageResult{
+        result, lastConfig_, {}, taskSourceIdentities_.value(result.source)});
 }
 
 void MainWindow::saveImageResultInBackground(const vision::InferenceResult &result, quint64 ticket)
@@ -1611,7 +1699,7 @@ void MainWindow::saveImageResultInBackground(const vision::InferenceResult &resu
                     worker_->acknowledgeImageResult(ticket);
                     if (!busy_ && !resultIoPending_)
                     {
-                        runButton_->setEnabled(!gpuSetupProcess_);
+                        updateStartEligibility();
                         demoButton_->setEnabled(!gpuSetupProcess_);
                         if (closing_)
                             QTimer::singleShot(0, this, &QWidget::close);
@@ -1624,8 +1712,20 @@ void MainWindow::selectQueueImage(int row)
 {
     if (busy_ || sourceKind_ != vision::SourceKind::Images || row < 0 || row >= files_.size())
         return;
+    updateRangeUi();
+    if (!imageResults_.isEmpty() && imageConfigFingerprint_ != inferenceFingerprint())
+        clearImageResults();
     const QString source = files_.at(row);
-    const auto cached = imageResults_.constFind(source);
+    auto cached = imageResults_.constFind(source);
+    const QString currentSourceIdentity = fileIdentity(source);
+    // A deleted original can still be reviewed from its accepted snapshot. An
+    // externally replaced original must not reuse the previous file's results.
+    if (cached != imageResults_.cend() && !currentSourceIdentity.isEmpty() &&
+        currentSourceIdentity != cached->sourceIdentity) {
+        imageResults_.remove(source);
+        queue_->item(row)->setForeground(QBrush());
+        cached = imageResults_.cend();
+    }
     bool cacheUnreadable = false;
     if (cached != imageResults_.cend())
     {
@@ -1953,7 +2053,9 @@ QWidget *MainWindow::buildGuide()
     <h2>模型库与结构显示</h2><p>在“模型库”点击模型即可全局选用，工作台检测与模型显示使用同一模型。选择后在后台预加载，结构图、层级树、参数表共用一次解析缓存；进入或离开页面、切换展示模式不重复加载。结构图可以缩放、平移并点击节点查看输入输出及参数；层级树可以展开模块，参数表可以查看张量名称、类型与形状，两者支持搜索和详情。普通 PT 的树表示模块包含关系，只有权重的文件按参数名称分组，不补造计算连接。无法解析的文件显示文字说明，可点击“重试加载”。非 ONNX 文件显示：想看完整结构，建使用导出的 ONNX。</p>
     <h2>PT 模型</h2><p>Ultralytics YOLO 的 PT 检查点会自动读取任务和类别名称，预处理由原生后端执行。支持的旧版 YOLOv5 权重使用随附的本地兼容模块。只包含 state_dict 的任意 PT 文件无法单独重建网络，需要原始模型架构。分割、姿态和旋转框输出暂不支持。</p>
     <h2>02 / 正确匹配模型</h2><p>YOLOv5：原始输出 <code>[1,N,5+C]</code>，包含 objectness。YOLOv8 / YOLO11：原始输出 <code>[1,4+C,N]</code>。模型应为 batch=1、固定正方形输入、FP32、不包含 NMS。输入尺寸必须与导出模型一致。分割、姿态、旋转框和端到端输出暂不支持。</p>
-    <p>默认 640 px、RGB、1/255 缩放、零均值，适合常见 YOLO 模型。自定义检测模型必须导入数量匹配的 UTF-8 标签文本，每行一个名称，并保持训练时类别顺序。未导入标签时按 COCO 80 类解释检测输出。分类模型未配置标签时显示数字类别。</p>
+    <p>默认 640 px、RGB、1/255 缩放、零均值，适合常见 YOLO 模型。自定义检测模型必须导入数量匹配的 UTF-8 标签文本，每行一个名称，并保持训练时类别顺序。类别数量从实际模型读取；未导入标签时，仅 80 类检测模型使用默认 COCO 名称，其余显示原始数字类别。分类模型未配置标签时显示数字类别。</p>
+    <p>图片输入可在开始按钮上方选择整个文件夹、从当前图片向后或只检测当前图片；开始时固定本次范围与顺序。后两种模式必须先在输入队列选图。运行期间禁止修改范围与输入，停止后已完成结果可回看、导出。范围外已有有效缓存保留，模型、推理参数或类别筛选变化会使旧结果失效。</p>
+    <p>“类别筛选”独立于名称标签：留空为全部类别，可输入 <code>32</code> 或 <code>0,2,32</code>，支持中文逗号与空格，保留模型原始 ID。非法或越界 ID 在行内提示并阻止启动；分类任务不使用此控件。COCO 的 ID 32 是 sports ball，包含多种运动球，并不等于只识别足球。</p>
     <h2>03 / 调整结果与预处理</h2><p>置信度越高，保留的目标越少；NMS IoU 控制同类重叠框的抑制。不同类别独立执行 NMS。检测输入使用 letterbox 保持比例，并将框映射回原图。分类使用正方形缩放和 top-5 输出，可在“预处理设置”调整缩放和均值；本版不提供逐通道标准差除法。</p>
     <p>输入源区域可直接选择 RGB、BGR 或灰度。灰度转换为图像明度：单通道模型直接接收灰度，三通道模型接收三个相同的灰度通道。ONNX 灰度输入统一使用“灰度均值”，G/B 均值不再分别参与计算；PT 可选 RGB 或灰度，归一化和零均值由原生后端执行。灰度模式同步显示灰度预览，模型载入后会显示实际输入通道数。</p>
     <h2>04 / 计算设备与 GPU 准备</h2><p>工作台可选择“自动 · 优先 NVIDIA GPU”“CPU”或“NVIDIA GPU”，并指定 GPU 编号。自动模式在 GPU 不可用时说明原因并使用 CPU；显式 GPU 模式无法使用时会报错。运行状态与导出记录显示实际执行设备，不能仅凭选择框判断。切换设备不改变灰度、颜色或双目设置，运行期间设备选择锁定。</p>
@@ -1987,6 +2089,8 @@ void MainWindow::connectWorker()
             [this](const QString &backend, const vision::ModelConfig &config)
             {
                 lastConfig_ = config;
+                modelClassCount_ = config.modelClassCount;
+                inspectedModelIdentity_ = activeModelIdentity_;
                 modelInputChannels_ = config.inputChannels;
                 updateModelMeta("已加载");
                 if (isPtModel(modelPath_))
@@ -1994,6 +2098,7 @@ void MainWindow::connectWorker()
                     nativeLabels_ = config.labels;
                     taskBox_->setCurrentIndex(static_cast<int>(config.task));
                 }
+                activeImageFingerprint_ = inferenceFingerprint(activeModelIdentity_);
                 actualDeviceKnown_ = true;
                 actualDevice_ = config.resolvedDevice;
                 actualDeviceIndex_ =
@@ -2013,6 +2118,12 @@ void MainWindow::connectWorker()
     connect(worker_, &vision::InferenceWorker::progress, this,
             [this](int done, int total)
             {
+                if (sourceKind_ == vision::SourceKind::Images) {
+                    updateRangeUi();
+                    progress_->setRange(0, taskRangeFiles_.size());
+                    progress_->setValue(completed_);
+                    return;
+                }
                 completed_ = done;
                 if (total > 0)
                 {
@@ -2068,6 +2179,7 @@ void MainWindow::connectWorker()
 
 void MainWindow::chooseImages()
 {
+    if (busy_) return;
     const QStringList p =
         QFileDialog::getOpenFileNames(this, "选择待检测图片", projectRoot_,
                                       "图片 (*.jpg *.jpeg *.png *.bmp *.webp *.tif *.tiff);;全部文件 (*)");
@@ -2076,6 +2188,7 @@ void MainWindow::chooseImages()
 }
 void MainWindow::chooseFolder()
 {
+    if (busy_) return;
     const QString p = QFileDialog::getExistingDirectory(this, "选择图片文件夹", projectRoot_);
     if (p.isEmpty())
         return;
@@ -2099,6 +2212,7 @@ void MainWindow::chooseFolder()
 }
 void MainWindow::chooseVideo()
 {
+    if (busy_) return;
     const QString p = QFileDialog::getOpenFileName(
         this, "选择视频", projectRoot_, "视频 (*.mp4 *.avi *.mkv *.mov *.webm *.m4v);;全部文件 (*)");
     if (p.isEmpty())
@@ -2122,6 +2236,7 @@ void MainWindow::chooseVideo()
 }
 void MainWindow::chooseCamera()
 {
+    if (busy_) return;
     clearImageResults();
     sourceKind_ = vision::SourceKind::Camera;
     files_.clear();
@@ -2159,10 +2274,178 @@ void MainWindow::updateSourceUi()
         resultInfo_->setText("输入已就绪，点击开始检测。");
     }
     updateRecordingUi();
+    updateRangeUi();
+}
+
+
+QString MainWindow::modelFileIdentity() const
+{
+    return fileIdentity(modelPath_);
+}
+
+QString MainWindow::inferenceFingerprint(const QString &modelIdentity) const
+{
+    auto c = currentConfig();
+    std::sort(c.classFilter.begin(), c.classFilter.end());
+    QByteArray bytes;
+    QDataStream out(&bytes, QIODevice::WriteOnly);
+    out << (modelIdentity.isEmpty() ? modelFileIdentity() : modelIdentity) << int(c.task) << c.inputSize << c.confidence << c.iou
+        << int(c.colorMode) << c.swapRB << c.scale << c.meanR << c.meanG << c.meanB
+        << int(c.device) << c.deviceIndex << c.labels << c.classFilter;
+    return QString::fromLatin1(QCryptographicHash::hash(bytes, QCryptographicHash::Sha256).toHex());
+}
+
+void MainWindow::invalidateConfiguredResults()
+{
+    if (initializing_ || busy_ || !canvas_)
+        return;
+    if (classFilterError_.isEmpty() && !imageResults_.isEmpty() &&
+        imageConfigFingerprint_ == inferenceFingerprint()) return;
+    updateInputPreview();
+    updateStartEligibility();
+}
+
+QStringList MainWindow::selectedImageRange(QString *error) const
+{
+    if (error) error->clear();
+    if (files_.isEmpty()) {
+        if (error) *error = "请先添加图片";
+        return {};
+    }
+    const int mode = detectionRange_->currentIndex();
+    if (mode == 0)
+        return files_;
+    const int row = queue_->currentRow();
+    if (row < 0 || row >= files_.size() || !queue_->selectionModel()->hasSelection()) {
+        if (error) *error = "请先在输入队列中选中一张图片";
+        return {};
+    }
+    return mode == 1 ? files_.mid(row) : QStringList{files_.at(row)};
+}
+
+void MainWindow::updateRangeUi()
+{
+    if (!detectionRangePanel_ || !rangeHint_ || !runButton_) return;
+    const bool images = sourceKind_ == vision::SourceKind::Images;
+    detectionRangePanel_->setVisible(images);
+    detectionRange_->setEnabled(images && !busy_);
+    QString error;
+    const auto range = busy_ ? taskRangeFiles_ : selectedImageRange(&error);
+    const int first = busy_ ? taskRangeFirst_ : (range.isEmpty() ? 0 : files_.indexOf(range.first()) + 1);
+    const int last = busy_ ? taskRangeLast_ : (range.isEmpty() ? 0 : files_.indexOf(range.last()) + 1);
+    rangeHint_->setText(!error.isEmpty() ? error
+        : QString("本次检测 %1 张：第 %2～%3 张%4")
+              .arg(range.size()).arg(first).arg(last)
+              .arg(busy_ ? QString(" · 完成 %1/%2").arg(completed_).arg(range.size()) : QString()));
+    rangeHint_->setStyleSheet(error.isEmpty() ? QString() : "color: #FFB4AB;");
+    updateStartEligibility();
+}
+
+void MainWindow::updateClassFilterUi()
+{
+    if (!classFilter_ || !classFilterHint_) return;
+    const auto task = static_cast<vision::ModelTask>(taskBox_->currentIndex());
+    const bool classification = task == vision::ModelTask::Classification;
+    classFilter_->setEnabled(!busy_ && !classification);
+    classFilterError_.clear();
+    QVector<int> ids;
+    QString hint;
+    if (classification) {
+        hint = "图像分类不使用目标检测类别筛选";
+    } else if (!vision::parseClassFilter(classFilter_->text(), &ids, &classFilterError_)) {
+        hint = classFilterError_;
+    } else if (ids.isEmpty()) {
+        hint = "留空检测全部类别";
+    } else {
+        const bool current = !modelFileIdentity().isEmpty() && inspectedModelIdentity_ == modelFileIdentity();
+        if (!current || modelInspectionPending_) {
+            classFilterError_ = modelInspectionPending_ ? "正在后台读取模型类别，完成后可开始"
+                : (modelInspectionError_.isEmpty() ? "尚未取得模型类别信息，请重新选择模型"
+                                                  : "无法校验类别：" + modelInspectionError_.left(180));
+        } else {
+            vision::validateClassFilter(ids, modelClassCount_, task, &classFilterError_);
+        }
+        if (!classFilterError_.isEmpty()) hint = classFilterError_;
+        else {
+            QStringList values;
+            for (int id : ids) values.append(QString::number(id));
+            hint = QString("保留原始 ID %1 · 模型 %2 类").arg(values.join(",")).arg(modelClassCount_);
+            if (ids.contains(32)) hint += "\nCOCO ID 32 是 sports ball，包含多种球类，并非只识别足球。";
+        }
+    }
+    classFilterHint_->setText(hint);
+    classFilterHint_->setStyleSheet(classFilterError_.isEmpty() ? QString() : "color: #FFB4AB;");
+    updateStartEligibility();
+}
+
+void MainWindow::updateStartEligibility()
+{
+    if (!runButton_ || !classFilter_) return;
+    QString rangeError;
+    if (sourceKind_ == vision::SourceKind::Images) selectedImageRange(&rangeError);
+    runButton_->setEnabled(!busy_ && !gpuSetupProcess_ && !resultIoPending_ && !modelPath_.isEmpty() &&
+                           rangeError.isEmpty() && classFilterError_.isEmpty());
+}
+
+void MainWindow::inspectSelectedModel()
+{
+    if (initializing_ || busy_) return;
+    if (modelInspectionCancellation_) modelInspectionCancellation_->store(true);
+    const quint64 generation = ++modelInspectionGeneration_;
+    modelInspectionCancellation_ = std::make_shared<std::atomic_bool>(false);
+    const auto cancelled = modelInspectionCancellation_;
+    inspectedModelIdentity_.clear();
+    modelInspectionError_.clear();
+    modelClassCount_ = 0;
+    const QString identity = modelFileIdentity();
+    if (identity.isEmpty()) {
+        modelInspectionPending_ = false;
+        updateClassFilterUi();
+        return;
+    }
+    modelInspectionPending_ = true;
+    updateClassFilterUi();
+    const auto config = currentConfig();
+    struct Inspection { vision::ModelConfig config; QString error; };
+    const auto output = std::make_shared<Inspection>();
+    auto *thread = QThread::create([config, cancelled, output] {
+        try {
+            output->config = vision::VisionEngine::inspectModel(config, [cancelled] { return cancelled->load(); });
+        } catch (const std::exception &error) { output->error = QString::fromUtf8(error.what()); }
+    });
+    thread->setObjectName("modelClassInspection");
+    connect(thread, &QThread::finished, this, [this, generation, identity, cancelled, output] {
+        if (generation != modelInspectionGeneration_ || cancelled->load()) return;
+        modelInspectionPending_ = false;
+        if (identity != modelFileIdentity()) {
+            invalidateConfiguredResults();
+            inspectSelectedModel();
+            return;
+        }
+        modelInspectionError_ = output->error;
+        if (output->error.isEmpty()) {
+            modelClassCount_ = output->config.modelClassCount;
+            modelInputChannels_ = output->config.inputChannels;
+            inspectedModelIdentity_ = identity;
+            if (isPtModel(modelPath_) || output->config.task == vision::ModelTask::Classification) {
+                const auto previousTask = taskBox_->currentIndex();
+                const QSignalBlocker block(taskBox_);
+                if (isPtModel(modelPath_)) nativeLabels_ = output->config.labels;
+                taskBox_->setCurrentIndex(int(output->config.task));
+                if (previousTask != taskBox_->currentIndex()) invalidateConfiguredResults();
+            }
+            updateModelMeta("已识别");
+            updateTaskUi();
+        }
+        updateClassFilterUi();
+    });
+    connect(thread, &QThread::finished, thread, &QObject::deleteLater);
+    thread->start();
 }
 
 void MainWindow::addFiles(const QStringList &input)
 {
+    if (busy_) return;
     if (sourceKind_ != vision::SourceKind::Images)
     {
         clearImageResults();
@@ -2262,12 +2545,19 @@ void MainWindow::setModel(const QString &path, bool force)
         modelPath_.clear();
         if (modelConversion_) modelConversion_->setSourceModel({});
         modelInputChannels_ = 0;
+        modelClassCount_ = 0;
+        inspectedModelIdentity_.clear();
+        modelInspectionError_.clear();
+        if (modelInspectionCancellation_) modelInspectionCancellation_->store(true);
+        ++modelInspectionGeneration_;
+        modelInspectionPending_ = false;
         nativeLabels_.clear();
         modelName_->setText("尚未选择模型");
         modelMeta_->setText("请在模型库中选择一个模型。");
         modelName_->setToolTip({});
         updateTaskUi();
         updateInputPreview();
+        updateClassFilterUi();
         displayModelStructure();
         persist();
         return;
@@ -2280,11 +2570,17 @@ void MainWindow::setModel(const QString &path, bool force)
         return;
     }
     if (modelPath_ == f.absoluteFilePath() && !force &&
-        (!convertedModelProfiles_.contains(modelPath_) || !convertedModelProfile(modelPath_).isEmpty()))
+        (!convertedModelProfiles_.contains(modelPath_) || !convertedModelProfile(modelPath_).isEmpty())) {
+        if (!initializing_ && !modelInspectionPending_ && inspectedModelIdentity_ != modelFileIdentity())
+            inspectSelectedModel();
         return;
+    }
     const bool convertedBgr =
         isPtModel(f.absoluteFilePath()) && inputColorMode_->currentData().toString() == "bgr";
     modelPath_ = f.absoluteFilePath();
+    modelClassCount_ = 0;
+    inspectedModelIdentity_.clear();
+    modelInspectionError_.clear();
     actualDeviceKnown_ = false;
     actualDeviceNotice_.clear();
     modelInputChannels_ = 0;
@@ -2303,6 +2599,7 @@ void MainWindow::setModel(const QString &path, bool force)
     applyConvertedModelProfile(modelPath_);
     updateTaskUi();
     updateInputPreview();
+    if (!initializing_) inspectSelectedModel();
     persist();
     if (modelList_->count() != models_.size())
         refreshModelLibrary();
@@ -2322,6 +2619,7 @@ void MainWindow::setModel(const QString &path, bool force)
 }
 void MainWindow::importLabels()
 {
+    if (busy_) return;
     const QString p = QFileDialog::getOpenFileName(this, "导入类别标签（每行一个名称）", projectRoot_,
                                                    "UTF-8 文本 (*.txt *.names);;全部文件 (*)");
     if (p.isEmpty())
@@ -2351,6 +2649,8 @@ void MainWindow::importLabels()
     labelsPath_ = p;
     labelButton_->setText(QString("类别标签 · %1 个").arg(labels_.size()));
     labelButton_->setToolTip(p);
+    invalidateConfiguredResults();
+    persist();
     showNotice("已导入 " + QString::number(labels_.size()) + " 个类别标签。");
 }
 vision::ModelConfig MainWindow::currentConfig() const
@@ -2360,6 +2660,9 @@ vision::ModelConfig MainWindow::currentConfig() const
     c.device = computeMode(computeDevice_->currentData().toString());
     c.deviceIndex = gpuDeviceIndex_->currentData().toInt();
     c.task = static_cast<vision::ModelTask>(taskBox_->currentIndex());
+    c.modelClassCount = modelClassCount_;
+    if (c.task != vision::ModelTask::Classification)
+        vision::parseClassFilter(classFilter_->text(), &c.classFilter);
     if (!labels_.isEmpty())
         c.labels = labels_;
     else if (isPtModel(modelPath_))
@@ -2367,7 +2670,7 @@ vision::ModelConfig MainWindow::currentConfig() const
     else if (!convertedModelProfile(modelPath_).isEmpty())
         c.labels = nativeLabels_;
     else
-        c.labels = c.task == vision::ModelTask::Classification ? QStringList{} : vision::cocoLabels();
+        c.labels = {}; // The backend maps COCO only when the actual model has 80 classes.
     c.inputSize = inputSize_->value();
     c.confidence = confidence_->value();
     c.iou = iou_->value();
@@ -2393,9 +2696,19 @@ void MainWindow::startInference()
         return;
     if (resultIoPending_)
     {
-        showNotice("正在保存已完成的结果，保存完成后即可开始新任务。");
+        showNotice("正在后台保存已完成结果，保存完成后即可开始新任务。");
         return;
     }
+    if (inspectedModelIdentity_ != modelFileIdentity() && !modelInspectionPending_)
+        inspectSelectedModel();
+    updateClassFilterUi();
+    updateRangeUi();
+    if (!classFilterError_.isEmpty())
+        return;
+    QString rangeError;
+    const auto imageRange = sourceKind_ == vision::SourceKind::Images ? selectedImageRange(&rangeError) : QStringList{};
+    if (!rangeError.isEmpty())
+        return;
     if (modelPath_.isEmpty())
     {
         showNotice("请先导入 ONNX 或 PT 模型。", true);
@@ -2421,14 +2734,31 @@ void MainWindow::startInference()
                          ? vision::StereoView::Full
                          : stereoMode(stereoView_->currentData().toString());
     req.cameraIndex = cameraIndex_->value();
-    req.files = sourceKind_ == vision::SourceKind::Video ? QStringList{streamPath_} : files_;
+    req.files = sourceKind_ == vision::SourceKind::Video ? QStringList{streamPath_} : imageRange;
+    taskRangeFiles_ = imageRange;
+    activeModelIdentity_ = modelFileIdentity();
+    activeImageFingerprint_ = inferenceFingerprint(activeModelIdentity_);
+    taskSourceIdentities_.clear();
+    for (const auto &source : imageRange) taskSourceIdentities_.insert(source, fileIdentity(source));
+    taskRangeFirst_ = imageRange.isEmpty() ? 0 : files_.indexOf(imageRange.first()) + 1;
+    taskRangeLast_ = imageRange.isEmpty() ? 0 : files_.indexOf(imageRange.last()) + 1;
+    if (modelInspectionPending_) {
+        if (modelInspectionCancellation_) modelInspectionCancellation_->store(true);
+        ++modelInspectionGeneration_;
+        modelInspectionPending_ = false;
+    }
     failed_ = false;
     inferenceStopping_ = false;
     lastError_.clear();
     actualDeviceKnown_ = false;
     actualDeviceNotice_.clear();
     completed_ = 0;
-    clearImageResults();
+    const QString fingerprint = activeImageFingerprint_;
+    if (imageConfigFingerprint_ != fingerprint)
+        clearImageResults();
+    imageConfigFingerprint_ = fingerprint;
+    // A same-configuration rerun preserves previously accepted results until
+    // each new result atomically replaces its entry. Progress counts only this job.
     lastResult_ = {};
     lastConfig_ = req.config;
     predictionTable_->setRowCount(0);
@@ -2477,9 +2807,13 @@ void MainWindow::setBusy(bool busy)
     updateTaskUi();
     updateRecordingUi();
     updateDeviceUi();
+    updateRangeUi();
     if (busy)
     {
-        progress_->setRange(0, 0);
+        if (sourceKind_ == vision::SourceKind::Images) {
+            progress_->setRange(0, taskRangeFiles_.size());
+            progress_->setValue(0);
+        } else progress_->setRange(0, 0);
     }
 }
 void MainWindow::updateTaskUi()
@@ -2526,9 +2860,13 @@ void MainWindow::updateTaskUi()
                                         : QString("类别标签 · 内置 %1 类").arg(nativeLabels_.size()))
                                  : (!convertedModelProfile(modelPath_).isEmpty()
                                         ? QString("类别标签 · 转换模型 %1 类").arg(nativeLabels_.size())
-                                        : (classification ? "类别标签 · 数字类别" : "类别标签 · 默认 COCO 80")));
+                                        : (classification ? "类别标签 · 数字类别"
+                                            : (modelClassCount_ == 80 ? "类别标签 · 默认 COCO 80"
+                                                : modelClassCount_ > 0 ? QString("类别标签 · 数字 %1 类").arg(modelClassCount_)
+                                                                      : QString("类别标签 · 模型默认")))));
     else
         labelButton_->setText(QString("类别标签 · %1 个").arg(labels_.size()));
+    updateClassFilterUi();
     updateDeviceUi();
 }
 void MainWindow::setComputeDevice(vision::ComputeDevice device, int index)
@@ -2615,7 +2953,7 @@ void MainWindow::updateDeviceUi()
         gpuCancelButton_->setEnabled(installing && !gpuSetupCancelling_);
     }
     if (runButton_)
-        runButton_->setEnabled(!installing && !resultIoPending_);
+        updateStartEligibility();
     if (demoButton_)
         demoButton_->setEnabled(!busy_ && !installing && !resultIoPending_);
 }
@@ -2887,8 +3225,18 @@ void MainWindow::onResult(const vision::InferenceResult &r, quint64 ticket)
         worker_->acknowledgeImageResult(ticket);
         return;
     }
-    if (sourceKind_ == vision::SourceKind::Images)
+    if (r.modelClassCount > 0) {
+        modelClassCount_ = r.modelClassCount;
+        lastConfig_.modelClassCount = r.modelClassCount;
+        updateClassFilterUi();
+    }
+    if (sourceKind_ == vision::SourceKind::Images) {
+        ++completed_;
         cacheImageResult(r);
+        updateRangeUi();
+        progress_->setRange(0, taskRangeFiles_.size());
+        progress_->setValue(completed_);
+    }
     displayResult(r);
     if (sourceKind_ == vision::SourceKind::Images)
     {
@@ -2976,9 +3324,10 @@ void MainWindow::displayResult(const vision::InferenceResult &r)
         auto *conf = new QTableWidgetItem(QString::number(p.confidence * 100, 'f', 1) + "%");
         conf->setTextAlignment(Qt::AlignCenter);
         predictionTable_->setItem(i, 1, conf);
-        auto *id = new QTableWidgetItem(QString::number(i + 1).rightJustified(2, '0'));
+        auto *id = new QTableWidgetItem(QString::number(p.classId));
         id->setTextAlignment(Qt::AlignCenter);
         id->setForeground(QColor("#A5A5A5"));
+        id->setToolTip("模型原始 class_id，从 0 开始");
         predictionTable_->setItem(i, 2, id);
     }
     exportButton_->setEnabled(!busy_ && !r.image.isNull() && !r.demonstration);
@@ -3002,11 +3351,23 @@ void MainWindow::onFinished(bool cancelled)
         }
     }
     setBusy(false);
+    if (sourceKind_ == vision::SourceKind::Images) {
+        // Restores the selected accepted result even when cancellation happened
+        // before the first new frame and the current queue row never changed.
+        selectQueueImage(queue_->currentRow());
+    }
+    if (activeModelIdentity_ != modelFileIdentity()) {
+        invalidateConfiguredResults();
+        inspectSelectedModel();
+    }
     refreshHistory();
     if (failed_ && !lastError_.isEmpty())
         showNotice(lastError_, true);
     else if (!failed_)
-        showNotice(cancelled ? "任务已停止 · 当前结果可导出"
+        showNotice(cancelled ? (sourceKind_ == vision::SourceKind::Images
+                                   ? QString("任务已停止 · 本次完成 %1 / %2 张 · 已完成结果可回看与导出")
+                                         .arg(completed_).arg(taskRangeFiles_.size())
+                                   : QString("任务已停止 · 已处理 %1 帧 · 当前结果可导出").arg(completed_))
                              : QString("检测完成 · 已处理 %1 %2")
                                    .arg(completed_)
                                    .arg(sourceKind_ == vision::SourceKind::Images ? "张图片" : "帧"));
@@ -3285,7 +3646,11 @@ MainWindow::ResultExport MainWindow::prepareResultExport(const vision::Inference
         {"swap_rb", configValue.swapRB},
         {"scale", configValue.scale},
         {"mean_rgb", QJsonArray{configValue.meanR, configValue.meanG, configValue.meanB}}};
-    const QJsonObject config{{"input_size", configValue.inputSize},
+    QJsonArray filterIds;
+    for (int id : configValue.classFilter) filterIds.append(id);
+    const QJsonObject config{{"class_filter", filterIds},
+                             {"model_class_count", configValue.modelClassCount},
+                             {"input_size", configValue.inputSize},
                              {"input_channels", configValue.inputChannels},
                              {"color_mode", configValue.colorMode == vision::InputColorMode::Grayscale
                                                 ? "grayscale"
@@ -3676,11 +4041,13 @@ void MainWindow::persist()
         settings_->setValue("deviceIndex", gpuDeviceIndex_->currentData());
         settings_->setValue("swapRB", inputColorMode_->currentData().toString() != "bgr");
         settings_->setValue("autoExport", autoExport_->isChecked());
+        settings_->setValue("classFilter", classFilter_->text());
     }
     settings_->sync();
 }
 void MainWindow::closeEvent(QCloseEvent *e)
 {
+    if (modelInspectionCancellation_) modelInspectionCancellation_->store(true);
     if (modelConversion_ && modelConversion_->isBusy())
     {
         closing_ = true;

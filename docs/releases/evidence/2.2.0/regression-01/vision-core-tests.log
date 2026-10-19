@@ -1,0 +1,70 @@
+Internal ctest changing into directory: /tmp/vision-studio-2.2.0-build
+UpdateCTestConfiguration  from :/tmp/vision-studio-2.2.0-build/DartConfiguration.tcl
+Parse Config file:/tmp/vision-studio-2.2.0-build/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/tmp/vision-studio-2.2.0-build/DartConfiguration.tcl
+Parse Config file:/tmp/vision-studio-2.2.0-build/DartConfiguration.tcl
+Test project /tmp/vision-studio-2.2.0-build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: vision-core-tests
+
+1: Test command: /tmp/vision-studio-2.2.0-build/vision-core-tests
+1: Environment variables: 
+1:  QT_QPA_PLATFORM=offscreen
+1: Test timeout computed to be: 1500
+1: ********* Start testing of CoreTests *********
+1: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+1: PASS   : CoreTests::initTestCase()
+1: PASS   : CoreTests::classFilterParsingAndValidation()
+1: PASS   : CoreTests::classFilterUsesActualOnnxClassCountAndOriginalIds()
+1: PASS   : CoreTests::classFilter32IsNotRenumberedAndZeroMatchSucceeds()
+1: PASS   : CoreTests::realOnnxClassFilterMatchesUnfilteredSubset()
+1: PASS   : CoreTests::classificationRejectsDetectionClassFilter()
+1: PASS   : CoreTests::yoloV8LetterboxClippingAndNms()
+1: PASS   : CoreTests::yoloV5UsesObjectnessAndClassScores()
+1: PASS   : CoreTests::classificationLogitsBecomeProbabilities()
+1: PASS   : CoreTests::classificationProbabilitiesRemainUnchanged()
+1: PASS   : CoreTests::preprocessingRespectsColorChannels()
+1: PASS   : CoreTests::preprocessingSubtractsMeanBeforeScaling()
+1: PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgb888-padded-scanlines)
+1: PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgba8888)
+1: PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgb32)
+1: PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(red)
+1: PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(green)
+1: PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(blue)
+1: PASS   : CoreTests::grayscaleThreeChannelsReplicateOneIntensity()
+1: PASS   : CoreTests::grayscaleDetectionPaddingUses114(single-channel)
+1: PASS   : CoreTests::grayscaleDetectionPaddingUses114(replicated-three-channel)
+1: PASS   : CoreTests::colorInputRejectsSingleChannelModel()
+1: PASS   : CoreTests::unsupportedONNXInputChannels(four-channels)
+1: PASS   : CoreTests::unsupportedONNXInputChannels(symbolic-channel-axis)
+1: PASS   : CoreTests::initializerGraphInputsRemainCompatible()
+1: PASS   : CoreTests::missingModelReportsFailure()
+1: PASS   : CoreTests::unsupportedDetectionOutputReportsFailure()
+1: PASS   : CoreTests::emptyImageReportsFailure()
+1: PASS   : CoreTests::workerProcessesEveryImageInBatch()
+1: PASS   : CoreTests::workerStopsBatchAndCanRunAgain()
+1: PASS   : CoreTests::workerDeliversVideoLastFrameAtEndOfFile()
+1: PASS   : CoreTests::workerReportsUnreadableInputAndFinishes()
+1: PASS   : CoreTests::stereoOddWidthSelectionAndInference()
+1: PASS   : CoreTests::stereoSelectionRejectsEmptyAndTooNarrowFrames()
+1: PASS   : CoreTests::workerSelectsSideBySideVideoView(full-frame)
+1: PASS   : CoreTests::workerSelectsSideBySideVideoView(left-eye)
+1: PASS   : CoreTests::workerSelectsSideBySideVideoView(right-eye)
+1: PASS   : CoreTests::workerKeepsImagesWholeWhenStereoViewSelected()
+1: PASS   : CoreTests::cleanupTestCase()
+1: Totals: 39 passed, 0 failed, 0 skipped, 0 blacklisted, 685ms
+1: ********* Finished testing of CoreTests *********
+1/1 Test #1: vision-core-tests ................   Passed    0.75 sec
+
+The following tests passed:
+	vision-core-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.75 sec

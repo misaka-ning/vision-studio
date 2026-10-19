@@ -1,0 +1,10 @@
+********* Start testing of PtBackendTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : PtBackendTests::initTestCase()
+PASS   : PtBackendTests::realPtClassFilterMatchesOriginalIds(modern-yolov8)
+PASS   : PtBackendTests::realPtClassFilterMatchesOriginalIds(legacy-yolov5)
+PASS   : PtBackendTests::torchScriptClassFilterUsesModelMetadataAndRejectsClassification()
+PASS   : PtBackendTests::modelInspectionIgnoresUserLabelsAndFiltering()
+PASS   : PtBackendTests::cleanupTestCase()
+Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 66090ms
+********* Finished testing of PtBackendTests *********

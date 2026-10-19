@@ -202,6 +202,8 @@ void PtBackend::send(const QJsonObject &message)
 void PtBackend::load(const ModelConfig &config)
 {
     reset();
+    if (config.task == ModelTask::Classification && !config.classFilter.isEmpty())
+        fail(QStringLiteral("类别筛选仅用于目标检测；分类任务不支持此筛选。"));
     if (config.deviceIndex < 0 || config.deviceIndex > 255)
         fail(QStringLiteral("CUDA 设备编号应在 0 到 255 之间。"));
     if (config.device != ComputeDevice::CPU)
@@ -262,13 +264,17 @@ void PtBackend::loadOnDevice(const ModelConfig &config, bool cuda)
     const QString task = config.task == ModelTask::Classification ? "classify"
                          : config.task == ModelTask::YoloV5       ? "v5"
                                                                   : "detect";
+    QJsonArray classFilter;
+    for (int id : config.classFilter)
+        classFilter.append(id);
     process->setArguments(
         {"-u", script, "--model", QFileInfo(config.modelPath).absoluteFilePath(), "--task", task, "--size",
          QString::number(config.inputSize), "--labels",
          QString::fromUtf8(
              QJsonDocument(QJsonArray::fromStringList(config.labels)).toJson(QJsonDocument::Compact)),
          "--color-mode", config.colorMode == InputColorMode::Grayscale ? "grayscale" : "color",
-         "--device", cuda ? "cuda" : "cpu", "--device-index", QString::number(config.deviceIndex)});
+         "--device", cuda ? "cuda" : "cpu", "--device-index", QString::number(config.deviceIndex),
+         "--class-filter", QString::fromUtf8(QJsonDocument(classFilter).toJson(QJsonDocument::Compact))});
     m_process = std::move(process);
     if (m_cancellationCheck && m_cancellationCheck())
         processFailure(QStringLiteral("PyTorch 推理已取消。"));
@@ -314,6 +320,9 @@ void PtBackend::loadOnDevice(const ModelConfig &config, bool cuda)
                 fail(QStringLiteral(".pt 模型类别名称无效。"));
             labels.append(value.toString());
         }
+        const QJsonValue classCount = ready.value("class_count");
+        if (!classCount.isUndefined() && (!finiteNumber(classCount) || classCount.toDouble() != labels.size()))
+            fail(QStringLiteral("PyTorch 模型类别数量与内置类别元数据不一致。"));
         if (!config.labels.isEmpty() && config.labels.size() != labels.size())
             fail(QStringLiteral(
                      "标签文件有 %1 个类别，.pt 模型有 %2 个类别；请使用匹配的标签文件或模型自带类别。")
@@ -343,6 +352,10 @@ void PtBackend::loadOnDevice(const ModelConfig &config, bool cuda)
         m_config.task = detectedTask == "classify" ? ModelTask::Classification
                         : layout == "v5"           ? ModelTask::YoloV5
                                                    : ModelTask::YoloV8;
+        m_config.modelClassCount = labels.size();
+        QString filterError;
+        if (!validateClassFilter(m_config.classFilter, m_config.modelClassCount, m_config.task, &filterError))
+            fail(filterError);
         m_config.labels = config.labels.isEmpty() ? labels : config.labels;
         m_backendName = ready.value("backend").toString("PyTorch / CPU");
         m_loaded = true;
@@ -408,6 +421,8 @@ InferenceResult PtBackend::infer(const QImage &image, const QString &source)
     result.source = source;
     result.modelName = QFileInfo(m_config.modelPath).fileName();
     result.task = m_config.task;
+    result.classFilter = m_config.classFilter;
+    result.modelClassCount = m_config.modelClassCount;
     result.backend = m_backendName;
     result.requestedDevice = m_config.device;
     result.device = m_config.resolvedDevice;
@@ -447,6 +462,8 @@ InferenceResult PtBackend::infer(const QImage &image, const QString &source)
             if (box.width() <= 0 || box.height() <= 0)
                 continue;
         }
+        if (!m_config.classFilter.isEmpty() && !m_config.classFilter.contains(classId))
+            continue; // Defensive protocol check; workers filter before their NMS/limit.
         result.predictions.append(
             {classId, m_config.labels.at(classId), float(confidenceValue.toDouble()), box});
     }
