@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "version": "2.4.0",
+  "status": "awaiting_polkit_authentication",
+  "actual_installed_debian_version": "2.3.1-1",
+  "requested_debian_version": "2.4.0-1",
+  "host_upgrade_claimed_complete": false,
+  "isolated_installation_acceptance_completed": true,
+  "before_user_files": 2465,
+  "reason": "System-level installation requires native Polkit administrator authentication. No passwords or authentication secrets requested in chat."
+}

@@ -1,0 +1,1426 @@
+{
+  "schema_version": 1,
+  "version": "2.3.0",
+  "new_version": "2.4.0",
+  "preview_only": true,
+  "deleted_paths": [],
+  "generated_at_utc": "2026-10-20T13:24:57.048222+00:00",
+  "intended_retained_release_versions": [
+    "2.4.0",
+    "2.3.1"
+  ],
+  "new_release_remote_verification_required_before_any_cleanup": true,
+  "old_release_final_remote_reverification_required": true,
+  "remote_verification_executed_by_this_audit": false,
+  "eligible_to_execute_cleanup_now": false,
+  "candidates": [
+    {
+      "label": "worktree_release",
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0",
+      "kind": "immutable_release_copy",
+      "exists": true,
+      "action": "preview_only_no_deletion",
+      "files": 63,
+      "directories": 1,
+      "symlinks": 0,
+      "logical_file_bytes": 2082701889,
+      "nested_git": [],
+      "foreign_filesystem_entries": [],
+      "special_entries": [],
+      "git_tracked_paths_in_candidate": [],
+      "assets": [
+        {
+          "name": "vision-studio_2.3.0-1_amd64.deb",
+          "bytes": 387134996,
+          "sha256": "e8f600337b7c452a2104d1bc78f544bbc41ab5553b8e67db37d919b084ab7cbf",
+          "matches_historical_final_assets": true,
+          "device": 66308,
+          "inode": 31232298,
+          "hardlinks": 2
+        },
+        {
+          "name": "vision-studio-2.3.0-complete-source.tar.xz",
+          "bytes": 846257988,
+          "sha256": "ed0c75206649ce57d41512a8f97ed12fee394a332cb646e6b6deabc7a15afbde",
+          "matches_historical_final_assets": true,
+          "device": 66308,
+          "inode": 31199987,
+          "hardlinks": 2
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 207,
+          "sha256": "fbbb09d225583e75b4d199f63d071610998d60f91c622d261b9d16bc1fc0312a",
+          "matches_historical_final_assets": true,
+          "device": 66308,
+          "inode": 31201388,
+          "hardlinks": 1
+        }
+      ],
+      "historical_remote_receipt_success": true,
+      "historical_remote_tag_commit": "05ea7df054ad9afbbe431e094e6f52fba0c51d99",
+      "final_remote_reverification_required": true,
+      "metadata_evidence_audit": [
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/SOURCE-INVENTORY.json",
+          "size": 8027,
+          "sha256": "e53b0036e13604c72bf43801a3a25d46d639405b602d444f5c65ecdd9af2a2b2",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/SOURCE-INVENTORY.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/SOURCE-SHA256SUMS",
+          "size": 2206,
+          "sha256": "6a44f4679fb5d3d8b5e61816772de6fe81a50fc86696a7d8c6273fc2d7f0f058",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/SOURCE-SHA256SUMS"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/build-deb.log",
+          "size": 676,
+          "sha256": "0ffb3923ca60eca7e8c3b97adf8d212c51bb02d2210bf12d622878906473c6bf",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/build-deb.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/build-source.log",
+          "size": 127,
+          "sha256": "3928354565de7ae44480a6256f088e2145ff964250be8056a9c337871198e9f5",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/build-source.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/conversion-qa.json",
+          "size": 14544,
+          "sha256": "820c78c215a457e53860e26535c98c71a37ce697628695e23873441b9e35c691",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/conversion-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/ctest-qa.json",
+          "size": 105703,
+          "sha256": "7869c48ae2a85f17034de535100a8a5c8b1b2ff9d0177b6c83ee92cd5c3009fc",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/ctest-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/evaluation-qa.json",
+          "size": 6185,
+          "sha256": "f2cd5a28a822390881308956096e8de56a1658c363dd8660f268063f8d657c82",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/evaluation-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/final-package-gpu-evaluation-receipt.json",
+          "size": 6777,
+          "sha256": "beb84ecff14e045144176249ecc7e297d755fad02afc7820a3ffbec6e0fb6a38",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/final-package-gpu-evaluation-receipt.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/finalize-qa.log",
+          "size": 1082,
+          "sha256": "93496c5d32fc3ba171ce800eda33db4fd673db02e107181b30cd8b884c9ac324",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/finalize-qa.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/gpu-qa.json",
+          "size": 1568,
+          "sha256": "e51bca2a5a8fd32130ff474d6c07cb63880c1a7cde97402c3b36230543bf8d41",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/gpu-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/input-reuse-proof.json",
+          "size": 4549,
+          "sha256": "ab883b2db7256ebdf9dbf71b3cbeba6df25ec71ec07bd941fed006a88183191d",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/input-reuse-proof.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/install-qa.json",
+          "size": 17927,
+          "sha256": "11fd3a4daaf796fdd88bafb86de8624ad0b295af1bdbd14933435f30dd513883",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/install-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/install-qa.log",
+          "size": 136,
+          "sha256": "d7b47482245447a4716ba0fa33f2282a05a44388321a2e8030313093ac88e64c",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/install-qa.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/latest-release.json",
+          "size": 11531,
+          "sha256": "7366550db911b32b336487b6a3a422d94ade6cd74ed4085c4061cb480b21a318",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/latest-release.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/local-release-normalization.json",
+          "size": 11579,
+          "sha256": "51cca75c1eb853ef21cb23f48267e77eec76d238da95d31f6497426ffcd28c01",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/local-release-normalization.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/old-source-cleanup-preview.json",
+          "size": 3752,
+          "sha256": "674400177111269349a70d898ba28be6c0919352d0fc508a722ae088b822de1e",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/old-source-cleanup-preview.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/old-source-cleanup.json",
+          "size": 3911,
+          "sha256": "4a2fac63bcde9c6d0aba6fd1149dd5de25e2f8bedf99050d8abce48cb4a2324b",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/old-source-cleanup.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/packaged-evaluation-qa.json",
+          "size": 308195,
+          "sha256": "36949e40d649d5705a93868c2bb500fbe91e674a46c4a7fe8925b1f91c68c665",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/packaged-evaluation-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/packaged-evaluation-qa.log",
+          "size": 400,
+          "sha256": "978585f9b69521f7f38c803ff26676c23084648a9356feea108e70ed64092d5d",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/packaged-evaluation-qa.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/packaged-gpu-qa.json",
+          "size": 20993,
+          "sha256": "be8c04e7a69688c847586e5ea75eb493696733f71c6bffe6db6ac8d133ea0fb7",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/packaged-gpu-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/packaged-gpu-qa.log",
+          "size": 238,
+          "sha256": "2a6e60331739e443fee842505f4387112626d4cb0e4460f4d9003a112fe8cef5",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/packaged-gpu-qa.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/packaged-mapping-qa.json",
+          "size": 6960,
+          "sha256": "672bbe584248362a21287a5566f4d39e92507b16f8b80ff3360d3b37f28cbac7",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/mapping-extra/packaged-mapping-qa.json",
+            "docs/releases/evidence/2.3.0/packaged-mapping-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/packaged-mapping-qa.log",
+          "size": 452,
+          "sha256": "9bc5eec2721b13a3c3bac05ccfc2995a0921fb781997c46cd5338efeb395c5c0",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/mapping-extra/packaged-mapping-qa.log",
+            "docs/releases/evidence/2.3.0/packaged-mapping-qa.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/post-publication-local-sync.json",
+          "size": 1320,
+          "sha256": "aeca8a560d1ea5f816605ea1a140d65f6a4152d9bd7a65f47236b40f913cf323",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/post-publication-local-sync.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/previous-2.2.0-verify.json",
+          "size": 1006,
+          "sha256": "bc14666e2b12e64b825fe0a75a1c8431275430c4703bec9e979b80bfa87cac56",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/previous-2.2.0-verify.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/prune-executed.json",
+          "size": 3597,
+          "sha256": "e138017a937914eef1376ea10b23c34e577c0e9bdf2eab3e595ae48efd7d3a09",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/prune-executed.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/prune-preview.json",
+          "size": 3515,
+          "sha256": "0c6f3c06b68ee8969f11434657837d114eb45912fdc0085bdf220044e8a3eb42",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/prune-preview.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/qa-report.json",
+          "size": 119524,
+          "sha256": "d4733f2a7f86e40f89c18d14c68da970e4329407c81cbd94c4298b84a44e9759",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/qa-report.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/qa-report.log",
+          "size": 147,
+          "sha256": "76b19da4aaf73a82bc03675bdd3d5bd6f0bc2f22b9bf723795f225ece50adf13",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/qa-report.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/release-dry-run.json",
+          "size": 717,
+          "sha256": "8ba206374f03d9bceae14ac0c453cc074f002bf491aae240e6423a3b9b639ff6",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/release-dry-run.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/release-publish-initial-failure.json",
+          "size": 453,
+          "sha256": "87995e20873b62d064fcc040bfdfb02b6330c2bdb2afbb45b60c9d78739f3c8e",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/release-publish-initial-failure.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/release-publish.json",
+          "size": 1580,
+          "sha256": "e9d10d4db751dfb99a887308ddfa5e58e97047e0c3c348fc86468ac74452cd2a",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/release-publish.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/release-publish.stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/final-ui-harness.stderr",
+            "docs/releases/evidence/2.3.0/final-ui-initial-run/integration.stderr",
+            "docs/releases/evidence/2.3.0/final-ui-initial-run/integration.stdout",
+            "docs/releases/evidence/2.3.0/final-ui-initial-run/ui-tests.stderr",
+            "docs/releases/evidence/2.3.0/final-ui-initial-run/ui-tests.stdout",
+            "docs/releases/evidence/2.3.0/final-ui/integration.stderr",
+            "docs/releases/evidence/2.3.0/final-ui/integration.stdout",
+            "docs/releases/evidence/2.3.0/final-ui/ui-tests.stderr",
+            "docs/releases/evidence/2.3.0/final-ui/ui-tests.stdout",
+            "docs/releases/evidence/2.3.0/integration-01/stderr.log",
+            "docs/releases/evidence/2.3.0/integration-01/stdout.log",
+            "docs/releases/evidence/2.3.0/integration-02/stderr.log",
+            "docs/releases/evidence/2.3.0/integration-02/stdout.log",
+            "docs/releases/evidence/2.3.0/mapping-extra/application.stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/conversion_onnx-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/conversion_torchscript-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/gpu-unprepared-probe-stderr.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/install-stderr.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/installed-status-stderr.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/model_display-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/model_display_pt-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/namespace-root-stderr.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/namespace-user-stderr.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/onnx-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/pt-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/purge-stderr.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/read-only-user-stderr.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/read-only-user-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-evaluation-qa/onnx_cpu/application.stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-evaluation-qa/onnx_cuda/application.stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-evaluation-qa/pt_cpu/application.stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-evaluation-qa/pt_cuda/application.stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-evaluation-qa/torchscript_cpu/application.stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-evaluation-qa/zero_result_id32_cpu/application.stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-gpu-qa/onnx_cpu/stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-gpu-qa/onnx_cuda/stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-gpu-qa/pt_cpu/stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-gpu-qa/pt_cuda/stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/qa-report/user-state/conversion_onnx-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/qa-report/user-state/conversion_torchscript-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/qa-report/user-state/model_display-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/qa-report/user-state/model_display_pt-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/qa-report/user-state/onnx-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/qa-report/user-state/pt-stdout.log",
+            "docs/releases/evidence/2.3.0/production-ui-01/geometry.stderr",
+            "docs/releases/evidence/2.3.0/production-ui-01/geometry.stdout",
+            "docs/releases/evidence/2.3.0/production-ui-01/integration.stderr",
+            "docs/releases/evidence/2.3.0/production-ui-01/integration.stdout",
+            "docs/releases/evidence/2.3.0/production-ui-final/integration.stderr",
+            "docs/releases/evidence/2.3.0/production-ui-final/integration.stdout",
+            "docs/releases/evidence/2.3.0/production-ui-final/legacy-ui.stderr",
+            "docs/releases/evidence/2.3.0/production-ui-final/legacy-ui.stdout",
+            "docs/releases/evidence/2.3.0/release-publish.stderr.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/release-verify.json",
+          "size": 1006,
+          "sha256": "c58cf581dd072d1016cdff6387c677f29446018187095469fdb20ab3e28f0859",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/release-verify.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/source-bundle-qa.json",
+          "size": 2144967,
+          "sha256": "3d126ab45618cb26e0f02b17e3426b0acc6374cdd88142078cfd54df5bd2eedb",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/source-bundle-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/source-bundle-qa.log",
+          "size": 448,
+          "sha256": "a3afae017b2ab7e0ded970ba9eb67cb969d6ab477f214b86a987522089b65891",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/source-bundle-qa.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/source-freeze.json",
+          "size": 683,
+          "sha256": "8d60fa9b90cc0134b64a39f4b5cf5bc67c644343803b204fb23408a944190401",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/source-freeze.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/temporary-payload-cleanup.json",
+          "size": 1281,
+          "sha256": "8dccf9a84f15bfa9ecf354f949c6c74b8d82ce731c6195cc39a8c8aa4fb88196",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/temporary-payload-cleanup.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/vision-studio_2.3.0-1_amd64.deb.manifest.json",
+          "size": 5252,
+          "sha256": "9815b7b2a9ab8a34748dbefa51eb6849cb5b49c1649c8b2f1e538b12f5fe117c",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/vision-studio_2.3.0-1_amd64.deb.manifest.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/vision-studio_2.3.0-1_amd64.deb.sha256",
+          "size": 98,
+          "sha256": "a1dac091e6d212a27ce46c72f8f70960e77217ddc6825f42fdf5a442417d6f7f",
+          "exact_committed_evidence_copies": [],
+          "preserved_copy": "docs/releases/evidence/2.4.0/cleanup-old-230-unique-logs/worktree_release/vision-studio_2.3.0-1_amd64.deb.sha256"
+        }
+      ],
+      "internal_source_checksums": [
+        {
+          "name": "vision-studio-2.3.0-sources.tar.xz",
+          "sha256": "7f552909614be6f4155147e713e3448527bf3c0b23e4fccf37cf7d410dc01273",
+          "matches": true
+        },
+        {
+          "name": "SOURCE-INVENTORY.json",
+          "sha256": "e53b0036e13604c72bf43801a3a25d46d639405b602d444f5c65ecdd9af2a2b2",
+          "matches": true
+        },
+        {
+          "name": "sources/DOWNLOAD-PROVENANCE.json",
+          "sha256": "e92f113f288b6809e4911092ab59ce87d871a21707811e9813d05f98b36ba312",
+          "matches": true
+        },
+        {
+          "name": "sources/qtbase-everywhere-src-6.8.3.tar.xz",
+          "sha256": "56001b905601bb9023d399f3ba780d7fa940f3e4861e496a7c490331f49e0b80",
+          "matches": true
+        },
+        {
+          "name": "sources/qtsvg-everywhere-src-6.8.3.tar.xz",
+          "sha256": "35eb516460f00f264eb504baa253432384351cf23fb9980a5857190e8deef438",
+          "matches": true
+        },
+        {
+          "name": "sources/qtwayland-everywhere-src-6.8.3.tar.xz",
+          "sha256": "20fe385887d21190165a3180c17dcfc8b9a0e1da4ec76865b6334bdc709994b0",
+          "matches": true
+        },
+        {
+          "name": "sources/qtimageformats-everywhere-src-6.8.3.tar.xz",
+          "sha256": "049bfb99845e4801672aca07c3c4fc4c140f932a3a33faa899419579e33ef1c8",
+          "matches": true
+        },
+        {
+          "name": "sources/qtdeclarative-everywhere-src-6.8.3.tar.xz",
+          "sha256": "1f03a2b8f5588b4face7da87926e9b2c1372b3a32157c52df07a75067a9db1af",
+          "matches": true
+        },
+        {
+          "name": "sources/qtwebchannel-everywhere-src-6.8.3.tar.xz",
+          "sha256": "967046b2650b7fc7b27547522e998e35d62291d795b20d9497e4bcc714831262",
+          "matches": true
+        },
+        {
+          "name": "sources/qtpositioning-everywhere-src-6.8.3.tar.xz",
+          "sha256": "6ab69a7e71a7795aab9ca2798eea126e36df55159a771ebd2f37cad3da63e9d3",
+          "matches": true
+        },
+        {
+          "name": "sources/qtwebengine-everywhere-src-6.8.3.tar.xz",
+          "sha256": "df4e19ba2b3a540551b6f998d62597377ffa688c1cff564589b7da2e2bf87337",
+          "matches": true
+        },
+        {
+          "name": "sources/ultralytics-8.4.173.tar.gz",
+          "sha256": "cfb50c462a9138a187f7e5957ad2c91e3e757f6f0569da0c896574282d553840",
+          "matches": true
+        },
+        {
+          "name": "sources/ultralytics_thop-2.2.2.tar.gz",
+          "sha256": "149a89c26c2be35b709fa25951f4644dea13d63017025569a193159a5908e3ed",
+          "matches": true
+        },
+        {
+          "name": "sources/opencv-python-headless-4.11.0.86.tar.gz",
+          "sha256": "996eb282ca4b43ec6a3972414de0e2331f5d9cda2b41091a49739c19fb843798",
+          "matches": true
+        },
+        {
+          "name": "sources/opencv-python-86.tar.gz",
+          "sha256": "8f8f21b10e60ecaf22241e39ad04b1ac2766925d471e1c5ddc4ed397f0099e91",
+          "matches": true
+        },
+        {
+          "name": "sources/opencv-python-86-Dockerfile_x86_64",
+          "sha256": "19d7609f4beef721d40d526b350d094af791d84fb9b572f2c95d9161943912dc",
+          "matches": true
+        },
+        {
+          "name": "sources/ffmpeg-5.1.6.tar.xz",
+          "sha256": "f4fa066278f7a47feab316fef905f4db0d5e9b589451949740f83972b30901bd",
+          "matches": true
+        },
+        {
+          "name": "sources/netron-9.3.1-source.tar.gz",
+          "sha256": "612d8a064d0c7e166b47208c41bb8ac2ae7f95d5a5f0d659e3f41d82c3cd5507",
+          "matches": true
+        },
+        {
+          "name": "sources/onnx-1.17.0.tar.gz",
+          "sha256": "48ca1a91ff73c1d5e3ea2eef20ae5d0e709bb8a2355ed798ffc2169753013fd3",
+          "matches": true
+        },
+        {
+          "name": "sources/protobuf-33.0.tar.gz",
+          "sha256": "cbc536064706b628dcfe507bef386ef3e2214d563657612296f1781aa155ee07",
+          "matches": true
+        },
+        {
+          "name": "sources/protobuf-cpp-3.21.12.tar.gz",
+          "sha256": "4eab9b524aa5913c6fffb20b2a8abf5ef7f95a80bc0701f3a6dbb4c607f73460",
+          "matches": true
+        }
+      ],
+      "success": true
+    },
+    {
+      "label": "primary_release",
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0",
+      "kind": "immutable_release_copy",
+      "exists": true,
+      "action": "preview_only_no_deletion",
+      "files": 63,
+      "directories": 1,
+      "symlinks": 0,
+      "logical_file_bytes": 2082701889,
+      "nested_git": [],
+      "foreign_filesystem_entries": [],
+      "special_entries": [],
+      "git_tracked_paths_in_candidate": [],
+      "assets": [
+        {
+          "name": "vision-studio_2.3.0-1_amd64.deb",
+          "bytes": 387134996,
+          "sha256": "e8f600337b7c452a2104d1bc78f544bbc41ab5553b8e67db37d919b084ab7cbf",
+          "matches_historical_final_assets": true,
+          "device": 66308,
+          "inode": 31232298,
+          "hardlinks": 2
+        },
+        {
+          "name": "vision-studio-2.3.0-complete-source.tar.xz",
+          "bytes": 846257988,
+          "sha256": "ed0c75206649ce57d41512a8f97ed12fee394a332cb646e6b6deabc7a15afbde",
+          "matches_historical_final_assets": true,
+          "device": 66308,
+          "inode": 31199987,
+          "hardlinks": 2
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 207,
+          "sha256": "fbbb09d225583e75b4d199f63d071610998d60f91c622d261b9d16bc1fc0312a",
+          "matches_historical_final_assets": true,
+          "device": 66308,
+          "inode": 25858596,
+          "hardlinks": 1
+        }
+      ],
+      "historical_remote_receipt_success": true,
+      "historical_remote_tag_commit": "05ea7df054ad9afbbe431e094e6f52fba0c51d99",
+      "final_remote_reverification_required": true,
+      "metadata_evidence_audit": [
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/SOURCE-INVENTORY.json",
+          "size": 8027,
+          "sha256": "e53b0036e13604c72bf43801a3a25d46d639405b602d444f5c65ecdd9af2a2b2",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/SOURCE-INVENTORY.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/SOURCE-SHA256SUMS",
+          "size": 2206,
+          "sha256": "6a44f4679fb5d3d8b5e61816772de6fe81a50fc86696a7d8c6273fc2d7f0f058",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/SOURCE-SHA256SUMS"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/build-deb.log",
+          "size": 676,
+          "sha256": "0ffb3923ca60eca7e8c3b97adf8d212c51bb02d2210bf12d622878906473c6bf",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/build-deb.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/build-source.log",
+          "size": 127,
+          "sha256": "3928354565de7ae44480a6256f088e2145ff964250be8056a9c337871198e9f5",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/build-source.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/conversion-qa.json",
+          "size": 14544,
+          "sha256": "820c78c215a457e53860e26535c98c71a37ce697628695e23873441b9e35c691",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/conversion-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/ctest-qa.json",
+          "size": 105703,
+          "sha256": "7869c48ae2a85f17034de535100a8a5c8b1b2ff9d0177b6c83ee92cd5c3009fc",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/ctest-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/evaluation-qa.json",
+          "size": 6185,
+          "sha256": "f2cd5a28a822390881308956096e8de56a1658c363dd8660f268063f8d657c82",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/evaluation-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/final-package-gpu-evaluation-receipt.json",
+          "size": 6777,
+          "sha256": "beb84ecff14e045144176249ecc7e297d755fad02afc7820a3ffbec6e0fb6a38",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/final-package-gpu-evaluation-receipt.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/finalize-qa.log",
+          "size": 1082,
+          "sha256": "93496c5d32fc3ba171ce800eda33db4fd673db02e107181b30cd8b884c9ac324",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/finalize-qa.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/gpu-qa.json",
+          "size": 1568,
+          "sha256": "e51bca2a5a8fd32130ff474d6c07cb63880c1a7cde97402c3b36230543bf8d41",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/gpu-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/input-reuse-proof.json",
+          "size": 4549,
+          "sha256": "ab883b2db7256ebdf9dbf71b3cbeba6df25ec71ec07bd941fed006a88183191d",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/input-reuse-proof.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/install-qa.json",
+          "size": 17927,
+          "sha256": "11fd3a4daaf796fdd88bafb86de8624ad0b295af1bdbd14933435f30dd513883",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/install-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/install-qa.log",
+          "size": 136,
+          "sha256": "d7b47482245447a4716ba0fa33f2282a05a44388321a2e8030313093ac88e64c",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/install-qa.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/latest-release.json",
+          "size": 11531,
+          "sha256": "7366550db911b32b336487b6a3a422d94ade6cd74ed4085c4061cb480b21a318",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/latest-release.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/local-release-normalization.json",
+          "size": 11579,
+          "sha256": "51cca75c1eb853ef21cb23f48267e77eec76d238da95d31f6497426ffcd28c01",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/local-release-normalization.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/old-source-cleanup-preview.json",
+          "size": 3752,
+          "sha256": "674400177111269349a70d898ba28be6c0919352d0fc508a722ae088b822de1e",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/old-source-cleanup-preview.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/old-source-cleanup.json",
+          "size": 3911,
+          "sha256": "4a2fac63bcde9c6d0aba6fd1149dd5de25e2f8bedf99050d8abce48cb4a2324b",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/old-source-cleanup.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/packaged-evaluation-qa.json",
+          "size": 308195,
+          "sha256": "36949e40d649d5705a93868c2bb500fbe91e674a46c4a7fe8925b1f91c68c665",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/packaged-evaluation-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/packaged-evaluation-qa.log",
+          "size": 400,
+          "sha256": "978585f9b69521f7f38c803ff26676c23084648a9356feea108e70ed64092d5d",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/packaged-evaluation-qa.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/packaged-gpu-qa.json",
+          "size": 20993,
+          "sha256": "be8c04e7a69688c847586e5ea75eb493696733f71c6bffe6db6ac8d133ea0fb7",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/packaged-gpu-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/packaged-gpu-qa.log",
+          "size": 238,
+          "sha256": "2a6e60331739e443fee842505f4387112626d4cb0e4460f4d9003a112fe8cef5",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/packaged-gpu-qa.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/packaged-mapping-qa.json",
+          "size": 6960,
+          "sha256": "672bbe584248362a21287a5566f4d39e92507b16f8b80ff3360d3b37f28cbac7",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/mapping-extra/packaged-mapping-qa.json",
+            "docs/releases/evidence/2.3.0/packaged-mapping-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/packaged-mapping-qa.log",
+          "size": 452,
+          "sha256": "9bc5eec2721b13a3c3bac05ccfc2995a0921fb781997c46cd5338efeb395c5c0",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/mapping-extra/packaged-mapping-qa.log",
+            "docs/releases/evidence/2.3.0/packaged-mapping-qa.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/post-publication-local-sync.json",
+          "size": 1320,
+          "sha256": "aeca8a560d1ea5f816605ea1a140d65f6a4152d9bd7a65f47236b40f913cf323",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/post-publication-local-sync.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/previous-2.2.0-verify.json",
+          "size": 1006,
+          "sha256": "bc14666e2b12e64b825fe0a75a1c8431275430c4703bec9e979b80bfa87cac56",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/previous-2.2.0-verify.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/prune-executed.json",
+          "size": 3597,
+          "sha256": "e138017a937914eef1376ea10b23c34e577c0e9bdf2eab3e595ae48efd7d3a09",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/prune-executed.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/prune-preview.json",
+          "size": 3515,
+          "sha256": "0c6f3c06b68ee8969f11434657837d114eb45912fdc0085bdf220044e8a3eb42",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/prune-preview.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/qa-report.json",
+          "size": 119524,
+          "sha256": "d4733f2a7f86e40f89c18d14c68da970e4329407c81cbd94c4298b84a44e9759",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/qa-report.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/qa-report.log",
+          "size": 147,
+          "sha256": "76b19da4aaf73a82bc03675bdd3d5bd6f0bc2f22b9bf723795f225ece50adf13",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/qa-report.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/release-dry-run.json",
+          "size": 717,
+          "sha256": "8ba206374f03d9bceae14ac0c453cc074f002bf491aae240e6423a3b9b639ff6",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/release-dry-run.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/release-publish-initial-failure.json",
+          "size": 453,
+          "sha256": "87995e20873b62d064fcc040bfdfb02b6330c2bdb2afbb45b60c9d78739f3c8e",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/release-publish-initial-failure.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/release-publish.json",
+          "size": 1580,
+          "sha256": "e9d10d4db751dfb99a887308ddfa5e58e97047e0c3c348fc86468ac74452cd2a",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/release-publish.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/release-publish.stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/final-ui-harness.stderr",
+            "docs/releases/evidence/2.3.0/final-ui-initial-run/integration.stderr",
+            "docs/releases/evidence/2.3.0/final-ui-initial-run/integration.stdout",
+            "docs/releases/evidence/2.3.0/final-ui-initial-run/ui-tests.stderr",
+            "docs/releases/evidence/2.3.0/final-ui-initial-run/ui-tests.stdout",
+            "docs/releases/evidence/2.3.0/final-ui/integration.stderr",
+            "docs/releases/evidence/2.3.0/final-ui/integration.stdout",
+            "docs/releases/evidence/2.3.0/final-ui/ui-tests.stderr",
+            "docs/releases/evidence/2.3.0/final-ui/ui-tests.stdout",
+            "docs/releases/evidence/2.3.0/integration-01/stderr.log",
+            "docs/releases/evidence/2.3.0/integration-01/stdout.log",
+            "docs/releases/evidence/2.3.0/integration-02/stderr.log",
+            "docs/releases/evidence/2.3.0/integration-02/stdout.log",
+            "docs/releases/evidence/2.3.0/mapping-extra/application.stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/conversion_onnx-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/conversion_torchscript-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/gpu-unprepared-probe-stderr.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/install-stderr.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/installed-status-stderr.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/model_display-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/model_display_pt-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/namespace-root-stderr.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/namespace-user-stderr.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/onnx-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/pt-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/purge-stderr.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/read-only-user-stderr.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/install-qa/logs/read-only-user-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-evaluation-qa/onnx_cpu/application.stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-evaluation-qa/onnx_cuda/application.stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-evaluation-qa/pt_cpu/application.stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-evaluation-qa/pt_cuda/application.stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-evaluation-qa/torchscript_cpu/application.stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-evaluation-qa/zero_result_id32_cpu/application.stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-gpu-qa/onnx_cpu/stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-gpu-qa/onnx_cuda/stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-gpu-qa/pt_cpu/stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/packaged-gpu-qa/pt_cuda/stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/qa-report/user-state/conversion_onnx-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/qa-report/user-state/conversion_torchscript-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/qa-report/user-state/model_display-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/qa-report/user-state/model_display_pt-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/qa-report/user-state/onnx-stdout.log",
+            "docs/releases/evidence/2.3.0/packaged-raw/qa-report/user-state/pt-stdout.log",
+            "docs/releases/evidence/2.3.0/production-ui-01/geometry.stderr",
+            "docs/releases/evidence/2.3.0/production-ui-01/geometry.stdout",
+            "docs/releases/evidence/2.3.0/production-ui-01/integration.stderr",
+            "docs/releases/evidence/2.3.0/production-ui-01/integration.stdout",
+            "docs/releases/evidence/2.3.0/production-ui-final/integration.stderr",
+            "docs/releases/evidence/2.3.0/production-ui-final/integration.stdout",
+            "docs/releases/evidence/2.3.0/production-ui-final/legacy-ui.stderr",
+            "docs/releases/evidence/2.3.0/production-ui-final/legacy-ui.stdout",
+            "docs/releases/evidence/2.3.0/release-publish.stderr.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/release-verify.json",
+          "size": 1006,
+          "sha256": "c58cf581dd072d1016cdff6387c677f29446018187095469fdb20ab3e28f0859",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/release-verify.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/source-bundle-qa.json",
+          "size": 2144967,
+          "sha256": "3d126ab45618cb26e0f02b17e3426b0acc6374cdd88142078cfd54df5bd2eedb",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/source-bundle-qa.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/source-bundle-qa.log",
+          "size": 448,
+          "sha256": "a3afae017b2ab7e0ded970ba9eb67cb969d6ab477f214b86a987522089b65891",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/source-bundle-qa.log"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/source-freeze.json",
+          "size": 683,
+          "sha256": "8d60fa9b90cc0134b64a39f4b5cf5bc67c644343803b204fb23408a944190401",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/source-freeze.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/temporary-payload-cleanup.json",
+          "size": 1281,
+          "sha256": "8dccf9a84f15bfa9ecf354f949c6c74b8d82ce731c6195cc39a8c8aa4fb88196",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/temporary-payload-cleanup.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/vision-studio_2.3.0-1_amd64.deb.manifest.json",
+          "size": 5252,
+          "sha256": "9815b7b2a9ab8a34748dbefa51eb6849cb5b49c1649c8b2f1e538b12f5fe117c",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.3.0/vision-studio_2.3.0-1_amd64.deb.manifest.json"
+          ]
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/vision-studio_2.3.0-1_amd64.deb.sha256",
+          "size": 98,
+          "sha256": "a1dac091e6d212a27ce46c72f8f70960e77217ddc6825f42fdf5a442417d6f7f",
+          "exact_committed_evidence_copies": [],
+          "preserved_copy": "docs/releases/evidence/2.4.0/cleanup-old-230-unique-logs/primary_release/vision-studio_2.3.0-1_amd64.deb.sha256"
+        }
+      ],
+      "internal_source_checksums": [
+        {
+          "name": "vision-studio-2.3.0-sources.tar.xz",
+          "sha256": "7f552909614be6f4155147e713e3448527bf3c0b23e4fccf37cf7d410dc01273",
+          "matches": true
+        },
+        {
+          "name": "SOURCE-INVENTORY.json",
+          "sha256": "e53b0036e13604c72bf43801a3a25d46d639405b602d444f5c65ecdd9af2a2b2",
+          "matches": true
+        },
+        {
+          "name": "sources/DOWNLOAD-PROVENANCE.json",
+          "sha256": "e92f113f288b6809e4911092ab59ce87d871a21707811e9813d05f98b36ba312",
+          "matches": true
+        },
+        {
+          "name": "sources/qtbase-everywhere-src-6.8.3.tar.xz",
+          "sha256": "56001b905601bb9023d399f3ba780d7fa940f3e4861e496a7c490331f49e0b80",
+          "matches": true
+        },
+        {
+          "name": "sources/qtsvg-everywhere-src-6.8.3.tar.xz",
+          "sha256": "35eb516460f00f264eb504baa253432384351cf23fb9980a5857190e8deef438",
+          "matches": true
+        },
+        {
+          "name": "sources/qtwayland-everywhere-src-6.8.3.tar.xz",
+          "sha256": "20fe385887d21190165a3180c17dcfc8b9a0e1da4ec76865b6334bdc709994b0",
+          "matches": true
+        },
+        {
+          "name": "sources/qtimageformats-everywhere-src-6.8.3.tar.xz",
+          "sha256": "049bfb99845e4801672aca07c3c4fc4c140f932a3a33faa899419579e33ef1c8",
+          "matches": true
+        },
+        {
+          "name": "sources/qtdeclarative-everywhere-src-6.8.3.tar.xz",
+          "sha256": "1f03a2b8f5588b4face7da87926e9b2c1372b3a32157c52df07a75067a9db1af",
+          "matches": true
+        },
+        {
+          "name": "sources/qtwebchannel-everywhere-src-6.8.3.tar.xz",
+          "sha256": "967046b2650b7fc7b27547522e998e35d62291d795b20d9497e4bcc714831262",
+          "matches": true
+        },
+        {
+          "name": "sources/qtpositioning-everywhere-src-6.8.3.tar.xz",
+          "sha256": "6ab69a7e71a7795aab9ca2798eea126e36df55159a771ebd2f37cad3da63e9d3",
+          "matches": true
+        },
+        {
+          "name": "sources/qtwebengine-everywhere-src-6.8.3.tar.xz",
+          "sha256": "df4e19ba2b3a540551b6f998d62597377ffa688c1cff564589b7da2e2bf87337",
+          "matches": true
+        },
+        {
+          "name": "sources/ultralytics-8.4.173.tar.gz",
+          "sha256": "cfb50c462a9138a187f7e5957ad2c91e3e757f6f0569da0c896574282d553840",
+          "matches": true
+        },
+        {
+          "name": "sources/ultralytics_thop-2.2.2.tar.gz",
+          "sha256": "149a89c26c2be35b709fa25951f4644dea13d63017025569a193159a5908e3ed",
+          "matches": true
+        },
+        {
+          "name": "sources/opencv-python-headless-4.11.0.86.tar.gz",
+          "sha256": "996eb282ca4b43ec6a3972414de0e2331f5d9cda2b41091a49739c19fb843798",
+          "matches": true
+        },
+        {
+          "name": "sources/opencv-python-86.tar.gz",
+          "sha256": "8f8f21b10e60ecaf22241e39ad04b1ac2766925d471e1c5ddc4ed397f0099e91",
+          "matches": true
+        },
+        {
+          "name": "sources/opencv-python-86-Dockerfile_x86_64",
+          "sha256": "19d7609f4beef721d40d526b350d094af791d84fb9b572f2c95d9161943912dc",
+          "matches": true
+        },
+        {
+          "name": "sources/ffmpeg-5.1.6.tar.xz",
+          "sha256": "f4fa066278f7a47feab316fef905f4db0d5e9b589451949740f83972b30901bd",
+          "matches": true
+        },
+        {
+          "name": "sources/netron-9.3.1-source.tar.gz",
+          "sha256": "612d8a064d0c7e166b47208c41bb8ac2ae7f95d5a5f0d659e3f41d82c3cd5507",
+          "matches": true
+        },
+        {
+          "name": "sources/onnx-1.17.0.tar.gz",
+          "sha256": "48ca1a91ff73c1d5e3ea2eef20ae5d0e709bb8a2355ed798ffc2169753013fd3",
+          "matches": true
+        },
+        {
+          "name": "sources/protobuf-33.0.tar.gz",
+          "sha256": "cbc536064706b628dcfe507bef386ef3e2214d563657612296f1781aa155ee07",
+          "matches": true
+        },
+        {
+          "name": "sources/protobuf-cpp-3.21.12.tar.gz",
+          "sha256": "4eab9b524aa5913c6fffb20b2a8abf5ef7f95a80bc0701f3a6dbb4c607f73460",
+          "matches": true
+        }
+      ],
+      "success": true
+    },
+    {
+      "label": "worktree_source",
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.0/clean-source",
+      "kind": "frozen_source_export",
+      "exists": true,
+      "action": "preview_only_no_deletion",
+      "files": 4021,
+      "directories": 2683,
+      "symlinks": 0,
+      "logical_file_bytes": 116962221,
+      "nested_git": [],
+      "foreign_filesystem_entries": [],
+      "special_entries": [],
+      "git_tracked_paths_in_candidate": []
+    },
+    {
+      "label": "worktree_build",
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+      "kind": "rebuildable_cmake_build",
+      "exists": true,
+      "action": "preview_only_no_deletion",
+      "files": 399,
+      "directories": 155,
+      "symlinks": 0,
+      "logical_file_bytes": 43561180,
+      "nested_git": [],
+      "foreign_filesystem_entries": [],
+      "special_entries": [],
+      "git_tracked_paths_in_candidate": []
+    },
+    {
+      "label": "worktree_stage",
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.3.0-1",
+      "kind": "reobtainable_debian_staging",
+      "exists": true,
+      "action": "preview_only_no_deletion",
+      "files": 36725,
+      "directories": 7911,
+      "symlinks": 29,
+      "logical_file_bytes": 1690226108,
+      "nested_git": [],
+      "foreign_filesystem_entries": [],
+      "special_entries": [],
+      "git_tracked_paths_in_candidate": []
+    },
+    {
+      "label": "primary_source",
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.3.0/clean-source",
+      "kind": "frozen_source_export",
+      "exists": false,
+      "action": "preview_only_no_deletion"
+    },
+    {
+      "label": "primary_build",
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/build/2.3.0-release",
+      "kind": "rebuildable_cmake_build",
+      "exists": false,
+      "action": "preview_only_no_deletion"
+    },
+    {
+      "label": "primary_stage",
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/deb-stage/2.3.0-1",
+      "kind": "reobtainable_debian_staging",
+      "exists": false,
+      "action": "preview_only_no_deletion"
+    }
+  ],
+  "preserved_backups": [
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/vision-studio_2.3.0-1_amd64.deb.sha256",
+      "size": 98,
+      "sha256": "a1dac091e6d212a27ce46c72f8f70960e77217ddc6825f42fdf5a442417d6f7f",
+      "exact_committed_evidence_copies": [],
+      "preserved_copy": "docs/releases/evidence/2.4.0/cleanup-old-230-unique-logs/worktree_release/vision-studio_2.3.0-1_amd64.deb.sha256"
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0/vision-studio_2.3.0-1_amd64.deb.sha256",
+      "size": 98,
+      "sha256": "a1dac091e6d212a27ce46c72f8f70960e77217ddc6825f42fdf5a442417d6f7f",
+      "exact_committed_evidence_copies": [],
+      "preserved_copy": "docs/releases/evidence/2.4.0/cleanup-old-230-unique-logs/primary_release/vision-studio_2.3.0-1_amd64.deb.sha256"
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/.ninja_log",
+      "size": 35839,
+      "sha256": "b744217c68ebc4cc8270904ad6a4d30121912f8d96ffa72d5d71836017abd3e3",
+      "exact_committed_evidence_copies": [],
+      "preserved_copy": "docs/releases/evidence/2.4.0/cleanup-old-230-unique-logs/build/.ninja_log"
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/CMakeFiles/CMakeOutput.log",
+      "size": 25055,
+      "sha256": "ba92e30966290561d2c21acb3ae04b5e47c17001485635438a93d579532376e5",
+      "exact_committed_evidence_copies": [],
+      "preserved_copy": "docs/releases/evidence/2.4.0/cleanup-old-230-unique-logs/build/CMakeFiles/CMakeOutput.log"
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/Testing/Temporary/CTestCostData.txt",
+      "size": 615,
+      "sha256": "347b37e1001350213a57461131d64dd0f8ec6be54a787faae6bdc444edb51c56",
+      "exact_committed_evidence_copies": [],
+      "preserved_copy": "docs/releases/evidence/2.4.0/cleanup-old-230-unique-logs/build/Testing/Temporary/CTestCostData.txt"
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/Testing/Temporary/LastTest.log",
+      "size": 7785,
+      "sha256": "e2d60a13e7abdca6221f6b6951c3237c54f17247b6d5542c409ff77932570b43",
+      "exact_committed_evidence_copies": [],
+      "preserved_copy": "docs/releases/evidence/2.4.0/cleanup-old-230-unique-logs/build/Testing/Temporary/LastTest.log"
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/Testing/Temporary/LastTestsFailed.log",
+      "size": 18,
+      "sha256": "1d434f3a2b9401b0101a194b42b7d68e64569472a254c17cc59b348bf7e60db0",
+      "exact_committed_evidence_copies": [],
+      "preserved_copy": "docs/releases/evidence/2.4.0/cleanup-old-230-unique-logs/build/Testing/Temporary/LastTestsFailed.log"
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "source_export_verification": {
+    "source_freeze_commit": "9dba95c0081cf1d1616c6537f6e41ad58d07722a",
+    "git_archive_files": 4020,
+    "missing": [],
+    "mismatches": [],
+    "extra_files": [
+      "runtime-info.json"
+    ],
+    "runtime_info_sha256": "15b239dc233e80b4ddaa8b22f87f07fb71bfe4d90332985a708bce04d6019f1b",
+    "runtime_info_matches_freeze_receipt": true,
+    "success": true
+  },
+  "source_member_manifest": {
+    "path": "docs/releases/evidence/2.4.0/cleanup-old-230-source-members.jsonl.gz",
+    "sha256": "572d070fede76b382608d5f883be941a86d60e91ceedc018a1deaf0997547cb3",
+    "bytes": 179658,
+    "rows": 4021
+  },
+  "build_verification": {
+    "cache_release": true,
+    "cache_version_230": true,
+    "cache_source_worktree": true,
+    "cache_production_resources": true,
+    "production_binary_sha256": "80803d9b84bdeedf43f4ac51d886960ae93f6afa4ce54376ec3701bb99755aa3",
+    "matches_freeze_binary": true,
+    "matches_ctest_binary": true,
+    "temporary_logs": [
+      {
+        "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/.ninja_log",
+        "size": 35839,
+        "sha256": "b744217c68ebc4cc8270904ad6a4d30121912f8d96ffa72d5d71836017abd3e3",
+        "exact_committed_evidence_copies": [],
+        "preserved_copy": "docs/releases/evidence/2.4.0/cleanup-old-230-unique-logs/build/.ninja_log"
+      },
+      {
+        "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/CMakeFiles/CMakeOutput.log",
+        "size": 25055,
+        "sha256": "ba92e30966290561d2c21acb3ae04b5e47c17001485635438a93d579532376e5",
+        "exact_committed_evidence_copies": [],
+        "preserved_copy": "docs/releases/evidence/2.4.0/cleanup-old-230-unique-logs/build/CMakeFiles/CMakeOutput.log"
+      },
+      {
+        "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/Testing/Temporary/CTestCostData.txt",
+        "size": 615,
+        "sha256": "347b37e1001350213a57461131d64dd0f8ec6be54a787faae6bdc444edb51c56",
+        "exact_committed_evidence_copies": [],
+        "preserved_copy": "docs/releases/evidence/2.4.0/cleanup-old-230-unique-logs/build/Testing/Temporary/CTestCostData.txt"
+      },
+      {
+        "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/Testing/Temporary/LastTest.log",
+        "size": 7785,
+        "sha256": "e2d60a13e7abdca6221f6b6951c3237c54f17247b6d5542c409ff77932570b43",
+        "exact_committed_evidence_copies": [],
+        "preserved_copy": "docs/releases/evidence/2.4.0/cleanup-old-230-unique-logs/build/Testing/Temporary/LastTest.log"
+      },
+      {
+        "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/Testing/Temporary/LastTestsFailed.log",
+        "size": 18,
+        "sha256": "1d434f3a2b9401b0101a194b42b7d68e64569472a254c17cc59b348bf7e60db0",
+        "exact_committed_evidence_copies": [],
+        "preserved_copy": "docs/releases/evidence/2.4.0/cleanup-old-230-unique-logs/build/Testing/Temporary/LastTestsFailed.log"
+      }
+    ],
+    "test_binaries": [
+      {
+        "name": "vision-core-tests",
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-core-tests",
+        "expected_sha256": "f2f91c7ea0705487561eba88a80ca820a91a8ddf48c04674d63b89d6b91a7843",
+        "actual_sha256": "f2f91c7ea0705487561eba88a80ca820a91a8ddf48c04674d63b89d6b91a7843",
+        "matches": true
+      },
+      {
+        "name": "vision-inference-delivery-tests",
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-inference-delivery-tests",
+        "expected_sha256": "ffb8f844aae0078847c5404ed99974493f400cdbc2f2e019692e49799932f7d7",
+        "actual_sha256": "ffb8f844aae0078847c5404ed99974493f400cdbc2f2e019692e49799932f7d7",
+        "matches": true
+      },
+      {
+        "name": "vision-recording-tests",
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-recording-tests",
+        "expected_sha256": "5968a00d95150a7dbbd4add8c593c0604be38b56d28c262d5a246039c32acec7",
+        "actual_sha256": "5968a00d95150a7dbbd4add8c593c0604be38b56d28c262d5a246039c32acec7",
+        "matches": true
+      },
+      {
+        "name": "vision-pt-tests",
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-pt-tests",
+        "expected_sha256": "de1c7a00972d94c0fe0ca7e003f892115431dc35efd4c68fbfc03b04f1704901",
+        "actual_sha256": "de1c7a00972d94c0fe0ca7e003f892115431dc35efd4c68fbfc03b04f1704901",
+        "matches": true
+      },
+      {
+        "name": "vision-gpu-tests",
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-gpu-tests",
+        "expected_sha256": "99ada661a33acc761c6d9b66fc7c406ead4ff13f88c49ced2d12b3ce8a60ac2a",
+        "actual_sha256": "99ada661a33acc761c6d9b66fc7c406ead4ff13f88c49ced2d12b3ce8a60ac2a",
+        "matches": true
+      },
+      {
+        "name": "vision-ui-tests",
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-ui-tests",
+        "expected_sha256": "ce4d59ec60ddf636307e293104dab7dcb592d0b92e674d7ac4a8bd2eb4416944",
+        "actual_sha256": "ce4d59ec60ddf636307e293104dab7dcb592d0b92e674d7ac4a8bd2eb4416944",
+        "matches": true
+      },
+      {
+        "name": "vision-batch-responsiveness-tests",
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-batch-responsiveness-tests",
+        "expected_sha256": "13ad780f32632792066e9290b1d0d171f892b8995bc563c3fe7cd015c54af75d",
+        "actual_sha256": "13ad780f32632792066e9290b1d0d171f892b8995bc563c3fe7cd015c54af75d",
+        "matches": true
+      },
+      {
+        "name": "vision-scope-filter-ui-tests",
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-scope-filter-ui-tests",
+        "expected_sha256": "5aa258a68eb5a606838c767060a047c0f2e329e849a8dd0bbf592e4007bec37c",
+        "actual_sha256": "5aa258a68eb5a606838c767060a047c0f2e329e849a8dd0bbf592e4007bec37c",
+        "matches": true
+      },
+      {
+        "name": "vision-modelviewer-tests",
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-modelviewer-tests",
+        "expected_sha256": "3fd3ca6dbbf0c9c0421372790989b2862bab310946f33d6c83b1ffc9fc3ea9fd",
+        "actual_sha256": "3fd3ca6dbbf0c9c0421372790989b2862bab310946f33d6c83b1ffc9fc3ea9fd",
+        "matches": true
+      },
+      {
+        "name": "vision-conversion-ui-tests",
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-conversion-ui-tests",
+        "expected_sha256": "0319d1f4f835b1952dff5ef01ef073b8f48b5ecf47acb9d8bd45029718ddac92",
+        "actual_sha256": "0319d1f4f835b1952dff5ef01ef073b8f48b5ecf47acb9d8bd45029718ddac92",
+        "matches": true
+      },
+      {
+        "name": "vision-conversion-inference-tests",
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-conversion-inference-tests",
+        "expected_sha256": "37f33ffe5ff8ef022a3c4dc6976c6d86cd4c224fdb387eaa19e6d45f596c5c24",
+        "actual_sha256": "37f33ffe5ff8ef022a3c4dc6976c6d86cd4c224fdb387eaa19e6d45f596c5c24",
+        "matches": true
+      },
+      {
+        "name": "vision-evaluation-worker-tests",
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-evaluation-worker-tests",
+        "expected_sha256": "76ccb6c05de9cfeca618ba05f6ebaccb92f188475106b8f2ba24d831dca79650",
+        "actual_sha256": "76ccb6c05de9cfeca618ba05f6ebaccb92f188475106b8f2ba24d831dca79650",
+        "matches": true
+      },
+      {
+        "name": "vision-evaluation-panel-tests",
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-evaluation-panel-tests",
+        "expected_sha256": "122ed8d0e5667de56b263797abd1f82aae42a23465fce66da53435e3eaee3404",
+        "actual_sha256": "122ed8d0e5667de56b263797abd1f82aae42a23465fce66da53435e3eaee3404",
+        "matches": true
+      },
+      {
+        "name": "vision-evaluation-integration-tests",
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-evaluation-integration-tests",
+        "expected_sha256": "bbb660002333759c0d291852af2561c7294d7593f1b5a8eacbb341ec83bc954d",
+        "actual_sha256": "bbb660002333759c0d291852af2561c7294d7593f1b5a8eacbb341ec83bc954d",
+        "matches": true
+      }
+    ],
+    "success": true,
+    "all_entries_have_generated_build_or_preserved_log_purpose": true
+  },
+  "stage_verification": {
+    "members_verified": 44664,
+    "types": {
+      "directory": 7910,
+      "file": 36725,
+      "symlink": 29
+    },
+    "mismatches": [],
+    "missing_members": [],
+    "extra_members": [],
+    "control_version_230_1": true,
+    "deb_sha256": "e8f600337b7c452a2104d1bc78f544bbc41ab5553b8e67db37d919b084ab7cbf",
+    "deb_matches_final_asset": true,
+    "packaged_binary_sha256": "1a4f0295c28b150375a428a486b3f973d7aca40d91e403b8e0447874f7b7f89f",
+    "binary_matches_package_manifest": true,
+    "deb_matches_package_manifest": true,
+    "runtime_is_staging_copy_only": "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.3.0-1/opt/VisionStudio/runtime",
+    "success": true
+  },
+  "stage_member_manifest": {
+    "path": "docs/releases/evidence/2.4.0/cleanup-old-230-stage-members.jsonl.gz",
+    "sha256": "f9dd2a0bd1580ef65720056851028333d815cba00768ed6dce4685cdca1ac71f",
+    "bytes": 1757643,
+    "rows": 44664
+  },
+  "bytes": {
+    "logical_file_bytes_in_all_candidates": 6016153287,
+    "unique_allocated_inode_bytes": 4050968576,
+    "allocated_bytes_if_all_candidate_links_removed": 3256672256,
+    "note": "Estimates exclude directory metadata; shared hardlinks with retained versions are not counted as freed."
+  },
+  "protected_paths": [
+    "/home/misaka/.codex/worktrees/ef0b/yolo",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/.git",
+    "/home/misaka/文档/ChatGPT/yolo",
+    "/home/misaka/文档/ChatGPT/yolo/.git",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.0 except exact clean-source child",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.1",
+    "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.1",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.4.0",
+    "/home/misaka/文档/ChatGPT/yolo/output/releases/2.4.0",
+    "/home/misaka/Qt",
+    "/opt/VisionStudio/runtime",
+    "/home/misaka/.local/share/vision-studio",
+    "/home/misaka/文档/ChatGPT/yolo/build/qt-imageformats-prefix"
+  ],
+  "required_before_execute": [
+    "Successfully publish and independently remotely verify final 2.4.0, including tag, public state and every core asset size/SHA256.",
+    "Freshly reverify immutable 2.3.0 remote tag and three core asset sizes/SHA256.",
+    "Use scripts/github_release.py prune preview and execute for each releases root; do not manually broad-delete release trees.",
+    "Before exact clean-source/build/stage removal, recheck all member manifests and preserved backup hashes, refuse new/changed/extra members or active processes; never follow symlinks.",
+    "Retain all other output/v2.3.0 QA/backup paths and shared SDK/runtime/user data."
+  ],
+  "local_preflight_checks_passed": true,
+  "elapsed_seconds": 22.322,
+  "build_member_manifest": {
+    "path": "docs/releases/evidence/2.4.0/cleanup-old-230-build-members.jsonl.gz",
+    "sha256": "f1a293ab07fde68084d19e0ec95736d86efca05bec6a7dbfdc97cd5fe050f9d5",
+    "bytes": 16424,
+    "rows": 554,
+    "unclassified_entries": []
+  },
+  "supplemented_at_utc": "2026-10-20T13:26:27.091693+00:00"
+}

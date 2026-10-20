@@ -10,7 +10,11 @@
 
 当前工程版本：**2.4.0**，聚焦数据集评估与视频／摄像头推理，移除独立图片和普通图片文件夹导入；重新整理工作台顶部任务条与可折叠的数据集设置，给预览画面留出更多空间。在同一工作台串联「导入带标注数据集 → 评估目标类 → 分析阈值与错例 → 采用检测配置」。界面保留 [Fluent-Qt](https://github.com/calvinhxx/Fluent-Qt) 风格，复用全局模型与现有推理后端。本次发行平台：**Ubuntu 22.04 LTS amd64**；安装文件以 Releases 实际发布为准。Windows 已发布安装包仍为 2.1.0 补充版，本版不宣称完成 Windows 2.4.0 验收。应用代码采用 **AGPL-3.0-only**。
 
-工作台采用 Fluent 深色界面；2.4.0 的实际布局截图与尺寸检查随[同版验收证据](docs/releases/evidence/2.4.0/)保存，旧版截图不作为本版界面展示。
+![Vision Studio 2.4.0 数据集预览](docs/screenshots/workbench-2.4.0.png)
+
+![Vision Studio 2.4.0 评估与阈值](docs/screenshots/evaluation-2.4.0.png)
+
+以上为最终 2.4.0 安装包的实际 Qt 窗口，使用公开 COCO8 四张 Val 图片和随附 YOLOv5n 模型验收，分别展示 CPU 预览与 CUDA 评估。这里只演示界面与管线，不是足球能力或部署性能基准；[同版验收证据](docs/releases/evidence/2.4.0/)保留来源、原始日志与布局检查。
 
 ## 功能
 

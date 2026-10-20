@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "version": "2.4.0",
+  "success": true,
+  "errors": [],
+  "generated_at_utc": "2026-10-20T13:42:20.198454+00:00",
+  "scope": "Complete effective evaluation Qt/worker/Python suites plus six actual final-package pretrained-model cases and three same-weight comparisons.",
+  "checks": {
+    "onnx_cpu": true,
+    "pt_cpu": true,
+    "torchscript_cpu": true,
+    "zero_result_id32_cpu": true,
+    "onnx_cuda": true,
+    "pt_cuda": true,
+    "pt_torchscript_cpu": true,
+    "onnx_cpu_cuda": true,
+    "pt_cpu_cuda": true
+  },
+  "details": {
+    "deb_sha256": "a49aac15daf9733d42126f84d7c6dc64256dbac46da21cb4d9d8ed58d2effe68",
+    "deb_bytes": 387150092,
+    "packaged_binary_sha256": "3f83fbdc4f5fe277f13ea08332a88bbfd8adb4f889342ec75e0873f6b2bfcbd1",
+    "production_unstripped_binary_sha256": "5813c1bf7a3970b5c51746479a78c5acb0fc81048be8f5a36ef4574f23d6484e",
+    "ctest_report": "ctest-qa.json",
+    "hardware": "NVIDIA GeForce RTX 4060",
+    "aggregation_only": "No new inference was executed by this report aggregation.",
+    "packaged_report": "packaged-evaluation-qa.json",
+    "regressions": [
+      {
+        "name": "vision-evaluation-integration-tests",
+        "log": "qa-full/vision-evaluation-integration-tests.log",
+        "log_sha256": "1b0b1f287c095998823685a9dc4946e42853504b638728e9c68245424a28dad9",
+        "actual_passed": 33
+      },
+      {
+        "name": "vision-evaluation-worker-tests",
+        "log": "qa-full/vision-evaluation-worker-tests.log",
+        "log_sha256": "fd6d9c26a4f26c76b76bcc637e3a7227a021d0c41cd2d73183a2107148107852",
+        "actual_passed": 18
+      },
+      {
+        "name": "vision-evaluation-python-tests",
+        "log": "qa-full/vision-evaluation-python-tests.log",
+        "log_sha256": "9ae9107e729ffb72add5e83d1b673077a9c02e5632e3f7946881119c50f7421c",
+        "actual_passed": 49
+      }
+    ],
+    "dataset": {
+      "yaml": "/tmp/vision-studio-evaluation-public-230/coco8-qa.yaml",
+      "yaml_sha256": "7258a71117ef520036345818544c3c8a7ffd50a38ba6a7b42c752544b7631c1c",
+      "split": "val",
+      "provenance": {
+        "dataset": "COCO8",
+        "source_url": "https://github.com/ultralytics/assets/releases/download/v0.0.0/coco8.zip",
+        "configuration_url": "https://raw.githubusercontent.com/ultralytics/ultralytics/main/ultralytics/cfg/datasets/coco8.yaml",
+        "sha256": "54c67fe9ef88313e021ec0e92b73c200167bb0a86633e8df8658d832cca828c9",
+        "bytes": 443158,
+        "purpose": "Public ground-truth data for inference pipeline integration, not representative football accuracy",
+        "images": [
+          "coco8/images/train/000000000009.jpg",
+          "coco8/images/train/000000000025.jpg",
+          "coco8/images/train/000000000030.jpg",
+          "coco8/images/train/000000000034.jpg",
+          "coco8/images/val/000000000036.jpg",
+          "coco8/images/val/000000000042.jpg",
+          "coco8/images/val/000000000049.jpg",
+          "coco8/images/val/000000000061.jpg"
+        ],
+        "labels": [
+          "coco8/labels/train/000000000009.txt",
+          "coco8/labels/train/000000000025.txt",
+          "coco8/labels/train/000000000030.txt",
+          "coco8/labels/train/000000000034.txt",
+          "coco8/labels/val/000000000036.txt",
+          "coco8/labels/val/000000000042.txt",
+          "coco8/labels/val/000000000049.txt",
+          "coco8/labels/val/000000000061.txt"
+        ],
+        "configuration_original_sha256": "030aaffa08f8a161dc3587d216aa956c0c8947e594b2d9d8515a36b9ac44f9fa",
+        "configuration_sha256": "7258a71117ef520036345818544c3c8a7ffd50a38ba6a7b42c752544b7631c1c",
+        "configuration_changes": "Set absolute QA dataset path and remove automatic download instruction; names and split unchanged",
+        "positive_target": "COCO original class ID 0: person",
+        "negative_target": "COCO original class ID 32: sports ball; val has zero annotated instances"
+      }
+    },
+    "limitations": [
+      "COCO8 is a tiny pipeline integration set, not a deployment benchmark or football accuracy claim.",
+      "CUDA comparisons apply to identical weights and record explicit numeric tolerances."
+    ],
+    "comparisons": {
+      "pt_torchscript_cpu": {
+        "success": true,
+        "minimum_working_box_iou": 0.9722889543186704,
+        "maximum_working_score_error": 8.940696716308594e-07,
+        "metric_absolute_differences": {
+          "mAP50": 0.0,
+          "mAP50_95": 0.006666666666666654,
+          "precision": 0.0,
+          "recall": 0.0,
+          "F1": 0.0,
+          "no_ball_false_positive_rate": 0
+        },
+        "tolerances": {
+          "box_iou_minimum": 0.95,
+          "score_absolute_maximum": 0.005,
+          "metric_absolute_maximum": 0.02
+        },
+        "note": "Same weights only; different YOLO architectures are not expected to have equal accuracy."
+      },
+      "onnx_cpu_cuda": {
+        "success": true,
+        "minimum_working_box_iou": 0.9999982815465431,
+        "maximum_working_score_error": 3.2782554626464844e-07,
+        "metric_absolute_differences": {
+          "mAP50": 0.0,
+          "mAP50_95": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "F1": 0.0,
+          "no_ball_false_positive_rate": 0
+        },
+        "tolerances": {
+          "box_iou_minimum": 0.95,
+          "score_absolute_maximum": 0.005,
+          "metric_absolute_maximum": 0.02
+        },
+        "note": "Same weights only; different YOLO architectures are not expected to have equal accuracy."
+      },
+      "pt_cpu_cuda": {
+        "success": true,
+        "minimum_working_box_iou": 0.9999970950913512,
+        "maximum_working_score_error": 4.76837158203125e-07,
+        "metric_absolute_differences": {
+          "mAP50": 0.0,
+          "mAP50_95": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "F1": 0.0,
+          "no_ball_false_positive_rate": 0
+        },
+        "tolerances": {
+          "box_iou_minimum": 0.95,
+          "score_absolute_maximum": 0.005,
+          "metric_absolute_maximum": 0.02
+        },
+        "note": "Same weights only; different YOLO architectures are not expected to have equal accuracy."
+      }
+    }
+  }
+}
