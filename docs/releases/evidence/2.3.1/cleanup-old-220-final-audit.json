@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "success": true,
+  "audit_only_with_new_backups": true,
+  "deleted_paths": [],
+  "cleanup_permitted": false,
+  "requires_root_explicit_remote_verified_before_any_deletion": true,
+  "version": "2.2.0",
+  "generated_at_utc": "2026-10-20T10:41:10.868042+00:00",
+  "elapsed_seconds": 27.243,
+  "errors": [],
+  "deb": {
+    "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.2.0/vision-studio_2.2.0-1_amd64.deb",
+    "sha256": "8ef059801bcef7f24189cba16bdaf66551fafb3f48ceb6b042bfb12f522226ac",
+    "matches_preview": true
+  },
+  "stage_comparison": {
+    "payload": {
+      "archive_members": 44660,
+      "regular_and_hardlink_files": 36721,
+      "symlinks": 29,
+      "regular_file_bytes_compared": 1689762133,
+      "mismatches": [],
+      "extra_stage_members": [],
+      "missing_stage_members": [],
+      "mode_mismatches": [],
+      "success": true
+    },
+    "control": {
+      "archive_members": 1,
+      "regular_and_hardlink_files": 1,
+      "symlinks": 0,
+      "regular_file_bytes_compared": 2435,
+      "mismatches": [],
+      "extra_stage_members": [],
+      "missing_stage_members": [],
+      "mode_mismatches": [],
+      "success": true
+    }
+  },
+  "source_export_recheck": {
+    "source_freeze_commit": "5098cdd697bc5c392d414295a5c4234651e73825",
+    "tracked_files": 3691,
+    "missing": [],
+    "changed": [],
+    "executable_mode_mismatches": [],
+    "extra_files": [
+      "runtime-info.json"
+    ],
+    "extra_files_match_preview": true,
+    "extra_directories": [],
+    "success": true
+  },
+  "per_member_manifest": {
+    "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/cleanup-old-220-stage-members.jsonl.gz",
+    "records": 44661,
+    "jsonl_content_sha256": "126a881218a5af58d2e9a8a96b80dd5ccb0da6224dfbda441620ce09c2c131a9",
+    "gzip_sha256": "eef22590296ec938f6553dd4104193cc75afe47ba1edafcb3ce8057202ec6cf6",
+    "bytes": 1786499
+  },
+  "backup_manifest": {
+    "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/SHA256-manifest.json",
+    "sha256": "667dfcfa28c9886e57b462cf345dd20d331bbe01a6fae112611ffd06145e3f61",
+    "files": 15,
+    "all_files_sha256_verified": true
+  },
+  "preserved_original_paths": [
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.2.0",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/local-install/2.2.0"
+  ],
+  "no_source_dataset_user_runtime_qt_or_primary_shared_build_modified": true,
+  "notes": [
+    "All stage payload/control members compared by type, regular-file bytes SHA256 and symlink target; no extraction into stage.",
+    "Only requested QA backups and audit artifacts were created. No old directory or source file was removed or rewritten.",
+    "Historical remote receipts are preliminary. Fresh root-agent remote verification remains mandatory."
+  ]
+}

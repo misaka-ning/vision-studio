@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "version": "2.2.0",
+  "backup_only": true,
+  "files": [
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.2.0/SOURCE-INVENTORY.json",
+      "backup": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/worktree/SOURCE-INVENTORY.json",
+      "bytes": 8027,
+      "sha256": "90cde872239b5520012b8a956b2954805cc4fdb6b3e4f8f668a2b0f85a927b46",
+      "backup_sha256": "90cde872239b5520012b8a956b2954805cc4fdb6b3e4f8f668a2b0f85a927b46",
+      "matches": true,
+      "preexisting_identical": false
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.2.0/vision-studio_2.2.0-1_amd64.deb.manifest.json",
+      "backup": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/worktree/vision-studio_2.2.0-1_amd64.deb.manifest.json",
+      "bytes": 5252,
+      "sha256": "a16a9c332c4dee5b11f682bedd4046776137066ac9f4732e873345476bc4bcae",
+      "backup_sha256": "a16a9c332c4dee5b11f682bedd4046776137066ac9f4732e873345476bc4bcae",
+      "matches": true,
+      "preexisting_identical": false
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.2.0/release-plan.json",
+      "backup": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/worktree/release-plan.json",
+      "bytes": 717,
+      "sha256": "71b572d3f4a958bc8f158705fd07d09df1dc023039f36dc7f25bbfa6589857b6",
+      "backup_sha256": "71b572d3f4a958bc8f158705fd07d09df1dc023039f36dc7f25bbfa6589857b6",
+      "matches": true,
+      "preexisting_identical": false
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.2.0/old-2.0-hardlink-aliases.json",
+      "backup": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/worktree/old-2.0-hardlink-aliases.json",
+      "bytes": 8605,
+      "sha256": "3d80256bb8aa7d632aec7fb90d62325162a85995272ac8ac5b17c2a9b4c066f8",
+      "backup_sha256": "3d80256bb8aa7d632aec7fb90d62325162a85995272ac8ac5b17c2a9b4c066f8",
+      "matches": true,
+      "preexisting_identical": false
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.2.0/release-publish.stderr",
+      "backup": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/worktree/release-publish.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backup_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches": true,
+      "preexisting_identical": false
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.2.0/vision-studio_2.2.0-1_amd64.deb.sha256",
+      "backup": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/worktree/vision-studio_2.2.0-1_amd64.deb.sha256",
+      "bytes": 98,
+      "sha256": "d44e1a2848fce2a11daface659b1195180a71a961e16cf66182b3ebb0dc3bc5a",
+      "backup_sha256": "d44e1a2848fce2a11daface659b1195180a71a961e16cf66182b3ebb0dc3bc5a",
+      "matches": true,
+      "preexisting_identical": false
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.2.0/SOURCE-INVENTORY.json",
+      "backup": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/primary/SOURCE-INVENTORY.json",
+      "bytes": 8027,
+      "sha256": "90cde872239b5520012b8a956b2954805cc4fdb6b3e4f8f668a2b0f85a927b46",
+      "backup_sha256": "90cde872239b5520012b8a956b2954805cc4fdb6b3e4f8f668a2b0f85a927b46",
+      "matches": true,
+      "preexisting_identical": false
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.2.0/vision-studio_2.2.0-1_amd64.deb.manifest.json",
+      "backup": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/primary/vision-studio_2.2.0-1_amd64.deb.manifest.json",
+      "bytes": 5252,
+      "sha256": "a16a9c332c4dee5b11f682bedd4046776137066ac9f4732e873345476bc4bcae",
+      "backup_sha256": "a16a9c332c4dee5b11f682bedd4046776137066ac9f4732e873345476bc4bcae",
+      "matches": true,
+      "preexisting_identical": false
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.2.0/release-plan.json",
+      "backup": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/primary/release-plan.json",
+      "bytes": 717,
+      "sha256": "71b572d3f4a958bc8f158705fd07d09df1dc023039f36dc7f25bbfa6589857b6",
+      "backup_sha256": "71b572d3f4a958bc8f158705fd07d09df1dc023039f36dc7f25bbfa6589857b6",
+      "matches": true,
+      "preexisting_identical": false
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.2.0/old-2.0-hardlink-aliases.json",
+      "backup": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/primary/old-2.0-hardlink-aliases.json",
+      "bytes": 8605,
+      "sha256": "3d80256bb8aa7d632aec7fb90d62325162a85995272ac8ac5b17c2a9b4c066f8",
+      "backup_sha256": "3d80256bb8aa7d632aec7fb90d62325162a85995272ac8ac5b17c2a9b4c066f8",
+      "matches": true,
+      "preexisting_identical": false
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.2.0/release-publish.stderr",
+      "backup": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/primary/release-publish.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backup_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches": true,
+      "preexisting_identical": false
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.2.0/vision-studio_2.2.0-1_amd64.deb.sha256",
+      "backup": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/primary/vision-studio_2.2.0-1_amd64.deb.sha256",
+      "bytes": 98,
+      "sha256": "d44e1a2848fce2a11daface659b1195180a71a961e16cf66182b3ebb0dc3bc5a",
+      "backup_sha256": "d44e1a2848fce2a11daface659b1195180a71a961e16cf66182b3ebb0dc3bc5a",
+      "matches": true,
+      "preexisting_identical": false
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.2.0-release/Testing/Temporary/LastTestsFailed.log",
+      "backup": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/build-testing/Temporary/LastTestsFailed.log",
+      "bytes": 18,
+      "sha256": "1d434f3a2b9401b0101a194b42b7d68e64569472a254c17cc59b348bf7e60db0",
+      "backup_sha256": "1d434f3a2b9401b0101a194b42b7d68e64569472a254c17cc59b348bf7e60db0",
+      "matches": true,
+      "preexisting_identical": false
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.2.0-release/Testing/Temporary/CTestCostData.txt",
+      "backup": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/build-testing/Temporary/CTestCostData.txt",
+      "bytes": 113,
+      "sha256": "5fbc5fa4e2a6e963fd3fd59d62abfbf73c8215f4e0c2a6de305466d5fc37d9c0",
+      "backup_sha256": "5fbc5fa4e2a6e963fd3fd59d62abfbf73c8215f4e0c2a6de305466d5fc37d9c0",
+      "matches": true,
+      "preexisting_identical": false
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.2.0-release/Testing/Temporary/LastTest.log",
+      "backup": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/build-testing/Temporary/LastTest.log",
+      "bytes": 13253,
+      "sha256": "db7aef10d376f9f573cb8289cba9e813aaef1126216efb346ea6500b48f9a9a5",
+      "backup_sha256": "db7aef10d376f9f573cb8289cba9e813aaef1126216efb346ea6500b48f9a9a5",
+      "matches": true,
+      "preexisting_identical": false
+    }
+  ]
+}

@@ -1,0 +1,308 @@
+{
+  "schema_version": 1,
+  "success": true,
+  "version": "2.3.1",
+  "obsolete_version": "2.2.0",
+  "authorization": "Root explicitly confirmed fresh remote verification of 2.3.1, 2.3.0 and 2.2.0 and authorized only the three exact old build/stage/source paths.",
+  "started_at_utc": "2026-10-20T10:44:35.764424+00:00",
+  "deleted_paths": [
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.2.0-release",
+      "logical_file_bytes": 18950963,
+      "files": 172,
+      "directories": 101,
+      "absent_after": true
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.2.0-1",
+      "logical_file_bytes": 1689765182,
+      "files": 36751,
+      "directories": 7911,
+      "absent_after": true
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.2.0",
+      "logical_file_bytes": 103054001,
+      "files": 3692,
+      "directories": 2582,
+      "absent_after": true
+    }
+  ],
+  "release_directories_not_touched": true,
+  "errors": [],
+  "backups": {
+    "manifest": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/SHA256-manifest.json",
+    "sha256": "667dfcfa28c9886e57b462cf345dd20d331bbe01a6fae112611ffd06145e3f61",
+    "files": [
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/worktree/SOURCE-INVENTORY.json",
+        "sha256": "90cde872239b5520012b8a956b2954805cc4fdb6b3e4f8f668a2b0f85a927b46",
+        "matches": true
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/worktree/vision-studio_2.2.0-1_amd64.deb.manifest.json",
+        "sha256": "a16a9c332c4dee5b11f682bedd4046776137066ac9f4732e873345476bc4bcae",
+        "matches": true
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/worktree/release-plan.json",
+        "sha256": "71b572d3f4a958bc8f158705fd07d09df1dc023039f36dc7f25bbfa6589857b6",
+        "matches": true
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/worktree/old-2.0-hardlink-aliases.json",
+        "sha256": "3d80256bb8aa7d632aec7fb90d62325162a85995272ac8ac5b17c2a9b4c066f8",
+        "matches": true
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/worktree/release-publish.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "matches": true
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/worktree/vision-studio_2.2.0-1_amd64.deb.sha256",
+        "sha256": "d44e1a2848fce2a11daface659b1195180a71a961e16cf66182b3ebb0dc3bc5a",
+        "matches": true
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/primary/SOURCE-INVENTORY.json",
+        "sha256": "90cde872239b5520012b8a956b2954805cc4fdb6b3e4f8f668a2b0f85a927b46",
+        "matches": true
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/primary/vision-studio_2.2.0-1_amd64.deb.manifest.json",
+        "sha256": "a16a9c332c4dee5b11f682bedd4046776137066ac9f4732e873345476bc4bcae",
+        "matches": true
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/primary/release-plan.json",
+        "sha256": "71b572d3f4a958bc8f158705fd07d09df1dc023039f36dc7f25bbfa6589857b6",
+        "matches": true
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/primary/old-2.0-hardlink-aliases.json",
+        "sha256": "3d80256bb8aa7d632aec7fb90d62325162a85995272ac8ac5b17c2a9b4c066f8",
+        "matches": true
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/primary/release-publish.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "matches": true
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/release-metadata/primary/vision-studio_2.2.0-1_amd64.deb.sha256",
+        "sha256": "d44e1a2848fce2a11daface659b1195180a71a961e16cf66182b3ebb0dc3bc5a",
+        "matches": true
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/build-testing/Temporary/LastTestsFailed.log",
+        "sha256": "1d434f3a2b9401b0101a194b42b7d68e64569472a254c17cc59b348bf7e60db0",
+        "matches": true
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/build-testing/Temporary/CTestCostData.txt",
+        "sha256": "5fbc5fa4e2a6e963fd3fd59d62abfbf73c8215f4e0c2a6de305466d5fc37d9c0",
+        "matches": true
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa/2.2.0/build-testing/Temporary/LastTest.log",
+        "sha256": "db7aef10d376f9f573cb8289cba9e813aaef1126216efb346ea6500b48f9a9a5",
+        "matches": true
+      }
+    ]
+  },
+  "remote_proofs": {
+    "release-verify.json": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.1/release-verify.json",
+      "sha256": "7118d0b75be8a0dd446a50e60031a0c611e102d4bb1eca105cd8ece2efead698",
+      "success": true,
+      "tag": "v2.3.1",
+      "commit": "1029f642152e75bdfd60a5def60168fea53b6e5b",
+      "assets": [
+        {
+          "name": "vision-studio_2.3.1-1_amd64.deb",
+          "bytes": 387141452,
+          "sha256": "1e959057337832f2dac8d950d738426ad426ea124aee7cefc925286792d19758",
+          "asset_id": 659029108,
+          "verification": "GitHub REST sha256 digest"
+        },
+        {
+          "name": "vision-studio-2.3.1-complete-source.tar.xz",
+          "bytes": 847507304,
+          "sha256": "bcf9e2dcfb27e96db3c411dfa71da3e7dc248ed81ed1adb0c554ee08ba7d29e6",
+          "asset_id": 659030721,
+          "verification": "GitHub REST sha256 digest"
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 207,
+          "sha256": "f68adff3fd49fbad4bd73c1562a8b28ceaa904721c87a67f037fa56ac2a1e24e",
+          "asset_id": 659035302,
+          "verification": "GitHub REST sha256 digest"
+        }
+      ]
+    },
+    "previous-2.2.0-verify.json": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.1/previous-2.2.0-verify.json",
+      "sha256": "bc14666e2b12e64b825fe0a75a1c8431275430c4703bec9e979b80bfa87cac56",
+      "success": true,
+      "tag": "v2.2.0",
+      "commit": "962710c2a568cd586b81a8fdac03f38ca6795074",
+      "assets": [
+        {
+          "name": "vision-studio_2.2.0-1_amd64.deb",
+          "bytes": 386748572,
+          "sha256": "8ef059801bcef7f24189cba16bdaf66551fafb3f48ceb6b042bfb12f522226ac",
+          "asset_id": 655938290,
+          "verification": "GitHub REST sha256 digest"
+        },
+        {
+          "name": "vision-studio-2.2.0-complete-source.tar.xz",
+          "bytes": 843193300,
+          "sha256": "8e65c6f10810fdfd73385e8f8ab0088f7099cf6758876741653aacfb6b9c4e5d",
+          "asset_id": 655940034,
+          "verification": "GitHub REST sha256 digest"
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 207,
+          "sha256": "c3ebcbe78dd33699eab40a477d81ef0b35c7a3d48c3566cb2b4bda4543592fa0",
+          "asset_id": 655943219,
+          "verification": "GitHub REST sha256 digest"
+        }
+      ]
+    },
+    "retained-2.3.0-verify.json": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.1/retained-2.3.0-verify.json",
+      "sha256": "c58cf581dd072d1016cdff6387c677f29446018187095469fdb20ab3e28f0859",
+      "success": true,
+      "tag": "v2.3.0",
+      "commit": "05ea7df054ad9afbbe431e094e6f52fba0c51d99",
+      "assets": [
+        {
+          "name": "vision-studio_2.3.0-1_amd64.deb",
+          "bytes": 387134996,
+          "sha256": "e8f600337b7c452a2104d1bc78f544bbc41ab5553b8e67db37d919b084ab7cbf",
+          "asset_id": 658898700,
+          "verification": "GitHub REST sha256 digest"
+        },
+        {
+          "name": "vision-studio-2.3.0-complete-source.tar.xz",
+          "bytes": 846257988,
+          "sha256": "ed0c75206649ce57d41512a8f97ed12fee394a332cb646e6b6deabc7a15afbde",
+          "asset_id": 658900369,
+          "verification": "GitHub REST sha256 digest"
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 207,
+          "sha256": "fbbb09d225583e75b4d199f63d071610998d60f91c622d261b9d16bc1fc0312a",
+          "asset_id": 658916229,
+          "verification": "GitHub REST sha256 digest"
+        }
+      ]
+    }
+  },
+  "latest_release": {
+    "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.1/latest-release.json",
+    "sha256": "593b78928818301f93f6ea81fd9b28625f03c7de6d5f30a2d694c5bc56861e6d",
+    "validated": true,
+    "tag": "v2.3.1",
+    "draft": false,
+    "manual_assets": 3
+  },
+  "preflight_roots": [
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.2.0-release",
+      "device": 66308,
+      "inode": 30946803,
+      "root_mtime_ns": 1792403824648979450,
+      "files": 172,
+      "directories": 101,
+      "logical_file_bytes": 18950963,
+      "nested_git": [],
+      "foreign_filesystem_entries": []
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.2.0-1",
+      "device": 66308,
+      "inode": 30953554,
+      "root_mtime_ns": 1792404576391016156,
+      "files": 36751,
+      "directories": 7911,
+      "logical_file_bytes": 1689765182,
+      "nested_git": [],
+      "foreign_filesystem_entries": []
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.2.0",
+      "device": 66308,
+      "inode": 30946735,
+      "root_mtime_ns": 1792404538659014313,
+      "files": 3692,
+      "directories": 2582,
+      "logical_file_bytes": 103054001,
+      "nested_git": [],
+      "foreign_filesystem_entries": []
+    }
+  ],
+  "stage_final_full_sha256_recheck": {
+    "members": 44661,
+    "types": {
+      "directory": 7910,
+      "file": 36722,
+      "symlink": 29
+    },
+    "mismatches": [],
+    "extra_members": [],
+    "missing_members": [],
+    "member_evidence_content_sha256": "126a881218a5af58d2e9a8a96b80dd5ccb0da6224dfbda441620ce09c2c131a9",
+    "expected_member_evidence_content_sha256": "126a881218a5af58d2e9a8a96b80dd5ccb0da6224dfbda441620ce09c2c131a9",
+    "success": true
+  },
+  "source_final_git_blob_recheck": {
+    "freeze_commit": "5098cdd697bc5c392d414295a5c4234651e73825",
+    "tracked_files": 3691,
+    "mismatches": [],
+    "extra_files": [
+      "runtime-info.json"
+    ],
+    "known_extra_hashes_match": true,
+    "success": true
+  },
+  "build_final_recheck": {
+    "audited_file_count_matches": true,
+    "audited_byte_size_matches": true,
+    "Testing_original_and_backup_hashes_match": true,
+    "success": true
+  },
+  "preserved_qa_and_user_backup_before": {
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.2.0": {
+      "files": 314,
+      "aggregate_sha256": "640df7ff34354ebb2f7b9a90be7eaab8516389ef92a27db2a6dbacb4d6abd395"
+    },
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/local-install/2.2.0": {
+      "files": 1,
+      "aggregate_sha256": "f0f1117ef8f00c6a1ee96957a9174c24e12b8c1e6384726f5eb6403f5bc62af1"
+    }
+  },
+  "bytes": {
+    "logical_file_bytes_removed_if_success": 1811770146,
+    "unique_allocated_inode_bytes_before": 1924857856,
+    "allocated_bytes_with_all_links_in_deleted_roots": 1924857856,
+    "note": "Estimates exclude directory metadata. No free-disk delta is claimed because release pruning can run concurrently."
+  },
+  "all_preflight_checks_passed": true,
+  "elapsed_seconds": 10.263,
+  "finished_at_utc": "2026-10-20T10:44:46.027716+00:00",
+  "preserved_qa_and_user_backup_after": {
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.2.0": {
+      "files": 314,
+      "aggregate_sha256": "640df7ff34354ebb2f7b9a90be7eaab8516389ef92a27db2a6dbacb4d6abd395"
+    },
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/local-install/2.2.0": {
+      "files": 1,
+      "aggregate_sha256": "f0f1117ef8f00c6a1ee96957a9174c24e12b8c1e6384726f5eb6403f5bc62af1"
+    }
+  }
+}

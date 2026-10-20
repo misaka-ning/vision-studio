@@ -1,0 +1,35 @@
+{
+  "success": true,
+  "version": "2.3.1",
+  "independent_remote_verification": true,
+  "latest_tag": "v2.3.1",
+  "manual_asset_count": 3,
+  "verified_assets": [
+    {
+      "name": "vision-studio_2.3.1-1_amd64.deb",
+      "bytes": 387141452,
+      "sha256": "1e959057337832f2dac8d950d738426ad426ea124aee7cefc925286792d19758",
+      "asset_id": 659029108,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "vision-studio-2.3.1-complete-source.tar.xz",
+      "bytes": 847507304,
+      "sha256": "bcf9e2dcfb27e96db3c411dfa71da3e7dc248ed81ed1adb0c554ee08ba7d29e6",
+      "asset_id": 659030721,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 207,
+      "sha256": "f68adff3fd49fbad4bd73c1562a8b28ceaa904721c87a67f037fa56ac2a1e24e",
+      "asset_id": 659035302,
+      "verification": "GitHub REST sha256 digest"
+    }
+  ],
+  "immutable_assets_changed": false,
+  "retained_versions_after_prune": [
+    "2.3.1",
+    "2.3.0"
+  ]
+}

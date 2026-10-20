@@ -1,0 +1,854 @@
+{
+  "schema_version": 1,
+  "preview_only": true,
+  "deleted_paths": [],
+  "generated_at_utc": "2026-10-20T10:21:51.994635+00:00",
+  "intended_retained_release_versions": [
+    "2.3.1",
+    "2.3.0"
+  ],
+  "new_release_remote_verification_required_before_any_cleanup": true,
+  "old_release_final_remote_reverification_required": true,
+  "no_network_asset_download_performed": true,
+  "version": "2.2.0",
+  "source_export_verification": {
+    "source_freeze_commit": "5098cdd697bc5c392d414295a5c4234651e73825",
+    "tracked_files": 3691,
+    "missing": [],
+    "mismatches": [],
+    "extra_files": [
+      {
+        "path": "runtime-info.json",
+        "size": 3051,
+        "sha256": "15b239dc233e80b4ddaa8b22f87f07fb71bfe4d90332985a708bce04d6019f1b"
+      }
+    ],
+    "tracked_bytes_match_git": true,
+    "runtime_info_matches_freeze_receipt": true
+  },
+  "candidates": [
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.2.0",
+      "exists": true,
+      "symlink_root": false,
+      "action": "preview_only_no_deletion",
+      "files": 53,
+      "logical_file_bytes": 2075695043,
+      "allocated_unique_inode_bytes": 2075848704,
+      "hardlinked_file_paths": 21,
+      "symlinks": 0,
+      "nested_git": [],
+      "git_tracked_paths_in_candidate": [],
+      "blocked_if_nested_git": false,
+      "kind": "immutable_release_copy",
+      "cleanup_condition": "New 2.3.1 release remotely verified, then independently re-verify all three immutable 2.2.0 assets and Git tag; use release-tool prune for canonical release directory.",
+      "historical_remote_receipt_success": true,
+      "historical_remote_tag_commit": "962710c2a568cd586b81a8fdac03f38ca6795074",
+      "assets": [
+        {
+          "name": "vision-studio_2.2.0-1_amd64.deb",
+          "bytes": 386748572,
+          "sha256": "8ef059801bcef7f24189cba16bdaf66551fafb3f48ceb6b042bfb12f522226ac",
+          "asset_id": 655938290,
+          "verification": "GitHub REST sha256 digest",
+          "local_sha256": "8ef059801bcef7f24189cba16bdaf66551fafb3f48ceb6b042bfb12f522226ac",
+          "local_size": 386748572,
+          "matches_historical_receipt": true,
+          "device": 66308,
+          "inode": 30971985,
+          "hardlinks": 2
+        },
+        {
+          "name": "vision-studio-2.2.0-complete-source.tar.xz",
+          "bytes": 843193300,
+          "sha256": "8e65c6f10810fdfd73385e8f8ab0088f7099cf6758876741653aacfb6b9c4e5d",
+          "asset_id": 655940034,
+          "verification": "GitHub REST sha256 digest",
+          "local_sha256": "8e65c6f10810fdfd73385e8f8ab0088f7099cf6758876741653aacfb6b9c4e5d",
+          "local_size": 843193300,
+          "matches_historical_receipt": true,
+          "device": 66308,
+          "inode": 30946723,
+          "hardlinks": 2
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 207,
+          "sha256": "c3ebcbe78dd33699eab40a477d81ef0b35c7a3d48c3566cb2b4bda4543592fa0",
+          "asset_id": 655943219,
+          "verification": "GitHub REST sha256 digest",
+          "local_sha256": "c3ebcbe78dd33699eab40a477d81ef0b35c7a3d48c3566cb2b4bda4543592fa0",
+          "local_size": 207,
+          "matches_historical_receipt": true,
+          "device": 66308,
+          "inode": 30946734,
+          "hardlinks": 1
+        }
+      ],
+      "final_remote_reverification_required": true,
+      "metadata_evidence_audit": [
+        {
+          "relative_path": "source-freeze.json",
+          "size": 683,
+          "sha256": "ce107135748a850c0bac3c93c690fce4ab939bf184dd367879829d5ec8c88f98",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/source-freeze.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "install-qa.log",
+          "size": 136,
+          "sha256": "e874c55cddcb29be48c097bd78f2df89ec2aa947ec45c9c8f8043fb107fccf08",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/install-qa.log"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "SOURCE-INVENTORY.json",
+          "size": 8027,
+          "sha256": "90cde872239b5520012b8a956b2954805cc4fdb6b3e4f8f668a2b0f85a927b46",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        },
+        {
+          "relative_path": "vision-studio_2.2.0-1_amd64.deb.manifest.json",
+          "size": 5252,
+          "sha256": "a16a9c332c4dee5b11f682bedd4046776137066ac9f4732e873345476bc4bcae",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        },
+        {
+          "relative_path": "release-publish.json",
+          "size": 1580,
+          "sha256": "65343ea503bcca618eda8770a3731f70454bf606f5be32b643a6d523896c42ac",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/release-publish.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "qa-report.log",
+          "size": 147,
+          "sha256": "f5bca1c402131fd6c6c7b859fbb3c0a48f7cfd8901662c75e89bccd48d73b0d7",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/qa-report.log"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "SOURCE-SHA256SUMS",
+          "size": 2206,
+          "sha256": "2123f703f9e25011abfd53883f3c03312f5cb3c4a092a5d4ecf419e75a394dad",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/SOURCE-SHA256SUMS"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "packaged-scope-filter-qa.json",
+          "size": 4790,
+          "sha256": "a9ba2aa48ca898048b293abc1a1155549df9e8f0eee4aa875225c86dfd34ab50",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/packaged-scope-filter-qa.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "ctest-qa.json",
+          "size": 16263,
+          "sha256": "f8608861323babda6e2854bd3df89ea8fffab51cdd1d04161a23dce8c6445ea4",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/ctest-qa.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "install-qa.json",
+          "size": 17928,
+          "sha256": "740758e68a94fe6809449be55f15e7127b0ae5413704c3d9ebea5fdd1ddcae69",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/install-qa.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "old-build-cleanup.json",
+          "size": 14175,
+          "sha256": "3840ebb125844c86bcfa78676692b3ddd9303748c43f1fbc124b365e38ab034b",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/old-build-cleanup.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "latest-release.json",
+          "size": 614,
+          "sha256": "ed6e02207242367a502fcd9ea6f1674d8e78ef8d307328e480238e2bcaa5f5c9",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/latest-release.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "release-verify.json",
+          "size": 1006,
+          "sha256": "bc14666e2b12e64b825fe0a75a1c8431275430c4703bec9e979b80bfa87cac56",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/release-verify.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "build-source.log",
+          "size": 127,
+          "sha256": "332c578a18a4c1a601c4485f89c040641f6fa8a516fb176d015e54c1f9f56507",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/build-source.log"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "prune-executed.json",
+          "size": 3597,
+          "sha256": "34a26069e7632b3534a41e54d2f49dba4141dadfd7350aec0653f12b58b7296f",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/prune-executed.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "release-plan.json",
+          "size": 717,
+          "sha256": "71b572d3f4a958bc8f158705fd07d09df1dc023039f36dc7f25bbfa6589857b6",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        },
+        {
+          "relative_path": "old-2.0-hardlink-aliases.json",
+          "size": 8605,
+          "sha256": "3d80256bb8aa7d632aec7fb90d62325162a85995272ac8ac5b17c2a9b4c066f8",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        },
+        {
+          "relative_path": "release-publish.stderr",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        },
+        {
+          "relative_path": "packaged-gpu-qa.log",
+          "size": 238,
+          "sha256": "9023d53ed5f66c7cc76a232f0fe7881f8612297dc7e012c26f32cf3eeedfda1f",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/packaged-gpu-qa.log"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "vision-studio_2.2.0-1_amd64.deb.sha256",
+          "size": 98,
+          "sha256": "d44e1a2848fce2a11daface659b1195180a71a961e16cf66182b3ebb0dc3bc5a",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        },
+        {
+          "relative_path": "local-release-normalization.json",
+          "size": 8458,
+          "sha256": "1a6c627ed9da17ff5aaab02bf73e0e9a3f8e113f0a0d8c3ff8670c153e457a4d",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/local-release-normalization.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "source-bundle-qa.log",
+          "size": 448,
+          "sha256": "1c154e1c518b6ba6c027cc7d60a938907f3314bb363d9de20cb4c2eb0b586bfa",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/source-bundle-qa.log"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "packaged-gpu-qa.json",
+          "size": 21081,
+          "sha256": "66dafc136a4438cbb75963c200cd690f58b4932aa59d1e08b6b82fa7d931b510",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/packaged-gpu-qa.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "final-build.log",
+          "size": 22,
+          "sha256": "8c35b1682f73592d30612d7b0fabdb384fcfff35cb5a076cb48b85b1368aa794",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/final-build.log"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "source-bundle-qa.json",
+          "size": 2074448,
+          "sha256": "91bb4e97ad118f10146c7a0ddb663cab0a44986c334ed318b570c4b72e359c1a",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/source-bundle-qa.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "build-deb.log",
+          "size": 676,
+          "sha256": "ef3538fc56dbbbfd673b9a914c04f18ed57b7846585c2916678316c0133000c6",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/build-deb.log"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "conversion-qa.json",
+          "size": 13852,
+          "sha256": "e644351b611b4c2c73baaf3071020cb225827aae336225c845df8b52ba27cb26",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/conversion-qa.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "gpu-qa.json",
+          "size": 1486,
+          "sha256": "5d69d5d58c1c7c048e6d7ea50e5fc1d81e5e327844a9bdd2df2c9670ebf8a5f2",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/gpu-qa.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "prune-preview.json",
+          "size": 3515,
+          "sha256": "c381d40fa4d4bc74492f55c0dbc545a95bc53b4f8453b2ff9d059993490f0409",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/prune-preview.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "qa-report.json",
+          "size": 119523,
+          "sha256": "10cc0925c8e594d8bb0b1b595ad0cba49819f287758a7fd60c9669e3e2dcb7d7",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/qa-report.json"
+          ],
+          "preserve_before_delete": false
+        }
+      ],
+      "upstream_archives_count": 19,
+      "upstream_archives_shared_with_retained_releases": 18
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.2.0",
+      "exists": true,
+      "symlink_root": false,
+      "action": "preview_only_no_deletion",
+      "files": 53,
+      "logical_file_bytes": 2075695043,
+      "allocated_unique_inode_bytes": 2075848704,
+      "hardlinked_file_paths": 9,
+      "symlinks": 0,
+      "nested_git": [],
+      "git_tracked_paths_in_candidate": [],
+      "blocked_if_nested_git": false,
+      "kind": "immutable_release_copy",
+      "cleanup_condition": "New 2.3.1 release remotely verified, then independently re-verify all three immutable 2.2.0 assets and Git tag; use release-tool prune for canonical release directory.",
+      "historical_remote_receipt_success": true,
+      "historical_remote_tag_commit": "962710c2a568cd586b81a8fdac03f38ca6795074",
+      "assets": [
+        {
+          "name": "vision-studio_2.2.0-1_amd64.deb",
+          "bytes": 386748572,
+          "sha256": "8ef059801bcef7f24189cba16bdaf66551fafb3f48ceb6b042bfb12f522226ac",
+          "asset_id": 655938290,
+          "verification": "GitHub REST sha256 digest",
+          "local_sha256": "8ef059801bcef7f24189cba16bdaf66551fafb3f48ceb6b042bfb12f522226ac",
+          "local_size": 386748572,
+          "matches_historical_receipt": true,
+          "device": 66308,
+          "inode": 30971985,
+          "hardlinks": 2
+        },
+        {
+          "name": "vision-studio-2.2.0-complete-source.tar.xz",
+          "bytes": 843193300,
+          "sha256": "8e65c6f10810fdfd73385e8f8ab0088f7099cf6758876741653aacfb6b9c4e5d",
+          "asset_id": 655940034,
+          "verification": "GitHub REST sha256 digest",
+          "local_sha256": "8e65c6f10810fdfd73385e8f8ab0088f7099cf6758876741653aacfb6b9c4e5d",
+          "local_size": 843193300,
+          "matches_historical_receipt": true,
+          "device": 66308,
+          "inode": 30946723,
+          "hardlinks": 2
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 207,
+          "sha256": "c3ebcbe78dd33699eab40a477d81ef0b35c7a3d48c3566cb2b4bda4543592fa0",
+          "asset_id": 655943219,
+          "verification": "GitHub REST sha256 digest",
+          "local_sha256": "c3ebcbe78dd33699eab40a477d81ef0b35c7a3d48c3566cb2b4bda4543592fa0",
+          "local_size": 207,
+          "matches_historical_receipt": true,
+          "device": 66308,
+          "inode": 31090727,
+          "hardlinks": 1
+        }
+      ],
+      "final_remote_reverification_required": true,
+      "metadata_evidence_audit": [
+        {
+          "relative_path": "source-freeze.json",
+          "size": 683,
+          "sha256": "ce107135748a850c0bac3c93c690fce4ab939bf184dd367879829d5ec8c88f98",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/source-freeze.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "install-qa.log",
+          "size": 136,
+          "sha256": "e874c55cddcb29be48c097bd78f2df89ec2aa947ec45c9c8f8043fb107fccf08",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/install-qa.log"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "SOURCE-INVENTORY.json",
+          "size": 8027,
+          "sha256": "90cde872239b5520012b8a956b2954805cc4fdb6b3e4f8f668a2b0f85a927b46",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        },
+        {
+          "relative_path": "vision-studio_2.2.0-1_amd64.deb.manifest.json",
+          "size": 5252,
+          "sha256": "a16a9c332c4dee5b11f682bedd4046776137066ac9f4732e873345476bc4bcae",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        },
+        {
+          "relative_path": "release-publish.json",
+          "size": 1580,
+          "sha256": "65343ea503bcca618eda8770a3731f70454bf606f5be32b643a6d523896c42ac",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/release-publish.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "qa-report.log",
+          "size": 147,
+          "sha256": "f5bca1c402131fd6c6c7b859fbb3c0a48f7cfd8901662c75e89bccd48d73b0d7",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/qa-report.log"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "SOURCE-SHA256SUMS",
+          "size": 2206,
+          "sha256": "2123f703f9e25011abfd53883f3c03312f5cb3c4a092a5d4ecf419e75a394dad",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/SOURCE-SHA256SUMS"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "packaged-scope-filter-qa.json",
+          "size": 4790,
+          "sha256": "a9ba2aa48ca898048b293abc1a1155549df9e8f0eee4aa875225c86dfd34ab50",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/packaged-scope-filter-qa.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "ctest-qa.json",
+          "size": 16263,
+          "sha256": "f8608861323babda6e2854bd3df89ea8fffab51cdd1d04161a23dce8c6445ea4",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/ctest-qa.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "install-qa.json",
+          "size": 17928,
+          "sha256": "740758e68a94fe6809449be55f15e7127b0ae5413704c3d9ebea5fdd1ddcae69",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/install-qa.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "old-build-cleanup.json",
+          "size": 14175,
+          "sha256": "3840ebb125844c86bcfa78676692b3ddd9303748c43f1fbc124b365e38ab034b",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/old-build-cleanup.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "latest-release.json",
+          "size": 614,
+          "sha256": "ed6e02207242367a502fcd9ea6f1674d8e78ef8d307328e480238e2bcaa5f5c9",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/latest-release.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "release-verify.json",
+          "size": 1006,
+          "sha256": "bc14666e2b12e64b825fe0a75a1c8431275430c4703bec9e979b80bfa87cac56",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/release-verify.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "build-source.log",
+          "size": 127,
+          "sha256": "332c578a18a4c1a601c4485f89c040641f6fa8a516fb176d015e54c1f9f56507",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/build-source.log"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "prune-executed.json",
+          "size": 3597,
+          "sha256": "34a26069e7632b3534a41e54d2f49dba4141dadfd7350aec0653f12b58b7296f",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/prune-executed.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "release-plan.json",
+          "size": 717,
+          "sha256": "71b572d3f4a958bc8f158705fd07d09df1dc023039f36dc7f25bbfa6589857b6",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        },
+        {
+          "relative_path": "old-2.0-hardlink-aliases.json",
+          "size": 8605,
+          "sha256": "3d80256bb8aa7d632aec7fb90d62325162a85995272ac8ac5b17c2a9b4c066f8",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        },
+        {
+          "relative_path": "release-publish.stderr",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        },
+        {
+          "relative_path": "packaged-gpu-qa.log",
+          "size": 238,
+          "sha256": "9023d53ed5f66c7cc76a232f0fe7881f8612297dc7e012c26f32cf3eeedfda1f",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/packaged-gpu-qa.log"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "vision-studio_2.2.0-1_amd64.deb.sha256",
+          "size": 98,
+          "sha256": "d44e1a2848fce2a11daface659b1195180a71a961e16cf66182b3ebb0dc3bc5a",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        },
+        {
+          "relative_path": "local-release-normalization.json",
+          "size": 8458,
+          "sha256": "1a6c627ed9da17ff5aaab02bf73e0e9a3f8e113f0a0d8c3ff8670c153e457a4d",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/local-release-normalization.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "source-bundle-qa.log",
+          "size": 448,
+          "sha256": "1c154e1c518b6ba6c027cc7d60a938907f3314bb363d9de20cb4c2eb0b586bfa",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/source-bundle-qa.log"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "packaged-gpu-qa.json",
+          "size": 21081,
+          "sha256": "66dafc136a4438cbb75963c200cd690f58b4932aa59d1e08b6b82fa7d931b510",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/packaged-gpu-qa.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "final-build.log",
+          "size": 22,
+          "sha256": "8c35b1682f73592d30612d7b0fabdb384fcfff35cb5a076cb48b85b1368aa794",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/final-build.log"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "source-bundle-qa.json",
+          "size": 2074448,
+          "sha256": "91bb4e97ad118f10146c7a0ddb663cab0a44986c334ed318b570c4b72e359c1a",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/source-bundle-qa.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "build-deb.log",
+          "size": 676,
+          "sha256": "ef3538fc56dbbbfd673b9a914c04f18ed57b7846585c2916678316c0133000c6",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/build-deb.log"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "conversion-qa.json",
+          "size": 13852,
+          "sha256": "e644351b611b4c2c73baaf3071020cb225827aae336225c845df8b52ba27cb26",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/conversion-qa.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "gpu-qa.json",
+          "size": 1486,
+          "sha256": "5d69d5d58c1c7c048e6d7ea50e5fc1d81e5e327844a9bdd2df2c9670ebf8a5f2",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/gpu-qa.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "prune-preview.json",
+          "size": 3515,
+          "sha256": "c381d40fa4d4bc74492f55c0dbc545a95bc53b4f8453b2ff9d059993490f0409",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/prune-preview.json"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "qa-report.json",
+          "size": 119523,
+          "sha256": "10cc0925c8e594d8bb0b1b595ad0cba49819f287758a7fd60c9669e3e2dcb7d7",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/qa-report.json"
+          ],
+          "preserve_before_delete": false
+        }
+      ],
+      "upstream_archives_count": 19,
+      "upstream_archives_shared_with_retained_releases": 6
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.2.0-release",
+      "exists": true,
+      "symlink_root": false,
+      "action": "preview_only_no_deletion",
+      "files": 172,
+      "logical_file_bytes": 18950963,
+      "allocated_unique_inode_bytes": 19333120,
+      "hardlinked_file_paths": 0,
+      "symlinks": 0,
+      "nested_git": [],
+      "git_tracked_paths_in_candidate": [],
+      "blocked_if_nested_git": false,
+      "kind": "rebuildable_cmake_build",
+      "version_evidence": "CMakeCache.txt contains CMAKE_PROJECT_VERSION=2.2.0 and production fallback /opt/VisionStudio.",
+      "cleanup_condition": "Source freeze verified and preserve unique Testing logs before exact-directory removal.",
+      "unique_qa_logs": [
+        {
+          "relative_path": "Testing/Temporary/LastTestsFailed.log",
+          "size": 18,
+          "sha256": "1d434f3a2b9401b0101a194b42b7d68e64569472a254c17cc59b348bf7e60db0",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        },
+        {
+          "relative_path": "Testing/Temporary/CTestCostData.txt",
+          "size": 113,
+          "sha256": "5fbc5fa4e2a6e963fd3fd59d62abfbf73c8215f4e0c2a6de305466d5fc37d9c0",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        },
+        {
+          "relative_path": "Testing/Temporary/LastTest.log",
+          "size": 13253,
+          "sha256": "db7aef10d376f9f573cb8289cba9e813aaef1126216efb346ea6500b48f9a9a5",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        }
+      ]
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.2.0-1",
+      "exists": true,
+      "symlink_root": false,
+      "action": "preview_only_no_deletion",
+      "files": 36751,
+      "logical_file_bytes": 1689765182,
+      "allocated_unique_inode_bytes": 1792667648,
+      "hardlinked_file_paths": 0,
+      "symlinks": 29,
+      "nested_git": [],
+      "git_tracked_paths_in_candidate": [],
+      "blocked_if_nested_git": false,
+      "kind": "reobtainable_debian_install_staging",
+      "cleanup_condition": "Exact version DEBIAN/control checked; payload reobtainable by extracting verified immutable 2.2.0 DEB; never follow symlinks while deleting stage.",
+      "control_version_220_1": true,
+      "shared_runtime_inside_stage_is_packaged_copy_not_runtime_root": "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.2.0-1/opt/VisionStudio/runtime"
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.2.0",
+      "exists": true,
+      "symlink_root": false,
+      "action": "preview_only_no_deletion",
+      "files": 3692,
+      "logical_file_bytes": 103054001,
+      "allocated_unique_inode_bytes": 112857088,
+      "hardlinked_file_paths": 0,
+      "symlinks": 0,
+      "nested_git": [],
+      "git_tracked_paths_in_candidate": [],
+      "blocked_if_nested_git": false,
+      "kind": "frozen_source_export",
+      "cleanup_condition": "All tracked export files match source freeze commit; generated runtime-info is backed by frozen receipt and source bundle. Current repository and Git metadata remain protected."
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.2.0",
+      "exists": true,
+      "symlink_root": false,
+      "action": "preview_only_no_deletion",
+      "files": 314,
+      "logical_file_bytes": 40969857,
+      "allocated_unique_inode_bytes": 41771008,
+      "hardlinked_file_paths": 0,
+      "symlinks": 0,
+      "nested_git": [],
+      "git_tracked_paths_in_candidate": [],
+      "blocked_if_nested_git": false,
+      "kind": "unique_qa_outputs_preserve",
+      "cleanup_condition": "Do not remove now. Preserve complete generated QA tree or archive it with checksums outside old version cleanup first; original GUI inputs/results are not all present as exact committed files.",
+      "qa_key_files": [
+        {
+          "relative_path": "final-gui/raw.log",
+          "size": 3510,
+          "sha256": "300d24639559402dc7208d4eabff6fda2845a44f63e0c4672d6c50635b9d73f2",
+          "exact_committed_evidence_copies": [
+            "docs/releases/evidence/2.2.0/packaged-gui.log"
+          ],
+          "preserve_before_delete": false
+        },
+        {
+          "relative_path": "final-gui/data/history.json",
+          "size": 54493,
+          "sha256": "ffbfeab337afd87f9c3c0ec138b70fa97ca776cca75bf09fe1ee7e2111979af4",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        },
+        {
+          "relative_path": "final-gui/data/preferences.ini",
+          "size": 818,
+          "sha256": "f77bf9328976c76b154fd496a8c074beec04ce42782b08fefc81fa5c905186f5",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        },
+        {
+          "relative_path": "final-gui/report/installed-gui-qa.json",
+          "size": 5277,
+          "sha256": "7ca0e88eb231617c7a385300e59cf002d18f70f15cb8db89095efba6f9f244e6",
+          "exact_committed_evidence_copies": [],
+          "preserve_before_delete": true
+        }
+      ]
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/local-install/2.2.0",
+      "exists": true,
+      "symlink_root": false,
+      "action": "preview_only_no_deletion",
+      "files": 1,
+      "logical_file_bytes": 733,
+      "allocated_unique_inode_bytes": 4096,
+      "hardlinked_file_paths": 0,
+      "symlinks": 0,
+      "nested_git": [],
+      "git_tracked_paths_in_candidate": [],
+      "blocked_if_nested_git": false,
+      "kind": "user_state_backup_protected",
+      "cleanup_condition": "Retain user-state-before.json; this is a user-preservation backup, not obsolete build/code.",
+      "preserve_all": true
+    }
+  ],
+  "totals": {
+    "logical_file_bytes_including_aliases": 6004130822,
+    "allocated_unique_candidate_inode_bytes": 4070322176,
+    "allocated_bytes_with_all_hardlinks_inside_audited_candidates": 3276034048,
+    "allocated_bytes_shared_with_external_retained_paths": 794288128,
+    "note": "Not a deletion authorization. QA/user backup preservation and final remote verification must complete. Directories and filesystem metadata are not included in file-byte estimates."
+  },
+  "protected_paths": [
+    "/home/misaka/.codex/worktrees/ef0b/yolo",
+    "/home/misaka/文档/ChatGPT/yolo",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/.git",
+    "/home/misaka/文档/ChatGPT/yolo/.git",
+    "/home/misaka/Qt",
+    "/home/misaka/文档/ChatGPT/yolo/build",
+    "/opt/VisionStudio",
+    "/home/misaka/.local/share/vision-studio",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.1",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.3.0-1",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.3.1-1",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.0",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1"
+  ],
+  "git_state": {
+    "worktree": [
+      "?? \"docs/\\350\\266\\263\\347\\220\\203\\346\\250\\241\\345\\236\\213\\345\\276\\256\\350\\260\\203.md\"",
+      "?? scripts/evaluate_ball.py",
+      "?? scripts/finetune_ball.py",
+      "?? scripts/run_finetune_ball.sh"
+    ],
+    "primary": [
+      "?? \"docs/\\350\\266\\263\\347\\220\\203\\346\\250\\241\\345\\236\\213\\345\\276\\256\\350\\260\\203.md\"",
+      "?? scripts/evaluate_ball.py",
+      "?? scripts/finetune_ball.py",
+      "?? scripts/run_finetune_ball.sh"
+    ]
+  },
+  "scan_scope_note": "Only exact 2.2.0 outputs at the two requested repository roots were audited. Shared Qt/plugin/runtime trees, user outputs and other legacy directories were not classified as removable."
+}
