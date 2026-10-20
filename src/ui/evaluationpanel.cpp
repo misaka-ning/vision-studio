@@ -47,6 +47,19 @@ template <class Base> class NoWheel final : public Base
 protected:
     void wheelEvent(QWheelEvent *event) override { event->ignore(); }
 };
+class ElidedLabel final : public QLabel
+{
+public:
+    using QLabel::QLabel;
+protected:
+    void paintEvent(QPaintEvent *) override
+    {
+        QPainter painter(this);
+        painter.setPen(palette().color(foregroundRole()));
+        painter.drawText(contentsRect(), alignment() | Qt::TextSingleLine,
+                         fontMetrics().elidedText(text(), Qt::ElideRight, contentsRect().width()));
+    }
+};
 class ThresholdSpin final : public QDoubleSpinBox
 {
 public:
@@ -319,20 +332,24 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     controls_->setStyleSheet("#evaluationControls { background:#272727; }");
     controls_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
     auto *configuration = new QVBoxLayout(controls_);
-    configuration->setContentsMargins(0, 4, 0, 4);
-    configuration->setSpacing(6);
+    configuration->setContentsMargins(0, 2, 0, 2);
+    configuration->setSpacing(2);
     auto *modeRow = new QHBoxLayout;
-    modeRow->setSpacing(10);
+    modeRow->setSpacing(8);
     modeRow->addWidget(label("工作模式", "sectionTitle"));
     mode_ = new NoWheel<QComboBox>;
     mode_->setObjectName("evaluationModeCombo");
     mode_->addItem("检测预览", false); mode_->addItem("评估调优", true);
-    mode_->setFixedWidth(154);
+    mode_->setFixedWidth(126);
     modeRow->addWidget(mode_);
-    datasetHint_ = label("导入 YOLO 数据集，可叠加标注并评估模型。", "evaluationDatasetHint");
+    datasetHint_ = new ElidedLabel("导入 YOLO 数据集，可叠加标注并评估模型。");
+    datasetHint_->setObjectName("evaluationDatasetHint");
+    datasetHint_->setTextFormat(Qt::PlainText);
     datasetHint_->setStyleSheet("color:#B8B8B8; font-size:11px;");
+    datasetHint_->setWordWrap(false);
     datasetHint_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
-    datasetHint_->setMaximumHeight(36);
+    datasetHint_->setMinimumWidth(0);
+    datasetHint_->setMaximumHeight(32);
     modeRow->addWidget(datasetHint_, 1);
     split_ = new NoWheel<QComboBox>;
     split_->setObjectName("evaluationSplitCombo");
@@ -341,13 +358,51 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     modeRow->addWidget(split_);
     reload_ = button("重新检查", "evaluationReloadDatasetButton");
     modeRow->addWidget(reload_);
+    eligibilityStatus_ = new QToolButton;
+    eligibilityStatus_->setObjectName("evaluationEligibilityStatusButton");
+    eligibilityStatus_->setCursor(Qt::PointingHandCursor);
+    eligibilityStatus_->setToolButtonStyle(Qt::ToolButtonTextOnly);
+    eligibilityStatus_->setMinimumHeight(30);
+    modeRow->addWidget(eligibilityStatus_);
+    const QString toggleStyle = "QToolButton { color:#D2D2D2; background:#303030; border:1px solid #454545; border-radius:4px; padding:6px 9px; } QToolButton:hover { background:#3B3B3B; } QToolButton:checked { background:#354C59; border-color:#4A6C80; } QToolButton:disabled { color:#858585; background:#292929; border-color:#3B3B3B; }";
+    datasetSettingsButton_ = new QToolButton;
+    datasetSettingsButton_->setObjectName("evaluationDatasetSettingsButton");
+    datasetSettingsButton_->setText("数据集设置");
+    datasetSettingsButton_->setCheckable(true);
+    datasetSettingsButton_->setCursor(Qt::PointingHandCursor);
+    datasetSettingsButton_->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    datasetSettingsButton_->setArrowType(Qt::RightArrow);
+    datasetSettingsButton_->setStyleSheet(toggleStyle);
+    datasetSettingsButton_->setToolTip("设置模型与数据集类别映射、审核文件及阈值扫描参数。");
+    modeRow->addWidget(datasetSettingsButton_);
     configuration->addLayout(modeRow);
 
+    datasetSettings_ = new QWidget;
+    datasetSettings_->setObjectName("evaluationDatasetSettings");
+    datasetSettings_->setStyleSheet("#evaluationDatasetSettings { background:#242424; border:1px solid #353535; border-radius:5px; }");
+    auto *settingsLayout = new QVBoxLayout(datasetSettings_);
+    settingsLayout->setContentsMargins(8, 2, 8, 2);
+    settingsLayout->setSpacing(4);
+    configuration->addWidget(datasetSettings_);
+    datasetSettings_->hide();
+    connect(datasetSettingsButton_, &QToolButton::toggled, this, [this](bool expanded) {
+        datasetSettings_->setVisible(expanded);
+        datasetSettingsButton_->setArrowType(expanded ? Qt::DownArrow : Qt::RightArrow);
+    });
+    connect(eligibilityStatus_, &QToolButton::clicked, this, [this] {
+        datasetSettingsButton_->setChecked(true);
+    });
+
+    validation_ = label({}, "evaluationValidationHint");
+    validation_->setStyleSheet("color:#FFB4AB; font-size:11px;");
+    validation_->setMaximumHeight(44);
+    validation_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    settingsLayout->addWidget(validation_);
     datasetControls_ = new QWidget;
     auto *datasetConfiguration = new QVBoxLayout(datasetControls_);
     datasetConfiguration->setContentsMargins(0, 0, 0, 0);
-    datasetConfiguration->setSpacing(6);
-    configuration->addWidget(datasetControls_);
+    datasetConfiguration->setSpacing(2);
+    settingsLayout->addWidget(datasetControls_);
     auto *mapping = new QHBoxLayout;
     mapping->setSpacing(9);
     modelId_ = new NoWheel<QSpinBox>; modelId_->setObjectName("evaluationModelClassIdSpin"); modelId_->setRange(0, 0);
@@ -362,9 +417,9 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     mapping->addWidget(mappingHint_, 1);
     auto *advancedToggle = new QToolButton;
     advancedToggle->setObjectName("evaluationAdvancedButton");
-    advancedToggle->setText("评估设置"); advancedToggle->setCheckable(true); advancedToggle->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    advancedToggle->setText("高级参数"); advancedToggle->setCheckable(true); advancedToggle->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     advancedToggle->setArrowType(Qt::RightArrow);
-    advancedToggle->setStyleSheet("QToolButton { color:#D2D2D2; background:#303030; border:1px solid #454545; border-radius:4px; padding:6px 9px; } QToolButton:hover { background:#3B3B3B; }");
+    advancedToggle->setStyleSheet(toggleStyle);
     mapping->addWidget(advancedToggle);
     datasetConfiguration->addLayout(mapping);
 
@@ -376,8 +431,8 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     metadata_->setPlaceholderText("审核 metadata.csv（可选；标准 YOLO 标签无需此文件）");
     metadata_->setClearButtonEnabled(true);
     metadataRow->addWidget(metadata_, 1);
-    metadataBrowse_ = button("浏览审核文件", "evaluationMetadataBrowseButton");
-    metadataRow->addWidget(metadataBrowse_); advancedLayout->addLayout(metadataRow);
+    metadataBrowse_ = button("审核文件", "evaluationMetadataBrowseButton");
+    metadataRow->addWidget(metadataBrowse_);
     auto *parameters = new QHBoxLayout;
     parameters->setSpacing(8);
     matchIou_ = number("evaluationMatchIouSpin", .05, 1, .05, .5);
@@ -389,17 +444,15 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     parameters->addWidget(label("扫描起点", "muted")); parameters->addWidget(scanStart_);
     parameters->addWidget(label("终点", "muted")); parameters->addWidget(scanEnd_);
     parameters->addWidget(label("步长", "muted")); parameters->addWidget(scanStep_);
-    auto *parameterHint = label("复用低分预测 · NMS 使用检测配置", "tiny");
-    parameterHint->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
-    parameters->addWidget(parameterHint, 1);
+    metadata_->setMinimumWidth(100);
+    metadata_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    metadata_->setToolTip("可选审核 metadata.csv；标准 YOLO 标签无需此文件。扫描复用低分预测，NMS 使用检测配置。");
+    parameters->addLayout(metadataRow, 1);
     advancedLayout->addLayout(parameters);
     datasetConfiguration->addWidget(advanced); advanced->hide();
     connect(advancedToggle, &QToolButton::toggled, this, [advanced, advancedToggle](bool enabled) {
         advanced->setVisible(enabled); advancedToggle->setArrowType(enabled ? Qt::DownArrow : Qt::RightArrow);
     });
-    validation_ = label({}, "evaluationValidationHint");
-    validation_->setStyleSheet("color:#FFB4AB; font-size:11px;");
-    configuration->addWidget(validation_);
 
     auto *outer = new QVBoxLayout(this); outer->setContentsMargins(0, 0, 0, 0);
     auto *scroll = new QScrollArea; scroll->setWidgetResizable(true); scroll->setFrameShape(QFrame::NoFrame);
@@ -545,6 +598,7 @@ void EvaluationPanel::setDatasetSource(const QString &source, const QString &spl
 {
     updating_ = true;
     yaml_ = QFileInfo(source).absoluteFilePath();
+    importError_.clear();
     metadata_->setText(metadata);
     const int index = split_->findData(split);
     if (index >= 0) split_->setCurrentIndex(index);
@@ -557,6 +611,7 @@ void EvaluationPanel::setDatasetSource(const QString &source, const QString &spl
 }
 void EvaluationPanel::showDatasetImportError(const QString &message)
 {
+    importError_ = message;
     datasetHint_->setText("导入未完成 · " + message.section('\n', 0, 0));
     datasetHint_->setToolTip(message + "\n可切换集合重试，或重新选择配置。\n" + yaml_);
     updateEligibility();
@@ -571,6 +626,7 @@ void EvaluationPanel::setDataset(const QJsonObject &manifest)
     const bool changed = manifest_ != manifest;
     updating_ = true;
     manifest_ = manifest;
+    importError_.clear();
     yaml_ = manifest.value("dataset_source").toString(manifest.value("data_yaml").toString(yaml_));
     metadata_->setText(manifest.value("metadata_path").toString());
     const QString split = manifest.value("split").toString("val");
@@ -580,13 +636,14 @@ void EvaluationPanel::setDataset(const QJsonObject &manifest)
     datasetId_->setMaximum(qMax(datasetId_->value(), qMax(0, int(names.size()) - 1)));
     const auto validation = manifest.value("validation").toObject();
     const int samples = manifest.value("samples").toArray().size();
-    datasetHint_->setText(QString("%1 · %2\n有效 %3 张 · 含框 %4 · 空标签 %5 · 缺标签 %6 · 排除 %7")
-        .arg(QFileInfo(manifest.value("data_yaml").toString(yaml_)).fileName(), split.toUpper()).arg(samples)
+    const QString datasetFile = QFileInfo(manifest.value("data_yaml").toString(yaml_)).fileName();
+    const QString detail = QString("%1 · %2\n有效 %3 张 · 含框 %4 · 空标签 %5 · 缺标签 %6 · 排除 %7")
+        .arg(datasetFile, split.toUpper()).arg(samples)
         .arg(validation.value("positive_images").toInt()).arg(validation.value("negative_images").toInt())
-        .arg(validation.value("missing_labels").toInt()).arg(validation.value("excluded").toInt()));
+        .arg(validation.value("missing_labels").toInt()).arg(validation.value("excluded").toInt());
+    datasetHint_->setText(QString("%1 · %2 张").arg(datasetFile).arg(samples));
     const QString relocation = manifest.value("relocation_notice").toString();
-    if (!relocation.isEmpty()) datasetHint_->setText(datasetHint_->text() + " · 已使用当前目录迁移路径");
-    datasetHint_->setToolTip(yaml_ + (relocation.isEmpty() ? QString() : "\n" + relocation));
+    datasetHint_->setToolTip(detail + "\n" + yaml_ + (relocation.isEmpty() ? QString() : "\n已使用当前目录迁移路径：" + relocation));
     updating_ = false;
     updateMapping(); updateEligibility();
     if (changed) emit configChanged();
@@ -594,7 +651,7 @@ void EvaluationPanel::setDataset(const QJsonObject &manifest)
 void EvaluationPanel::clearDataset()
 {
     updating_ = true;
-    manifest_ = {}; yaml_.clear(); metadata_->clear(); split_->setCurrentIndex(split_->findData("val"));
+    manifest_ = {}; yaml_.clear(); importError_.clear(); metadata_->clear(); split_->setCurrentIndex(split_->findData("val"));
     updating_ = false;
     datasetHint_->setText("导入 YOLO 数据集，可叠加标注并评估模型。");
     datasetHint_->setToolTip({});
@@ -662,15 +719,47 @@ void EvaluationPanel::updateMapping()
 void EvaluationPanel::updateEligibility()
 {
     const QString problem = validationMessage();
+    const bool hasSource = !yaml_.isEmpty() || !manifest_.isEmpty();
+    const bool importFailed = manifest_.isEmpty() && !importError_.isEmpty();
+    const bool invalidDataset = !manifest_.isEmpty() &&
+        (manifest_.value("requires_attention").toBool() ||
+         manifest_.value("validation").toObject().value("missing_labels").toInt() > 0 ||
+         manifest_.value("samples").toArray().isEmpty() || manifest_.value("names").toArray().isEmpty());
+    const QString detail = importFailed ? importError_ : problem;
     if (auto *items = qobject_cast<QStandardItemModel *>(mode_->model()))
         if (auto *item = items->item(1)) item->setEnabled(problem.isEmpty());
     mode_->setEnabled(!busy_);
     datasetControls_->setVisible(!manifest_.isEmpty());
+    datasetSettingsButton_->setVisible(hasSource);
+    datasetSettings_->setVisible(hasSource && datasetSettingsButton_->isChecked());
     split_->setVisible(!yaml_.isEmpty()); reload_->setVisible(!yaml_.isEmpty());
     for (QWidget *control : QList<QWidget *>{split_, reload_, metadata_, metadataBrowse_, modelId_, datasetId_, matchIou_, scanStart_, scanEnd_, scanStep_})
         control->setEnabled(!busy_);
     reload_->setEnabled(!busy_ && !yaml_.isEmpty());
-    validation_->setText(problem); validation_->setVisible(!problem.isEmpty() && (!manifest_.isEmpty() || evaluationMode()));
+    QString summary = detail.section('\n', 0, 0).trimmed();
+    if (summary.size() > 160) summary = summary.left(160) + "…";
+    if (summary != detail.trimmed() && !summary.endsWith("…")) summary += "…";
+    validation_->setText(summary);
+    validation_->setToolTip(detail);
+    validation_->setAccessibleDescription(detail);
+    validation_->setVisible(!detail.isEmpty() && hasSource);
+    validation_->setStyleSheet(!importFailed && !invalidDataset &&
+                              (model_.task == vision::ModelTask::Classification || model_.modelPath.isEmpty() || model_.modelClassCount <= 0)
+                                  ? "color:#E8C688; font-size:11px;" : "color:#FFB4AB; font-size:11px;");
+    QString status, color;
+    if (importFailed) { status = "导入失败"; color = "#FFB4AB"; }
+    else if (manifest_.isEmpty()) { status = busy_ ? "正在检查" : "待导入"; color = "#E8C688"; }
+    else if (invalidDataset) { status = "需检查"; color = "#FFB4AB"; }
+    else if (problem.isEmpty()) { status = "可评估"; color = "#A6E3B0"; }
+    else if (model_.task == vision::ModelTask::Classification) { status = "仅预览"; color = "#E8C688"; }
+    else if (model_.modelPath.isEmpty()) { status = "待选模型"; color = "#E8C688"; }
+    else if (model_.modelClassCount <= 0) { status = "等待模型"; color = "#E8C688"; }
+    else { status = "需检查"; color = "#FFB4AB"; }
+    eligibilityStatus_->setText(status);
+    eligibilityStatus_->setVisible(hasSource);
+    eligibilityStatus_->setStyleSheet(QString("QToolButton { color:%1; background:transparent; border:1px solid transparent; border-radius:4px; padding:4px 6px; font-size:11px; } QToolButton:hover { background:#333333; border-color:#454545; }").arg(color));
+    eligibilityStatus_->setToolTip((detail.isEmpty() ? QStringLiteral("数据集与目标类别映射有效，可以选择评估调优。") : detail) + "\n点击查看数据集设置。");
+    eligibilityStatus_->setAccessibleName("评估状态：" + status);
     const bool rows = !report_.value("rows").toArray().isEmpty();
     apply_->setEnabled(!busy_ && rows);
     threshold_->setEnabled(rows); filter_->setEnabled(rows);

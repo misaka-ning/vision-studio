@@ -55,8 +55,6 @@ int main(int argc, char **argv)
     parser.addVersionOption();
     parser.addOption({"screenshot", "保存工作台截图并退出", "path"});
     parser.addOption({"smoke", "执行真实示例 ONNX 推理、导出和 UI 自检后退出", "directory"});
-    parser.addOption({"demo", "启动后运行内置真实 YOLO 示例"});
-    parser.addOption({"pt-demo", "启动后运行 PyTorch YOLOv8n .pt 示例"});
     parser.addOption({"smoke-pt", "执行真实 .pt 推理、导出和 UI 自检后退出", "directory"});
     parser.addOption({"smoke-model", "执行真实模型解析、三种视图与缓存自检后退出", "directory"});
     parser.addOption({"smoke-conversion", "执行模型转换界面、导出与实际推理自检后退出", "directory"});
@@ -184,10 +182,6 @@ int main(int argc, char **argv)
                                app.exit(3);
                            });
     }
-    else if (parser.isSet("demo"))
-        QTimer::singleShot(250, &window, &MainWindow::runDemo);
-    else if (parser.isSet("pt-demo"))
-        QTimer::singleShot(250, &window, &MainWindow::runPtDemo);
     else if (parser.isSet("display-model"))
         QTimer::singleShot(250, &window,
                            [&] { window.showModelStructure(parser.value("display-model")); });

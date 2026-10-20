@@ -356,13 +356,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     auto *local = text("●  本地运行", "localBadge");
     header->addWidget(local, 0, Qt::AlignVCenter);
     header->addSpacing(12);
-    demoButton_ = button("运行示例", "play");
-    demoButton_->setToolTip("选择 ONNX 或 PT 示例，使用真实模型检测示例图片");
-    demoButton_->setObjectName("demoButton");
-    auto *demoMenu = new QMenu(demoButton_);
-    demoMenu->addAction("ONNX · YOLOv5 Nano", this, &MainWindow::runDemo);
-    demoMenu->addAction("PT · YOLOv8 Nano", this, &MainWindow::runPtDemo);
-    demoButton_->setMenu(demoMenu);
     exportButton_ = button("导出结果", "export");
     exportButton_->setEnabled(false);
     exportButton_->setObjectName("exportResultButton");
@@ -500,15 +493,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
         labelButton_->setToolTip(labelsPath_);
     }
     applyConvertedModelProfile(modelPath_);
-    const QString sample = projectRoot_ + "/assets/bus.jpg";
-    if (QFileInfo::exists(sample))
-        addFiles({sample});
-    else
-    {
-        canvas_->setResult(ImageCanvas::createDemoResult());
-        canvasTitle_->setText("示范场景 · 交互预览");
-        resultInfo_->setText("示范框用于预览界面；导入模型后可执行真实推理。");
-    }
+    canvas_->clear();
+    updateSourceUi();
     refreshModelLibrary();
     refreshHistory();
     refreshRecordings();
@@ -531,7 +517,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
              [this]
              {
                  if (!busy_)
-                     chooseImages();
+                     evaluation_->chooseDataset();
              });
     shortcut(QKeySequence("Ctrl+M"),
              [this]
@@ -705,58 +691,69 @@ QWidget *MainWindow::buildWorkbench()
     all->addLayout(metrics);
     auto *inputCommands = card("commandBar");
     auto *commandLayout = new QVBoxLayout(inputCommands);
-    commandLayout->setContentsMargins(16, 6, 16, 6);
-    commandLayout->setSpacing(6);
+    commandLayout->setContentsMargins(12, 7, 12, 7);
+    commandLayout->setSpacing(4);
     auto *commands = new QHBoxLayout;
-    commands->setContentsMargins(0, 0, 0, 0);
-    commands->setSpacing(16);
-    commands->addWidget(text("输入源", "sectionTitle"));
-    auto *sources = new QHBoxLayout;
-    sources->setSpacing(8);
-    QStringList names = {"图片", "文件夹", "视频", "摄像头"};
-    QStringList icons = {"image", "folder", "video", "camera"};
-    for (int i = 0; i < 4; ++i)
-    {
-        auto *b = button(names[i], icons[i]);
-        sources->addWidget(b);
-        lockedControls_.append(b);
-        if (i == 0)
-            connect(b, &QPushButton::clicked, this, &MainWindow::chooseImages);
-        if (i == 1)
-            connect(b, &QPushButton::clicked, this, &MainWindow::chooseFolder);
-        if (i == 2)
-            connect(b, &QPushButton::clicked, this, &MainWindow::chooseVideo);
-        if (i == 3)
-            connect(b, &QPushButton::clicked, this, &MainWindow::chooseCamera);
-    }
-    sourceLabel_ = text("尚未选择输入", "tiny");
-    sourceLabel_->setWordWrap(true);
-    sourceLabel_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
-    sourceLabel_->setMaximumHeight(40);
-    commands->addLayout(sources);
-    commands->addWidget(sourceLabel_, 1);
+    commands->setSpacing(6);
+    evaluation_ = new EvaluationPanel;
     auto *datasetButton = button("YOLO 数据集", "folder");
     datasetButton->setObjectName("openYoloDatasetButton");
-    datasetButton->setToolTip("选择含 data.yaml 或 dataset.yaml 的数据集文件夹；右侧菜单也可直接选择 YAML 配置。");
-    sources->addWidget(datasetButton);
+    datasetButton->setToolTip("选择标准 YOLO 数据集文件夹 · Ctrl+O");
+    commands->addWidget(datasetButton);
     lockedControls_.append(datasetButton);
-    evaluation_ = new EvaluationPanel;
     connect(datasetButton, &QPushButton::clicked, evaluation_, &EvaluationPanel::chooseDataset);
     auto *datasetOptions = new QToolButton;
     datasetOptions->setObjectName("openYoloDatasetOptionsButton");
     datasetOptions->setAccessibleName("数据集导入方式");
     datasetOptions->setArrowType(Qt::DownArrow);
     datasetOptions->setPopupMode(QToolButton::InstantPopup);
-    datasetOptions->setFixedWidth(28);
-    datasetOptions->setStyleSheet("QToolButton { background:#303030; color:#E6E6E6; border:1px solid #454545; border-radius:4px; padding:7px 2px; } QToolButton:hover { background:#3B3B3B; } QToolButton::menu-indicator { image:none; }");
+    datasetOptions->setFixedSize(26, 34);
+    datasetOptions->setStyleSheet("QToolButton { background:#303030; color:#E6E6E6; border:1px solid #454545; border-radius:4px; } QToolButton:hover { background:#3B3B3B; } QToolButton::menu-indicator { image:none; }");
     auto *datasetMenu = new QMenu(datasetOptions);
     auto *yamlAction = datasetMenu->addAction("选择 YAML 配置文件…");
     yamlAction->setObjectName("openYoloDatasetYamlAction");
     connect(yamlAction, &QAction::triggered, evaluation_, &EvaluationPanel::chooseDatasetFile);
     datasetOptions->setMenu(datasetMenu);
-    sources->addWidget(datasetOptions);
+    commands->addWidget(datasetOptions);
     lockedControls_.append(datasetOptions);
+    auto *video = button("视频", "video");
+    video->setObjectName("openVideoButton");
+    auto *camera = button("摄像头", "camera");
+    camera->setObjectName("openCameraButton");
+    commands->addWidget(video); commands->addWidget(camera);
+    lockedControls_.append(video); lockedControls_.append(camera);
+    connect(video, &QPushButton::clicked, this, &MainWindow::chooseVideo);
+    connect(camera, &QPushButton::clicked, this, &MainWindow::chooseCamera);
+    sourceLabel_ = text("选择数据集或连接实时输入", "tiny");
+    sourceLabel_->setObjectName("workbenchSourceSummary");
+    sourceLabel_->setWordWrap(false);
+    sourceLabel_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    commands->addWidget(sourceLabel_, 1);
+    commands->addStretch();
+    commands->addSpacing(8);
+    commands->addWidget(text("设备", "tiny"));
+    computeDevice_ = new QComboBox;
+    computeDevice_->setObjectName("computeDevice");
+    computeDevice_->setAccessibleName("推理设备");
+    computeDevice_->addItem("自动", "auto");
+    computeDevice_->addItem("CPU", "cpu");
+    computeDevice_->addItem("NVIDIA GPU", "cuda");
+    computeDevice_->setFixedWidth(140);
+    commands->addWidget(computeDevice_);
+    gpuDeviceLabel_ = text("GPU", "tiny");
+    commands->addWidget(gpuDeviceLabel_);
+    gpuDeviceIndex_ = new QComboBox;
+    gpuDeviceIndex_->setObjectName("gpuDeviceIndex");
+    gpuDeviceIndex_->setAccessibleName("GPU 设备编号");
+    gpuDeviceIndex_->addItem("GPU 0 · 待检查", 0);
+    gpuDeviceIndex_->setFixedWidth(190);
+    commands->addWidget(gpuDeviceIndex_);
+    deviceHint_ = text("●", "tiny");
+    deviceHint_->setObjectName("deviceEnvironmentHint");
+    deviceHint_->setFixedWidth(14);
+    commands->addWidget(deviceHint_);
     commandLayout->addLayout(commands);
+    commandLayout->addWidget(evaluation_->controlsWidget());
     all->addWidget(inputCommands);
     auto *columns = new QSplitter;
     columns->setChildrenCollapsible(false);
@@ -768,37 +765,6 @@ QWidget *MainWindow::buildWorkbench()
     cl->setContentsMargins(14, 14, 14, 14);
     cl->setSpacing(10);
     cl->addWidget(text("检测配置", "sectionTitle"));
-    auto *devices = new QHBoxLayout;
-    devices->setSpacing(12);
-    devices->addWidget(text("推理设备", "sectionTitle"));
-    computeDevice_ = new QComboBox;
-    computeDevice_->setObjectName("computeDevice");
-    computeDevice_->setAccessibleName("推理设备");
-    computeDevice_->addItem("自动 · 优先 NVIDIA GPU", "auto");
-    computeDevice_->addItem("CPU", "cpu");
-    computeDevice_->addItem("NVIDIA GPU", "cuda");
-    computeDevice_->setToolTip("自动模式优先使用已就绪的 NVIDIA GPU，无法使用时说明原因并使用 CPU；"
-                               "显式选择 NVIDIA GPU 时，不会静默回退到 CPU。");
-    computeDevice_->setMinimumWidth(220);
-    computeDevice_->setMaximumWidth(270);
-    devices->addWidget(computeDevice_);
-    gpuDeviceLabel_ = text("GPU 设备", "tiny");
-    gpuDeviceIndex_ = new QComboBox;
-    gpuDeviceIndex_->setObjectName("gpuDeviceIndex");
-    gpuDeviceIndex_->setAccessibleName("GPU 设备编号");
-    gpuDeviceIndex_->addItem("GPU 0 · 待检查", 0);
-    gpuDeviceIndex_->setMinimumWidth(220);
-    gpuDeviceIndex_->setMaximumWidth(300);
-    devices->addWidget(gpuDeviceLabel_);
-    devices->addWidget(gpuDeviceIndex_);
-    deviceHint_ = text("正在检查 GPU 环境…", "tiny");
-    deviceHint_->setObjectName("deviceEnvironmentHint");
-    deviceHint_->setWordWrap(true);
-    deviceHint_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
-    deviceHint_->setMaximumHeight(40);
-    devices->addWidget(deviceHint_, 1);
-    commandLayout->addLayout(devices);
-    commandLayout->addWidget(evaluation_->controlsWidget());
     lockedControls_.append(computeDevice_);
     lockedControls_.append(gpuDeviceIndex_);
     const auto deviceChanged = [this]
@@ -1023,11 +989,11 @@ QWidget *MainWindow::buildWorkbench()
     detectionRange_ = new QComboBox;
     detectionRange_->setObjectName("detectionRange");
     detectionRange_->setAccessibleName("检测范围");
-    detectionRange_->addItems({"检测整个文件夹", "从当前图片向后检测", "只检测当前图片"});
-    detectionRange_->setToolTip("点击开始时固定本次范围和队列顺序；检测整个文件夹始终从第一张开始。");
+    detectionRange_->addItems({"检测当前集合", "从当前图片向后检测", "只检测当前图片"});
+    detectionRange_->setToolTip("点击开始时固定本次范围和队列顺序；检测当前集合始终从第一张开始。");
     rangeForm->addRow("检测范围", detectionRange_);
     rangeLayout->addLayout(rangeForm);
-    rangeHint_ = text("请先添加图片", "tiny");
+    rangeHint_ = text("请先导入 YOLO 数据集", "tiny");
     rangeHint_->setObjectName("detectionRangeHint");
     rangeHint_->setWordWrap(true);
     rangeLayout->addWidget(rangeHint_);
@@ -1123,10 +1089,12 @@ QWidget *MainWindow::buildWorkbench()
     connect(canvas_, &ImageCanvas::fileDropped, this,
             [this](const QString &p)
             {
-                if (!busy_)
-                    addFiles({p});
+                const QFileInfo input(p);
+                if (busy_) { showNotice("请先停止任务，再更换输入。"); return; }
+                if (input.isDir() || (input.isFile() && QStringList{"yaml", "yml"}.contains(input.suffix().toLower())))
+                    loadDataset(input.absoluteFilePath(), evaluation_->datasetSplit(), evaluation_->metadataPath());
                 else
-                    showNotice("请先停止任务，再更换输入。");
+                    showNotice("请导入标准 YOLO 数据集，或选择视频／摄像头。", true);
             });
     auto *queueFrame = card();
     auto *ql = new QHBoxLayout(queueFrame);
@@ -1181,6 +1149,8 @@ QWidget *MainWindow::buildWorkbench()
     rl->addLayout(ih);
     resultInfo_ = text("运行模型后，目标和置信度将显示在这里。", "muted");
     resultInfo_->setWordWrap(true);
+    resultInfo_->setMinimumHeight(44);
+    resultInfo_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     rl->addWidget(resultInfo_);
     predictionTable_ = new QTableWidget(0, 3);
     predictionTable_->setHorizontalHeaderLabels({"类别", "置信度", "类别 ID"});
@@ -1556,17 +1526,6 @@ QWidget *MainWindow::buildMore()
     connect(gpuPrepareButton_, &QPushButton::clicked, this, &MainWindow::prepareGpuEnvironment);
     connect(gpuCancelButton_, &QPushButton::clicked, this, &MainWindow::cancelGpuPreparation);
     layout->addWidget(environment);
-    auto *examples = card();
-    auto *exampleLayout = new QVBoxLayout(examples);
-    exampleLayout->setContentsMargins(24, 22, 24, 22);
-    exampleLayout->setSpacing(12);
-    exampleLayout->addWidget(text("运行示例", "modelName"));
-    auto *exampleHint =
-        text("选择本地 ONNX 或 PT 示例，体验真实 YOLO 检测。运行后自动返回检测工作台。", "muted");
-    exampleHint->setWordWrap(true);
-    exampleLayout->addWidget(exampleHint);
-    exampleLayout->addWidget(demoButton_, 0, Qt::AlignLeft);
-    layout->addWidget(examples);
     auto *exports = card();
     auto *exportLayout = new QVBoxLayout(exports);
     exportLayout->setContentsMargins(24, 22, 24, 22);
@@ -1760,7 +1719,6 @@ void MainWindow::saveImageResultInBackground(const vision::InferenceResult &resu
                     if (!busy_ && !resultIoPending_)
                     {
                         updateStartEligibility();
-                        demoButton_->setEnabled(!gpuSetupProcess_);
                         if (closing_)
                             QTimer::singleShot(0, this, &QWidget::close);
                     }
@@ -2120,21 +2078,21 @@ QWidget *MainWindow::buildGuide()
     html->setHtml(R"(
     <style>h1{color:#F5F5F5;font-size:28px}h2{color:#60CDFF;font-size:16px;margin-top:26px}p,li{line-height:1.8;color:#D2D2D2;font-size:13px}code{color:#D8ECF5}a{color:#60CDFF}</style>
     <h1>让你的视觉模型，真正运行起来。</h1><p>Vision Studio 是一个原生 C++ / Qt 桌面工作台。模型加载、图像处理与推理均在本机完成。</p>
-    <h2>01 / 开始你的第一次检测</h2><p>“更多”页的“运行示例”可选择 ONNX / PT 示例。使用自己的模型时，导入 ONNX 或 PT，然后选择图片、文件夹、视频或摄像头，点击“开始检测”。PT 使用本机独立 PyTorch 环境直接推理，无需手动导出。</p>
+    <h2>01 / 开始你的第一次检测</h2><p>在模型库选用 ONNX 或 PT 模型，再导入标准 YOLO 数据集，或选择视频／摄像头。数据集支持检测预览与评估调优；普通图片和无标注文件夹导入已退出。Ctrl+O 直接选择数据集文件夹，详细类别映射与扫描参数位于“数据集设置”。PT 通过本机独立 PyTorch 环境推理。</p>
     <h2>模型库与结构显示</h2><p>在“模型库”点击模型即可全局选用，工作台检测与模型显示使用同一模型。选择后在后台预加载，结构图、层级树、参数表共用一次解析缓存；进入或离开页面、切换展示模式不重复加载。结构图可以缩放、平移并点击节点查看输入输出及参数；层级树可以展开模块，参数表可以查看张量名称、类型与形状，两者支持搜索和详情。普通 PT 的树表示模块包含关系，只有权重的文件按参数名称分组，不补造计算连接。无法解析的文件显示文字说明，可点击“重试加载”。非 ONNX 文件显示：想看完整结构，建使用导出的 ONNX。</p>
     <h2>PT 模型</h2><p>Ultralytics YOLO 的 PT 检查点会自动读取任务和类别名称，预处理由原生后端执行。支持的旧版 YOLOv5 权重使用随附的本地兼容模块。只包含 state_dict 的任意 PT 文件无法单独重建网络，需要原始模型架构。分割、姿态和旋转框输出暂不支持。</p>
     <h2>02 / 正确匹配模型</h2><p>YOLOv5：原始输出 <code>[1,N,5+C]</code>，包含 objectness。YOLOv8 / YOLO11：原始输出 <code>[1,4+C,N]</code>。模型应为 batch=1、固定正方形输入、FP32、不包含 NMS。输入尺寸必须与导出模型一致。分割、姿态、旋转框和端到端输出暂不支持。</p>
     <p>默认 640 px、RGB、1/255 缩放、零均值，适合常见 YOLO 模型。自定义检测模型必须导入数量匹配的 UTF-8 标签文本，每行一个名称，并保持训练时类别顺序。类别数量从实际模型读取；未导入标签时，仅 80 类检测模型使用默认 COCO 名称，其余显示原始数字类别。分类模型未配置标签时显示数字类别。</p>
-    <p>图片输入可在开始按钮上方选择整个文件夹、从当前图片向后或只检测当前图片；开始时固定本次范围与顺序。后两种模式必须先在输入队列选图。运行期间禁止修改范围与输入，停止后已完成结果可回看、导出。范围外已有有效缓存保留，模型、推理参数或类别筛选变化会使旧结果失效。</p>
+    <p>数据集检测预览可在开始按钮上方选择检测当前集合、从当前图片向后或只检测当前图片；当前集合指所选的 Train、Val 或 Test。开始时固定本次范围与顺序。后两种模式必须先在输入队列选图。运行期间禁止修改范围与输入，停止后已完成结果可回看、导出。范围外已有有效缓存保留，模型、推理参数或类别筛选变化会使旧结果失效。</p>
     <p>“类别筛选”独立于名称标签：留空为全部类别，可输入 <code>32</code> 或 <code>0,2,32</code>，支持中文逗号与空格，保留模型原始 ID。非法或越界 ID 在行内提示并阻止启动；分类任务不使用此控件。COCO 的 ID 32 是 sports ball，包含多种运动球，并不等于只识别足球。</p>
     <h2>03 / 调整结果与预处理</h2><p>置信度越高，保留的目标越少；NMS IoU 控制同类重叠框的抑制。不同类别独立执行 NMS。检测输入使用 letterbox 保持比例，并将框映射回原图。分类使用正方形缩放和 top-5 输出，可在“预处理设置”调整缩放和均值；本版不提供逐通道标准差除法。</p>
     <p>输入源区域可直接选择 RGB、BGR 或灰度。灰度转换为图像明度：单通道模型直接接收灰度，三通道模型接收三个相同的灰度通道。ONNX 灰度输入统一使用“灰度均值”，G/B 均值不再分别参与计算；PT 可选 RGB 或灰度，归一化和零均值由原生后端执行。灰度模式同步显示灰度预览，模型载入后会显示实际输入通道数。</p>
     <h2>04 / 计算设备与 GPU 准备</h2><p>工作台可选择“自动 · 优先 NVIDIA GPU”“CPU”或“NVIDIA GPU”，并指定 GPU 编号。自动模式在 GPU 不可用时说明原因并使用 CPU；显式 GPU 模式无法使用时会报错。运行状态与导出记录显示实际执行设备，不能仅凭选择框判断。切换设备不改变灰度、颜色或双目设置，运行期间设备选择锁定。</p>
     <p>首次使用 GPU 请到“更多”检查并点击“准备 GPU 支持”。需要一次联网下载约 4 GB，建议至少预留 20 GB 空间；依赖保存在个人数据目录，CPU 环境保留，不安装或修改显卡驱动。准备过程中可查看进度与日志、取消本窗口启动的任务。完成后重新检查环境，再运行模型验证。</p>
-    <h2>05 / 批量、视频与摄像头</h2><p>文件夹模式扫描当前目录内的常见图片格式，逐张推理。视频与摄像头连续处理每帧；实际速度取决于所选设备与模型，界面预览限流。点击“停止运行”结束任务。“更多”页可导出当前帧。视频或摄像头检测时可点击“开始录制”，再次点击结束；“录制视频”页可查看、播放及导出带检测标注的录像。</p>
-    <p>单设备左右并排（SBS）的双目摄像头或视频可选“完整画面”“双目左目”“双目右目”。选择单目时，沿水平中线裁出所选眼，再执行预览、推理和导出；结果坐标以该单目图像为基准，JSON 同时记录原始双目画面尺寸。普通图片始终使用完整图像。运行中画面选择锁定，停止后可切换。</p>
+    <h2>05 / 批量、视频与摄像头</h2><p>YOLO 数据集按照所选集合及检测范围逐张推理。视频与摄像头连续处理每帧；实际速度取决于所选设备与模型，界面预览限流。点击“停止运行”结束任务。“更多”页可导出当前帧。视频或摄像头检测时可点击“开始录制”，再次点击结束；“录制视频”页可查看、播放及导出带检测标注的录像。</p>
+    <p>单设备左右并排（SBS）的双目摄像头或视频可选“完整画面”“双目左目”“双目右目”。选择单目时，沿水平中线裁出所选眼，再执行预览、推理和导出；结果坐标以该单目图像为基准，JSON 同时记录原始双目画面尺寸。数据集图片始终使用完整图像。运行中画面选择锁定，停止后可切换。</p>
     <h2>05 / 保存你的洞察</h2><p>导出结果会生成标注 PNG、包含原始像素坐标的 JSON，以及可用于表格分析的 CSV。启用自动保存后，批量任务为每张图片保存结果，流式任务在结束时保存最后一帧。设置和运行记录自动保存在用户数据目录。</p>
-    <h2>键盘与画布</h2><p><code>Ctrl+O</code> 添加图片　<code>Ctrl+M</code> 导入模型　<code>Ctrl+R</code> 开始　<code>Ctrl+E</code> 导出　<code>Esc</code> 停止<br>滚轮缩放，拖动画布平移，双击适应画布，点击检测框或结果列表定位目标。</p>
+    <h2>键盘与画布</h2><p><code>Ctrl+O</code> 导入数据集　<code>Ctrl+M</code> 导入模型　<code>Ctrl+R</code> 开始　<code>Ctrl+E</code> 导出　<code>Esc</code> 停止<br>滚轮缩放，拖动画布平移，双击适应画布，点击检测框或结果列表定位目标。</p>
     <h2>运行环境与兼容性</h2><p>界面为本机 C++ / Qt 6.8.3。ONNX 的 CPU 路径使用 OpenCV DNN，GPU 路径使用 ONNX Runtime CUDA；PT 使用本地 PyTorch 环境。兼容性取决于实际后端与模型算子。CPU 与 Netron 环境位于 runtime，GPU 支持安装在个人数据目录的 gpu-runtime。结构显示使用内嵌 Qt WebEngine 与本机 Netron，与推理设备选择无关。依赖准备完成后可离线运行模型。</p>
     <p><a href="https://github.com/ultralytics/yolov5">YOLOv5 官方项目</a>　<a href="https://docs.ultralytics.com/modes/export/">Ultralytics ONNX 导出文档</a></p>
     <h2>开源许可</h2><p>Copyright © 2026 misaka_ning。Vision Studio 应用代码按 GNU AGPL v3 发布，您可以依据许可证复制、修改和再分发。程序不提供任何担保。完整许可证、第三方许可和对应源码资料随发行版本提供。</p>
@@ -2248,39 +2206,6 @@ void MainWindow::connectWorker()
     workerThread_->start();
 }
 
-void MainWindow::chooseImages()
-{
-    if (busy_) return;
-    const QStringList p =
-        QFileDialog::getOpenFileNames(this, "选择待检测图片", projectRoot_,
-                                      "图片 (*.jpg *.jpeg *.png *.bmp *.webp *.tif *.tiff);;全部文件 (*)");
-    if (!p.isEmpty())
-        addFiles(p);
-}
-void MainWindow::chooseFolder()
-{
-    if (busy_) return;
-    const QString p = QFileDialog::getExistingDirectory(this, "选择图片文件夹", projectRoot_);
-    if (p.isEmpty())
-        return;
-    QStringList files;
-    const QDir d(p);
-    for (const QFileInfo &f : d.entryInfoList(QDir::Files, QDir::Name))
-    {
-        const QString ext = f.suffix().toLower();
-        if (QStringList{"jpg", "jpeg", "png", "bmp", "webp", "tif", "tiff"}.contains(ext))
-            files.append(f.absoluteFilePath());
-    }
-    if (files.isEmpty())
-    {
-        showNotice("该文件夹中没有支持的图片。", true);
-        return;
-    }
-    clearImageResults();
-    files_.clear();
-    queue_->clear();
-    addFiles(files);
-}
 void MainWindow::chooseVideo()
 {
     if (busy_) return;
@@ -2331,8 +2256,9 @@ void MainWindow::updateSourceUi()
     // Dataset reports carry their own metrics. Reclaim their duplicated header
     // and the image-only recording placeholder so the canvas fits a small window.
     for (QLabel *value : {countMetric_, latencyMetric_, classMetric_, sizeMetric_})
-        value->parentWidget()->setVisible(!datasetContext);
+        value->parentWidget()->setVisible(!datasetContext && (streaming || !files_.isEmpty()));
     if (evaluation_) evaluation_->controlsWidget()->setVisible(datasetContext || !evaluation_->datasetYaml().isEmpty());
+    sourceLabel_->setVisible(!datasetContext);
     recordButton_->setVisible(streaming);
     recordingStatus_->setVisible(streaming);
     stereoLabel_->setVisible(streaming);
@@ -2341,7 +2267,7 @@ void MainWindow::updateSourceUi()
     const QString view = stereoName(stereoMode(stereoView_->currentData().toString()));
     if (sourceKind_ == vision::SourceKind::Images)
         sourceLabel_->setText(datasetManifest_.isEmpty()
-            ? QString("图片输入 · %1 个文件").arg(files_.size())
+            ? (files_.isEmpty() ? QStringLiteral("选择数据集或连接实时输入") : QString("自检输入 · %1 张").arg(files_.size()))
             : QString("YOLO 数据集 · %1 · %2 张有效图片").arg(datasetManifest_.value("split").toString()).arg(files_.size()));
     else if (sourceKind_ == vision::SourceKind::Video)
         sourceLabel_->setText("视频 · " + QFileInfo(streamPath_).fileName() + " · " + view);
@@ -2354,8 +2280,11 @@ void MainWindow::updateSourceUi()
         classMetric_->setText("—");
         if (sourceKind_ != vision::SourceKind::Images || files_.isEmpty())
             sizeMetric_->setText("—");
-        resultInfo_->setText("输入已就绪，点击开始检测。");
+        resultInfo_->setText(sourceKind_ == vision::SourceKind::Images && files_.isEmpty()
+                                 ? "请选择 YOLO 数据集、视频或摄像头。"
+                                 : "输入已就绪，点击开始检测。");
     }
+    sourceLabel_->setToolTip(sourceLabel_->text());
     updateRecordingUi();
     updateRangeUi();
 }
@@ -2392,7 +2321,7 @@ QStringList MainWindow::selectedImageRange(QString *error) const
 {
     if (error) error->clear();
     if (files_.isEmpty()) {
-        if (error) *error = "请先添加图片";
+        if (error) *error = "请先导入 YOLO 数据集";
         return {};
     }
     const int mode = detectionRange_->currentIndex();
@@ -2806,7 +2735,7 @@ void MainWindow::startInference()
     }
     if (sourceKind_ == vision::SourceKind::Images && files_.isEmpty())
     {
-        showNotice("请先添加图片或选择其他输入源。", true);
+        showNotice("请先导入 YOLO 数据集或选择视频／摄像头。", true);
         return;
     }
     if (autoExport_->isChecked())
@@ -2894,7 +2823,6 @@ void MainWindow::setBusy(bool busy)
     for (auto *c : lockedControls_)
         c->setEnabled(!busy);
     static_cast<ModelLibraryList *>(modelList_)->setLibraryBusy(busy);
-    demoButton_->setEnabled(!busy);
     runButton_->setVisible(!busy);
     stopButton_->setVisible(busy);
     stopButton_->setEnabled(busy);
@@ -3017,8 +2945,12 @@ void MainWindow::updateDeviceUi()
         hint = requested == vision::ComputeDevice::Auto
                    ? QStringLiteral("GPU 尚未就绪 · 自动模式可使用 CPU")
                    : QStringLiteral("GPU 尚未就绪 · 更多 → 准备 GPU 支持");
-    deviceHint_->setText(hint);
-    deviceHint_->setToolTip(reason.isEmpty() ? hint : reason);
+    deviceHint_->setText("●");
+    deviceHint_->setStyleSheet(QString("color:%1; font-size:12px;").arg(ready || requested == vision::ComputeDevice::CPU ? "#A6E3B0" : "#FFB88A"));
+    deviceHint_->setAccessibleName(hint);
+    deviceHint_->setToolTip(reason.isEmpty() ? hint : hint + "\n" + reason);
+    computeDevice_->setToolTip("自动模式优先使用 NVIDIA GPU；显式 GPU 失败时不回退。\n" + deviceHint_->toolTip());
+    gpuDeviceIndex_->setToolTip(gpuDeviceIndex_->currentText() + "\n" + deviceHint_->toolTip());
     if (backendBadge_)
     {
         const QString device = actualDevice_ == vision::ComputeDevice::CUDA
@@ -3053,8 +2985,6 @@ void MainWindow::updateDeviceUi()
     }
     if (runButton_)
         updateStartEligibility();
-    if (demoButton_)
-        demoButton_->setEnabled(!busy_ && !installing && !resultIoPending_);
 }
 
 QString MainWindow::gpuLauncherPython() const
@@ -4256,7 +4186,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
     {
         if (e->key() == Qt::Key_O && !busy_)
         {
-            chooseImages();
+            evaluation_->chooseDataset();
             return;
         }
         if (e->key() == Qt::Key_M && !busy_)

@@ -15,6 +15,7 @@
 #include <QPushButton>
 #include <QSignalSpy>
 #include <QSpinBox>
+#include <QStandardItemModel>
 #include <QTableWidget>
 #include <QToolButton>
 #include <QTemporaryDir>
@@ -318,9 +319,20 @@ private slots:
         QFile theme(QStringLiteral(VISION_PROJECT_DIR) + "/assets/fluent-dark.qss"); QVERIFY(theme.open(QIODevice::ReadOnly));
         window.setStyleSheet(QString::fromUtf8(theme.readAll()));
         window.resize(970, 500); panel->setModel(model()); window.show(); QTest::qWait(10);
-        QVERIFY(panel->controlsWidget()->sizeHint().height() <= 65);
+        QVERIFY(panel->controlsWidget()->sizeHint().height() <= 48);
         panel->setDataset(dataset()); QTest::qWait(10);
-        QVERIFY(panel->controlsWidget()->sizeHint().height() <= 120);
+        QVERIFY(panel->controlsWidget()->sizeHint().height() <= 48);
+        auto *settings = control<QWidget>(*panel, "evaluationDatasetSettings");
+        auto *settingsButton = control<QToolButton>(*panel, "evaluationDatasetSettingsButton");
+        auto *advanced = control<QWidget>(*panel, "evaluationAdvancedControls");
+        QVERIFY(settings && settingsButton && advanced);
+        QVERIFY(!settings->isVisible()); QVERIFY(!advanced->isVisible());
+        for (const char *name : {"evaluationModelClassIdSpin", "evaluationDatasetClassIdSpin", "evaluationMetadataEdit", "evaluationMatchIouSpin", "evaluationScanStartSpin", "evaluationScanEndSpin", "evaluationScanStepSpin"})
+            QVERIFY2(!control<QWidget>(*panel, name)->isVisible(), name);
+        settingsButton->click(); QTest::qWait(10); QVERIFY(settings->isVisible());
+        QVERIFY(control<QWidget>(*panel, "evaluationModelClassIdSpin")->isVisible());
+        QVERIFY(control<QWidget>(*panel, "evaluationDatasetClassIdSpin")->isVisible());
+        QVERIFY(!advanced->isVisible());
         control<QToolButton>(*panel, "evaluationAdvancedButton")->click(); QTest::qWait(10);
         for (const char *name : {"evaluationModeCombo", "evaluationSplitCombo", "evaluationModelClassIdSpin", "evaluationDatasetClassIdSpin", "evaluationMetadataEdit", "evaluationMatchIouSpin", "evaluationScanStartSpin", "evaluationScanEndSpin", "evaluationScanStepSpin"}) {
             auto *widget = control<QWidget>(*panel, name); QVERIFY2(widget->isVisible(), name);
@@ -328,8 +340,58 @@ private slots:
             QVERIFY2(panel->controlsWidget()->rect().contains(bounds), name);
             QVERIFY2(widget->height() >= 30, name);
         }
+        settingsButton->click(); QTest::qWait(10); QVERIFY(!settings->isVisible());
+        QVERIFY(panel->controlsWidget()->sizeHint().height() <= 48);
         // The detached analysis view is not inserted into this toolbar-only test.
         delete panel;
+    }
+    void longImportErrorsRemainCompactAndKeepCompleteDetailsAccessible()
+    {
+        QWidget window; window.setObjectName("workspace"); auto *layout = new QVBoxLayout(&window);
+        auto *panel = new EvaluationPanel; layout->addWidget(panel->controlsWidget());
+        QFile theme(QStringLiteral(VISION_PROJECT_DIR) + "/assets/fluent-dark.qss"); QVERIFY(theme.open(QIODevice::ReadOnly));
+        window.setStyleSheet(QString::fromUtf8(theme.readAll()));
+        window.resize(970, 450); panel->setModel(model()); window.show();
+        panel->setDatasetSource("/dataset/invalid", "val", {});
+        const QString error = "ValueError: " + QString(8192, 'x') + "\nTraceback (most recent call last):\n" + QString(8192, 'y');
+        panel->showDatasetImportError(error); QTest::qWait(10);
+        auto *status = control<QToolButton>(*panel, "evaluationEligibilityStatusButton");
+        auto *settings = control<QWidget>(*panel, "evaluationDatasetSettings");
+        auto *validation = control<QLabel>(*panel, "evaluationValidationHint");
+        QVERIFY(status && settings && validation); QCOMPARE(status->text(), QString("导入失败"));
+        QVERIFY(!settings->isVisible()); QVERIFY(panel->controlsWidget()->sizeHint().height() <= 48);
+        status->click(); QTest::qWait(10); QVERIFY(settings->isVisible());
+        QVERIFY(panel->controlsWidget()->sizeHint().height() <= 160);
+        QVERIFY(validation->height() <= 44); QVERIFY(validation->text().size() <= 161);
+        QVERIFY(validation->text().endsWith("…")); QVERIFY(!validation->text().contains('\n'));
+        QCOMPARE(validation->toolTip(), error); QCOMPARE(validation->accessibleDescription(), error);
+        QVERIFY(status->toolTip().contains(error));
+        const QRect bounds(validation->mapTo(panel->controlsWidget(), QPoint()), validation->size());
+        QVERIFY(panel->controlsWidget()->rect().contains(bounds));
+        QVERIFY(!panel->canEvaluate());
+        delete panel;
+    }
+    void collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode()
+    {
+        EvaluationPanel panel; panel.setModel(model()); panel.setDataset(dataset());
+        auto *status = control<QToolButton>(panel, "evaluationEligibilityStatusButton");
+        auto *settings = control<QWidget>(panel, "evaluationDatasetSettings");
+        auto *settingsButton = control<QToolButton>(panel, "evaluationDatasetSettingsButton");
+        auto *mode = control<QComboBox>(panel, "evaluationModeCombo");
+        QVERIFY(status && settings && settingsButton && mode);
+        auto classification = model(); classification.task = vision::ModelTask::Classification;
+        panel.setModel(classification);
+        QVERIFY(!settingsButton->isChecked()); QVERIFY(settings->isHidden());
+        QVERIFY(status->text().contains("仅预览")); QVERIFY(status->toolTip().contains("分类"));
+        QVERIFY(!panel.canEvaluate()); QVERIFY(!panel.evaluationMode());
+        auto *items = qobject_cast<QStandardItemModel *>(mode->model()); QVERIFY(items);
+        QVERIFY(!items->item(1)->isEnabled());
+        status->click(); QVERIFY(settingsButton->isChecked()); QVERIFY(!settings->isHidden());
+        QVERIFY(control<QLabel>(panel, "evaluationValidationHint")->text().contains("分类"));
+        QVERIFY(!panel.evaluationMode());
+        settingsButton->click(); panel.setModel(model());
+        QVERIFY(status->text().contains("可评估")); QVERIFY(items->item(1)->isEnabled());
+        QVERIFY(settings->isHidden());
     }
     void captureFluentLayout()
     {
