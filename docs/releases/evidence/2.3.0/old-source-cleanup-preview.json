@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "version": "2.3.0",
+  "success": true,
+  "dry_run": true,
+  "generated_at_utc": "2026-10-20T09:54:29.569429+00:00",
+  "removed": [],
+  "errors": [],
+  "audit": "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.3.0/old-2.1-audit.json",
+  "audit_sha256": "2b80d9016abec6e4cc87a711762a099ef999ba2ee2b8ccd77bea2f2370819364",
+  "candidates": [
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/clean-source-verified",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/clean-source-verified.tar"
+  ],
+  "logical_bytes": 193599559,
+  "preservation_policy": "All other old QA tools, logs, models, states, user data and release folders remain untouched",
+  "old_backup_receipt": {
+    "receipt": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/prune-executed.json",
+    "sha256": "e138017a937914eef1376ea10b23c34e577c0e9bdf2eab3e595ae48efd7d3a09",
+    "kind": "official prune remote preflight",
+    "complete_source": {
+      "name": "vision-studio-2.1.0-complete-source.tar.xz",
+      "bytes": 838070904,
+      "sha256": "cb6983e349ce98f9e242d0da87f6555b2b125bf7387df8a2e03a6450c774f2ef",
+      "asset_id": 624060828,
+      "verification": "GitHub REST sha256 digest"
+    }
+  },
+  "verified_retained": [
+    {
+      "receipt": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/release-verify.json",
+      "receipt_sha256": "c58cf581dd072d1016cdff6387c677f29446018187095469fdb20ab3e28f0859",
+      "tag": "v2.3.0",
+      "commit": "05ea7df054ad9afbbe431e094e6f52fba0c51d99",
+      "assets": [
+        {
+          "name": "vision-studio_2.3.0-1_amd64.deb",
+          "bytes": 387134996,
+          "sha256": "e8f600337b7c452a2104d1bc78f544bbc41ab5553b8e67db37d919b084ab7cbf",
+          "asset_id": 658898700,
+          "verification": "GitHub REST sha256 digest"
+        },
+        {
+          "name": "vision-studio-2.3.0-complete-source.tar.xz",
+          "bytes": 846257988,
+          "sha256": "ed0c75206649ce57d41512a8f97ed12fee394a332cb646e6b6deabc7a15afbde",
+          "asset_id": 658900369,
+          "verification": "GitHub REST sha256 digest"
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 207,
+          "sha256": "fbbb09d225583e75b4d199f63d071610998d60f91c622d261b9d16bc1fc0312a",
+          "asset_id": 658916229,
+          "verification": "GitHub REST sha256 digest"
+        }
+      ],
+      "release_dir": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0"
+    },
+    {
+      "receipt": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0/previous-2.2.0-verify.json",
+      "receipt_sha256": "bc14666e2b12e64b825fe0a75a1c8431275430c4703bec9e979b80bfa87cac56",
+      "tag": "v2.2.0",
+      "commit": "962710c2a568cd586b81a8fdac03f38ca6795074",
+      "assets": [
+        {
+          "name": "vision-studio_2.2.0-1_amd64.deb",
+          "bytes": 386748572,
+          "sha256": "8ef059801bcef7f24189cba16bdaf66551fafb3f48ceb6b042bfb12f522226ac",
+          "asset_id": 655938290,
+          "verification": "GitHub REST sha256 digest"
+        },
+        {
+          "name": "vision-studio-2.2.0-complete-source.tar.xz",
+          "bytes": 843193300,
+          "sha256": "8e65c6f10810fdfd73385e8f8ab0088f7099cf6758876741653aacfb6b9c4e5d",
+          "asset_id": 655940034,
+          "verification": "GitHub REST sha256 digest"
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 207,
+          "sha256": "c3ebcbe78dd33699eab40a477d81ef0b35c7a3d48c3566cb2b4bda4543592fa0",
+          "asset_id": 655943219,
+          "verification": "GitHub REST sha256 digest"
+        }
+      ],
+      "release_dir": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.2.0"
+    }
+  ],
+  "blocked_proofs": [],
+  "ready_to_execute": true
+}
