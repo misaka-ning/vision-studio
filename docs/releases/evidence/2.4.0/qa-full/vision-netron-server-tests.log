@@ -1,0 +1,41 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 13
+    Start 13: vision-netron-server-tests
+
+13: Test command: /usr/bin/python3.10 "/home/misaka/.codex/worktrees/ef0b/yolo/tests/netron_server_tests.py"
+13: Test timeout computed to be: 45
+13: test_concurrent_sessions_have_different_ephemeral_ports (__main__.NetronServerTests) ... ok
+13: test_eof_and_sigterm_close_session (__main__.NetronServerTests) ... ok
+13: test_external_data_stays_within_model_directory (__main__.NetronServerTests) ... ok
+13: test_invalid_command_releases_port (__main__.NetronServerTests) ... ok
+13: test_invalid_path_directory_and_arguments_emit_errors (__main__.NetronServerTests) ... ok
+13: test_missing_module_and_wrong_version_are_clear_errors (__main__.NetronServerTests) ... ok
+13: test_pickle_payload_is_never_deserialized_or_framework_imported (__main__.NetronServerTests) ... ok
+13: test_real_onnx_static_assets_model_bytes_and_json_quit (__main__.NetronServerTests) ... ok
+13: test_real_pt_raw_bytes_and_plain_quit (__main__.NetronServerTests) ... ok
+13: test_slow_http_client_does_not_block_quit (__main__.NetronServerTests) ... ok
+13: test_unknown_suffix_and_corrupt_bytes_are_served_without_parsing (__main__.NetronServerTests) ... ok
+13: 
+13: ----------------------------------------------------------------------
+13: Ran 11 tests in 4.647s
+13: 
+13: OK
+1/1 Test #13: vision-netron-server-tests .......   Passed    4.71 sec
+
+The following tests passed:
+	vision-netron-server-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   4.72 sec

@@ -1,0 +1,17 @@
+{
+  "version": "2.4.0",
+  "source_commit": "9d57e96860a2b7388594fb402ea52eaa363fa886",
+  "archive_input_commit": "9d57e96860a2b7388594fb402ea52eaa363fa886",
+  "source_tree": "96a8cbec0c10fb2da226c1588117a4d499fc32df",
+  "clean_export": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.4.0/clean-source",
+  "source_method": "Final clean export byte-verified file-by-file against git archive origin/main after explicit test dataset fixture repair",
+  "runtime_info_sha256": "15b239dc233e80b4ddaa8b22f87f07fb71bfe4d90332985a708bce04d6019f1b",
+  "note": "The four unrelated user training files are excluded; no existing user application data is copied.",
+  "main_tree_identical_to_archive_input": true,
+  "git_archive_files_verified": 4284,
+  "production_application_unchanged": true,
+  "initial_application_source_commit": "60d6b2c5475c954f307b6b39cdda656a4bfe32cb",
+  "initial_tree": "8a839b94918af103308c6a86f1e0a03762e9655a",
+  "only_test_source_repaired": "tests/conversion_inference_tests.cpp",
+  "initial_source_freeze_record": "diagnostics/pre-fixture-source/source-freeze.json"
+}

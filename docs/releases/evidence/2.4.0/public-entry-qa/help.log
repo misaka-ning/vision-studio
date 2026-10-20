@@ -1,0 +1,19 @@
+Usage: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release/bin/vision-studio [options]
+Vision Studio · 本地 YOLO 视觉推理工作台
+
+Options:
+  -h, --help                      Displays help on commandline options.
+  --help-all                      Displays help, including generic Qt options.
+  -v, --version                   Displays version information.
+  --screenshot <path>             保存工作台截图并退出
+  --smoke <directory>             执行真实示例 ONNX 推理、导出和 UI 自检后退出
+  --smoke-pt <directory>          执行真实 .pt 推理、导出和 UI 自检后退出
+  --smoke-model <directory>       执行真实模型解析、三种视图与缓存自检后退出
+  --smoke-conversion <directory>  执行模型转换界面、导出与实际推理自检后退出
+  --smoke-evaluation <directory>  执行数据集评估、阈值分析、结果导出和界面自检后退出
+  --evaluation-request <path>     评估自检 JSON 请求文件（需配合 --smoke-evaluation）
+  --conversion-source <path>      转换自检的本地 PT 模型
+  --conversion-format <format>    转换自检格式：onnx 或 torchscript
+  --display-model <path>          指定结构显示的模型文件
+  --device <mode>                 推理设备：auto、cpu 或 cuda
+  --gpu-index <index>             NVIDIA GPU 索引（默认 0）

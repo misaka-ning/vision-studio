@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "repository": "misaka-ning/vision-studio",
+  "tag": "v2.3.0",
+  "commit": "05ea7df054ad9afbbe431e094e6f52fba0c51d99",
+  "url": "https://github.com/misaka-ning/vision-studio/releases/tag/v2.3.0",
+  "prerelease": false,
+  "verified_assets": [
+    {
+      "name": "vision-studio_2.3.0-1_amd64.deb",
+      "bytes": 387134996,
+      "sha256": "e8f600337b7c452a2104d1bc78f544bbc41ab5553b8e67db37d919b084ab7cbf",
+      "asset_id": 658898700,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "vision-studio-2.3.0-complete-source.tar.xz",
+      "bytes": 846257988,
+      "sha256": "ed0c75206649ce57d41512a8f97ed12fee394a332cb646e6b6deabc7a15afbde",
+      "asset_id": 658900369,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 207,
+      "sha256": "fbbb09d225583e75b4d199f63d071610998d60f91c622d261b9d16bc1fc0312a",
+      "asset_id": 658916229,
+      "verification": "GitHub REST sha256 digest"
+    }
+  ]
+}

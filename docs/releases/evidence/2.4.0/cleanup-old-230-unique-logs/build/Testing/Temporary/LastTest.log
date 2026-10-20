@@ -1,0 +1,53 @@
+Start testing: Oct 20 17:16 HKT
+----------------------------------------------------------
+5/18 Testing: vision-gpu-tests
+5/18 Test: vision-gpu-tests
+Command: "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-gpu-tests"
+Directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release
+"vision-gpu-tests" start time: Oct 20 17:16 HKT
+Output:
+----------------------------------------------------------
+********* Start testing of GpuBackendTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : GpuBackendTests::initTestCase()
+QINFO  : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds() CLASS_FILTER_EVIDENCE {"actual_cuda_device":"NVIDIA GeForce RTX 4060","case":"all","cpu_backend":"OpenCV DNN / CPU","cpu_count":5,"cpu_original_ids":[0,5],"cuda_backend":"ONNX Runtime / CUDA","cuda_count":5,"cuda_original_ids":[0,5],"filter":[],"model":"yolov5n.onnx","model_class_count":80,"zero_match":false}
+QINFO  : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds() CLASS_FILTER_EVIDENCE {"actual_cuda_device":"NVIDIA GeForce RTX 4060","case":"32","cpu_backend":"OpenCV DNN / CPU","cpu_count":0,"cpu_original_ids":[],"cuda_backend":"ONNX Runtime / CUDA","cuda_count":0,"cuda_original_ids":[],"filter":[32],"model":"yolov5n.onnx","model_class_count":80,"zero_match":true}
+QINFO  : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds() CLASS_FILTER_EVIDENCE {"actual_cuda_device":"NVIDIA GeForce RTX 4060","case":"multi","cpu_backend":"OpenCV DNN / CPU","cpu_count":5,"cpu_original_ids":[0,5],"cuda_backend":"ONNX Runtime / CUDA","cuda_count":5,"cuda_original_ids":[0,5],"filter":[0,5],"model":"yolov5n.onnx","model_class_count":80,"zero_match":false}
+QINFO  : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds() CLASS_FILTER_EVIDENCE {"actual_cuda_device":"NVIDIA GeForce RTX 4060","case":"all","cpu_backend":"PyTorch / Ultralytics / CPU","cpu_count":5,"cpu_original_ids":[0,5],"cuda_backend":"PyTorch / Ultralytics / CUDA","cuda_count":5,"cuda_original_ids":[0,5],"filter":[],"model":"yolov8n.pt","model_class_count":80,"zero_match":false}
+QINFO  : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds() CLASS_FILTER_EVIDENCE {"actual_cuda_device":"NVIDIA GeForce RTX 4060","case":"32","cpu_backend":"PyTorch / Ultralytics / CPU","cpu_count":0,"cpu_original_ids":[],"cuda_backend":"PyTorch / Ultralytics / CUDA","cuda_count":0,"cuda_original_ids":[],"filter":[32],"model":"yolov8n.pt","model_class_count":80,"zero_match":true}
+QINFO  : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds() CLASS_FILTER_EVIDENCE {"actual_cuda_device":"NVIDIA GeForce RTX 4060","case":"multi","cpu_backend":"PyTorch / Ultralytics / CPU","cpu_count":5,"cpu_original_ids":[0,5],"cuda_backend":"PyTorch / Ultralytics / CUDA","cuda_count":5,"cuda_original_ids":[0,5],"filter":[0,5],"model":"yolov8n.pt","model_class_count":80,"zero_match":false}
+QINFO  : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds() CLASS_FILTER_EVIDENCE {"actual_cuda_device":"NVIDIA GeForce RTX 4060","case":"all","cpu_backend":"PyTorch / YOLOv5 / CPU","cpu_count":5,"cpu_original_ids":[0,5],"cuda_backend":"PyTorch / YOLOv5 / CUDA","cuda_count":5,"cuda_original_ids":[0,5],"filter":[],"model":"yolov5n.pt","model_class_count":80,"zero_match":false}
+QINFO  : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds() CLASS_FILTER_EVIDENCE {"actual_cuda_device":"NVIDIA GeForce RTX 4060","case":"32","cpu_backend":"PyTorch / YOLOv5 / CPU","cpu_count":0,"cpu_original_ids":[],"cuda_backend":"PyTorch / YOLOv5 / CUDA","cuda_count":0,"cuda_original_ids":[],"filter":[32],"model":"yolov5n.pt","model_class_count":80,"zero_match":true}
+QINFO  : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds() CLASS_FILTER_EVIDENCE {"actual_cuda_device":"NVIDIA GeForce RTX 4060","case":"multi","cpu_backend":"PyTorch / YOLOv5 / CPU","cpu_count":5,"cpu_original_ids":[0,5],"cuda_backend":"PyTorch / YOLOv5 / CUDA","cuda_count":5,"cuda_original_ids":[0,5],"filter":[0,5],"model":"yolov5n.pt","model_class_count":80,"zero_match":false}
+QINFO  : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds() CLASS_FILTER_EVIDENCE {"actual_cuda_device":"NVIDIA GeForce RTX 4060","case":"all","cpu_backend":"PyTorch / TorchScript / CPU","cpu_count":1,"cpu_original_ids":[32],"cuda_backend":"PyTorch / TorchScript / CUDA","cuda_count":1,"cuda_original_ids":[32],"filter":[],"model":"gpu-3-1-33-32.pt","model_class_count":33,"zero_match":false}
+QINFO  : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds() CLASS_FILTER_EVIDENCE {"actual_cuda_device":"NVIDIA GeForce RTX 4060","case":"32","cpu_backend":"PyTorch / TorchScript / CPU","cpu_count":1,"cpu_original_ids":[32],"cuda_backend":"PyTorch / TorchScript / CUDA","cuda_count":1,"cuda_original_ids":[32],"filter":[32],"model":"gpu-3-1-33-32.pt","model_class_count":33,"zero_match":false}
+QINFO  : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds() CLASS_FILTER_EVIDENCE {"actual_cuda_device":"NVIDIA GeForce RTX 4060","case":"multi","cpu_backend":"PyTorch / TorchScript / CPU","cpu_count":1,"cpu_original_ids":[32],"cuda_backend":"PyTorch / TorchScript / CUDA","cuda_count":1,"cuda_original_ids":[32],"filter":[0,32],"model":"gpu-3-1-33-32.pt","model_class_count":33,"zero_match":false}
+QINFO  : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds() CLASS_FILTER_EVIDENCE {"actual_cuda_device":"NVIDIA GeForce RTX 4060","case":"zero","cpu_backend":"PyTorch / TorchScript / CPU","cpu_count":0,"cpu_original_ids":[],"cuda_backend":"PyTorch / TorchScript / CUDA","cuda_count":0,"cuda_original_ids":[],"filter":[1],"model":"gpu-3-1-33-32.pt","model_class_count":33,"zero_match":true}
+PASS   : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds()
+PASS   : GpuBackendTests::realModernAndLegacyPtColorAndGrayscale()
+PASS   : GpuBackendTests::torchScriptC1AndC3GrayscaleDetectionAndClassification()
+PASS   : GpuBackendTests::nativeGrayC1C3Classification()
+PASS   : GpuBackendTests::modernAndLegacyRealSingleChannelStems()
+QINFO  : GpuBackendTests::realOnnxCudaMatchesCpuAndExecutesCudaNodes() ORT_PROFILE_EVIDENCE {"cuda_node_events":364,"distinct_cuda_nodes":182,"profile":"onnx-cuda-0_2026-10-20_17-18-45.json"}
+QINFO  : GpuBackendTests::realOnnxCudaMatchesCpuAndExecutesCudaNodes() ORT_PROFILE_SAVED /home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/production-replay/artifacts/onnx-cuda-0_2026-10-20_17-18-45.json
+QINFO  : GpuBackendTests::realOnnxCudaMatchesCpuAndExecutesCudaNodes() ORT_PROFILE_EVIDENCE {"cuda_node_events":364,"distinct_cuda_nodes":182,"profile":"onnx-cuda-1_2026-10-20_17-18-45.json"}
+QINFO  : GpuBackendTests::realOnnxCudaMatchesCpuAndExecutesCudaNodes() ORT_PROFILE_SAVED /home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/production-replay/artifacts/onnx-cuda-1_2026-10-20_17-18-45.json
+PASS   : GpuBackendTests::realOnnxCudaMatchesCpuAndExecutesCudaNodes()
+PASS   : GpuBackendTests::onnxC1AndC3GrayPixelsMatchModelInput()
+PASS   : GpuBackendTests::onnxCudaCancellationTerminatesRunAndSessionCanRecover()
+PASS   : GpuBackendTests::ptCudaCancellationStopsChildAndCudaReloadWorks()
+PASS   : GpuBackendTests::cleanupTestCase()
+Totals: 11 passed, 0 failed, 0 skipped, 0 blacklisted, 135529ms
+********* Finished testing of GpuBackendTests *********
+<end of output>
+Test time = 135.66 sec
+----------------------------------------------------------
+Test Passed.
+"vision-gpu-tests" end time: Oct 20 17:18 HKT
+"vision-gpu-tests" time elapsed: 00:02:15
+----------------------------------------------------------
+
+End testing: Oct 20 17:18 HKT
+
+gpu = 135.66 sec*proc
+

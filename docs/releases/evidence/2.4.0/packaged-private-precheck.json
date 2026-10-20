@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "version": "2.4.0",
+  "success": true,
+  "errors": [],
+  "created_at_utc": "2026-10-20T13:24:02.440001+00:00",
+  "scope": "Actual final extracted helper read-only private dataset precheck, no inference",
+  "dataset_writes": false,
+  "metadata_selected": false,
+  "model_inference": false,
+  "privacy_note": "Private images, labels, filenames, source paths and complete manifests retained locally only; public evidence contains counts and hashes.",
+  "deb_sha256": "a49aac15daf9733d42126f84d7c6dc64256dbac46da21cb4d9d8ed58d2effe68",
+  "package_bound": true,
+  "read_only_application": true,
+  "source_helpers_match_staged": {
+    "evaluation_worker.py": true,
+    "evaluation_data.py": true,
+    "evaluation_metrics.py": true
+  },
+  "input_files": 16667,
+  "input_files_aggregate_sha256": "9402d172393628233ea996738d93ea991606bae163a8a23ae8fe46b87d6176e2",
+  "manifest_matches_source_precheck": true,
+  "selected_images": 1223,
+  "available_images": 1223,
+  "class_count": 1,
+  "validation": {
+    "positive_images": 813,
+    "negative_images": 410,
+    "missing_labels": 0,
+    "excluded": 0
+  },
+  "root_relocated": true,
+  "manifest_fingerprint": "f270de2815fa47c1a95d7934b77e90b9d01316cfd030d46dbb2a27069b5b09e0",
+  "requires_attention": false,
+  "input_files_unchanged": true,
+  "original_yaml_sha256_unchanged": true,
+  "yaml_sha256": "3a958830cf889ac21d2109f903ab469b8295aedf267b97b7b8a1d4efa07bef5b",
+  "packaged_application_unchanged": true,
+  "elapsed_seconds": 32.879
+}

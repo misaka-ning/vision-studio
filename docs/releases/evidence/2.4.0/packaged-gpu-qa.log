@@ -1,0 +1,1 @@
+{"success": true, "version": "2.4.0", "checks": {"packaged_onnx_cuda": true, "packaged_pt_cuda": true, "cpu_regression": true}, "errors": [], "report": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.4.0/packaged-gpu-qa.json"}

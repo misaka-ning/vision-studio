@@ -1,0 +1,32 @@
+{
+  "version": "2.4.0",
+  "success": true,
+  "checks": {
+    "help_excludes_demo": true,
+    "old_demo_rejected": true,
+    "version_240": true
+  },
+  "binary_sha256": "5813c1bf7a3970b5c51746479a78c5acb0fc81048be8f5a36ef4574f23d6484e",
+  "commands": {
+    "--help": {
+      "exit_code": 0,
+      "stdout": "Usage: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release/bin/vision-studio [options]\nVision Studio · 本地 YOLO 视觉推理工作台\n\nOptions:\n  -h, --help                      Displays help on commandline options.\n  --help-all                      Displays help, including generic Qt options.\n  -v, --version                   Displays version information.\n  --screenshot <path>             保存工作台截图并退出\n  --smoke <directory>             执行真实示例 ONNX 推理、导出和 UI 自检后退出\n  --smoke-pt <directory>          执行真实 .pt 推理、导出和 UI 自检后退出\n  --smoke-model <directory>       执行真实模型解析、三种视图与缓存自检后退出\n  --smoke-conversion <directory>  执行模型转换界面、导出与实际推理自检后退出\n  --smoke-evaluation <directory>  执行数据集评估、阈值分析、结果导出和界面自检后退出\n  --evaluation-request <path>     评估自检 JSON 请求文件（需配合 --smoke-evaluation）\n  --conversion-source <path>      转换自检的本地 PT 模型\n  --conversion-format <format>    转换自检格式：onnx 或 torchscript\n  --display-model <path>          指定结构显示的模型文件\n  --device <mode>                 推理设备：auto、cpu 或 cuda\n  --gpu-index <index>             NVIDIA GPU 索引（默认 0）\n",
+      "stderr": ""
+    },
+    "--demo": {
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Vision Studio: Unknown option 'demo'.\n"
+    },
+    "--pt-demo": {
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Vision Studio: Unknown option 'pt-demo'.\n"
+    },
+    "--version": {
+      "exit_code": 0,
+      "stdout": "Vision Studio 2.4.0\n",
+      "stderr": ""
+    }
+  }
+}

@@ -1,0 +1,85 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 11
+    Start 11: vision-conversion-inference-tests
+
+11: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release/vision-conversion-inference-tests
+11: Environment variables: 
+11:  QT_QPA_PLATFORM=offscreen
+11:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+11: Test timeout computed to be: 300
+11: ********* Start testing of ConversionInferenceTests *********
+11: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+11: PASS   : ConversionInferenceTests::initTestCase()
+11: FAIL!  : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(modern-gray-onnx) Compared values are not the same
+11:    Actual   (starts.size()): 0
+11:    Expected (1)            : 1
+11:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/conversion_inference_tests.cpp(246)]
+11: FAIL!  : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(legacy-focus-gray-onnx) Compared values are not the same
+11:    Actual   (starts.size()): 0
+11:    Expected (1)            : 1
+11:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/conversion_inference_tests.cpp(246)]
+11: FAIL!  : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(script-gray-detection-onnx) Compared values are not the same
+11:    Actual   (starts.size()): 0
+11:    Expected (1)            : 1
+11:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/conversion_inference_tests.cpp(246)]
+11: FAIL!  : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(script-gray-classification-onnx) Compared values are not the same
+11:    Actual   (starts.size()): 0
+11:    Expected (1)            : 1
+11:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/conversion_inference_tests.cpp(246)]
+11: FAIL!  : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(modern-c3-classification-torchscript-preserves-gray) Compared values are not the same
+11:    Actual   (starts.size()): 0
+11:    Expected (1)            : 1
+11:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/conversion_inference_tests.cpp(246)]
+11: FAIL!  : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(script-color-detection-torchscript) Compared values are not the same
+11:    Actual   (starts.size()): 0
+11:    Expected (1)            : 1
+11:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/conversion_inference_tests.cpp(246)]
+11: FAIL!  : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov8n-640-onnx-cpu) Compared values are not the same
+11:    Actual   (starts.size()): 0
+11:    Expected (1)            : 1
+11:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/conversion_inference_tests.cpp(246)]
+11: FAIL!  : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov5n-640-onnx-cpu) Compared values are not the same
+11:    Actual   (starts.size()): 0
+11:    Expected (1)            : 1
+11:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/conversion_inference_tests.cpp(246)]
+11: FAIL!  : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov8n-640-onnx-cuda) Compared values are not the same
+11:    Actual   (starts.size()): 0
+11:    Expected (1)            : 1
+11:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/conversion_inference_tests.cpp(246)]
+11: FAIL!  : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov5n-640-onnx-cuda) Compared values are not the same
+11:    Actual   (starts.size()): 0
+11:    Expected (1)            : 1
+11:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/conversion_inference_tests.cpp(246)]
+11: FAIL!  : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov8n-640-torchscript-cuda) Compared values are not the same
+11:    Actual   (starts.size()): 0
+11:    Expected (1)            : 1
+11:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/conversion_inference_tests.cpp(246)]
+11: FAIL!  : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov5n-640-torchscript-cuda) Compared values are not the same
+11:    Actual   (starts.size()): 0
+11:    Expected (1)            : 1
+11:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/conversion_inference_tests.cpp(246)]
+11: PASS   : ConversionInferenceTests::cleanupTestCase()
+11: Totals: 2 passed, 12 failed, 0 skipped, 0 blacklisted, 49203ms
+11: ********* Finished testing of ConversionInferenceTests *********
+1/1 Test #11: vision-conversion-inference-tests ...***Failed   49.38 sec
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =  49.38 sec
+
+The following tests FAILED:
+	 11 - vision-conversion-inference-tests (Failed)
+Errors while running CTest
+Output from these tests are in: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release/Testing/Temporary/LastTest.log
+Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.
