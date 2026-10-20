@@ -1,0 +1,20 @@
+********* Start testing of EvaluationWorkerTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : EvaluationWorkerTests::initTestCase()
+PASS   : EvaluationWorkerTests::prepareUsesRealDimensionsAndFlagsMissingLabels()
+FAIL!  : EvaluationWorkerTests::actualOnnxAllAndSubsets() Caught unhandled exception
+   Loc: [/home/qt/work/qt/qtbase/src/testlib/qtestcase.cpp(1982)]
+Totals: 2 passed, 1 failed, 0 skipped, 0 blacklisted, 1626ms
+********* Finished testing of EvaluationWorkerTests *********
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  评估辅助进程失败：Process operation timed out
+{"success": false, "error": "数据集清单内容或校验指纹已变化。"}
+Received signal 6 (SIGABRT)
+         [Non-test] function time: 1466ms, total time: 1626ms
+
+=== Stack trace ===
+Could not attach to process.  If your uid matches the uid of the target
+process, check the setting of /proc/sys/kernel/yama/ptrace_scope, or try
+again as the root user.  For more details, see /etc/sysctl.d/10-ptrace.conf
+ptrace: 对设备不适当的 ioctl 操作.
+=== End of stack trace ===

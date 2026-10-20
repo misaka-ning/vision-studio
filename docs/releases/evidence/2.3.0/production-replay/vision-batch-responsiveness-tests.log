@@ -1,0 +1,43 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 7
+    Start 7: vision-batch-responsiveness-tests
+
+7: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-batch-responsiveness-tests
+7: Environment variables: 
+7:  QT_QPA_PLATFORM=offscreen
+7:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+7: Test timeout computed to be: 180
+7: ********* Start testing of BatchResponsivenessTests *********
+7: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+7: PASS   : BatchResponsivenessTests::initTestCase()
+7: QWARN  : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(1920x1080-rgb-random) This plugin does not support propagateSizeHints()
+7: QINFO  : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(1920x1080-rgb-random) batch_responsiveness_evidence: {"accepted_after_stop":1,"accepted_at_stop":1,"automatic_export":true,"backend":"OpenCV DNN / CPU","cache_survives_removed_sources":true,"complete_exports":true,"device":"cpu","heartbeat_ticks":49,"height":1080,"maximum_heartbeat_gap_ms":16,"observed_stop_elapsed_ms":30,"scheduled_stop_dispatch_ms":39,"total_images":3,"width":1920}
+7: PASS   : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(1920x1080-rgb-random)
+7: QWARN  : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(3840x2160-rgb-random) This plugin does not support propagateSizeHints()
+7: QINFO  : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(3840x2160-rgb-random) batch_responsiveness_evidence: {"accepted_after_stop":1,"accepted_at_stop":1,"automatic_export":true,"backend":"OpenCV DNN / CPU","cache_survives_removed_sources":true,"complete_exports":true,"device":"cpu","heartbeat_ticks":173,"height":2160,"maximum_heartbeat_gap_ms":18,"observed_stop_elapsed_ms":30,"scheduled_stop_dispatch_ms":38,"total_images":3,"width":3840}
+7: PASS   : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(3840x2160-rgb-random)
+7: QWARN  : BatchResponsivenessTests::automaticExportDiskFailureStopsWithoutDeadlockAndBatchCanRecover() This plugin does not support propagateSizeHints()
+7: QINFO  : BatchResponsivenessTests::automaticExportDiskFailureStopsWithoutDeadlockAndBatchCanRecover() batch_disk_failure_evidence: export_error_reported=true no_deadlock=true completed_result_retained=true recovered_images=3
+7: PASS   : BatchResponsivenessTests::automaticExportDiskFailureStopsWithoutDeadlockAndBatchCanRecover()
+7: PASS   : BatchResponsivenessTests::cleanupTestCase()
+7: Totals: 5 passed, 0 failed, 0 skipped, 0 blacklisted, 9051ms
+7: ********* Finished testing of BatchResponsivenessTests *********
+1/1 Test #7: vision-batch-responsiveness-tests ...   Passed    9.23 sec
+
+The following tests passed:
+	vision-batch-responsiveness-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   9.24 sec

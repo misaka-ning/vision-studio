@@ -134,6 +134,11 @@ def check_inputs(arguments: argparse.Namespace) -> None:
         raise RuntimeError("The model structure viewer requires the pinned Netron 9.3.1 distribution.")
     if metadata["distributions"].get("onnx") != "1.17.0" or metadata["distributions"].get("protobuf") != "6.33.0":
         raise RuntimeError("The model converter requires the tested ONNX 1.17.0 / protobuf 6.33.0 runtime.")
+    evaluation_dependencies = {"numpy", "pillow", "pyyaml", "matplotlib", "ultralytics"}
+    distributions = {name.lower().replace("_", "-") for name in metadata["distributions"]}
+    missing = evaluation_dependencies - distributions
+    if missing:
+        raise RuntimeError("The evaluator is missing bundled runtime dependencies: " + ", ".join(sorted(missing)))
     if not (arguments.qt_prefix / "libexec/QtWebEngineProcess").is_file():
         raise RuntimeError("The Qt 6.8.3 SDK must include WebEngine and QtWebEngineProcess.")
     arguments.runtime_metadata = metadata
@@ -467,10 +472,8 @@ def stage_payload(arguments: argparse.Namespace) -> tuple[Path, dict[str, str]]:
     if (app / "models/source").exists():
         shutil.rmtree(app / "models/source")
     (app / "scripts").mkdir()
-    shutil.copy2(arguments.source_root / "scripts/pt_worker.py", app / "scripts/pt_worker.py")
-    shutil.copy2(arguments.source_root / "scripts/netron_server.py", app / "scripts/netron_server.py")
-    shutil.copy2(arguments.source_root / "scripts/model_convert.py", app / "scripts/model_convert.py")
-    for name in ("gpu_setup.py", "gpu_probe.py", "setup_gpu.sh"):
+    for name in ("pt_worker.py", "netron_server.py", "model_convert.py", "evaluation_data.py",
+                 "evaluation_metrics.py", "evaluation_worker.py", "gpu_setup.py", "gpu_probe.py", "setup_gpu.sh"):
         shutil.copy2(arguments.source_root / "scripts" / name, app / "scripts" / name)
     for name in ("requirements-gpu.txt", "requirements-gpu.lock.txt"):
         shutil.copy2(arguments.source_root / name, app / name)

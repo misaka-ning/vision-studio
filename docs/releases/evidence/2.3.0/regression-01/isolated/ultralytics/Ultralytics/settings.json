@@ -1,0 +1,19 @@
+{
+  "settings_version": "0.0.8",
+  "datasets_dir": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/datasets",
+  "weights_dir": "weights",
+  "runs_dir": "runs",
+  "uuid": "6e48307b10eb1a861ea6e929a1e00fea54da5dc8a14a42d7eacd08d68b42be86",
+  "sync": true,
+  "api_key": "",
+  "openai_api_key": "",
+  "clearml": true,
+  "comet": true,
+  "dvc": true,
+  "mlflow": true,
+  "raytune": true,
+  "tensorboard": false,
+  "wandb": false,
+  "vscode_msg": true,
+  "openvino_msg": true
+}

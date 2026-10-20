@@ -28,6 +28,7 @@ class ImageCanvas final : public QWidget
     void clear();
     void setBoxesVisible(bool visible);
     void setLabelsVisible(bool visible);
+    void setGroundTruthVisible(bool visible) { m_groundTruthVisible = visible; update(); }
     void setSelectedPrediction(int index);
     void fitToView();
     void actualSize();
@@ -76,6 +77,7 @@ class ImageCanvas final : public QWidget
     bool m_fit = true;
     bool m_boxesVisible = true;
     bool m_labelsVisible = true;
+    bool m_groundTruthVisible = true;
     bool m_dragging = false;
     bool m_moved = false;
     bool m_dropActive = false;

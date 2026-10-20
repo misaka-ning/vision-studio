@@ -1,0 +1,2668 @@
+{
+  "schema_version": 1,
+  "version": "2.3.0",
+  "success": true,
+  "errors": [],
+  "generated_at_utc": "2026-10-20T09:26:32.862765+00:00",
+  "scope": "Actual effective 18-suite regression: 17-suite baseline, six complete affected-suite production replays, and final full direct Qt UI/integration runs. Final DEB/install/source acceptance is separate.",
+  "effective_suite_count": 18,
+  "qt_tests_passed": 286,
+  "python_tests_passed": 86,
+  "failed": 0,
+  "skipped": 0,
+  "blacklisted": 0,
+  "suites": [
+    {
+      "name": "vision-core-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-core\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/regression-01/vision-core-tests.xml"
+      ],
+      "source_run": "regression-01",
+      "log": "regression-01/vision-core-tests.log",
+      "log_sha256": "822c3cf0b5d9718c68a34983a9e9afe548593f7843c189866fbf5241676933a4",
+      "junit": "regression-01/vision-core-tests.xml",
+      "junit_sha256": "c8f0ae615c8f3882e6fa6faf3a7d6399d91188724297c806da64270af9d067e7",
+      "qt_totals": [
+        {
+          "passed": 39,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "CoreTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.701,
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-inference-delivery-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-inference\\-delivery\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/regression-01/vision-inference-delivery-tests.xml"
+      ],
+      "source_run": "regression-01",
+      "log": "regression-01/vision-inference-delivery-tests.log",
+      "log_sha256": "2cdf87ba73f8ef2a83761335822d4a7bd339418adeb6807aaab7827993411e25",
+      "junit": "regression-01/vision-inference-delivery-tests.xml",
+      "junit_sha256": "58cc67688a307087060044f7b58ac4d332a3cd0f7a0882ff39bf15a7d9571ec6",
+      "qt_totals": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "InferenceDeliveryTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 1.378,
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-recording-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-recording\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/regression-01/vision-recording-tests.xml"
+      ],
+      "source_run": "regression-01",
+      "log": "regression-01/vision-recording-tests.log",
+      "log_sha256": "1f5f3f81dcb1411b3cc8854eee4caed6b4da8e81ffa89a9000770ed12183dbd7",
+      "junit": "regression-01/vision-recording-tests.xml",
+      "junit_sha256": "455ab5917e59948b48cd4467adccb933b0d202fb7e8256c732c5ea92450da8b6",
+      "qt_totals": [
+        {
+          "passed": 15,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "RecordingTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 2.841,
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-pt-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-pt\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/regression-01/vision-pt-tests.xml"
+      ],
+      "source_run": "regression-01",
+      "log": "regression-01/vision-pt-tests.log",
+      "log_sha256": "f27e01a28e52bfde83a7a2c8d48662d329316240a7f15f43dc1acdbca0a1a483",
+      "junit": "regression-01/vision-pt-tests.xml",
+      "junit_sha256": "8ae96378c9eaba0b4f9af9c929cdede4162c138ea82c9bfb55b1d46447a78c43",
+      "qt_totals": [
+        {
+          "passed": 36,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "PtBackendTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 238.658,
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-gpu-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-gpu\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/production-replay/vision-gpu-tests.xml"
+      ],
+      "source_run": "production-replay",
+      "log": "production-replay/vision-gpu-tests.log",
+      "log_sha256": "92d834b8239591d28bb432c92d4045cab668fe0b1ac16c538673450a6bd1f5d4",
+      "junit": "production-replay/vision-gpu-tests.xml",
+      "junit_sha256": "47a4de847681c030c898e6eab009b09835c08390ce48100a6a415b70b62003ce",
+      "qt_totals": [
+        {
+          "passed": 11,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "GpuBackendTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 135.529,
+      "feature_evidence": [
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "all",
+            "cpu_backend": "OpenCV DNN / CPU",
+            "cpu_count": 5,
+            "cpu_original_ids": [
+              0,
+              5
+            ],
+            "cuda_backend": "ONNX Runtime / CUDA",
+            "cuda_count": 5,
+            "cuda_original_ids": [
+              0,
+              5
+            ],
+            "filter": [],
+            "model": "yolov5n.onnx",
+            "model_class_count": 80,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "32",
+            "cpu_backend": "OpenCV DNN / CPU",
+            "cpu_count": 0,
+            "cpu_original_ids": [],
+            "cuda_backend": "ONNX Runtime / CUDA",
+            "cuda_count": 0,
+            "cuda_original_ids": [],
+            "filter": [
+              32
+            ],
+            "model": "yolov5n.onnx",
+            "model_class_count": 80,
+            "zero_match": true
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "multi",
+            "cpu_backend": "OpenCV DNN / CPU",
+            "cpu_count": 5,
+            "cpu_original_ids": [
+              0,
+              5
+            ],
+            "cuda_backend": "ONNX Runtime / CUDA",
+            "cuda_count": 5,
+            "cuda_original_ids": [
+              0,
+              5
+            ],
+            "filter": [
+              0,
+              5
+            ],
+            "model": "yolov5n.onnx",
+            "model_class_count": 80,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "all",
+            "cpu_backend": "PyTorch / Ultralytics / CPU",
+            "cpu_count": 5,
+            "cpu_original_ids": [
+              0,
+              5
+            ],
+            "cuda_backend": "PyTorch / Ultralytics / CUDA",
+            "cuda_count": 5,
+            "cuda_original_ids": [
+              0,
+              5
+            ],
+            "filter": [],
+            "model": "yolov8n.pt",
+            "model_class_count": 80,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "32",
+            "cpu_backend": "PyTorch / Ultralytics / CPU",
+            "cpu_count": 0,
+            "cpu_original_ids": [],
+            "cuda_backend": "PyTorch / Ultralytics / CUDA",
+            "cuda_count": 0,
+            "cuda_original_ids": [],
+            "filter": [
+              32
+            ],
+            "model": "yolov8n.pt",
+            "model_class_count": 80,
+            "zero_match": true
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "multi",
+            "cpu_backend": "PyTorch / Ultralytics / CPU",
+            "cpu_count": 5,
+            "cpu_original_ids": [
+              0,
+              5
+            ],
+            "cuda_backend": "PyTorch / Ultralytics / CUDA",
+            "cuda_count": 5,
+            "cuda_original_ids": [
+              0,
+              5
+            ],
+            "filter": [
+              0,
+              5
+            ],
+            "model": "yolov8n.pt",
+            "model_class_count": 80,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "all",
+            "cpu_backend": "PyTorch / YOLOv5 / CPU",
+            "cpu_count": 5,
+            "cpu_original_ids": [
+              0,
+              5
+            ],
+            "cuda_backend": "PyTorch / YOLOv5 / CUDA",
+            "cuda_count": 5,
+            "cuda_original_ids": [
+              0,
+              5
+            ],
+            "filter": [],
+            "model": "yolov5n.pt",
+            "model_class_count": 80,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "32",
+            "cpu_backend": "PyTorch / YOLOv5 / CPU",
+            "cpu_count": 0,
+            "cpu_original_ids": [],
+            "cuda_backend": "PyTorch / YOLOv5 / CUDA",
+            "cuda_count": 0,
+            "cuda_original_ids": [],
+            "filter": [
+              32
+            ],
+            "model": "yolov5n.pt",
+            "model_class_count": 80,
+            "zero_match": true
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "multi",
+            "cpu_backend": "PyTorch / YOLOv5 / CPU",
+            "cpu_count": 5,
+            "cpu_original_ids": [
+              0,
+              5
+            ],
+            "cuda_backend": "PyTorch / YOLOv5 / CUDA",
+            "cuda_count": 5,
+            "cuda_original_ids": [
+              0,
+              5
+            ],
+            "filter": [
+              0,
+              5
+            ],
+            "model": "yolov5n.pt",
+            "model_class_count": 80,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "all",
+            "cpu_backend": "PyTorch / TorchScript / CPU",
+            "cpu_count": 1,
+            "cpu_original_ids": [
+              32
+            ],
+            "cuda_backend": "PyTorch / TorchScript / CUDA",
+            "cuda_count": 1,
+            "cuda_original_ids": [
+              32
+            ],
+            "filter": [],
+            "model": "gpu-3-1-33-32.pt",
+            "model_class_count": 33,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "32",
+            "cpu_backend": "PyTorch / TorchScript / CPU",
+            "cpu_count": 1,
+            "cpu_original_ids": [
+              32
+            ],
+            "cuda_backend": "PyTorch / TorchScript / CUDA",
+            "cuda_count": 1,
+            "cuda_original_ids": [
+              32
+            ],
+            "filter": [
+              32
+            ],
+            "model": "gpu-3-1-33-32.pt",
+            "model_class_count": 33,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "multi",
+            "cpu_backend": "PyTorch / TorchScript / CPU",
+            "cpu_count": 1,
+            "cpu_original_ids": [
+              32
+            ],
+            "cuda_backend": "PyTorch / TorchScript / CUDA",
+            "cuda_count": 1,
+            "cuda_original_ids": [
+              32
+            ],
+            "filter": [
+              0,
+              32
+            ],
+            "model": "gpu-3-1-33-32.pt",
+            "model_class_count": 33,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "zero",
+            "cpu_backend": "PyTorch / TorchScript / CPU",
+            "cpu_count": 0,
+            "cpu_original_ids": [],
+            "cuda_backend": "PyTorch / TorchScript / CUDA",
+            "cuda_count": 0,
+            "cuda_original_ids": [],
+            "filter": [
+              1
+            ],
+            "model": "gpu-3-1-33-32.pt",
+            "model_class_count": 33,
+            "zero_match": true
+          }
+        },
+        {
+          "kind": "ORT_PROFILE_EVIDENCE",
+          "value": {
+            "cuda_node_events": 364,
+            "distinct_cuda_nodes": 182,
+            "profile": "onnx-cuda-0_2026-10-20_17-18-45.json"
+          }
+        },
+        {
+          "kind": "ORT_PROFILE_EVIDENCE",
+          "value": {
+            "cuda_node_events": 364,
+            "distinct_cuda_nodes": 182,
+            "profile": "onnx-cuda-1_2026-10-20_17-18-45.json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vision-ui-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "source_run": "final-ui",
+      "execution_kind": "direct Qt binary with captured process exit status",
+      "command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-ui-tests",
+        "-o",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/final-ui/ui-tests.log,txt"
+      ],
+      "binary": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-ui-tests",
+      "binary_sha256": "ce4d59ec60ddf636307e293104dab7dcb592d0b92e674d7ac4a8bd2eb4416944",
+      "log": "final-ui/ui-tests.log",
+      "log_sha256": "af37292fad27e7465344e32a0e95a451f3ec71110b02a3cd38c83462211e2282",
+      "junit": null,
+      "qt_totals": [
+        {
+          "passed": 38,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "UiTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 43.011
+    },
+    {
+      "name": "vision-batch-responsiveness-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-batch\\-responsiveness\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/production-replay/vision-batch-responsiveness-tests.xml"
+      ],
+      "source_run": "production-replay",
+      "log": "production-replay/vision-batch-responsiveness-tests.log",
+      "log_sha256": "9d45fba221e5ec39820c4a26ce63b1dd2f3d18468646be31e4e4a11d977199f9",
+      "junit": "production-replay/vision-batch-responsiveness-tests.xml",
+      "junit_sha256": "9c4ce0195e1ab5e15a1adcc088456e3d2a4841731366cbc3c25b3fe08aa06c2a",
+      "qt_totals": [
+        {
+          "passed": 5,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "BatchResponsivenessTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 9.051,
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-scope-filter-ui-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-scope\\-filter\\-ui\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/production-replay/vision-scope-filter-ui-tests.xml"
+      ],
+      "source_run": "production-replay",
+      "log": "production-replay/vision-scope-filter-ui-tests.log",
+      "log_sha256": "0832a3a10b506a69c44baa6f80dbf8da0e68df4269aba4c69261376d328ed199",
+      "junit": "production-replay/vision-scope-filter-ui-tests.xml",
+      "junit_sha256": "fa7b1ec4fcc575e6f20390def8a2609d6c4ccbf26850dc00630c84e506e13e8e",
+      "qt_totals": [
+        {
+          "passed": 38,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "ScopeFilterUiTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 28.427,
+      "feature_evidence": [
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 3,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 2,
+            "mode": 0,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 0,
+            "submitted_count": 3
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 3,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 2,
+            "mode": 0,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 1,
+            "submitted_count": 3
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 3,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 2,
+            "mode": 0,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 2,
+            "submitted_count": 3
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 3,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 2,
+            "mode": 1,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 0,
+            "submitted_count": 3
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 2,
+            "first_queue_row": 1,
+            "kind": "range",
+            "last_queue_row": 2,
+            "mode": 1,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 1,
+            "submitted_count": 2
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "first_queue_row": 2,
+            "kind": "range",
+            "last_queue_row": 2,
+            "mode": 1,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 2,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "completed": 1,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 0,
+            "mode": 2,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 0,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "completed": 1,
+            "first_queue_row": 1,
+            "kind": "range",
+            "last_queue_row": 1,
+            "mode": 2,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 1,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "first_queue_row": 2,
+            "kind": "range",
+            "last_queue_row": 2,
+            "mode": 2,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 2,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 0,
+            "mode": 0,
+            "queue_count": 1,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 0,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 61,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 60,
+            "mode": 0,
+            "queue_count": 61,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 50,
+            "submitted_count": 61
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 0,
+            "mode": 1,
+            "queue_count": 1,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 0,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 11,
+            "first_queue_row": 50,
+            "kind": "range",
+            "last_queue_row": 60,
+            "mode": 1,
+            "queue_count": 61,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 50,
+            "submitted_count": 11
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 0,
+            "mode": 2,
+            "queue_count": 1,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 0,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "completed": 1,
+            "first_queue_row": 50,
+            "kind": "range",
+            "last_queue_row": 50,
+            "mode": 2,
+            "queue_count": 61,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 50,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 3,
+            "export_matches_preview": true,
+            "filter_text": "",
+            "kind": "scope-and-filter",
+            "mode": 0,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 3,
+            "export_matches_preview": true,
+            "filter_text": "32",
+            "kind": "scope-and-filter",
+            "mode": 0,
+            "original_ids_retained": true,
+            "zero_match_is_completed": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 3,
+            "export_matches_preview": true,
+            "filter_text": "0,5,32",
+            "kind": "scope-and-filter",
+            "mode": 0,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 3,
+            "export_matches_preview": true,
+            "filter_text": "5，0 5，32",
+            "kind": "scope-and-filter",
+            "mode": 0,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 2,
+            "export_matches_preview": true,
+            "filter_text": "",
+            "kind": "scope-and-filter",
+            "mode": 1,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 2,
+            "export_matches_preview": true,
+            "filter_text": "32",
+            "kind": "scope-and-filter",
+            "mode": 1,
+            "original_ids_retained": true,
+            "zero_match_is_completed": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 2,
+            "export_matches_preview": true,
+            "filter_text": "0,5,32",
+            "kind": "scope-and-filter",
+            "mode": 1,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 2,
+            "export_matches_preview": true,
+            "filter_text": "5，0 5，32",
+            "kind": "scope-and-filter",
+            "mode": 1,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "export_matches_preview": true,
+            "filter_text": "",
+            "kind": "scope-and-filter",
+            "mode": 2,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "export_matches_preview": true,
+            "filter_text": "32",
+            "kind": "scope-and-filter",
+            "mode": 2,
+            "original_ids_retained": true,
+            "zero_match_is_completed": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "export_matches_preview": true,
+            "filter_text": "0,5,32",
+            "kind": "scope-and-filter",
+            "mode": 2,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "export_matches_preview": true,
+            "filter_text": "5，0 5，32",
+            "kind": "scope-and-filter",
+            "mode": 2,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "kind": "selection-and-stream",
+            "missing_selection_blocks_tail_and_current": true,
+            "stream_range_hidden": true,
+            "whole_queue_works_without_selection": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "classification_filter_disabled": true,
+            "coco_classes": 80,
+            "invalid_inputs_block_start": true,
+            "kind": "validation",
+            "replacement_model_classes": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "changed_parameters_invalidate": true,
+            "kind": "cache-range",
+            "outside_range_kept_after_cancel": true,
+            "same_configuration_cancel_keeps_accepted_results": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "auto_export_count": 1,
+            "backend": "OpenCV DNN",
+            "completed": 1,
+            "kind": "stopped-range",
+            "no_followup_after_stop": true,
+            "queue_count": 61,
+            "range_count": 11,
+            "review_correct": true,
+            "total_observed_ms": 471
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_class_count": 1,
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "kind": "dynamic-class-metadata",
+            "submitted_class_count": 0,
+            "ui_and_export_configuration_synchronized": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "actual_inference": true,
+            "backend": "OpenCV DNN / CPU",
+            "filter": "0,5",
+            "kind": "workbench-visual",
+            "mode": 2,
+            "optional_screenshot": "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/production-replay/artifacts/scope-filter-workbench.png",
+            "queue_count": 64,
+            "selected_row": 50
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "identity_changed": true,
+            "job_identity_frozen": true,
+            "kind": "model-identity-during-task",
+            "later_results_not_relabelled": true,
+            "stale_cache_unavailable": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "changed_source_cache_unavailable": true,
+            "kind": "source-identity-during-task",
+            "submitted_identity_frozen": true,
+            "unchanged_source_review_available": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "changed_filter_invalidates": true,
+            "changed_source_rejects_old_result": true,
+            "equivalent_filter_keeps_cache": true,
+            "kind": "cache-identity"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vision-modelviewer-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-modelviewer\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/regression-01/vision-modelviewer-tests.xml"
+      ],
+      "source_run": "regression-01",
+      "log": "regression-01/vision-modelviewer-tests.log",
+      "log_sha256": "e81f24c3320c9234eb818256d2e1f60b468fe0573c9df467538cf024f8c0bef6",
+      "junit": "regression-01/vision-modelviewer-tests.xml",
+      "junit_sha256": "b624723dbea90fdf1cd2b8a2b4eb1e5bf887276fe12e4527ba60c88c541e08c2",
+      "qt_totals": [
+        {
+          "passed": 16,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "ModelViewerTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 14.074,
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-conversion-ui-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-conversion\\-ui\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/regression-01/vision-conversion-ui-tests.xml"
+      ],
+      "source_run": "regression-01",
+      "log": "regression-01/vision-conversion-ui-tests.log",
+      "log_sha256": "370a6ed645097b2c529a4661853f7b8038ae54d16855dfcfb74c1589d118fea1",
+      "junit": "regression-01/vision-conversion-ui-tests.xml",
+      "junit_sha256": "6f07810a74170fabd5e7fbad88e11fa1ef0c6861dd07e267941bdb3f986ae6c7",
+      "qt_totals": [
+        {
+          "passed": 8,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "ConversionUiTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.698,
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-conversion-inference-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-conversion\\-inference\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/production-replay/vision-conversion-inference-tests.xml"
+      ],
+      "source_run": "production-replay",
+      "log": "production-replay/vision-conversion-inference-tests.log",
+      "log_sha256": "c360f83397358edded61c23237d588cb2d687f1544555aae3e3264c8d2bd4a7b",
+      "junit": "production-replay/vision-conversion-inference-tests.xml",
+      "junit_sha256": "30bc6968c9d7f7ec788bf58179907efc5843a7caecaa496b82e7f8d9428963c1",
+      "qt_totals": [
+        {
+          "passed": 14,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "ConversionInferenceTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 118.534,
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-model-conversion-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-model\\-conversion\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/regression-01/vision-model-conversion-tests.xml"
+      ],
+      "source_run": "regression-01",
+      "log": "regression-01/vision-model-conversion-tests.log",
+      "log_sha256": "bbd75f8ccf68071ce11b16159846918dd79dde541954094af9734d7f5e77a0a7",
+      "junit": "regression-01/vision-model-conversion-tests.xml",
+      "junit_sha256": "50809b3d904a1fb92dd3c845a1a8a53ca853bf3011e15df96305c11f5acafc55",
+      "qt_totals": [],
+      "python_tests": 20,
+      "result_elapsed_seconds": 113.977,
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-netron-server-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-netron\\-server\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/regression-01/vision-netron-server-tests.xml"
+      ],
+      "source_run": "regression-01",
+      "log": "regression-01/vision-netron-server-tests.log",
+      "log_sha256": "b2dceef4aa3b8cdd4643a7d54f78071f00e3a8609a231b8e36d2083f3bc53281",
+      "junit": "regression-01/vision-netron-server-tests.xml",
+      "junit_sha256": "ec4949d42b69aac039bbf2ca64cc378970cbc3c3bd145a5538a32c8e591d6b01",
+      "qt_totals": [],
+      "python_tests": 11,
+      "result_elapsed_seconds": 4.222,
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-gpu-runtime-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-gpu\\-runtime\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/regression-01/vision-gpu-runtime-tests.xml"
+      ],
+      "source_run": "regression-01",
+      "log": "regression-01/vision-gpu-runtime-tests.log",
+      "log_sha256": "1f3e23bd47f2895484a9a4638130e6a20c5783b9143c5352a7c62bf47cd99b1e",
+      "junit": "regression-01/vision-gpu-runtime-tests.xml",
+      "junit_sha256": "d6e1b4e87fa7e7f321d3027d2c156b31873d84fada8dc0070f16fde4bb1c8123",
+      "qt_totals": [],
+      "python_tests": 21,
+      "result_elapsed_seconds": 1.177,
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-evaluation-worker-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-evaluation\\-worker\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/production-replay/vision-evaluation-worker-tests.xml"
+      ],
+      "source_run": "production-replay",
+      "log": "production-replay/vision-evaluation-worker-tests.log",
+      "log_sha256": "086069281207d8cd3512b7bad3db420c7fb7029d0f816aee6eefffa10de59c62",
+      "junit": "production-replay/vision-evaluation-worker-tests.xml",
+      "junit_sha256": "d611292a6aea35757d3b1e7bfdef9d9a1d45b4f4a600108149f12b559b38c622",
+      "qt_totals": [
+        {
+          "passed": 18,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "EvaluationWorkerTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 28.451,
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-evaluation-panel-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-evaluation\\-panel\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/production-replay/vision-evaluation-panel-tests.xml"
+      ],
+      "source_run": "production-replay",
+      "log": "production-replay/vision-evaluation-panel-tests.log",
+      "log_sha256": "e01d743044f8a10a0047db65a16df75fe718b951efeba1a85b56c42fec9e85f7",
+      "junit": "production-replay/vision-evaluation-panel-tests.xml",
+      "junit_sha256": "672ffca93e0d794046b06c027e9723b8f9e807bad5e8ee3678d0d0289d4c005d",
+      "qt_totals": [
+        {
+          "passed": 19,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "EvaluationPanelTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.268,
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-evaluation-python-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-evaluation\\-python\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/regression-01/vision-evaluation-python-tests.xml"
+      ],
+      "source_run": "regression-01",
+      "log": "regression-01/vision-evaluation-python-tests.log",
+      "log_sha256": "0c0e7bc84431cc4bf79126c04d16c49d58c094ce9723fbc3b5382741dbe33780",
+      "junit": "regression-01/vision-evaluation-python-tests.xml",
+      "junit_sha256": "59adcfb9472ee8b3449688d3a28113e91140752b55e4dc1e3f3e768154151102",
+      "qt_totals": [],
+      "python_tests": 34,
+      "result_elapsed_seconds": 4.944,
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-evaluation-integration-tests",
+      "success": true,
+      "exit_code": 0,
+      "skipped": false,
+      "source_run": "final-ui",
+      "execution_kind": "direct Qt binary with captured process exit status",
+      "command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-evaluation-integration-tests",
+        "-o",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/final-ui/integration.log,txt"
+      ],
+      "binary": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-evaluation-integration-tests",
+      "binary_sha256": "bbb660002333759c0d291852af2561c7294d7593f1b5a8eacbb341ec83bc954d",
+      "log": "final-ui/integration.log",
+      "log_sha256": "2313583a175febc3db355def68c59b4e160a438f1df6c0b10bf56c04c4b681db",
+      "junit": null,
+      "qt_totals": [
+        {
+          "passed": 23,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "EvaluationIntegrationTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 54.852
+    }
+  ],
+  "production_binary_sha256": "80803d9b84bdeedf43f4ac51d886960ae93f6afa4ce54376ec3701bb99755aa3",
+  "production_binary": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/bin/vision-studio",
+  "baseline_binary_sha256": "f6a7ba4ad2186ecdcda36127e86acd898f231f04f9254e23499c81e8447ffbf0",
+  "replay_binary_sha256": "102244fba3067b4edac93f1b67342b35a411d10916a5b179ebf3136e44ee41b8",
+  "source_code_input_sha256": {
+    "CMakeLists.txt": "d8dc405c244477a18018637dc9334ae2148206daf91327e60b99f8c2859bce4a",
+    "VisionStudio.desktop": "b9925ba51c8ddf14ae6b1be49a0e6172ed9013f200adfeb167ecc657670c4bd9",
+    "assets/app-icon.svg": "f19509a7e658b9d6de24f20cdf3b7da8dc2c215a52a3ab4bc58bd44bf3ea3c71",
+    "assets/bus.jpg": "33b198a1d2839bb9ac4c65d61f9e852196793cae9a0781360859425f6022b69c",
+    "assets/chevron-down.svg": "23e59c0b5ff14617645b164d457d0bbe213588acc49666dddf6a697167d34075",
+    "assets/chevron-up.svg": "3c104a9107118fac5485ccc5b06443a7b84853ba546f58c657200f93eb8a0aca",
+    "assets/fluent-check.svg": "aeb320e675efae43c3d04f221d3034c83031c7a682b38ae04ba386e63712703a",
+    "assets/fluent-dark.qss": "8487fd896584b28d83d47d9052994c4be59b1aa19d050ffea04783b4540ecf8f",
+    "packaging/build_deb.py": "268c14f2e63389a7de9d5fcb9c6ee791eae873d5c5ec802d3f6aaeb0ed295885",
+    "packaging/verify_deb.py": "ad4ea486064d07a5a91563c41b4dbf69cacf6cde4da24a5131357f24ff4ed019",
+    "packaging/verify_evaluation_deb.py": "dda8e57d9555ca2801e631fb750ab3b71f8a8373601b95e23b0465002aa16213",
+    "packaging/verify_gpu_deb.py": "0f19969273cf412d078a957a13b924663358da3078870f474a25a3e08def89ca",
+    "packaging/verify_install_namespace.py": "7a7a5736774d85a8a48c7962c0086776b6334da3f5e2c39ddb5d912a0e6a0982",
+    "packaging/windows/build_windows.py": "bad4b9c13512270e2c8f8518dda278beee2bfaeefedb6415ffafbd68de521c66",
+    "packaging/windows/lock_gpu.py": "2a0f8c3020f08175af7dc70415cadcc27a85ecb64636cfa63302167f71a29e0c",
+    "requirements-gpu-windows.lock.txt": "460a7e2604f3fa24853982ad9e79286dacfbf1ae88de20d03c8aca04f9ba396c",
+    "requirements-gpu.lock.txt": "42e7b6aa6de177210e5bc66801f3f9fb4758ec0c2f1a3ef1ce7b1c543aabe5c4",
+    "requirements-gpu.txt": "b94dd9e8d3aa11b4bad97e69db47d3a9f9a4781a601c2c9f4c33915eabe09ca4",
+    "requirements-pt.lock.txt": "07e49260cf1f15ac6f3d6aea6af0e32ec75261923d87e5a2a7827f06b9bad896",
+    "requirements-pt.txt": "66dd8d3453017b71bc5835a6614154292ef7d7c9ebf29c47482d38fda664cb96",
+    "resources.qrc": "9e37952e3fc73853c8d95a8e24016661ffea1c4294dadefd05d642b268ffa8d4",
+    "run.sh": "bf86940e119c1d0583805c37331a6608bae3fc148c20e059608e1434fc745411",
+    "runtime-info.json": "15b239dc233e80b4ddaa8b22f87f07fb71bfe4d90332985a708bce04d6019f1b",
+    "scripts/build.sh": "cc26f31d83cc63ca93d696e63c644c13573873aa776d84d29f5b32fb695cd07e",
+    "scripts/evaluation_data.py": "34acbd29ff6da312f911bd360145cb09f0b748525127d895d0f777e215863931",
+    "scripts/evaluation_metrics.py": "fe4b5683cb23d455978dd39a3c1a615ae0e11da65792f3696d4d71e001fde234",
+    "scripts/evaluation_worker.py": "4b825f7ef26dac79c0ca5658ed8431d5d375f827d9333b34ef937360b4a699c8",
+    "scripts/github_release.py": "484f5ffcad61234b0771b56d331caf7f55d0d542e524ed6a672144778b4fad69",
+    "scripts/gpu_probe.py": "048069945796b5178b2d7b6fb3b22dab39816eb74084141bdfbf47e26d7c1704",
+    "scripts/gpu_setup.py": "435ccae2bf39c0abed654b4d0fa99449ba8a988bee1141247e70e0e4c5379aa7",
+    "scripts/gpu_windows.py": "427d74ff8ebee083d311ffbf963c3da77c69ced4359b4861125c607c5ff44a0a",
+    "scripts/model_convert.py": "b0262cff2c0fee9063b8df55bdea1be5e922b6b4bbf3280796a89c90cfc44bda",
+    "scripts/netron_server.py": "09c8d804634364dbf62c888ba42c01e7518976378955ecb47a4d2e76075340ea",
+    "scripts/package.sh": "ca50296954a975dfcc89ae8276b41603b396e8fb3e334eea0ac759f2dbe58c36",
+    "scripts/prepare_bundled_model.py": "e1e5ec701fba43ccce3a292fecc0e3aaded6dd608a202c4b0a139da0b4e14e42",
+    "scripts/pt_worker.py": "2752326ee741385441187aa1b6e0b6bd2cee8c507f0f3e5e09587d0a68095c9e",
+    "scripts/qa_detection_scope_220.py": "94544da7fd3ffeb22f7529b9a11859585a7770120e31c5c9d0443c4463b49d87",
+    "scripts/release_metadata.py": "6112d7c4ca8447f2ec751166433470d2dc249461561ccb78abd9d81a09c86b95",
+    "scripts/setup_gpu.sh": "8535901f637a852bdc051568430ba37bdc51baf0c1e6e804a82957dea6a3bcf6",
+    "scripts/setup_pt.sh": "465b7987749219394971a32e11a228e7c8a919a3ef0543ac17194f27d782dea0",
+    "src/core/evaluationmatch.cpp": "77e75728bda549d12780e506d6e9688d685c03b946b4d0c12260129e78a85aa9",
+    "src/core/evaluationmatch.h": "7d4ba818276f8b2af5cb76bb4351f20e6a7b84f896b149051aea5fb8380718a0",
+    "src/core/evaluationreview.cpp": "996ac20fc24d97abbbea54036d1be895513ffd6eb2b3ee9c0edfd9910906b675",
+    "src/core/evaluationreview.h": "cb20fba95a222dcd6fe5f4ef308c8f0e4d9f183a03b58ed6bde5ec9ab5606d68",
+    "src/core/evaluationworker.cpp": "abc9400740c388912fc49a1934528aa6a0526c6918de474a99a3f55701d4aa82",
+    "src/core/evaluationworker.h": "615def53eecc3f1907e7bb75da44f23bd3fdbbbd4bd7bdf54121691c0d3088bf",
+    "src/core/gpuruntime.cpp": "ecf98b813385e77e87093d2e90dfcf26eefced5b8bbf6a2ee9a5d1315898b694",
+    "src/core/gpuruntime.h": "13e9c5024fdd30b5784fb690a74229025cea45c24ae5f517954e15948aaf1994",
+    "src/core/inferenceworker.cpp": "db67509f9f96011a519a5b66031ba66617123adea2e43a782b7122defe391ccd",
+    "src/core/inferenceworker.h": "96cbfc0f2abcead572539ae6bf29b275b4a1abf5f46c77d6103e65719b938965",
+    "src/core/onnxcudabackend.cpp": "03f8df8cd9c8a8b585b7d85b46db162946ffbf2fd75d6500644c606409e274d0",
+    "src/core/onnxcudabackend.h": "be31b2cc4103a6b4615a4f2c350ba15fe46386711c4ca8c1df7ecc4107e5cec4",
+    "src/core/ptbackend.cpp": "c80aef86e797bea47db6417fa27940e98c35d8e2151675671ddd113faa3dc49d",
+    "src/core/ptbackend.h": "6a558223d45596b5e014facd6ea558dfff61842f7af9a781e044b0be6ebf8d23",
+    "src/core/videorecorder.cpp": "697897667d1b16b3856ff3751b7a03c426bef1277758390bd2a5f224e5d48ce5",
+    "src/core/videorecorder.h": "500f8000bef9d6b86b2ea5817a05c7c679266460400c12e9558a1dbe7327ed22",
+    "src/core/visionengine.cpp": "78710b559ade349dc3a7179f2adbab8e5d60e6a5afdf27301d23e5c194247f9b",
+    "src/core/visionengine.h": "2194073f1290e4ff731dc7c34fe58a61ae57755807b54da35f1cfead4c17a0e1",
+    "src/core/visiontypes.h": "452ad4a27d547a78d405005faa1ba577ebc33065029a493e87d5764bbab317b5",
+    "src/main.cpp": "e5d75a4431f91b48abbd5501f90b1f4cf7d14f6318877ae2d773b64bda042428",
+    "src/ui/evaluationpanel.cpp": "3299227714fb5a53af88421c9468302c7c971484290dabf27be5351942716408",
+    "src/ui/evaluationpanel.h": "86a1256c4ac30ea4bd74a576fd8048a68c6d4fae5b621813b5c152df35aee2c8",
+    "src/ui/icons.cpp": "384fc8ec0dbe338fee161285921bb5ed2757fba30bfff879d0910b61dcc0c4fe",
+    "src/ui/icons.h": "4325b5739b35dfbf9b470923bd72bd05a25ed350771cd4aa4477467ad995be98",
+    "src/ui/imagecanvas.cpp": "5b439b2441bb8ace93e82c23213b606263c3e47d9ce93ffc7eb80b0dacd31784",
+    "src/ui/imagecanvas.h": "c61a2bb7790265184157547ebc8a31884df1a5aa517dda97c1e57b3b5679f496",
+    "src/ui/mainwindow.cpp": "93e27b2e276ce73bb792d0a7905ae800356f280f78786a86730fce55e647dc07",
+    "src/ui/mainwindow.h": "c45b6be5674cf1408e65de850a94c65dd5faf7460115fcfee869f99aaa83cec5",
+    "src/ui/mainwindow_evaluation.cpp": "9853ad3274a1c6046cdc1904729f5178a5ec41a12216d00015171b6748e19ee4",
+    "src/ui/modelconversionpage.cpp": "b95916e71da00642cf0a1a570248ddbd0d92eb453df362570b7886176c51388e",
+    "src/ui/modelconversionpage.h": "d58d129fa47ee268ca9397587e35fb8c7a82e54e2448ba6f29a8434be9580c44",
+    "src/ui/modelviewer.cpp": "bca6a7c57da5b109f29fcd2c9ddf6f98ad31ecf81e4f053a7bda912c61158b72",
+    "src/ui/modelviewer.h": "2b939e9aa06a58ae972842477e0bf96dd1caed76be66acb4f5bca5ea23c2491f",
+    "tests/batch_responsiveness_tests.cpp": "962851b1b4c317566dcc2536896232a8ecffe758067fb749cdf76efce6198c1f",
+    "tests/conversion_inference_tests.cpp": "71d76557ee923518a904e7e61c4950bbec9f24f423daf44823329dff4d375b67",
+    "tests/conversion_ui_tests.cpp": "e83edbcfc615318946c0cc9b95c7641e83a08eef1cf6667285fb2459cfd3ad8d",
+    "tests/core_tests.cpp": "daf13f4d0ef188196152462cbe18c959de019dccdccaaad08f8d317fc8873a96",
+    "tests/evaluation_integration_tests.cpp": "14bec495124b14343f55c83d989f4b8e0d676935f5d29fa9c0c0806d74b8c150",
+    "tests/evaluation_panel_tests.cpp": "cccbf2358a36074d242a4e97a22ad99ca1481c661585cec543b88f9f63136038",
+    "tests/evaluation_tests.py": "75f8639bd5c4f2256b9d9e1151fd3883d14f69d18f43b9f37120c70e47bda8ef",
+    "tests/evaluation_worker_tests.cpp": "b0a7975dae53c8b79454a7a9ff83da8cca1e66bed19683e8057db9d4d9b21c33",
+    "tests/generate_modelviewer_fixtures.py": "891d194431d3e9162e0a2f209580b79b1aaa7a19f13ec9c949e1dca810a8f130",
+    "tests/github_release_tests.py": "7078cbba99f945b8b87faac18fd1b44926e4e0ed7ca7ab179d4c81b136476b70",
+    "tests/gpu_backend_tests.cpp": "eb209f7dfd60de0fbe3921228b25c4eee239fd258b0a520e442649e2d112423c",
+    "tests/gpu_runtime_tests.py": "b3054c926a5dafa8904f33866c1591763dbcc213f205d9467dde3f49da58cf4d",
+    "tests/inference_delivery_tests.cpp": "abbdc67aaec9ac626f92514a72962b1f5717e1852142ee9e244ca1a282206c8e",
+    "tests/model_conversion_tests.py": "7479dda571f5ace9f363d527d07d4d2834345bc34f4579719eec4217b07b7a4d",
+    "tests/modelviewer_tests.cpp": "24ca41968bf50a250cf99fcec28890bd52c25305ac11eb86446c2df884c697fc",
+    "tests/netron_server_tests.py": "a4967760d0585a6341fb8f245addf0d3679992c18c97dad0cde1f8718245e688",
+    "tests/pt_backend_tests.cpp": "ed624bfea9c5b23cdee57620c3f5388ec648ade0dc1731d1e60a2aca30f55b2d",
+    "tests/recording_tests.cpp": "24da43c5a406fb17b5782df438ba5b85f46793f0dedfd5eb12b52b3cf37e1011",
+    "tests/release_metadata_tests.py": "335c08eed6c2c20fca845edfa67c74bf1944c91714dbcc5432732d29c2766962",
+    "tests/scope_filter_ui_tests.cpp": "4e79907500dd3cc1e1f3c6c2002b2a180b1428e0964d3fdff4b9d52f9ace401d",
+    "tests/ui_tests.cpp": "34a0b8d69b93f0dc2d9efaafa629d6c53c65f08e31331b0ea7d43958f9f6517d",
+    "tests/windows_release_tests.py": "62404d6a7055caf928bbbe5dcc7628da821f6119f9d0f2bb6f49a990983bd653"
+  },
+  "current_test_binary_sha256": {
+    "vision-core-tests": "f2f91c7ea0705487561eba88a80ca820a91a8ddf48c04674d63b89d6b91a7843",
+    "vision-inference-delivery-tests": "ffb8f844aae0078847c5404ed99974493f400cdbc2f2e019692e49799932f7d7",
+    "vision-recording-tests": "5968a00d95150a7dbbd4add8c593c0604be38b56d28c262d5a246039c32acec7",
+    "vision-pt-tests": "de1c7a00972d94c0fe0ca7e003f892115431dc35efd4c68fbfc03b04f1704901",
+    "vision-gpu-tests": "99ada661a33acc761c6d9b66fc7c406ead4ff13f88c49ced2d12b3ce8a60ac2a",
+    "vision-ui-tests": "ce4d59ec60ddf636307e293104dab7dcb592d0b92e674d7ac4a8bd2eb4416944",
+    "vision-batch-responsiveness-tests": "13ad780f32632792066e9290b1d0d171f892b8995bc563c3fe7cd015c54af75d",
+    "vision-scope-filter-ui-tests": "5aa258a68eb5a606838c767060a047c0f2e329e849a8dd0bbf592e4007bec37c",
+    "vision-modelviewer-tests": "3fd3ca6dbbf0c9c0421372790989b2862bab310946f33d6c83b1ffc9fc3ea9fd",
+    "vision-conversion-ui-tests": "0319d1f4f835b1952dff5ef01ef073b8f48b5ecf47acb9d8bd45029718ddac92",
+    "vision-conversion-inference-tests": "37f33ffe5ff8ef022a3c4dc6976c6d86cd4c224fdb387eaa19e6d45f596c5c24",
+    "vision-evaluation-worker-tests": "76ccb6c05de9cfeca618ba05f6ebaccb92f188475106b8f2ba24d831dca79650",
+    "vision-evaluation-panel-tests": "122ed8d0e5667de56b263797abd1f82aae42a23465fce66da53435e3eaee3404",
+    "vision-evaluation-integration-tests": "bbb660002333759c0d291852af2561c7294d7593f1b5a8eacbb341ec83bc954d"
+  },
+  "source_hash_scope": "Current final source/static inputs at aggregation; earlier baseline/replay execution identities remain in their original reports. Backend code remained fixed after production replay; final UI suites cover later UI changes.",
+  "cuda_profiles": [
+    {
+      "file": "production-replay/artifacts/onnx-cuda-0_2026-10-20_17-18-45.json",
+      "sha256": "cdd5f3027b67404a0cbab454b8e3521d12840f021db2aa3f278ed54ebc819fce",
+      "cuda_node_events": 364,
+      "distinct_cuda_nodes": 182
+    },
+    {
+      "file": "production-replay/artifacts/onnx-cuda-1_2026-10-20_17-18-45.json",
+      "sha256": "994de58c130024275bb67005f1be24d1d1a8f3fb8d85b7904a0175a8f9a5410a",
+      "cuda_node_events": 364,
+      "distinct_cuda_nodes": 182
+    }
+  ],
+  "hardware": "NVIDIA GeForce RTX 4060",
+  "original_evidence_files": {
+    "final-ui/evaluation-scope-versus-ordinary-cache/report.json": {
+      "sha256": "5390bb38845eb6265f3808a0d33d024d311b151b3a7ee70540e0a9c8188660fd",
+      "bytes": 67004
+    },
+    "final-ui/evaluation-scope-versus-ordinary-cache/status.json": {
+      "sha256": "c8d2b930ddb627f8ab1eaf7f0ba8124b6ef6798facfbf98494402c35b9c279ac",
+      "bytes": 204
+    },
+    "final-ui/history-other-global-model/report.json": {
+      "sha256": "2f3419018e95f5483b56beae25376de75c8fbaedbcfa0a61de80be504ec929e3",
+      "bytes": 71026
+    },
+    "final-ui/history-other-global-model/status.json": {
+      "sha256": "fa0695361ea30e205bc0c71beec80971ffb8651be786a6439956df72b746305d",
+      "bytes": 204
+    },
+    "final-ui/integration.log": {
+      "sha256": "2313583a175febc3db355def68c59b4e160a438f1df6c0b10bf56c04c4b681db",
+      "bytes": 16035
+    },
+    "final-ui/integration.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "final-ui/integration.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "final-ui/precise-adopted-working-points/report.json": {
+      "sha256": "3b854a897bbfed8c2237ac2cc27b94c837eaa57d865275ab71b5d4f0d92ae251",
+      "bytes": 67201
+    },
+    "final-ui/precise-adopted-working-points/status.json": {
+      "sha256": "de1eb2a1e7fe354a700fda8bdb2ef7f6492d80e61f13fa687ee2cb4ae41b8751",
+      "bytes": 204
+    },
+    "final-ui/range-0-count-4-selection-2/report.json": {
+      "sha256": "3d5d16156b64c9968e8909e828efe2add3c296af52b597ef442feb1f9dbfa862",
+      "bytes": 71026
+    },
+    "final-ui/range-0-count-4-selection-2/status.json": {
+      "sha256": "45b411db49e9c560e4b961b9bdc0e9fcfaea88095fa152a6794dadf13ba74fc9",
+      "bytes": 204
+    },
+    "final-ui/range-0-count-61-selection-50/report.json": {
+      "sha256": "4fab784d91aba37e1594c8b688da134980a1dad3bfb6fb6a85fd4992e8d2d965",
+      "bytes": 174792
+    },
+    "final-ui/range-0-count-61-selection-50/status.json": {
+      "sha256": "716a9068492738cebe93d19322bacc14c4cab64af5aeaa956872b2ed48a37304",
+      "bytes": 206
+    },
+    "final-ui/range-1-count-4-selection-1/report.json": {
+      "sha256": "621895cfc58dc63d7882abbd191ccc5e7ccc866bc32f0485a4883f8ad93ad819",
+      "bytes": 77585
+    },
+    "final-ui/range-1-count-4-selection-1/status.json": {
+      "sha256": "dee68ca320ef84c3e0a58ec8b53339d0e0c11fdbd1c5a88565ac4090ac43e943",
+      "bytes": 204
+    },
+    "final-ui/range-1-count-61-selection-50/report.json": {
+      "sha256": "38c4cd7ca0a1c525293e842740d7a8bac029cda96c6a5dc4b0c9ce8a7caac8b1",
+      "bytes": 140554
+    },
+    "final-ui/range-1-count-61-selection-50/status.json": {
+      "sha256": "1a2a122d6440ca6e4c34195bcd39aaaaaf5b5b7bee21c30ffacf330833ee8401",
+      "bytes": 206
+    },
+    "final-ui/range-2-count-1-selection-0/report.json": {
+      "sha256": "814ae35a22f54a1294871a73033f8c25b97ec1f77df479be28611a7803252658",
+      "bytes": 64365
+    },
+    "final-ui/range-2-count-1-selection-0/status.json": {
+      "sha256": "3518760718eb87429dcaf386de512aac80d928696efc820b7a29962a625f6ef2",
+      "bytes": 204
+    },
+    "final-ui/range-2-count-4-selection-1/report.json": {
+      "sha256": "abbfd1f89405dc903c962c8dc6b982a70543695dba9a1362cac39dd7976fa16b",
+      "bytes": 67004
+    },
+    "final-ui/range-2-count-4-selection-1/status.json": {
+      "sha256": "0df4598bf8f1620fa036f32551e9b6de701b16bf3e7219bf24a500557fcaec0f",
+      "bytes": 204
+    },
+    "final-ui/range-2-count-61-selection-60/report.json": {
+      "sha256": "ca8ff6fb1e2feffc0e6eeed2856f604574fd38518a2b04621a1ce7f060d2dd88",
+      "bytes": 119895
+    },
+    "final-ui/range-2-count-61-selection-60/status.json": {
+      "sha256": "28f4e7f649621190cf340e5075c3b0d039dbbeaa35afa4bf5adcbf7545f7213e",
+      "bytes": 204
+    },
+    "final-ui/run-qa.json": {
+      "sha256": "5e29db845f06025c2750d58dad409acd480680024606cf9b3ac740a1da82b9b6",
+      "bytes": 1984
+    },
+    "final-ui/selected-export/selected.json": {
+      "sha256": "40bd542ca83be21f6035beb81f110702b1e95799dffd6e70d407aa685ccf9657",
+      "bytes": 2165
+    },
+    "final-ui/selected-result-export/report.json": {
+      "sha256": "bbdb2566282ae3a83ac98155bc6e2ba37202c25b5223edba3b78ed660502c596",
+      "bytes": 71026
+    },
+    "final-ui/selected-result-export/status.json": {
+      "sha256": "0b6fbbab4e80ab0bfa0c7bb8fb3bb26a272767150751d638cba64d56ad5c7dde",
+      "bytes": 204
+    },
+    "final-ui/stop-prefix-review/report.json": {
+      "sha256": "0b9462e67257b7775e66d0f4cd370ee9c41c352654a32bcbbd8282ad61f7b81a",
+      "bytes": 128533
+    },
+    "final-ui/stop-prefix-review/status.json": {
+      "sha256": "8477b241071f90fc62fc1f1f74210a794a7860127c34fd6131057eb2051cfd93",
+      "bytes": 206
+    },
+    "final-ui/threshold-filter-adopt/report.json": {
+      "sha256": "4e553fe8dab66bd40bc2ff516558f94fb944cc455b04f57d2a56d95daf15a017",
+      "bytes": 71026
+    },
+    "final-ui/threshold-filter-adopt/status.json": {
+      "sha256": "8316d1bdd66d2fc33614d6556138c867dfde5485c33f1c693d7dc362721e3a2b",
+      "bytes": 204
+    },
+    "final-ui/ui-tests.log": {
+      "sha256": "af37292fad27e7465344e32a0e95a451f3ec71110b02a3cd38c83462211e2282",
+      "bytes": 11572
+    },
+    "final-ui/ui-tests.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "final-ui/ui-tests.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "final-ui-harness.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "final-ui-harness.stdout": {
+      "sha256": "9c96a1d014d6996fdde6f478fb1dd8f7ecb426b9a489db258bb59856731f8969",
+      "bytes": 441
+    },
+    "final-ui-initial-run/evaluation-scope-versus-ordinary-cache/report.json": {
+      "sha256": "d7250a62cf8c01aa5d4274b7e3a69ae210b14c43634f3bcdc5853fd76e9fb20d",
+      "bytes": 67004
+    },
+    "final-ui-initial-run/evaluation-scope-versus-ordinary-cache/status.json": {
+      "sha256": "fef90f201a1e16b75f126907fdeaa8fe341bacc6579778e588025c52b7b6ef47",
+      "bytes": 204
+    },
+    "final-ui-initial-run/history-other-global-model/report.json": {
+      "sha256": "2cda668e0afeb22d6cacd7acd445c7c8058fd4cbc61bc9f6a3d771f42bd77540",
+      "bytes": 71026
+    },
+    "final-ui-initial-run/history-other-global-model/status.json": {
+      "sha256": "f8b93d453430826ed5ea156b12f9ea88989d5748ee9803337f7599e4d4563dfe",
+      "bytes": 204
+    },
+    "final-ui-initial-run/integration.log": {
+      "sha256": "4b3f5f2f89316a571056e4894d1243622784bb97ed801bdbea9c2ef307821662",
+      "bytes": 16035
+    },
+    "final-ui-initial-run/integration.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "final-ui-initial-run/integration.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "final-ui-initial-run/precise-adopted-working-points/report.json": {
+      "sha256": "9dbaad97b8c6d424ad01b39ad34fe9fb14ce1bbeeeed0bf6b1c53daf984a7796",
+      "bytes": 67201
+    },
+    "final-ui-initial-run/precise-adopted-working-points/status.json": {
+      "sha256": "21746fdb200e4bea59400c98787d7c46d0e4b424828b2f62b3f3b7766497311b",
+      "bytes": 204
+    },
+    "final-ui-initial-run/range-0-count-4-selection-2/report.json": {
+      "sha256": "a7eef8e8e7e1f3d08a9648b117035b0329122eba78f0c26d617cea0b37b2bbb1",
+      "bytes": 71026
+    },
+    "final-ui-initial-run/range-0-count-4-selection-2/status.json": {
+      "sha256": "715c5c515d0534cf2c8fe1b2ae5d7c837fefbe3ec61a4b4be215f2c2ea972511",
+      "bytes": 204
+    },
+    "final-ui-initial-run/range-0-count-61-selection-50/report.json": {
+      "sha256": "8fca48b1aa45226218f62728c8aff93700e6a67e58bf007628125ddf6db1a765",
+      "bytes": 174792
+    },
+    "final-ui-initial-run/range-0-count-61-selection-50/status.json": {
+      "sha256": "87d9a6711d579805b790572415830b62f1cdf0138707e05afa835ccd23f6ad29",
+      "bytes": 206
+    },
+    "final-ui-initial-run/range-1-count-4-selection-1/report.json": {
+      "sha256": "6e19f5b62d109e8fb7d3cc387eb2c93d4c0ade0b6a23809a7cbfa932fbfe26a1",
+      "bytes": 77585
+    },
+    "final-ui-initial-run/range-1-count-4-selection-1/status.json": {
+      "sha256": "b1afa58123b606b4cac65e76e1a66763a08f5de6ffd3580153857f6f3b023bef",
+      "bytes": 204
+    },
+    "final-ui-initial-run/range-1-count-61-selection-50/report.json": {
+      "sha256": "27952abb958775e7909dad5ff930597e0b151c1867fdd6a48593a7d8c7e6510b",
+      "bytes": 140554
+    },
+    "final-ui-initial-run/range-1-count-61-selection-50/status.json": {
+      "sha256": "9b726c1eedad29fb79246fccbead650b24332cbe1defe1d54d78010d1f6b4422",
+      "bytes": 206
+    },
+    "final-ui-initial-run/range-2-count-1-selection-0/report.json": {
+      "sha256": "834b36278e80e0f770a25825f795f08e49d44408089da4eaf9c2d889e9609aaa",
+      "bytes": 64365
+    },
+    "final-ui-initial-run/range-2-count-1-selection-0/status.json": {
+      "sha256": "1ced9a3537a7f69e407137f7b205150f956c9cc241abe80b15c7881decd977d3",
+      "bytes": 204
+    },
+    "final-ui-initial-run/range-2-count-4-selection-1/report.json": {
+      "sha256": "9d894e2a20db9d45cabb7602dadf54f73756abdf72d562d38394d937b0abe044",
+      "bytes": 67004
+    },
+    "final-ui-initial-run/range-2-count-4-selection-1/status.json": {
+      "sha256": "2b1bc6b7e01bf264a5f1c37c432ec398044be9bcba00befc7f37797fc83bbee8",
+      "bytes": 204
+    },
+    "final-ui-initial-run/range-2-count-61-selection-60/report.json": {
+      "sha256": "3e46fe832d144bbad91945a3b2f88c50e4a470dacc585655e2d5622a63164986",
+      "bytes": 119895
+    },
+    "final-ui-initial-run/range-2-count-61-selection-60/status.json": {
+      "sha256": "f55e4b3f94297e6f23ce71170b0239cddc45fa4ec9289fca7a3744bfbc048879",
+      "bytes": 204
+    },
+    "final-ui-initial-run/selected-export/selected.json": {
+      "sha256": "4936bf5d831a7f0d3daae60a19e0f69655b2bbb0c33a458ddff8f710971994bc",
+      "bytes": 2165
+    },
+    "final-ui-initial-run/selected-result-export/report.json": {
+      "sha256": "6478138937def9043eaa3f0f18d6a1a92cf8c700960f6221a4a7c4986f82e70d",
+      "bytes": 71026
+    },
+    "final-ui-initial-run/selected-result-export/status.json": {
+      "sha256": "4b722818c177c26e0b9e2160b171b6d5052ee3ecb84649dc853b405aa1c3438e",
+      "bytes": 204
+    },
+    "final-ui-initial-run/stop-prefix-review/report.json": {
+      "sha256": "00558a35412a35ba73c1816b728c9a63391de9fa0032368134456776ce71dde4",
+      "bytes": 128533
+    },
+    "final-ui-initial-run/stop-prefix-review/status.json": {
+      "sha256": "74484e3c3d38d2e6d1b076e6626975bc38e5d00932919f515c6484a77d9338a6",
+      "bytes": 206
+    },
+    "final-ui-initial-run/threshold-filter-adopt/report.json": {
+      "sha256": "8df8fd445003c22774b85da920f33aa7b65f35be27b5879ce163b5fc3dbdcfb9",
+      "bytes": 71026
+    },
+    "final-ui-initial-run/threshold-filter-adopt/status.json": {
+      "sha256": "f27dbb1f1f3b3520ae53a76678d0652e22eac86dda2e60849722d5cce80edb44",
+      "bytes": 204
+    },
+    "final-ui-initial-run/ui-tests.log": {
+      "sha256": "1df31b9c162b3fd7c16f71e98c6f079dc9900da503bd5eef6fc0170d74c68c08",
+      "bytes": 11572
+    },
+    "final-ui-initial-run/ui-tests.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "final-ui-initial-run/ui-tests.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "integration-01/evaluation-scope-versus-ordinary-cache/report.json": {
+      "sha256": "af67f55774cd1f03bebd746f417330060cd89191a0c5680203162d8808e49a61",
+      "bytes": 67004
+    },
+    "integration-01/evaluation-scope-versus-ordinary-cache/status.json": {
+      "sha256": "73a96a135ec18eedbb444c59cc2bdf7c1b8cc7493ee32334f77237b71c4ad2eb",
+      "bytes": 204
+    },
+    "integration-01/history-other-global-model/report.json": {
+      "sha256": "8a3664bfc0046d580d2eb0e9990ac03ad136dfb50f198db696618345c468ac3f",
+      "bytes": 71026
+    },
+    "integration-01/history-other-global-model/status.json": {
+      "sha256": "e8c9a675950341ceb68b1e1affe5a9808505a42d8780d241bf13ce0f7643a6c7",
+      "bytes": 204
+    },
+    "integration-01/range-0-count-4-selection-2/report.json": {
+      "sha256": "b6958d635fb380021f1e763bf99df90eef3360344ba79b985e1c5bf8465f1fef",
+      "bytes": 71026
+    },
+    "integration-01/range-0-count-4-selection-2/status.json": {
+      "sha256": "de0e9fa55c32a264869398e42bc45fcc36977ef44c4718d02c0059971bc09505",
+      "bytes": 204
+    },
+    "integration-01/range-0-count-61-selection-50/report.json": {
+      "sha256": "1b37ccc17ed19e923285338aa28183827eba2600db0f8a3ae21bed745295147f",
+      "bytes": 174792
+    },
+    "integration-01/range-0-count-61-selection-50/status.json": {
+      "sha256": "f9a8fec92de920e68995ddd5c8589ff8d033e856514700977651cc33dbd0f00c",
+      "bytes": 206
+    },
+    "integration-01/range-1-count-4-selection-1/report.json": {
+      "sha256": "de9a90d82485b792af0db7454a0f75f5bd55007eb23d99b0d0fff063323120db",
+      "bytes": 77585
+    },
+    "integration-01/range-1-count-4-selection-1/status.json": {
+      "sha256": "1d0796c872f5cb0604c361208ba327a622f266979c1a57d58c776ba055e4b62e",
+      "bytes": 204
+    },
+    "integration-01/range-1-count-61-selection-50/report.json": {
+      "sha256": "62e9d2009e202204c7c6b42ef93fb5ce77702b5dedfdad14323ba6c168135c6e",
+      "bytes": 140554
+    },
+    "integration-01/range-1-count-61-selection-50/status.json": {
+      "sha256": "ce57c5a1656311ba97abcd3b3020bb14d928434d17b79c799abd4495458b9bb1",
+      "bytes": 206
+    },
+    "integration-01/range-2-count-1-selection-0/report.json": {
+      "sha256": "776e0ac4ebb7fe4273bd58a76190e7194e6be323ec462a02fa898d785079c919",
+      "bytes": 64365
+    },
+    "integration-01/range-2-count-1-selection-0/status.json": {
+      "sha256": "2f62ea6fb13a238f2fd8bb3eb07005e6e62339584385b025e3ef57eb4794714b",
+      "bytes": 204
+    },
+    "integration-01/range-2-count-4-selection-1/report.json": {
+      "sha256": "0b850f905f27c65073d8925ffeda218748f38949ec22f80dc3ebdfe300eec058",
+      "bytes": 67004
+    },
+    "integration-01/range-2-count-4-selection-1/status.json": {
+      "sha256": "13ab912c062c1063a4511d4323c38b748176d6722333e179cbeccc54aeb5f066",
+      "bytes": 204
+    },
+    "integration-01/range-2-count-61-selection-60/report.json": {
+      "sha256": "a5556af0b47ca416a427942d304bd086b576d72c9b3034bc31b91f15da03185b",
+      "bytes": 119895
+    },
+    "integration-01/range-2-count-61-selection-60/status.json": {
+      "sha256": "ce2b72e481eadb362ca1137e5e7b27f93eca51f0e139f5065e7d00d684fc6c80",
+      "bytes": 204
+    },
+    "integration-01/raw.log": {
+      "sha256": "46f36640f83edf836d373f03447ca5e4c1bd6f46be41a6b6601a0a68adf44816",
+      "bytes": 14627
+    },
+    "integration-01/selected-export/selected.json": {
+      "sha256": "63d4f082e6fb6da682898b65cdcd2bb93596f6ea67ad0037f3400f1d1537f4e3",
+      "bytes": 2165
+    },
+    "integration-01/selected-result-export/report.json": {
+      "sha256": "2bbe7d38b9df518886a51d12983e74f7f02d5407da5320a92ff8ce06f6f8eca8",
+      "bytes": 71026
+    },
+    "integration-01/selected-result-export/status.json": {
+      "sha256": "1c110383849a4613ef40af6371f28160e468b30e519f08bfcfde917d7408acf4",
+      "bytes": 204
+    },
+    "integration-01/stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "integration-01/stdout.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "integration-01/stop-prefix-review/report.json": {
+      "sha256": "8a7e948e4520c1020e9fb217b0baf381c9e643db617cec6d4bc210ddab0ce179",
+      "bytes": 128533
+    },
+    "integration-01/stop-prefix-review/status.json": {
+      "sha256": "dee62db131be080c0bd3daf533c676335d39036751e9cab26bcf60759c19075b",
+      "bytes": 206
+    },
+    "integration-01/threshold-filter-adopt/report.json": {
+      "sha256": "a994eb7e3c65c2c236ff8753385629cf35d6bae10284bc8f9106721224e6dc55",
+      "bytes": 71026
+    },
+    "integration-01/threshold-filter-adopt/status.json": {
+      "sha256": "9933b8e67c78dd540a91ca541ba40bf0f88a97d59aeb6b8a750e0eef5eb3ed82",
+      "bytes": 204
+    },
+    "integration-02/evaluation-scope-versus-ordinary-cache/report.json": {
+      "sha256": "81938a2aeb4816521ce9cfbc610fe479ca55907b76cbca33fb10f2564d027b2d",
+      "bytes": 67004
+    },
+    "integration-02/evaluation-scope-versus-ordinary-cache/status.json": {
+      "sha256": "e673b650c395941db12066a1879423f65ed9ea86afa6018689e98793ae2ff632",
+      "bytes": 204
+    },
+    "integration-02/history-other-global-model/report.json": {
+      "sha256": "40f629b353eb9ec6ce3ed8052ee799d8b3515091411c6ff2852f63815cf198c3",
+      "bytes": 71026
+    },
+    "integration-02/history-other-global-model/status.json": {
+      "sha256": "fac8a784fe38974a1db3357991d7e4406d601eaa9b363411367c522268b46c68",
+      "bytes": 204
+    },
+    "integration-02/input-1.log": {
+      "sha256": "cdab665e6b63c368a261e6037817e533e9529b9c0c766f4cee11761944ad47e2",
+      "bytes": 685
+    },
+    "integration-02/input-2.log": {
+      "sha256": "350e066960cec7adabe0058636651ff660bcaa60385b167441439939599ae49f",
+      "bytes": 685
+    },
+    "integration-02/input-3.log": {
+      "sha256": "2260c80dd062ebaf944b51c06208f62145655c082f7f6d0fc1e9b1c615a29abd",
+      "bytes": 685
+    },
+    "integration-02/range-0-count-4-selection-2/report.json": {
+      "sha256": "fb5922e041cce50cebe0d9bfadce2c94a2c70b85b5f11717f5d36bd9f23d65f6",
+      "bytes": 71026
+    },
+    "integration-02/range-0-count-4-selection-2/status.json": {
+      "sha256": "99a1d1eec722c8b00fa0f00005bcc04f9e787eb1997f86c195277cf520f35dfe",
+      "bytes": 204
+    },
+    "integration-02/range-0-count-61-selection-50/report.json": {
+      "sha256": "d2478d4f33eeef62d32dd24835984dadbd50262ad640ec71a8a0d0e3ee773f90",
+      "bytes": 174792
+    },
+    "integration-02/range-0-count-61-selection-50/status.json": {
+      "sha256": "3d393e5f29923b19ff8858ab7ee52e8d9e12a2b8655dab48d266674b4b983954",
+      "bytes": 206
+    },
+    "integration-02/range-1-count-4-selection-1/report.json": {
+      "sha256": "207824f0e7b5506c774b3bc9c518c2d8aa2918d32e1640fc84050e0266ec55f8",
+      "bytes": 77585
+    },
+    "integration-02/range-1-count-4-selection-1/status.json": {
+      "sha256": "986697839cbd74beff8f8ebee0b0dca431ff0379a487a22821532cd881efaaef",
+      "bytes": 204
+    },
+    "integration-02/range-1-count-61-selection-50/report.json": {
+      "sha256": "6bd607010e5f46a51c8344e3931252b0701fe933ed4dfcb3fba423c151af07e2",
+      "bytes": 140554
+    },
+    "integration-02/range-1-count-61-selection-50/status.json": {
+      "sha256": "2e65b0698f86ce40728334a9a206bde1cf76e0c272bad4643e8319ab91e0d7ea",
+      "bytes": 206
+    },
+    "integration-02/range-2-count-1-selection-0/report.json": {
+      "sha256": "27cd3dcebfcc916a050b8483a32476c964ae9d87c675914de411728d431cf786",
+      "bytes": 64365
+    },
+    "integration-02/range-2-count-1-selection-0/status.json": {
+      "sha256": "41f6c76c4dc54d4e15dabf8e20762732c72e53fad92edf50af654ba2bfc25ba0",
+      "bytes": 204
+    },
+    "integration-02/range-2-count-4-selection-1/report.json": {
+      "sha256": "e101c5cdc4f95bf8b9827d384f5907b59cd857c23f35a7a054b6da076b61cc2d",
+      "bytes": 67004
+    },
+    "integration-02/range-2-count-4-selection-1/status.json": {
+      "sha256": "1f4187c05607e398fdf498a9c561540b4795d0045be89c64178b71393919c4d2",
+      "bytes": 204
+    },
+    "integration-02/range-2-count-61-selection-60/report.json": {
+      "sha256": "b838fe343e95e1300cf017353b19d4a20c7dc062a6ba4f2ee7287c12aa89b5d6",
+      "bytes": 119895
+    },
+    "integration-02/range-2-count-61-selection-60/status.json": {
+      "sha256": "625931f88033eb45be31b3f78eba5193c5e0ea52774709563a5d679edc03550e",
+      "bytes": 204
+    },
+    "integration-02/raw.log": {
+      "sha256": "06a07b3f83400e0badbcf809efadec93c0b40d80a0362cc6b130fa933b84c02f",
+      "bytes": 14433
+    },
+    "integration-02/selected-export/selected.json": {
+      "sha256": "d1c8eb407c58778f0f8262f7b67a4fcd054152c9eee774e71d1367383fa28bbf",
+      "bytes": 2165
+    },
+    "integration-02/selected-result-export/report.json": {
+      "sha256": "13023e26e72776e19fe64ac0ff060c47ced0ee95cbe8433e7d7b354bc5f19bb6",
+      "bytes": 71026
+    },
+    "integration-02/selected-result-export/status.json": {
+      "sha256": "6fa66077f498626354cf8daba37c95a83ab1af77e54decf0dbfedf56c150b704",
+      "bytes": 204
+    },
+    "integration-02/stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "integration-02/stdout.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "integration-02/stop-prefix-review/report.json": {
+      "sha256": "dd4d7fb556bb762429725e9fefd3264ce906a628f0c6ab346d88561786bc2c86",
+      "bytes": 128533
+    },
+    "integration-02/stop-prefix-review/status.json": {
+      "sha256": "61d884b82f59c2df7037a37febc540bac67d7985b279aabd12980ce8259dd366",
+      "bytes": 206
+    },
+    "integration-02/threshold-filter-adopt/report.json": {
+      "sha256": "55445538d21f4718fa34caee5b7d0edcfea984edcc5e96b4548bbddb7d68bb45",
+      "bytes": 71026
+    },
+    "integration-02/threshold-filter-adopt/status.json": {
+      "sha256": "04ad3600da07f8f863f1f459cb579addbd4e44a10e3d51a16515a71368e44774",
+      "bytes": 204
+    },
+    "production-replay/artifacts/onnx-cuda-0_2026-10-20_17-18-45.json": {
+      "sha256": "cdd5f3027b67404a0cbab454b8e3521d12840f021db2aa3f278ed54ebc819fce",
+      "bytes": 287153
+    },
+    "production-replay/artifacts/onnx-cuda-1_2026-10-20_17-18-45.json": {
+      "sha256": "994de58c130024275bb67005f1be24d1d1a8f3fb8d85b7904a0175a8f9a5410a",
+      "bytes": 287154
+    },
+    "production-replay/ctest-discovery.json": {
+      "sha256": "6d8ca8c8aa7745d6874d4106b12cc01dd9998781def789221c3ad7f8e13c5831",
+      "bytes": 14083
+    },
+    "production-replay/detection-regression-qa.json": {
+      "sha256": "e454edac536f296d87287da1b0158598d5cafd33aeac92e4a84d497f8f9fd97d",
+      "bytes": 32097
+    },
+    "production-replay/isolated/matplotlib/fontlist-v390.json": {
+      "sha256": "1c6afac377804dc3206e231d5be7837e35fba738ad646221c9e56e77079b6061",
+      "bytes": 115885
+    },
+    "production-replay/isolated/ultralytics/Ultralytics/settings.json": {
+      "sha256": "1690465c81700a5c19faaecc9564259e0992cfba442b45dbac6b972b9d5b0046",
+      "bytes": 516
+    },
+    "production-replay/vision-batch-responsiveness-tests.log": {
+      "sha256": "9d45fba221e5ec39820c4a26ce63b1dd2f3d18468646be31e4e4a11d977199f9",
+      "bytes": 3851
+    },
+    "production-replay/vision-batch-responsiveness-tests.xml": {
+      "sha256": "9c4ce0195e1ab5e15a1adcc088456e3d2a4841731366cbc3c25b3fe08aa06c2a",
+      "bytes": 1499
+    },
+    "production-replay/vision-conversion-inference-tests.log": {
+      "sha256": "c360f83397358edded61c23237d588cb2d687f1544555aae3e3264c8d2bd4a7b",
+      "bytes": 4041
+    },
+    "production-replay/vision-conversion-inference-tests.xml": {
+      "sha256": "30bc6968c9d7f7ec788bf58179907efc5843a7caecaa496b82e7f8d9428963c1",
+      "bytes": 1501
+    },
+    "production-replay/vision-evaluation-panel-tests.log": {
+      "sha256": "e01d743044f8a10a0047db65a16df75fe718b951efeba1a85b56c42fec9e85f7",
+      "bytes": 3817
+    },
+    "production-replay/vision-evaluation-panel-tests.xml": {
+      "sha256": "672ffca93e0d794046b06c027e9723b8f9e807bad5e8ee3678d0d0289d4c005d",
+      "bytes": 1492
+    },
+    "production-replay/vision-evaluation-worker-tests.log": {
+      "sha256": "086069281207d8cd3512b7bad3db420c7fb7029d0f816aee6eefffa10de59c62",
+      "bytes": 3044
+    },
+    "production-replay/vision-evaluation-worker-tests.xml": {
+      "sha256": "d611292a6aea35757d3b1e7bfdef9d9a1d45b4f4a600108149f12b559b38c622",
+      "bytes": 1494
+    },
+    "production-replay/vision-gpu-tests.log": {
+      "sha256": "92d834b8239591d28bb432c92d4045cab668fe0b1ac16c538673450a6bd1f5d4",
+      "bytes": 8464
+    },
+    "production-replay/vision-gpu-tests.xml": {
+      "sha256": "47a4de847681c030c898e6eab009b09835c08390ce48100a6a415b70b62003ce",
+      "bytes": 1467
+    },
+    "production-replay/vision-scope-filter-ui-tests.log": {
+      "sha256": "0832a3a10b506a69c44baa6f80dbf8da0e68df4269aba4c69261376d328ed199",
+      "bytes": 16024
+    },
+    "production-replay/vision-scope-filter-ui-tests.xml": {
+      "sha256": "fa7b1ec4fcc575e6f20390def8a2609d6c4ccbf26850dc00630c84e506e13e8e",
+      "bytes": 1490
+    },
+    "production-ui-01/evaluation-scope-versus-ordinary-cache/report.json": {
+      "sha256": "c75cb339199b6fd30c53938f969b80e32210cf153cece9b3c38ae93cbd464dea",
+      "bytes": 67004
+    },
+    "production-ui-01/evaluation-scope-versus-ordinary-cache/status.json": {
+      "sha256": "f3d165e3dec8c743e80731f9c27e2b1ed5050eaebc26373213f4a9c50205bc9c",
+      "bytes": 204
+    },
+    "production-ui-01/geometry.log": {
+      "sha256": "00c02a19bcdc72fcd3f125ffcbf161618288bd12298fb051742f844240227cef",
+      "bytes": 439
+    },
+    "production-ui-01/geometry.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "production-ui-01/geometry.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "production-ui-01/history-other-global-model/report.json": {
+      "sha256": "fc47fea234fec5433f46cd6f4e9b6726a20be1535ed595e12131a8fa1591e03e",
+      "bytes": 71026
+    },
+    "production-ui-01/history-other-global-model/status.json": {
+      "sha256": "c5298eee473298f4f6a7666beec85ccc6bee3cd0888239b5f60800ee5448ebc2",
+      "bytes": 204
+    },
+    "production-ui-01/integration.log": {
+      "sha256": "799e893606ac57ea568acce626fce7aeb152bcc292561cb781be6cafb1902f2f",
+      "bytes": 14623
+    },
+    "production-ui-01/integration.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "production-ui-01/integration.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "production-ui-01/range-0-count-4-selection-2/report.json": {
+      "sha256": "37ba098c602baafcacd3b26c1bfeb105d45934390e4ef8811934e7b6acc5d2ed",
+      "bytes": 71026
+    },
+    "production-ui-01/range-0-count-4-selection-2/status.json": {
+      "sha256": "93d1ffa22767339a8ca1ab19a93d7eea3a87e39f4bc5436d81a78c8c7a9732a1",
+      "bytes": 204
+    },
+    "production-ui-01/range-0-count-61-selection-50/report.json": {
+      "sha256": "17194e166fa54b78f80acb2b140ce2489705b08bb663aac759cac02ccdd6e449",
+      "bytes": 174792
+    },
+    "production-ui-01/range-0-count-61-selection-50/status.json": {
+      "sha256": "fccddf322f8e2a18180f59c6772a94f0adc008dc4210f990e4d7f37f292e1866",
+      "bytes": 206
+    },
+    "production-ui-01/range-1-count-4-selection-1/report.json": {
+      "sha256": "5fa23301485572aa5b39ca042034c9a3eabd59fdf2ec15395c61b2e3ff015c1c",
+      "bytes": 77585
+    },
+    "production-ui-01/range-1-count-4-selection-1/status.json": {
+      "sha256": "2d01bb79259f7fc5136a48f0f799419ccf454542e710f3f607c1fb95b31a4220",
+      "bytes": 204
+    },
+    "production-ui-01/range-1-count-61-selection-50/report.json": {
+      "sha256": "55bb34d0655711cf309ae9c01d2e7083ac2b316200172a84313f29c92cf0a8e8",
+      "bytes": 140554
+    },
+    "production-ui-01/range-1-count-61-selection-50/status.json": {
+      "sha256": "deb5a9244ac84a1f8b0e02c8082e09cda0c6857dc58bbec792c9d3d496618371",
+      "bytes": 206
+    },
+    "production-ui-01/range-2-count-1-selection-0/report.json": {
+      "sha256": "0fa5e6fe0a7329b44dd8818382c427b11758150628636e74a8064e9b666a452c",
+      "bytes": 64365
+    },
+    "production-ui-01/range-2-count-1-selection-0/status.json": {
+      "sha256": "380f9e258a3f19e6797bd357ae2a3bb175b8f812d8e149385c4a3a64005d255a",
+      "bytes": 204
+    },
+    "production-ui-01/range-2-count-4-selection-1/report.json": {
+      "sha256": "fc9a847f41188d73bf94b2ed34e550037ee40f49687e8e7f6912f719aa3ea751",
+      "bytes": 67004
+    },
+    "production-ui-01/range-2-count-4-selection-1/status.json": {
+      "sha256": "e4e41aa5aaa4e0bfde5b238a2a3952c1366bc2842e8255eab60f630ee69aaba1",
+      "bytes": 204
+    },
+    "production-ui-01/range-2-count-61-selection-60/report.json": {
+      "sha256": "40d788a2f81bf3ccc66e0b517aece443cd556b73c1d04a7479b0fde66d784fa0",
+      "bytes": 119895
+    },
+    "production-ui-01/range-2-count-61-selection-60/status.json": {
+      "sha256": "dc59cff441153f722ed754a01c19f9e1cd2c6d87f4ab936e22c90718ec52923b",
+      "bytes": 204
+    },
+    "production-ui-01/selected-export/selected.json": {
+      "sha256": "f041dfa5c05ca4ed6fb8b4fe364deccae639c5a3d7ddede2ba587a8146d5dff8",
+      "bytes": 2165
+    },
+    "production-ui-01/selected-result-export/report.json": {
+      "sha256": "e81a19f6f7b3b465c5f54ecb8e56409f98d03da3b164ab5fde0719ac3dcd49c6",
+      "bytes": 71026
+    },
+    "production-ui-01/selected-result-export/status.json": {
+      "sha256": "e30df6421838aceb8ffc29500a01f7a5db53d2120f84bbf7583ac7b34752f4d6",
+      "bytes": 204
+    },
+    "production-ui-01/stop-prefix-review/report.json": {
+      "sha256": "809a1297706b7b63dcdf3a72e2f47ff66d6e28e5b296f379913e80556f33a113",
+      "bytes": 128533
+    },
+    "production-ui-01/stop-prefix-review/status.json": {
+      "sha256": "ddae56eea410d5bb2ced2c10c7a31c425d7963a97c842ffe6382eedd55e12113",
+      "bytes": 206
+    },
+    "production-ui-01/threshold-filter-adopt/report.json": {
+      "sha256": "7778fcd7c02b6d0b6a7043e5e9f255d882b00a5682bebaf40d920144a9ac52f0",
+      "bytes": 71026
+    },
+    "production-ui-01/threshold-filter-adopt/status.json": {
+      "sha256": "cfdb7953e77622598301d6b313c33e80608ad941d6aca276be45499c18f4f99e",
+      "bytes": 204
+    },
+    "production-ui-final/evaluation-scope-versus-ordinary-cache/report.json": {
+      "sha256": "1de1cb75edaeddf9c67a8143d86c074ef17689a14f15699182de98933122b7cf",
+      "bytes": 67004
+    },
+    "production-ui-final/evaluation-scope-versus-ordinary-cache/status.json": {
+      "sha256": "485362796a7100ffbf63886a33ef16a60b8c09566b5d5cd8eeee0897396afe08",
+      "bytes": 204
+    },
+    "production-ui-final/history-other-global-model/report.json": {
+      "sha256": "14def562cfab44e10101626da995df4232136e00ab24002c76b0eb33de083f03",
+      "bytes": 71026
+    },
+    "production-ui-final/history-other-global-model/status.json": {
+      "sha256": "b5e3ae49be68d389566fb50fd50293a88d3099ab6d9d66960fc058bec5925195",
+      "bytes": 204
+    },
+    "production-ui-final/integration.log": {
+      "sha256": "46a085ea0c72ff6d09121609b543ae555cc0b999d2495af2883a90df3fa6f8ea",
+      "bytes": 15963
+    },
+    "production-ui-final/integration.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "production-ui-final/integration.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "production-ui-final/legacy-ui.log": {
+      "sha256": "8cbc0fe24142fedcdbda5683d3c8cd890e95ea1cfbf07c389dd665eb82fe08cd",
+      "bytes": 11778
+    },
+    "production-ui-final/legacy-ui.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "production-ui-final/legacy-ui.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "production-ui-final/precise-adopted-working-points/report.json": {
+      "sha256": "4c4f34037efd459c4de87b791c8971508435648baff1077a3126a96ed1207eb3",
+      "bytes": 67201
+    },
+    "production-ui-final/precise-adopted-working-points/status.json": {
+      "sha256": "ff339e2618a209980ca9e1beba309d8f2d835a9b77478f1b45e95d654986c290",
+      "bytes": 204
+    },
+    "production-ui-final/range-0-count-4-selection-2/report.json": {
+      "sha256": "2121358acc27afee90ebfd5ee285ed7bcc9900d30fa11692eb47600b2969bff8",
+      "bytes": 71026
+    },
+    "production-ui-final/range-0-count-4-selection-2/status.json": {
+      "sha256": "64f8bae8959aaefc027fb5b6cc979dedb1c320a875afad492085b30cb2f183ee",
+      "bytes": 204
+    },
+    "production-ui-final/range-0-count-61-selection-50/report.json": {
+      "sha256": "9c6ac5d485e6c7adbd0bd36706004d36fa17dd8e67b9b8120d620168f4c3a2a7",
+      "bytes": 174792
+    },
+    "production-ui-final/range-0-count-61-selection-50/status.json": {
+      "sha256": "42f95eba16fde4427c2ae4fc753075012253fa3d4914ea1a186163d5865b1ac4",
+      "bytes": 206
+    },
+    "production-ui-final/range-1-count-4-selection-1/report.json": {
+      "sha256": "e6d1a3288c5e0b6aea08cc6b981cfe19941ebed813a794737a230587772bad84",
+      "bytes": 77585
+    },
+    "production-ui-final/range-1-count-4-selection-1/status.json": {
+      "sha256": "5eb17cbdbf1cbc0eb36048a82f078842602a566abc4d163641bea03f638e412e",
+      "bytes": 204
+    },
+    "production-ui-final/range-1-count-61-selection-50/report.json": {
+      "sha256": "bed5ef9f50cc3ebe38574d1b8c3d3bcddfac5102dfb011c1b1c9e0d706389e46",
+      "bytes": 140554
+    },
+    "production-ui-final/range-1-count-61-selection-50/status.json": {
+      "sha256": "cfb21b99026bd6e9af6e115bad887cd39edd67f5d535952f4ee469205a249bda",
+      "bytes": 206
+    },
+    "production-ui-final/range-2-count-1-selection-0/report.json": {
+      "sha256": "2e8d7a13064055e91f46e531ab49a0e36917c51a69c995298b56cff254e11196",
+      "bytes": 64365
+    },
+    "production-ui-final/range-2-count-1-selection-0/status.json": {
+      "sha256": "3423574b2b0f13b50d5e74dd916eb62cc0b47391c1e356770dbc0cce20ae44bf",
+      "bytes": 204
+    },
+    "production-ui-final/range-2-count-4-selection-1/report.json": {
+      "sha256": "1344730f2111ef5099df6019d29d50c82f48c308807812433e41e60a33eec4c1",
+      "bytes": 67004
+    },
+    "production-ui-final/range-2-count-4-selection-1/status.json": {
+      "sha256": "6fc6684f0dc5f2cff7fdbfeb8158849da34cb3cdcc9102a436a44115df69f2c2",
+      "bytes": 204
+    },
+    "production-ui-final/range-2-count-61-selection-60/report.json": {
+      "sha256": "f10145f3341738decb9d00da6c89f11aecdf5d15329da964d2725bb66377e6cc",
+      "bytes": 119895
+    },
+    "production-ui-final/range-2-count-61-selection-60/status.json": {
+      "sha256": "b91eca36cf59a37ea45e68ed542e4c60fc1a7c27ce6df9d90f9b235d7687767b",
+      "bytes": 204
+    },
+    "production-ui-final/selected-export/selected.json": {
+      "sha256": "7e93ce7da87aed712f5ed983f5672ccae30b46cfaf578adf5d7c5c1cb4e6e758",
+      "bytes": 2165
+    },
+    "production-ui-final/selected-result-export/report.json": {
+      "sha256": "517008b874187cf92a01805e25ea4e561f7ae92f6831db01d31965cccfe47102",
+      "bytes": 71026
+    },
+    "production-ui-final/selected-result-export/status.json": {
+      "sha256": "2f3c6b7f4e90cd2545eecc0c24b5433f64eaffb34e58cf7a7ce8bd95addc73d1",
+      "bytes": 204
+    },
+    "production-ui-final/stop-prefix-review/report.json": {
+      "sha256": "febdf8b3c8dfffcfa11d7e486ea89d9248128edf33e1255d07a91b1ae7603709",
+      "bytes": 128533
+    },
+    "production-ui-final/stop-prefix-review/status.json": {
+      "sha256": "58519aae471ebc21472c7ed6184a32b2d4c4bc13caabed2dbe5aabb4703673ba",
+      "bytes": 206
+    },
+    "production-ui-final/threshold-filter-adopt/report.json": {
+      "sha256": "374371bd7c9aaabcee05d75ca1e82d4ca305e0b78662a7f07292e76cbfe9a30b",
+      "bytes": 71026
+    },
+    "production-ui-final/threshold-filter-adopt/status.json": {
+      "sha256": "96199c7bb69e6d6e5b80c4baa504029a3d988f24e3ba1dc082fff72e92ae80d1",
+      "bytes": 204
+    },
+    "regression-01/ctest-discovery.json": {
+      "sha256": "6d8ca8c8aa7745d6874d4106b12cc01dd9998781def789221c3ad7f8e13c5831",
+      "bytes": 14083
+    },
+    "regression-01/detection-regression-qa.json": {
+      "sha256": "f15d3bdee4b15ab9c682f085cf1820c35a458a548db662277e292f6aa64ae109",
+      "bytes": 41991
+    },
+    "regression-01/isolated/matplotlib/fontlist-v390.json": {
+      "sha256": "7321ade0606b3e505d2a0ee9ec46fa876196acd8370323a547efa0d11aa2d74e",
+      "bytes": 115885
+    },
+    "regression-01/isolated/ultralytics/Ultralytics/settings.json": {
+      "sha256": "b8fe03560250ab69976aa5f3474cd545dcda9aa29c3b812698e5fe4f53ec5161",
+      "bytes": 491
+    },
+    "regression-01/vision-batch-responsiveness-tests.log": {
+      "sha256": "a2546ec1560b6ec15cdd61453e96fb6bcedf9b51428b98dbbaadbb10a9093d2c",
+      "bytes": 3851
+    },
+    "regression-01/vision-batch-responsiveness-tests.xml": {
+      "sha256": "db271d79c9acb2e01d35db7d7b11fd0b0eccd7a48c9659e7dd11e60e5f227f42",
+      "bytes": 1499
+    },
+    "regression-01/vision-conversion-inference-tests.log": {
+      "sha256": "aef31b575a19bc01b2bfeb460951ae1180de29df1e8a40e83bfd2850c1c233f1",
+      "bytes": 4041
+    },
+    "regression-01/vision-conversion-inference-tests.xml": {
+      "sha256": "18e786bf6d2199f0db6f1d657dc329144345cc64c3a1861570fadf1fc7fefde3",
+      "bytes": 1501
+    },
+    "regression-01/vision-conversion-ui-tests.log": {
+      "sha256": "370a6ed645097b2c529a4661853f7b8038ae54d16855dfcfb74c1589d118fea1",
+      "bytes": 2966
+    },
+    "regression-01/vision-conversion-ui-tests.xml": {
+      "sha256": "6f07810a74170fabd5e7fbad88e11fa1ef0c6861dd07e267941bdb3f986ae6c7",
+      "bytes": 1486
+    },
+    "regression-01/vision-core-tests.log": {
+      "sha256": "822c3cf0b5d9718c68a34983a9e9afe548593f7843c189866fbf5241676933a4",
+      "bytes": 4162
+    },
+    "regression-01/vision-core-tests.xml": {
+      "sha256": "c8f0ae615c8f3882e6fa6faf3a7d6399d91188724297c806da64270af9d067e7",
+      "bytes": 1468
+    },
+    "regression-01/vision-evaluation-panel-tests.log": {
+      "sha256": "461fb87b9529ec298f46d3a863bbdc8be4ebd9cfde06c15e1ba531172831f364",
+      "bytes": 3737
+    },
+    "regression-01/vision-evaluation-panel-tests.xml": {
+      "sha256": "fcd93deb3d78bafd59bba04b8b23968158a1dfe00a9270071caba9afeb165569",
+      "bytes": 1492
+    },
+    "regression-01/vision-evaluation-python-tests.log": {
+      "sha256": "0c0e7bc84431cc4bf79126c04d16c49d58c094ce9723fbc3b5382741dbe33780",
+      "bytes": 1513
+    },
+    "regression-01/vision-evaluation-python-tests.xml": {
+      "sha256": "59adcfb9472ee8b3449688d3a28113e91140752b55e4dc1e3f3e768154151102",
+      "bytes": 512
+    },
+    "regression-01/vision-evaluation-worker-tests.log": {
+      "sha256": "ca74e902b88000e962069d091d4bfbd1d9612bdb64bfe7cbce88c0dd320b47d8",
+      "bytes": 2952
+    },
+    "regression-01/vision-evaluation-worker-tests.xml": {
+      "sha256": "9d33a56ce6f54bc705d9ae5b2b2e4c89a3483ee94c54d5b37885dbeb3f252fd0",
+      "bytes": 1494
+    },
+    "regression-01/vision-gpu-runtime-tests.log": {
+      "sha256": "1f3e23bd47f2895484a9a4638130e6a20c5783b9143c5352a7c62bf47cd99b1e",
+      "bytes": 1405
+    },
+    "regression-01/vision-gpu-runtime-tests.xml": {
+      "sha256": "d6e1b4e87fa7e7f321d3027d2c156b31873d84fada8dc0070f16fde4bb1c8123",
+      "bytes": 487
+    },
+    "regression-01/vision-gpu-tests.log": {
+      "sha256": "58c1a7d8b9a574ad90f29223f7979b26b0a7d37843a9621a9767a26599dbcdf8",
+      "bytes": 8456
+    },
+    "regression-01/vision-gpu-tests.xml": {
+      "sha256": "e9931a4c5fda7226e0515b51ef1dcd8efdf0337b2197fc4f5ad9b91cc45d843e",
+      "bytes": 1467
+    },
+    "regression-01/vision-inference-delivery-tests.log": {
+      "sha256": "2cdf87ba73f8ef2a83761335822d4a7bd339418adeb6807aaab7827993411e25",
+      "bytes": 2361
+    },
+    "regression-01/vision-inference-delivery-tests.xml": {
+      "sha256": "58cc67688a307087060044f7b58ac4d332a3cd0f7a0882ff39bf15a7d9571ec6",
+      "bytes": 1385
+    },
+    "regression-01/vision-model-conversion-tests.log": {
+      "sha256": "bbd75f8ccf68071ce11b16159846918dd79dde541954094af9734d7f5e77a0a7",
+      "bytes": 15197
+    },
+    "regression-01/vision-model-conversion-tests.xml": {
+      "sha256": "50809b3d904a1fb92dd3c845a1a8a53ca853bf3011e15df96305c11f5acafc55",
+      "bytes": 1493
+    },
+    "regression-01/vision-modelviewer-tests.log": {
+      "sha256": "e81f24c3320c9234eb818256d2e1f60b468fe0573c9df467538cf024f8c0bef6",
+      "bytes": 14565
+    },
+    "regression-01/vision-modelviewer-tests.xml": {
+      "sha256": "b624723dbea90fdf1cd2b8a2b4eb1e5bf887276fe12e4527ba60c88c541e08c2",
+      "bytes": 1481
+    },
+    "regression-01/vision-netron-server-tests.log": {
+      "sha256": "b2dceef4aa3b8cdd4643a7d54f78071f00e3a8609a231b8e36d2083f3bc53281",
+      "bytes": 3110
+    },
+    "regression-01/vision-netron-server-tests.xml": {
+      "sha256": "ec4949d42b69aac039bbf2ca64cc378970cbc3c3bd145a5538a32c8e591d6b01",
+      "bytes": 1491
+    },
+    "regression-01/vision-pt-tests.log": {
+      "sha256": "f27e01a28e52bfde83a7a2c8d48662d329316240a7f15f43dc1acdbca0a1a483",
+      "bytes": 4406
+    },
+    "regression-01/vision-pt-tests.xml": {
+      "sha256": "8ae96378c9eaba0b4f9af9c929cdede4162c138ea82c9bfb55b1d46447a78c43",
+      "bytes": 1465
+    },
+    "regression-01/vision-recording-tests.log": {
+      "sha256": "1f5f3f81dcb1411b3cc8854eee4caed6b4da8e81ffa89a9000770ed12183dbd7",
+      "bytes": 2792
+    },
+    "regression-01/vision-recording-tests.xml": {
+      "sha256": "455ab5917e59948b48cd4467adccb933b0d202fb7e8256c732c5ea92450da8b6",
+      "bytes": 1477
+    },
+    "regression-01/vision-scope-filter-ui-tests.log": {
+      "sha256": "7bfba2ba909a635b641e5bf6944f3bce4f68c2271bed4195d0865f856ff638ee",
+      "bytes": 16020
+    },
+    "regression-01/vision-scope-filter-ui-tests.xml": {
+      "sha256": "a68372a4ab12e7e093e2ce9f598d4c001fe3e091a3d4371e9283d53e2cadfd48",
+      "bytes": 1489
+    },
+    "regression-01/vision-ui-tests.log": {
+      "sha256": "ea96ee6dd6360219f32cfe1b28aa92a71f64e7554a255c8bc143a8965c0e642d",
+      "bytes": 14275
+    },
+    "regression-01/vision-ui-tests.xml": {
+      "sha256": "7ba43c0cfef2fb77d2e17c225ed83565830af7461fbe2742d5eb1f47f7b788be",
+      "bytes": 12798
+    },
+    "preliminary/vision-evaluation-python-tests-7678b3fbceb4.log": {
+      "sha256": "7678b3fbceb4c0ce7a2fb8a4ea6cf9621fe9b137e399ad7df90a9b387ecf4f90",
+      "bytes": 3080
+    },
+    "preliminary/vision-evaluation-worker-tests-230-initial-980eb7f9eae6.log": {
+      "sha256": "980eb7f9eae6117f0a591b7f52a35cf0b46307812c76e66d1ecbc43afb8aab55",
+      "bytes": 1239
+    },
+    "preliminary/vision-evaluation-worker-tests-230-431c04d809c9.log": {
+      "sha256": "431c04d809c9d2ee07bab54b1f05f09c34b795ee194debfbc3c61d65ceb09d20",
+      "bytes": 1540
+    },
+    "preliminary/vision-windows-release-tool-tests-230-e6f200cd416e.log": {
+      "sha256": "e6f200cd416eff1a6023b9c79760284f127a7a7edf93159373d0ad287a37fe97",
+      "bytes": 1685
+    },
+    "preliminary/vision230-build-final-integration-4314dd581904.log": {
+      "sha256": "4314dd581904adaa799af098790151d040693a510147f68cc07a2be0573cd8c2",
+      "bytes": 2901
+    },
+    "preliminary/vision230-build-integration-tests-replay-86b2521f6729.log": {
+      "sha256": "86b2521f67292957249890f4f676ca3c526d27e0e89216ec16f863560aadd5cb",
+      "bytes": 250
+    },
+    "preliminary/vision230-build-integration-1d7e3dd17dca.log": {
+      "sha256": "1d7e3dd17dcaa4e893753a5562ba7e921e5639fc167dff656a4ea212bc110bd3",
+      "bytes": 3192
+    },
+    "preliminary/vision230-build-replay-f641c884c68f.log": {
+      "sha256": "f641c884c68f30e715da760ce0b6cdf4525504623a3d7eca3585bfcacca69fb6",
+      "bytes": 5084
+    },
+    "preliminary/vision230-build-cb59c317bbef.log": {
+      "sha256": "cb59c317bbefd4fc29860e6cf1664f1e34933a8019dfbd5238e2ef707dd2f464",
+      "bytes": 10938
+    },
+    "preliminary/vision230-configure-replay-ad6dcab3291c.log": {
+      "sha256": "ad6dcab3291c4dbcb2cab918e1c51bbc69ba8f59a8023d4e6a7163d9f1c3d38a",
+      "bytes": 344
+    },
+    "preliminary/vision230-configure-d72f8dc041f6.log": {
+      "sha256": "d72f8dc041f684575b5af22b2ec776cfc982478c1bb39b4652d8a43d8332dd25",
+      "bytes": 1366
+    },
+    "preliminary/vision230-final-test-build-86b2521f6729.log": {
+      "sha256": "86b2521f67292957249890f4f676ca3c526d27e0e89216ec16f863560aadd5cb",
+      "bytes": 250
+    },
+    "preliminary/vision230-production-build-cd15ebfa701b.log": {
+      "sha256": "cd15ebfa701bed4f0077f0f107089631571344d87a6b6d197e692cee63ef86a2",
+      "bytes": 3074
+    },
+    "preliminary/vision230-production-configure-ad6dcab3291c.log": {
+      "sha256": "ad6dcab3291c4dbcb2cab918e1c51bbc69ba8f59a8023d4e6a7163d9f1c3d38a",
+      "bytes": 344
+    },
+    "preliminary/vision230-production-final-build-50105ac55c36.log": {
+      "sha256": "50105ac55c3680eb81b480f6431d08bfbc412239629d7a54b55e673f6da3ee2b",
+      "bytes": 1848
+    },
+    "preliminary/vision230-production-frozen-build-ebbb208b58e7.log": {
+      "sha256": "ebbb208b58e7dafc84e11b4d6b04dd0558d0b69ed2df9e28d99de0bb0b3eebcf",
+      "bytes": 741
+    },
+    "preliminary/vision230-release-tools-6912dc6e720d.log": {
+      "sha256": "6912dc6e720d9ea7e95b8ff24ccfd2f302c1732cc482bfb75b0898e7c52b9df5",
+      "bytes": 7391
+    },
+    "preliminary/vision230-version-tool-tests-f55299c3aa62.log": {
+      "sha256": "f55299c3aa6260fd3242b0f2c1033e472f43dc85de278839b24489f0cfe9b9c1",
+      "bytes": 1980
+    }
+  },
+  "omitted_superseded_cuda_traces": [
+    {
+      "path": "regression-01/artifacts/onnx-cuda-0_2026-10-20_17-05-31.json",
+      "sha256": "b80df1008da3508a1ff58e2689297cdd0cbe6bc39ac39a74389296ebb64236af",
+      "reason": "Superseded CUDA trace; raw runner report retained, effective production-replay traces archived"
+    },
+    {
+      "path": "regression-01/artifacts/onnx-cuda-1_2026-10-20_17-05-31.json",
+      "sha256": "71148b861ad418b18c0a9f143c6aba89e645f4789ec9a888e2e76ad75faf7bc8",
+      "reason": "Superseded CUDA trace; raw runner report retained, effective production-replay traces archived"
+    }
+  ],
+  "superseded_runs": [
+    {
+      "path": "regression-01/detection-regression-qa.json",
+      "reason": "Initial real UI layout assertion failed. Original failed log/XML/report retained; only the final complete UI run replaces that result. Six selected suites have complete production replays."
+    },
+    {
+      "path": "integration-01/raw.log",
+      "reason": "Initial dataset file-picker automation did not wait for the filesystem model; failure retained. Later complete integration runs replace it."
+    },
+    {
+      "path": "production-ui-final/legacy-ui.log",
+      "reason": "Sandbox loopback/Netron access failure is not a pass. Original failure retained; final UI executes with the required local-loopback permissions."
+    },
+    {
+      "path": "preliminary",
+      "reason": "Earlier diagnostics, configure/build logs and incomplete/subset trials are retained as history, never counted toward effective success."
+    }
+  ],
+  "limitations": [
+    "No Windows 2.3.0 build or installation acceptance",
+    "No physical camera acceptance",
+    "Synthetic/derived labels validate evaluation mechanics, not general model accuracy",
+    "Local stop/timing observations are not performance guarantees",
+    "Not a single one-shot CTest pass: effective suites are explicitly selected from retained actual runs"
+  ],
+  "command": [
+    "/home/misaka/miniconda3/bin/python3",
+    "docs/releases/evidence/2.3.0/summarize_regressions.py",
+    "--include-temp-logs"
+  ],
+  "summarizer_sha256": "b1b1ba19581c81c4106865f96001eb2f2379b2d018f2a2e7adcba160d60e9ad3"
+}

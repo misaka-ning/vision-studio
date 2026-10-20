@@ -1,0 +1,11 @@
+[1/13] Automatic MOC for target vision-ui
+[2/12] Building CXX object CMakeFiles/vision-ui.dir/src/ui/mainwindow_evaluation.cpp.o
+[3/12] Building CXX object CMakeFiles/vision-ui.dir/src/ui/mainwindow.cpp.o
+[4/12] Linking CXX executable bin/vision-studio
+[5/12] Linking CXX executable vision-batch-responsiveness-tests
+[6/12] Linking CXX executable vision-ui-tests
+[7/12] Automatic MOC for target vision-evaluation-integration-tests
+[8/11] Linking CXX executable vision-conversion-inference-tests
+[9/11] Linking CXX executable vision-scope-filter-ui-tests
+[10/11] Building CXX object CMakeFiles/vision-evaluation-integration-tests.dir/tests/evaluation_integration_tests.cpp.o
+[11/11] Linking CXX executable vision-evaluation-integration-tests

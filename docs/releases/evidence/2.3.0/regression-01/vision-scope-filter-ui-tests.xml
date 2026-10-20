@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="28"
+	timestamp="2026-10-20T17:06:27"
+	>
+	<testcase name="vision-scope-filter-ui-tests" classname="vision-scope-filter-ui-tests" time="28.408" status="run">
+		<system-out>********* Start testing of ScopeFilterUiTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : ScopeFilterUiTests::initTestCase()
+QINFO  : ScopeFilterUiTests::fixedRangeAndProgress(mode-0-row-0) detection_scope_evidence: {"actual_device":"cpu","backend":"OpenCV DNN / CPU","completed":3,"first_queue_row":0,"kind":"range","last_queue_row":2,"mode":0,"queue_count":3,"range_outside_unprocessed":true,"review_matches_selection":true,"selected_row":0,"submitted_count":3}
+PASS   : ScopeFilterUiTests::fixedRangeAndProgress(mode-0-row-0)
+QINFO  : ScopeFilterUiTests::fixedRangeAndProgress(mode-0-row-1) detection_scope_evidence: {"actual_device":"cpu","backend":"OpenCV DNN / CPU","completed":3,"first_queue_row":0,"kind":"range","last_queue_row":2,"mode":0,"queue_count":3,"range_outside_unprocessed":true,"review_matches_selection":true,"selected_row":1,"submitted_count":3}
+PASS   : ScopeFilter...
+The rest of the test output was removed since it exceeds the threshold of 1024 bytes.
+</system-out>
+	</testcase>
+</testsuite>
