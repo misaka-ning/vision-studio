@@ -1,0 +1,72 @@
+{
+    "actual_device": "cpu",
+    "application": "Vision Studio",
+    "backend": "PyTorch / Ultralytics / CPU",
+    "config": {
+        "class_filter": [
+            32
+        ],
+        "color_mode": "rgb",
+        "confidence_threshold": 0.949999988079071,
+        "input_channels": 3,
+        "input_size": 640,
+        "model_class_count": 80,
+        "nms_iou": 0.44999998807907104,
+        "preprocess": {
+            "color_mode": "rgb",
+            "mean_rgb": [
+                0,
+                0,
+                0
+            ],
+            "mode": "model_native",
+            "scale": 0.00392156862745098,
+            "swap_rb": true
+        }
+    },
+    "device_index": -1,
+    "device_name": "CPU",
+    "device_notice": "",
+    "evaluation": {
+        "analysis_confidence": 0.949999988079071,
+        "has_ground_truth": true,
+        "ignored_predictions": [
+        ],
+        "matched_ground_truth": [
+        ],
+        "matched_predictions": [
+        ],
+        "matching_available": true,
+        "matching_iou": 0.5,
+        "report_directory": "/tmp/vision-studio-mapping-final-230-o8f3fb6f/data/evaluations/20261020-095140-449-03106fd1"
+    },
+    "frame": 0,
+    "ground_truth": [
+        {
+            "class_id": 0,
+            "height": 465.1897600000001,
+            "label": "person",
+            "width": 310.610079,
+            "x": 167.58015949999998,
+            "y": 162.88991999999996
+        }
+    ],
+    "height": 640,
+    "inference_ms": 44.247971032746136,
+    "model": "yolov8n.pt",
+    "model_file": "/tmp/vision-studio-evaluation-qa-s0br3_r7/extracted/opt/VisionStudio/models/yolov8n.pt",
+    "predictions": [
+    ],
+    "requested_device": "cpu",
+    "source": "/tmp/vision-studio-evaluation-public-230/coco8/images/val/000000000036.jpg",
+    "source_frame_size": {
+        "height": 640,
+        "width": 481
+    },
+    "stereo_view": "full",
+    "task": "YOLOv8 / 11",
+    "timestamp": "2026-10-20T17:51:46.472",
+    "total_ms": 102.365811,
+    "version": "2.3.0",
+    "width": 481
+}

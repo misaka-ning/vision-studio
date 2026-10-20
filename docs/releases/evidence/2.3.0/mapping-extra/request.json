@@ -1,0 +1,18 @@
+{
+  "dataset_yaml": "/tmp/vision-studio-evaluation-public-230/coco8-qa.yaml",
+  "split": "val",
+  "model_path": "/tmp/vision-studio-evaluation-qa-s0br3_r7/extracted/opt/VisionStudio/models/yolov8n.pt",
+  "task": "yolov8",
+  "device": "cpu",
+  "device_index": 0,
+  "input_size": 640,
+  "model_class_id": 32,
+  "dataset_class_id": 0,
+  "confidence": 1.0,
+  "nms_iou": 0.45,
+  "color_mode": "rgb",
+  "scan_start": 0.05,
+  "scan_end": 0.95,
+  "scan_step": 0.01,
+  "match_iou": 0.5
+}

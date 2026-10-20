@@ -1,0 +1,12 @@
+test_audit_cannot_select_another_path (__main__.CleanupGuardTests.test_audit_cannot_select_another_path) ... ok
+test_changed_source_cannot_use_stale_audit (__main__.CleanupGuardTests.test_changed_source_cannot_use_stale_audit) ... ok
+test_default_preview_does_not_delete (__main__.CleanupGuardTests.test_default_preview_does_not_delete) ... ok
+test_execute_without_remote_receipts_is_blocked (__main__.CleanupGuardTests.test_execute_without_remote_receipts_is_blocked) ... ok
+test_symlink_or_protected_runtime_is_rejected (__main__.CleanupGuardTests.test_symlink_or_protected_runtime_is_rejected) ... ok
+test_two_exact_temporary_candidates_only (__main__.CleanupGuardTests.test_two_exact_temporary_candidates_only) ... ok
+test_wrong_version_and_changed_retained_asset_block_execution (__main__.CleanupGuardTests.test_wrong_version_and_changed_retained_asset_block_execution) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.009s
+
+OK

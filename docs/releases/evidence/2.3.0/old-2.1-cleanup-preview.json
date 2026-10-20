@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "version": "2.3.0",
+  "success": true,
+  "dry_run": true,
+  "generated_at_utc": "2026-10-20T09:39:55.715642+00:00",
+  "removed": [],
+  "errors": [],
+  "audit": "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.3.0/old-2.1-audit.json",
+  "audit_sha256": "2b80d9016abec6e4cc87a711762a099ef999ba2ee2b8ccd77bea2f2370819364",
+  "candidates": [
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/clean-source-verified",
+    "/home/misaka/文档/ChatGPT/yolo/output/v2.1.0/clean-source-verified.tar"
+  ],
+  "logical_bytes": 193599559,
+  "preservation_policy": "All other old QA tools, logs, models, states, user data and release folders remain untouched",
+  "verified_retained": [],
+  "blocked_proofs": [
+    "2.3.0: official verify receipt and retained release directory required",
+    "2.2.0: official verify receipt and retained release directory required",
+    "Provide the official prune receipt or a fresh official 2.1.0 verify receipt"
+  ],
+  "ready_to_execute": false
+}

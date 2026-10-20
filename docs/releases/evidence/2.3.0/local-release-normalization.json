@@ -1,0 +1,333 @@
+{
+  "success": true,
+  "version": "2.3.0",
+  "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.0",
+  "destination": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0",
+  "remote_verified_before_copy": true,
+  "files": [
+    {
+      "file": "SHA256SUMS",
+      "bytes": 207,
+      "sha256": "fbbb09d225583e75b4d199f63d071610998d60f91c622d261b9d16bc1fc0312a",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "SOURCE-INVENTORY.json",
+      "bytes": 8027,
+      "sha256": "e53b0036e13604c72bf43801a3a25d46d639405b602d444f5c65ecdd9af2a2b2",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "SOURCE-SHA256SUMS",
+      "bytes": 2206,
+      "sha256": "6a44f4679fb5d3d8b5e61816772de6fe81a50fc86696a7d8c6273fc2d7f0f058",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "build-deb.log",
+      "bytes": 676,
+      "sha256": "0ffb3923ca60eca7e8c3b97adf8d212c51bb02d2210bf12d622878906473c6bf",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "build-source.log",
+      "bytes": 127,
+      "sha256": "3928354565de7ae44480a6256f088e2145ff964250be8056a9c337871198e9f5",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "conversion-qa.json",
+      "bytes": 14544,
+      "sha256": "820c78c215a457e53860e26535c98c71a37ce697628695e23873441b9e35c691",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "ctest-qa.json",
+      "bytes": 105703,
+      "sha256": "7869c48ae2a85f17034de535100a8a5c8b1b2ff9d0177b6c83ee92cd5c3009fc",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "evaluation-qa.json",
+      "bytes": 6185,
+      "sha256": "f2cd5a28a822390881308956096e8de56a1658c363dd8660f268063f8d657c82",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "final-package-gpu-evaluation-receipt.json",
+      "bytes": 6777,
+      "sha256": "beb84ecff14e045144176249ecc7e297d755fad02afc7820a3ffbec6e0fb6a38",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "finalize-qa.log",
+      "bytes": 1082,
+      "sha256": "93496c5d32fc3ba171ce800eda33db4fd673db02e107181b30cd8b884c9ac324",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "gpu-qa.json",
+      "bytes": 1568,
+      "sha256": "e51bca2a5a8fd32130ff474d6c07cb63880c1a7cde97402c3b36230543bf8d41",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "input-reuse-proof.json",
+      "bytes": 4549,
+      "sha256": "ab883b2db7256ebdf9dbf71b3cbeba6df25ec71ec07bd941fed006a88183191d",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "install-qa.json",
+      "bytes": 17927,
+      "sha256": "11fd3a4daaf796fdd88bafb86de8624ad0b295af1bdbd14933435f30dd513883",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "install-qa.log",
+      "bytes": 136,
+      "sha256": "d7b47482245447a4716ba0fa33f2282a05a44388321a2e8030313093ac88e64c",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "latest-release.json",
+      "bytes": 11531,
+      "sha256": "7366550db911b32b336487b6a3a422d94ade6cd74ed4085c4061cb480b21a318",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "packaged-evaluation-qa.json",
+      "bytes": 308195,
+      "sha256": "36949e40d649d5705a93868c2bb500fbe91e674a46c4a7fe8925b1f91c68c665",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "packaged-evaluation-qa.log",
+      "bytes": 400,
+      "sha256": "978585f9b69521f7f38c803ff26676c23084648a9356feea108e70ed64092d5d",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "packaged-gpu-qa.json",
+      "bytes": 20993,
+      "sha256": "be8c04e7a69688c847586e5ea75eb493696733f71c6bffe6db6ac8d133ea0fb7",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "packaged-gpu-qa.log",
+      "bytes": 238,
+      "sha256": "2a6e60331739e443fee842505f4387112626d4cb0e4460f4d9003a112fe8cef5",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "previous-2.2.0-verify.json",
+      "bytes": 1006,
+      "sha256": "bc14666e2b12e64b825fe0a75a1c8431275430c4703bec9e979b80bfa87cac56",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "qa-report.json",
+      "bytes": 119524,
+      "sha256": "d4733f2a7f86e40f89c18d14c68da970e4329407c81cbd94c4298b84a44e9759",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "qa-report.log",
+      "bytes": 147,
+      "sha256": "76b19da4aaf73a82bc03675bdd3d5bd6f0bc2f22b9bf723795f225ece50adf13",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "release-dry-run.json",
+      "bytes": 717,
+      "sha256": "8ba206374f03d9bceae14ac0c453cc074f002bf491aae240e6423a3b9b639ff6",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "release-publish-initial-failure.json",
+      "bytes": 453,
+      "sha256": "87995e20873b62d064fcc040bfdfb02b6330c2bdb2afbb45b60c9d78739f3c8e",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "release-publish.json",
+      "bytes": 1580,
+      "sha256": "e9d10d4db751dfb99a887308ddfa5e58e97047e0c3c348fc86468ac74452cd2a",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "release-publish.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "release-verify.json",
+      "bytes": 1006,
+      "sha256": "c58cf581dd072d1016cdff6387c677f29446018187095469fdb20ab3e28f0859",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "source-bundle-qa.json",
+      "bytes": 2144967,
+      "sha256": "3d126ab45618cb26e0f02b17e3426b0acc6374cdd88142078cfd54df5bd2eedb",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "source-bundle-qa.log",
+      "bytes": 448,
+      "sha256": "a3afae017b2ab7e0ded970ba9eb67cb969d6ab477f214b86a987522089b65891",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "source-freeze.json",
+      "bytes": 683,
+      "sha256": "8d60fa9b90cc0134b64a39f4b5cf5bc67c644343803b204fb23408a944190401",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "sources/DOWNLOAD-PROVENANCE.json",
+      "bytes": 6931,
+      "sha256": "e92f113f288b6809e4911092ab59ce87d871a21707811e9813d05f98b36ba312",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "sources/ffmpeg-5.1.6.tar.xz",
+      "bytes": 10021428,
+      "sha256": "f4fa066278f7a47feab316fef905f4db0d5e9b589451949740f83972b30901bd",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "sources/netron-9.3.1-source.tar.gz",
+      "bytes": 5176979,
+      "sha256": "612d8a064d0c7e166b47208c41bb8ac2ae7f95d5a5f0d659e3f41d82c3cd5507",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "sources/onnx-1.17.0.tar.gz",
+      "bytes": 12165120,
+      "sha256": "48ca1a91ff73c1d5e3ea2eef20ae5d0e709bb8a2355ed798ffc2169753013fd3",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "sources/opencv-python-86-Dockerfile_x86_64",
+      "bytes": 6363,
+      "sha256": "19d7609f4beef721d40d526b350d094af791d84fb9b572f2c95d9161943912dc",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "sources/opencv-python-86.tar.gz",
+      "bytes": 1126800,
+      "sha256": "8f8f21b10e60ecaf22241e39ad04b1ac2766925d471e1c5ddc4ed397f0099e91",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "sources/opencv-python-headless-4.11.0.86.tar.gz",
+      "bytes": 95177929,
+      "sha256": "996eb282ca4b43ec6a3972414de0e2331f5d9cda2b41091a49739c19fb843798",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "sources/protobuf-33.0.tar.gz",
+      "bytes": 6872665,
+      "sha256": "cbc536064706b628dcfe507bef386ef3e2214d563657612296f1781aa155ee07",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "sources/protobuf-cpp-3.21.12.tar.gz",
+      "bytes": 4842303,
+      "sha256": "4eab9b524aa5913c6fffb20b2a8abf5ef7f95a80bc0701f3a6dbb4c607f73460",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "sources/qtbase-everywhere-src-6.8.3.tar.xz",
+      "bytes": 48426536,
+      "sha256": "56001b905601bb9023d399f3ba780d7fa940f3e4861e496a7c490331f49e0b80",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "sources/qtdeclarative-everywhere-src-6.8.3.tar.xz",
+      "bytes": 36503988,
+      "sha256": "1f03a2b8f5588b4face7da87926e9b2c1372b3a32157c52df07a75067a9db1af",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "sources/qtimageformats-everywhere-src-6.8.3.tar.xz",
+      "bytes": 2035140,
+      "sha256": "049bfb99845e4801672aca07c3c4fc4c140f932a3a33faa899419579e33ef1c8",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "sources/qtpositioning-everywhere-src-6.8.3.tar.xz",
+      "bytes": 663612,
+      "sha256": "6ab69a7e71a7795aab9ca2798eea126e36df55159a771ebd2f37cad3da63e9d3",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "sources/qtsvg-everywhere-src-6.8.3.tar.xz",
+      "bytes": 2009072,
+      "sha256": "35eb516460f00f264eb504baa253432384351cf23fb9980a5857190e8deef438",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "sources/qtwayland-everywhere-src-6.8.3.tar.xz",
+      "bytes": 1141132,
+      "sha256": "20fe385887d21190165a3180c17dcfc8b9a0e1da4ec76865b6334bdc709994b0",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "sources/qtwebchannel-everywhere-src-6.8.3.tar.xz",
+      "bytes": 209372,
+      "sha256": "967046b2650b7fc7b27547522e998e35d62291d795b20d9497e4bcc714831262",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "sources/qtwebengine-everywhere-src-6.8.3.tar.xz",
+      "bytes": 566553436,
+      "sha256": "df4e19ba2b3a540551b6f998d62597377ffa688c1cff564589b7da2e2bf87337",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "sources/ultralytics-8.4.173.tar.gz",
+      "bytes": 1267669,
+      "sha256": "cfb50c462a9138a187f7e5957ad2c91e3e757f6f0569da0c896574282d553840",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "sources/ultralytics_thop-2.2.2.tar.gz",
+      "bytes": 39543,
+      "sha256": "149a89c26c2be35b709fa25951f4644dea13d63017025569a193159a5908e3ed",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "vision-studio-2.3.0-complete-source.tar.xz",
+      "bytes": 846257988,
+      "sha256": "ed0c75206649ce57d41512a8f97ed12fee394a332cb646e6b6deabc7a15afbde",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "vision-studio-2.3.0-sources.tar.xz",
+      "bytes": 52239568,
+      "sha256": "7f552909614be6f4155147e713e3448527bf3c0b23e4fccf37cf7d410dc01273",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "vision-studio_2.3.0-1_amd64.deb",
+      "bytes": 387134996,
+      "sha256": "e8f600337b7c452a2104d1bc78f544bbc41ab5553b8e67db37d919b084ab7cbf",
+      "method": "hardlink immutable archive"
+    },
+    {
+      "file": "vision-studio_2.3.0-1_amd64.deb.manifest.json",
+      "bytes": 5252,
+      "sha256": "9815b7b2a9ab8a34748dbefa51eb6849cb5b49c1649c8b2f1e538b12f5fe117c",
+      "method": "independent metadata copy"
+    },
+    {
+      "file": "vision-studio_2.3.0-1_amd64.deb.sha256",
+      "bytes": 98,
+      "sha256": "a1dac091e6d212a27ce46c72f8f70960e77217ddc6825f42fdf5a442417d6f7f",
+      "method": "independent metadata copy"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "arguments": [
+    "/tmp/vision-studio-evaluation-qa-s0br3_r7/extracted/opt/VisionStudio/run-installed.sh",
+    "--smoke-evaluation",
+    "/tmp/vision-studio-mapping-final-230-o8f3fb6f/ui-smoke",
+    "--evaluation-request",
+    "/tmp/vision-studio-mapping-final-230-o8f3fb6f/request.json"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 10.135,
+  "stdout": "/tmp/vision-studio-mapping-final-230-o8f3fb6f/application.stdout.log",
+  "stderr": "/tmp/vision-studio-mapping-final-230-o8f3fb6f/application.stderr.log",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "f02b41fde5cf4d64670e249cfe7d3682b8335c85007a3cc2143e8dd6300ae4d0"
+}

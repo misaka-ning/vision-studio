@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "version": "2.3.0",
+  "remote_verified_before_cleanup": true,
+  "removed": [
+    {
+      "path": "/tmp/vision-studio-deb-qa-j3nhwx1z/extracted",
+      "regular_files": 36724,
+      "logical_bytes": 1690223673,
+      "packaged_binary_sha256": "1a4f0295c28b150375a428a486b3f973d7aca40d91e403b8e0447874f7b7f89f"
+    },
+    {
+      "path": "/tmp/vision-studio-gpu-deb-qa-3s99o3li/root",
+      "regular_files": 36724,
+      "logical_bytes": 1690223673,
+      "packaged_binary_sha256": "1a4f0295c28b150375a428a486b3f973d7aca40d91e403b8e0447874f7b7f89f"
+    },
+    {
+      "path": "/tmp/vision-studio-evaluation-qa-s0br3_r7/extracted",
+      "regular_files": 36724,
+      "logical_bytes": 1690223673,
+      "packaged_binary_sha256": "1a4f0295c28b150375a428a486b3f973d7aca40d91e403b8e0447874f7b7f89f"
+    },
+    {
+      "path": "/tmp/vision-studio-install-qa-a9oxi3xp/input.deb",
+      "logical_bytes": 387134996,
+      "deb_sha256": "e8f600337b7c452a2104d1bc78f544bbc41ab5553b8e67db37d919b084ab7cbf"
+    }
+  ],
+  "preserved": "All native QA outputs, plots, candidate reports, logs and isolated user states outside these literal disposable extraction roots; canonical 2.3/2.2 assets, staging/build trees, /opt, shared Qt SDK/GPU/runtime and user files unchanged."
+}
