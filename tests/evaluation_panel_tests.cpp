@@ -3,20 +3,25 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QDoubleSpinBox>
+#include <QElapsedTimer>
 #include <QFile>
+#include <QFileDialog>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QLabel>
+#include <QLineEdit>
 #include <QPushButton>
 #include <QSignalSpy>
 #include <QSpinBox>
 #include <QTableWidget>
 #include <QToolButton>
 #include <QTemporaryDir>
+#include <QTimer>
 #include <QWheelEvent>
 #include <QtTest>
+#include <functional>
 
 namespace {
 QJsonObject dataset()
@@ -57,7 +62,76 @@ template<class T> T *control(EvaluationPanel &panel, const char *name)
 class EvaluationPanelTests final : public QObject
 {
     Q_OBJECT
+    bool choosePath(const std::function<void()> &open, const QString &path, bool directory, bool cancel = false)
+    {
+        bool seen = false, correctMode = false;
+        QElapsedTimer elapsed; elapsed.start(); QTimer timer;
+        connect(&timer, &QTimer::timeout, this, [&] {
+            for (auto *widget : QApplication::topLevelWidgets()) {
+                auto *dialog = qobject_cast<QFileDialog *>(widget);
+                if (!dialog || !dialog->isVisible()) continue;
+                correctMode = dialog->fileMode() == (directory ? QFileDialog::Directory : QFileDialog::ExistingFile);
+                if (cancel || elapsed.elapsed() > 15000) { dialog->reject(); return; }
+                if (!seen) { seen = true; dialog->setDirectory(QFileInfo(path).absolutePath()); }
+                if (auto *filename = dialog->findChild<QLineEdit *>("fileNameEdit")) filename->setText(path);
+                if (!dialog->selectedFiles().isEmpty() && QFileInfo(dialog->selectedFiles().first()).absoluteFilePath() == path)
+                    QMetaObject::invokeMethod(dialog, "accept", Qt::QueuedConnection);
+            }
+        });
+        timer.start(10); open(); timer.stop();
+        return correctMode && (cancel || seen) && elapsed.elapsed() < 15000;
+    }
 private slots:
+    void initTestCase()
+    {
+        QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
+    }
+    void directoryImportIsDefaultAndYamlRemainsExplicit()
+    {
+        QTemporaryDir area; QVERIFY(area.isValid());
+        const QString yaml = area.path() + "/dataset.yaml";
+        QFile file(yaml); QVERIFY(file.open(QIODevice::WriteOnly)); file.write("names: [ball]\nval: images/val\n"); file.close();
+        EvaluationPanel panel; QSignalSpy requested(&panel, &EvaluationPanel::datasetRequested);
+        QVERIFY(choosePath([&] { panel.chooseDataset(); }, area.path(), true));
+        QCOMPARE(requested.count(), 1); QCOMPARE(requested.takeFirst().at(0).toString(), area.path());
+        QCOMPARE(panel.datasetYaml(), area.path());
+        QVERIFY(choosePath([&] { panel.chooseDatasetFile(); }, yaml, false));
+        QCOMPARE(requested.count(), 1); QCOMPARE(requested.takeFirst().at(0).toString(), yaml);
+        QCOMPARE(panel.datasetYaml(), yaml);
+    }
+    void cancellingOrBusyDoesNotRequestDataset()
+    {
+        EvaluationPanel panel; panel.setDataset(dataset());
+        QSignalSpy requested(&panel, &EvaluationPanel::datasetRequested);
+        QVERIFY(choosePath([&] { panel.chooseDataset(); }, {}, true, true));
+        QCOMPARE(requested.count(), 0); QCOMPARE(panel.datasetYaml(), QString("/dataset/data.yaml"));
+        QVERIFY(choosePath([&] { panel.chooseDatasetFile(); }, {}, false, true));
+        QCOMPARE(requested.count(), 0); QCOMPARE(panel.datasetYaml(), QString("/dataset/data.yaml"));
+        panel.setBusy(true); panel.chooseDataset(); panel.chooseDatasetFile();
+        QCOMPARE(requested.count(), 0); QCOMPARE(panel.datasetYaml(), QString("/dataset/data.yaml"));
+    }
+    void failedFirstImportKeepsSourceAndAllowsExplicitSplitRetry()
+    {
+        EvaluationPanel panel; panel.setModel(model());
+        QSignalSpy requested(&panel, &EvaluationPanel::datasetRequested);
+        QSignalSpy changes(&panel, &EvaluationPanel::configChanged);
+        panel.setDatasetSource("/dataset/train-only", "val", "/dataset/audit.csv");
+        QCOMPARE(requested.count(), 0); QCOMPARE(changes.count(), 0);
+        panel.showDatasetImportError("该数据集未配置 Val，请选择 Train 后重试。");
+        QCOMPARE(panel.datasetYaml(), QString("/dataset/train-only"));
+        QCOMPARE(panel.metadataPath(), QString("/dataset/audit.csv"));
+        QVERIFY(panel.dataset().isEmpty()); QVERIFY(!panel.canEvaluate());
+        auto *split = control<QComboBox>(panel, "evaluationSplitCombo"); QVERIFY(split);
+        auto *reload = control<QPushButton>(panel, "evaluationReloadDatasetButton"); QVERIFY(reload);
+        QVERIFY(!split->isHidden()); QVERIFY(!reload->isHidden()); QVERIFY(reload->isEnabled());
+        QVERIFY(control<QLabel>(panel, "evaluationDatasetHint")->toolTip().contains("未配置 Val"));
+        split->setCurrentIndex(split->findData("train"));
+        QCOMPARE(requested.count(), 1); const auto request = requested.takeFirst();
+        QCOMPARE(request.at(0).toString(), QString("/dataset/train-only"));
+        QCOMPARE(request.at(1).toString(), QString("train"));
+        QCOMPARE(request.at(2).toString(), QString("/dataset/audit.csv"));
+        panel.clearDataset(); QVERIFY(panel.datasetYaml().isEmpty()); QVERIFY(split->isHidden()); QVERIFY(reload->isHidden());
+    }
     void modeRequiresValidDatasetAndDetection()
     {
         EvaluationPanel panel;

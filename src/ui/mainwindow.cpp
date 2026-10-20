@@ -65,6 +65,7 @@
 #include <QTextBrowser>
 #include <QThread>
 #include <QTimer>
+#include <QToolButton>
 #include <QUrl>
 #include <QUuid>
 #include <QVBoxLayout>
@@ -736,10 +737,25 @@ QWidget *MainWindow::buildWorkbench()
     commands->addWidget(sourceLabel_, 1);
     auto *datasetButton = button("YOLO 数据集", "folder");
     datasetButton->setObjectName("openYoloDatasetButton");
+    datasetButton->setToolTip("选择含 data.yaml 或 dataset.yaml 的数据集文件夹；右侧菜单也可直接选择 YAML 配置。");
     sources->addWidget(datasetButton);
     lockedControls_.append(datasetButton);
     evaluation_ = new EvaluationPanel;
     connect(datasetButton, &QPushButton::clicked, evaluation_, &EvaluationPanel::chooseDataset);
+    auto *datasetOptions = new QToolButton;
+    datasetOptions->setObjectName("openYoloDatasetOptionsButton");
+    datasetOptions->setAccessibleName("数据集导入方式");
+    datasetOptions->setArrowType(Qt::DownArrow);
+    datasetOptions->setPopupMode(QToolButton::InstantPopup);
+    datasetOptions->setFixedWidth(28);
+    datasetOptions->setStyleSheet("QToolButton { background:#303030; color:#E6E6E6; border:1px solid #454545; border-radius:4px; padding:7px 2px; } QToolButton:hover { background:#3B3B3B; } QToolButton::menu-indicator { image:none; }");
+    auto *datasetMenu = new QMenu(datasetOptions);
+    auto *yamlAction = datasetMenu->addAction("选择 YAML 配置文件…");
+    yamlAction->setObjectName("openYoloDatasetYamlAction");
+    connect(yamlAction, &QAction::triggered, evaluation_, &EvaluationPanel::chooseDatasetFile);
+    datasetOptions->setMenu(datasetMenu);
+    sources->addWidget(datasetOptions);
+    lockedControls_.append(datasetOptions);
     commandLayout->addLayout(commands);
     all->addWidget(inputCommands);
     auto *columns = new QSplitter;
@@ -2316,7 +2332,7 @@ void MainWindow::updateSourceUi()
     // and the image-only recording placeholder so the canvas fits a small window.
     for (QLabel *value : {countMetric_, latencyMetric_, classMetric_, sizeMetric_})
         value->parentWidget()->setVisible(!datasetContext);
-    if (evaluation_) evaluation_->controlsWidget()->setVisible(datasetContext);
+    if (evaluation_) evaluation_->controlsWidget()->setVisible(datasetContext || !evaluation_->datasetYaml().isEmpty());
     recordButton_->setVisible(streaming);
     recordingStatus_->setVisible(streaming);
     stereoLabel_->setVisible(streaming);

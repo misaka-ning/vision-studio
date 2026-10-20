@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "selected_yaml": "dataset.yaml",
+  "yaml_sha256": "3a958830cf889ac21d2109f903ab469b8295aedf267b97b7b8a1d4efa07bef5b",
+  "split": "val",
+  "dataset_writes": false,
+  "model_inference": false,
+  "available_images": 1223,
+  "selected_images": 1223,
+  "class_count": 1,
+  "validation": {
+    "positive_images": 813,
+    "negative_images": 410,
+    "missing_labels": 0,
+    "excluded": 0
+  },
+  "requires_attention": false,
+  "metadata_selected": false,
+  "resolved_yaml_is_expected": true,
+  "root_relocated": true,
+  "input_files": 2448,
+  "input_files_aggregate_sha256": "b0caeb3ccecebc8d9521fcf8bed831005ddc810b89bfff5afbdac0dff06c2c44",
+  "manifest_fingerprint": "f270de2815fa47c1a95d7934b77e90b9d01316cfd030d46dbb2a27069b5b09e0",
+  "yaml_unchanged": true,
+  "elapsed_seconds": 5.449,
+  "privacy_note": "Private input images, labels, file lists, manifest and filesystem paths are not included. Summary only; no inference or accuracy claim."
+}

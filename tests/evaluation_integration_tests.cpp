@@ -19,6 +19,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
+#include <QMenu>
 #include <QMessageBox>
 #include <QProgressBar>
 #include <QPushButton>
@@ -30,6 +31,7 @@
 #include <QTableWidget>
 #include <QTemporaryDir>
 #include <QTimer>
+#include <QToolButton>
 #include <QtTest>
 #include <algorithm>
 #include <cstring>
@@ -149,31 +151,48 @@ class EvaluationIntegrationTests final : public QObject
         writeFile(yaml_, ("path: " + directory + "\nval: images/val\nnames: [football]\n").toUtf8());
         return yaml_;
     }
+    bool selectDatasetPath(bool directYaml = false)
+    {
+        QTimer chooser; QElapsedTimer pickerTimeout; pickerTimeout.start();
+        bool pickerSeen = false, correctMode = false;
+        const QString selected = directYaml ? yaml_ : QFileInfo(yaml_).absolutePath();
+        connect(&chooser, &QTimer::timeout, this, [this, &pickerTimeout, &pickerSeen, &correctMode, selected, directYaml] {
+            for (auto *widget : QApplication::topLevelWidgets())
+                if (auto *dialog = qobject_cast<QFileDialog *>(widget); dialog && dialog->isVisible()) {
+                    correctMode = dialog->fileMode() == (directYaml ? QFileDialog::ExistingFile : QFileDialog::Directory);
+                    if (pickerTimeout.elapsed() > 15000) { unexpectedDialog_ = "YOLO dataset chooser did not accept the existing selection"; dialog->reject(); return; }
+                    if (!pickerSeen) {
+                        pickerSeen = true; dialog->setDirectory(QFileInfo(selected).absolutePath());
+                    }
+                    // QFileSystemModel may finish loading after setDirectory and
+                    // replace an early selection. Keep the filename editor in
+                    // sync without restarting the directory model every tick.
+                    if (auto *filename = dialog->findChild<QLineEdit *>("fileNameEdit")) filename->setText(selected);
+                    if (!dialog->selectedFiles().isEmpty() && QFileInfo(dialog->selectedFiles().first()).absoluteFilePath() == selected)
+                        QMetaObject::invokeMethod(dialog, "accept", Qt::QueuedConnection);
+                }
+        });
+        chooser.start(10);
+        if (directYaml) {
+            auto *options = window_->findChild<QToolButton *>("openYoloDatasetOptionsButton");
+            if (!options || !options->menu()) return false;
+            QAction *yamlAction = nullptr;
+            for (auto *action : options->menu()->actions()) if (action->text().contains("YAML")) yamlAction = action;
+            if (!yamlAction) return false;
+            yamlAction->trigger();
+        } else {
+            auto *button = window_->findChild<QPushButton *>("openYoloDatasetButton");
+            if (!button) return false;
+            button->click();
+        }
+        chooser.stop();
+        return pickerSeen && correctMode && unexpectedDialog_.isEmpty();
+    }
     bool loadDataset(int count = 4, bool publicFileDialog = false)
     {
         dataset(count);
         if (publicFileDialog) {
-            QTimer chooser; QElapsedTimer pickerTimeout; pickerTimeout.start();
-            bool pickerSeen = false;
-            connect(&chooser, &QTimer::timeout, this, [this, &pickerTimeout, &pickerSeen] {
-                for (auto *widget : QApplication::topLevelWidgets())
-                    if (auto *dialog = qobject_cast<QFileDialog *>(widget); dialog && dialog->isVisible()) {
-                        if (pickerTimeout.elapsed() > 15000) { unexpectedDialog_ = "YOLO dataset file chooser did not accept the existing YAML"; dialog->reject(); return; }
-                        if (!pickerSeen) {
-                            pickerSeen = true; dialog->setDirectory(QFileInfo(yaml_).absolutePath());
-                        }
-                        // QFileSystemModel may finish loading after setDirectory and
-                        // replace an early selection. Keep the filename editor in
-                        // sync without restarting the directory model every tick.
-                        if (auto *filename = dialog->findChild<QLineEdit *>("fileNameEdit")) filename->setText(yaml_);
-                        if (!dialog->selectedFiles().isEmpty() && QFileInfo(dialog->selectedFiles().first()).absoluteFilePath() == yaml_)
-                            QMetaObject::invokeMethod(dialog, "accept", Qt::QueuedConnection);
-                    }
-            });
-            chooser.start(10);
-            auto *button = window_->findChild<QPushButton *>("openYoloDatasetButton");
-            if (!button) return false;
-            button->click(); chooser.stop();
+            if (!selectDatasetPath()) return false;
         } else window_->loadDataset(yaml_, "val");
         if (!waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; })) return false;
         return window_->files_ == images_ && window_->datasetManifest_.value("samples").toArray().size() == count;
@@ -221,7 +240,7 @@ private slots:
     {
         QApplication::setStyle("Fusion"); QApplication::setFont(QFont("Noto Sans CJK SC", 10));
         QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
-        QCoreApplication::setApplicationVersion("2.3.0");
+        QCoreApplication::setApplicationVersion("2.3.1");
         for (QString candidate : {qEnvironmentVariable("VISION_STUDIO_EVALUATION_PYTHON"), qEnvironmentVariable("VISION_STUDIO_PYTHON"),
             QStringLiteral(VISION_PROJECT_DIR) + "/runtime/bin/python", QStringLiteral(VISION_PROJECT_DIR) + "/runtime/python.exe",
             QStringLiteral("/opt/VisionStudio/runtime/bin/python")}) {
@@ -287,6 +306,86 @@ private slots:
         window_->evaluation_->setMode(false); QCOMPARE(window_->workbenchTabs_->currentIndex(), 0);
         QCOMPARE(window_->files_, images_);
     }
+    void directoryImportFindsConventionalDatasetBesideTrainingConfiguration()
+    {
+        dataset();
+        const QString directory = QFileInfo(yaml_).absolutePath();
+        const QString conventional = directory + "/dataset.yaml";
+        QVERIFY(QFile::rename(yaml_, conventional)); yaml_ = conventional;
+        writeFile(directory + "/train_from_scratch.example.yaml", "epochs: 100\nmodel: yolo.pt\n");
+        QVERIFY2(selectDatasetPath(), qPrintable(state()));
+        QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; }), qPrintable(state()));
+        QCOMPARE(window_->datasetManifest_.value("data_yaml").toString(), conventional);
+        QCOMPARE(window_->evaluation_->datasetYaml(), directory);
+        QCOMPARE(window_->files_, images_); QCOMPARE(window_->queue_->count(), 4);
+        QVERIFY(window_->canvas_->result().hasGroundTruth); QVERIFY(window_->evaluation_->canEvaluate());
+    }
+    void explicitYamlOptionDisambiguatesDirectoryWithoutGuessing()
+    {
+        dataset();
+        const auto previousFiles = window_->files_;
+        const QString directory = QFileInfo(yaml_).absolutePath();
+        QVERIFY(QFile::copy(yaml_, directory + "/dataset.yaml"));
+        QVERIFY2(selectDatasetPath(), qPrintable(state()));
+        QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; }), qPrintable(state()));
+        QVERIFY(window_->datasetManifest_.isEmpty()); QCOMPARE(window_->files_, previousFiles);
+        QCOMPARE(window_->evaluation_->datasetYaml(), directory); QVERIFY(!window_->evaluation_->canEvaluate());
+        QVERIFY(window_->evaluation_->controlsWidget()->isVisible());
+        const auto *hint = window_->evaluation_->controlsWidget()->findChild<QLabel *>("evaluationDatasetHint"); QVERIFY(hint);
+        QVERIFY(hint->toolTip().contains("YAML", Qt::CaseInsensitive));
+        QVERIFY2(selectDatasetPath(true), qPrintable(state()));
+        QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; }), qPrintable(state()));
+        QCOMPARE(window_->datasetManifest_.value("data_yaml").toString(), yaml_);
+        QCOMPARE(window_->files_, images_); QVERIFY(window_->evaluation_->canEvaluate());
+    }
+    void firstImportMissingValKeepsDirectoryForExplicitTrainRetry()
+    {
+        dataset();
+        const auto previousFiles = window_->files_;
+        const QString directory = QFileInfo(yaml_).absolutePath();
+        writeFile(yaml_, ("path: " + directory + "\ntrain: images/val\nnames: [football]\n").toUtf8());
+        QVERIFY2(selectDatasetPath(), qPrintable(state()));
+        QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; }), qPrintable(state()));
+        QVERIFY(window_->datasetManifest_.isEmpty()); QCOMPARE(window_->files_, previousFiles);
+        QCOMPARE(window_->evaluation_->datasetYaml(), directory); QCOMPARE(window_->evaluation_->datasetSplit(), QString("val"));
+        QVERIFY(window_->evaluation_->controlsWidget()->isVisible());
+        auto *split = window_->evaluation_->controlsWidget()->findChild<QComboBox *>("evaluationSplitCombo"); QVERIFY(split);
+        QVERIFY(split->isVisible()); QVERIFY(split->isEnabled());
+        auto *retry = window_->evaluation_->controlsWidget()->findChild<QPushButton *>("evaluationReloadDatasetButton");
+        QVERIFY(retry); QVERIFY(retry->isVisible()); QVERIFY(retry->isEnabled());
+        QVERIFY(!window_->evaluation_->canEvaluate()); QVERIFY(!window_->evaluation_->evaluationMode());
+        split->setCurrentIndex(split->findData("train"));
+        QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; }), qPrintable(state()));
+        QCOMPARE(window_->datasetManifest_.value("split").toString(), QString("train"));
+        QCOMPARE(window_->evaluation_->datasetSplit(), QString("train"));
+        QCOMPARE(window_->evaluation_->datasetYaml(), directory); QCOMPARE(window_->files_, images_);
+        QVERIFY(window_->evaluation_->canEvaluate()); QVERIFY(window_->canvas_->result().hasGroundTruth);
+    }
+    void relocatedDatasetFolderRemainsUsableWhenSwitchingSplit()
+    {
+        dataset();
+        const QString directory = QFileInfo(yaml_).absolutePath();
+        const QString absent = area_->path() + "/old-export-location";
+        writeFile(yaml_, ("path: " + absent + "\nval: images/val\ntrain: images/val\nnames: [football]\n").toUtf8());
+        QFile original(yaml_); QVERIFY(original.open(QIODevice::ReadOnly)); const auto bytes = original.readAll(); original.close();
+        QVERIFY2(selectDatasetPath(), qPrintable(state()));
+        QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; }), qPrintable(state()));
+        QCOMPARE(window_->files_, images_); QCOMPARE(window_->evaluation_->datasetYaml(), directory);
+        QVERIFY(!window_->datasetManifest_.value("relocation_notice").toString().isEmpty());
+        QVERIFY(!QFileInfo::exists(absent));
+        auto *split = window_->evaluation_->controlsWidget()->findChild<QComboBox *>("evaluationSplitCombo"); QVERIFY(split);
+        split->setCurrentIndex(split->findData("train"));
+        QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; }), qPrintable(state()));
+        QCOMPARE(window_->datasetManifest_.value("split").toString(), QString("train"));
+        QCOMPARE(window_->files_, images_); QCOMPARE(window_->evaluation_->datasetYaml(), directory);
+        QVERIFY(window_->evaluation_->canEvaluate());
+        QVERIFY2(runEvaluation(0, 0), qPrintable(state()));
+        QCOMPARE(window_->evaluationReport_.value("status").toString(), QString("complete"));
+        QCOMPARE(window_->evaluationReport_.value("completed_images").toInt(), 4);
+        QCOMPARE(window_->evaluationReport_.value("manifest").toObject().value("dataset_source").toString(), directory);
+        evidence("relocated-folder-evaluation");
+        QVERIFY(original.open(QIODevice::ReadOnly)); QCOMPARE(original.readAll(), bytes);
+    }
     void minimumWindowContainsEntireCanvas()
     {
         window_->resize(1260, 820); QTest::qWait(40);
@@ -330,13 +429,14 @@ private slots:
     void failedSplitChangeDoesNotMislabelPreviousDataset()
     {
         QVERIFY2(loadDataset(), qPrintable(state()));
+        const auto manifest = window_->datasetManifest_;
+        const auto files = window_->files_;
         auto *split = window_->evaluation_->controlsWidget()->findChild<QComboBox *>("evaluationSplitCombo"); QVERIFY(split);
         split->setCurrentIndex(split->findData("test"));
         QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; }), qPrintable(state()));
-        if (window_->evaluation_->canEvaluate()) {
-            QCOMPARE(window_->evaluation_->datasetSplit(), window_->datasetManifest_.value("split").toString());
-            QCOMPARE(window_->evaluation_->datasetYaml(), window_->datasetManifest_.value("data_yaml").toString());
-        }
+        QVERIFY(window_->evaluation_->canEvaluate()); QCOMPARE(window_->datasetManifest_, manifest); QCOMPARE(window_->files_, files);
+        QCOMPARE(window_->evaluation_->datasetSplit(), window_->datasetManifest_.value("split").toString());
+        QCOMPARE(window_->evaluation_->datasetYaml(), window_->datasetManifest_.value("data_yaml").toString());
         QVERIFY(!window_->busy_);
     }
     void rangesAndMetrics_data()

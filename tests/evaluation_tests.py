@@ -104,6 +104,178 @@ class DatasetTests(DatasetFixture):
         self.assertFalse(self.manifest["requires_attention"])
         validate_manifest(self.manifest)
 
+    def test_dataset_root_matches_explicit_yaml_without_writing_dataset(self):
+        before = {str(path.relative_to(self.root)): digest(path)
+                  for path in self.root.rglob("*") if path.is_file()}
+        manifest = self.prepare(dataset_yaml=str(self.root))
+        self.assertEqual(manifest, {**self.manifest, "dataset_source": str(self.root),
+                                   "fingerprint": manifest["fingerprint"]})
+        self.assertEqual(manifest["dataset_source"], str(self.root))
+        self.assertEqual(manifest["data_yaml"], str(self.data))
+        self.assertEqual(manifest["dataset_yaml"], str(self.data))
+        after = {str(path.relative_to(self.root)): digest(path)
+                 for path in self.root.rglob("*") if path.is_file()}
+        self.assertEqual(before, after)
+
+    def test_dataset_root_prefers_each_conventional_name_over_training_yaml(self):
+        text = self.data.read_text(encoding="utf-8")
+        self.data.unlink()
+        training = self.root / "train_from_scratch.example.yaml"
+        training.write_text("epochs: 100\nbatch: 16\n", encoding="utf-8")
+        for name in ("data.yaml", "data.yml", "dataset.yaml", "dataset.yml", "DATA.YAML", "DaTaSeT.YmL"):
+            with self.subTest(name=name):
+                config = self.root / name
+                config.write_text(text, encoding="utf-8")
+                try:
+                    manifest = self.prepare(dataset_yaml=str(self.root))
+                    self.assertEqual(manifest["data_yaml"], str(config.resolve()))
+                    self.assertEqual(len(manifest["samples"]), 3)
+                    self.assertNotIn(str(training), manifest["source_hashes"])
+                    validate_manifest(manifest)
+                finally:
+                    config.unlink()
+
+    def test_dataset_root_rejects_multiple_conventional_configs(self):
+        other = self.root / "data.YML"
+        other.write_text(self.data.read_text(encoding="utf-8"), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "多个标准数据集配置.*选择 YAML"):
+            self.prepare(dataset_yaml=str(self.root))
+        # An explicit selection remains usable when the folder is ambiguous.
+        self.assertEqual(self.prepare()["data_yaml"], str(self.data))
+
+    def test_dataset_root_accepts_unique_nonconventional_yaml(self):
+        other = self.root / "football-validation.YML"
+        self.data.rename(other)
+        manifest = self.prepare(dataset_yaml=str(self.root))
+        self.assertEqual(manifest["data_yaml"], str(other))
+        self.assertEqual(len(manifest["samples"]), 3)
+
+    def test_dataset_root_rejects_multiple_nonconventional_yaml(self):
+        first = self.root / "football.yaml"
+        self.data.rename(first)
+        second = self.root / "other.yml"
+        second.write_text(first.read_text(encoding="utf-8"), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "多个 YAML 配置.*选择 YAML"):
+            self.prepare(dataset_yaml=str(self.root))
+        self.assertEqual(self.prepare(dataset_yaml=str(first))["data_yaml"], str(first))
+
+    def test_dataset_root_does_not_search_nested_directories_or_infer_classes(self):
+        nested = self.root / "nested"
+        nested.mkdir()
+        self.data.rename(nested / "dataset.yaml")
+        with self.assertRaisesRegex(ValueError, "本层没有 YAML.*names"):
+            self.prepare(dataset_yaml=str(self.root))
+
+    def test_dataset_root_with_unicode_and_spaces_keeps_yaml_relative_paths(self):
+        nested = self.root / "足球 数据集"
+        (nested / "images" / "val").mkdir(parents=True)
+        (nested / "labels" / "val").mkdir(parents=True)
+        image = self.add_image("一张 球场", "0 0.5 0.5 0.5 0.5\n", nested / "images" / "val")
+        config = nested / "data.yml"
+        config.write_text("path: .\nval: images/val\nnames: [足球]\n", encoding="utf-8")
+        manifest = self.prepare(dataset_yaml=str(nested))
+        self.assertEqual(manifest["data_yaml"], str(config))
+        self.assertEqual(manifest["root"], str(nested))
+        self.assertEqual(manifest["names"], ["足球"])
+        self.assertEqual([sample["image"] for sample in manifest["samples"]], [str(image)])
+
+    def test_dataset_root_requires_explicit_available_split(self):
+        self.write_yaml(val=None, train="images/val")
+        with self.assertRaisesRegex(ValueError, "未提供有效的 val"):
+            self.prepare(dataset_yaml=str(self.root))
+        manifest = self.prepare(dataset_yaml=str(self.root), split="train")
+        self.assertEqual(manifest["split"], "train")
+        self.assertEqual(len(manifest["samples"]), 3)
+
+    def test_dataset_root_never_infers_metadata_or_falls_back_from_invalid_config(self):
+        (self.root / "metadata.csv").write_text("not a reviewed dataset metadata file\n", encoding="utf-8")
+        self.assertIsNone(self.prepare(dataset_yaml=str(self.root))["metadata_path"])
+        (self.root / "training.example.yaml").write_text(self.data.read_text(encoding="utf-8"), encoding="utf-8")
+        self.data.write_text("epochs: 100\n", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "names"):
+            self.prepare(dataset_yaml=str(self.root))
+
+    def relocated_fixture(self, entries=None, absolute_split=False):
+        previous_root = self.root / "old-missing-root"
+        listing = self.root / "lists" / "val.txt"
+        listing.parent.mkdir(exist_ok=True)
+        if entries is None:
+            entries = [previous_root / "images" / "val" / path.name for path in (self.a, self.b, self.c)]
+        listing.write_text("".join(str(entry) + "\n" for entry in entries), encoding="utf-8")
+        self.write_yaml(path=str(previous_root),
+                        val=str(previous_root / "lists" / "val.txt") if absolute_split else "lists/val.txt")
+        return previous_root, listing
+
+    def test_explicit_directory_relocates_missing_absolute_root_and_list_entries_read_only(self):
+        previous_root, listing = self.relocated_fixture(absolute_split=True)
+        before = {str(path.relative_to(self.root)): digest(path)
+                  for path in self.root.rglob("*") if path.is_file()}
+        manifest = self.prepare(dataset_yaml=str(self.root))
+        self.assertTrue(manifest["root_relocated"])
+        self.assertEqual(manifest["configured_root"], str(previous_root))
+        self.assertEqual(manifest["root"], str(self.root))
+        self.assertEqual(manifest["dataset_source"], str(self.root))
+        self.assertEqual(manifest["data_yaml"], str(self.data))
+        self.assertIn("只读重定位", manifest["relocation_notice"])
+        self.assertEqual([sample["image"] for sample in manifest["samples"]],
+                         [str(self.a), str(self.b), str(self.c)])
+        self.assertEqual(set(manifest["source_hashes"]), {str(self.data), str(listing)})
+        self.assertEqual(manifest["source_hashes"][str(listing)], digest(listing))
+        validate_manifest(manifest)
+        evaluation_data.assert_unchanged(manifest)
+        self.assertEqual(before, {str(path.relative_to(self.root)): digest(path)
+                                 for path in self.root.rglob("*") if path.is_file()})
+
+    def test_directory_relocation_does_not_override_existing_configured_root(self):
+        previous_root, _ = self.relocated_fixture()
+        previous_root.mkdir()
+        with self.assertRaisesRegex(ValueError, "集合路径不存在"):
+            self.prepare(dataset_yaml=str(self.root))
+        # Even when a usable local dataset exists, a valid configured root wins.
+        self.add_image("original", "", previous_root / "images" / "val")
+        self.write_yaml(path=str(previous_root), val="images/val")
+        manifest = self.prepare(dataset_yaml=str(self.root))
+        self.assertEqual(manifest["root"], str(previous_root))
+        self.assertEqual(len(manifest["samples"]), 1)
+        self.assertNotIn("root_relocated", manifest)
+
+    def test_directory_relocation_rejects_missing_paths_outside_previous_root(self):
+        previous_root = self.root / "old-missing-root"
+        self.relocated_fixture([previous_root / "images" / "val" / self.a.name,
+                                self.root / "unrelated-missing" / self.b.name])
+        with self.assertRaisesRegex(ValueError, "图片名单含缺失文件"):
+            self.prepare(dataset_yaml=str(self.root))
+
+    def test_directory_relocation_rejects_missing_target_image_and_label(self):
+        previous_root, _ = self.relocated_fixture()
+        self.relocated_fixture([previous_root / "images" / "val" / "missing.png"])
+        with self.assertRaisesRegex(ValueError, "图片名单含缺失文件"):
+            self.prepare(dataset_yaml=str(self.root))
+        self.relocated_fixture()
+        (self.labels / "a.txt").unlink()
+        with self.assertRaisesRegex(ValueError, "重定位.*缺失标签"):
+            self.prepare(dataset_yaml=str(self.root))
+
+    def test_direct_yaml_never_relocates_missing_root_or_guesses_relative_root(self):
+        self.relocated_fixture()
+        with self.assertRaisesRegex(ValueError, "集合路径不存在"):
+            self.prepare()
+        self.write_yaml(path="old-missing-root", val="images/val")
+        with self.assertRaisesRegex(ValueError, "集合路径不存在"):
+            self.prepare(dataset_yaml=str(self.root))
+
+    def test_relocated_manifest_still_checks_real_inputs_and_source_lists(self):
+        _, listing = self.relocated_fixture()
+        manifest = self.prepare(dataset_yaml=str(self.root))
+        listing.write_text(listing.read_text(encoding="utf-8") + "\n", encoding="utf-8")
+        with self.assertRaisesRegex(RuntimeError, "配置／名单"):
+            evaluation_data.assert_unchanged(manifest)
+        self.relocated_fixture()
+        manifest = self.prepare(dataset_yaml=str(self.root))
+        (self.labels / "a.txt").write_text("", encoding="utf-8")
+        with self.assertRaisesRegex(RuntimeError, "原图或标注"):
+            evaluation_data.assert_unchanged(manifest)
+
     def test_more_than_fifty_images_no_limit(self):
         for index in range(58):
             self.add_image(f"extra-{index:03}", "")

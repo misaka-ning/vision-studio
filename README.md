@@ -8,14 +8,14 @@
 
 [下载发行版](https://github.com/misaka-ning/vision-studio/releases) · [更新日志](CHANGELOG.md) · [使用指南](docs/使用指南.md) · [报告问题](https://github.com/misaka-ning/vision-studio/issues)
 
-当前工程版本：**2.3.0**，在同一检测工作台串联「导入带标注数据集 → 评估目标类 → 分析阈值与错例 → 采用检测配置」。界面保留 [Fluent-Qt](https://github.com/calvinhxx/Fluent-Qt) 风格，复用全局模型与现有推理后端。本次发行平台：**Ubuntu 22.04 LTS amd64**；安装文件以 Releases 实际发布为准。Windows 已发布安装包仍为 2.1.0 补充版，本版不宣称完成 Windows 2.3.0 验收。应用代码采用 **AGPL-3.0-only**。
+当前工程版本：**2.3.1**，修复数据集输入只能选择 YAML、无法直接选择文件夹的问题；在同一检测工作台串联「导入带标注数据集 → 评估目标类 → 分析阈值与错例 → 采用检测配置」。界面保留 [Fluent-Qt](https://github.com/calvinhxx/Fluent-Qt) 风格，复用全局模型与现有推理后端。本次发行平台：**Ubuntu 22.04 LTS amd64**；安装文件以 Releases 实际发布为准。Windows 已发布安装包仍为 2.1.0 补充版，本版不宣称完成 Windows 2.3.1 验收。应用代码采用 **AGPL-3.0-only**。
 
 ![2.2.0 Fluent 检测工作台：64 张队列中仅检测当前第 51 张，保留原始类别 ID 0、5](docs/preview-2.2.0.png)
 
 ## 功能
 
 - **检测工作台**：图片队列、批量图片、视频和摄像头输入；开始按钮上方可选择「检测整个文件夹」「从当前图片向后检测」「只检测当前图片」，开始时冻结队列范围和顺序。YOLO 检测与单标签图像分类，置信度和 NMS IoU 阈值可调；输入尺寸、置信度和 NMS IoU 不受鼠标滚轮误改，文件夹结果保存放在后台，停止时不受保存队列阻塞。批量完成后可点击队列图片回看本轮标注、目标列表和指标，并导出所选图片的结果。
-- **数据集与评估调优**：直接导入标准 YOLO `data.yaml`／`dataset.yaml`，选择 Val／Test／Train，复用图片队列、三种检测范围和画布；「检测预览」查看 GT 与预测，「评估调优」后台采集低分候选并计算目标类 AP50／AP50–95、固定阈值 P／R／F1、TP／FP／FN 与无目标图片误报率。单目标原始类别映射兼容 COCO 模型与自训练模型，缺标签阻止评估，不把它当作负样本。
+- **数据集与评估调优**：点击「YOLO 数据集」直接选择数据集文件夹；同排箭头可直接选择 YAML 配置。优先识别根目录唯一的 `data.yaml`／`data.yml`／`dataset.yaml`／`dataset.yml`，配置歧义时提示明确选文件；选择 Val／Test／Train，复用图片队列、三种检测范围和画布；「检测预览」查看 GT 与预测，「评估调优」后台采集低分候选并计算目标类 AP50／AP50–95、固定阈值 P／R／F1、TP／FP／FN 与无目标图片误报率。单目标原始类别映射兼容 COCO 模型与自训练模型，缺标签阻止评估，不把它当作负样本。
 - **阈值与错例联动**：默认扫描 0.05～0.95、步长 0.01 的 91 个工作点，可调整扫描范围；曲线、明细、指标与误检／漏检队列联动，使用同一次推理缓存。完整 Val 评估可按 F1、最低 Precision 或最高误报率约束选择工作点；只有明确点击「采用检测配置」才更新工作台阈值、原始类别、预处理与设备。评估报告持久保存，运行记录与模型库可重新打开。
 - **类别筛选**：独立输入原始类别 ID，留空为全部，支持 `32`、`0,2,32`、空格和中文逗号，自动去重；后台读取模型实际类别范围，非法 ID 通过行内提示阻止开始。检测框、表格、数量、导出与录像使用同一筛选结果，不重编号；分类任务禁用该控件。COCO ID 32 是 sports ball，涵盖多种球类，并非只识别足球。
 - **模型库**：导入 ONNX / PT / TorchScript，可拖动排序并在重启后保留；右键打开模型位置、编辑备注、更改显示名称或从列表移除。显示名称与备注持久保存，重命名不改原始文件名与内容，移除保留文件；全局选用统一决定工作台、模型显示与转换页默认来源。
@@ -34,17 +34,17 @@
 
 ## 下载与安装
 
-从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下命令用于 2.3.0 正式发布后安装。每版只上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
+从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下命令用于 2.3.1 正式发布后安装。每版只上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
 
 页面另外显示 GitHub 自动提供的 **Source code (zip)** 和 **Source code (tar.gz)** 两个源码入口，它们由平台生成，不能从 Release 中移除。下载三个手动附件后，先校验，再安装：
 
 ```bash
 sha256sum -c SHA256SUMS
-sudo apt install ./vision-studio_2.3.0-1_amd64.deb
+sudo apt install ./vision-studio_2.3.1-1_amd64.deb
 vision-studio
 ```
 
-2.3.0 正式包的 Debian 版本为 `2.3.0-1`，高于 `2.2.0-1`、`2.1.0-1` 及此前版本，可用以上 APT 命令直接升级。先结束检测、评估、录像与模型转换，导出需要永久保存的结果，退出旧程序再安装；升级保留个人设置、模型、运行记录、导出、录像、评估报告与已准备的 GPU 环境。普通检测临时缓存不会跨程序重启保留，评估报告及其预测快照独立持久保存。
+2.3.1 正式包的 Debian 版本为 `2.3.1-1`，高于 `2.3.0-1`、`2.2.0-1`、`2.1.0-1` 及此前版本，可用以上 APT 命令直接升级。先结束检测、评估、录像与模型转换，导出需要永久保存的结果，退出旧程序再安装；升级保留个人设置、模型、运行记录、导出、录像、评估报告与已准备的 GPU 环境。普通检测临时缓存不会跨程序重启保留，评估报告及其预测快照独立持久保存。
 
 也可从应用菜单启动 **Vision Studio**。首次体验可打开「更多 → 运行示例」，再导入自己的模型。
 
@@ -86,7 +86,7 @@ PT 支持兼容的 Ultralytics YOLOv8 / YOLO11 完整检查点、随附 YOLOv5 v
 
 ### Windows 本地开发
 
-Windows 2.1.0 已在对应环境使用 Qt 6.8.3 MSVC 2022 64 位 SDK、MSVC x64 和 OpenCV 4.12.0 Windows 动态库完成构建及真实 ONNX CPU 示例验证；以下是源码构建方法，不代表本轮已验收 Windows 2.3.0。Qt 需安装 WebEngine、WebChannel、Svg 及其配套模块。请在 Visual Studio x64 开发者终端中执行，按实际安装位置调整路径：
+Windows 2.1.0 已在对应环境使用 Qt 6.8.3 MSVC 2022 64 位 SDK、MSVC x64 和 OpenCV 4.12.0 Windows 动态库完成构建及真实 ONNX CPU 示例验证；以下是源码构建方法，不代表本轮已验收 Windows 2.3.1。Qt 需安装 WebEngine、WebChannel、Svg 及其配套模块。请在 Visual Studio x64 开发者终端中执行，按实际安装位置调整路径：
 
 ```powershell
 cmake -S . -B build-windows -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DCMAKE_PREFIX_PATH=D:/Qt/6.8.3/msvc2022_64 -DOpenCV_DIR=D:/Opencv-C++/opencv/build/x64/vc16/lib
@@ -138,7 +138,7 @@ GPU 依赖使用独立的 `requirements-gpu.txt`／`requirements-gpu.lock.txt`�
 
 ## 验证与发行
 
-2.3.0 的实际测试范围、原始日志、最终 DEB、安装、CPU／CUDA、数据集评估与对应源码检查保存在 [本版验收证据](docs/releases/evidence/2.3.0/)；发行说明见 [2.3.0](docs/releases/2.3.0.md)。只有本版最终文件完成适用核验后才发布，执行结果以同版报告为准，不提前将开发构建或旧版报告视为安装包验收。物理摄像头和 Windows 2.3.0 不作为已测试项目。
+2.3.1 的实际测试范围、原始日志、最终 DEB、安装、CPU／CUDA、数据集评估与对应源码检查保存在 [本版验收证据](docs/releases/evidence/2.3.1/)；发行说明见 [2.3.1](docs/releases/2.3.1.md)。只有本版最终文件完成适用核验后才发布，执行结果以同版报告为准，不提前将开发构建或旧版报告视为安装包验收。物理摄像头和 Windows 2.3.1 不作为已测试项目。
 
 普通检测在同一配置下逐图更新结果，停止前未重算的图片与范围外有效缓存保留；修改模型、预处理、阈值、设备、类别名称映射或类别筛选会清除不兼容的临时缓存。评估使用独立配置、标注和预测快照，历史统计不会被新配置改写。源文件内容变化会阻止新任务作为有效评估发布；历史图像叠加仍需核对原图哈希，原图已移动或改变时保留统计并提示，避免错配。范围及筛选组合、超过 50 张、停止后回看、零匹配、类别映射与原始 ID 保留均属于验证范围。
 
@@ -148,7 +148,7 @@ GPU 依赖使用独立的 `requirements-gpu.txt`／`requirements-gpu.lock.txt`�
 ./build/bin/vision-studio --smoke-model /tmp/vision-studio-model-smoke
 ```
 
-发布按 [版本管理](docs/版本管理.md) 执行：源码与带说明标签 `v2.3.0` 推送，三个手动附件远端核验成功后才清理旧发行／独立构建副本，届时本地保留 2.3.0 与 2.2.0；完成前继续保留现有发行备份。用户设置、模型、评估、录像、共享 SDK／runtime 及未备份资料保留。历史 [2.2.0](docs/releases/2.2.0.md)、[2.1.0](docs/releases/2.1.0.md) 及其原始证据和归档保持不变。
+发布按 [版本管理](docs/版本管理.md) 执行：源码与带说明标签 `v2.3.1` 推送，三个手动附件远端核验成功后才清理旧发行／独立构建副本，届时本地保留 2.3.1 与 2.3.0；完成前继续保留现有发行备份。用户设置、模型、评估、录像、共享 SDK／runtime 及未备份资料保留。历史 [2.3.0](docs/releases/2.3.0.md)、[2.2.0](docs/releases/2.2.0.md)、[2.1.0](docs/releases/2.1.0.md) 及其原始证据和归档保持不变。
 
 ## 文档、贡献与许可
 

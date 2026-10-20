@@ -23,6 +23,9 @@ public:
     explicit EvaluationPanel(QWidget *parent = nullptr);
     QWidget *controlsWidget() const { return controls_; }
     void chooseDataset();
+    void chooseDatasetFile();
+    void setDatasetSource(const QString &source, const QString &split, const QString &metadata = {});
+    void showDatasetImportError(const QString &message);
     void setDataset(const QJsonObject &manifest);
     void clearDataset();
     void setModel(const vision::ModelConfig &config);

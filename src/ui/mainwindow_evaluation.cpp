@@ -184,13 +184,17 @@ void MainWindow::loadDataset(const QString &yaml, const QString &split, const QS
     if (busy_ || evaluationWorker_ || gpuSetupProcess_ || (modelConversion_ && modelConversion_->isBusy())) return;
     auto *worker = new vision::EvaluationWorker(this);
     const auto delivered = std::make_shared<bool>(false);
+    const auto importError = std::make_shared<QString>();
+    evaluation_->setDatasetSource(yaml, split, metadata);
     evaluationWorker_ = worker;
     worker->configureDataset(yaml, split, metadata, projectRoot_);
     taskRangeFiles_.clear(); completed_ = 0;
     setBusy(true);
+    updateSourceUi();
     connect(worker, &vision::EvaluationWorker::progress, this, [this](int, int, const QString &stage) { showNotice(stage); });
-    connect(worker, &vision::EvaluationWorker::failed, this, [this](const QString &message) {
-        if (datasetManifest_.isEmpty()) evaluation_->clearDataset();
+    connect(worker, &vision::EvaluationWorker::failed, this, [this, importError](const QString &message) {
+        *importError = message;
+        if (datasetManifest_.isEmpty()) evaluation_->showDatasetImportError(message);
         else evaluation_->setDataset(datasetManifest_);
         showNotice(message, true);
     });
@@ -216,15 +220,18 @@ void MainWindow::loadDataset(const QString &yaml, const QString &split, const QS
         workbenchTabs_->setTabEnabled(1, true); workbenchTabs_->setCurrentIndex(0);
         queue_->setCurrentRow(files_.isEmpty() ? -1 : 0);
         lastResult_ = {}; updateSourceUi();
-        showNotice(QString("数据集预检查完成 · %1 张有效图片 · %2").arg(files_.size()).arg(manifest.value("split").toString()));
+        QString notice = QString("数据集预检查完成 · %1 张有效图片 · %2").arg(files_.size()).arg(manifest.value("split").toString());
+        if (manifest.value("root_relocated").toBool()) notice += " · 旧路径已按当前文件夹读取，原文件未修改";
+        showNotice(notice);
     });
-    connect(worker, &QThread::finished, this, [this, worker, delivered] {
+    connect(worker, &QThread::finished, this, [this, worker, delivered, importError] {
         if (!*delivered) {
-            if (datasetManifest_.isEmpty()) evaluation_->clearDataset();
+            if (datasetManifest_.isEmpty()) evaluation_->showDatasetImportError(importError->isEmpty() ? QStringLiteral("数据集检查已取消，可重新检查。") : *importError);
             else evaluation_->setDataset(datasetManifest_);
         }
         evaluationWorker_ = nullptr; worker->deleteLater();
         setBusy(false); updateEvaluationModel();
+        updateSourceUi();
         selectQueueImage(queue_->currentRow());
         if (closing_) QTimer::singleShot(0, this, &QWidget::close);
     });
