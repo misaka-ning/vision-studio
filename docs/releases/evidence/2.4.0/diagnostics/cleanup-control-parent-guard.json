@@ -1,0 +1,9 @@
+{
+  "version": "2.4.0",
+  "guard_failed_before_source_build_stage_deletion": true,
+  "extra_stage_entries": [
+    "DEBIAN"
+  ],
+  "missing_stage_entries": [],
+  "explanation": "Payload/control member audit includes every DEBIAN control file but omits their generated parent directory. Executor corrected to permit only this exact directory with mode 0755; all file/type/mode/hash checks remain strict. Official release pruning already completed independently."
+}
