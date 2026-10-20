@@ -1,0 +1,1 @@
+{"ok": false, "prepared": false, "cuda_available": false, "reason": "GPU 环境尚未准备", "devices": [], "torch_version": "", "torch_cuda": "", "ort_version": "", "driver_version": ""}

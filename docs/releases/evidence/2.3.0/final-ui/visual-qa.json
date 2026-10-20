@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "success": true,
+  "scope": "Production application code in the full Qt test executables; this does not replace final DEB acceptance.",
+  "checks": {
+    "ordinary_1260_complete_canvas": true,
+    "dataset_1260_no_form_overlap": true,
+    "fluent_dark_tabs_and_readable_labels": true,
+    "canvas_minimum_height_280_retained": true
+  },
+  "canvas_geometry_record": "minimum_canvas_geometry QRect(1,43 422x280) parent_rect QRect(0,0 424x344) fully_in_parent true",
+  "screenshots": [
+    {
+      "path": "ordinary-minimum-window.png",
+      "width": 1260,
+      "height": 820,
+      "sha256": "3b862226b5a2086bd0b8be1cf18038b416a19ced4bf169a338d2bc8b21d8ec62",
+      "reviewed_with_view_image": true
+    },
+    {
+      "path": "threshold-filter-adopt/minimum-window.png",
+      "width": 1260,
+      "height": 820,
+      "sha256": "3b951097cbee8d8359bf897f9abef27343b515f1bd1bf439f78eb7e42b8ea80f",
+      "reviewed_with_view_image": true
+    }
+  ],
+  "notes": [
+    "Visual inspection used actual final screenshots. Dataset analysis content continues in a vertical scroll area.",
+    "Evaluation screenshots use the genuine Conv/GlobalAveragePool/Reshape ONNX integration fixture. Its known scores/geometry validate matching; displayed AP is not a football model accuracy claim.",
+    "Ordinary screenshot uses bundled YOLOv5n on the real bus image. The displayed elapsed time is a local observation, not a performance guarantee."
+  ]
+}
