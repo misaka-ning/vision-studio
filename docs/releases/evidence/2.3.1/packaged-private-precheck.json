@@ -1,0 +1,26 @@
+{
+  "version": "2.3.1",
+  "success": true,
+  "deb_sha256": "1e959057337832f2dac8d950d738426ad426ea124aee7cefc925286792d19758",
+  "scope": "Actual final staged helper read-only private dataset precheck, no inference",
+  "selected_images": 1223,
+  "validation": {
+    "positive_images": 813,
+    "negative_images": 410,
+    "missing_labels": 0,
+    "excluded": 0
+  },
+  "root_relocated": true,
+  "manifest_matches_source_precheck": true,
+  "source_helpers_match_staged": {
+    "evaluation_worker.py": true,
+    "evaluation_data.py": true,
+    "evaluation_metrics.py": true
+  },
+  "input_files_aggregate_sha256": "b0caeb3ccecebc8d9521fcf8bed831005ddc810b89bfff5afbdac0dff06c2c44",
+  "original_yaml_sha256_unchanged": true,
+  "dataset_writes": false,
+  "metadata_selected": false,
+  "elapsed_seconds": 5.78,
+  "privacy_note": "Private manifest, images, labels, filenames and source paths retained locally only and excluded from public evidence."
+}

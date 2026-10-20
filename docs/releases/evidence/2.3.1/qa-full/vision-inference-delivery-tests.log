@@ -1,0 +1,38 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 2
+    Start 2: vision-inference-delivery-tests
+
+2: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/vision-inference-delivery-tests
+2: Environment variables: 
+2:  QT_QPA_PLATFORM=offscreen
+2: Test timeout computed to be: 90
+2: ********* Start testing of InferenceDeliveryTests *********
+2: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+2: PASS   : InferenceDeliveryTests::initTestCase()
+2: QINFO  : InferenceDeliveryTests::slowConsumerBoundsDeliveryAndStopReleasesUnacknowledgedResult() delivery_cancel_evidence: max_unacknowledged=1 stop_elapsed_ms=50 delivered=2 total=3
+2: PASS   : InferenceDeliveryTests::slowConsumerBoundsDeliveryAndStopReleasesUnacknowledgedResult()
+2: PASS   : InferenceDeliveryTests::lateAcknowledgementFromCancelledJobCannotAdvanceNextJob()
+2: PASS   : InferenceDeliveryTests::acknowledgedBatchCompletesAllImagesWithoutLegacyDuplicateDelivery()
+2: PASS   : InferenceDeliveryTests::unboundedStandaloneWorkerRetainsExistingResultSignal()
+2: PASS   : InferenceDeliveryTests::cleanupTestCase()
+2: Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 1329ms
+2: ********* Finished testing of InferenceDeliveryTests *********
+1/1 Test #2: vision-inference-delivery-tests ...   Passed    1.41 sec
+
+The following tests passed:
+	vision-inference-delivery-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   1.41 sec

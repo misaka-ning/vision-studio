@@ -1,0 +1,2098 @@
+{
+  "schema_version": 1,
+  "version": "2.3.1",
+  "success": true,
+  "errors": [],
+  "scope": "Raw retained evidence from six real final-package CPU/CUDA evaluation cases and three identical-weight backend comparisons on public COCO8 Val. No new inference or model-quality claim is made by archiving.",
+  "deb_sha256": "1e959057337832f2dac8d950d738426ad426ea124aee7cefc925286792d19758",
+  "packaged_binary_sha256": "17f426bc0c84775b9364fb1f005ffb869772db52ff03f4c690cf004179107f59",
+  "original_matrix_report": "output/releases/2.3.1/packaged-evaluation-qa.json",
+  "original_matrix_report_sha256": "fb9dc660e30bc377bbc216078678e83ef8ba1e70884efa2efd52670f41204c77",
+  "source_workdir": "/tmp/vision-studio-evaluation-qa-d7h7nood",
+  "dataset_provenance": {
+    "dataset": "COCO8",
+    "source_url": "https://github.com/ultralytics/assets/releases/download/v0.0.0/coco8.zip",
+    "configuration_url": "https://raw.githubusercontent.com/ultralytics/ultralytics/main/ultralytics/cfg/datasets/coco8.yaml",
+    "sha256": "54c67fe9ef88313e021ec0e92b73c200167bb0a86633e8df8658d832cca828c9",
+    "bytes": 443158,
+    "purpose": "Public ground-truth data for inference pipeline integration, not representative football accuracy",
+    "images": [
+      "coco8/images/train/000000000009.jpg",
+      "coco8/images/train/000000000025.jpg",
+      "coco8/images/train/000000000030.jpg",
+      "coco8/images/train/000000000034.jpg",
+      "coco8/images/val/000000000036.jpg",
+      "coco8/images/val/000000000042.jpg",
+      "coco8/images/val/000000000049.jpg",
+      "coco8/images/val/000000000061.jpg"
+    ],
+    "labels": [
+      "coco8/labels/train/000000000009.txt",
+      "coco8/labels/train/000000000025.txt",
+      "coco8/labels/train/000000000030.txt",
+      "coco8/labels/train/000000000034.txt",
+      "coco8/labels/val/000000000036.txt",
+      "coco8/labels/val/000000000042.txt",
+      "coco8/labels/val/000000000049.txt",
+      "coco8/labels/val/000000000061.txt"
+    ],
+    "configuration_original_sha256": "030aaffa08f8a161dc3587d216aa956c0c8947e594b2d9d8515a36b9ac44f9fa",
+    "configuration_sha256": "7258a71117ef520036345818544c3c8a7ffd50a38ba6a7b42c752544b7631c1c",
+    "configuration_changes": "Set absolute QA dataset path and remove automatic download instruction; names and split unchanged",
+    "positive_target": "COCO original class ID 0: person",
+    "negative_target": "COCO original class ID 32: sports ball; val has zero annotated instances"
+  },
+  "dataset_note": "Only public COCO8 validation images and ground-truth are used. This tiny set checks integration mechanics; it is not a football accuracy, deployment or generalization benchmark. No private user dataset is included.",
+  "case_names": [
+    "onnx_cpu",
+    "onnx_cuda",
+    "pt_cpu",
+    "pt_cuda",
+    "torchscript_cpu",
+    "zero_result_id32_cpu"
+  ],
+  "comparisons": {
+    "pt_torchscript_cpu": {
+      "success": true,
+      "minimum_working_box_iou": 0.9722889543186704,
+      "maximum_working_score_error": 8.940696716308594e-07,
+      "metric_absolute_differences": {
+        "mAP50": 0.0,
+        "mAP50_95": 0.006666666666666654,
+        "precision": 0.0,
+        "recall": 0.0,
+        "F1": 0.0,
+        "no_ball_false_positive_rate": 0
+      },
+      "tolerances": {
+        "box_iou_minimum": 0.95,
+        "score_absolute_maximum": 0.005,
+        "metric_absolute_maximum": 0.02
+      },
+      "note": "Same weights only; different YOLO architectures are not expected to have equal accuracy."
+    },
+    "onnx_cpu_cuda": {
+      "success": true,
+      "minimum_working_box_iou": 0.9999982815465431,
+      "maximum_working_score_error": 3.2782554626464844e-07,
+      "metric_absolute_differences": {
+        "mAP50": 0.0,
+        "mAP50_95": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "F1": 0.0,
+        "no_ball_false_positive_rate": 0
+      },
+      "tolerances": {
+        "box_iou_minimum": 0.95,
+        "score_absolute_maximum": 0.005,
+        "metric_absolute_maximum": 0.02
+      },
+      "note": "Same weights only; different YOLO architectures are not expected to have equal accuracy."
+    },
+    "pt_cpu_cuda": {
+      "success": true,
+      "minimum_working_box_iou": 0.9999970950913512,
+      "maximum_working_score_error": 4.76837158203125e-07,
+      "metric_absolute_differences": {
+        "mAP50": 0.0,
+        "mAP50_95": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "F1": 0.0,
+        "no_ball_false_positive_rate": 0
+      },
+      "tolerances": {
+        "box_iou_minimum": 0.95,
+        "score_absolute_maximum": 0.005,
+        "metric_absolute_maximum": 0.02
+      },
+      "note": "Same weights only; different YOLO architectures are not expected to have equal accuracy."
+    }
+  },
+  "actual_cuda_profiles": [
+    {
+      "file": "onnx_cuda/ort-evaluation_2026-10-20_18-27-20.json",
+      "sha256": "756ad58aea6205e806302e19a6601fb403fab7fbdf9d7d49afa1569e64397133",
+      "actual_cuda_node_events": 910
+    }
+  ],
+  "torchscript_export_result": {
+    "source": "Original JSON result line in torchscript-export/conversion.stdout.log, not a separate original JSON file.",
+    "value": {
+      "protocol": 1,
+      "type": "result",
+      "message": "模型转换完成。",
+      "source": "/tmp/vision-studio-evaluation-qa-d7h7nood/extracted/opt/VisionStudio/models/yolov8n.pt",
+      "source_format": "checkpoint",
+      "output": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript-export/yolov8n.torchscript",
+      "format": "torchscript",
+      "sha256": "b15e125f504e898ee07d0d8c973fcde786f6775638762ea586b8e2b820c9be53",
+      "bytes": 13216658,
+      "opset": null,
+      "version": 1,
+      "modelType": "yolov8",
+      "task": "detect",
+      "names": {
+        "0": "person",
+        "1": "bicycle",
+        "2": "car",
+        "3": "motorcycle",
+        "4": "airplane",
+        "5": "bus",
+        "6": "train",
+        "7": "truck",
+        "8": "boat",
+        "9": "traffic light",
+        "10": "fire hydrant",
+        "11": "stop sign",
+        "12": "parking meter",
+        "13": "bench",
+        "14": "bird",
+        "15": "cat",
+        "16": "dog",
+        "17": "horse",
+        "18": "sheep",
+        "19": "cow",
+        "20": "elephant",
+        "21": "bear",
+        "22": "zebra",
+        "23": "giraffe",
+        "24": "backpack",
+        "25": "umbrella",
+        "26": "handbag",
+        "27": "tie",
+        "28": "suitcase",
+        "29": "frisbee",
+        "30": "skis",
+        "31": "snowboard",
+        "32": "sports ball",
+        "33": "kite",
+        "34": "baseball bat",
+        "35": "baseball glove",
+        "36": "skateboard",
+        "37": "surfboard",
+        "38": "tennis racket",
+        "39": "bottle",
+        "40": "wine glass",
+        "41": "cup",
+        "42": "fork",
+        "43": "knife",
+        "44": "spoon",
+        "45": "bowl",
+        "46": "banana",
+        "47": "apple",
+        "48": "sandwich",
+        "49": "orange",
+        "50": "broccoli",
+        "51": "carrot",
+        "52": "hot dog",
+        "53": "pizza",
+        "54": "donut",
+        "55": "cake",
+        "56": "chair",
+        "57": "couch",
+        "58": "potted plant",
+        "59": "bed",
+        "60": "dining table",
+        "61": "toilet",
+        "62": "tv",
+        "63": "laptop",
+        "64": "mouse",
+        "65": "remote",
+        "66": "keyboard",
+        "67": "cell phone",
+        "68": "microwave",
+        "69": "oven",
+        "70": "toaster",
+        "71": "sink",
+        "72": "refrigerator",
+        "73": "book",
+        "74": "clock",
+        "75": "vase",
+        "76": "scissors",
+        "77": "teddy bear",
+        "78": "hair drier",
+        "79": "toothbrush"
+      },
+      "classes": {
+        "0": "person",
+        "1": "bicycle",
+        "2": "car",
+        "3": "motorcycle",
+        "4": "airplane",
+        "5": "bus",
+        "6": "train",
+        "7": "truck",
+        "8": "boat",
+        "9": "traffic light",
+        "10": "fire hydrant",
+        "11": "stop sign",
+        "12": "parking meter",
+        "13": "bench",
+        "14": "bird",
+        "15": "cat",
+        "16": "dog",
+        "17": "horse",
+        "18": "sheep",
+        "19": "cow",
+        "20": "elephant",
+        "21": "bear",
+        "22": "zebra",
+        "23": "giraffe",
+        "24": "backpack",
+        "25": "umbrella",
+        "26": "handbag",
+        "27": "tie",
+        "28": "suitcase",
+        "29": "frisbee",
+        "30": "skis",
+        "31": "snowboard",
+        "32": "sports ball",
+        "33": "kite",
+        "34": "baseball bat",
+        "35": "baseball glove",
+        "36": "skateboard",
+        "37": "surfboard",
+        "38": "tennis racket",
+        "39": "bottle",
+        "40": "wine glass",
+        "41": "cup",
+        "42": "fork",
+        "43": "knife",
+        "44": "spoon",
+        "45": "bowl",
+        "46": "banana",
+        "47": "apple",
+        "48": "sandwich",
+        "49": "orange",
+        "50": "broccoli",
+        "51": "carrot",
+        "52": "hot dog",
+        "53": "pizza",
+        "54": "donut",
+        "55": "cake",
+        "56": "chair",
+        "57": "couch",
+        "58": "potted plant",
+        "59": "bed",
+        "60": "dining table",
+        "61": "toilet",
+        "62": "tv",
+        "63": "laptop",
+        "64": "mouse",
+        "65": "remote",
+        "66": "keyboard",
+        "67": "cell phone",
+        "68": "microwave",
+        "69": "oven",
+        "70": "toaster",
+        "71": "sink",
+        "72": "refrigerator",
+        "73": "book",
+        "74": "clock",
+        "75": "vase",
+        "76": "scissors",
+        "77": "teddy bear",
+        "78": "hair drier",
+        "79": "toothbrush"
+      },
+      "input_channels": 3,
+      "ch": 3,
+      "shape": [
+        1,
+        3,
+        640,
+        640
+      ],
+      "layout": "v8",
+      "stride": 32,
+      "nms": false,
+      "precision": "fp32",
+      "batch": 1,
+      "dynamic": false
+    }
+  },
+  "excluded": [
+    "extracted application tree",
+    "runtime",
+    "GPU/cache/config/state/font cache directories",
+    "converted TorchScript model",
+    "source model binaries",
+    "private datasets",
+    "unrelated user history"
+  ],
+  "archive": {
+    "file": "evaluation-artifacts.zip",
+    "bytes": 8899082,
+    "sha256": "859c9a991a93d1bbb7f49ca0abcfb5977ce022ae4f353ff218ed39199b2052df"
+  },
+  "files": [
+    {
+      "file": "onnx_cpu/application.stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/application.stderr.log",
+      "category": "raw application stderr",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/application.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/application.stdout.log",
+      "category": "raw application stdout",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/REPORT.md",
+      "bytes": 1252,
+      "sha256": "1d8da1bb17290177e82ee1d4e444eef2b11d16b6bde4a4f4c5d314654fca3e3a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/REPORT.md",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/errors.csv",
+      "bytes": 385,
+      "sha256": "992b103ac3d8e761471c423bcb21d422b51fc881053857894ecf5ea2465fefde",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/errors.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/helper.log",
+      "bytes": 185,
+      "sha256": "8d6515a59d7dd8c2dd7f604eceb3f2e6df99bffb575e82c09cb4ae2e1762c429",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/helper.log",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/manifest.json",
+      "bytes": 9691,
+      "sha256": "266a496dd208a60af7d5d53880848c3d4073bb275b24946bbd4ad7b8ca4cab2a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/manifest.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/negative-false-positive-rate.png",
+      "bytes": 61509,
+      "sha256": "903f272b1b1cc1f63d12de477d3a3870663fc53edb814499ef214c3d91d3575e",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/negative-false-positive-rate.png",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu",
+      "image": {
+        "width": 1728,
+        "height": 972,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/negative-false-positive-rate.svg",
+      "bytes": 12915,
+      "sha256": "323ed9ea013b45ac39a6f85020b865702a1ad2454542a93a174d365da0f1aa13",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/negative-false-positive-rate.svg",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/per-image.csv",
+      "bytes": 593,
+      "sha256": "3714f9327dfdc1f081e860b7931bc673e69c2874598a9d0a357f4f2f9baeb82b",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/per-image.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/predictions.jsonl",
+      "bytes": 31373,
+      "sha256": "c80f005342f1c67613035eff9c83020e614f903fa118940fbfcbf3b8ffefe579",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/predictions.jsonl",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/report.json",
+      "bytes": 210065,
+      "sha256": "b25eb3041ee99effd033549843e569ad3c7fc268ec44d8cbd217dc9dde9cb81e",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/report.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/request.json",
+      "bytes": 1927,
+      "sha256": "3e2e709f5e9790a954628056e94509f3c5513a5e93ab8c212a5424d7f14a0c6a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/request.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/samples/0.json",
+      "bytes": 3850,
+      "sha256": "607ec1a638685473521a25887f69851fe890d9805ae780d4036c7485493684ca",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/samples/0.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/samples/0.sha256",
+      "bytes": 65,
+      "sha256": "7e5bd974ee92917a5f2dc84dafd79c0867dd66b944344f1048ecabfd4438de13",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/samples/0.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/samples/1.json",
+      "bytes": 9921,
+      "sha256": "0ff1b3e2b5e494ea487266956db76a89dd9e3b60c2e857a413ccd44f989d1587",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/samples/1.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/samples/1.sha256",
+      "bytes": 65,
+      "sha256": "bcd4765423fba07eaac05cfcb8b822bd5cdc070b74269cc9fd306d8f8e1c1b78",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/samples/1.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/samples/2.json",
+      "bytes": 38219,
+      "sha256": "3a8ce0e06171e7e3234748bd991d585ae81822dda749ad7bf8ce5fc7fc067d5e",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/samples/2.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/samples/2.sha256",
+      "bytes": 65,
+      "sha256": "0cc4e152ecf8849a1a2e0e43a77097f9481a613e5944c7aec87eae002bda5f66",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/samples/2.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/samples/3.json",
+      "bytes": 11445,
+      "sha256": "5b39159eae0f7460338a583278cf790471412f4a43ad2fd1075d9e8f4a29374d",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/samples/3.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/samples/3.sha256",
+      "bytes": 65,
+      "sha256": "8cd026b5b2c738124c521b7a4b9e91345b4ecab8797e52d0b7ef902826dffeb5",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/samples/3.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/status.json",
+      "bytes": 207,
+      "sha256": "cfb5480f01d2afbd8179e0aed07d5689e032a3fe663d4a7c9920c9a3c7f97081",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/status.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/threshold-performance.png",
+      "bytes": 83695,
+      "sha256": "55b21f9048d0b8eb08783a645ce1a03159a06136a02ea9d7b1dff3cdc4f113f4",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/threshold-performance.png",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu",
+      "image": {
+        "width": 1728,
+        "height": 972,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/threshold-performance.svg",
+      "bytes": 18508,
+      "sha256": "8dfaf84b33f2f1273cfdf7ab533ab947a4753cee59c3912ce0c28ca881d5fa46",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/threshold-performance.svg",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/thresholds.csv",
+      "bytes": 32049,
+      "sha256": "b80611663eb634ffdcc08636b8ac2eb8e9d9296f8b1905e68b3ed474fa4cc220",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/data/evaluations/20261020-102645-235-d415c7aa/thresholds.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/request.json",
+      "bytes": 483,
+      "sha256": "cd477cc45dd63f264ccf5c1f29da55ba737bf9b03b932974ef86504473b51443",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/request.json",
+      "category": "native evaluation request",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/ui-smoke/evaluation-analysis.png",
+      "bytes": 249461,
+      "sha256": "d5ecbf3c19688cf1a75ba5d2a1c6b94d79baf2e4849181a1903f3b36cc2055df",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/ui-smoke/evaluation-analysis.png",
+      "category": "actual native UI screenshot",
+      "case": "onnx_cpu",
+      "image": {
+        "width": 1580,
+        "height": 960,
+        "mode": "RGB",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "onnx_cpu/ui-smoke/evaluation-preview.png",
+      "bytes": 403047,
+      "sha256": "896e327a88ffa83ece65527f334834840d675a1653a3358e54abb00116df6690",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/ui-smoke/evaluation-preview.png",
+      "category": "actual native UI screenshot",
+      "case": "onnx_cpu",
+      "image": {
+        "width": 1580,
+        "height": 960,
+        "mode": "RGB",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "onnx_cpu/ui-smoke/evaluation-smoke-report.json",
+      "bytes": 238178,
+      "sha256": "8e72ca11d01443a907047eb97ef8d9dc7c39aa5e49f650f2cd7ca6be9de757c3",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/ui-smoke/evaluation-smoke-report.json",
+      "category": "actual native evaluation smoke report",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/ui-smoke/selected-result/000000000036-20261020-182648-268.csv",
+      "bytes": 106,
+      "sha256": "4c834153d3a3ddab9666f3caca7c49c305930373c47b5451e0bf66c362faef02",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/ui-smoke/selected-result/000000000036-20261020-182648-268.csv",
+      "category": "actual selected-image export",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/ui-smoke/selected-result/000000000036-20261020-182648-268.json",
+      "bytes": 2319,
+      "sha256": "15082f9a865c87e3d721614027677bee356c51774bf7989214fa92c0a38bf39b",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/ui-smoke/selected-result/000000000036-20261020-182648-268.json",
+      "category": "actual selected-image export",
+      "case": "onnx_cpu"
+    },
+    {
+      "file": "onnx_cpu/ui-smoke/selected-result/000000000036-20261020-182648-268.png",
+      "bytes": 685903,
+      "sha256": "e87d4c6734e522b3de5283dbfc7c7138bcfc5132db1dd36e748b510a88acc784",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cpu/ui-smoke/selected-result/000000000036-20261020-182648-268.png",
+      "category": "actual selected-image export",
+      "case": "onnx_cpu",
+      "image": {
+        "width": 481,
+        "height": 640,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "onnx_cuda/application.stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/application.stderr.log",
+      "category": "raw application stderr",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/application.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/application.stdout.log",
+      "category": "raw application stdout",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/REPORT.md",
+      "bytes": 1252,
+      "sha256": "1d8da1bb17290177e82ee1d4e444eef2b11d16b6bde4a4f4c5d314654fca3e3a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/REPORT.md",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/errors.csv",
+      "bytes": 385,
+      "sha256": "992b103ac3d8e761471c423bcb21d422b51fc881053857894ecf5ea2465fefde",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/errors.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/helper.log",
+      "bytes": 186,
+      "sha256": "0724d7d14b652abf2fe1ab223236fa2fed2f8f455116ca180e7c3af62e80756a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/helper.log",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/manifest.json",
+      "bytes": 9691,
+      "sha256": "266a496dd208a60af7d5d53880848c3d4073bb275b24946bbd4ad7b8ca4cab2a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/manifest.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/negative-false-positive-rate.png",
+      "bytes": 61509,
+      "sha256": "903f272b1b1cc1f63d12de477d3a3870663fc53edb814499ef214c3d91d3575e",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/negative-false-positive-rate.png",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda",
+      "image": {
+        "width": 1728,
+        "height": 972,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/negative-false-positive-rate.svg",
+      "bytes": 12915,
+      "sha256": "e69e50228f158b8678df00542fe86507aa4e5587a287758d069b78b09f779003",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/negative-false-positive-rate.svg",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/per-image.csv",
+      "bytes": 593,
+      "sha256": "3714f9327dfdc1f081e860b7931bc673e69c2874598a9d0a357f4f2f9baeb82b",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/per-image.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/predictions.jsonl",
+      "bytes": 31453,
+      "sha256": "5bd036338e571031398f499c443dde2b0931ae24a1c4c2bbb148f52611f1fa26",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/predictions.jsonl",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/report.json",
+      "bytes": 210113,
+      "sha256": "483f3aa0c29d21363f5a17387d7ec391ea4b4030c632ab2cdb9af58ac317feaa",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/report.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/request.json",
+      "bytes": 1949,
+      "sha256": "1f2f574cfbe2d7d8d68c272b95174bff8905a7d87b5858fa8dc459ad310e0dd0",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/request.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/samples/0.json",
+      "bytes": 3866,
+      "sha256": "033114e3f54e0a86d0a91a98edcf5d03591dc5becceed85fd228fa846796ee54",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/samples/0.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/samples/0.sha256",
+      "bytes": 65,
+      "sha256": "0370b12feef45c1112d7c0841c288fd3884afc45a156ef18906a17d1063c2895",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/samples/0.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/samples/1.json",
+      "bytes": 9948,
+      "sha256": "b87e92ce46f1b8364c6883fd2dc6d99f565fcc9365fedd7ca06470898aafd565",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/samples/1.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/samples/1.sha256",
+      "bytes": 65,
+      "sha256": "6b9eb9b37bb1494f2f44db1f2b657ffbd779b92d9e0c15f0d30a711fcc197c09",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/samples/1.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/samples/2.json",
+      "bytes": 38230,
+      "sha256": "f21ecb0876ed88e303e9f9ca3fa56ab930f57e8fd40c6619f26e1d82406e44af",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/samples/2.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/samples/2.sha256",
+      "bytes": 65,
+      "sha256": "86c6deeb23e5a1235946a94bbd36e6ca24e4abb93f015fd86fdb79492fce4a0d",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/samples/2.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/samples/3.json",
+      "bytes": 11471,
+      "sha256": "a2d39e023c4c70a590230ff8986167d0dd13548bde90c95cad4d7e009f24918b",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/samples/3.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/samples/3.sha256",
+      "bytes": 65,
+      "sha256": "5817cca79cb469f9306aaa4a2aa7c8ea5bcd93a10c279933400c4aa7db3a77aa",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/samples/3.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/status.json",
+      "bytes": 208,
+      "sha256": "779ffe30eb5e7a86cc645bdfe76a1733c46799ef5ccd880424a0d0729ffa489d",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/status.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/threshold-performance.png",
+      "bytes": 83695,
+      "sha256": "55b21f9048d0b8eb08783a645ce1a03159a06136a02ea9d7b1dff3cdc4f113f4",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/threshold-performance.png",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda",
+      "image": {
+        "width": 1728,
+        "height": 972,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/threshold-performance.svg",
+      "bytes": 18508,
+      "sha256": "b010d48050b53f5be2711a63c8cb84ac8f849f409c97177c2e1dcfb0f03eb8bf",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/threshold-performance.svg",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/thresholds.csv",
+      "bytes": 32049,
+      "sha256": "b10d9ad47ed4bb2b508a99d78b53ee2de1a1121ec10cebaf5abc53cdc5646273",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/data/evaluations/20261020-102719-805-a72235a4/thresholds.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/ort-evaluation_2026-10-20_18-27-20.json",
+      "bytes": 718321,
+      "sha256": "756ad58aea6205e806302e19a6601fb403fab7fbdf9d7d49afa1569e64397133",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/ort-evaluation_2026-10-20_18-27-20.json",
+      "category": "actual CUDAExecutionProvider profile",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/request.json",
+      "bytes": 484,
+      "sha256": "31efbaeac7d8d36febd21656d9b3776525e450304a2345228965b49580abf21d",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/request.json",
+      "category": "native evaluation request",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/ui-smoke/evaluation-analysis.png",
+      "bytes": 246047,
+      "sha256": "8ab2c61ce8acc689c408664e5200fbbe6a059d44bd9151c6d0f1879117e5cc26",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/ui-smoke/evaluation-analysis.png",
+      "category": "actual native UI screenshot",
+      "case": "onnx_cuda",
+      "image": {
+        "width": 1580,
+        "height": 960,
+        "mode": "RGB",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "onnx_cuda/ui-smoke/evaluation-preview.png",
+      "bytes": 409425,
+      "sha256": "035a75216b6309026eaf0ae4adb047e4655a97c14f81c40b8ef0fdb42a1305b6",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/ui-smoke/evaluation-preview.png",
+      "category": "actual native UI screenshot",
+      "case": "onnx_cuda",
+      "image": {
+        "width": 1580,
+        "height": 960,
+        "mode": "RGB",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "onnx_cuda/ui-smoke/evaluation-smoke-report.json",
+      "bytes": 238231,
+      "sha256": "aa2b65e0807b68605054c7fb73f3d733fba248109d6dc17dfa33838662677a74",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/ui-smoke/evaluation-smoke-report.json",
+      "category": "actual native evaluation smoke report",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/ui-smoke/selected-result/000000000036-20261020-182723-200.csv",
+      "bytes": 106,
+      "sha256": "903711d08593b3b9b15f80f49a30f880cd5d81dd8ad32a8a57ff75a8c82f8b63",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/ui-smoke/selected-result/000000000036-20261020-182723-200.csv",
+      "category": "actual selected-image export",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/ui-smoke/selected-result/000000000036-20261020-182723-200.json",
+      "bytes": 2342,
+      "sha256": "03b7ad0214749042bc70ffc88fc5809ca1e2afa86ade908cf3c407d3bce82b4a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/ui-smoke/selected-result/000000000036-20261020-182723-200.json",
+      "category": "actual selected-image export",
+      "case": "onnx_cuda"
+    },
+    {
+      "file": "onnx_cuda/ui-smoke/selected-result/000000000036-20261020-182723-200.png",
+      "bytes": 685904,
+      "sha256": "6305346b43ba34cd7cb144352d6c676b5fcc28a4889e9c82a12edbbf442b9a47",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/onnx_cuda/ui-smoke/selected-result/000000000036-20261020-182723-200.png",
+      "category": "actual selected-image export",
+      "case": "onnx_cuda",
+      "image": {
+        "width": 481,
+        "height": 640,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "packaged-evaluation-qa.json",
+      "bytes": 308197,
+      "sha256": "fb9dc660e30bc377bbc216078678e83ef8ba1e70884efa2efd52670f41204c77",
+      "source_file": "output/releases/2.3.1/packaged-evaluation-qa.json",
+      "category": "original final-package evaluation matrix report"
+    },
+    {
+      "file": "pt_cpu/application.stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/application.stderr.log",
+      "category": "raw application stderr",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/application.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/application.stdout.log",
+      "category": "raw application stdout",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/REPORT.md",
+      "bytes": 1252,
+      "sha256": "181ab7dc92d3581f6fffc68688ea206fb026dd2a2db2c00b5cee5cd5594f4187",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/REPORT.md",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/errors.csv",
+      "bytes": 371,
+      "sha256": "db1de785d15b37bc159f703d54c38269901fdd8ac2020a7a580cb1e8107281b9",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/errors.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/helper.log",
+      "bytes": 183,
+      "sha256": "a791d833f22d1bf2e352d5f421f11c8ae04a02e0b4a246ed94105ef9681d9242",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/helper.log",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/manifest.json",
+      "bytes": 9691,
+      "sha256": "266a496dd208a60af7d5d53880848c3d4073bb275b24946bbd4ad7b8ca4cab2a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/manifest.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/negative-false-positive-rate.png",
+      "bytes": 55686,
+      "sha256": "374ecb81cacf2df73e9a3e549ec0a4cf97881b33bac2146e8a82774f8e54e3af",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/negative-false-positive-rate.png",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu",
+      "image": {
+        "width": 1728,
+        "height": 972,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/negative-false-positive-rate.svg",
+      "bytes": 12916,
+      "sha256": "b6d309aef4a03493d9a81b8b852f8dec1148682d83ecd2fa2b6941210f6d2552",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/negative-false-positive-rate.svg",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/per-image.csv",
+      "bytes": 579,
+      "sha256": "a7a03cb06321eecc0cdf66fb0f28357a6c86f887c02aaf66a09166d0f2546f8b",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/per-image.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/predictions.jsonl",
+      "bytes": 18379,
+      "sha256": "92f2823a6f56a7c916d0bc1ea4af5af03a0f81be38cb8dc8cfaa790db6429582",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/predictions.jsonl",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/report.json",
+      "bytes": 208961,
+      "sha256": "f29f7fcafca66786cee017d4ee5ae5ea5bf1f579568e187d768393e56c7859bf",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/report.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/request.json",
+      "bytes": 3750,
+      "sha256": "6edfa1c032ae5e8c1ea5e803b4adfc76d1ac3b7b236870ffa389999fd65b12e2",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/request.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/samples/0.json",
+      "bytes": 2059,
+      "sha256": "22797931b2772ff22508140bd5adae2caeff687f30c6e1a65e47dca9def478e4",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/samples/0.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/samples/0.sha256",
+      "bytes": 65,
+      "sha256": "e5f6a2daacf4801bbe71e57bcd017117a3e10274c59a49204e67782c1db05821",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/samples/0.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/samples/1.json",
+      "bytes": 6642,
+      "sha256": "962442aa0f22103cf74218af0f927b7507da37e61d7a4053361f5a87013ab802",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/samples/1.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/samples/1.sha256",
+      "bytes": 65,
+      "sha256": "f905284c3749db64e4ab9524a9d38d82e5a6bc3223698d592947a5b912281839",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/samples/1.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/samples/2.json",
+      "bytes": 19729,
+      "sha256": "c8b585f8a1a9b58828e19b168937c16edec3b20afa94b2f0b8abb612301abf84",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/samples/2.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/samples/2.sha256",
+      "bytes": 65,
+      "sha256": "af7cd2c37d2d3eef83040de1db0b2fd60de89221e36abda165af459f2df53c8e",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/samples/2.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/samples/3.json",
+      "bytes": 8371,
+      "sha256": "130f1b53e91e662f6e08d5396a2bef20805d0c223344487378c34bfa035e7bd3",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/samples/3.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/samples/3.sha256",
+      "bytes": 65,
+      "sha256": "dadf4c8a6945e61ef36dfb1059588c45f2f92aacd218b1fa143f9dbe5fdb76c5",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/samples/3.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/status.json",
+      "bytes": 205,
+      "sha256": "e9af9a4a1ccf898a0ee4885b60b810b83a65636fc2b82d69dd0780c292bfb1cc",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/status.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/threshold-performance.png",
+      "bytes": 71482,
+      "sha256": "7c8595abd9805c788bde509b929936a71e6c0fab0ad08da0c6fb540550c5120a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/threshold-performance.png",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu",
+      "image": {
+        "width": 1728,
+        "height": 972,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/threshold-performance.svg",
+      "bytes": 18442,
+      "sha256": "661dbc38662b20a0b5c5564d613355ee7f35e2fa045e55d8b5d8ffade4ca0618",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/threshold-performance.svg",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/thresholds.csv",
+      "bytes": 33230,
+      "sha256": "437af12ff82f6a7088be870fedaadf1b924a90c55158e93813fdc7d170696c12",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/data/evaluations/20261020-102652-292-f11af5fc/thresholds.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/request.json",
+      "bytes": 481,
+      "sha256": "983b2fd387b97a30ba01c0eb462d4d2a6eb7512298b317db95cc4a8c1d0e0e6f",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/request.json",
+      "category": "native evaluation request",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/ui-smoke/evaluation-analysis.png",
+      "bytes": 248792,
+      "sha256": "9f43434f382ecac3a549277be9438527c86a81acc9d13d77dca1c07e7ba5454e",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/ui-smoke/evaluation-analysis.png",
+      "category": "actual native UI screenshot",
+      "case": "pt_cpu",
+      "image": {
+        "width": 1580,
+        "height": 960,
+        "mode": "RGB",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "pt_cpu/ui-smoke/evaluation-preview.png",
+      "bytes": 400756,
+      "sha256": "d7ab622c021199a3cb590ee60b0577d97b3ff68fba82b8f9df6f178b9468e545",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/ui-smoke/evaluation-preview.png",
+      "category": "actual native UI screenshot",
+      "case": "pt_cpu",
+      "image": {
+        "width": 1580,
+        "height": 960,
+        "mode": "RGB",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "pt_cpu/ui-smoke/evaluation-smoke-report.json",
+      "bytes": 237688,
+      "sha256": "24bebfb6ba1581d2979a3b752179c3ec8eb02547cf8a2c667a178e5e7d4e1ab6",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/ui-smoke/evaluation-smoke-report.json",
+      "category": "actual native evaluation smoke report",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/ui-smoke/selected-result/000000000036-20261020-182658-488.csv",
+      "bytes": 107,
+      "sha256": "ccc2533d738ec48c9851f0eb2a003469bd272e2a5aef5bd0e565a2833761ce53",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/ui-smoke/selected-result/000000000036-20261020-182658-488.csv",
+      "category": "actual selected-image export",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/ui-smoke/selected-result/000000000036-20261020-182658-488.json",
+      "bytes": 2349,
+      "sha256": "e63d8ce1de2f2d63b33ecc68d329dde24a92a1d7d1068e43bed87324cd045933",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/ui-smoke/selected-result/000000000036-20261020-182658-488.json",
+      "category": "actual selected-image export",
+      "case": "pt_cpu"
+    },
+    {
+      "file": "pt_cpu/ui-smoke/selected-result/000000000036-20261020-182658-488.png",
+      "bytes": 681950,
+      "sha256": "faebcb5128b07ac8c6246f137a8f18ad4cba3dd51d470651a4640a4fef1c4511",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cpu/ui-smoke/selected-result/000000000036-20261020-182658-488.png",
+      "category": "actual selected-image export",
+      "case": "pt_cpu",
+      "image": {
+        "width": 481,
+        "height": 640,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "pt_cuda/application.stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/application.stderr.log",
+      "category": "raw application stderr",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/application.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/application.stdout.log",
+      "category": "raw application stdout",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/REPORT.md",
+      "bytes": 1252,
+      "sha256": "181ab7dc92d3581f6fffc68688ea206fb026dd2a2db2c00b5cee5cd5594f4187",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/REPORT.md",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/errors.csv",
+      "bytes": 371,
+      "sha256": "db1de785d15b37bc159f703d54c38269901fdd8ac2020a7a580cb1e8107281b9",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/errors.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/helper.log",
+      "bytes": 184,
+      "sha256": "fd8b4f2e2bf007679c220bc18b1cc4f938fbec79dc3ddac6d943052e94140a53",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/helper.log",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/manifest.json",
+      "bytes": 9691,
+      "sha256": "266a496dd208a60af7d5d53880848c3d4073bb275b24946bbd4ad7b8ca4cab2a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/manifest.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/negative-false-positive-rate.png",
+      "bytes": 55686,
+      "sha256": "374ecb81cacf2df73e9a3e549ec0a4cf97881b33bac2146e8a82774f8e54e3af",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/negative-false-positive-rate.png",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda",
+      "image": {
+        "width": 1728,
+        "height": 972,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/negative-false-positive-rate.svg",
+      "bytes": 12916,
+      "sha256": "f3ed15c22fe923a7ca6553fc10e63e3708839fc353b9cc8dcbd48114ccf359f2",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/negative-false-positive-rate.svg",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/per-image.csv",
+      "bytes": 579,
+      "sha256": "a7a03cb06321eecc0cdf66fb0f28357a6c86f887c02aaf66a09166d0f2546f8b",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/per-image.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/predictions.jsonl",
+      "bytes": 18479,
+      "sha256": "2e47f43ea9572fb51e782d610cc2ab8f802b1eb1c68e84f801c0d3445a30d852",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/predictions.jsonl",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/report.json",
+      "bytes": 209009,
+      "sha256": "3e68a2e8f4b74a68f43afc3139e945c2960c44effe88dff5e902a057f4d525e2",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/report.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/request.json",
+      "bytes": 3772,
+      "sha256": "b03d95c81425499fd109323fdb4cfeed63132540aac73f5231369aedadb9a119",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/request.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/samples/0.json",
+      "bytes": 2079,
+      "sha256": "4d2ddf335b2ba3e597bdc45ec70209f6ba99254bb0f7f1c5edb02916829201f4",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/samples/0.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/samples/0.sha256",
+      "bytes": 65,
+      "sha256": "26e53fd18b7868df1985b263ad0110725536c8eb91191edacdf1eee5120e0441",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/samples/0.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/samples/1.json",
+      "bytes": 6643,
+      "sha256": "39f54e20fa347f46ba706516619150565d278788d06ec2768066cd8591ab4bf4",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/samples/1.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/samples/1.sha256",
+      "bytes": 65,
+      "sha256": "cf43ee32c7e6b2a0d0e656c368d3825be44b72b9c553c28ba0c53ff63e528a2d",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/samples/1.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/samples/2.json",
+      "bytes": 19754,
+      "sha256": "868b1e69ed74d2a0f1b02fb807d6134a042f3590a45e3ba74a6eb0e5d4a1addb",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/samples/2.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/samples/2.sha256",
+      "bytes": 65,
+      "sha256": "72c66229f595cfe81dba1cba1fb02168263e8851de68c7fec380afe8995f494f",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/samples/2.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/samples/3.json",
+      "bytes": 8425,
+      "sha256": "7b6e848b9d624740b7108049c507259c9230568dda594abf02f74ac90d8b84b7",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/samples/3.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/samples/3.sha256",
+      "bytes": 65,
+      "sha256": "db5cb2e6a51422f0fc18d16eb211082b4df0e3ee92815c7972319abacfa3e8e7",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/samples/3.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/status.json",
+      "bytes": 206,
+      "sha256": "fdcf5764b9f4565b9b95b762c4af20be683fb109601e6415721393a8c09f1c76",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/status.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/threshold-performance.png",
+      "bytes": 71482,
+      "sha256": "7c8595abd9805c788bde509b929936a71e6c0fab0ad08da0c6fb540550c5120a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/threshold-performance.png",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda",
+      "image": {
+        "width": 1728,
+        "height": 972,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/threshold-performance.svg",
+      "bytes": 18442,
+      "sha256": "45720c6877c2aa88d2d0383a19342620c8bbefc9e90566180658c7de4f91027d",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/threshold-performance.svg",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/data/evaluations/20261020-102727-240-9802510c/thresholds.csv",
+      "bytes": 33230,
+      "sha256": "efd8dad6ebe5b9dfe32bbaf7c934b7bbbff1b092e2be785bed5b4d322dcab9cf",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/data/evaluations/20261020-102727-240-9802510c/thresholds.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/request.json",
+      "bytes": 482,
+      "sha256": "b51ef2921d560b7ccef52bb1010c52dd79d8ba0ec8d6d67d4937b42925c9d59a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/request.json",
+      "category": "native evaluation request",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/ui-smoke/evaluation-analysis.png",
+      "bytes": 254499,
+      "sha256": "bb1e1870f39d24f45bfbaa64e508de1f92bd1a1b90c1a13c3fd988b07c861c1a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/ui-smoke/evaluation-analysis.png",
+      "category": "actual native UI screenshot",
+      "case": "pt_cuda",
+      "image": {
+        "width": 1580,
+        "height": 960,
+        "mode": "RGB",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "pt_cuda/ui-smoke/evaluation-preview.png",
+      "bytes": 405645,
+      "sha256": "9fdf5a0cdf5d5ed625811bbe9deab4695e77451d5d258d2139df07501fde7570",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/ui-smoke/evaluation-preview.png",
+      "category": "actual native UI screenshot",
+      "case": "pt_cuda",
+      "image": {
+        "width": 1580,
+        "height": 960,
+        "mode": "RGB",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "pt_cuda/ui-smoke/evaluation-smoke-report.json",
+      "bytes": 237741,
+      "sha256": "a52c41a34df2a46670d99402c6dfb268df759d1b704045329dfe7c0d9d73c618",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/ui-smoke/evaluation-smoke-report.json",
+      "category": "actual native evaluation smoke report",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/ui-smoke/selected-result/000000000036-20261020-182732-157.csv",
+      "bytes": 107,
+      "sha256": "ccc2533d738ec48c9851f0eb2a003469bd272e2a5aef5bd0e565a2833761ce53",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/ui-smoke/selected-result/000000000036-20261020-182732-157.csv",
+      "category": "actual selected-image export",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/ui-smoke/selected-result/000000000036-20261020-182732-157.json",
+      "bytes": 2373,
+      "sha256": "f9c1fce51db5d3e820bbf1675de1c7104459d45cd71b7cb176328583eca420cf",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/ui-smoke/selected-result/000000000036-20261020-182732-157.json",
+      "category": "actual selected-image export",
+      "case": "pt_cuda"
+    },
+    {
+      "file": "pt_cuda/ui-smoke/selected-result/000000000036-20261020-182732-157.png",
+      "bytes": 681950,
+      "sha256": "faebcb5128b07ac8c6246f137a8f18ad4cba3dd51d470651a4640a4fef1c4511",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/pt_cuda/ui-smoke/selected-result/000000000036-20261020-182732-157.png",
+      "category": "actual selected-image export",
+      "case": "pt_cuda",
+      "image": {
+        "width": 481,
+        "height": 640,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "public-dataset/coco8-qa.yaml",
+      "bytes": 1198,
+      "sha256": "7258a71117ef520036345818544c3c8a7ffd50a38ba6a7b42c752544b7631c1c",
+      "source_file": "/tmp/vision-studio-evaluation-public-230/coco8-qa.yaml",
+      "category": "original QA public dataset configuration"
+    },
+    {
+      "file": "public-dataset/provenance.json",
+      "bytes": 1642,
+      "sha256": "5f5712021ed2edaf209b13c7bf704e58b3a0c82643a68b254206874579af0e38",
+      "source_file": "/tmp/vision-studio-evaluation-public-230/provenance.json",
+      "category": "original public dataset provenance"
+    },
+    {
+      "file": "torchscript-export/conversion.stderr.log",
+      "bytes": 449,
+      "sha256": "c4e279d31c0e64aeb074f58ff9354f120e4e234f42951661a6d3edf720a48998",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript-export/conversion.stderr.log",
+      "category": "raw TorchScript export stderr"
+    },
+    {
+      "file": "torchscript-export/conversion.stdout.log",
+      "bytes": 3876,
+      "sha256": "356df4349a80fa369980feeef87bb944a6e3cadd78a4817e85f010bfc697f784",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript-export/conversion.stdout.log",
+      "category": "raw TorchScript export stdout"
+    },
+    {
+      "file": "torchscript_cpu/application.stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/application.stderr.log",
+      "category": "raw application stderr",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/application.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/application.stdout.log",
+      "category": "raw application stdout",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/REPORT.md",
+      "bytes": 1252,
+      "sha256": "f10732a3821ed240daf4d9c7d8b88cd309a9809f82ea22acfad3f08e1393de8d",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/REPORT.md",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/errors.csv",
+      "bytes": 371,
+      "sha256": "db1de785d15b37bc159f703d54c38269901fdd8ac2020a7a580cb1e8107281b9",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/errors.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/helper.log",
+      "bytes": 192,
+      "sha256": "3be3414908b5ef5a31055cad5e376384edc1189e8a1294a9df4dcd1e340f97cb",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/helper.log",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/manifest.json",
+      "bytes": 9691,
+      "sha256": "266a496dd208a60af7d5d53880848c3d4073bb275b24946bbd4ad7b8ca4cab2a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/manifest.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/negative-false-positive-rate.png",
+      "bytes": 55686,
+      "sha256": "374ecb81cacf2df73e9a3e549ec0a4cf97881b33bac2146e8a82774f8e54e3af",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/negative-false-positive-rate.png",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu",
+      "image": {
+        "width": 1728,
+        "height": 972,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/negative-false-positive-rate.svg",
+      "bytes": 12916,
+      "sha256": "b3a3f4193384ad3b68d5b07a00c43da41b2d2f7a6dabcb23253d4f2cc0360262",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/negative-false-positive-rate.svg",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/per-image.csv",
+      "bytes": 579,
+      "sha256": "a7a03cb06321eecc0cdf66fb0f28357a6c86f887c02aaf66a09166d0f2546f8b",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/per-image.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/predictions.jsonl",
+      "bytes": 18386,
+      "sha256": "581b630c357ad18597cafe50143c6b3aee1fbfb353d77b0de8fc503d290a0d30",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/predictions.jsonl",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/report.json",
+      "bytes": 207752,
+      "sha256": "45fe701929176d7ca22546820cdaebfd59d32393ee8bbe35e97cdc23e2b46ccb",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/report.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/request.json",
+      "bytes": 3733,
+      "sha256": "67d96d7279f2537a8d9837bc0e514cf2e8a62478c805a9ed1af809b726099fea",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/request.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/samples/0.json",
+      "bytes": 2064,
+      "sha256": "deed85d33c3d035edcd6b07c702ea27792a437e7547cd7ef17c7f871a22fbefe",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/samples/0.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/samples/0.sha256",
+      "bytes": 65,
+      "sha256": "c42583ca0d13aeb07c0fecfefc5c826defe7327e998b402fc53f80cc5237eb40",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/samples/0.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/samples/1.json",
+      "bytes": 6636,
+      "sha256": "a2c9a3c9ccaf9d5a78be910aa669ec82805d711b30268570d09d9f68b0442452",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/samples/1.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/samples/1.sha256",
+      "bytes": 65,
+      "sha256": "6b65420f3aad1646fa52cbd70c057d8f4472758ed64bf80b58cb80adaf815df0",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/samples/1.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/samples/2.json",
+      "bytes": 19704,
+      "sha256": "2c4922e21859c8f588047c12bda666845472ef66f3fd521487a5e59ccd2acef8",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/samples/2.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/samples/2.sha256",
+      "bytes": 65,
+      "sha256": "497041635bc738bb3631785a1c6c4f4dc8dccf0bdc70867164b8e7b0b896bfae",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/samples/2.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/samples/3.json",
+      "bytes": 8404,
+      "sha256": "5dfc766da4fa9686f74d687376bd72bb50985b47e83e2223836f2d66bd522e66",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/samples/3.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/samples/3.sha256",
+      "bytes": 65,
+      "sha256": "2d316345e29311f47df46d352f6a674d235987173a43a05c86616667f1893219",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/samples/3.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/status.json",
+      "bytes": 214,
+      "sha256": "934dbb2d4e8c176896cb441344d3c10e7e624f346c3d7ecfbf47c30c06a5f0e9",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/status.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/threshold-performance.png",
+      "bytes": 71482,
+      "sha256": "7c8595abd9805c788bde509b929936a71e6c0fab0ad08da0c6fb540550c5120a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/threshold-performance.png",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu",
+      "image": {
+        "width": 1728,
+        "height": 972,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/threshold-performance.svg",
+      "bytes": 18442,
+      "sha256": "dd7ec78c5ba49a52d2217ab912ce0b515a167863026357ffcff5b9396b654ead",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/threshold-performance.svg",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/thresholds.csv",
+      "bytes": 32047,
+      "sha256": "4401164e1c6f6151c8642be5f10115e7f97d9576674cc988839f107323e56771",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/data/evaluations/20261020-102702-564-b3f635d1/thresholds.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/request.json",
+      "bytes": 475,
+      "sha256": "96b1abd60fd19e2ef11b761c23fd77775c5c1db4c488a6dce0cf21240d859e43",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/request.json",
+      "category": "native evaluation request",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/ui-smoke/evaluation-analysis.png",
+      "bytes": 250546,
+      "sha256": "59dc8665a5a646d7d03f8ccae5d9235531dff7fa621ea735292195179c937e77",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/ui-smoke/evaluation-analysis.png",
+      "category": "actual native UI screenshot",
+      "case": "torchscript_cpu",
+      "image": {
+        "width": 1580,
+        "height": 960,
+        "mode": "RGB",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "torchscript_cpu/ui-smoke/evaluation-preview.png",
+      "bytes": 402038,
+      "sha256": "36f9bdd8fb57cdc033e388488b38203fc587b7bff220b4de2be028be141062e9",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/ui-smoke/evaluation-preview.png",
+      "category": "actual native UI screenshot",
+      "case": "torchscript_cpu",
+      "image": {
+        "width": 1580,
+        "height": 960,
+        "mode": "RGB",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "torchscript_cpu/ui-smoke/evaluation-smoke-report.json",
+      "bytes": 236509,
+      "sha256": "e1363e555e01c3378c0b70f3edcdcb22071c14da44080a58b417eacfd090fee3",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/ui-smoke/evaluation-smoke-report.json",
+      "category": "actual native evaluation smoke report",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/ui-smoke/selected-result/000000000036-20261020-182708-920.csv",
+      "bytes": 107,
+      "sha256": "ccc2533d738ec48c9851f0eb2a003469bd272e2a5aef5bd0e565a2833761ce53",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/ui-smoke/selected-result/000000000036-20261020-182708-920.csv",
+      "category": "actual selected-image export",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/ui-smoke/selected-result/000000000036-20261020-182708-920.json",
+      "bytes": 2362,
+      "sha256": "8a5a70e059f22a489489f3ccb9e06aef9f8bd80930540ababef282e945e9e058",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/ui-smoke/selected-result/000000000036-20261020-182708-920.json",
+      "category": "actual selected-image export",
+      "case": "torchscript_cpu"
+    },
+    {
+      "file": "torchscript_cpu/ui-smoke/selected-result/000000000036-20261020-182708-920.png",
+      "bytes": 681950,
+      "sha256": "faebcb5128b07ac8c6246f137a8f18ad4cba3dd51d470651a4640a4fef1c4511",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/torchscript_cpu/ui-smoke/selected-result/000000000036-20261020-182708-920.png",
+      "category": "actual selected-image export",
+      "case": "torchscript_cpu",
+      "image": {
+        "width": 481,
+        "height": 640,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "zero_result_id32_cpu/application.stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/application.stderr.log",
+      "category": "raw application stderr",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/application.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/application.stdout.log",
+      "category": "raw application stdout",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/REPORT.md",
+      "bytes": 1233,
+      "sha256": "8854c63232bf4f4480a26a8294ef4d8310e72564467fd04d78fa9c6d288ddbaf",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/REPORT.md",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/errors.csv",
+      "bytes": 28,
+      "sha256": "3f50a22b548bac364f2d7601852359cb4737101e038eeb3ef1570f7cf6bf5eb0",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/errors.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/helper.log",
+      "bytes": 197,
+      "sha256": "1125dc8ccd5843b2a4efa2d01cf46801a07ccd06d0794c23fba04e10c77b6fde",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/helper.log",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/manifest.json",
+      "bytes": 9691,
+      "sha256": "266a496dd208a60af7d5d53880848c3d4073bb275b24946bbd4ad7b8ca4cab2a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/manifest.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/negative-false-positive-rate.png",
+      "bytes": 56895,
+      "sha256": "5ffbcabf4d240163c80659316a1a136d5d17a7f0d1ab4d8a760d52cceeeb9c7f",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/negative-false-positive-rate.png",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu",
+      "image": {
+        "width": 1728,
+        "height": 972,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/negative-false-positive-rate.svg",
+      "bytes": 13549,
+      "sha256": "c8843ba95fab9193c9adef6364631f83d9df1310e5ed34865b898d3fd495d8d0",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/negative-false-positive-rate.svg",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/per-image.csv",
+      "bytes": 524,
+      "sha256": "dd7eed16d19c4b6c145d94eb436031fe192e22f9518665d344d4a21d1bb7f367",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/per-image.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/predictions.jsonl",
+      "bytes": 3987,
+      "sha256": "aea3c5d0641dbc090eafc169cdf4cd8ef2a289babffab3e853c2efa5e8d72985",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/predictions.jsonl",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/report.json",
+      "bytes": 129742,
+      "sha256": "d4b4b346ed2b469a8439cdeaf13aa116cd3d2cd273070f650d5a6644609a217c",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/report.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/request.json",
+      "bytes": 3750,
+      "sha256": "bd21b990d01de76bb8100dd04d7249d5e28ae167fbd2547e34b1173b93eb834f",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/request.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/samples/0.json",
+      "bytes": 1161,
+      "sha256": "f2960aeeb61377d25d1336ebb2a6f48dfef6239a541129435c4bac7696b6f8da",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/samples/0.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/samples/0.sha256",
+      "bytes": 65,
+      "sha256": "654cfbe95db64dad079bd5adc2cd02b53bca0fcfd74e8569b5ddfee78517d12d",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/samples/0.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/samples/1.json",
+      "bytes": 959,
+      "sha256": "049a21d1215ed2bd565831c2461a4909a8c30271082b1995cc0605cdf391058c",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/samples/1.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/samples/1.sha256",
+      "bytes": 65,
+      "sha256": "c325f0f70832f6d267edfdd6d3531aeb139de00c6fb4d0c4d0200b527ddb7275",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/samples/1.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/samples/2.json",
+      "bytes": 2858,
+      "sha256": "8d0d1252df67268ea6eccbdcfb0c6487734e7fa019e3e6ba5ed298a29676bd89",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/samples/2.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/samples/2.sha256",
+      "bytes": 65,
+      "sha256": "213ae0e6d1cf9d3fe2a4bc41349dd9901979ffb6df4d07f9677315500d8016a7",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/samples/2.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/samples/3.json",
+      "bytes": 2086,
+      "sha256": "8f522280380a2a792b7c4c6e4058a7a50ad700fc6383f7065834a2fd55d5822a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/samples/3.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/samples/3.sha256",
+      "bytes": 65,
+      "sha256": "12c3b32c5128a2a02622006a6c44a1208cdbc5d3d813a184caea2b1fb67fcd18",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/samples/3.sha256",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/status.json",
+      "bytes": 219,
+      "sha256": "4a52ef2d488a92eb37aa4ee2ae360d003bb2416aa219e0479b2e50bbc08d163f",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/status.json",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/threshold-performance.png",
+      "bytes": 49230,
+      "sha256": "c1b47cf096bb608d652b45bb47022a600d368721ea4ddaa559898691770e73f9",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/threshold-performance.png",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu",
+      "image": {
+        "width": 1728,
+        "height": 972,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/threshold-performance.svg",
+      "bytes": 12486,
+      "sha256": "e3b192666e97ba042f63ae3485762dfc30f8b32468117591e3b785dd5373a86c",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/threshold-performance.svg",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/thresholds.csv",
+      "bytes": 13278,
+      "sha256": "306feccfd96ae905349193196507297b1eb3a911d976704bbfc859cd571a0aad",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/data/evaluations/20261020-102712-851-af576ff9/thresholds.csv",
+      "category": "persistent evaluation report/candidate cache",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/request.json",
+      "bytes": 482,
+      "sha256": "d3615be51add202e4f64b63a00512a02e7aadf55bd438735898c54ae029c959d",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/request.json",
+      "category": "native evaluation request",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/ui-smoke/evaluation-analysis.png",
+      "bytes": 249830,
+      "sha256": "259bda8e0b7d3e67d41e9450462b642fea0a4a7f31d3ec0ca52f4d342e693354",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/ui-smoke/evaluation-analysis.png",
+      "category": "actual native UI screenshot",
+      "case": "zero_result_id32_cpu",
+      "image": {
+        "width": 1580,
+        "height": 960,
+        "mode": "RGB",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "zero_result_id32_cpu/ui-smoke/evaluation-preview.png",
+      "bytes": 417206,
+      "sha256": "f0a2d0384bb2644718bd1ac1569db4cdd0645e39bfa140051ded4cbe54ff0a6f",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/ui-smoke/evaluation-preview.png",
+      "category": "actual native UI screenshot",
+      "case": "zero_result_id32_cpu",
+      "image": {
+        "width": 1580,
+        "height": 960,
+        "mode": "RGB",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    },
+    {
+      "file": "zero_result_id32_cpu/ui-smoke/evaluation-smoke-report.json",
+      "bytes": 149343,
+      "sha256": "9e88418e799e4b37c6042878197e2a2ea242c3d4508ae7bad9c1a115ee94bb89",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/ui-smoke/evaluation-smoke-report.json",
+      "category": "actual native evaluation smoke report",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/ui-smoke/selected-result/000000000036-20261020-182719-044.csv",
+      "bytes": 56,
+      "sha256": "24f5d419330de332180a546378a57f35afe56977f36a8ce64108cc9c4d4c650a",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/ui-smoke/selected-result/000000000036-20261020-182719-044.csv",
+      "category": "actual selected-image export",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/ui-smoke/selected-result/000000000036-20261020-182719-044.json",
+      "bytes": 1824,
+      "sha256": "3fea03a49053ff34c99cc629fc7857dca16d3d3c05e380fcb78e04a971fb8ad2",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/ui-smoke/selected-result/000000000036-20261020-182719-044.json",
+      "category": "actual selected-image export",
+      "case": "zero_result_id32_cpu"
+    },
+    {
+      "file": "zero_result_id32_cpu/ui-smoke/selected-result/000000000036-20261020-182719-044.png",
+      "bytes": 678970,
+      "sha256": "ad5299a57b38a8ffceded0870623d727e38aa15b5a41f7e31d62f0d1b2ac098f",
+      "source_file": "/tmp/vision-studio-evaluation-qa-d7h7nood/zero_result_id32_cpu/ui-smoke/selected-result/000000000036-20261020-182719-044.png",
+      "category": "actual selected-image export",
+      "case": "zero_result_id32_cpu",
+      "image": {
+        "width": 481,
+        "height": 640,
+        "mode": "RGBA",
+        "format": "PNG",
+        "fully_decoded": true
+      }
+    }
+  ],
+  "file_count": 192,
+  "uncompressed_bytes": 13196543,
+  "png_fully_decoded_count": 30,
+  "zip_crc_and_member_sha256_verified": true,
+  "limitations": [
+    "COCO8 is a tiny pipeline integration set, not a deployment benchmark or football accuracy claim.",
+    "CUDA comparisons apply to identical weights and record explicit numeric tolerances.",
+    "Image decoding does not replace interaction assertions.",
+    "No physical camera or Windows 2.3.1 evaluation acceptance.",
+    "Zero-result sports-ball case tests absent-target handling; COCO sports ball is not football-specific."
+  ],
+  "visual_inspection": {
+    "method": "Opened the retained PNG pixels with view_image after complete Pillow decode. No generated stand-in or altered screenshots.",
+    "files": [
+      "onnx_cuda/ui-smoke/evaluation-analysis.png",
+      "pt_cpu/ui-smoke/evaluation-preview.png"
+    ],
+    "observations": [
+      "The ONNX CUDA analysis screenshot shows four COCO8 Val samples, class 0 → class 0, actual saved full-set metrics, analysis threshold and deployment configuration action in the existing dark UI. Lower analysis content is reached through its scroll area.",
+      "The PT CPU preview shows the public COCO8 umbrella image with a blue GT person box, prediction box, TP label and original class ID 0. Some table class text uses standard ellipsis at the narrow column width."
+    ],
+    "limitations": [
+      "Only these two keyframes were visually inspected; all thirty PNG files were fully decoded. Metrics are tiny integration-set observations, not football model quality or performance claims."
+    ]
+  }
+}
