@@ -1,5 +1,6 @@
 #include "core/visionengine.h"
 #include "ui/imagecanvas.h"
+#include "ui/evaluationpanel.h"
 #include "ui/mainwindow.h"
 #include "ui/modelconversionpage.h"
 
@@ -8,6 +9,9 @@
 #include <QDateTime>
 #include <QDir>
 #include <QDoubleSpinBox>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QElapsedTimer>
 #include <QFile>
 #include <QFileInfo>
 #include <QJsonArray>
@@ -16,6 +20,7 @@
 #include <QLineEdit>
 #include <QListWidget>
 #include <QMessageBox>
+#include <QMimeData>
 #include <QProcess>
 #include <QProcessEnvironment>
 #include <QPushButton>
@@ -26,6 +31,7 @@
 #include <QTemporaryDir>
 #include <QTest>
 #include <QTimer>
+#include <QUrl>
 #include <cmath>
 #include <memory>
 
@@ -112,6 +118,8 @@ class ConversionInferenceTests final : public QObject
         QVERIFY(QFile::copy(project_ + "/models/yolov5n.onnx", home + "/models/yolov5n.onnx"));
         QVERIFY(QFile::copy(project_ + "/scripts/pt_worker.py", home + "/scripts/pt_worker.py"));
         QVERIFY(QFile::copy(project_ + "/scripts/netron_server.py", home + "/scripts/netron_server.py"));
+        for (const QString &helper : {QString("evaluation_worker.py"), QString("evaluation_data.py"), QString("evaluation_metrics.py")})
+            QVERIFY(QFile::copy(project_ + "/scripts/" + helper, home + "/scripts/" + helper));
         QVERIFY(QFile::link(project_ + "/vendor", home + "/vendor"));
         QFile probe(home + "/scripts/gpu_probe.py");
         QVERIFY(probe.open(QIODevice::WriteOnly));
@@ -204,6 +212,9 @@ class ConversionInferenceTests final : public QObject
             QVERIFY(QFileInfo(configuredGpuRuntime_ + "/ready.json").isFile());
             qputenv("VISION_STUDIO_GPU_RUNTIME_DIR", configuredGpuRuntime_.toUtf8());
         }
+        // The professional workbench starts empty. Import the fixture through
+        // the public YOLO dataset drop after the full-model bus replacement.
+        QVERIFY2(importDatasetFixture(), qPrintable(datasetError_));
         const QString original = (fullModel ? project_ + "/models" : fixtures_->path()) + '/' + source;
         window_->showModelStructure(original);
         if (preserveGray)
@@ -245,6 +256,8 @@ class ConversionInferenceTests final : public QObject
         QTest::mouseClick(namedButton(window_.get(), "开始检测"), Qt::LeftButton);
         QCOMPARE(starts.size(), 1);
         const auto request = starts[0][0].value<vision::JobRequest>();
+        QCOMPARE(request.sourceKind, vision::SourceKind::Images);
+        QCOMPARE(request.files, QStringList{datasetImage_});
         QCOMPARE(request.config.modelPath, output);
         QCOMPARE(request.config.inputChannels, channels);
         QCOMPARE(request.config.inputSize, imageSize);
@@ -311,6 +324,62 @@ class ConversionInferenceTests final : public QObject
     }
 
   private:
+    bool importDatasetFixture()
+    {
+        datasetError_.clear();
+        const auto fail = [this](const QString &message) { datasetError_ = message; return false; };
+        const QString directory = area_->path() + "/dataset";
+        if (!QDir().mkpath(directory + "/images/val") || !QDir().mkpath(directory + "/labels/val"))
+            return fail("Cannot create the conversion test dataset directories.");
+        datasetImage_ = directory + "/images/val/bus.jpg";
+        if (QFileInfo::exists(datasetImage_) && !QFile::remove(datasetImage_))
+            return fail("Cannot refresh the conversion test dataset image.");
+        if (!QFile::copy(area_->path() + "/assets/bus.jpg", datasetImage_))
+            return fail("Cannot copy the current conversion test image into the dataset.");
+        if (QImage(datasetImage_).convertToFormat(QImage::Format_RGB888) != image_.convertToFormat(QImage::Format_RGB888))
+            return fail("The imported dataset image differs from the original/converted inference comparison pixels.");
+        QFile label(directory + "/labels/val/bus.txt");
+        if (!label.open(QIODevice::WriteOnly | QIODevice::Truncate))
+            return fail("Cannot write the empty conversion test annotation.");
+        label.close(); // Explicit empty annotation for a conversion-only preview fixture.
+        QFile yaml(directory + "/data.yaml");
+        const QByteArray configuration("path: .\nval: images/val\nnames: [conversion_fixture]\n");
+        if (!yaml.open(QIODevice::WriteOnly | QIODevice::Truncate) || yaml.write(configuration) != configuration.size())
+            return fail("Cannot write the standard YOLO test dataset configuration.");
+        yaml.close();
+        auto *page = window_->findChild<QWidget *>("workbenchPage");
+        auto *canvas = page ? page->findChild<ImageCanvas *>() : nullptr;
+        auto *evaluation = window_->findChild<EvaluationPanel *>();
+        auto *queue = window_->findChild<QListWidget *>("inputQueue");
+        auto *run = namedButton(window_.get(), "开始检测");
+        if (!canvas || !evaluation || !queue || !run)
+            return fail("The workbench public dataset controls are missing.");
+        QMimeData mime; mime.setUrls({QUrl::fromLocalFile(directory)});
+        const QPoint point = canvas->rect().center();
+        QDragEnterEvent enter(point, Qt::CopyAction, &mime, Qt::LeftButton, Qt::NoModifier);
+        QApplication::sendEvent(canvas, &enter);
+        if (!enter.isAccepted()) return fail("The canvas rejected the standard YOLO dataset directory.");
+        QDropEvent drop(point, Qt::CopyAction, &mime, Qt::LeftButton, Qt::NoModifier);
+        QApplication::sendEvent(canvas, &drop);
+        if (!drop.isAccepted()) return fail("The canvas did not accept the YOLO dataset drop.");
+        QElapsedTimer timer; timer.start();
+        while (timer.elapsed() < 30000 && unexpected_.isEmpty())
+        {
+            QApplication::processEvents();
+            const auto samples = evaluation->dataset().value("samples").toArray();
+            if (samples.size() == 1 && samples[0].toObject().value("image").toString() == datasetImage_ &&
+                queue->count() == 1 && canvas->result().source == datasetImage_ &&
+                !canvas->result().image.isNull() && run->isEnabled())
+            {
+                if (evaluation->evaluationMode()) return fail("The dataset fixture must remain in detection preview mode.");
+                return true;
+            }
+            QTest::qWait(5);
+        }
+        auto *hint = evaluation->controlsWidget()->findChild<QLabel *>("evaluationDatasetHint");
+        return fail("The conversion test dataset did not become ready for preview inference: " + unexpected_ +
+                    (hint ? "\n" + hint->toolTip() : QString()));
+    }
     void verifyPersistenceAndManualLabels(const QString &output, const QJsonObject &metadata)
     {
         window_->close();
@@ -327,6 +396,7 @@ class ConversionInferenceTests final : public QObject
         settings.setValue("labelsPath", area_->path() + "/manual.names");
         settings.sync();
         showWindow();
+        QVERIFY2(importDatasetFixture(), qPrintable(datasetError_));
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
         QTest::mouseClick(namedButton(window_.get(), "开始检测"), Qt::LeftButton);
         QCOMPARE(starts.size(), 1);
@@ -369,7 +439,7 @@ class ConversionInferenceTests final : public QObject
         window_->show();
         QTest::qWait(20);
     }
-    QString project_, runtime_, configuredGpuRuntime_, unexpected_;
+    QString project_, runtime_, configuredGpuRuntime_, unexpected_, datasetImage_, datasetError_;
     QImage image_;
     QHash<QByteArray, QByteArray> previous_;
     QSet<QByteArray> present_;
