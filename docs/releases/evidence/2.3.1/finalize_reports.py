@@ -98,10 +98,26 @@ def aggregate(project, release, evidence):
     source_archive = release / f"vision-studio-{VERSION}-complete-source.tar.xz"
     require(deb.is_file() and source_archive.is_file(), "Final DEB and complete corresponding source must exist")
     deb_sha = sha(deb)
-    raw_names = ("qa-report.json", "install-qa.json", "source-bundle-qa.json", "packaged-gpu-qa.json", "packaged-evaluation-qa.json")
+    raw_names = ("qa-report.json", "install-qa.json", "source-bundle-qa.json", "packaged-gpu-qa.json", "packaged-evaluation-qa.json",
+                 "folder-package-qa.json", "packaged-private-precheck.json")
     reports = {name: read(release / name) for name in raw_names}
     for name, report in reports.items():
         passed(report, name, deb_sha)
+    folder = reports["folder-package-qa.json"]
+    expected_folder_checks = ("final_deb_binding_and_readonly", "unchanged_public_val_fixture_and_readonly",
+        "real_onnx_cpu_four_images", "directory_origin_preserved", "unique_conventional_yaml_selected",
+        "stale_root_and_absolute_list_relocated", "all_91_threshold_points", "selected_png_json_csv_exports",
+        "public_and_fixture_inputs_unchanged", "packaged_application_unchanged")
+    require(folder.get("package_bound") is True and folder.get("read_only_application") is True and
+            all(folder.get("checks", {}).get(name) is True for name in expected_folder_checks),
+            "Final read-only package did not pass the folder-specific regression")
+    private = reports["packaged-private-precheck.json"]
+    require(private.get("selected_images", 0) > 0 and private.get("root_relocated") is True and
+            private.get("manifest_matches_source_precheck") is True and
+            private.get("original_yaml_sha256_unchanged") is True and private.get("dataset_writes") is False and
+            all(private.get("source_helpers_match_staged", {}).get(name) is True for name in
+                ("evaluation_worker.py", "evaluation_data.py", "evaluation_metrics.py")),
+            "Private directory precheck is incomplete or inputs differ; never substitute it for inference accuracy")
     ctest = read(evidence / "ctest-qa.json")
     require(ctest.get("version") == VERSION and ctest.get("success") is True and not ctest.get("errors") and
             ctest.get("failed") == ctest.get("skipped") == ctest.get("blacklisted") == 0,

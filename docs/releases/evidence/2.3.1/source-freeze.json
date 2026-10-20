@@ -1,0 +1,11 @@
+{
+  "version": "2.3.1",
+  "source_commit": "cfe21880b386f09dc4ef20ac6bc38d0e90dcfd8b",
+  "clean_export": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/clean-source",
+  "source_method": "git archive of archive_input_commit; exact Git tree equality to squash-merged main source_commit verified",
+  "runtime_info_sha256": "15b239dc233e80b4ddaa8b22f87f07fb71bfe4d90332985a708bce04d6019f1b",
+  "note": "Source revision is immutable; final QA evidence and publication receipts are committed separately without changing packaged production inputs.",
+  "archive_input_commit": "40418b7f74f6d2674fc923c8c6e487ad3e066933",
+  "source_tree": "f60d04239cc526766b66cd712712926e7de243d5",
+  "main_tree_identical_to_archive_input": true
+}

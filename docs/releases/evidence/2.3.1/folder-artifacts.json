@@ -1,0 +1,151 @@
+{
+  "version": "2.3.1",
+  "deb_sha256": "1e959057337832f2dac8d950d738426ad426ea124aee7cefc925286792d19758",
+  "scope": "Actual final readonly package folder import and evaluation; public COCO8 only, no private inputs; pipeline validation, not an accuracy benchmark",
+  "files": {
+    "application/application.stderr.log": {
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+    },
+    "application/application.stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/REPORT.md": {
+      "bytes": 1270,
+      "sha256": "5457a3b2f30fb186fc04c32af27797403000d863b1c7a16a00a18029213badbb"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/errors.csv": {
+      "bytes": 417,
+      "sha256": "08c45eb3820570fda9a0c0fb4fd8f331071d2d07c051e5e35ca663c05db9794f"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/helper.log": {
+      "bytes": 543,
+      "sha256": "9d6aa08db3a1dbeabda884510152a439117f4368a5698d4fb7cc35d3e9d102f0"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/manifest.json": {
+      "bytes": 10328,
+      "sha256": "8d638639c9014ebf6afcd0e0497d45bea3d0175b5c6fa98ee05bdc9cb5a54174"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/negative-false-positive-rate.png": {
+      "bytes": 61509,
+      "sha256": "903f272b1b1cc1f63d12de477d3a3870663fc53edb814499ef214c3d91d3575e"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/per-image.csv": {
+      "bytes": 657,
+      "sha256": "7b83786f762e54614e040117fda491675c625dc0f0d6d3bb55d59081ffac0a7f"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/plot-config/fontlist-v390.json": {
+      "bytes": 115885,
+      "sha256": "8cb3cf1de17d624a99c6953d4d60f27121507a28c610a9ebacb284d3dd97f6ed"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/predictions.jsonl": {
+      "bytes": 31502,
+      "sha256": "ba0140e76288b50b1e6d65d1ded4c1dad57b6873b0924c5d99f7867f85594bc1"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/report.json": {
+      "bytes": 210938,
+      "sha256": "1e874a6bf817d8f66ab3a690fe652b1db0e95b0649a7cac38bd9b2ca2e841db9"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/request.json": {
+      "bytes": 1991,
+      "sha256": "33e3593801e2d3c26461404015c3f2f332f6c403dd1e6d90baf6576e002bfd67"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/samples/0.json": {
+      "bytes": 3883,
+      "sha256": "af39b5c4ae38c86cc7c5df115d1f25a438487c2f177b3d6b369fbf9f395a5c83"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/samples/1.json": {
+      "bytes": 9953,
+      "sha256": "d632bf590adbb04f7cde87ad9dce6936c02ebd2e4a55ace9a0b9f373ca700300"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/samples/2.json": {
+      "bytes": 38251,
+      "sha256": "18f5d36a6a58e9447b2fefd85442a6423090b4e30e63049c155f69d7f01b53e7"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/samples/3.json": {
+      "bytes": 11477,
+      "sha256": "6401147ada03a18df0e7600114ebfea956b7e6dcc8c9cdf470955a439fb1851c"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/status.json": {
+      "bytes": 214,
+      "sha256": "2f078d3ce2c5f8e82fb8a4d5ad679fcd2f8c08fd22fe5edd636f5e05620a142e"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/threshold-performance.png": {
+      "bytes": 83695,
+      "sha256": "55b21f9048d0b8eb08783a645ce1a03159a06136a02ea9d7b1dff3cdc4f113f4"
+    },
+    "application/data/evaluations/20261020-102823-622-4feff7bb/thresholds.csv": {
+      "bytes": 32049,
+      "sha256": "b80611663eb634ffdcc08636b8ac2eb8e9d9296f8b1905e68b3ed474fa4cc220"
+    },
+    "application/request.json": {
+      "bytes": 491,
+      "sha256": "37c86703cb76d0e4ccdceb35fb791501ce2db9c045ae5c104aa814e396267d7d"
+    },
+    "application/ui-smoke/evaluation-analysis.png": {
+      "bytes": 242408,
+      "sha256": "97f839eb225349bf9b4768fac1cc6ef90aef9f837fbb41d0131e570d54da79b4"
+    },
+    "application/ui-smoke/evaluation-preview.png": {
+      "bytes": 405539,
+      "sha256": "5d45072cc9dc52ecfd67212b6d9a8579d71b8328e5243d3a40b1cb9bc2af56da"
+    },
+    "application/ui-smoke/evaluation-smoke-report.json": {
+      "bytes": 239103,
+      "sha256": "d4449fc26a0f5a45e359fc98c07f964edc00ef9ac52e2a75641a3dfa0f48c8d3"
+    },
+    "application/ui-smoke/selected-result/000000000036-20261020-182826-448.csv": {
+      "bytes": 106,
+      "sha256": "4c834153d3a3ddab9666f3caca7c49c305930373c47b5451e0bf66c362faef02"
+    },
+    "application/ui-smoke/selected-result/000000000036-20261020-182826-448.json": {
+      "bytes": 2343,
+      "sha256": "107fee74eddffe15472139ce9f18443fd2b5149aeb288d7cc7e14d44811a1905"
+    },
+    "application/ui-smoke/selected-result/000000000036-20261020-182826-448.png": {
+      "bytes": 685903,
+      "sha256": "e87d4c6734e522b3de5283dbfc7c7138bcfc5132db1dd36e748b510a88acc784"
+    },
+    "migrated-dataset/data.yaml": {
+      "bytes": 965,
+      "sha256": "c4f878fee5d9edaea3f99c77a60c780e050e34797f6facfec3dd38daefb00e49"
+    },
+    "migrated-dataset/lists/val.txt": {
+      "bytes": 388,
+      "sha256": "607627c32a735c2ef37d1c8f972ae6919151e44be430f95be15cf6c9ec2bc748"
+    },
+    "migrated-dataset/train_from_scratch.example.yaml": {
+      "bytes": 27,
+      "sha256": "12f2ef9306254ebc409af1b9e0b88903ef5dcd56a9d20a3c4c88f02a98cd1769"
+    }
+  },
+  "zip_sha256": "848d43f0c14173d4a222be1f236f6b8cf6f7bb539da4dad09d74e554c2a15062",
+  "png_complete_decode": [
+    {
+      "file": "application/data/evaluations/20261020-102823-622-4feff7bb/negative-false-positive-rate.png",
+      "width": 1728,
+      "height": 972
+    },
+    {
+      "file": "application/data/evaluations/20261020-102823-622-4feff7bb/threshold-performance.png",
+      "width": 1728,
+      "height": 972
+    },
+    {
+      "file": "application/ui-smoke/evaluation-analysis.png",
+      "width": 1580,
+      "height": 960
+    },
+    {
+      "file": "application/ui-smoke/evaluation-preview.png",
+      "width": 1580,
+      "height": 960
+    },
+    {
+      "file": "application/ui-smoke/selected-result/000000000036-20261020-182826-448.png",
+      "width": 481,
+      "height": 640
+    }
+  ]
+}

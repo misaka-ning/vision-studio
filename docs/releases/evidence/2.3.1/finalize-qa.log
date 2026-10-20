@@ -1,0 +1,36 @@
+{
+  "success": true,
+  "deb_sha256": "1e959057337832f2dac8d950d738426ad426ea124aee7cefc925286792d19758",
+  "gpu_checks": {
+    "onnx_cuda_nodes": true,
+    "pt_cuda": true,
+    "packaged_onnx_cuda": true,
+    "packaged_pt_cuda": true,
+    "cpu_regression": true,
+    "grayscale_c1_c3": true,
+    "stereo_recording": true
+  },
+  "conversion_passed": {
+    "vision-conversion-inference-tests": 14,
+    "vision-model-conversion-tests": 20
+  },
+  "evaluation_passed": {
+    "vision-evaluation-integration-tests": 27,
+    "vision-evaluation-worker-tests": 18,
+    "vision-evaluation-python-tests": 49
+  },
+  "manual_assets": {
+    "vision-studio_2.3.1-1_amd64.deb": {
+      "bytes": 387141452,
+      "sha256": "1e959057337832f2dac8d950d738426ad426ea124aee7cefc925286792d19758"
+    },
+    "vision-studio-2.3.1-complete-source.tar.xz": {
+      "bytes": 847507304,
+      "sha256": "bcf9e2dcfb27e96db3c411dfa71da3e7dc248ed81ed1adb0c554ee08ba7d29e6"
+    },
+    "SHA256SUMS": {
+      "bytes": 207,
+      "sha256": "f68adff3fd49fbad4bd73c1562a8b28ceaa904721c87a67f037fa56ac2a1e24e"
+    }
+  }
+}

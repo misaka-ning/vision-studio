@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "version": "2.3.1",
+  "success": true,
+  "errors": [],
+  "scope": "Actual host upgrade and installed-helper read-only private directory precheck; not model accuracy",
+  "previous_debian_version": "2.3.0-1",
+  "installed_debian_version": "2.3.1-1",
+  "application_version_stdout": "Vision Studio 2.3.1",
+  "deb_sha256": "1e959057337832f2dac8d950d738426ad426ea124aee7cefc925286792d19758",
+  "installed_package_code_verified": {
+    "build/bin/vision-studio": true,
+    "models/yolov5n.onnx": true,
+    "models/yolov8n.pt": true,
+    "run-installed.sh": true,
+    "scripts/evaluation_data.py": true,
+    "scripts/evaluation_metrics.py": true,
+    "scripts/evaluation_worker.py": true,
+    "scripts/model_convert.py": true,
+    "scripts/pt_worker.py": true
+  },
+  "user_files_verified_unchanged": 5,
+  "user_state_changes": 0,
+  "private_backup_retained": true,
+  "installed_dataset_precheck": {
+    "selected_images": 1223,
+    "validation": {
+      "positive_images": 813,
+      "negative_images": 410,
+      "missing_labels": 0,
+      "excluded": 0
+    },
+    "root_relocated": true,
+    "manifest_matches_preinstall": true,
+    "model_inference": false,
+    "dataset_writes": false,
+    "elapsed_seconds": 5.245
+  },
+  "privacy_note": "Private before-state backup and manifests retained only locally; public report contains counts and hashes, not private file paths or data."
+}

@@ -1,0 +1,55 @@
+{
+  "version": "2.3.1",
+  "scope": "Supplemental frozen Qt integration binary, synthetic fixture; not model accuracy",
+  "files": {
+    "visual-check.json": {
+      "bytes": 2751,
+      "sha256": "1abc50aa8225876137c33b5da27c6a0ec2b8ebf6f5120a68e5ae29c16e8bc646"
+    },
+    "VISUAL-CHECK.md": {
+      "bytes": 1489,
+      "sha256": "e7bea45a719b168b30830d8c2a07c62ef7db99dea8c59d1cef02f8ba60663d80"
+    },
+    "native-ui-tests.txt": {
+      "bytes": 2875,
+      "sha256": "78cc21a0d7d700d50cdcd069933e7b672202d3e48246ec062057c78649acb498"
+    },
+    "threshold-filter-adopt/status.json": {
+      "bytes": 204,
+      "sha256": "df9db5dbb8f492577a20c2b0297287f79870e1f88855dd72f64fa071f8493040"
+    },
+    "threshold-filter-adopt/native-window.png": {
+      "bytes": 227505,
+      "sha256": "8132874f30247c0e17f2f4171e0a278a9c8c5692982938160939b79ef514288c"
+    },
+    "threshold-filter-adopt/report.json": {
+      "bytes": 71123,
+      "sha256": "5ba7f76879b1c5dffd2eaa20fdc315c6c932efa04590f1f12d67bbdcdb62ee03"
+    },
+    "threshold-filter-adopt/minimum-window.png": {
+      "bytes": 206699,
+      "sha256": "858cb3381ba09afcb486f7f64c1f14e8f23ce9cc27194fdb656b242d5cc1f5ef"
+    },
+    "threshold-filter-adopt/REPORT.md": {
+      "bytes": 1264,
+      "sha256": "883704e166bc0a239e16b5f5c86ffa3f5361cfff668149c8bd421660a0ea886b"
+    },
+    "relocated-folder-evaluation/status.json": {
+      "bytes": 204,
+      "sha256": "223325b2d0fa5ecd31a8e6db5364727cbb59156917cdc1b34a5b3212937bbe96"
+    },
+    "relocated-folder-evaluation/native-window.png": {
+      "bytes": 230880,
+      "sha256": "ecef7e47027df67a22adedcc5a7434d6db7fa3701c8b4be42eef9f1471e7ca5c"
+    },
+    "relocated-folder-evaluation/report.json": {
+      "bytes": 70398,
+      "sha256": "2615610c2e1069927747e99da9214f2e5039be751205b5731753ad34bb24b5ac"
+    },
+    "relocated-folder-evaluation/REPORT.md": {
+      "bytes": 1370,
+      "sha256": "5b67b027be6955d714d3e2945251b8f667abd70b71417f528b2a8d9bbabd2878"
+    }
+  },
+  "zip_sha256": "068359ce942bdf4df6099c57aa2d80bb20a5337b7dd11ff67f02b1b4b0a7c789"
+}

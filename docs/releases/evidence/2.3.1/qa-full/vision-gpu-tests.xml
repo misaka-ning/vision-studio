@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="136"
+	timestamp="2026-10-20T18:22:47"
+	>
+	<testcase name="vision-gpu-tests" classname="vision-gpu-tests" time="136.448" status="run">
+		<system-out>********* Start testing of GpuBackendTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : GpuBackendTests::initTestCase()
+QINFO  : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds() CLASS_FILTER_EVIDENCE {"actual_cuda_device":"NVIDIA GeForce RTX 4060","case":"all","cpu_backend":"OpenCV DNN / CPU","cpu_count":5,"cpu_original_ids":[0,5],"cuda_backend":"ONNX Runtime / CUDA","cuda_count":5,"cuda_original_ids":[0,5],"filter":[],"model":"yolov5n.onnx","model_class_count":80,"zero_match":false}
+QINFO  : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds() CLASS_FILTER_EVIDENCE {"actual_cuda_device":"NVIDIA GeForce RTX 4060","case":"32","cpu_backend":"OpenCV DNN / CPU","cpu_count":0,"cpu_original_ids":[],"cuda_backend":"ONNX Runtime / CUDA","cuda_count":0,"cuda_original_ids":[],"filter":[32],"model":"yolov5n.onnx","model_class_count":80,"zero_match":true}
+QINFO...
+The rest of the test output was removed since it exceeds the threshold of 1024 bytes.
+</system-out>
+	</testcase>
+</testsuite>
