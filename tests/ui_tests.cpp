@@ -337,6 +337,19 @@ QJsonObject exportedMetadata(const QString &home)
 class UiTests final : public QObject
 {
     Q_OBJECT
+    // Ordinary image inputs are kept solely as internal fixtures for inference
+    // and cache regressions. The product imports still images as YOLO datasets.
+    bool importInternalFolder(const QString &path)
+    {
+        QStringList files;
+        for (const auto &file : QDir(path).entryInfoList(QDir::Files, QDir::Name))
+            if (QStringList{"jpg", "jpeg", "png", "bmp", "webp", "tif", "tiff"}.contains(file.suffix().toLower()))
+                files.append(file.absoluteFilePath());
+        if (files.isEmpty()) return false;
+        window_->clearImageResults(); window_->files_.clear(); window_->queue_->clear();
+        window_->addFiles(files);
+        return window_->files_ == files;
+    }
   private slots:
     void initTestCase()
     {
@@ -430,6 +443,31 @@ class UiTests final : public QObject
             qunsetenv("VISION_STUDIO_GPU_RUNTIME_DIR");
     }
 
+    void professionalWorkbenchStartsEmptyAndRejectsLooseImageInputs()
+    {
+        auto *canvas = workbenchCanvas(window_.get());
+        auto *queue = inputQueue(window_.get());
+        QVERIFY(canvas && queue);
+        QVERIFY(!findButton(window_.get(), QStringLiteral("图片")));
+        QVERIFY(!findButton(window_.get(), QStringLiteral("文件夹")));
+        QVERIFY(!findButton(window_.get(), QStringLiteral("运行示例")));
+        QVERIFY(window_->findChild<QPushButton *>(QStringLiteral("openYoloDatasetButton")));
+        QVERIFY(findButton(window_.get(), QStringLiteral("视频")));
+        QVERIFY(findButton(window_.get(), QStringLiteral("摄像头")));
+        QCOMPARE(queue->count(), 0);
+        QVERIFY(canvas->result().image.isNull());
+        QVERIFY(canvas->result().predictions.isEmpty());
+        QVERIFY(!findButton(window_.get(), QStringLiteral("开始检测"))->isEnabled());
+        const QString image = fixture_->path() + QStringLiteral("/assets/bus.jpg");
+        QVERIFY(!dropFile(canvas, image));
+        QCOMPARE(queue->count(), 0);
+        QVERIFY(canvas->result().image.isNull());
+        QCOMPARE(predictionTable(window_.get())->rowCount(), 0);
+        QSignalSpy starts(window_.get(), &MainWindow::startRequested);
+        canvas->setFocus(); QTest::keyClick(canvas, Qt::Key_R, Qt::ControlModifier);
+        QTest::qWait(30); QCOMPARE(starts.count(), 0);
+    }
+
     void realInferenceSelectionAndNavigation()
     {
         auto *device = window_->findChild<QComboBox *>(QStringLiteral("computeDevice"));
@@ -500,19 +538,16 @@ class UiTests final : public QObject
 
         auto *pages = window_->findChild<QStackedWidget *>(QStringLiteral("workspacePages"));
         auto *title = window_->findChild<QLabel *>(QStringLiteral("pageTitle"));
-        auto *demoButton = findButton(window_.get(), QStringLiteral("运行示例"));
         QVERIFY(pages);
         QVERIFY(title);
-        QVERIFY(demoButton);
+        QVERIFY(!findButton(window_.get(), QStringLiteral("运行示例")));
         QCOMPARE(pages->count(), 8);
         QCOMPARE(pages->widget(0)->objectName(), QStringLiteral("workbenchPage"));
         QCOMPARE(pages->widget(2)->objectName(), QStringLiteral("modelDisplayPage"));
         QCOMPARE(pages->widget(5)->objectName(), QStringLiteral("recordingsPage"));
         QCOMPARE(pages->widget(6)->objectName(), QStringLiteral("modelConversionPage"));
         QCOMPARE(pages->widget(7)->objectName(), QStringLiteral("morePage"));
-        QVERIFY(pages->widget(7)->isAncestorOf(demoButton));
         QVERIFY(pages->widget(7)->isAncestorOf(exportButton));
-        QVERIFY(!demoButton->isVisible());
         QVERIFY(!exportButton->isVisible());
         for (const auto &route :
              {qMakePair(QStringLiteral("模型库"), 1), qMakePair(QStringLiteral("模型显示"), 2),
@@ -527,7 +562,6 @@ class UiTests final : public QObject
             QCOMPARE(pages->currentIndex(), route.second);
             QCOMPARE(title->text(), route.first);
             QVERIFY(nav->isChecked());
-            QCOMPARE(demoButton->isVisible(), route.second == 7);
             QCOMPARE(exportButton->isVisible(), route.second == 7);
             if (route.second == 7)
                 window_->saveScreenshot(QStringLiteral(VISION_PROJECT_DIR) +
@@ -1088,6 +1122,7 @@ class UiTests final : public QObject
         QVERIFY(run);
         QVERIFY(exportButton);
         QVERIFY(inputSize);
+        window_->addFiles({fixture_->path() + QStringLiteral("/assets/bus.jpg")});
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
         canvas->setFocus();
         QTest::keyClick(canvas, Qt::Key_R, Qt::ControlModifier);
@@ -1192,7 +1227,7 @@ class UiTests final : public QObject
         QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
         const QString second = fixture_->path() + QStringLiteral("/assets/second.jpg");
         QVERIFY(QFile::copy(fixture_->path() + QStringLiteral("/assets/bus.jpg"), second));
-        QVERIFY(dropFile(canvas, second));
+        window_->addFiles({second});
         QCOMPARE(queue->count(), 2);
         QCOMPARE(queue->currentRow(), 1);
         QCOMPARE(canvas->result().source, second);
@@ -1251,7 +1286,7 @@ class UiTests final : public QObject
         QVERIFY(original.save(first));
         QVERIFY(original.scaled(original.size() / 2, Qt::IgnoreAspectRatio,
                                 Qt::SmoothTransformation).save(second));
-        QVERIFY(chooseDialogFile(findButton(window_.get(), QStringLiteral("文件夹")), folder));
+        QVERIFY(importInternalFolder(folder));
         QCOMPARE(queue->count(), 2);
         QCOMPARE(queue->item(0)->toolTip(), first);
         QCOMPARE(queue->item(1)->toolTip(), second);
@@ -1393,7 +1428,7 @@ class UiTests final : public QObject
         QTest::mouseClick(findButton(window_.get(), QStringLiteral("检测工作台")), Qt::LeftButton);
         const QString unprocessed = fixture_->path() + QStringLiteral("/assets/unprocessed.png");
         QVERIFY(original.save(unprocessed));
-        QVERIFY(dropFile(canvas, unprocessed));
+        window_->addFiles({unprocessed});
         QCOMPARE(queue->count(), 3);
         QCOMPARE(canvas->result().source, unprocessed);
         QVERIFY(!canvas->result().image.isNull());
@@ -1465,7 +1500,7 @@ class UiTests final : public QObject
             files.append(file);
             originals.append(image);
         }
-        QVERIFY(chooseDialogFile(findButton(window_.get(), QStringLiteral("文件夹")), folder));
+        QVERIFY(importInternalFolder(folder));
         QCOMPARE(queue->count(), imageCount);
         for (int row = 0; row < imageCount; ++row)
             QCOMPARE(queue->item(row)->toolTip(), files[row]);
@@ -1586,7 +1621,7 @@ class UiTests final : public QObject
             QVERIFY(image.save(file));
             files.append(file);
         }
-        QVERIFY(chooseDialogFile(findButton(window_.get(), QStringLiteral("文件夹")), folder));
+        QVERIFY(importInternalFolder(folder));
         QCOMPARE(queue->count(), imageCount);
         queue->setCurrentRow(imageCount - 1);
         QVector<vision::InferenceResult> detected(imageCount);
@@ -1666,7 +1701,7 @@ class UiTests final : public QObject
             QVERIFY(image.save(file));
             files.append(file);
         }
-        QVERIFY(chooseDialogFile(findButton(window_.get(), QStringLiteral("文件夹")), folder));
+        QVERIFY(importInternalFolder(folder));
         QCOMPARE(queue->count(), 3);
         // Corrupt a file after successful import so the actual worker fails only
         // after delivering the first result, rather than the importer skipping it.
@@ -1756,7 +1791,7 @@ class UiTests final : public QObject
             QVERIFY(original.save(file));
             files.append(file);
         }
-        QVERIFY(chooseDialogFile(findButton(window_.get(), QStringLiteral("文件夹")), folder));
+        QVERIFY(importInternalFolder(folder));
         QCOMPARE(queue->count(), 2);
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
         QTest::mouseClick(run, Qt::LeftButton);
@@ -1829,7 +1864,7 @@ class UiTests final : public QObject
         const QString second = folder + QStringLiteral("/02-portrait.png");
         QVERIFY(firstImage.save(first));
         QVERIFY(secondImage.save(second));
-        QVERIFY(chooseDialogFile(findButton(window_.get(), QStringLiteral("文件夹")), folder));
+        QVERIFY(importInternalFolder(folder));
         QCOMPARE(queue->count(), 2);
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
         QTest::mouseClick(run, Qt::LeftButton);
@@ -2134,7 +2169,7 @@ class UiTests final : public QObject
         stereo->setCurrentIndex(stereo->findData(QStringLiteral("right")));
         QVERIFY(canvas->result().image.isNull());
         QVERIFY(!exportButton->isEnabled()); // Do not export an old result after switching eyes.
-        QVERIFY(dropFile(canvas, fixture_->path() + QStringLiteral("/assets/bus.jpg")));
+        window_->addFiles({fixture_->path() + QStringLiteral("/assets/bus.jpg")});
         QVERIFY(!stereo->isVisible() && !stereo->isEnabled());
         QCOMPARE(stereo->currentData().toString(), QStringLiteral("right"));
         QTest::mouseClick(run, Qt::LeftButton);

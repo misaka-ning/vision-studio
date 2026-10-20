@@ -36,51 +36,6 @@ QPushButton *findButton(QWidget *parent, const QString &title)
     return nullptr;
 }
 
-bool chooseFolder(QPushButton *button, const QString &path)
-{
-    if (!button)
-        return false;
-    bool selected = false, nameSet = false;
-    QPointer<QFileDialog> active;
-    QElapsedTimer elapsed;
-    elapsed.start();
-    QTimer selection;
-    QObject::connect(&selection, &QTimer::timeout, button,
-        [&]
-        {
-            auto *dialog = qobject_cast<QFileDialog *>(QApplication::activeModalWidget());
-            if (!dialog)
-                return;
-            if (active != dialog)
-            {
-                active = dialog;
-                dialog->setOption(QFileDialog::DontUseNativeDialog);
-                dialog->setDirectory(QFileInfo(path).absolutePath());
-                QObject::connect(dialog, &QDialog::finished, &selection,
-                    [&](int result) { selected = result == QDialog::Accepted; selection.stop(); });
-            }
-            if (elapsed.elapsed() > 5000)
-            {
-                dialog->reject();
-                return;
-            }
-            if (elapsed.elapsed() < 500)
-                return;
-            auto *name = dialog->findChild<QLineEdit *>(QStringLiteral("fileNameEdit"));
-            if (!name)
-                return;
-            if (!nameSet)
-            {
-                name->setText(path);
-                nameSet = true;
-            }
-            QMetaObject::invokeMethod(dialog, "accept", Qt::QueuedConnection);
-        });
-    selection.start(50);
-    QTest::mouseClick(button, Qt::LeftButton);
-    return selected;
-}
-
 QImage texturedImage(const QSize &size)
 {
     QImage image(size, QImage::Format_RGB888);
@@ -132,8 +87,10 @@ class BatchResponsivenessTests final : public QObject
                 return {};
             files.append(file);
         }
-        if (!chooseFolder(findButton(window_.get(), QStringLiteral("文件夹")), folder))
-            return {};
+        window_->clearImageResults();
+        window_->files_.clear();
+        window_->queue_->clear();
+        window_->addFiles(files);
         return files;
     }
 

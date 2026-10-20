@@ -43,6 +43,8 @@ class EvaluationWorker;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+    friend class UiTests;
+    friend class BatchResponsivenessTests;
     friend class ScopeFilterUiTests;
     friend class EvaluationIntegrationTests;
   public:
@@ -84,8 +86,6 @@ class MainWindow : public QMainWindow
     void exportRecording();
     void setupStyle();
     void connectWorker();
-    void chooseImages();
-    void chooseFolder();
     void chooseVideo();
     void chooseCamera();
     void importModel();
@@ -239,7 +239,7 @@ class MainWindow : public QMainWindow
     QProgressBar *gpuSetupProgress_ = nullptr;
     QLabel *preprocessHint_ = nullptr, *meanRLabel_ = nullptr, *stereoLabel_ = nullptr;
     QPushButton *runButton_ = nullptr, *stopButton_ = nullptr, *exportButton_ = nullptr,
-                *demoButton_ = nullptr, *modelButton_ = nullptr, *labelButton_ = nullptr;
+                *modelButton_ = nullptr, *labelButton_ = nullptr;
     QPushButton *recordButton_ = nullptr, *recordingPlayButton_ = nullptr, *exportRecordingButton_ = nullptr;
     QLabel *recordingStatus_ = nullptr, *recordingsCount_ = nullptr, *recordingDetails_ = nullptr;
     QListWidget *queue_ = nullptr, *modelList_ = nullptr;

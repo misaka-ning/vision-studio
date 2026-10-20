@@ -11,6 +11,8 @@
 #include <QDateTime>
 #include <QDir>
 #include <QDoubleSpinBox>
+#include <QDragEnterEvent>
+#include <QDropEvent>
 #include <QElapsedTimer>
 #include <QFile>
 #include <QFileDialog>
@@ -21,6 +23,7 @@
 #include <QListWidget>
 #include <QMenu>
 #include <QMessageBox>
+#include <QMimeData>
 #include <QProgressBar>
 #include <QPushButton>
 #include <QSettings>
@@ -151,7 +154,7 @@ class EvaluationIntegrationTests final : public QObject
         writeFile(yaml_, ("path: " + directory + "\nval: images/val\nnames: [football]\n").toUtf8());
         return yaml_;
     }
-    bool selectDatasetPath(bool directYaml = false)
+    bool selectDatasetPath(bool directYaml = false, bool keyboardShortcut = false)
     {
         QTimer chooser; QElapsedTimer pickerTimeout; pickerTimeout.start();
         bool pickerSeen = false, correctMode = false;
@@ -180,6 +183,9 @@ class EvaluationIntegrationTests final : public QObject
             for (auto *action : options->menu()->actions()) if (action->text().contains("YAML")) yamlAction = action;
             if (!yamlAction) return false;
             yamlAction->trigger();
+        } else if (keyboardShortcut) {
+            window_->activateWindow(); window_->canvas_->setFocus();
+            QTest::keyClick(window_->canvas_, Qt::Key_O, Qt::ControlModifier);
         } else {
             auto *button = window_->findChild<QPushButton *>("openYoloDatasetButton");
             if (!button) return false;
@@ -240,7 +246,7 @@ private slots:
     {
         QApplication::setStyle("Fusion"); QApplication::setFont(QFont("Noto Sans CJK SC", 10));
         QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
-        QCoreApplication::setApplicationVersion("2.3.1");
+        QCoreApplication::setApplicationVersion("2.4.0");
         for (QString candidate : {qEnvironmentVariable("VISION_STUDIO_EVALUATION_PYTHON"), qEnvironmentVariable("VISION_STUDIO_PYTHON"),
             QStringLiteral(VISION_PROJECT_DIR) + "/runtime/bin/python", QStringLiteral(VISION_PROJECT_DIR) + "/runtime/python.exe",
             QStringLiteral("/opt/VisionStudio/runtime/bin/python")}) {
@@ -306,6 +312,44 @@ private slots:
         window_->evaluation_->setMode(false); QCOMPARE(window_->workbenchTabs_->currentIndex(), 0);
         QCOMPARE(window_->files_, images_);
     }
+    void shortcutOpensDatasetDirectoryInsteadOfLooseImagePicker()
+    {
+        dataset();
+        QVERIFY2(selectDatasetPath(false, true), qPrintable(state()));
+        QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; }), qPrintable(state()));
+        QCOMPARE(window_->files_, images_);
+        QCOMPARE(window_->datasetManifest_.value("samples").toArray().size(), 4);
+        QVERIFY(!window_->datasetManifest_.isEmpty());
+    }
+    void canvasAcceptsDatasetsAndRejectsLooseImagesWithoutChangingQueue()
+    {
+        const auto drop = [this](const QString &path) {
+            QMimeData mime; mime.setUrls({QUrl::fromLocalFile(path)});
+            const QPoint point = window_->canvas_->rect().center();
+            QDragEnterEvent enter(point, Qt::CopyAction, &mime, Qt::LeftButton, Qt::NoModifier);
+            QApplication::sendEvent(window_->canvas_, &enter);
+            if (!enter.isAccepted()) return false;
+            QDropEvent event(point, Qt::CopyAction, &mime, Qt::LeftButton, Qt::NoModifier);
+            QApplication::sendEvent(window_->canvas_, &event);
+            return event.isAccepted();
+        };
+        dataset();
+        QVERIFY(drop(QFileInfo(yaml_).absolutePath()));
+        QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; }), qPrintable(state()));
+        QCOMPARE(window_->files_, images_);
+        const QJsonObject initialManifest = window_->datasetManifest_;
+        const auto initialSource = window_->lastResult_.source;
+        QVERIFY(!drop(images_.last()));
+        QCOMPARE(window_->files_, images_); QCOMPARE(window_->datasetManifest_, initialManifest);
+        QCOMPARE(window_->lastResult_.source, initialSource);
+        QCOMPARE(window_->queue_->currentRow(), 0);
+        dataset(3);
+        QVERIFY(drop(yaml_));
+        QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; }), qPrintable(state()));
+        QCOMPARE(window_->files_, images_); QCOMPARE(window_->queue_->count(), 3);
+        QCOMPARE(window_->datasetManifest_.value("data_yaml").toString(), yaml_);
+    }
+
     void directoryImportFindsConventionalDatasetBesideTrainingConfiguration()
     {
         dataset();
@@ -393,15 +437,91 @@ private slots:
             return window_->canvas_->parentWidget()->rect().contains(QRect(window_->canvas_->pos(), window_->canvas_->size()));
         };
         QVERIFY(fullyContained()); QVERIFY(window_->canvas_->height() >= 280);
-        QVERIFY(!window_->recordButton_->isVisible()); QVERIFY(window_->countMetric_->parentWidget()->isVisible());
+        QVERIFY(!window_->recordButton_->isVisible()); QVERIFY(!window_->countMetric_->parentWidget()->isVisible());
         QVERIFY2(loadDataset(), qPrintable(state())); QTest::qWait(40);
         QVERIFY(fullyContained()); QVERIFY(window_->canvas_->height() >= 280);
         QVERIFY(!window_->countMetric_->parentWidget()->isVisible());
         QVERIFY(window_->evaluation_->controlsWidget()->isVisible());
-        window_->clearDatasetContext(); window_->updateSourceUi(); QTest::qWait(40);
-        QVERIFY(fullyContained()); QVERIFY(window_->countMetric_->parentWidget()->isVisible());
+        QPushButton *clear = nullptr;
+        for (auto *button : window_->findChildren<QPushButton *>()) if (button->text() == "清空") clear = button;
+        QVERIFY(clear); clear->click(); QTest::qWait(40);
+        QVERIFY(window_->files_.isEmpty()); QVERIFY(window_->datasetManifest_.isEmpty());
+        QVERIFY(fullyContained()); QVERIFY(!window_->countMetric_->parentWidget()->isVisible());
         QVERIFY(!window_->evaluation_->controlsWidget()->isVisible());
+        auto *camera = window_->findChild<QPushButton *>("openCameraButton"); QVERIFY(camera); camera->click(); QTest::qWait(40);
+        QCOMPARE(window_->sourceKind_, vision::SourceKind::Camera);
+        QVERIFY(window_->countMetric_->parentWidget()->isVisible()); QVERIFY(window_->recordButton_->isVisible());
+        QVERIFY(fullyContained()); QVERIFY(window_->canvas_->height() >= 280);
     }
+    void compactCommandBarPreservesCanvasAndCollapsesDatasetDetails_data()
+    {
+        QTest::addColumn<int>("width"); QTest::addColumn<QString>("device");
+        for (int width : {1260, 1380})
+            for (const QString &device : {QStringLiteral("cpu"), QStringLiteral("cuda")})
+                QTest::newRow(qPrintable(QString("%1-%2-layout-only").arg(width).arg(device))) << width << device;
+    }
+    void compactCommandBarPreservesCanvasAndCollapsesDatasetDetails()
+    {
+        QFETCH(int, width); QFETCH(QString, device);
+        window_->resize(width, 820);
+        // This checks device-selector layout only; no CUDA inference is claimed.
+        window_->computeDevice_->setCurrentIndex(window_->computeDevice_->findData(device));
+        QTest::qWait(40);
+        auto *bar = window_->findChild<QWidget *>("commandBar"); QVERIFY(bar && bar->isVisible());
+        QVERIFY2(bar->height() <= 112, qPrintable(QString("empty command bar: %1 px").arg(bar->height())));
+        QVERIFY2(loadDataset(), qPrintable(state())); QTest::qWait(40);
+        auto *settings = window_->evaluation_->controlsWidget()->findChild<QWidget *>("evaluationDatasetSettings");
+        auto *settingsButton = window_->evaluation_->controlsWidget()->findChild<QToolButton *>("evaluationDatasetSettingsButton");
+        auto *advanced = window_->evaluation_->controlsWidget()->findChild<QWidget *>("evaluationAdvancedControls");
+        auto *advancedButton = window_->evaluation_->controlsWidget()->findChild<QToolButton *>("evaluationAdvancedButton");
+        QVERIFY(settings && settingsButton && advanced && advancedButton);
+        QVERIFY(!settings->isVisible()); QVERIFY(!advanced->isVisible());
+        QVERIFY2(bar->height() <= 112, qPrintable(QString("dataset command bar: %1 px").arg(bar->height())));
+        QVERIFY(window_->canvas_->height() >= 280);
+        QVERIFY(window_->canvas_->parentWidget()->rect().contains(QRect(window_->canvas_->pos(), window_->canvas_->size())));
+        for (const char *name : {"openYoloDatasetButton", "openYoloDatasetOptionsButton", "openVideoButton", "openCameraButton", "computeDevice", "evaluationModeCombo", "evaluationSplitCombo", "evaluationReloadDatasetButton", "evaluationDatasetSettingsButton"}) {
+            auto *control = bar->findChild<QWidget *>(name); QVERIFY2(control && control->isVisible(), name);
+            QVERIFY2(bar->rect().contains(QRect(control->mapTo(bar, QPoint()), control->size())), name);
+        }
+        if (device == "cuda") {
+            auto *gpu = bar->findChild<QComboBox *>("gpuDeviceIndex"); QVERIFY(gpu && gpu->isVisible());
+            QVERIFY(bar->rect().contains(QRect(gpu->mapTo(bar, QPoint()), gpu->size())));
+        }
+        const QString screenshotRoot = qEnvironmentVariable("VISION_EVALUATION_INTEGRATION_EVIDENCE");
+        const auto screenshot = [this, screenshotRoot, width, device](const QString &state) {
+            if (screenshotRoot.isEmpty()) return true;
+            if (!QDir().mkpath(screenshotRoot)) return false;
+            const QString path = screenshotRoot + QString("/compact-%1-%2-%3.png").arg(width).arg(device, state);
+            window_->saveScreenshot(path);
+            return QImage(path).size() == window_->size();
+        };
+        QVERIFY(screenshot("collapsed"));
+        settingsButton->click(); QTest::qWait(30);
+        QVERIFY(settings->isVisible());
+        QVERIFY(bar->findChild<QSpinBox *>("evaluationModelClassIdSpin")->isVisible());
+        QVERIFY(bar->findChild<QSpinBox *>("evaluationDatasetClassIdSpin")->isVisible());
+        advancedButton->click(); QTest::qWait(30); QVERIFY(advanced->isVisible());
+        for (const char *name : {"evaluationMetadataEdit", "evaluationMatchIouSpin", "evaluationScanStartSpin", "evaluationScanEndSpin", "evaluationScanStepSpin"}) {
+            auto *control = bar->findChild<QWidget *>(name); QVERIFY2(control && control->isVisible(), name);
+            QVERIFY2(bar->rect().contains(QRect(control->mapTo(bar, QPoint()), control->size())), name);
+        }
+        const QRect expandedCanvas(window_->canvas_->mapTo(window_.get(), QPoint()), window_->canvas_->size());
+        qInfo().noquote() << "expanded_workbench_geometry" << width << device << "command_bar_px" << bar->height()
+                         << "canvas" << QRect(window_->canvas_->pos(), window_->canvas_->size())
+                         << "canvas_parent" << window_->canvas_->parentWidget()->rect()
+                         << "canvas_in_window" << expandedCanvas << "window" << window_->rect();
+        QVERIFY(screenshot("expanded"));
+        QVERIFY(window_->rect().contains(expandedCanvas));
+        QVERIFY(window_->canvas_->parentWidget()->rect().contains(QRect(window_->canvas_->pos(), window_->canvas_->size())));
+        QVERIFY(window_->canvas_->height() >= 280);
+        settingsButton->click(); QTest::qWait(30);
+        QVERIFY(!settings->isVisible());
+        QVERIFY2(bar->height() <= 112, qPrintable(QString("recollapsed command bar: %1 px").arg(bar->height())));
+        QVERIFY(window_->canvas_->height() >= 280);
+        qInfo().noquote() << "compact_workbench_evidence" << width << device << "command_bar_px" << bar->height()
+                         << "canvas" << window_->canvas_->size();
+    }
+
     void missingCurrentSelectionDoesNotExpandTask()
     {
         QVERIFY2(loadDataset(), qPrintable(state())); configureEvaluation();

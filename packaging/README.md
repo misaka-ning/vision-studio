@@ -4,14 +4,14 @@
 
 默认程序安装在 `/opt/VisionStudio`，菜单与命令为 `vision-studio`。模型、运行库和程序属于系统文件；设置、会话、导出、录像和评估报告使用当前用户的应用数据目录。卸载程序不会删除用户创建的结果。
 
-2.3.1 修复数据集文件夹导入：默认选择文件夹，同排箭头保留直接选择 YAML；只解析根目录唯一配置，歧义时要求明确选文件，首次失败保留位置与集合以便重试。沿用 2.3.0 的评估指标、全局模型、三种检测范围、Fluent 界面与现有 CPU／CUDA 后端，无新增运行依赖。
+2.4.0 聚焦标准 YOLO 数据集、视频与摄像头，退出独立图片／普通图片文件夹、图片拖入、更多页运行示例及公开 `--demo`／`--pt-demo`。Ctrl+O 改为数据集导入。工作台顶部压缩为输入源与设备任务条，数据集上下文保留单行，映射、metadata 与扫描配置折叠到「数据集设置」。沿用既有导入、评估、全局模型、三种范围、结果缓存与 CPU／CUDA 后端；默认范围「检测当前集合」只处理当前选择的 Train／Val／Test 集合。无新增运行依赖。
 
-本版内部 Debian Control Version 为 `2.3.1-1`，公开文件名为 `vision-studio_2.3.1-1_amd64.deb`。该版本高于 `2.3.0-1`、`2.2.0-1` 及此前版本，可直接升级；安装前结束检测、评估、录像与模型转换，导出临时结果并退出旧程序。版本排序由 Control 决定，文件名采用 GitHub 已验证的安全字符集。
+本版内部 Debian Control Version 为 `2.4.0-1`，公开文件名为 `vision-studio_2.4.0-1_amd64.deb`。该版本高于 `2.3.1-1`、`2.3.0-1` 及此前版本，可直接升级；安装前结束检测、评估、录像与模型转换，导出临时结果并退出旧程序。版本排序由 Control 决定，文件名采用 GitHub 已验证的安全字符集。
 
 ## 安装与启动
 
 ```sh
-sudo apt install ./vision-studio_2.3.1-1_amd64.deb
+sudo apt install ./vision-studio_2.4.0-1_amd64.deb
 vision-studio
 ```
 
@@ -67,7 +67,7 @@ python3 packaging/build_deb.py \
   --source-root /干净源码绝对路径
 ```
 
-默认产物在 `output/releases/2.3.1/`，staging 在 `output/deb-stage/2.3.1-1/`。默认版本从 CMake 的 `VISION_STUDIO_APP_VERSION` 读取；本版应用版本为 `2.3.1`，Debian 包版本为 `2.3.1-1`。已存在的 staging 和 `.deb` 会被拒绝覆盖；需要重打包时指定新的 `--stage` 和 `--output`。`--install-root` 可改变应用安装目录，默认 `/opt/VisionStudio`；编译时的生产资源根也应使用相同路径。`--compression zstd` 提供另一种 Ubuntu 支持的压缩方式，默认使用 xz。
+默认产物在 `output/releases/2.4.0/`，staging 在 `output/deb-stage/2.4.0-1/`。默认版本从 CMake 的 `VISION_STUDIO_APP_VERSION` 读取；本版应用版本为 `2.4.0`，Debian 包版本为 `2.4.0-1`。已存在的 staging 和 `.deb` 会被拒绝覆盖；需要重打包时指定新的 `--stage` 和 `--output`。`--install-root` 可改变应用安装目录，默认 `/opt/VisionStudio`；编译时的生产资源根也应使用相同路径。`--compression zstd` 提供另一种 Ubuntu 支持的压缩方式，默认使用 xz。
 
 构建脚本保留 ELF 依赖闭包需要的 Qt 运行库与图片、X11、Wayland、输入法及桌面文件对话框插件，重写为 `$ORIGIN` 相对 RUNPATH，去除 staging 内应用和 Qt 的调试符号。WebP/TIFF 等补充插件通过 `--extra-qt-plugins` 加入，必须匹配 Qt 6.8.3。
 
@@ -79,7 +79,7 @@ Python 包包含运行所需模块与授权资料，删除 pip、旧环境的 co
 
 ## 验证与发布
 
-2.3.1 的实际测试与最终包验收以 `docs/releases/evidence/2.3.1/` 的报告和原始日志为准，开发测试、受影响复验、合成标注与真实标注集验收分别记录。不能沿用旧版本的套数、耗时、CUDA profile 或通过结论。适用回归应覆盖常规检测、转换、结构显示、录像与数据集评估，并专项检查文件夹／YAML 两种入口、配置候选解析及失败后重试与恢复；最终安装包还须单独执行下面的检查。
+2.4.0 的实际测试与最终包验收以 `docs/releases/evidence/2.4.0/` 的报告和原始日志为准，开发测试、受影响复验、合成标注与真实标注集验收分别记录。不能沿用旧版本的套数、耗时、CUDA profile 或通过结论。适用回归应覆盖常规检测、转换、结构显示、录像与数据集评估，并专项检查精简后的公开入口、Ctrl+O 数据集导入、拒绝图片拖入、启动空状态、紧凑／展开布局、错误状态与任务锁定；文件夹／YAML 两种数据集入口、配置候选解析及失败后重试与恢复仍需保留；最终安装包还须单独执行下面的检查。
 
 CMake 的 `VISION_STUDIO_TEST_PYTHON` 是评估 Python 测试解释器的 FILEPATH 缓存变量，可在配置时用 `-DVISION_STUDIO_TEST_PYTHON=/完整runtime/bin/python` 覆盖；首次未指定时读取 `VISION_STUDIO_PYTHON`，再寻找源码／安装树 runtime 与默认 Python。此测试始终注册；缺解释器或依赖会明确失败，不能算作跳过后通过。准备 runtime 后重新配置，再运行 `ctest --test-dir build/release --output-on-failure`。评估 Python 单测不代替 Qt 调度、真实模型及最终包回归。
 
@@ -87,7 +87,7 @@ V1.6 的配置安全与许可测试执行 `/usr/bin/python3.10 -m unittest disco
 
 包旁生成 SHA256 和 JSON manifest。发布前应运行 `packaging/verify_deb.py`，检查 ownership、RUNPATH、依赖与路径，再在解压树内以普通用户运行真实 ONNX、现代 `.pt`、旧版 YOLOv5 `.pt` 推理和模型显示。模型显示分别验证 ONNX 与 PT 的结构图、层级树、参数表，保存 `model-display.png`、`model-hierarchy.png`、`model-parameters.png`；报告核对 `nodes`、`hierarchy_items`、`parameter_rows`、`display_modes` 与 `cache_preserved`，确认同服务、同浏览器缓存复用，不能仅以 HTTP 打开作为成功。安装到 `/opt` 后应用目录应保持不可写，导出结果必须写入用户目录。转换验收另需真实新模型输出、ONNX checker、TorchScript 重载和配置元数据、与原 PT 的输出比较、入库后推理、取消与已有文件保护，保存 `conversion-qa.json` 和原始日志并绑定最终 DEB；最终实际结果以同版证据报告为准，未通过不发布。
 
-2.3.1 沿用此前 18 份上游材料与 59 项 CPU 发行 runtime，不把 ONNX／protobuf 旧依赖误记为本版新增。四份转换相关原通知与成员哈希位于 `packaging/licenses/model-conversion/`，Qt 原通知／SDK 记录保留。复用前逐份核对来源、版本与 SHA256，应用源码与两层归档按 2.3.1 重新生成；最终实际元数据需与许可清单和来源对应。
+2.4.0 沿用此前 18 份上游材料与 59 项 CPU 发行 runtime，不把 ONNX／protobuf 旧依赖误记为本版新增。四份转换相关原通知与成员哈希位于 `packaging/licenses/model-conversion/`，Qt 原通知／SDK 记录保留。复用前逐份核对来源、版本与 SHA256，应用源码与两层归档按 2.4.0 重新生成；最终实际元数据需与许可清单和来源对应。
 
 新增评估验收应包含标准 YAML／目录／名单、空标签与缺标签、审核过滤、真实类别映射、四条推理路径、灰度 C1／C3、三种范围、超过 50 张、停止后回看、零匹配、阈值边界、推荐约束、显式采用配置、重启恢复、缓存和源文件变更。最终 DEB 的只读安装树也须实际生成报告、PNG／SVG、CSV 与图像导出，并核对工作台显示与报告一致；结果与最终 DEB SHA256 绑定。派生或合成标注只验证流程，不作为模型能力数据宣传。
 
@@ -95,29 +95,29 @@ V1.6 的配置安全与许可测试执行 `/usr/bin/python3.10 -m unittest disco
 
 ```sh
 python3 docs/release/build_source_archive.py --source-root /干净源码绝对路径 \
-  --release-directory output/releases/2.3.1
+  --release-directory output/releases/2.4.0
 ```
 
 该命令生成应用源码归档、完整源码包和两层校验清单；若同版本的归档已存在，会拒绝覆盖。`--overwrite` 仅可用于尚未发布的当前候选，改变冻结输入后还须重新验收；已公开版本的归档、安装包、清单和标签不可覆盖或移动。
 
 ```sh
-dpkg-deb --info output/releases/2.3.1/vision-studio_2.3.1-1_amd64.deb
-python3 packaging/verify_deb.py output/releases/2.3.1/vision-studio_2.3.1-1_amd64.deb \
-  --smoke --apt-simulate --source-dir output/releases/2.3.1
+dpkg-deb --info output/releases/2.4.0/vision-studio_2.4.0-1_amd64.deb
+python3 packaging/verify_deb.py output/releases/2.4.0/vision-studio_2.4.0-1_amd64.deb \
+  --smoke --apt-simulate --source-dir output/releases/2.4.0
 python3 packaging/verify_install_namespace.py \
-  output/releases/2.3.1/vision-studio_2.3.1-1_amd64.deb
+  output/releases/2.4.0/vision-studio_2.4.0-1_amd64.deb
 python3 packaging/verify_gpu_deb.py \
-  output/releases/2.3.1/vision-studio_2.3.1-1_amd64.deb \
+  output/releases/2.4.0/vision-studio_2.4.0-1_amd64.deb \
   --runtime-dir "$HOME/.local/share/vision-studio/gpu-runtime" \
-  --report output/releases/2.3.1/packaged-gpu-qa.json
+  --report output/releases/2.4.0/packaged-gpu-qa.json
 ```
 
 `verify_gpu_deb.py` 使用已通过准备自检的独立 GPU 环境，以普通用户运行解压包的真实启动器，分别检查 ONNX CUDA、PT CUDA、ONNX CPU 和 PT CPU，并核验实际后端／设备导出。它不安装 GPU 依赖或修改驱动，报告绑定被测 DEB SHA256；该报告仅证明包内四轮检查，最终 `gpu-qa.json` 还须合并 CUDA 节点、灰度与左右目／录像等实际验收，不能直接复制改名。
 
 隔离安装验收在私有命名空间内执行安装、断网普通用户运行和卸载，不修改宿主的软件包数据库。无显示器检查可使用 `--disable-gpu` 软件渲染，默认仍保留 sandbox；若特定测试容器无法提供 Chromium 所需的内核隔离，应在该次验收记录中明确说明测试限制，不改正常启动器。
 
-运行环境只读取选定的本地 `.pt`，不会根据文件名下载或替换权重。可用 `VISION_STUDIO_PYTHON` 指定另一个兼容的本地环境，用 `VISION_STUDIO_DATA_DIR` 指定测试或导出数据目录。`VISION_STUDIO_QT_HOME` 可选择自行构建的兼容 Qt 6.8.3 prefix，须包含 `lib/`、`plugins/`、`libexec/QtWebEngineProcess`、`resources/` 和 `translations/qtwebengine_locales/`；替换库、插件和 WebEngine 资产共同加载。发布授权、模型来源及第三方许可见包内 `/usr/share/doc/vision-studio/copyright` 和 `licenses/`，以及 `docs/release/`。每版 Release 只上传三个手动附件：DEB、`vision-studio-2.3.1-complete-source.tar.xz` 与校验两个主文件的 `SHA256SUMS`，源码内的 `SOURCE-SHA256SUMS` 校验各原始归档。GitHub 另外自动显示 Source code zip／tar.gz，它们不能替代完整对应源码包；QA 和原始日志保存到仓库 `docs/releases/evidence/2.3.1`，不零散上传 Release。
+运行环境只读取选定的本地 `.pt`，不会根据文件名下载或替换权重。可用 `VISION_STUDIO_PYTHON` 指定另一个兼容的本地环境，用 `VISION_STUDIO_DATA_DIR` 指定测试或导出数据目录。`VISION_STUDIO_QT_HOME` 可选择自行构建的兼容 Qt 6.8.3 prefix，须包含 `lib/`、`plugins/`、`libexec/QtWebEngineProcess`、`resources/` 和 `translations/qtwebengine_locales/`；替换库、插件和 WebEngine 资产共同加载。发布授权、模型来源及第三方许可见包内 `/usr/share/doc/vision-studio/copyright` 和 `licenses/`，以及 `docs/release/`。每版 Release 只上传三个手动附件：DEB、`vision-studio-2.4.0-complete-source.tar.xz` 与校验两个主文件的 `SHA256SUMS`，源码内的 `SOURCE-SHA256SUMS` 校验各原始归档。GitHub 另外自动显示 Source code zip／tar.gz，它们不能替代完整对应源码包；QA 和原始日志保存到仓库 `docs/releases/evidence/2.4.0`，不零散上传 Release。
 
-对应源码包含 qtbase、qtsvg、qtwayland、qtimageformats、qtdeclarative、qtwebchannel、qtpositioning、qtwebengine 八个模块；QtWebEngine 归档包含 Chromium 源码及原通知。Netron 9.3.1 原始 tag 源码和 MIT、Dagre / Graphlib 原通知也随源码交付。C++ ONNX Runtime 1.23.2 API 头文件、原始 MIT 许可和官方来源 SHA256 保留在 `vendor/onnxruntime/`。ONNX 1.17.0、Python protobuf v33.0 与 ONNX 静态 C++ protobuf 3.21.12 的原始源码和通知继续交付，共 18 份上游材料。CPU 许可快照必须与所用发行 runtime 的实际元数据一致，完整重建步骤见 `docs/release/对应源码与重建.md`。Windows 打包清单更新仅确保源码路径完整，本版不据此声称 Windows 2.3.1 已验收。
+对应源码包含 qtbase、qtsvg、qtwayland、qtimageformats、qtdeclarative、qtwebchannel、qtpositioning、qtwebengine 八个模块；QtWebEngine 归档包含 Chromium 源码及原通知。Netron 9.3.1 原始 tag 源码和 MIT、Dagre / Graphlib 原通知也随源码交付。C++ ONNX Runtime 1.23.2 API 头文件、原始 MIT 许可和官方来源 SHA256 保留在 `vendor/onnxruntime/`。ONNX 1.17.0、Python protobuf v33.0 与 ONNX 静态 C++ protobuf 3.21.12 的原始源码和通知继续交付，共 18 份上游材料。CPU 许可快照必须与所用发行 runtime 的实际元数据一致，完整重建步骤见 `docs/release/对应源码与重建.md`。Windows 打包清单更新仅确保源码路径完整，本版不据此声称 Windows 2.4.0 已验收。
 
 参考：[dpkg-deb 官方手册](https://manpages.debian.org/bookworm/dpkg/dpkg-deb.1.en.html)、[dpkg-shlibdeps 官方手册](https://manpages.debian.org/bookworm/dpkg-dev/dpkg-shlibdeps.1.en.html)。

@@ -12,6 +12,7 @@ class QLineEdit;
 class QPushButton;
 class QSpinBox;
 class QTableWidget;
+class QToolButton;
 class EvaluationCurve;
 
 // The workbench owns model selection and inference. This view only edits an
@@ -72,6 +73,8 @@ private:
 
     QPointer<QWidget> controls_;
     QWidget *datasetControls_ = nullptr;
+    QWidget *datasetSettings_ = nullptr;
+    QToolButton *datasetSettingsButton_ = nullptr, *eligibilityStatus_ = nullptr;
     QComboBox *mode_ = nullptr, *split_ = nullptr, *filter_ = nullptr, *strategy_ = nullptr;
     QSpinBox *modelId_ = nullptr, *datasetId_ = nullptr;
     QDoubleSpinBox *threshold_ = nullptr, *matchIou_ = nullptr, *scanStart_ = nullptr,
@@ -88,7 +91,7 @@ private:
     QTableWidget *table_ = nullptr;
     QJsonObject manifest_, report_, operatingOverride_;
     vision::ModelConfig model_;
-    QString yaml_, directory_;
+    QString yaml_, directory_, importError_;
     bool busy_ = false, updating_ = false, exporting_ = false;
     double recommended_ = -1;
 };

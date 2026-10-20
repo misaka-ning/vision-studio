@@ -66,7 +66,7 @@ class ImageCanvas final : public QWidget
                                        bool boxesVisible, bool labelsVisible, int selected,
                                        qreal scale, bool exporting);
     static QColor classColor(int classId);
-    static QString imageFileFromDrop(const QMimeData *mime);
+    static QString datasetSourceFromDrop(const QMimeData *mime);
 
     vision::InferenceResult m_result;
     qreal m_scale = 1.0;

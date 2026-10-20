@@ -47,7 +47,7 @@ ImageCanvas::ImageCanvas(QWidget *parent) : QWidget(parent)
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setAccessibleName(QStringLiteral("视觉图像画布"));
     setAccessibleDescription(
-        QStringLiteral("可拖入图片。滚轮缩放，拖动平移，双击适应视图，F 适应视图，1 原始尺寸。"));
+        QStringLiteral("可拖入 YOLO 数据集文件夹或 YAML。滚轮缩放，拖动平移，双击适应视图，F 适应视图，1 原始尺寸。"));
 }
 
 void ImageCanvas::setResult(const vision::InferenceResult &result)
@@ -404,11 +404,11 @@ void ImageCanvas::paintEvent(QPaintEvent *)
         painter.setFont(canvasFont(13, QFont::DemiBold));
         painter.setPen(QColor("#F5F5F5"));
         painter.drawText(QRectF(0, center.y() + 38, width(), 30), Qt::AlignCenter,
-                         QStringLiteral("拖入图片，开始视觉推理"));
+                         QStringLiteral("选择数据集，或连接实时输入"));
         painter.setFont(canvasFont(9));
         painter.setPen(QColor("#B8B8B8"));
         painter.drawText(QRectF(0, center.y() + 77, width(), 22), Qt::AlignCenter,
-                         QStringLiteral("或选择图片文件 · PNG / JPG / BMP / WEBP"));
+                         QStringLiteral("YOLO 数据集 / 视频 / 摄像头"));
     }
     else
     {
@@ -633,16 +633,15 @@ void ImageCanvas::keyPressEvent(QKeyEvent *event)
     event->accept();
 }
 
-QString ImageCanvas::imageFileFromDrop(const QMimeData *mime)
+QString ImageCanvas::datasetSourceFromDrop(const QMimeData *mime)
 {
-    const auto formats = QImageReader::supportedImageFormats();
     for (const QUrl &url : mime->urls())
     {
         if (!url.isLocalFile())
             continue;
         const QString file = url.toLocalFile();
         const QFileInfo info(file);
-        if (info.isFile() && formats.contains(info.suffix().toLower().toLatin1()))
+        if (info.isDir() || (info.isFile() && QStringList{"yaml", "yml"}.contains(info.suffix().toLower())))
             return file;
     }
     return {};
@@ -650,7 +649,9 @@ QString ImageCanvas::imageFileFromDrop(const QMimeData *mime)
 
 void ImageCanvas::dragEnterEvent(QDragEnterEvent *event)
 {
-    if (!imageFileFromDrop(event->mimeData()).isEmpty())
+    m_dropActive = false;
+    event->ignore();
+    if (!datasetSourceFromDrop(event->mimeData()).isEmpty())
     {
         m_dropActive = true;
         event->acceptProposedAction();
@@ -668,7 +669,8 @@ void ImageCanvas::dragLeaveEvent(QDragLeaveEvent *event)
 void ImageCanvas::dropEvent(QDropEvent *event)
 {
     m_dropActive = false;
-    const QString file = imageFileFromDrop(event->mimeData());
+    event->ignore();
+    const QString file = datasetSourceFromDrop(event->mimeData());
     if (!file.isEmpty())
     {
         emit fileDropped(file);
