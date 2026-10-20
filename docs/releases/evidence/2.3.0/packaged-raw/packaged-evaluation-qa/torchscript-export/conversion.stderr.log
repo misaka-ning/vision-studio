@@ -1,0 +1,4 @@
+Creating new Ultralytics Settings v0.0.8 file ✅ 
+View Ultralytics Settings with 'yolo settings' or at '/tmp/vision-studio-evaluation-qa-s0br3_r7/torchscript-export/.vision-studio-convert-47ytsc80/ultralytics/Ultralytics/settings.json'
+Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/usage/settings.
+TorchScript portability: registered 3 detection cache buffers.

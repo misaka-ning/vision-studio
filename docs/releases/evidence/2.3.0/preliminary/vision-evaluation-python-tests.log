@@ -1,0 +1,39 @@
+test_bad_prediction_caches_rejected (evaluation_tests.CacheIntegrityTests) ... ok
+test_candidate_floor_cannot_recover_discarded_predictions (evaluation_tests.CacheIntegrityTests) ... ok
+test_image_changes_rejected (evaluation_tests.CacheIntegrityTests) ... ok
+test_label_changed_during_preparation_is_rejected (evaluation_tests.CacheIntegrityTests) ... ok
+test_label_changes_rejected (evaluation_tests.CacheIntegrityTests) ... ok
+test_manifest_modification_rejected (evaluation_tests.CacheIntegrityTests) ... ok
+test_mapping_ids_validate_actual_counts (evaluation_tests.CacheIntegrityTests) ... ok
+test_model_changes_rejected (evaluation_tests.CacheIntegrityTests) ... ok
+test_selection_cannot_duplicate_or_add_unknown_images (evaluation_tests.CacheIntegrityTests) ... ok
+test_yaml_changes_rejected (evaluation_tests.CacheIntegrityTests) ... ok
+test_invalid_label_formats (evaluation_tests.DatasetTests) ... ok
+test_list_of_splits_and_duplicate_rejected (evaluation_tests.DatasetTests) ... ok
+test_manifest_survives_qt_equivalent_integral_float_serialization (evaluation_tests.DatasetTests) ... ok
+test_missing_label_is_attention_not_negative (evaluation_tests.DatasetTests) ... ok
+test_more_than_fifty_images_no_limit (evaluation_tests.DatasetTests) ... ok
+test_names_must_be_contiguous_and_nc_consistent (evaluation_tests.DatasetTests) ... ok
+test_nonstandard_exif_rejected_before_coordinate_rotation (evaluation_tests.DatasetTests) ... ok
+test_optional_review_metadata_strict_and_exclusions_recorded (evaluation_tests.DatasetTests) ... ok
+test_standard_dataset_pixel_boxes_and_negative_counts (evaluation_tests.DatasetTests) ... ok
+test_txt_preserves_explicit_order_and_is_hashed (evaluation_tests.DatasetTests) ... ok
+test_yaml_names_mapping_and_root_relative_to_yaml (evaluation_tests.DatasetTests) ... ok
+test_actual_cli_preparation_analysis_and_decodable_exports (evaluation_tests.ExportTests) ... ok
+test_source_changed_while_exporting_no_complete_report_published (evaluation_tests.ExportTests) ... ok
+test_ap_independent_of_working_threshold (evaluation_tests.MetricsTests) ... ok
+test_empty_cancelled_result_unknown_model_count (evaluation_tests.MetricsTests) ... ok
+test_hand_calculated_operating_point_and_raw_indices (evaluation_tests.MetricsTests) ... ok
+test_highest_iou_one_to_one_and_stable_ties (evaluation_tests.MetricsTests) ... ok
+test_low_threshold_rematches_and_negative_image_rate (evaluation_tests.MetricsTests) ... ok
+test_only_target_gt_defines_negative_image (evaluation_tests.MetricsTests) ... ok
+test_perfect_ap_uses_actual_ultralytics_integral (evaluation_tests.MetricsTests) ... ok
+test_recommendation_constraints_and_no_feasible_point (evaluation_tests.MetricsTests) ... ok
+test_subset_single_and_cancelled_never_present_full_map (evaluation_tests.MetricsTests) ... ok
+test_threshold_grid_inclusive_and_bounded (evaluation_tests.MetricsTests) ... ok
+test_zero_predictions_with_gt_is_zero_precision_recall_f1 (evaluation_tests.MetricsTests) ... ok
+
+----------------------------------------------------------------------
+Ran 34 tests in 4.749s
+
+OK

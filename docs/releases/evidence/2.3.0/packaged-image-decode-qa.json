@@ -1,0 +1,281 @@
+{
+  "version": "2.3.0",
+  "success": true,
+  "errors": [],
+  "details": {
+    "deb_sha256": "e8f600337b7c452a2104d1bc78f544bbc41ab5553b8e67db37d919b084ab7cbf"
+  },
+  "decoded_images": [
+    {
+      "case": "onnx_cpu",
+      "file": "negative-false-positive-rate.png",
+      "size": [
+        1728,
+        972
+      ],
+      "sha256": "903f272b1b1cc1f63d12de477d3a3870663fc53edb814499ef214c3d91d3575e"
+    },
+    {
+      "case": "onnx_cpu",
+      "file": "threshold-performance.png",
+      "size": [
+        1728,
+        972
+      ],
+      "sha256": "55b21f9048d0b8eb08783a645ce1a03159a06136a02ea9d7b1dff3cdc4f113f4"
+    },
+    {
+      "case": "onnx_cpu",
+      "file": "selected-result/000000000036-20261020-173230-984.png",
+      "size": [
+        481,
+        640
+      ],
+      "sha256": "e87d4c6734e522b3de5283dbfc7c7138bcfc5132db1dd36e748b510a88acc784"
+    },
+    {
+      "case": "onnx_cpu",
+      "file": "ui/evaluation-analysis.png",
+      "size": [
+        1580,
+        960
+      ],
+      "sha256": "6cff07e1924b36f862b74562022d929d07786b7ce9986b4f516c2ff4572b62bb"
+    },
+    {
+      "case": "onnx_cpu",
+      "file": "ui/evaluation-preview.png",
+      "size": [
+        1580,
+        960
+      ],
+      "sha256": "c26d0dd7ffdaa8f828fa7d9afa35f0ca8cb6a4cf67bef810f23c2b4adf7b702a"
+    },
+    {
+      "case": "pt_cpu",
+      "file": "negative-false-positive-rate.png",
+      "size": [
+        1728,
+        972
+      ],
+      "sha256": "374ecb81cacf2df73e9a3e549ec0a4cf97881b33bac2146e8a82774f8e54e3af"
+    },
+    {
+      "case": "pt_cpu",
+      "file": "threshold-performance.png",
+      "size": [
+        1728,
+        972
+      ],
+      "sha256": "7c8595abd9805c788bde509b929936a71e6c0fab0ad08da0c6fb540550c5120a"
+    },
+    {
+      "case": "pt_cpu",
+      "file": "selected-result/000000000036-20261020-173241-468.png",
+      "size": [
+        481,
+        640
+      ],
+      "sha256": "faebcb5128b07ac8c6246f137a8f18ad4cba3dd51d470651a4640a4fef1c4511"
+    },
+    {
+      "case": "pt_cpu",
+      "file": "ui/evaluation-analysis.png",
+      "size": [
+        1580,
+        960
+      ],
+      "sha256": "a490956b6500e09c97b395004e8bba69084594ab0ab37ad63f9cb9d38b44d61c"
+    },
+    {
+      "case": "pt_cpu",
+      "file": "ui/evaluation-preview.png",
+      "size": [
+        1580,
+        960
+      ],
+      "sha256": "d820b1f6ef36e514aaa5992c0e1e153b09bcf47cbd08b1f4846f9c6199c2b805"
+    },
+    {
+      "case": "torchscript_cpu",
+      "file": "negative-false-positive-rate.png",
+      "size": [
+        1728,
+        972
+      ],
+      "sha256": "374ecb81cacf2df73e9a3e549ec0a4cf97881b33bac2146e8a82774f8e54e3af"
+    },
+    {
+      "case": "torchscript_cpu",
+      "file": "threshold-performance.png",
+      "size": [
+        1728,
+        972
+      ],
+      "sha256": "7c8595abd9805c788bde509b929936a71e6c0fab0ad08da0c6fb540550c5120a"
+    },
+    {
+      "case": "torchscript_cpu",
+      "file": "selected-result/000000000036-20261020-173251-488.png",
+      "size": [
+        481,
+        640
+      ],
+      "sha256": "faebcb5128b07ac8c6246f137a8f18ad4cba3dd51d470651a4640a4fef1c4511"
+    },
+    {
+      "case": "torchscript_cpu",
+      "file": "ui/evaluation-analysis.png",
+      "size": [
+        1580,
+        960
+      ],
+      "sha256": "f12c2a2e3b359606a5e186659fdd1063610934e26f62943735eabe673a63d116"
+    },
+    {
+      "case": "torchscript_cpu",
+      "file": "ui/evaluation-preview.png",
+      "size": [
+        1580,
+        960
+      ],
+      "sha256": "1f62cff4604d975301be916e0dcba638fee62df8af1f0b98dd83f5b608e5ca06"
+    },
+    {
+      "case": "zero_result_id32_cpu",
+      "file": "negative-false-positive-rate.png",
+      "size": [
+        1728,
+        972
+      ],
+      "sha256": "5ffbcabf4d240163c80659316a1a136d5d17a7f0d1ab4d8a760d52cceeeb9c7f"
+    },
+    {
+      "case": "zero_result_id32_cpu",
+      "file": "threshold-performance.png",
+      "size": [
+        1728,
+        972
+      ],
+      "sha256": "c1b47cf096bb608d652b45bb47022a600d368721ea4ddaa559898691770e73f9"
+    },
+    {
+      "case": "zero_result_id32_cpu",
+      "file": "selected-result/000000000036-20261020-173301-548.png",
+      "size": [
+        481,
+        640
+      ],
+      "sha256": "ad5299a57b38a8ffceded0870623d727e38aa15b5a41f7e31d62f0d1b2ac098f"
+    },
+    {
+      "case": "zero_result_id32_cpu",
+      "file": "ui/evaluation-analysis.png",
+      "size": [
+        1580,
+        960
+      ],
+      "sha256": "51db88318c197ac0054e0b1eac0ce7f59dba1439a30aba1e2691c80fa0aec19d"
+    },
+    {
+      "case": "zero_result_id32_cpu",
+      "file": "ui/evaluation-preview.png",
+      "size": [
+        1580,
+        960
+      ],
+      "sha256": "0c7334d6359b6efd3c55a0f650e9eb19c889f7c0d572632a932f0b363972979f"
+    },
+    {
+      "case": "onnx_cuda",
+      "file": "negative-false-positive-rate.png",
+      "size": [
+        1728,
+        972
+      ],
+      "sha256": "903f272b1b1cc1f63d12de477d3a3870663fc53edb814499ef214c3d91d3575e"
+    },
+    {
+      "case": "onnx_cuda",
+      "file": "threshold-performance.png",
+      "size": [
+        1728,
+        972
+      ],
+      "sha256": "55b21f9048d0b8eb08783a645ce1a03159a06136a02ea9d7b1dff3cdc4f113f4"
+    },
+    {
+      "case": "onnx_cuda",
+      "file": "selected-result/000000000036-20261020-173305-640.png",
+      "size": [
+        481,
+        640
+      ],
+      "sha256": "6305346b43ba34cd7cb144352d6c676b5fcc28a4889e9c82a12edbbf442b9a47"
+    },
+    {
+      "case": "onnx_cuda",
+      "file": "ui/evaluation-analysis.png",
+      "size": [
+        1580,
+        960
+      ],
+      "sha256": "abf33ebaff902d4fc54770c24cb9d1244c709c56cb3b51409fc0492725945899"
+    },
+    {
+      "case": "onnx_cuda",
+      "file": "ui/evaluation-preview.png",
+      "size": [
+        1580,
+        960
+      ],
+      "sha256": "322f1b70520d22107653f3851edac0042d5dcd69c979a4a3925fe59b01b2a7cb"
+    },
+    {
+      "case": "pt_cuda",
+      "file": "negative-false-positive-rate.png",
+      "size": [
+        1728,
+        972
+      ],
+      "sha256": "374ecb81cacf2df73e9a3e549ec0a4cf97881b33bac2146e8a82774f8e54e3af"
+    },
+    {
+      "case": "pt_cuda",
+      "file": "threshold-performance.png",
+      "size": [
+        1728,
+        972
+      ],
+      "sha256": "7c8595abd9805c788bde509b929936a71e6c0fab0ad08da0c6fb540550c5120a"
+    },
+    {
+      "case": "pt_cuda",
+      "file": "selected-result/000000000036-20261020-173314-528.png",
+      "size": [
+        481,
+        640
+      ],
+      "sha256": "faebcb5128b07ac8c6246f137a8f18ad4cba3dd51d470651a4640a4fef1c4511"
+    },
+    {
+      "case": "pt_cuda",
+      "file": "ui/evaluation-analysis.png",
+      "size": [
+        1580,
+        960
+      ],
+      "sha256": "9f145f3530b23bf31845c556f7eb4026e730db3579b4205935586083a8a811f8"
+    },
+    {
+      "case": "pt_cuda",
+      "file": "ui/evaluation-preview.png",
+      "size": [
+        1580,
+        960
+      ],
+      "sha256": "fe03a6048c37436efe38562f6950681c71a0ad23fb108974020e3f933d84f631"
+    }
+  ],
+  "note": "All actual final-package plots, native annotation exports and UI screenshots decoded by Pillow. QA-ARTIFACTS.zip includes plots and tabular data; original dataset photos/model artifacts stay outside Git."
+}

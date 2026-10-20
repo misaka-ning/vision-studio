@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "version": "2.3.0",
+  "success": true,
+  "errors": [],
+  "generated_at_utc": "2026-10-20T09:35:59.712368+00:00",
+  "checks": {
+    "onnx_cuda_nodes": true,
+    "pt_cuda": true,
+    "packaged_onnx_cuda": true,
+    "packaged_pt_cuda": true,
+    "cpu_regression": true,
+    "grayscale_c1_c3": true,
+    "stereo_recording": true
+  },
+  "scope": "Actual effective GPU/recording suites, CUDA kernel traces and four final read-only DEB CPU/CUDA cases.",
+  "details": {
+    "deb_sha256": "e8f600337b7c452a2104d1bc78f544bbc41ab5553b8e67db37d919b084ab7cbf",
+    "deb_bytes": 387134996,
+    "packaged_binary_sha256": "1a4f0295c28b150375a428a486b3f973d7aca40d91e403b8e0447874f7b7f89f",
+    "production_unstripped_binary_sha256": "80803d9b84bdeedf43f4ac51d886960ae93f6afa4ce54376ec3701bb99755aa3",
+    "ctest_report": "ctest-qa.json",
+    "hardware": "NVIDIA GeForce RTX 4060",
+    "aggregation_only": "No new inference was executed by this report aggregation.",
+    "packaged_report": "packaged-gpu-qa.json",
+    "cuda_profiles": [
+      {
+        "file": "production-replay/artifacts/onnx-cuda-0_2026-10-20_17-18-45.json",
+        "sha256": "cdd5f3027b67404a0cbab454b8e3521d12840f021db2aa3f278ed54ebc819fce",
+        "cuda_node_events": 364,
+        "distinct_cuda_nodes": 182
+      },
+      {
+        "file": "production-replay/artifacts/onnx-cuda-1_2026-10-20_17-18-45.json",
+        "sha256": "994de58c130024275bb67005f1be24d1d1a8f3fb8d85b7904a0175a8f9a5410a",
+        "cuda_node_events": 364,
+        "distinct_cuda_nodes": 182
+      }
+    ]
+  }
+}

@@ -1,0 +1,346 @@
+{
+  "version": "2.3.0",
+  "success": true,
+  "files": [
+    {
+      "file": "packaged-raw/qa-report/user-state/conversion_onnx-stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+    },
+    {
+      "file": "packaged-raw/qa-report/user-state/conversion_onnx-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/qa-report/user-state/conversion_torchscript-stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+    },
+    {
+      "file": "packaged-raw/qa-report/user-state/conversion_torchscript-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/qa-report/user-state/legacy-stderr.log",
+      "bytes": 80,
+      "sha256": "4fa2e3f1beb42698e532de4b8540d923b084fb5ba244370830a2d521ffc83b25"
+    },
+    {
+      "file": "packaged-raw/qa-report/user-state/model_display-stderr.log",
+      "bytes": 644,
+      "sha256": "53f06baa52cebb5b8e0a3992954da4259275290ae834d5aded5d440d7d7f612a"
+    },
+    {
+      "file": "packaged-raw/qa-report/user-state/model_display-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/qa-report/user-state/model_display_pt-stderr.log",
+      "bytes": 727,
+      "sha256": "9741dbab7885bec7179513fc51d9a8d3b67bdcbe0053974eae37ffb164ced422"
+    },
+    {
+      "file": "packaged-raw/qa-report/user-state/model_display_pt-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/qa-report/user-state/onnx-stderr.log",
+      "bytes": 595,
+      "sha256": "8f253cab44ba92ea5613f492fe80bbf1817eef796e858be09dee7bf611f7456d"
+    },
+    {
+      "file": "packaged-raw/qa-report/user-state/onnx-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/qa-report/user-state/pt-stderr.log",
+      "bytes": 614,
+      "sha256": "bc86134cc8df4a436264cd8f271bfa18053baa495f84df7ace40e66ed5d895a4"
+    },
+    {
+      "file": "packaged-raw/qa-report/user-state/pt-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/conversion_onnx-stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/conversion_onnx-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/conversion_torchscript-stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/conversion_torchscript-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/dpkg.log",
+      "bytes": 1207,
+      "sha256": "13cd1fa7e07067e136e35cc9e3318080746b04c5b939aaa4f6ea90b05e69cd5b"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/gpu-unprepared-probe-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/gpu-unprepared-probe-stdout.log",
+      "bytes": 189,
+      "sha256": "1e21598e1e314aff49c7a85a52333422940a3231f8d494e9959bd8d6060980a5"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/install-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/install-stdout.log",
+      "bytes": 261,
+      "sha256": "01662b6c99e3279d8244d181fe388aa9469adc763c04fefa23fc62057ba878d8"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/installed-status-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/installed-status-stdout.log",
+      "bytes": 21,
+      "sha256": "9808a6089aef021fe37d633eb5edcf59ccf196ef3150933df87b1831d0f22a3c"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/model_display-stderr.log",
+      "bytes": 600,
+      "sha256": "7e7817ad290c9b69c5dcf6b273d65aa4765a840d0d75d11fe83381e7bb8c5f36"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/model_display-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/model_display_pt-stderr.log",
+      "bytes": 683,
+      "sha256": "e27d07bf948cface6be37a5e9d93911d5b34d697155b7ed7b9d359d1389c1dcf"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/model_display_pt-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/namespace-root-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/namespace-root-stdout.log",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/namespace-user-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/namespace-user-stdout.log",
+      "bytes": 5,
+      "sha256": "83c02ac2d48c863dab2ccf6870455aadfc2cec073b8db269b517c879d76aa6d9"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/onnx-stderr.log",
+      "bytes": 595,
+      "sha256": "d89e75722c35d13372a7314d5f81966fcf000cd3b7ff1ebbc0377b23eb5c0fe2"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/onnx-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/pt-stderr.log",
+      "bytes": 702,
+      "sha256": "438514821565a4a40c75c3c2c6d0b9c85b3fbc8fd76f5c29670d7a08e9d1d1de"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/pt-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/purge-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/purge-stdout.log",
+      "bytes": 110,
+      "sha256": "754d92b78b8aa722a0494b27c5a704a412963e9a6f1fc5c9cd79f9485e1bd1a3"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/read-only-user-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/install-qa/logs/read-only-user-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/packaged-gpu-qa/onnx_cpu/stderr.log",
+      "bytes": 429,
+      "sha256": "f810c58b9fb5215fa4d5c166fa1a88be6192d9a24f69cfe55fa26593d3ff15ef"
+    },
+    {
+      "file": "packaged-raw/packaged-gpu-qa/onnx_cpu/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/packaged-gpu-qa/onnx_cuda/stderr.log",
+      "bytes": 453,
+      "sha256": "7941bd1dd9cad1b50a2ec03d756ba0e6291fb25dc0fb1c510733f2b2e0e94f4b"
+    },
+    {
+      "file": "packaged-raw/packaged-gpu-qa/onnx_cuda/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/packaged-gpu-qa/pt_cpu/stderr.log",
+      "bytes": 448,
+      "sha256": "3b027bae277e96cacfee10aa42607d5efa62f09d1f4d5f75db6a104f959a5653"
+    },
+    {
+      "file": "packaged-raw/packaged-gpu-qa/pt_cpu/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/packaged-gpu-qa/pt_cuda/stderr.log",
+      "bytes": 558,
+      "sha256": "638e5a24b78566825e1116f889860af7387ccc577724e8bc4456a8958a6507ae"
+    },
+    {
+      "file": "packaged-raw/packaged-gpu-qa/pt_cuda/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/onnx_cpu/application.stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/onnx_cpu/application.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/onnx_cpu/data/evaluations/20261020-093227-793-fb74163f/helper.log",
+      "bytes": 185,
+      "sha256": "32b6d3039301d8358dca3522990a4c1b72a202847029dd7d5a0693ff10d1abad"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/onnx_cuda/application.stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/onnx_cuda/application.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/onnx_cuda/data/evaluations/20261020-093302-328-40e73536/helper.log",
+      "bytes": 186,
+      "sha256": "825f11b6098a30a805945eba0fcb3e0fe691cf83f42dadcae5cfa0d5ef033258"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/pt_cpu/application.stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/pt_cpu/application.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/pt_cpu/data/evaluations/20261020-093235-114-5cd2b98c/helper.log",
+      "bytes": 183,
+      "sha256": "4a0bae1c6da6ede0af82b845be472101efd3c7d04aa9f2c97764ca0605c3de6f"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/pt_cuda/application.stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/pt_cuda/application.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/pt_cuda/data/evaluations/20261020-093309-775-25d621a1/helper.log",
+      "bytes": 184,
+      "sha256": "ff2055604e2941879090af3a8662f1ae81fc9d998fee06c2e27d544f4c85d0c4"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/torchscript-export/conversion.stderr.log",
+      "bytes": 449,
+      "sha256": "cd0aa7d773fb97ec294522b929f6d846340ae32ea19de0cfe8c61c2839aefb03"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/torchscript-export/conversion.stdout.log",
+      "bytes": 3876,
+      "sha256": "da780c20db3e7a6ff1df237b5635ad5c996c4a12a0acad294cdeecc86a2faa57"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/torchscript_cpu/application.stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/torchscript_cpu/application.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/torchscript_cpu/data/evaluations/20261020-093245-292-b77d1844/helper.log",
+      "bytes": 192,
+      "sha256": "b0a0b5e3f201788838f4efd8f4dc8666b2edfc4908f4381c0706385ea6b9d267"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/zero_result_id32_cpu/application.stderr.log",
+      "bytes": 302,
+      "sha256": "f02b41fde5cf4d64670e249cfe7d3682b8335c85007a3cc2143e8dd6300ae4d0"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/zero_result_id32_cpu/application.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "packaged-raw/packaged-evaluation-qa/zero_result_id32_cpu/data/evaluations/20261020-093255-435-494c86aa/helper.log",
+      "bytes": 197,
+      "sha256": "e07baf37d2f599f246fd211ae1e3bb641a11801d9e822ca0744d50a22eb8ce05"
+    }
+  ]
+}

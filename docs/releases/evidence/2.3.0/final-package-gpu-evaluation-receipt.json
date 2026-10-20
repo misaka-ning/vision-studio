@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "version": "2.3.0",
+  "success": true,
+  "generated_at_utc": "2026-10-20T09:35:57.473075+00:00",
+  "source_freeze_commit": "9dba95c0081cf1d1616c6537f6e41ad58d07722a",
+  "deb_sha256": "e8f600337b7c452a2104d1bc78f544bbc41ab5553b8e67db37d919b084ab7cbf",
+  "scope": "Post-execution read-only verification of final package extraction, frozen verifier source, and retained raw process logs. No new inference executed.",
+  "verifiers": {
+    "packaging/verify_gpu_deb.py": {
+      "sha256": "0f19969273cf412d078a957a13b924663358da3078870f474a25a3e08def89ca",
+      "frozen_source_sha256": "0f19969273cf412d078a957a13b924663358da3078870f474a25a3e08def89ca"
+    },
+    "packaging/verify_evaluation_deb.py": {
+      "sha256": "dda8e57d9555ca2801e631fb750ab3b71f8a8373601b95e23b0465002aa16213",
+      "frozen_source_sha256": "dda8e57d9555ca2801e631fb750ab3b71f8a8373601b95e23b0465002aa16213"
+    }
+  },
+  "runs": {
+    "gpu": {
+      "report": "packaged-gpu-qa.json",
+      "report_sha256": "be8c04e7a69688c847586e5ea75eb493696733f71c6bffe6db6ac8d133ea0fb7",
+      "workdir": "/tmp/vision-studio-gpu-deb-qa-3s99o3li",
+      "application": "/tmp/vision-studio-gpu-deb-qa-3s99o3li/root/opt/VisionStudio",
+      "application_read_only": true,
+      "read_only_entries_verified": 39690,
+      "binary_sha256": "1a4f0295c28b150375a428a486b3f973d7aca40d91e403b8e0447874f7b7f89f",
+      "raw_logs": {
+        "pt_cpu/stdout.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "pt_cpu/stderr.log": {
+          "bytes": 448,
+          "sha256": "3b027bae277e96cacfee10aa42607d5efa62f09d1f4d5f75db6a104f959a5653"
+        },
+        "onnx_cpu/stdout.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "onnx_cpu/stderr.log": {
+          "bytes": 429,
+          "sha256": "f810c58b9fb5215fa4d5c166fa1a88be6192d9a24f69cfe55fa26593d3ff15ef"
+        },
+        "pt_cuda/stdout.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "pt_cuda/stderr.log": {
+          "bytes": 558,
+          "sha256": "638e5a24b78566825e1116f889860af7387ccc577724e8bc4456a8958a6507ae"
+        },
+        "onnx_cuda/stdout.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "onnx_cuda/stderr.log": {
+          "bytes": 453,
+          "sha256": "7941bd1dd9cad1b50a2ec03d756ba0e6291fb25dc0fb1c510733f2b2e0e94f4b"
+        }
+      }
+    },
+    "evaluation": {
+      "report": "packaged-evaluation-qa.json",
+      "report_sha256": "36949e40d649d5705a93868c2bb500fbe91e674a46c4a7fe8925b1f91c68c665",
+      "workdir": "/tmp/vision-studio-evaluation-qa-s0br3_r7",
+      "application": "/tmp/vision-studio-evaluation-qa-s0br3_r7/extracted/opt/VisionStudio",
+      "application_read_only": true,
+      "read_only_entries_verified": 39690,
+      "binary_sha256": "1a4f0295c28b150375a428a486b3f973d7aca40d91e403b8e0447874f7b7f89f",
+      "raw_logs": {
+        "pt_cpu/application.stderr.log": {
+          "bytes": 214,
+          "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+        },
+        "pt_cpu/application.stdout.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "onnx_cpu/application.stderr.log": {
+          "bytes": 214,
+          "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+        },
+        "onnx_cpu/application.stdout.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "zero_result_id32_cpu/application.stderr.log": {
+          "bytes": 302,
+          "sha256": "f02b41fde5cf4d64670e249cfe7d3682b8335c85007a3cc2143e8dd6300ae4d0"
+        },
+        "zero_result_id32_cpu/application.stdout.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "torchscript-export/conversion.stderr.log": {
+          "bytes": 449,
+          "sha256": "cd0aa7d773fb97ec294522b929f6d846340ae32ea19de0cfe8c61c2839aefb03"
+        },
+        "torchscript-export/conversion.stdout.log": {
+          "bytes": 3876,
+          "sha256": "da780c20db3e7a6ff1df237b5635ad5c996c4a12a0acad294cdeecc86a2faa57"
+        },
+        "pt_cuda/application.stderr.log": {
+          "bytes": 214,
+          "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+        },
+        "pt_cuda/application.stdout.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "onnx_cuda/application.stderr.log": {
+          "bytes": 214,
+          "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+        },
+        "onnx_cuda/application.stdout.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "torchscript_cpu/application.stderr.log": {
+          "bytes": 214,
+          "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+        },
+        "torchscript_cpu/application.stdout.log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "torchscript_cpu/data/evaluations/20261020-093245-292-b77d1844/helper.log": {
+          "bytes": 192,
+          "sha256": "b0a0b5e3f201788838f4efd8f4dc8666b2edfc4908f4381c0706385ea6b9d267"
+        },
+        "onnx_cuda/data/evaluations/20261020-093302-328-40e73536/helper.log": {
+          "bytes": 186,
+          "sha256": "825f11b6098a30a805945eba0fcb3e0fe691cf83f42dadcae5cfa0d5ef033258"
+        },
+        "pt_cuda/data/evaluations/20261020-093309-775-25d621a1/helper.log": {
+          "bytes": 184,
+          "sha256": "ff2055604e2941879090af3a8662f1ae81fc9d998fee06c2e27d544f4c85d0c4"
+        },
+        "zero_result_id32_cpu/data/evaluations/20261020-093255-435-494c86aa/helper.log": {
+          "bytes": 197,
+          "sha256": "e07baf37d2f599f246fd211ae1e3bb641a11801d9e822ca0744d50a22eb8ce05"
+        },
+        "onnx_cpu/data/evaluations/20261020-093227-793-fb74163f/helper.log": {
+          "bytes": 185,
+          "sha256": "32b6d3039301d8358dca3522990a4c1b72a202847029dd7d5a0693ff10d1abad"
+        },
+        "pt_cpu/data/evaluations/20261020-093235-114-5cd2b98c/helper.log": {
+          "bytes": 183,
+          "sha256": "4a0bae1c6da6ede0af82b845be472101efd3c7d04aa9f2c97764ca0605c3de6f"
+        }
+      }
+    }
+  }
+}
