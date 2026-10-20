@@ -66,3 +66,11 @@ README 两张截图来自最终只读 DEB 的真实 COCO8 CPU 预览与 CUDA 分
 没有验收 Windows 2.4.0、物理摄像头、TensorRT 或新模型架构。COCO8 很小，只证明管线、指标和同权重后端一致性，不是足球精度或部署性能基准；ID32 为 sports ball，不等于仅足球。历史 Release 标签和资产不覆盖。
 
 GitHub 发布、Latest、三个资产大小与 SHA256 以及保留最新两版的结果，以下游独立发布凭证为准。旧 2.3.0 的[清理预审](cleanup-old-230-preview.json)是只读计划；远端未核验时不执行删除，个人资料、其余 QA、共享 SDK/runtime 始终保护。
+
+## 正式发布与本地保留
+
+正式标签 `v2.4.0` 固定为 `ba0e38604ba81b430e9234ea122c208439a7b1cd`。官方工具的[预检查](release-dry-run.json)、[发布凭证](release-publish.json)、[独立复核](release-verify.json)及 [Latest 原始响应](latest-release.json)确认：发行已公开、非预发布、Latest 为 2.4.0，只有三个手动附件，大小与 SHA256 全部吻合上表。
+
+新旧远端核验通过后，官方工具分别[预览](prune-worktree-preview.json)并[执行工作区发行清理](prune-worktree-executed.json)，[主目录同样完成](prune-primary-executed.json)。两处发行副本只保留 2.4.0、2.3.1。源码／构建／暂存另经[逐成员复核与精确清理](old-source-cleanup.json)：只删除已审计的三个 2.3.0 目录，独立 QA、用户备份、Git、SDK 与 CPU／GPU runtime 保护。两个未发布的重复源码诊断归档也按记录 SHA 精确删除，原校验、日志及 Git 修订保留。
+
+[最终本地状态](final-local-state.json)记录对应版本目录及当时宿主状态。本机升级仍待 Polkit 管理员验证；安装包与源码已公开，隔离安装验收已经完成。这里的随后凭证以维护提交保存，不改冻结标签或资产。

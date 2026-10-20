@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "version": "2.4.0",
+  "success": true,
+  "retained_release_versions": [
+    "2.4.0",
+    "2.3.1"
+  ],
+  "worktree_releases": [
+    "2.3.1",
+    "2.4.0"
+  ],
+  "primary_releases": [
+    "2.3.1",
+    "2.4.0"
+  ],
+  "worktree_builds": [
+    "2.3.1-release",
+    "2.4.0-release"
+  ],
+  "worktree_stages": [
+    "2.3.1-1",
+    "2.4.0-1"
+  ],
+  "old_source_removed": true,
+  "current_source_and_git_preserved": true,
+  "installed_debian_version_at_observation": "2.3.1-1",
+  "host_install_pending_polkit": true,
+  "user_backups_and_other_qa_preserved": true
+}

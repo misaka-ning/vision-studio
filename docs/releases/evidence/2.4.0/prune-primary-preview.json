@@ -1,0 +1,97 @@
+{
+  "success": true,
+  "dry_run": true,
+  "root": "/home/misaka/文档/ChatGPT/yolo/output/releases",
+  "kept": [
+    "/home/misaka/文档/ChatGPT/yolo/output/releases/2.4.0",
+    "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.1"
+  ],
+  "verified_kept": [
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.4.0",
+      "url": "https://github.com/misaka-ning/vision-studio/releases/tag/v2.4.0",
+      "commit": "ba0e38604ba81b430e9234ea122c208439a7b1cd",
+      "assets": [
+        {
+          "name": "vision-studio_2.4.0-1_amd64.deb",
+          "bytes": 387150092,
+          "sha256": "a49aac15daf9733d42126f84d7c6dc64256dbac46da21cb4d9d8ed58d2effe68",
+          "asset_id": 659446537,
+          "verification": "GitHub REST sha256 digest"
+        },
+        {
+          "name": "vision-studio-2.4.0-complete-source.tar.xz",
+          "bytes": 862570864,
+          "sha256": "5450efd8c22eabaad294fa4f04bcf574fd1ccf1eaeca00644a133006a3a0b14c",
+          "asset_id": 659448173,
+          "verification": "GitHub REST sha256 digest"
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 207,
+          "sha256": "c86d51207583310322dbee8eb9165197903045ce90755ff973bdc28ba40335f7",
+          "asset_id": 659452292,
+          "verification": "GitHub REST sha256 digest"
+        }
+      ]
+    },
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.1",
+      "url": "https://github.com/misaka-ning/vision-studio/releases/tag/v2.3.1",
+      "commit": "1029f642152e75bdfd60a5def60168fea53b6e5b",
+      "assets": [
+        {
+          "name": "vision-studio_2.3.1-1_amd64.deb",
+          "bytes": 387141452,
+          "sha256": "1e959057337832f2dac8d950d738426ad426ea124aee7cefc925286792d19758",
+          "asset_id": 659029108,
+          "verification": "GitHub REST sha256 digest"
+        },
+        {
+          "name": "vision-studio-2.3.1-complete-source.tar.xz",
+          "bytes": 847507304,
+          "sha256": "bcf9e2dcfb27e96db3c411dfa71da3e7dc248ed81ed1adb0c554ee08ba7d29e6",
+          "asset_id": 659030721,
+          "verification": "GitHub REST sha256 digest"
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 207,
+          "sha256": "f68adff3fd49fbad4bd73c1562a8b28ceaa904721c87a67f037fa56ac2a1e24e",
+          "asset_id": 659035302,
+          "verification": "GitHub REST sha256 digest"
+        }
+      ]
+    }
+  ],
+  "verified_candidates": [
+    {
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.0",
+      "url": "https://github.com/misaka-ning/vision-studio/releases/tag/v2.3.0",
+      "commit": "05ea7df054ad9afbbe431e094e6f52fba0c51d99",
+      "assets": [
+        {
+          "name": "vision-studio_2.3.0-1_amd64.deb",
+          "bytes": 387134996,
+          "sha256": "e8f600337b7c452a2104d1bc78f544bbc41ab5553b8e67db37d919b084ab7cbf",
+          "asset_id": 658898700,
+          "verification": "GitHub REST sha256 digest"
+        },
+        {
+          "name": "vision-studio-2.3.0-complete-source.tar.xz",
+          "bytes": 846257988,
+          "sha256": "ed0c75206649ce57d41512a8f97ed12fee394a332cb646e6b6deabc7a15afbde",
+          "asset_id": 658900369,
+          "verification": "GitHub REST sha256 digest"
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 207,
+          "sha256": "fbbb09d225583e75b4d199f63d071610998d60f91c622d261b9d16bc1fc0312a",
+          "asset_id": 658916229,
+          "verification": "GitHub REST sha256 digest"
+        }
+      ]
+    }
+  ]
+}
