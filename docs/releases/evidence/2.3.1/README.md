@@ -1,6 +1,6 @@
 # Vision Studio 2.3.1 验收报告
 
-本报告记录 2026-10-20 实际执行的 Linux amd64 2.3.1 验收，重点为数据集文件夹／YAML 导入、受限只读路径迁移、失败后重试及已有数据集恢复。最终 DEB、完整对应源码和适用测试均已完成本地核验；随后完成的宿主升级见下方独立凭证。GitHub 发布状态以随后保存的真实发布核验凭证为准。
+本报告记录 2026-10-20 实际执行的 Linux amd64 2.3.1 验收，重点为数据集文件夹／YAML 导入、受限只读路径迁移、失败后重试及已有数据集恢复。最终 DEB、完整对应源码和适用测试均已完成本地核验；随后完成的宿主升级见下方独立凭证。GitHub 已完成正式发布及独立核验，发布后凭证与本地清理见文末。
 
 ## 源码、构建与最终文件
 
@@ -90,3 +90,11 @@ GPU 实测设备为 **NVIDIA GeForce RTX 4060**。完整 GPU 套的两份 ORT pr
 ## 随后实际宿主升级
 
 [host-install-qa.json](host-install-qa.json)、[DPKG 原始日志](host-install.log) 与 [版本输出](host-version.log) 记录本机从 `2.3.0-1` 升级到 `2.3.1-1`。`vision-studio --version` 实际输出 `Vision Studio 2.3.1`，9 个安装代码／模型文件匹配最终 DEB，5 个已有用户文件不变；小型设置备份仅本地保留。安装后的 helper 再次只读预检查私人 Val 1223 张，清单与安装前一致，没有执行私人数据集模型推理。私人备份与完整清单不入库。
+
+## 正式发布与本地保留
+
+正式标签 `v2.3.1` 固定到 `1029f642152e75bdfd60a5def60168fea53b6e5b`，没有移动历史标签。官方发布工具的[预检查](release-dry-run.json)、[发布凭证](release-publish.json)、[独立复核](release-verify.json)及 [Latest 原始响应](latest-release.json)确认：发行已公开、非预发布、Latest 为 2.3.1，只有 DEB、完整对应源码与 SHA256SUMS 三个手动附件，大小和 SHA256 均与上表一致。QA ZIP 均留在仓库，未增为 Release 附件。
+
+独立复核 [2.2.0](previous-2.2.0-verify.json) 和 [2.3.0](retained-2.3.0-verify.json) 后，执行两处正式发行目录的[工作区清理](prune-worktree-executed.json)与[主文件夹清理](prune-primary-executed.json)；两处均只保留 2.3.1、2.3.0。旧源码和构建采用[先前预览](cleanup-old-220-preview.json)、[完整审计](cleanup-old-220-final-audit.json)与[逐成员原始记录](cleanup-old-220-stage-members.jsonl.gz)，再按[执行凭证](old-source-cleanup.json)精确移除三个 2.2.0 旧源码／构建／暂存目录。15 份唯一日志与元数据的[备份清单](old-220-backup-manifest.json)保持可核对；旧 QA 输出和用户状态备份继续保留，共享 Qt、插件和 CPU／GPU runtime 未清理。
+
+[主文件夹源码同步](primary-main-sync.json)采用 main 快进，四份无关用户训练脚本／文档逐个 SHA256 不变。发布后凭证以独立维护提交保存；它们不回写冻结标签、安装包或对应源码资产。

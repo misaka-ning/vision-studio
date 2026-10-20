@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "scope": "Fast-forward primary main checkout, preserve all four unrelated user files",
+  "previous_commit": "660e82b4642010b325bc03f0109a7c14c79eb6ff",
+  "current_commit": "1029f642152e75bdfd60a5def60168fea53b6e5b",
+  "unrelated_user_files_verified_unchanged": 4,
+  "tracked_dirty_before": false,
+  "history_rewritten": false
+}
