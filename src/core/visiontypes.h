@@ -77,6 +77,15 @@ struct InferenceResult
     // Preserve the original selected source ROI for switching preview modes.
     QImage originalImage;
     QVector<Prediction> predictions;
+    // Optional evaluation overlay; these are never counted as predictions.
+    QVector<Prediction> groundTruth;
+    QVector<int> matchedPredictions;
+    QVector<int> ignoredPredictions;
+    QVector<int> matchedGroundTruth;
+    bool hasGroundTruth = false;
+    bool hasEvaluationMatches = false;
+    double matchingIou = .5;
+    QString evaluationReport;
     QString source;
     QString modelName;
     QString backend = "OpenCV DNN";

@@ -1,0 +1,43 @@
+[0/1] Re-running CMake...
+-- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
+-- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
+-- Could NOT find Cups (missing: CUPS_LIBRARIES CUPS_INCLUDE_DIR) 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release
+[1/61] Automatic MOC for target vision-core
+[2/59] Automatic MOC for target vision-modelviewer-tests
+[3/57] Automatic MOC for target vision-conversion-ui-tests
+[4/55] Automatic MOC for target vision-core-tests
+[5/53] Automatic MOC for target vision-inference-delivery-tests
+[6/51] Automatic MOC for target vision-recording-tests
+[7/49] Automatic MOC for target vision-pt-tests
+[8/47] Automatic MOC for target vision-gpu-tests
+[9/45] Automatic MOC for target vision-evaluation-worker-tests
+[10/43] Automatic MOC for target vision-ui
+[11/43] Automatic MOC for target vision-evaluation-panel-tests
+[12/42] Building CXX object CMakeFiles/vision-ui.dir/vision-ui_autogen/mocs_compilation.cpp.o
+[13/42] Building CXX object CMakeFiles/vision-ui.dir/src/ui/mainwindow_evaluation.cpp.o
+[14/42] Building CXX object CMakeFiles/vision-ui.dir/src/ui/evaluationpanel.cpp.o
+[15/42] Building CXX object CMakeFiles/vision-evaluation-panel-tests.dir/tests/evaluation_panel_tests.cpp.o
+[16/42] Building CXX object CMakeFiles/vision-evaluation-panel-tests.dir/src/ui/evaluationpanel.cpp.o
+[17/42] Linking CXX executable vision-evaluation-panel-tests
+[18/42] Building CXX object CMakeFiles/vision-ui.dir/src/ui/mainwindow.cpp.o
+[19/42] Automatic MOC for target vision-studio
+[20/41] Automatic MOC for target vision-ui-tests
+[21/40] Automatic MOC for target vision-batch-responsiveness-tests
+[22/39] Automatic MOC for target vision-scope-filter-ui-tests
+[23/38] Automatic MOC for target vision-conversion-inference-tests
+[24/37] Automatic MOC for target vision-evaluation-integration-tests
+[25/36] Building CXX object CMakeFiles/vision-studio.dir/src/main.cpp.o
+[26/36] Linking CXX executable bin/vision-studio
+[27/36] Building CXX object CMakeFiles/vision-batch-responsiveness-tests.dir/tests/batch_responsiveness_tests.cpp.o
+[28/36] Linking CXX executable vision-batch-responsiveness-tests
+[29/36] Building CXX object CMakeFiles/vision-scope-filter-ui-tests.dir/tests/scope_filter_ui_tests.cpp.o
+[30/36] Linking CXX executable vision-scope-filter-ui-tests
+[31/36] Building CXX object CMakeFiles/vision-conversion-inference-tests.dir/tests/conversion_inference_tests.cpp.o
+[32/36] Building CXX object CMakeFiles/vision-ui-tests.dir/tests/ui_tests.cpp.o
+[33/36] Linking CXX executable vision-conversion-inference-tests
+[34/36] Linking CXX executable vision-ui-tests
+[35/36] Building CXX object CMakeFiles/vision-evaluation-integration-tests.dir/tests/evaluation_integration_tests.cpp.o
+[36/36] Linking CXX executable vision-evaluation-integration-tests

@@ -1,0 +1,4 @@
+Running /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-evaluation-integration-tests -o /home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/final-ui/integration.log,txt
+vision-evaluation-integration-tests exit 0
+Running /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.0-release/vision-ui-tests -o /home/misaka/.codex/worktrees/ef0b/yolo/output/qa-2.3.0/final-ui/ui-tests.log,txt
+vision-ui-tests exit 0

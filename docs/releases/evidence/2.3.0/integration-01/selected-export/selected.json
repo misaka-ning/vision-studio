@@ -1,0 +1,82 @@
+{
+    "actual_device": "cpu",
+    "application": "Vision Studio",
+    "backend": "OpenCV DNN / CPU",
+    "config": {
+        "class_filter": [
+            0
+        ],
+        "color_mode": "rgb",
+        "confidence_threshold": 0.699999988079071,
+        "input_channels": 3,
+        "input_size": 64,
+        "model_class_count": 1,
+        "nms_iou": 0.44999998807907104,
+        "preprocess": {
+            "color_mode": "rgb",
+            "mean_rgb": [
+                0,
+                0,
+                0
+            ],
+            "mode": "configured",
+            "scale": 0.00392157,
+            "swap_rb": true
+        }
+    },
+    "device_index": -1,
+    "device_name": "CPU",
+    "device_notice": "",
+    "evaluation": {
+        "analysis_confidence": 0.699999988079071,
+        "has_ground_truth": true,
+        "ignored_predictions": [
+        ],
+        "matched_ground_truth": [
+        ],
+        "matched_predictions": [
+        ],
+        "matching_available": true,
+        "matching_iou": 0.5,
+        "report_directory": "/tmp/vision-evaluation-integration-tests-WssIwc/data/evaluations/20261020-085745-791-89843b04"
+    },
+    "frame": 0,
+    "ground_truth": [
+        {
+            "class_id": 0,
+            "height": 8,
+            "label": "football",
+            "width": 8,
+            "x": 4,
+            "y": 4
+        }
+    ],
+    "height": 64,
+    "inference_ms": 0.091676,
+    "model": "known.onnx",
+    "model_file": "/tmp/vision-evaluation-integration-tests-WssIwc/known.onnx",
+    "predictions": [
+        {
+            "class_id": 0,
+            "confidence": 0.8000308275222778,
+            "height": 20,
+            "label": "football",
+            "match_status": "FP",
+            "width": 20,
+            "x": 22,
+            "y": 22
+        }
+    ],
+    "requested_device": "cpu",
+    "source": "/tmp/vision-evaluation-integration-tests-WssIwc/dataset-4/images/val/0001.png",
+    "source_frame_size": {
+        "height": 64,
+        "width": 64
+    },
+    "stereo_view": "full",
+    "task": "YOLOv8 / 11",
+    "timestamp": "2026-10-20T16:57:48.300",
+    "total_ms": 0.137864,
+    "version": "2.3.0",
+    "width": 64
+}

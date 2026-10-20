@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "core/gpuruntime.h"
 #include "core/inferenceworker.h"
+#include "core/evaluationworker.h"
+#include "evaluationpanel.h"
 #include "core/visionengine.h"
 #include "icons.h"
 #include "imagecanvas.h"
@@ -58,6 +60,7 @@
 #include <QStandardItemModel>
 #include <QStandardPaths>
 #include <QTableWidget>
+#include <QTabWidget>
 #include <QTemporaryDir>
 #include <QTextBrowser>
 #include <QThread>
@@ -320,6 +323,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     modelDisplayNames_ = settings_->value("modelDisplayNames").toMap();
     modelNotes_ = settings_->value("modelNotes").toMap();
     convertedModelProfiles_ = settings_->value("convertedModelProfiles").toMap();
+    modelEvaluationProfiles_ = settings_->value("evaluationProfiles").toMap();
     QFile h(dataRoot_ + "/history.json");
     if (h.open(QIODevice::ReadOnly))
         history_ = QJsonDocument::fromJson(h.readAll()).array();
@@ -385,6 +389,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
         selectRoute(1);
     });
     connect(modelConversion_, &ModelConversionPage::busyChanged, this, [this](bool active) {
+        updateStartEligibility();
         if (!active && closing_) QTimer::singleShot(0, this, &QWidget::close);
     });
     pages_->addWidget(buildMore());
@@ -417,6 +422,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     resultIoPool_ = new QThreadPool(this);
     resultIoPool_->setMaxThreadCount(1);
     connectWorker();
+    connectEvaluation();
     const int savedTask = settings_->value("task", 0).toInt(),
               savedInput = settings_->value("inputSize", 640).toInt();
     const double savedConfidence = settings_->value("confidence", 0.25).toDouble(),
@@ -555,6 +561,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 }
 MainWindow::~MainWindow()
 {
+    if (evaluationPreviewCancellation_) evaluationPreviewCancellation_->store(true);
+    if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
     if (modelInspectionCancellation_)
         modelInspectionCancellation_->store(true);
     for (QProcess *process : {gpuProbeProcess_, gpuSetupProcess_})
@@ -574,6 +582,10 @@ MainWindow::~MainWindow()
     if (modelViewer_)
         modelViewer_->stop();
     stopRecordingPlayback();
+    if (evaluationWorker_) {
+        evaluationWorker_->requestStop();
+        evaluationWorker_->wait();
+    }
     worker_->requestStop();
     workerThread_->quit();
     workerThread_->wait();
@@ -599,7 +611,12 @@ void MainWindow::setupStyle()
     setPalette(colors);
     QFile theme(QStringLiteral(":/fluent-dark.qss"));
     if (theme.open(QIODevice::ReadOnly))
-        setStyleSheet(QString::fromUtf8(theme.readAll()));
+        setStyleSheet(QString::fromUtf8(theme.readAll()) + QStringLiteral(
+            "QTabWidget::pane { background:#202020; border:1px solid #353535; border-radius:6px; top:-1px; }"
+            "QTabBar::tab { background:#272727; color:#B8B8B8; border:1px solid #353535; border-bottom:2px solid transparent; border-top-left-radius:4px; border-top-right-radius:4px; padding:8px 14px; margin-right:4px; }"
+            "QTabBar::tab:selected { background:#303030; color:#F5F5F5; border-bottom:2px solid #60CDFF; }"
+            "QTabBar::tab:hover { background:#353535; color:#F5F5F5; }"
+            "QTabBar::tab:disabled { color:#828282; background:#252525; }"));
 }
 
 QWidget *MainWindow::buildSidebar()
@@ -717,6 +734,12 @@ QWidget *MainWindow::buildWorkbench()
     sourceLabel_->setMaximumHeight(40);
     commands->addLayout(sources);
     commands->addWidget(sourceLabel_, 1);
+    auto *datasetButton = button("YOLO 数据集", "folder");
+    datasetButton->setObjectName("openYoloDatasetButton");
+    sources->addWidget(datasetButton);
+    lockedControls_.append(datasetButton);
+    evaluation_ = new EvaluationPanel;
+    connect(datasetButton, &QPushButton::clicked, evaluation_, &EvaluationPanel::chooseDataset);
     commandLayout->addLayout(commands);
     all->addWidget(inputCommands);
     auto *columns = new QSplitter;
@@ -759,6 +782,7 @@ QWidget *MainWindow::buildWorkbench()
     deviceHint_->setMaximumHeight(40);
     devices->addWidget(deviceHint_, 1);
     commandLayout->addLayout(devices);
+    commandLayout->addWidget(evaluation_->controlsWidget());
     lockedControls_.append(computeDevice_);
     lockedControls_.append(gpuDeviceIndex_);
     const auto deviceChanged = [this]
@@ -897,8 +921,8 @@ QWidget *MainWindow::buildWorkbench()
     form->addRow("输入尺寸", inputSize_);
     confidence_ = new WheelSafeSpinBox<QDoubleSpinBox>;
     confidence_->setObjectName("confidence");
-    confidence_->setRange(0.01, 1.0);
-    confidence_->setDecimals(2);
+    confidence_->setRange(0.001, 1.0);
+    confidence_->setDecimals(3);
     confidence_->setSingleStep(0.05);
     confidence_->setValue(0.25);
     form->addRow("置信度", confidence_);
@@ -1027,6 +1051,11 @@ QWidget *MainWindow::buildWorkbench()
     showLabels_ = new QCheckBox("标签");
     showLabels_->setChecked(true);
     tl->addWidget(showLabels_);
+    showGroundTruth_ = new QCheckBox("GT 标注");
+    showGroundTruth_->setObjectName("showGroundTruth");
+    showGroundTruth_->setChecked(true);
+    showGroundTruth_->hide();
+    tl->addWidget(showGroundTruth_);
     auto *fit = button({}, "fit", "ghost");
     fit->setFixedSize(32, 32);
     fit->setMinimumHeight(32);
@@ -1062,7 +1091,13 @@ QWidget *MainWindow::buildWorkbench()
     zoomLabel_ = text("100%", "tiny");
     cb->addWidget(zoomLabel_);
     cf->addLayout(cb);
-    ml->addWidget(canvasFrame, 1);
+    workbenchTabs_ = new QTabWidget;
+    workbenchTabs_->setObjectName("workbenchAnalysisTabs");
+    workbenchTabs_->addTab(canvasFrame, "图像预览 / 标注对照");
+    workbenchTabs_->addTab(evaluation_, "评估与阈值");
+    workbenchTabs_->setTabEnabled(1, false);
+    ml->addWidget(workbenchTabs_, 1);
+    connect(showGroundTruth_, &QCheckBox::toggled, canvas_, &ImageCanvas::setGroundTruthVisible);
     connect(fit, &QPushButton::clicked, canvas_, &ImageCanvas::fitToView);
     connect(actual, &QPushButton::clicked, canvas_, &ImageCanvas::actualSize);
     connect(showBoxes_, &QCheckBox::toggled, canvas_, &ImageCanvas::setBoxesVisible);
@@ -1091,6 +1126,7 @@ QWidget *MainWindow::buildWorkbench()
     connect(clear, &QPushButton::clicked, this,
             [this]
             {
+                clearDatasetContext();
                 clearImageResults();
                 files_.clear();
                 queue_->clear();
@@ -1275,6 +1311,14 @@ QWidget *MainWindow::buildModels()
     actions->addWidget(activate);
     actions->addWidget(structure);
     actions->addWidget(remove);
+    auto *evaluationReport = button("查看评估 / 检测配置", "history");
+    evaluationReport->setObjectName("modelEvaluationReportButton");
+    actions->addWidget(evaluationReport);
+    connect(evaluationReport, &QPushButton::clicked, this, [this] {
+        const auto profile = modelEvaluationProfiles_.value(modelPath_).toMap();
+        if (profile.value("report_directory").toString().isEmpty()) { selectRoute(0); evaluation_->chooseDataset(); }
+        else loadEvaluationReport(profile.value("report_directory").toString());
+    });
     actions->addStretch();
     fl->addLayout(actions);
     connect(structure, &QPushButton::clicked, this, [this] { selectRoute(2); });
@@ -1389,7 +1433,7 @@ QWidget *MainWindow::buildHistory()
     l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(16);
     auto *row = new QHBoxLayout;
-    row->addWidget(text("最近 200 次图片推理与视频任务", "sectionTitle"), 1);
+    row->addWidget(text("最近 200 次检测与评估记录 · 双击评估记录回看报告", "sectionTitle"), 1);
     auto *exportHistory = button("导出运行记录", "export");
     row->addWidget(exportHistory);
     connect(exportHistory, &QPushButton::clicked, this,
@@ -1713,6 +1757,7 @@ void MainWindow::selectQueueImage(int row)
     if (busy_ || sourceKind_ != vision::SourceKind::Images || row < 0 || row >= files_.size())
         return;
     updateRangeUi();
+    if (evaluationReviewActive_) { reviewEvaluationImage(row); return; }
     if (!imageResults_.isEmpty() && imageConfigFingerprint_ != inferenceFingerprint())
         clearImageResults();
     const QString source = files_.at(row);
@@ -1756,6 +1801,8 @@ void MainWindow::selectQueueImage(int row)
         canvas_->clear();
     else
         canvas_->setResult(preview);
+    attachGroundTruth(preview);
+    canvas_->setResult(preview);
     canvasTitle_->setText(QFileInfo(source).fileName());
     sizeMetric_->setText(preview.image.isNull()
                              ? "—"
@@ -1778,6 +1825,11 @@ void MainWindow::updateInputPreview()
 {
     if (busy_ || !canvas_)
         return;
+    if (evaluationPreviewCancellation_) evaluationPreviewCancellation_->store(true);
+    if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
+    ++evaluationPreviewGeneration_; ++evaluationFilterGeneration_;
+    evaluationReviewActive_ = false;
+    for (int index = 0; index < queue_->count(); ++index) queue_->item(index)->setHidden(false);
     clearImageResults();
     const auto mode = currentConfig().colorMode;
     for (int index = 0; index < queue_->count(); ++index)
@@ -1787,14 +1839,17 @@ void MainWindow::updateInputPreview()
         if (!thumbnail.isNull())
             item->setIcon(QIcon(QPixmap::fromImage(vision::inputPreviewImage(thumbnail, mode))));
     }
-    auto preview = canvas_->result();
-    if (preview.image.isNull())
+    const auto previous = canvas_->result();
+    if (previous.image.isNull())
         return;
-    if (preview.originalImage.isNull())
-        preview.originalImage = preview.image;
+    vision::InferenceResult preview;
+    preview.source = previous.source;
+    preview.task = currentConfig().task;
+    preview.originalImage = previous.originalImage.isNull() ? previous.image : previous.originalImage;
+    preview.sourceFrameSize = previous.sourceFrameSize;
     preview.image = vision::inputPreviewImage(preview.originalImage, mode);
-    preview.predictions.clear();
     lastResult_ = {};
+    attachGroundTruth(preview);
     canvas_->setResult(preview);
     predictionTable_->setRowCount(0);
     emptyResults_->show();
@@ -2217,6 +2272,7 @@ void MainWindow::chooseVideo()
         this, "选择视频", projectRoot_, "视频 (*.mp4 *.avi *.mkv *.mov *.webm *.m4v);;全部文件 (*)");
     if (p.isEmpty())
         return;
+    clearDatasetContext();
     clearImageResults();
     sourceKind_ = vision::SourceKind::Video;
     streamPath_ = p;
@@ -2237,6 +2293,7 @@ void MainWindow::chooseVideo()
 void MainWindow::chooseCamera()
 {
     if (busy_) return;
+    clearDatasetContext();
     clearImageResults();
     sourceKind_ = vision::SourceKind::Camera;
     files_.clear();
@@ -2254,12 +2311,22 @@ void MainWindow::updateSourceUi()
 {
     cameraIndex_->setVisible(sourceKind_ == vision::SourceKind::Camera);
     const bool streaming = sourceKind_ != vision::SourceKind::Images;
+    const bool datasetContext = !datasetManifest_.isEmpty();
+    // Dataset reports carry their own metrics. Reclaim their duplicated header
+    // and the image-only recording placeholder so the canvas fits a small window.
+    for (QLabel *value : {countMetric_, latencyMetric_, classMetric_, sizeMetric_})
+        value->parentWidget()->setVisible(!datasetContext);
+    if (evaluation_) evaluation_->controlsWidget()->setVisible(datasetContext);
+    recordButton_->setVisible(streaming);
+    recordingStatus_->setVisible(streaming);
     stereoLabel_->setVisible(streaming);
     stereoView_->setVisible(streaming);
     stereoView_->setEnabled(streaming && !busy_);
     const QString view = stereoName(stereoMode(stereoView_->currentData().toString()));
     if (sourceKind_ == vision::SourceKind::Images)
-        sourceLabel_->setText(QString("图片输入 · %1 个文件").arg(files_.size()));
+        sourceLabel_->setText(datasetManifest_.isEmpty()
+            ? QString("图片输入 · %1 个文件").arg(files_.size())
+            : QString("YOLO 数据集 · %1 · %2 张有效图片").arg(datasetManifest_.value("split").toString()).arg(files_.size()));
     else if (sourceKind_ == vision::SourceKind::Video)
         sourceLabel_->setText("视频 · " + QFileInfo(streamPath_).fileName() + " · " + view);
     else
@@ -2384,7 +2451,11 @@ void MainWindow::updateStartEligibility()
     QString rangeError;
     if (sourceKind_ == vision::SourceKind::Images) selectedImageRange(&rangeError);
     runButton_->setEnabled(!busy_ && !gpuSetupProcess_ && !resultIoPending_ && !modelPath_.isEmpty() &&
-                           rangeError.isEmpty() && classFilterError_.isEmpty());
+                           rangeError.isEmpty() && (evaluation_ && evaluation_->evaluationMode()
+                               ? evaluation_->canEvaluate() && !modelInspectionPending_
+                               : classFilterError_.isEmpty()) &&
+                           (!modelConversion_ || !modelConversion_->isBusy()));
+    runButton_->setText(evaluation_ && evaluation_->evaluationMode() ? "开始评估" : "开始检测");
 }
 
 void MainWindow::inspectSelectedModel()
@@ -2446,6 +2517,7 @@ void MainWindow::inspectSelectedModel()
 void MainWindow::addFiles(const QStringList &input)
 {
     if (busy_) return;
+    if (!loadingDataset_) clearDatasetContext();
     if (sourceKind_ != vision::SourceKind::Images)
     {
         clearImageResults();
@@ -2692,8 +2764,10 @@ vision::ModelConfig MainWindow::currentConfig() const
 }
 void MainWindow::startInference()
 {
-    if (busy_ || gpuSetupProcess_)
+    if (busy_ || gpuSetupProcess_ || (modelConversion_ && modelConversion_->isBusy()))
         return;
+    if (evaluation_ && evaluation_->evaluationMode()) { startEvaluation(); return; }
+    evaluationReviewActive_ = false;
     if (resultIoPending_)
     {
         showNotice("正在后台保存已完成结果，保存完成后即可开始新任务。");
@@ -2780,6 +2854,12 @@ void MainWindow::stopInference()
 {
     if (!busy_)
         return;
+    if (evaluationWorker_) {
+        evaluationWorker_->requestStop();
+        stopButton_->setEnabled(false);
+        showNotice("停止请求已发送 · 已完成样本将保留，未完成任务不会作为完整评估成绩");
+        return;
+    }
     inferenceStopping_ = true;
     recordingRequested_ = false;
     recordingStopping_ = recordingActive_;
@@ -2791,6 +2871,8 @@ void MainWindow::stopInference()
 void MainWindow::setBusy(bool busy)
 {
     busy_ = busy;
+    if (evaluation_) evaluation_->setBusy(busy);
+    if (modelConversion_) modelConversion_->setEnabled(!busy);
     if (!busy)
         inferenceStopping_ = false;
     for (auto *c : lockedControls_)
@@ -2866,6 +2948,7 @@ void MainWindow::updateTaskUi()
                                                                       : QString("类别标签 · 模型默认")))));
     else
         labelButton_->setText(QString("类别标签 · %1 个").arg(labels_.size()));
+    updateEvaluationModel();
     updateClassFilterUi();
     updateDeviceUi();
 }
@@ -3218,8 +3301,10 @@ void MainWindow::updateModelMeta(const QString &state)
                             .arg(channels)
                             .arg(state));
 }
-void MainWindow::onResult(const vision::InferenceResult &r, quint64 ticket)
+void MainWindow::onResult(const vision::InferenceResult &input, quint64 ticket)
 {
+    auto r = input;
+    attachGroundTruth(r);
     if (ticket && (!busy_ || inferenceStopping_))
     {
         worker_->acknowledgeImageResult(ticket);
@@ -3251,9 +3336,12 @@ void MainWindow::onResult(const vision::InferenceResult &r, quint64 ticket)
     }
 }
 
-void MainWindow::displayResult(const vision::InferenceResult &r)
+void MainWindow::displayResult(const vision::InferenceResult &input)
 {
+    auto r = input;
+    if (!evaluationReviewActive_) attachGroundTruth(r);
     lastResult_ = r;
+    if (r.evaluationReport.isEmpty()) {
     actualDeviceKnown_ = true;
     actualDevice_ = r.device;
     actualDeviceIndex_ = r.deviceIndex;
@@ -3262,6 +3350,7 @@ void MainWindow::displayResult(const vision::InferenceResult &r)
     actualBackend_ = r.backend;
     updateDeviceUi();
     updateModelMeta("已验证");
+    }
     canvas_->setResult(r);
     canvasTitle_->setText(sourceKind_ == vision::SourceKind::Images
                               ? QFileInfo(r.source).fileName()
@@ -3308,6 +3397,18 @@ void MainWindow::displayResult(const vision::InferenceResult &r)
         resultInfo_->setText(resultInfo_->text() + "\n" + r.deviceNotice.left(400));
     emptyResults_->setVisible(r.predictions.isEmpty());
     emptyResults_->setText("未发现符合阈值的目标\n\n可尝试降低置信度或检查模型配置。");
+    if (r.hasGroundTruth) {
+        resultInfo_->setText(resultInfo_->text() + (r.hasEvaluationMatches
+            ? QString("\nGT 匹配 · TP %1 / FP %2 / FN %3\nGT 虚线 · 预测实线 · 原始类别 ID 保留")
+                .arg(r.matchedPredictions.size())
+                .arg(r.predictions.size() - r.ignoredPredictions.size() - r.matchedPredictions.size())
+                .arg(r.groundTruth.size() - r.matchedGroundTruth.size())
+            : QString("\nGT 标注预览 · 尚未完成该图的匹配评估")));
+    }
+    predictionTable_->setColumnCount(r.hasGroundTruth ? 4 : 3);
+    predictionTable_->setHorizontalHeaderLabels(r.hasGroundTruth
+        ? QStringList{"类别", "置信度", "类别 ID", "匹配"}
+        : QStringList{"类别", "置信度", "类别 ID"});
     predictionTable_->setRowCount(r.predictions.size());
     predictionTable_->clearSelection();
     for (int i = 0; i < r.predictions.size(); ++i)
@@ -3329,6 +3430,25 @@ void MainWindow::displayResult(const vision::InferenceResult &r)
         id->setForeground(QColor("#A5A5A5"));
         id->setToolTip("模型原始 class_id，从 0 开始");
         predictionTable_->setItem(i, 2, id);
+        if (r.hasGroundTruth) {
+            const QString state = !r.hasEvaluationMatches ? "待评估" : r.ignoredPredictions.contains(i) ? "忽略" : r.matchedPredictions.contains(i) ? "TP" : "FP";
+            auto *match = new QTableWidgetItem(state);
+            match->setTextAlignment(Qt::AlignCenter);
+            match->setForeground(QColor(state == "TP" ? "#6FE7B6" : state == "FP" ? "#FFB08F" : "#D2D2D2"));
+            predictionTable_->setItem(i, 3, match);
+        }
+    }
+    if (r.hasEvaluationMatches) {
+        for (int g = 0; g < r.groundTruth.size(); ++g) if (!r.matchedGroundTruth.contains(g)) {
+            const int row = predictionTable_->rowCount(); predictionTable_->insertRow(row);
+            const auto &gt = r.groundTruth[g];
+            const QStringList values = {"GT · " + gt.label, "—", QString::number(gt.classId), "FN"};
+            for (int c = 0; c < values.size(); ++c) {
+                auto *item = new QTableWidgetItem(values[c]); item->setForeground(QColor("#E6AAFF"));
+                item->setToolTip("数据集原始类别 ID；此标注没有匹配的目标预测。");
+                predictionTable_->setItem(row, c, item);
+            }
+        }
     }
     exportButton_->setEnabled(!busy_ && !r.image.isNull() && !r.demonstration);
 }
@@ -3617,12 +3737,16 @@ MainWindow::ResultExport MainWindow::prepareResultExport(const vision::Inference
                          (r.frameNumber > 0 ? QString("-f%1").arg(r.frameNumber) : "");
     // Capture metadata only; annotation rendering and encoding run in the writer.
     QJsonArray predictions;
-    QByteArray csv = "class_id,label,confidence,x,y,width,height\n";
+    QByteArray csv = r.hasGroundTruth ? "class_id,label,confidence,x,y,width,height,match_status\n" : "class_id,label,confidence,x,y,width,height\n";
+    int predictionIndex = 0;
     for (const auto &p : r.predictions)
     {
         QJsonObject pred{{"class_id", p.classId},   {"label", p.label}, {"confidence", double(p.confidence)},
                          {"x", p.box.x()},          {"y", p.box.y()},   {"width", p.box.width()},
                          {"height", p.box.height()}};
+        const QString matchStatus = !r.hasEvaluationMatches ? "unavailable" : r.ignoredPredictions.contains(predictionIndex) ? "ignored" :
+            r.matchedPredictions.contains(predictionIndex) ? "TP" : "FP";
+        if (r.hasGroundTruth) pred.insert("match_status", matchStatus);
         predictions.append(pred);
         QString label = p.label;
         label.replace('"', "\"\"");
@@ -3637,6 +3761,8 @@ MainWindow::ResultExport MainWindow::prepareResultExport(const vision::Inference
                    .arg(p.box.width(), 0, 'f', 2)
                    .arg(p.box.height(), 0, 'f', 2)
                    .toUtf8();
+        if (r.hasGroundTruth) { csv.chop(1); csv += ',' + matchStatus.toUtf8() + '\n'; }
+        ++predictionIndex;
     }
     const QJsonObject preprocess{
         {"mode", isPtModel(configValue.modelPath) ? "model_native" : "configured"},
@@ -3684,6 +3810,19 @@ MainWindow::ResultExport MainWindow::prepareResultExport(const vision::Inference
         {"inference_ms", r.inferenceMs},
         {"total_ms", r.totalMs},
         {"predictions", predictions}};
+    if (r.hasGroundTruth) {
+        QJsonArray truth, matched, matchedGt, ignored;
+        for (const auto &gt : r.groundTruth) truth.append(QJsonObject{{"class_id", gt.classId}, {"label", gt.label},
+            {"x", gt.box.x()}, {"y", gt.box.y()}, {"width", gt.box.width()}, {"height", gt.box.height()}});
+        for (int id : r.matchedPredictions) matched.append(id);
+        for (int id : r.matchedGroundTruth) matchedGt.append(id);
+        for (int id : r.ignoredPredictions) ignored.append(id);
+        root.insert("ground_truth", truth);
+        root.insert("evaluation", QJsonObject{{"has_ground_truth", true}, {"matching_available", r.hasEvaluationMatches},
+            {"matched_predictions", matched}, {"matched_ground_truth", matchedGt}, {"ignored_predictions", ignored},
+            {"report_directory", r.evaluationReport}, {"matching_iou", r.matchingIou},
+            {"analysis_confidence", double(configValue.confidence)}});
+    }
     return ResultExport{base, r, QJsonDocument(root).toJson(), csv};
 }
 
@@ -3960,13 +4099,18 @@ void MainWindow::refreshModelLibrary()
             caption += "\n备注 · " + compactNote.left(140) +
                        (compactNote.size() > 140 ? QStringLiteral("…") : QString());
         }
+        const auto profile = modelEvaluationProfiles_.value(p).toMap();
+        if (!profile.isEmpty()) caption += profile.value("model_identity").toString() == fileIdentity(p)
+            ? QString("\n评估 · %1 · %2%3").arg(profile.value("split").toString()).arg(profile.value("full_split").toBool() ? "完整集合" : "子集/未完成")
+                .arg(profile.value("adopted").toBool() ? QString(" · 已采用阈值 %1").arg(profile.value("adopted_threshold").toDouble(), 0, 'f', 2) : QString())
+            : QString("\n模型文件已变更 · 原评估仅供历史回看");
         auto *i = new QListWidgetItem(ui::icon("model", QColor("#60CDFF"), 34), caption);
         i->setData(Qt::UserRole, p);
         i->setData(Qt::UserRole + 1, modelDisplayName(p));
         i->setData(Qt::UserRole + 2, note);
         i->setToolTip(modelDisplayName(p) + "\n原始文件：" + f.fileName() + "\n" + p +
                        (note.isEmpty() ? QString() : "\n备注：" + note));
-        i->setSizeHint(QSize(100, note.isEmpty() ? 94 : 118));
+        i->setSizeHint(QSize(100, (note.isEmpty() ? 94 : 118) + (profile.isEmpty() ? 0 : 25)));
         modelList_->addItem(i);
         if (p == modelPath_)
             modelList_->setCurrentItem(i);
@@ -4020,6 +4164,7 @@ void MainWindow::persist()
     settings_->setValue("modelDisplayNames", modelDisplayNames_);
     settings_->setValue("modelNotes", modelNotes_);
     settings_->setValue("convertedModelProfiles", convertedModelProfiles_);
+    settings_->setValue("evaluationProfiles", modelEvaluationProfiles_);
     settings_->setValue("activeModel", modelPath_);
     settings_->setValue("exportDirectory", exportDir_);
     settings_->setValue("labels", labels_);
@@ -4047,6 +4192,8 @@ void MainWindow::persist()
 }
 void MainWindow::closeEvent(QCloseEvent *e)
 {
+    if (evaluationPreviewCancellation_) evaluationPreviewCancellation_->store(true);
+    if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
     if (modelInspectionCancellation_) modelInspectionCancellation_->store(true);
     if (modelConversion_ && modelConversion_->isBusy())
     {

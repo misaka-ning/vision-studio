@@ -29,6 +29,8 @@ class QTemporaryDir;
 class ImageCanvas;
 class ModelViewer;
 class ModelConversionPage;
+class EvaluationPanel;
+class QTabWidget;
 namespace cv
 {
 class VideoCapture;
@@ -36,11 +38,13 @@ class VideoCapture;
 namespace vision
 {
 class InferenceWorker;
+class EvaluationWorker;
 }
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
     friend class ScopeFilterUiTests;
+    friend class EvaluationIntegrationTests;
   public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
@@ -50,6 +54,7 @@ class MainWindow : public QMainWindow
     void runPtDemo();
     void runPtSmoke(const QString &outputDir);
     void runModelSmoke(const QString &outputDir, const QString &model = {});
+    void runEvaluationSmoke(const QString &outputDir, const QString &requestPath);
     void showModelStructure(const QString &model = {});
     void setComputeDevice(vision::ComputeDevice device, int index = 0);
   signals:
@@ -110,6 +115,18 @@ class MainWindow : public QMainWindow
     void refreshHistory();
     void recordResult(const vision::InferenceResult &result, bool writeToDisk = true);
     void exportResult();
+    void connectEvaluation();
+    void loadDataset(const QString &yaml, const QString &split, const QString &metadata = {});
+    void clearDatasetContext();
+    void startEvaluation();
+    void loadEvaluationReport(const QString &directory);
+    void acceptEvaluationReport(const QJsonObject &report, const QString &directory, bool record);
+    void reviewEvaluationImage(int row);
+    void applyEvaluationFilter(const QString &filter);
+    void applyEvaluationProfile(double threshold);
+    void updateEvaluationModel();
+    QString evaluationFingerprint() const;
+    void attachGroundTruth(vision::InferenceResult &result) const;
     struct ResultExport
     {
         QString base;
@@ -147,6 +164,19 @@ class MainWindow : public QMainWindow
     QString projectRoot_, dataRoot_, modelPath_, labelsPath_, streamPath_, exportDir_, smokeDir_;
     QStringList files_, labels_, models_;
     QVariantMap modelDisplayNames_, modelNotes_, convertedModelProfiles_;
+    QVariantMap modelEvaluationProfiles_;
+    EvaluationPanel *evaluation_ = nullptr;
+    QTabWidget *workbenchTabs_ = nullptr;
+    vision::EvaluationWorker *evaluationWorker_ = nullptr;
+    QJsonObject datasetManifest_, evaluationReport_;
+    QString evaluationDirectory_, evaluationRunFingerprint_, evaluationReviewFilter_ = "all";
+    vision::ModelConfig evaluationRunConfig_;
+    QHash<QString, int> evaluationSampleIndices_;
+    QHash<QString, QJsonObject> datasetSamples_;
+    bool loadingDataset_ = false, evaluationReviewActive_ = false;
+    std::shared_ptr<std::atomic_bool> evaluationPreviewCancellation_, evaluationFilterCancellation_;
+    quint64 evaluationPreviewGeneration_ = 0, evaluationFilterGeneration_ = 0;
+    QCheckBox *showGroundTruth_ = nullptr;
     QStringList nativeLabels_;
     vision::SourceKind sourceKind_ = vision::SourceKind::Images;
     vision::InferenceResult lastResult_;

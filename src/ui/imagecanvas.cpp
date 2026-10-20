@@ -136,7 +136,14 @@ QColor ImageCanvas::classColor(int classId)
 
 void ImageCanvas::paintAnnotations(QPainter &painter, qreal scale, bool exporting) const
 {
-    paintResultAnnotations(painter, m_result, m_boxesVisible, m_labelsVisible, m_selected, scale, exporting);
+    if (m_groundTruthVisible)
+        paintResultAnnotations(painter, m_result, m_boxesVisible, m_labelsVisible, m_selected, scale, exporting);
+    else
+    {
+        auto visible = m_result;
+        visible.groundTruth.clear();
+        paintResultAnnotations(painter, visible, m_boxesVisible, m_labelsVisible, m_selected, scale, exporting);
+    }
 }
 
 void ImageCanvas::paintResultAnnotations(QPainter &painter, const vision::InferenceResult &result,
@@ -261,7 +268,9 @@ void ImageCanvas::paintResultAnnotations(QPainter &painter, const vision::Infere
         if (box.isEmpty())
             continue;
         const bool selected = i == selectedIndex && !exporting;
-        const QColor color = classColor(prediction.classId);
+        const QColor color = result.hasEvaluationMatches && !result.ignoredPredictions.contains(i)
+                                 ? QColor(result.matchedPredictions.contains(i) ? "#6FE7B6" : "#FFB08F")
+                                 : classColor(prediction.classId);
         QColor fill = color;
         fill.setAlpha(selected ? 43 : 14);
         if (boxesVisible)
@@ -283,8 +292,11 @@ void ImageCanvas::paintResultAnnotations(QPainter &painter, const vision::Infere
         {
             const QString label =
                 QStringLiteral("%1  %2%")
-                    .arg(prediction.label.isEmpty() ? QStringLiteral("class %1").arg(prediction.classId)
-                                                    : prediction.label)
+                    .arg((result.hasEvaluationMatches && !result.ignoredPredictions.contains(i)
+                              ? (result.matchedPredictions.contains(i) ? QStringLiteral("TP · ") : QStringLiteral("FP · "))
+                              : QString()) +
+                         (prediction.label.isEmpty() ? QStringLiteral("class %1").arg(prediction.classId)
+                                                     : prediction.label))
                     .arg(qRound(prediction.confidence * 100));
             const qreal labelWidth =
                 std::min(painter.fontMetrics().horizontalAdvance(label) + 16 * unit, bounds.width());
@@ -294,6 +306,28 @@ void ImageCanvas::paintResultAnnotations(QPainter &painter, const vision::Infere
             labels.append({placement.first, box, placement.second, color, fitted});
         }
     }
+
+    if (result.hasGroundTruth)
+        for (int i = 0; i < result.groundTruth.size(); ++i)
+        {
+            const auto &gt = result.groundTruth[i];
+            const QRectF box = gt.box.intersected(bounds);
+            const bool matched = !result.hasEvaluationMatches || result.matchedGroundTruth.contains(i);
+            const QColor color(matched ? "#87C8FF" : "#E6AAFF");
+            if (boxesVisible)
+            {
+                painter.setBrush(Qt::NoBrush);
+                painter.setPen(QPen(color, 2 * unit, Qt::DashLine));
+                painter.drawRect(box);
+            }
+            if (labelsVisible && !box.isEmpty())
+            {
+                const QString label = (matched ? QStringLiteral("GT · ") : QStringLiteral("FN · ")) + gt.label;
+                const qreal width = std::min(painter.fontMetrics().horizontalAdvance(label) + 16 * unit, bounds.width());
+                const auto position = placeLabel(box, width);
+                labels.append({position.first, box, position.second, color, label});
+            }
+        }
 
     for (const auto &label : labels)
     {

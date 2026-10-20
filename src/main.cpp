@@ -60,6 +60,8 @@ int main(int argc, char **argv)
     parser.addOption({"smoke-pt", "执行真实 .pt 推理、导出和 UI 自检后退出", "directory"});
     parser.addOption({"smoke-model", "执行真实模型解析、三种视图与缓存自检后退出", "directory"});
     parser.addOption({"smoke-conversion", "执行模型转换界面、导出与实际推理自检后退出", "directory"});
+    parser.addOption({"smoke-evaluation", "执行数据集评估、阈值分析、结果导出和界面自检后退出", "directory"});
+    parser.addOption({"evaluation-request", "评估自检 JSON 请求文件（需配合 --smoke-evaluation）", "path"});
     parser.addOption({"conversion-source", "转换自检的本地 PT 模型", "path"});
     parser.addOption({"conversion-format", "转换自检格式：onnx 或 torchscript", "format", "onnx"});
     parser.addOption({"display-model", "指定结构显示的模型文件", "path"});
@@ -89,6 +91,12 @@ int main(int argc, char **argv)
                                window.saveScreenshot(parser.value("screenshot"));
                                app.quit();
                            });
+    else if (parser.isSet("smoke-evaluation"))
+    {
+        QTimer::singleShot(200, &window, [&] {
+            window.runEvaluationSmoke(parser.value("smoke-evaluation"), parser.value("evaluation-request"));
+        });
+    }
     else if (parser.isSet("smoke-conversion"))
     {
         QTimer::singleShot(200, &window, [&] {
