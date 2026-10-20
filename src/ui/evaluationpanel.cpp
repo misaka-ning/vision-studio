@@ -526,10 +526,40 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
 void EvaluationPanel::chooseDataset()
 {
     if (busy_) return;
-    const QString file = QFileDialog::getOpenFileName(this, "导入标准 YOLO 数据集", yaml_, "YOLO 数据集 (*.yaml *.yml)");
-    if (file.isEmpty()) return;
-    yaml_ = QFileInfo(file).absoluteFilePath();
+    const QFileInfo current(yaml_);
+    const QString initial = current.isDir() ? current.absoluteFilePath() : current.absolutePath();
+    const QString directory = QFileDialog::getExistingDirectory(this, "选择标准 YOLO 数据集文件夹", initial);
+    if (directory.isEmpty()) return;
+    setDatasetSource(directory, datasetSplit(), metadataPath());
     emit datasetRequested(yaml_, datasetSplit(), metadataPath());
+}
+void EvaluationPanel::chooseDatasetFile()
+{
+    if (busy_) return;
+    const QString file = QFileDialog::getOpenFileName(this, "选择 YOLO 数据集 YAML 配置", yaml_, "YOLO 数据集 (*.yaml *.yml *.YAML *.YML)");
+    if (file.isEmpty()) return;
+    setDatasetSource(file, datasetSplit(), metadataPath());
+    emit datasetRequested(yaml_, datasetSplit(), metadataPath());
+}
+void EvaluationPanel::setDatasetSource(const QString &source, const QString &split, const QString &metadata)
+{
+    updating_ = true;
+    yaml_ = QFileInfo(source).absoluteFilePath();
+    metadata_->setText(metadata);
+    const int index = split_->findData(split);
+    if (index >= 0) split_->setCurrentIndex(index);
+    updating_ = false;
+    if (manifest_.isEmpty()) {
+        datasetHint_->setText("正在检查数据集配置与标注…");
+        datasetHint_->setToolTip(yaml_);
+    }
+    updateEligibility();
+}
+void EvaluationPanel::showDatasetImportError(const QString &message)
+{
+    datasetHint_->setText("导入未完成 · " + message.section('\n', 0, 0));
+    datasetHint_->setToolTip(message + "\n可切换集合重试，或重新选择配置。\n" + yaml_);
+    updateEligibility();
 }
 void EvaluationPanel::requestDataset()
 {
@@ -541,7 +571,7 @@ void EvaluationPanel::setDataset(const QJsonObject &manifest)
     const bool changed = manifest_ != manifest;
     updating_ = true;
     manifest_ = manifest;
-    yaml_ = manifest.value("data_yaml").toString(yaml_);
+    yaml_ = manifest.value("dataset_source").toString(manifest.value("data_yaml").toString(yaml_));
     metadata_->setText(manifest.value("metadata_path").toString());
     const QString split = manifest.value("split").toString("val");
     const int index = split_->findData(split);
@@ -551,10 +581,12 @@ void EvaluationPanel::setDataset(const QJsonObject &manifest)
     const auto validation = manifest.value("validation").toObject();
     const int samples = manifest.value("samples").toArray().size();
     datasetHint_->setText(QString("%1 · %2\n有效 %3 张 · 含框 %4 · 空标签 %5 · 缺标签 %6 · 排除 %7")
-        .arg(QFileInfo(yaml_).fileName(), split.toUpper()).arg(samples)
+        .arg(QFileInfo(manifest.value("data_yaml").toString(yaml_)).fileName(), split.toUpper()).arg(samples)
         .arg(validation.value("positive_images").toInt()).arg(validation.value("negative_images").toInt())
         .arg(validation.value("missing_labels").toInt()).arg(validation.value("excluded").toInt()));
-    datasetHint_->setToolTip(yaml_);
+    const QString relocation = manifest.value("relocation_notice").toString();
+    if (!relocation.isEmpty()) datasetHint_->setText(datasetHint_->text() + " · 已使用当前目录迁移路径");
+    datasetHint_->setToolTip(yaml_ + (relocation.isEmpty() ? QString() : "\n" + relocation));
     updating_ = false;
     updateMapping(); updateEligibility();
     if (changed) emit configChanged();
@@ -634,7 +666,7 @@ void EvaluationPanel::updateEligibility()
         if (auto *item = items->item(1)) item->setEnabled(problem.isEmpty());
     mode_->setEnabled(!busy_);
     datasetControls_->setVisible(!manifest_.isEmpty());
-    split_->setVisible(!manifest_.isEmpty()); reload_->setVisible(!manifest_.isEmpty());
+    split_->setVisible(!yaml_.isEmpty()); reload_->setVisible(!yaml_.isEmpty());
     for (QWidget *control : QList<QWidget *>{split_, reload_, metadata_, metadataBrowse_, modelId_, datasetId_, matchIou_, scanStart_, scanEnd_, scanStep_})
         control->setEnabled(!busy_);
     reload_->setEnabled(!busy_ && !yaml_.isEmpty());

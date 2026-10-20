@@ -1,0 +1,30 @@
+{
+  "scope": "Only parser validation against retained historical logs, not 2.3.1 product tests",
+  "checked": [
+    {
+      "log": "docs/releases/evidence/2.3.0/production-replay/vision-batch-responsiveness-tests.log",
+      "passed": 5
+    },
+    {
+      "log": "docs/releases/evidence/2.3.0/production-replay/vision-conversion-inference-tests.log",
+      "passed": 14
+    },
+    {
+      "log": "docs/releases/evidence/2.3.0/production-replay/vision-evaluation-panel-tests.log",
+      "passed": 19
+    },
+    {
+      "log": "docs/releases/evidence/2.3.0/production-replay/vision-evaluation-worker-tests.log",
+      "passed": 18
+    },
+    {
+      "log": "docs/releases/evidence/2.3.0/production-replay/vision-gpu-tests.log",
+      "passed": 11
+    },
+    {
+      "log": "docs/releases/evidence/2.3.0/production-replay/vision-scope-filter-ui-tests.log",
+      "passed": 38
+    }
+  ],
+  "rejected_nonpass_injections": 18
+}

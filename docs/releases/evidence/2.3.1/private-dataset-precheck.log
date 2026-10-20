@@ -1,0 +1,8 @@
+Read-only private dataset precheck
+Selected configuration: dataset.yaml
+Split: val
+Selected images: 1223
+Validation: {"positive_images": 813, "negative_images": 410, "missing_labels": 0, "excluded": 0}
+Original YAML unchanged: True
+Model inference executed: false
+Input files aggregate SHA256: b0caeb3ccecebc8d9521fcf8bed831005ddc810b89bfff5afbdac0dff06c2c44

@@ -48,6 +48,35 @@ def resolve_path(value, base):
     return (Path(base) / path).resolve() if not path.is_absolute() else path.resolve()
 
 
+def resolve_dataset_yaml(value):
+    """Resolve a dataset root without guessing classes, splits or nested roots.
+
+    Training recipes often sit beside a dataset configuration. Prefer one
+    conventional dataset filename, but never choose between multiple such
+    files. Explicit YAML inputs retain their existing behavior.
+    """
+    path = resolve_path(value, Path.cwd())
+    if not path.is_dir():
+        return path
+    candidates = sorted((child for child in path.iterdir()
+                         if child.is_file() and child.suffix.lower() in (".yaml", ".yml")),
+                        key=lambda child: (child.name.casefold(), child.name))
+    conventional = {"data.yaml", "data.yml", "dataset.yaml", "dataset.yml"}
+    preferred = [child for child in candidates if child.name.casefold() in conventional]
+    if len(preferred) == 1:
+        return preferred[0].resolve()
+    if len(preferred) > 1:
+        raise ValueError("文件夹中存在多个标准数据集配置（" + "、".join(child.name for child in preferred)
+                         + "），请使用“选择 YAML”入口明确选择。")
+    if len(candidates) == 1:
+        return candidates[0].resolve()
+    if not candidates:
+        raise ValueError("所选文件夹本层没有 YAML 数据集配置；请选择含 data.yaml／dataset.yaml 的数据集根目录，"
+                         "或使用“选择 YAML”入口。配置须包含 names 和 train／val／test 集合路径。")
+    raise ValueError("文件夹中存在多个 YAML 配置（" + "、".join(child.name for child in candidates)
+                     + "），请使用“选择 YAML”入口明确选择数据集配置。")
+
+
 def read_json(path):
     def no_constant(value):
         raise ValueError(f"JSON 不允许非有限数：{value}")
@@ -76,12 +105,25 @@ def class_names(config):
     return names
 
 
-def list_images(entry, root, source_hashes):
+def dataset_entry_path(value, base, relocation=None):
+    path = resolve_path(value, base)
+    if relocation is not None and Path(str(value)).is_absolute() and not path.exists():
+        previous_root, selected_root = relocation
+        try:
+            relative = path.relative_to(previous_root)
+        except ValueError:
+            pass
+        else:
+            path = (selected_root / relative).resolve()
+    return path
+
+
+def list_images(entry, root, source_hashes, relocation=None):
     images = []
     for value in entry if isinstance(entry, list) else [entry]:
         if not isinstance(value, str) or not value.strip():
             raise ValueError("集合路径必须是图片目录、图片名单或它们的列表。")
-        path = resolve_path(value, root)
+        path = dataset_entry_path(value, root, relocation)
         if path.is_dir():
             images.extend(sorted((p.resolve() for p in path.rglob("*")
                                   if p.is_file() and p.suffix.lower() in IMAGE_SUFFIXES), key=str))
@@ -89,7 +131,7 @@ def list_images(entry, root, source_hashes):
             source_hashes[str(path)] = digest(path)
             for line in path.read_text(encoding="utf-8-sig").splitlines():
                 if line.strip():
-                    images.append(resolve_path(line.strip(), path.parent))
+                    images.append(dataset_entry_path(line.strip(), path.parent, relocation))
         elif path.is_file() and path.suffix.lower() in IMAGE_SUFFIXES:
             images.append(path)
         else:
@@ -163,18 +205,28 @@ def prepare_dataset(request):
 
     if not isinstance(request, dict) or not request.get("dataset_yaml"):
         raise ValueError("请选择本地 YOLO 数据集 YAML。")
-    data = resolve_path(request["dataset_yaml"], Path.cwd())
+    dataset_source = resolve_path(request["dataset_yaml"], Path.cwd())
+    data = resolve_dataset_yaml(dataset_source)
     source_hashes = {str(data): digest(data)}
     with data.open(encoding="utf-8-sig") as stream:
         config = yaml.safe_load(stream)
     if not isinstance(config, dict):
         raise ValueError("数据集配置必须是 YAML 映射。")
     names = class_names(config)
-    root = resolve_path(config.get("path", "."), data.parent)
+    root_value = config.get("path", ".")
+    root = resolve_path(root_value, data.parent)
+    relocation = None
+    if (dataset_source.is_dir() and dataset_source == data.parent
+            and Path(str(root_value)).is_absolute() and not root.exists()):
+        # Selecting a directory explicitly identifies the new dataset root.
+        # Only a missing absolute configured root is eligible; direct YAML
+        # inputs and missing paths outside that root remain strict failures.
+        relocation = (root, dataset_source)
+        root = dataset_source
     split = request.get("split", "val")
     if split not in ("train", "val", "test") or not config.get(split):
         raise ValueError(f"数据集未提供有效的 {split} 集合。")
-    images = list_images(config[split], root, source_hashes)
+    images = list_images(config[split], root, source_hashes, relocation)
     metadata_value = request.get("metadata_path") or request.get("metadata")
     metadata_path = resolve_path(metadata_value, data.parent) if metadata_value else None
     if metadata_path:
@@ -211,6 +263,8 @@ def prepare_dataset(request):
             flags = {key: int(row[key]) for key in SCENES}
         label = label_path(image)
         if not label.is_file():
+            if relocation is not None:
+                raise ValueError("数据集只读重定位后仍存在缺失标签，请修复所选文件夹中的 images／labels 配对后重新导入。")
             skipped.append({"image": str(image), "label": str(label), "reason": "missing_label"})
             missing += 1
             continue
@@ -239,6 +293,7 @@ def prepare_dataset(request):
                         "gt": boxes, "flags": flags, "image_sha256": image_sha256,
                         "label_sha256": label_sha256})
     manifest = {"schema_version": 1, "data_yaml": str(data), "dataset_yaml": str(data),
+                "dataset_source": str(dataset_source),
                 "root": str(root), "split": split, "names": names,
                 "metadata_path": str(metadata_path) if metadata_path else None,
                 "samples": samples, "skipped": skipped, "source_hashes": source_hashes,
@@ -247,6 +302,10 @@ def prepare_dataset(request):
                     "positive_images": sum(bool(s["gt"]) for s in samples),
                     "negative_images": sum(not s["gt"] for s in samples),
                     "missing_labels": missing, "excluded": len(skipped) - missing}}
+    if relocation is not None:
+        manifest.update({"root_relocated": True, "configured_root": str(relocation[0]),
+                         "relocation_notice": "原配置中的绝对根目录已失效，按所选文件夹只读重定位；"
+                                              "配置、图片名单与标注均未修改。"})
     manifest["fingerprint"] = canonical_digest(manifest)
     assert_unchanged(manifest)
     return manifest
