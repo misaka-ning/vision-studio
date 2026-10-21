@@ -454,7 +454,7 @@ class UiTests final : public QObject
             qunsetenv("VISION_STUDIO_GPU_RUNTIME_DIR");
     }
 
-    void professionalWorkbenchStartsEmptyAndRejectsLooseImageInputs()
+    void professionalWorkbenchStartsEmptyAndAcceptsTemporaryImageDrops()
     {
         auto *canvas = workbenchCanvas(window_.get());
         auto *queue = inputQueue(window_.get());
@@ -470,14 +470,18 @@ class UiTests final : public QObject
         QVERIFY(canvas->result().image.isNull());
         QVERIFY(canvas->result().predictions.isEmpty());
         QVERIFY(!findButton(window_.get(), QStringLiteral("开始检测"))->isEnabled());
-        const QString image = fixture_->path() + QStringLiteral("/assets/bus.jpg");
-        QVERIFY(!dropFile(canvas, image));
-        QCOMPARE(queue->count(), 0);
-        QVERIFY(canvas->result().image.isNull());
-        QCOMPARE(predictionTable(window_.get())->rowCount(), 0);
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
         canvas->setFocus(); QTest::keyClick(canvas, Qt::Key_R, Qt::ControlModifier);
         QTest::qWait(30); QCOMPARE(starts.count(), 0);
+        const QString image = fixture_->path() + QStringLiteral("/assets/bus.jpg");
+        QVERIFY(dropFile(canvas, image));
+        QTRY_COMPARE_WITH_TIMEOUT(queue->count(), 1, 10000);
+        QTRY_VERIFY_WITH_TIMEOUT(canvas->result().source == image && !canvas->result().image.isNull(), 10000);
+        QVERIFY(!canvas->result().hasGroundTruth);
+        QVERIFY(canvas->result().predictions.isEmpty());
+        QVERIFY(queue->item(0)->data(Qt::UserRole + 11).toBool());
+        QCOMPARE(predictionTable(window_.get())->rowCount(), 0);
+        QCOMPARE(starts.count(), 0);
     }
 
     void realInferenceSelectionAndNavigation()

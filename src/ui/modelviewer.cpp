@@ -1,9 +1,14 @@
 #include "modelviewer.h"
 
+#include <QApplication>
+#include <QClipboard>
 #include <QColor>
 #include <QCoreApplication>
+#include <QDateTime>
 #include <QDir>
 #include <QFileInfo>
+#include <QFileDialog>
+#include <QFontDatabase>
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QItemSelectionModel>
@@ -12,18 +17,26 @@
 #include <QJsonObject>
 #include <QLabel>
 #include <QLineEdit>
+#include <QPlainTextEdit>
 #include <QProcess>
 #include <QProcessEnvironment>
 #include <QProgressBar>
+#include <QRegularExpression>
 #include <QPushButton>
 #include <QSortFilterProxyModel>
 #include <QStackedLayout>
 #include <QStackedWidget>
 #include <QStandardItemModel>
 #include <QStandardPaths>
+#include <QSyntaxHighlighter>
 #include <QTableView>
 #include <QTimer>
 #include <QTreeView>
+#include <QTextBlock>
+#include <QTextCharFormat>
+#include <QTextCursor>
+#include <QTextDocument>
+#include <QTextEdit>
 #include <QVBoxLayout>
 #include <QWebEngineDownloadRequest>
 #include <QWebEnginePage>
@@ -39,6 +52,39 @@ namespace
 {
 constexpr qsizetype outputLimit = 64 * 1024;
 constexpr auto netronVersion = "9.3.1";
+
+class YamlHighlighter final : public QSyntaxHighlighter
+{
+  public:
+    explicit YamlHighlighter(QTextDocument *document) : QSyntaxHighlighter(document) {}
+  protected:
+    void highlightBlock(const QString &text) override
+    {
+        QTextCharFormat number, key, quoted, comment, word;
+        number.setForeground(QColor("#B5CEA8")); key.setForeground(QColor("#60CDFF"));
+        quoted.setForeground(QColor("#DCC08C")); comment.setForeground(QColor("#B8B8B8"));
+        word.setForeground(QColor("#4EC9B0"));
+        const auto apply = [this, &text](const QString &pattern, const QTextCharFormat &format) {
+            auto matches = QRegularExpression(pattern).globalMatch(text);
+            while (matches.hasNext()) { const auto match = matches.next(); setFormat(match.capturedStart(), match.capturedLength(), format); }
+        };
+        apply(QStringLiteral("\\b[-+]?[0-9]+(?:\\.[0-9]+)?\\b"), number);
+        apply(QStringLiteral("^[A-Za-z_][A-Za-z_0-9]*(?=:)"), key);
+        apply(QStringLiteral("\\b(?:Conv|C[123][A-Za-z0-9]*|Detect|Concat|SPPF|nn\\.[A-Za-z_0-9]+)\\b"), word);
+        int start = -1; bool escaped = false;
+        for (int index = 0; index < text.size(); ++index)
+        {
+            const QChar character = text[index];
+            if (start >= 0)
+            {
+                if (!escaped && character == '"') { setFormat(start, index - start + 1, quoted); start = -1; }
+                if (escaped) escaped = false; else escaped = character == '\\';
+            }
+            else if (character == '"') { start = index; escaped = false; }
+            else if (character == '#') { setFormat(index, text.size() - index, comment); break; }
+        }
+    }
+};
 
 class ParameterFilter final : public QSortFilterProxyModel
 {
@@ -575,9 +621,9 @@ ModelViewer::ModelViewer(QWidget *parent) : QWidget(parent)
     layout->setSpacing(10);
     auto *toolbar = new QHBoxLayout;
     toolbar->setSpacing(6);
-    const QStringList names = {QStringLiteral("结构图"), QStringLiteral("层级树"), QStringLiteral("参数表")};
+    const QStringList names = {QStringLiteral("结构图"), QStringLiteral("层级树"), QStringLiteral("参数表"), QStringLiteral("YOLO YAML")};
     const QStringList objects = {"modelGraphModeButton", "modelHierarchyModeButton",
-                                 "modelParametersModeButton"};
+                                 "modelParametersModeButton", "modelYamlModeButton"};
     for (int index = 0; index < names.size(); ++index)
     {
         auto *mode = new QPushButton(names[index], this);
@@ -609,6 +655,17 @@ ModelViewer::ModelViewer(QWidget *parent) : QWidget(parent)
         "QLineEdit { background:#303030; color:#F5F5F5; border:1px solid #454545; "
         "border-radius:4px; padding:6px 10px; } QLineEdit:focus { border-color:#60CDFF; }");
     toolbar->addWidget(m_search);
+    m_yamlCopy = new QPushButton(QStringLiteral("复制 YAML"), this);
+    m_yamlCopy->setObjectName("modelYamlCopyButton");
+    m_yamlSave = new QPushButton(QStringLiteral("另存 YAML"), this);
+    m_yamlSave->setObjectName("modelYamlSaveButton");
+    for (auto *button : {m_yamlCopy, m_yamlSave})
+    {
+        button->setMinimumHeight(34);
+        button->setCursor(Qt::PointingHandCursor);
+        button->setStyleSheet("QPushButton { background:#303030; color:#F5F5F5; border:1px solid #454545; border-radius:4px; padding:6px 10px; } QPushButton:hover { background:#383838; } QPushButton:disabled { color:#808080; }");
+        toolbar->addWidget(button);
+    }
     layout->addLayout(toolbar);
     m_summary = new QLabel(this);
     m_summary->setObjectName("modelStructureSummary");
@@ -704,6 +761,31 @@ ModelViewer::ModelViewer(QWidget *parent) : QWidget(parent)
     m_parameters->verticalHeader()->setDefaultSectionSize(32);
     parameterLayout->addWidget(m_parameters);
     m_stack->addWidget(m_parametersPage);
+    m_yamlPage = new QWidget(m_stack);
+    auto *yamlLayout = new QVBoxLayout(m_yamlPage);
+    yamlLayout->setContentsMargins(0, 0, 0, 0);
+    m_yamlStatus = new QLabel(m_yamlPage);
+    m_yamlStatus->setObjectName("modelYamlStatus");
+    m_yamlStatus->setTextFormat(Qt::PlainText);
+    m_yamlStatus->setWordWrap(true);
+    m_yamlStatus->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    m_yamlStatus->setStyleSheet("background:#303030; color:#D5D5D5; border:1px solid #454545; border-radius:6px; padding:12px;");
+    yamlLayout->addWidget(m_yamlStatus);
+    m_yamlSearchInfo = new QLabel(m_yamlPage);
+    m_yamlSearchInfo->setObjectName("modelYamlSearchInfo");
+    m_yamlSearchInfo->setStyleSheet("color:#B8B8B8; font-size:12px;");
+    yamlLayout->addWidget(m_yamlSearchInfo);
+    m_yamlEditor = new QPlainTextEdit(m_yamlPage);
+    m_yamlEditor->setObjectName("modelYamlEditor");
+    m_yamlEditor->setReadOnly(true);
+    m_yamlEditor->setUndoRedoEnabled(false);
+    m_yamlEditor->setLineWrapMode(QPlainTextEdit::NoWrap);
+    QFont fixed = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    fixed.setPointSize(11); m_yamlEditor->setFont(fixed);
+    m_yamlEditor->setStyleSheet("QPlainTextEdit { background:#202020; color:#F5F5F5; selection-background-color:#36526A; selection-color:#FFFFFF; border:1px solid #454545; border-radius:6px; padding:12px; }");
+    new YamlHighlighter(m_yamlEditor->document());
+    yamlLayout->addWidget(m_yamlEditor, 1);
+    m_stack->addWidget(m_yamlPage);
     const QString viewStyle =
         "QTreeView, QTableView { background:#272727; alternate-background-color:#2c2c2c; color:#F5F5F5; "
         "border:1px solid #454545; border-radius:8px; font-size:13px; gridline-color:#404040; outline:0; } "
@@ -740,7 +822,23 @@ ModelViewer::ModelViewer(QWidget *parent) : QWidget(parent)
                     updateSelectionDetails(true);
                 else if (m_mode == DisplayMode::Parameters)
                     updateSelectionDetails(false);
+                else if (m_mode == DisplayMode::YoloYaml)
+                    updateYamlSearch();
             });
+    connect(m_search, &QLineEdit::returnPressed, this, &ModelViewer::findNextYamlMatch);
+    connect(m_yamlCopy, &QPushButton::clicked, this, [this] {
+        if (yamlAvailable()) QApplication::clipboard()->setText(yamlText());
+    });
+    connect(m_yamlSave, &QPushButton::clicked, this, [this] {
+        if (!yamlAvailable()) return;
+        const QString suggestion = QDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation))
+            .filePath(QFileInfo(m_modelPath).completeBaseName() + ".architecture.yaml");
+        const QString path = QFileDialog::getSaveFileName(this, QStringLiteral("另存架构 YAML（新文件）"), suggestion,
+            QStringLiteral("YOLO 架构 YAML (*.yaml *.yml)"), nullptr, QFileDialog::DontConfirmOverwrite);
+        if (path.isEmpty()) return;
+        QString error;
+        m_yamlStatus->setText(saveYaml(path, &error) ? QStringLiteral("架构 YAML 已保存：%1\n%2").arg(path, yamlReason()) : error);
+    });
     connect(m_tree->selectionModel(), &QItemSelectionModel::currentChanged, this,
             [this]
             {
@@ -793,6 +891,14 @@ QString ModelViewer::modelPath() const
     return m_modelPath;
 }
 
+bool ModelViewer::matchesModelFile(const QString &path) const
+{
+    const QFileInfo file(path);
+    return m_modelBytes >= 0 && !m_canonicalPath.isEmpty() && file.isFile() && file.isReadable() &&
+           file.canonicalFilePath() == m_canonicalPath && file.size() == m_modelBytes &&
+           file.lastModified().toMSecsSinceEpoch() == m_modelModifiedMs;
+}
+
 ModelViewer::State ModelViewer::state() const
 {
     return m_state;
@@ -810,7 +916,7 @@ int ModelViewer::graphNodeCount() const
 
 void ModelViewer::setDisplayMode(DisplayMode mode)
 {
-    if (mode != DisplayMode::Graph && mode != DisplayMode::Hierarchy && mode != DisplayMode::Parameters)
+    if (mode != DisplayMode::Graph && mode != DisplayMode::Hierarchy && mode != DisplayMode::Parameters && mode != DisplayMode::YoloYaml)
         return;
     const bool changed = m_mode != mode;
     m_mode = mode;
@@ -834,6 +940,58 @@ int ModelViewer::parameterCount() const
     return m_parameterCount;
 }
 
+bool ModelViewer::yamlAvailable() const { return m_structureReady && m_yamlDocument.available && matchesModelFile(m_modelPath); }
+QString ModelViewer::yamlText() const { return matchesModelFile(m_modelPath) ? m_yamlDocument.text : QString(); }
+QString ModelViewer::yamlReason() const
+{
+    return m_modelBytes >= 0 && !matchesModelFile(m_modelPath)
+        ? QStringLiteral("模型文件已变化或不可读取；请重新载入后查看架构，旧缓存不会作为当前模型导出。") : m_yamlDocument.notice;
+}
+bool ModelViewer::saveYaml(const QString &path, QString *error) const
+{
+    if (!yamlAvailable())
+    {
+        if (error) *error = yamlReason().isEmpty() ? QStringLiteral("当前模型没有可导出的架构 YAML。") : yamlReason();
+        return false;
+    }
+    return vision::saveModelYaml(path, m_modelPath, m_yamlDocument, error);
+}
+
+void ModelViewer::updateYamlSearch()
+{
+    QList<QTextEdit::ExtraSelection> selections;
+    const QString query = m_search->text();
+    if (m_yamlDocument.available && !query.isEmpty())
+    {
+        QTextCursor cursor(m_yamlEditor->document());
+        while (selections.size() < 1000)
+        {
+            cursor = m_yamlEditor->document()->find(query, cursor);
+            if (cursor.isNull()) break;
+            QTextEdit::ExtraSelection selection;
+            selection.cursor = cursor;
+            selection.format.setBackground(QColor("#5B4A16"));
+            selection.format.setForeground(QColor("#FFFFFF"));
+            selections.append(selection);
+        }
+    }
+    m_yamlEditor->setExtraSelections(selections);
+    m_yamlSearchInfo->setText(query.isEmpty() ? QStringLiteral("只读架构 · 可搜索、复制与另存新文件") :
+        QStringLiteral("%1%2 处匹配 · 按回车定位下一处").arg(selections.size()).arg(selections.size() == 1000 ? "+" : ""));
+}
+
+void ModelViewer::findNextYamlMatch()
+{
+    if (m_mode != DisplayMode::YoloYaml || !yamlAvailable() || m_search->text().isEmpty()) return;
+    if (!m_yamlEditor->find(m_search->text()))
+    {
+        auto cursor = m_yamlEditor->textCursor();
+        cursor.movePosition(QTextCursor::Start);
+        m_yamlEditor->setTextCursor(cursor);
+        m_yamlEditor->find(m_search->text());
+    }
+}
+
 void ModelViewer::clearStructure()
 {
     m_structurePending = false;
@@ -841,6 +999,10 @@ void ModelViewer::clearStructure()
     m_hierarchyCount = 0;
     m_parameterCount = 0;
     m_hierarchyHint.clear();
+    m_yamlDocument = {};
+    m_yamlEditor->clear();
+    m_yamlStatus->clear();
+    m_yamlSearchInfo->clear();
     m_search->clear();
     m_treeModel->clear();
     m_treeModel->setHorizontalHeaderLabels(
@@ -860,15 +1022,28 @@ void ModelViewer::updateDisplay()
         m_modeButtons[index]->setChecked(index == static_cast<int>(m_mode));
     const bool ready = m_state == State::Ready && m_structureReady;
     const bool native = m_mode != DisplayMode::Graph;
+    const bool yaml = m_mode == DisplayMode::YoloYaml;
     m_search->setVisible(native);
-    m_search->setEnabled(ready);
-    m_search->setPlaceholderText(m_mode == DisplayMode::Parameters
+    m_search->setEnabled(ready && (!yaml || yamlAvailable()));
+    m_yamlCopy->setVisible(yaml);
+    m_yamlSave->setVisible(yaml);
+    m_yamlCopy->setEnabled(ready && yamlAvailable());
+    m_yamlSave->setEnabled(ready && yamlAvailable());
+    m_search->setPlaceholderText(yaml ? QStringLiteral("搜索 YAML，回车定位下一处") : m_mode == DisplayMode::Parameters
                                      ? QStringLiteral("搜索路径、类型、形状或备注")
                                      : QStringLiteral("搜索名称、类型或路径"));
     m_summary->setVisible(ready);
-    m_hint->setVisible(ready && native);
-    m_details->setVisible(ready && native);
-    if (ready && m_mode == DisplayMode::Hierarchy)
+    m_hint->setVisible(ready && native && !yaml);
+    m_details->setVisible(ready && native && !yaml);
+    if (ready && yaml)
+    {
+        m_stack->setCurrentWidget(m_yamlPage);
+        if (!matchesModelFile(m_modelPath)) m_yamlStatus->setText(yamlReason());
+        m_yamlEditor->setVisible(yamlAvailable());
+        m_yamlSearchInfo->setVisible(yamlAvailable());
+        updateYamlSearch();
+    }
+    else if (ready && m_mode == DisplayMode::Hierarchy)
     {
         m_stack->setCurrentWidget(m_hierarchyPage);
         m_hint->setText(m_hierarchyHint);
@@ -1007,7 +1182,11 @@ void ModelViewer::extractStructure(quint64 generation)
                             if (!self || generation != self->m_generation || !page || !self->m_webView ||
                                 self->m_webView->page() != page)
                                 return;
-                            self->m_structurePending = false;
+                            if (!self->matchesModelFile(self->m_modelPath))
+                            {
+                                self->fail(QStringLiteral("模型文件在解析期间已变化。请重新载入，避免显示旧文件的结构。"));
+                                return;
+                            }
                             const QByteArray encoded = result.toString().toUtf8();
                             if (encoded.size() > 4 * 1024 * 1024)
                             {
@@ -1026,14 +1205,47 @@ void ModelViewer::extractStructure(quint64 generation)
                                 return;
                             }
                             self->applyStructure(structure);
-                            self->m_structureReady = true;
-                            self->m_deadline->stop();
-                            self->setState(State::Ready, QStringLiteral("模型结构与只读元信息已缓存。"));
-                            if (!self || generation != self->m_generation || self->m_state != State::Ready)
-                                return;
-                            self->m_poll->setInterval(500);
-                            emit self->modelLoaded(self->m_modelPath);
+                            self->extractYaml(generation);
                         });
+}
+
+void ModelViewer::extractYaml(quint64 generation)
+{
+    if (!m_webView) return;
+    const QPointer<ModelViewer> self(this);
+    const QPointer<QWebEnginePage> page(m_webView->page());
+    page->runJavaScript(vision::modelYamlExtractionScript(), QWebEngineScript::MainWorld,
+        [self, page, generation](const QVariant &result) {
+            if (!self || generation != self->m_generation || !page || !self->m_webView ||
+                self->m_webView->page() != page) return;
+            if (!self->matchesModelFile(self->m_modelPath))
+            {
+                self->fail(QStringLiteral("模型文件在架构整理期间已变化。请重新载入，避免显示旧文件的配置。"));
+                return;
+            }
+            const QByteArray encoded = result.toString().toUtf8();
+            if (encoded.size() <= 256 * 1024)
+            {
+                const auto object = QJsonDocument::fromJson(encoded).object();
+                if (object.value("schema").toInt() == 1 && object.value("available").toBool())
+                    self->m_yamlDocument = vision::modelYamlDocument(object.value("architecture"));
+                else
+                    self->m_yamlDocument.notice = object.value("message").toString().left(2048);
+            }
+            if (self->m_yamlDocument.notice.isEmpty())
+                self->m_yamlDocument.notice = QStringLiteral("未取得受限的 YOLO 架构字典；此模式无法恢复原始 YAML，其他模式仍可使用。");
+            self->m_yamlEditor->setPlainText(self->m_yamlDocument.text);
+            self->m_yamlStatus->setText(self->m_yamlDocument.notice);
+            if (self->m_yamlDocument.available)
+                self->m_summary->setText(self->m_summary->text() + QStringLiteral(" · YOLO YAML %1 层蓝图").arg(self->m_yamlDocument.layers));
+            self->m_structurePending = false;
+            self->m_structureReady = true;
+            self->m_deadline->stop();
+            self->setState(State::Ready, QStringLiteral("四种展示模式的只读元信息已缓存。"));
+            if (!self || generation != self->m_generation || self->m_state != State::Ready) return;
+            self->m_poll->setInterval(500);
+            emit self->modelLoaded(self->m_modelPath);
+        });
 }
 
 void ModelViewer::setState(State state, const QString &message)
@@ -1127,6 +1339,8 @@ void ModelViewer::openModel(const QString &path)
     releaseResources();
     m_error.clear();
     m_modelPath = path.isEmpty() ? QString() : QFileInfo(path).absoluteFilePath();
+    m_modelBytes = -1;
+    m_modelModifiedMs = -1;
     if (path.isEmpty())
     {
         m_canonicalPath.clear();
@@ -1145,6 +1359,8 @@ void ModelViewer::openModel(const QString &path)
         fail(QStringLiteral("模型文件为空，无法解析结构。"));
         return;
     }
+    m_modelBytes = model.size();
+    m_modelModifiedMs = model.lastModified().toMSecsSinceEpoch();
     const QString helper = helperPath();
     if (helper.isEmpty() || !QFileInfo(helper).isFile())
     {

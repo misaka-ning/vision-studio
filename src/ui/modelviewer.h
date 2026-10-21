@@ -1,5 +1,7 @@
 #pragma once
 
+#include "modelyaml.h"
+
 #include <QByteArray>
 #include <QJsonObject>
 #include <QMetaType>
@@ -21,6 +23,7 @@ class QTreeView;
 class QTableView;
 class QStandardItemModel;
 class QSortFilterProxyModel;
+class QPlainTextEdit;
 
 // Browser and Python service are deliberately created only by openModel().
 class ModelViewer : public QWidget
@@ -39,7 +42,8 @@ class ModelViewer : public QWidget
     {
         Graph,
         Hierarchy,
-        Parameters
+        Parameters,
+        YoloYaml
     };
     Q_ENUM(DisplayMode)
 
@@ -49,6 +53,7 @@ class ModelViewer : public QWidget
     void openModel(const QString &path);
     void stop();
     QString modelPath() const;
+    bool matchesModelFile(const QString &path) const;
     State state() const;
     QString errorString() const;
     int graphNodeCount() const;
@@ -56,6 +61,10 @@ class ModelViewer : public QWidget
     DisplayMode displayMode() const;
     int hierarchyItemCount() const;
     int parameterCount() const;
+    bool yamlAvailable() const;
+    QString yamlText() const;
+    QString yamlReason() const;
+    bool saveYaml(const QString &path, QString *error = nullptr) const;
 
   signals:
     void modelLoaded(QString path);
@@ -72,6 +81,9 @@ class ModelViewer : public QWidget
     void keepBrowserRendering();
     void checkGraph();
     void extractStructure(quint64 generation);
+    void extractYaml(quint64 generation);
+    void updateYamlSearch();
+    void findNextYamlMatch();
     void applyStructure(const QJsonObject &structure);
     void clearStructure();
     void updateDisplay();
@@ -80,8 +92,10 @@ class ModelViewer : public QWidget
     State m_state = State::Empty;
     QString m_modelPath;
     QString m_canonicalPath;
+    qint64 m_modelBytes = -1, m_modelModifiedMs = -1;
     QString m_error;
     QString m_hierarchyHint;
+    vision::ModelYamlDocument m_yamlDocument;
     quint64 m_generation = 0;
     int m_graphNodeCount = 0;
     DisplayMode m_mode = DisplayMode::Graph;
@@ -103,6 +117,10 @@ class ModelViewer : public QWidget
     QWebEngineProfile *m_profile = nullptr;
     QWebEngineView *m_webView = nullptr;
     QWidget *m_hierarchyPage = nullptr, *m_parametersPage = nullptr;
+    QWidget *m_yamlPage = nullptr;
+    QPlainTextEdit *m_yamlEditor = nullptr;
+    QLabel *m_yamlStatus = nullptr, *m_yamlSearchInfo = nullptr;
+    QPushButton *m_yamlCopy = nullptr, *m_yamlSave = nullptr;
     QTreeView *m_tree = nullptr;
     QTableView *m_parameters = nullptr;
     QStandardItemModel *m_treeModel = nullptr, *m_parameterModel = nullptr;

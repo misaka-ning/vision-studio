@@ -2,6 +2,7 @@
 
 #include "core/visiontypes.h"
 #include <QPointF>
+#include <QStringList>
 #include <QWidget>
 
 class QDragEnterEvent;
@@ -32,6 +33,7 @@ class ImageCanvas final : public QWidget
     void setSelectedPrediction(int index);
     void fitToView();
     void actualSize();
+    void setDropActive(bool active);
     QImage annotatedImage() const;
     // Pure QImage rendering is safe in a background writer; no QWidget is created.
     static QImage annotatedResultImage(const vision::InferenceResult &result,
@@ -40,6 +42,7 @@ class ImageCanvas final : public QWidget
 
   signals:
     void fileDropped(const QString &file);
+    void filesDropped(const QStringList &files);
     void zoomChanged(int percent);
     void predictionSelected(int index);
 
@@ -66,7 +69,7 @@ class ImageCanvas final : public QWidget
                                        bool boxesVisible, bool labelsVisible, int selected,
                                        qreal scale, bool exporting);
     static QColor classColor(int classId);
-    static QString datasetSourceFromDrop(const QMimeData *mime);
+    static QStringList localFilesFromDrop(const QMimeData *mime);
 
     vision::InferenceResult m_result;
     qreal m_scale = 1.0;
