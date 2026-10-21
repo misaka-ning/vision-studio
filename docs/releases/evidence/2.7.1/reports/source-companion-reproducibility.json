@@ -1,0 +1,11 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "version": "2.7.1",
+  "original_success": true,
+  "original_file_commitment": {
+    "file": "source-companion-reproducibility.json",
+    "bytes": 332,
+    "sha256": "edc9a38c6900cbe76bf0850e74bfb08207dbe9e78db0c77a2d499cbe0117e9bd"
+  }
+}

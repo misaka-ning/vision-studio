@@ -1,0 +1,10 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "version": "2.7.1",
+  "original_file_commitment": {
+    "file": "SOURCE-INVENTORY.json",
+    "bytes": 8027,
+    "sha256": "e550534925247cb23155e4fe8cf2816ef1eff6f2df70eaa8dca515291e02b149"
+  }
+}

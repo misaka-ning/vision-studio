@@ -1,0 +1,23 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "final_deb_binding_and_readonly": true,
+      "yaml_two_process_restore": true,
+      "directory_two_process_restore": true,
+      "public_inputs_unchanged": true,
+      "packaged_application_unchanged": true,
+      "restore_has_no_inference_history_or_report_writes": true
+    }
+  },
+  "original_file_commitment": {
+    "file": "packaged-dataset-session-qa.json",
+    "bytes": 15798,
+    "sha256": "afdc0928918bece882cc01d60801bbaa24a4dfe1c92dd2f840abe5e4bec8ebb7"
+  }
+}

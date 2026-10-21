@@ -1,0 +1,26 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "onnx_cpu": true,
+      "pt_cpu": true,
+      "torchscript_cpu": true,
+      "zero_result_id32_cpu": true,
+      "onnx_cuda": true,
+      "pt_cuda": true,
+      "pt_torchscript_cpu": true,
+      "onnx_cpu_cuda": true,
+      "pt_cpu_cuda": true
+    }
+  },
+  "original_file_commitment": {
+    "file": "evaluation-qa.json",
+    "bytes": 6192,
+    "sha256": "2ba0abccee7e52d4ba0e0dc47b4ece524f265de26822ed2a273080de48017d26"
+  }
+}

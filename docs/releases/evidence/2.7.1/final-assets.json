@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "version": "2.7.1",
+  "assets": {
+    "vision-studio_2.7.1-1_amd64.deb": {
+      "bytes": 387333512,
+      "sha256": "1cf4c70c78687820dad0acb8f367c9a722b21a63ee6e6d664af9af27785a0bbe"
+    },
+    "vision-studio-2.7.1-complete-source.tar.xz": {
+      "bytes": 916197360,
+      "sha256": "8a61e48e8a0c32cc5bf8c810830a51cb4e2f363e190a93a1070f7d9fa93d7c7d"
+    },
+    "SHA256SUMS": {
+      "bytes": 207,
+      "sha256": "7f905a3f2fef69fe56f33e5b309d5198ff4942f2429f580879206460208fdb66"
+    }
+  }
+}

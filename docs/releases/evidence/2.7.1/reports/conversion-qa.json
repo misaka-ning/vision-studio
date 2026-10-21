@@ -1,0 +1,13 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "original_file_commitment": {
+    "file": "conversion-qa.json",
+    "bytes": 14529,
+    "sha256": "5b3609094ab19801b63c5ae4527c16ccef4e373728e16a861cd3ac6c5fe66125"
+  }
+}

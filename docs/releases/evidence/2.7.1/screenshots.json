@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "version": "2.7.1",
+  "only_four_manually_reviewed_widget_captures": true,
+  "images": [
+    {
+      "file": "screenshots/computeDevice-after.png",
+      "sha256": "76ab666e924c4a83f5de6f707256227c200474c944105715ef10918d75ef996a",
+      "bytes": 2849,
+      "byte_identical_to_reviewed_original": true,
+      "width": 140,
+      "height": 103,
+      "full_pixel_decode": true
+    },
+    {
+      "file": "screenshots/computeDevice-before.png",
+      "sha256": "e849655f1dd0f817e424e6beb305fe42d33a0b2fd5b31e9f7df6b6b676081ddc",
+      "bytes": 2861,
+      "byte_identical_to_reviewed_original": true,
+      "width": 140,
+      "height": 103,
+      "full_pixel_decode": true
+    },
+    {
+      "file": "screenshots/gpuDeviceIndex-after.png",
+      "sha256": "a8ac74953148efc7e3d9c8dfabeb5a715729503606f0902950c865b7de5b8583",
+      "bytes": 3756,
+      "byte_identical_to_reviewed_original": true,
+      "width": 251,
+      "height": 49,
+      "full_pixel_decode": true
+    },
+    {
+      "file": "screenshots/gpuDeviceIndex-before.png",
+      "sha256": "4e766056b1b17abbf6779f0f73b99adba2ab17cfad63353e20bf23453e5b6016",
+      "bytes": 3770,
+      "byte_identical_to_reviewed_original": true,
+      "width": 251,
+      "height": 49,
+      "full_pixel_decode": true
+    }
+  ]
+}
