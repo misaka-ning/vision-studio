@@ -1,0 +1,66 @@
+{
+  "version": "2.7.1",
+  "success": true,
+  "check_type": "actual Qt MainWindow widget capture",
+  "qt_platform": "offscreen",
+  "scope": "Visual appearance and Escape keeping the current choice; not inference or final-package acceptance.",
+  "control_count": 4,
+  "rows": [
+    {
+      "control": "computeDevice",
+      "item_count_unchanged": true,
+      "before_edge_bright_pixels": 1380,
+      "after_edge_bright_pixels": 0,
+      "before_popup_color": "#efefef",
+      "after_popup_color": "#202020"
+    },
+    {
+      "control": "gpuDeviceIndex",
+      "item_count_unchanged": true,
+      "before_edge_bright_pixels": 2490,
+      "after_edge_bright_pixels": 0,
+      "before_popup_color": "#efefef",
+      "after_popup_color": "#202020"
+    },
+    {
+      "control": "inputColorMode",
+      "item_count_unchanged": true,
+      "before_edge_bright_pixels": 1800,
+      "after_edge_bright_pixels": 0,
+      "before_popup_color": "#efefef",
+      "after_popup_color": "#202020"
+    },
+    {
+      "control": "detectionRange",
+      "item_count_unchanged": true,
+      "before_edge_bright_pixels": 1910,
+      "after_edge_bright_pixels": 0,
+      "before_popup_color": "#efefef",
+      "after_popup_color": "#202020"
+    }
+  ],
+  "escape_keeps_selection": true,
+  "personal_data_isolated": true,
+  "screenshots": [
+    {
+      "file": "screenshots/computeDevice-after.png",
+      "bytes": 2849,
+      "sha256": "76ab666e924c4a83f5de6f707256227c200474c944105715ef10918d75ef996a"
+    },
+    {
+      "file": "screenshots/computeDevice-before.png",
+      "bytes": 2861,
+      "sha256": "e849655f1dd0f817e424e6beb305fe42d33a0b2fd5b31e9f7df6b6b676081ddc"
+    },
+    {
+      "file": "screenshots/gpuDeviceIndex-after.png",
+      "bytes": 3756,
+      "sha256": "a8ac74953148efc7e3d9c8dfabeb5a715729503606f0902950c865b7de5b8583"
+    },
+    {
+      "file": "screenshots/gpuDeviceIndex-before.png",
+      "bytes": 3770,
+      "sha256": "4e766056b1b17abbf6779f0f73b99adba2ab17cfad63353e20bf23453e5b6016"
+    }
+  ]
+}

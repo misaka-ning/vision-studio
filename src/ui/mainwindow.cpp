@@ -634,6 +634,9 @@ void MainWindow::setupStyle()
     colors.setColor(QPalette::PlaceholderText, QColor("#A5A5A5"));
     colors.setColor(QPalette::Disabled, QPalette::Text, QColor("#858585"));
     colors.setColor(QPalette::Disabled, QPalette::ButtonText, QColor("#858585"));
+    // Style-sheet popup frames and their menu margins resolve the application
+    // palette, even when the item view inherits this window's dark stylesheet.
+    QApplication::setPalette(colors);
     setPalette(colors);
     QFile theme(QStringLiteral(":/fluent-dark.qss"));
     if (theme.open(QIODevice::ReadOnly))

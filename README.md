@@ -8,9 +8,9 @@
 
 [下载发行版](https://github.com/misaka-ning/vision-studio/releases) · [更新日志](CHANGELOG.md) · [使用指南](docs/使用指南.md) · [报告问题](https://github.com/misaka-ning/vision-studio/issues)
 
-当前工程版本：**2.7.0**。模型显示新增「YOLO YAML」，与结构图、层级树和参数表组成四种展示模式；仅从模型实际保存的架构字典生成等价配置，元信息缺失时明确提示，不猜测原始网络。图像预览支持拖入数据集目录、YAML／YML、视频或单张／多张图片。已有数据集时，可选择替换、临时加入或取消，默认取消；临时图片仅在当前会话检测，不计入 GT／评估，也不写入 `dataset-session.json`。保留数据集启动恢复与当前阈值错例浏览。沿用 C++17／Qt 6.8.3、Fluent 深色界面及现有 CPU／NVIDIA GPU 后端，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。
+当前工程版本：**2.7.1（待验收）**。本次为兼容的界面修复，处理深色下拉弹窗顶部和底部出现浅色条的问题；不改变选项、操作逻辑、推理或评估。沿用 C++17／Qt 6.8.3、Fluent 深色界面及现有 CPU／NVIDIA GPU 后端，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。
 
-2.7.0 已完成完整 22 套回归（396 项 Qt、101 项 Python，零失败／跳过）及最终包 CPU／CUDA、隔离安装、对应源码验收；实际范围与发行状态以[发行说明](docs/releases/2.7.0.md)及[同版证据](docs/releases/evidence/2.7.0/README.md)为准，未执行检查不写作通过。发行平台仍为 Ubuntu 22.04 amd64；Windows 已发布补充包仍为 2.1.0。下方保留实际 2.5.0 截图展示既有界面，不冒充 2.7.0 新功能或运行证据。
+2.7.1 的构建、下拉弹窗专项检查、完整 22 套回归及最终包验收尚待执行，实际进展见[发行说明](docs/releases/2.7.1.md)及[验收状态](docs/releases/evidence/2.7.1/README.md)。已发布的 2.7.0 及其[原验收结果](docs/releases/evidence/2.7.0/README.md)保持不变，不作为 2.7.1 的通过凭证。发行平台仍为 Ubuntu 22.04 amd64；Windows 已发布补充包仍为 2.1.0。下方截图均保留实际来源版本，不冒充本次补丁的运行证据。
 
 ![Vision Studio 2.5.0 图像预览：真实 ONNX CPU 检测与 GT 对照](docs/screenshots/workbench-2.5.0.png)
 
@@ -48,17 +48,17 @@
 
 ## 下载与安装
 
-从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下为 2.7.0 的安装命令。每版只上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
+从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下为 2.7.1 发布后的安装命令；尚未发布时请使用页面已有的正式版本。每版只上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
 
 页面另外显示 GitHub 自动提供的 **Source code (zip)** 和 **Source code (tar.gz)** 两个源码入口，它们由平台生成，不能从 Release 中移除。下载三个手动附件后，先校验，再安装：
 
 ```bash
 sha256sum -c SHA256SUMS
-sudo apt install ./vision-studio_2.7.0-1_amd64.deb
+sudo apt install ./vision-studio_2.7.1-1_amd64.deb
 vision-studio
 ```
 
-2.7.0 的 Debian 版本为 `2.7.0-1`，高于 `2.6.0-1` 及此前版本，可用以上 APT 命令直接升级。先结束检测、评估、录像与模型转换，导出需要永久保存的结果，退出旧程序再安装；升级保留个人设置、模型、运行记录、导出、录像、评估报告与已准备的 GPU 环境。普通检测临时缓存不会跨程序重启保留，评估报告及其预测快照独立持久保存。
+2.7.1 的 Debian 版本为 `2.7.1-1`，高于 `2.7.0-1` 及此前版本，可用以上 APT 命令直接升级。先结束检测、评估、录像与模型转换，导出需要永久保存的结果，退出旧程序再安装；升级保留个人设置、模型、运行记录、导出、录像、评估报告与已准备的 GPU 环境。普通检测临时缓存不会跨程序重启保留，评估报告及其预测快照独立持久保存。
 
 也可从应用菜单启动 **Vision Studio**。先在模型库选用模型，再导入数据集或拖入图片／视频，也可选择摄像头。Ctrl+O 打开文件夹与 YAML 共用的数据集选择器；普通图片仅通过预览区拖入，不增加图片／普通图片文件夹按钮，也不提供更多页示例及 `--demo`／`--pt-demo` 启动选项。临时替换或追加图片不会改写最后成功数据集记录，下次普通启动仍可恢复该数据集。
 
@@ -102,7 +102,7 @@ PT 支持兼容的 Ultralytics YOLOv8 / YOLO11 完整检查点、随附 YOLOv5 v
 
 ### Windows 本地开发
 
-Windows 2.1.0 已在对应环境使用 Qt 6.8.3 MSVC 2022 64 位 SDK、MSVC x64 和 OpenCV 4.12.0 Windows 动态库完成构建及真实 ONNX CPU 示例验证；以下是源码构建方法，不代表本轮已验收 Windows 2.7.0。Qt 需安装 WebEngine、WebChannel、Svg 及其配套模块。请在 Visual Studio x64 开发者终端中执行，按实际安装位置调整路径：
+Windows 2.1.0 已在对应环境使用 Qt 6.8.3 MSVC 2022 64 位 SDK、MSVC x64 和 OpenCV 4.12.0 Windows 动态库完成构建及真实 ONNX CPU 示例验证；以下是源码构建方法，不代表本轮已验收 Windows 2.7.1。Qt 需安装 WebEngine、WebChannel、Svg 及其配套模块。请在 Visual Studio x64 开发者终端中执行，按实际安装位置调整路径：
 
 ```powershell
 cmake -S . -B build-windows -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DCMAKE_PREFIX_PATH=D:/Qt/6.8.3/msvc2022_64 -DOpenCV_DIR=D:/Opencv-C++/opencv/build/x64/vc16/lib
@@ -154,7 +154,7 @@ GPU 依赖使用独立的 `requirements-gpu.txt`／`requirements-gpu.lock.txt`�
 
 ## 验证与发行
 
-2.7.0 已完整执行 22 套回归：396 项 Qt、101 项 Python，零失败／跳过；最终包 CPU／CUDA、隔离安装、转换、公开评估、拖入与 YOLO YAML 以及完整对应源码均已通过。去标识验收结果、真实截图、原件校验承诺及边界见[同版证据](docs/releases/evidence/2.7.0/README.md)。Qt 计数含初始化和清理，公开四图只验证功能；物理摄像头与 Windows 2.7.0 未列为本轮验收。
+2.7.1 尚未完成构建、完整 22 套回归或最终包验收。公开材料只在实际执行后更新，记录真实数量、失败与未执行边界；原始主机日志保留本地，仓库只公开允许字段的结果投影、原件校验承诺与人工目检的原样截图，投影不能作为原始 finalizer 输入。当前状态见[同版验收](docs/releases/evidence/2.7.1/README.md)。物理摄像头与 Windows 2.7.1 未列为已验收项目。
 
 普通检测在同一配置下逐图更新结果，停止前未重算的图片与范围外有效缓存保留；修改模型、预处理、阈值、设备、类别名称映射或类别筛选会清除不兼容的临时缓存。评估使用独立配置、标注和预测快照，历史统计不会被新配置改写。源文件内容变化会阻止新任务作为有效评估发布；历史图像叠加仍需核对原图哈希，原图已移动或改变时保留统计并提示，避免错配。范围及筛选组合、超过 50 张、停止后回看、零匹配、类别映射与原始 ID 保留均属于验证范围。
 
@@ -164,7 +164,7 @@ GPU 依赖使用独立的 `requirements-gpu.txt`／`requirements-gpu.lock.txt`�
 ./build/bin/vision-studio --smoke-model ./output/smoke/model
 ```
 
-每次更新按 [版本管理](docs/版本管理.md) 完成适用验收、源码与带说明标签、三个手动附件上传及远端核验后，再精确保留最新两版；本版执行结果见[发行说明](docs/releases/2.7.0.md)。用户设置、模型、评估、录像、共享 SDK／runtime 及未备份资料保留，既有公开标签与核心附件不覆盖。
+每次更新按 [版本管理](docs/版本管理.md) 完成适用验收、源码与带说明标签、三个手动附件上传及远端核验后，再精确保留最新两版；本版执行结果见[发行说明](docs/releases/2.7.1.md)。用户设置、模型、评估、录像、共享 SDK／runtime 及未备份资料保留，既有公开标签与核心附件不覆盖。
 
 ## 文档、贡献与许可
 
