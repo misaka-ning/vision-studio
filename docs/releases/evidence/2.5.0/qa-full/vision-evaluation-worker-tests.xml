@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="27"
+	timestamp="2026-10-21T10:17:52"
+	>
+	<testcase name="vision-evaluation-worker-tests" classname="vision-evaluation-worker-tests" time="27.6064" status="run">
+		<system-out>********* Start testing of EvaluationWorkerTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : EvaluationWorkerTests::initTestCase()
+PASS   : EvaluationWorkerTests::prepareUsesRealDimensionsAndFlagsMissingLabels()
+PASS   : EvaluationWorkerTests::actualOnnxAllAndSubsets(all-three)
+PASS   : EvaluationWorkerTests::actualOnnxAllAndSubsets(from-second)
+PASS   : EvaluationWorkerTests::actualOnnxAllAndSubsets(only-last)
+PASS   : EvaluationWorkerTests::actualOnnxAllAndSubsets(more-than-fifty-all)
+PASS   : EvaluationWorkerTests::actualOnnxAllAndSubsets(more-than-fifty-tail)
+PASS   : EvaluationWorkerTests::stopRetainsOnlyCompletedPrefix()
+PASS   : EvaluationWorkerTests::stopBeforeLoadProducesEmptyCancelledReport()
+PASS   : EvaluationWorkerTests::staleDatasetRejectedBeforePrediction()
+PASS   : EvaluationWorkerTests::duplicateAndForeignRangesRejected()
+PASS   : EvaluationWorkerTests::inval...
+The rest of the test output was removed since it exceeds the threshold of 1024 bytes.
+</system-out>
+	</testcase>
+</testsuite>

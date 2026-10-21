@@ -1,0 +1,12 @@
+{
+  "version": "2.5.0",
+  "generated_release_inventory_only": [
+    {
+      "file": "docs/release/SOURCE-INVENTORY.json",
+      "git_sha256": "d6e33ae7a38bc145fadda74876c4cdf2b9decd9cf226cbb3856a5fcd10612c96",
+      "source_sha256": "5e062e5f75af50c594229c2e411c16be792b3856194f6c816f36b7132c065e5a"
+    }
+  ],
+  "application_code_changes": false,
+  "reason": "Source archive generator derives the release inventory from actual upstream material; commit this generated metadata so clean source and Git match exactly."
+}

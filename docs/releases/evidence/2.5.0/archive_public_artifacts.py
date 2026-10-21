@@ -7,7 +7,7 @@ from pathlib import Path
 import zipfile
 from PIL import Image
 
-ROOT = Path('/home/misaka/.codex/worktrees/ef0b/yolo')
+ROOT = Path.cwd()
 RELEASE = ROOT / 'output/releases/2.5.0'
 VERSION = '2.5.0'
 
@@ -91,7 +91,7 @@ bundle('evaluation', entries, {
     'torchscript_export_result': matrix['torchscript_export'],
     'excluded': ['Extracted application/runtime/source tree', 'Models, including exported TorchScript', 'Runtime/cache directories', 'Private user inputs and reports'],
     'limitations': ['This is preservation of existing final-package raw evidence, not another executed test suite.', 'Timing and tiny-set metrics are not advertised performance or model-quality guarantees.'],
-    'visual_inspection': [{'file': 'onnx_cuda/ui-smoke/evaluation-analysis.png', 'result': 'Reviewed actual CUDA analysis window: compact two-row top controls, readable metrics and visible curve; no overlay or clipping in the selected frame.'},
+    'visual_inspection': [{'file': 'onnx_cuda/ui-smoke/evaluation-analysis.png', 'result': 'Reviewed actual 2.5.0 CUDA analysis page: full-width metrics and visible threshold curves; lower analysis content remains available through its scrollable viewport, without overlapping controls.'},
                           {'file': 'pt_cpu/ui-smoke/evaluation-preview.png', 'result': 'Reviewed actual PT CPU preview: source image, GT and predicted box, target list and compact top controls visible.'}]
 })
 
@@ -133,5 +133,5 @@ bundle('namespace', entries, {
     'excluded': ['Readonly /opt/VisionStudio runtime/source/model tree', 'usr-bin/system bindings', 'Exported ONNX/TorchScript models', 'User config/cache/history'],
     'limitations': ['Only proves private namespace installation, execution and purge. It does not assert host installation or model quality.'],
     'visual_inspection': [{'file': 'user/onnx/workbench.png', 'result': 'Actual isolated CPU smoke workbench inspected; image, five detections and readable UI visible.'},
-                          {'file': 'user/model_display/model-hierarchy.png', 'result': 'Actual isolated Netron hierarchy inspected; readable module names and details visible in dark theme.'}]
+                          {'file': 'user/model_display/model-hierarchy.png', 'result': 'Actual isolated native model hierarchy inspected; module names and details are readable in the dark theme.'}]
 })

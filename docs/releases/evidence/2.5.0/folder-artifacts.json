@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "version": "2.5.0",
+  "success": true,
+  "errors": [],
+  "scope": "Small original public folder-migration ONNX CPU regression evidence. Four copied public COCO8 Val images/labels were byte-verified by the original check; source JPEGs are not duplicated here.",
+  "deb_sha256": "9abc153c5699852ec40b16cb7b261f12796a103642601be4dda47f464d07fe03",
+  "source_workdir": "/tmp/vision-studio-folder-package-qa-qb0ofry0",
+  "source_report": {
+    "file": "output/releases/2.5.0/folder-package-qa.json",
+    "sha256": "9408f9bcf02b11747e6e2a1eb37b47d2a9f8dc58a7f8db60bb99b0e33d2f71b8"
+  },
+  "excluded": [
+    "Extracted application/runtime",
+    "Public source JPEG copies",
+    "Models",
+    "Cache folders",
+    "Private inputs"
+  ],
+  "limitations": [
+    "Original 10-check regression, not an additional suite or football accuracy benchmark."
+  ],
+  "archive": {
+    "file": "folder-artifacts.zip",
+    "bytes": 1529301,
+    "sha256": "1b9194af2559a61a9460cc3ec1cf1ed251a29555ef1af219f439ee55cbfdb64d"
+  },
+  "files": [
+    {
+      "file": "application/application.stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+    },
+    {
+      "file": "application/application.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/REPORT.md",
+      "bytes": 1270,
+      "sha256": "7a90935e7c9d02bbbf36dab716184e98acb268326835f0131accd2c24a131a6a"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/errors.csv",
+      "bytes": 417,
+      "sha256": "c69d664e826e2062a94d56383bb34ddb146ef2dfdbecb72e0b5493e21ec770eb"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/helper.log",
+      "bytes": 543,
+      "sha256": "c109ed2be99040c2ca60b0503ee8ffe5f88178494e2e4bc639b49e9c9bf467b7"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/manifest.json",
+      "bytes": 10328,
+      "sha256": "9d13d710b3f92d3ddb2680500f85554f52cdfba85bb5ddfbc1add15432b1105c"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/negative-false-positive-rate.png",
+      "bytes": 61509,
+      "sha256": "903f272b1b1cc1f63d12de477d3a3870663fc53edb814499ef214c3d91d3575e"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/negative-false-positive-rate.svg",
+      "bytes": 12915,
+      "sha256": "718cdcff2c13ea0f36c753f4bcc0dc85345529fd9d0425b147b073a1cdb1c225"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/per-image.csv",
+      "bytes": 657,
+      "sha256": "ef4e76a68549f7664ae3f73c042474e24fa21e9ff8b07e9c669793a62c3f7cc6"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/predictions.jsonl",
+      "bytes": 31501,
+      "sha256": "aee4c73247076ff9ae1842ce3888b07357b465de16519102f9e49508eb90479c"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/report.json",
+      "bytes": 210938,
+      "sha256": "2a1304a33cf30dd1f325f632b73b56b5e54f2e2b2fe15d3b94d9579bb8ef4ad8"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/request.json",
+      "bytes": 1991,
+      "sha256": "75c94a974b40700b840d740f9ae9d7585088158457a81d3014101e9e17858b0c"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/samples/0.json",
+      "bytes": 3883,
+      "sha256": "756efa744e98dd1dad809ef337ad855808ac46cb03cf98627612750a50adbb79"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/samples/0.sha256",
+      "bytes": 65,
+      "sha256": "6c05a27932943c0c2b4e0078f1ba25401cbc327b7fb52292ab4d9d941fc4c810"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/samples/1.json",
+      "bytes": 9953,
+      "sha256": "25979badfaec40624bc40a5fbee043e56021b98cede27b3bc21daa42264e509e"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/samples/1.sha256",
+      "bytes": 65,
+      "sha256": "af1502fb6b7224e2949e42d1c9b33ba375a3ea395ea7c4036fea175827a122d2"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/samples/2.json",
+      "bytes": 38250,
+      "sha256": "152bf8ba98dc2abd4133add274d7d725379b186f2476a1a542b672a93fdbc9ad"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/samples/2.sha256",
+      "bytes": 65,
+      "sha256": "7f2a879810a997b3c12e8875b1bc50f2160f39081898f747008a6b8d7d54cd7d"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/samples/3.json",
+      "bytes": 11477,
+      "sha256": "5b70687353c77bd9ab0430f2fa1ad2de5832884dbfa90a09110382653ded0483"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/samples/3.sha256",
+      "bytes": 65,
+      "sha256": "13299514bded70b54f8c121dbfc2d14a13d753a51155419c078c4d624fd6c043"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/status.json",
+      "bytes": 214,
+      "sha256": "59aecd9c57143b2a35f95162ad42fa78351933888c50bdd7b1b0a48c61121c58"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/threshold-performance.png",
+      "bytes": 83695,
+      "sha256": "55b21f9048d0b8eb08783a645ce1a03159a06136a02ea9d7b1dff3cdc4f113f4"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/threshold-performance.svg",
+      "bytes": 18508,
+      "sha256": "77c225623f80c70253036e25f71e8fd0123fe6bf97c48379dd177b8e3c87f0ba"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/thresholds.csv",
+      "bytes": 32049,
+      "sha256": "b80611663eb634ffdcc08636b8ac2eb8e9d9296f8b1905e68b3ed474fa4cc220"
+    },
+    {
+      "file": "application/request.json",
+      "bytes": 491,
+      "sha256": "b5ca55508ba201fe53e317522da66f243c2d55c6224505c924d668bf9993bc6b"
+    },
+    {
+      "file": "application/ui-smoke/evaluation-analysis.png",
+      "bytes": 172243,
+      "sha256": "8a127d479a2bacfffff377a65266516f0b96d20dd7252235c46dc3f32474afda"
+    },
+    {
+      "file": "application/ui-smoke/evaluation-preview.png",
+      "bytes": 505515,
+      "sha256": "62a7c32a67a26765425dab89209af6193590da45bbcb219eb2d35cacfcaac559"
+    },
+    {
+      "file": "application/ui-smoke/evaluation-smoke-report.json",
+      "bytes": 239103,
+      "sha256": "cdbb6c27de5786cff43c4b4fb45efbdc6a617c1285a74954017f7d5f23e542f0"
+    },
+    {
+      "file": "application/ui-smoke/selected-result/000000000036-20261021-101652-876.csv",
+      "bytes": 106,
+      "sha256": "4c834153d3a3ddab9666f3caca7c49c305930373c47b5451e0bf66c362faef02"
+    },
+    {
+      "file": "application/ui-smoke/selected-result/000000000036-20261021-101652-876.json",
+      "bytes": 2343,
+      "sha256": "bdf3f2ad281da8ccdfa3260b9a13f34f0697644e1c37ad9eb607253d876dd598"
+    },
+    {
+      "file": "application/ui-smoke/selected-result/000000000036-20261021-101652-876.png",
+      "bytes": 685903,
+      "sha256": "e87d4c6734e522b3de5283dbfc7c7138bcfc5132db1dd36e748b510a88acc784"
+    },
+    {
+      "file": "migrated-dataset/data.yaml",
+      "bytes": 965,
+      "sha256": "8195698d8ef51b366c0f8e3703115b450160e2922128dede7cb066e1fb7b44e1"
+    },
+    {
+      "file": "migrated-dataset/lists/val.txt",
+      "bytes": 388,
+      "sha256": "1da0daa88bf156f67d834a3b7dab029044bf871cc8ef96298dba8ecaabc0bde1"
+    },
+    {
+      "file": "migrated-dataset/train_from_scratch.example.yaml",
+      "bytes": 27,
+      "sha256": "12f2ef9306254ebc409af1b9e0b88903ef5dcd56a9d20a3c4c88f02a98cd1769"
+    }
+  ],
+  "file_count": 34,
+  "uncompressed_bytes": 2137656,
+  "png_fully_decoded_count": 5,
+  "png_complete_decode": [
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/negative-false-positive-rate.png",
+      "width": 1728,
+      "height": 972,
+      "mode": "RGBA"
+    },
+    {
+      "file": "application/data/evaluations/20261021-021649-883-0bc041cf/threshold-performance.png",
+      "width": 1728,
+      "height": 972,
+      "mode": "RGBA"
+    },
+    {
+      "file": "application/ui-smoke/evaluation-analysis.png",
+      "width": 1580,
+      "height": 960,
+      "mode": "RGB"
+    },
+    {
+      "file": "application/ui-smoke/evaluation-preview.png",
+      "width": 1580,
+      "height": 960,
+      "mode": "RGB"
+    },
+    {
+      "file": "application/ui-smoke/selected-result/000000000036-20261021-101652-876.png",
+      "width": 481,
+      "height": 640,
+      "mode": "RGBA"
+    }
+  ],
+  "zip_crc_and_member_sha256_verified": true
+}

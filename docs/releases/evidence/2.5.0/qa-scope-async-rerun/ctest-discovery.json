@@ -1,0 +1,648 @@
+{
+  "backtraceGraph" : 
+  {
+    "commands" : 
+    [
+      "add_test"
+    ],
+    "files" : 
+    [
+      "/home/misaka/.codex/worktrees/ef0b/yolo/CMakeLists.txt"
+    ],
+    "nodes" : 
+    [
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 46,
+        "parent" : 0
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 52,
+        "parent" : 2
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 59,
+        "parent" : 4
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 66,
+        "parent" : 6
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 73,
+        "parent" : 8
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 80,
+        "parent" : 10
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 87,
+        "parent" : 12
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 94,
+        "parent" : 14
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 102,
+        "parent" : 16
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 110,
+        "parent" : 18
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 115,
+        "parent" : 20
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 118,
+        "parent" : 22
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 120,
+        "parent" : 24
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 123,
+        "parent" : 26
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 134,
+        "parent" : 28
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 140,
+        "parent" : 30
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 157,
+        "parent" : 32
+      },
+      {
+        "file" : 0
+      },
+      {
+        "command" : 0,
+        "file" : 0,
+        "line" : 176,
+        "parent" : 34
+      }
+    ]
+  },
+  "kind" : "ctestInfo",
+  "tests" : 
+  [
+    {
+      "backtrace" : 1,
+      "command" : 
+      [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-core-tests"
+      ],
+      "name" : "vision-core-tests",
+      "properties" : 
+      [
+        {
+          "name" : "ENVIRONMENT",
+          "value" : 
+          [
+            "QT_QPA_PLATFORM=offscreen"
+          ]
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 3,
+      "command" : 
+      [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-inference-delivery-tests"
+      ],
+      "name" : "vision-inference-delivery-tests",
+      "properties" : 
+      [
+        {
+          "name" : "ENVIRONMENT",
+          "value" : 
+          [
+            "QT_QPA_PLATFORM=offscreen"
+          ]
+        },
+        {
+          "name" : "TIMEOUT",
+          "value" : 90.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 5,
+      "command" : 
+      [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-recording-tests"
+      ],
+      "name" : "vision-recording-tests",
+      "properties" : 
+      [
+        {
+          "name" : "ENVIRONMENT",
+          "value" : 
+          [
+            "QT_QPA_PLATFORM=offscreen"
+          ]
+        },
+        {
+          "name" : "TIMEOUT",
+          "value" : 90.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 7,
+      "command" : 
+      [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-pt-tests"
+      ],
+      "name" : "vision-pt-tests",
+      "properties" : 
+      [
+        {
+          "name" : "ENVIRONMENT",
+          "value" : 
+          [
+            "QT_QPA_PLATFORM=offscreen"
+          ]
+        },
+        {
+          "name" : "TIMEOUT",
+          "value" : 300.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 9,
+      "command" : 
+      [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-gpu-tests"
+      ],
+      "name" : "vision-gpu-tests",
+      "properties" : 
+      [
+        {
+          "name" : "ENVIRONMENT",
+          "value" : 
+          [
+            "QT_QPA_PLATFORM=offscreen"
+          ]
+        },
+        {
+          "name" : "LABELS",
+          "value" : 
+          [
+            "gpu"
+          ]
+        },
+        {
+          "name" : "TIMEOUT",
+          "value" : 600.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 11,
+      "command" : 
+      [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-ui-tests"
+      ],
+      "name" : "vision-ui-tests",
+      "properties" : 
+      [
+        {
+          "name" : "ENVIRONMENT",
+          "value" : 
+          [
+            "QT_QPA_PLATFORM=offscreen"
+          ]
+        },
+        {
+          "name" : "TIMEOUT",
+          "value" : 120.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 13,
+      "command" : 
+      [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-batch-responsiveness-tests"
+      ],
+      "name" : "vision-batch-responsiveness-tests",
+      "properties" : 
+      [
+        {
+          "name" : "ENVIRONMENT",
+          "value" : 
+          [
+            "QT_QPA_PLATFORM=offscreen",
+            "QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu"
+          ]
+        },
+        {
+          "name" : "TIMEOUT",
+          "value" : 180.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 15,
+      "command" : 
+      [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-scope-filter-ui-tests"
+      ],
+      "name" : "vision-scope-filter-ui-tests",
+      "properties" : 
+      [
+        {
+          "name" : "ENVIRONMENT",
+          "value" : 
+          [
+            "QT_QPA_PLATFORM=offscreen",
+            "QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu"
+          ]
+        },
+        {
+          "name" : "TIMEOUT",
+          "value" : 600.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 17,
+      "command" : 
+      [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-modelviewer-tests"
+      ],
+      "name" : "vision-modelviewer-tests",
+      "properties" : 
+      [
+        {
+          "name" : "ENVIRONMENT",
+          "value" : 
+          [
+            "QT_QPA_PLATFORM=offscreen",
+            "QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu"
+          ]
+        },
+        {
+          "name" : "TIMEOUT",
+          "value" : 180.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 19,
+      "command" : 
+      [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-conversion-ui-tests"
+      ],
+      "name" : "vision-conversion-ui-tests",
+      "properties" : 
+      [
+        {
+          "name" : "ENVIRONMENT",
+          "value" : 
+          [
+            "QT_QPA_PLATFORM=offscreen"
+          ]
+        },
+        {
+          "name" : "TIMEOUT",
+          "value" : 60.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 21,
+      "command" : 
+      [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-conversion-inference-tests"
+      ],
+      "name" : "vision-conversion-inference-tests",
+      "properties" : 
+      [
+        {
+          "name" : "ENVIRONMENT",
+          "value" : 
+          [
+            "QT_QPA_PLATFORM=offscreen",
+            "QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu"
+          ]
+        },
+        {
+          "name" : "TIMEOUT",
+          "value" : 300.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 23,
+      "command" : 
+      [
+        "/home/misaka/miniconda3/bin/python3.1",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/tests/model_conversion_tests.py"
+      ],
+      "name" : "vision-model-conversion-tests",
+      "properties" : 
+      [
+        {
+          "name" : "TIMEOUT",
+          "value" : 240.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 25,
+      "command" : 
+      [
+        "/home/misaka/miniconda3/bin/python3.1",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/tests/netron_server_tests.py"
+      ],
+      "name" : "vision-netron-server-tests",
+      "properties" : 
+      [
+        {
+          "name" : "TIMEOUT",
+          "value" : 45.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 27,
+      "command" : 
+      [
+        "/home/misaka/miniconda3/bin/python3.1",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/tests/gpu_runtime_tests.py"
+      ],
+      "name" : "vision-gpu-runtime-tests",
+      "properties" : 
+      [
+        {
+          "name" : "TIMEOUT",
+          "value" : 60.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 29,
+      "command" : 
+      [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-evaluation-worker-tests"
+      ],
+      "name" : "vision-evaluation-worker-tests",
+      "properties" : 
+      [
+        {
+          "name" : "ENVIRONMENT",
+          "value" : 
+          [
+            "QT_QPA_PLATFORM=offscreen"
+          ]
+        },
+        {
+          "name" : "TIMEOUT",
+          "value" : 600.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 31,
+      "command" : 
+      [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-evaluation-panel-tests"
+      ],
+      "name" : "vision-evaluation-panel-tests",
+      "properties" : 
+      [
+        {
+          "name" : "ENVIRONMENT",
+          "value" : 
+          [
+            "QT_QPA_PLATFORM=offscreen"
+          ]
+        },
+        {
+          "name" : "TIMEOUT",
+          "value" : 120.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 33,
+      "command" : 
+      [
+        "/opt/VisionStudio/runtime/bin/python",
+        "-B",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/tests/evaluation_tests.py"
+      ],
+      "name" : "vision-evaluation-python-tests",
+      "properties" : 
+      [
+        {
+          "name" : "ENVIRONMENT",
+          "value" : 
+          [
+            "OMP_NUM_THREADS=1",
+            "OPENBLAS_NUM_THREADS=1"
+          ]
+        },
+        {
+          "name" : "TIMEOUT",
+          "value" : 240.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    },
+    {
+      "backtrace" : 35,
+      "command" : 
+      [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-evaluation-integration-tests"
+      ],
+      "name" : "vision-evaluation-integration-tests",
+      "properties" : 
+      [
+        {
+          "name" : "ENVIRONMENT",
+          "value" : 
+          [
+            "QT_QPA_PLATFORM=offscreen",
+            "QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu"
+          ]
+        },
+        {
+          "name" : "TIMEOUT",
+          "value" : 600.0
+        },
+        {
+          "name" : "WORKING_DIRECTORY",
+          "value" : "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release"
+        }
+      ]
+    }
+  ],
+  "version" : 
+  {
+    "major" : 1,
+    "minor" : 0
+  }
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="1"
+	timestamp="2026-10-21T10:17:50"
+	>
+	<testcase name="vision-gpu-runtime-tests" classname="vision-gpu-runtime-tests" time="1.28473" status="run">
+		<system-out>.....................
+----------------------------------------------------------------------
+Ran 21 tests in 1.190s
+
+OK
+</system-out>
+	</testcase>
+</testsuite>

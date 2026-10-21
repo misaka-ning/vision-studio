@@ -10,11 +10,13 @@
 
 当前工程版本：**2.5.0**。数据集文件夹和 YAML 共用一个导入选择器；缩略图按可见范围后台读取，原图与结果回看异步加载，大队列分片填入界面。工作台拆分为占用完整工作区的「图像预览」和「评估与阈值」两个子页，数据集设置改为悬浮卡片，切页只改变查看位置，任务配置、预测缓存和历史报告保持独立。在同一工作台串联「导入带标注数据集 → 评估目标类 → 分析阈值与错例 → 采用检测配置」。界面保留 [Fluent-Qt](https://github.com/calvinhxx/Fluent-Qt) 风格，复用全局模型与现有推理后端。本次发行平台：**Ubuntu 22.04 LTS amd64**；安装文件以 Releases 实际发布为准。Windows 已发布安装包仍为 2.1.0 补充版，本版不宣称完成 Windows 2.5.0 验收。应用代码采用 **AGPL-3.0-only**。
 
-![Vision Studio 2.4.0 数据集预览（上一正式版）](docs/screenshots/workbench-2.4.0.png)
+本版已完成有效 18 套回归（305 项 Qt、101 项 Python）、真实 CPU／CUDA、最终包与对应源码验收；有效结果由原 17 套通过加相同 38 项 scope CPU 复验组成，并非一次完整 18 套全部通过，初轮失败记录保留。当前宿主升级等待 Polkit，GitHub 发布与旧版清理另按完成凭证记录。[验收详情与边界](docs/releases/evidence/2.5.0/README.md)。
 
-![Vision Studio 2.4.0 评估与阈值（上一正式版）](docs/screenshots/evaluation-2.4.0.png)
+![Vision Studio 2.5.0 图像预览：真实 ONNX CPU 检测与 GT 对照](docs/screenshots/workbench-2.5.0.png)
 
-以上为上一正式版 2.4.0 安装包的实际 Qt 窗口，使用公开 COCO8 四张 Val 图片和随附 YOLOv5n 模型验收，分别展示 CPU 预览与 CUDA 评估。这里只演示界面与管线，不是足球能力或部署性能基准；[2.4.0 验收证据](docs/releases/evidence/2.4.0/)保留该版本来源、原始日志与布局检查。2.5.0 的新布局、最终包实测结果和限制以本版证据为准，旧截图仅展示上一正式版。
+![Vision Studio 2.5.0 评估与阈值：真实 ONNX CUDA 评估](docs/screenshots/evaluation-2.5.0.png)
+
+以上为最终 2.5.0 只读 DEB 的实际 Qt 窗口，使用公开 COCO8 四张 Val 图片和随附 YOLOv5n 模型，分别展示 CPU 图像预览与 CUDA「评估与阈值」。截图用于展示界面和管线，不是足球精度或部署性能基准；工作台页脚的设备验证提示是该页实时状态，实际后端以报告为准。来源、原始日志及限制见 [2.5.0 验收证据](docs/releases/evidence/2.5.0/README.md)。
 
 ## 功能
 

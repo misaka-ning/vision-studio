@@ -1,0 +1,10 @@
+{
+  "version": "2.5.0",
+  "source_commit": "e1c2f12d308c3435323a9586cd354a60cd7cfbc2",
+  "archive_input_commit": "e1c2f12d308c3435323a9586cd354a60cd7cfbc2",
+  "source_tree": "b340effff8271bc131eebd026e47cb34b4c9231a",
+  "clean_export": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/clean-source",
+  "source_method": "Clean git archive of the immutable source-freeze commit, plus actual runtime-info.json; QA reports and publication receipts are committed later without changing production inputs.",
+  "runtime_info_sha256": "15b239dc233e80b4ddaa8b22f87f07fb71bfe4d90332985a708bce04d6019f1b",
+  "note": "Four unrelated user training files are excluded; user models, preferences, records and private data are not copied."
+}

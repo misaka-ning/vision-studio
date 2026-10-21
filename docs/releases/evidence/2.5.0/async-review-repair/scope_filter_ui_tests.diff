@@ -1,0 +1,115 @@
+--- a/tests/scope_filter_ui_tests.cpp@e1c2f12d308c3435323a9586cd354a60cd7cfbc2
++++ b/tests/scope_filter_ui_tests.cpp@reviewed-async-waits
+@@ -74,6 +74,24 @@
+         return false;
+     }
+ 
++    bool waitForReview(const QString &source, bool processed, int timeout = 10000)
++    {
++        QElapsedTimer timer; timer.start();
++        while (timer.elapsed() < timeout && unexpectedDialog_.isEmpty()) {
++            QApplication::processEvents();
++            const auto &result = window_->canvas_->result();
++            if (result.source == source && !result.image.isNull() &&
++                (result.inferenceMs > 0) == processed && window_->exportButton_->isEnabled() == processed)
++                return true;
++            QTest::qWait(5);
++        }
++        const auto &result = window_->canvas_->result();
++        qWarning().noquote() << "async_review_wait_failure" << "expected_source" << source << "processed" << processed
++                            << "actual_source" << result.source << "image_null" << result.image.isNull()
++                            << "inference_ms" << result.inferenceMs << "export_enabled" << window_->exportButton_->isEnabled();
++        return false;
++    }
++
+     void evidence(const QString &kind, const QJsonObject &details)
+     {
+         QJsonObject record = details;
+@@ -177,6 +195,7 @@
+         for (int row = 0; row < count; ++row) {
+             window_->queue_->setCurrentRow(row);
+             const bool processed = expected.contains(files_[row]);
++            QVERIFY2(waitForReview(files_[row], processed), qPrintable(unexpectedDialog_));
+             QCOMPARE(window_->canvas_->result().source, files_[row]);
+             QCOMPARE(window_->canvas_->result().inferenceMs > 0, processed);
+             QCOMPARE(window_->exportButton_->isEnabled(), processed);
+@@ -214,6 +233,7 @@
+         QCOMPARE(window_->imageResults_.size(), expected);
+         for (const QString &path : window_->taskRangeFiles_) {
+             window_->queue_->setCurrentRow(files_.indexOf(path));
++            QVERIFY2(waitForReview(path, true), qPrintable(unexpectedDialog_));
+             const auto result = window_->canvas_->result();
+             for (const auto &prediction : result.predictions)
+                 QVERIFY(ids.isEmpty() || ids.contains(prediction.classId));
+@@ -326,17 +346,21 @@
+         disconnect(stopBeforeFirst);
+         QCOMPARE(window_->imageResults_.size(), 3);
+         window_->queue_->setCurrentRow(0);
++        QVERIFY2(waitForReview(files_[0], true), qPrintable(unexpectedDialog_));
+         QCOMPARE(window_->canvas_->result().inferenceMs, original.inferenceMs);
+         QVERIFY(window_->exportButton_->isEnabled());
+         window_->queue_->setCurrentRow(1);
++        QVERIFY2(waitForReview(files_[1], true), qPrintable(unexpectedDialog_));
+         QVERIFY(window_->canvas_->result().inferenceMs > 0);
+         QVERIFY(window_->exportButton_->isEnabled());
+         window_->queue_->setCurrentRow(2);
++        QVERIFY2(waitForReview(files_[2], true), qPrintable(unexpectedDialog_));
+         QVERIFY(window_->canvas_->result().inferenceMs > 0);
+         window_->confidence_->setValue(.65);
+         QVERIFY(window_->imageResults_.isEmpty());
+         for (int row : {0, 2}) {
+             window_->queue_->setCurrentRow(row);
++            QVERIFY2(waitForReview(files_[row], false), qPrintable(unexpectedDialog_));
+             QCOMPARE(window_->canvas_->result().inferenceMs, 0.0);
+             QVERIFY(!window_->exportButton_->isEnabled());
+         }
+@@ -382,6 +406,7 @@
+         for (int row = 0; row < 61; ++row) {
+             window_->queue_->setCurrentRow(row);
+             const bool processed = row >= 50 && row < 50 + done;
++            QVERIFY2(waitForReview(files_[row], processed), qPrintable(unexpectedDialog_));
+             QCOMPARE(window_->canvas_->result().inferenceMs > 0, processed);
+             QCOMPARE(window_->exportButton_->isEnabled(), processed);
+         }
+@@ -493,6 +518,7 @@
+         QVERIFY(window_->imageResults_.isEmpty());
+         for (int row : {0, 1, 2}) {
+             window_->queue_->setCurrentRow(row);
++            QVERIFY2(waitForReview(files_[row], false), qPrintable(unexpectedDialog_));
+             QCOMPARE(window_->canvas_->result().inferenceMs, 0.0);
+             QVERIFY(!window_->exportButton_->isEnabled());
+         }
+@@ -515,9 +541,13 @@
+         QVERIFY(!submittedIdentity.isEmpty());
+         QCOMPARE(window_->imageResults_[files_[0]].sourceIdentity, submittedIdentity);
+         window_->queue_->setCurrentRow(0);
++        QVERIFY2(waitForReview(files_[0], false), qPrintable(unexpectedDialog_));
++        QCOMPARE(window_->canvas_->result().image.size(), QSize(79, 61));
++        QCOMPARE(window_->canvas_->result().image.pixelColor(0, 0), QColor(Qt::magenta));
+         QCOMPARE(window_->canvas_->result().inferenceMs, 0.0);
+         QVERIFY(!window_->exportButton_->isEnabled());
+         window_->queue_->setCurrentRow(1);
++        QVERIFY2(waitForReview(files_[1], true), qPrintable(unexpectedDialog_));
+         QVERIFY(window_->canvas_->result().inferenceMs > 0);
+         evidence("source-identity-during-task", {{"submitted_identity_frozen", true},
+                                                {"changed_source_cache_unavailable", true},
+@@ -534,14 +564,19 @@
+         window_->classFilter_->setText("5，0 5");
+         QCOMPARE(window_->imageResults_.size(), 2);
+         window_->queue_->setCurrentRow(0);
++        QVERIFY2(waitForReview(files_[0], true), qPrintable(unexpectedDialog_));
+         QVERIFY(window_->canvas_->result().inferenceMs > 0);
+         QImage replacement(61, 79, QImage::Format_RGB888); replacement.fill(Qt::cyan);
+         QVERIFY(replacement.save(files_[0]));
+         window_->queue_->setCurrentRow(1);
+         window_->queue_->setCurrentRow(0);
++        QVERIFY2(waitForReview(files_[0], false), qPrintable(unexpectedDialog_));
++        QCOMPARE(window_->canvas_->result().image.size(), replacement.size());
++        QCOMPARE(window_->canvas_->result().image.convertToFormat(QImage::Format_RGB888), replacement);
+         QCOMPARE(window_->canvas_->result().inferenceMs, 0.0);
+         QVERIFY(!window_->exportButton_->isEnabled());
+         window_->queue_->setCurrentRow(1);
++        QVERIFY2(waitForReview(files_[1], true), qPrintable(unexpectedDialog_));
+         QVERIFY(window_->canvas_->result().inferenceMs > 0);
+         window_->classFilter_->setText("32");
+         QVERIFY(window_->imageResults_.isEmpty());

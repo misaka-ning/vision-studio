@@ -1,0 +1,137 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 8
+    Start 8: vision-scope-filter-ui-tests
+
+8: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-scope-filter-ui-tests
+8: Environment variables: 
+8:  QT_QPA_PLATFORM=offscreen
+8:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+8: Test timeout computed to be: 600
+8: ********* Start testing of ScopeFilterUiTests *********
+8: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+8: PASS   : ScopeFilterUiTests::initTestCase()
+8: FAIL!  : ScopeFilterUiTests::fixedRangeAndProgress(mode-0-row-0) Compared values are not the same
+8:    Actual   (window_->canvas_->result().source): ""
+8:    Expected (files_[row])                      : "/tmp/vision-scope-filter-ui-tests-CGPqSS/images/001.png"
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(180)]
+8: FAIL!  : ScopeFilterUiTests::fixedRangeAndProgress(mode-0-row-1) Compared values are not the same
+8:    Actual   (window_->canvas_->result().source): ""
+8:    Expected (files_[row])                      : "/tmp/vision-scope-filter-ui-tests-cnhPqS/images/001.png"
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(180)]
+8: FAIL!  : ScopeFilterUiTests::fixedRangeAndProgress(mode-0-row-2) Compared values are not the same
+8:    Actual   (window_->canvas_->result().source): ""
+8:    Expected (files_[row])                      : "/tmp/vision-scope-filter-ui-tests-njipkp/images/001.png"
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(180)]
+8: FAIL!  : ScopeFilterUiTests::fixedRangeAndProgress(mode-1-row-0) Compared values are not the same
+8:    Actual   (window_->canvas_->result().source): ""
+8:    Expected (files_[row])                      : "/tmp/vision-scope-filter-ui-tests-dhnTsF/images/001.png"
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(180)]
+8: FAIL!  : ScopeFilterUiTests::fixedRangeAndProgress(mode-1-row-1) Compared values are not the same
+8:    Actual   (window_->canvas_->result().source): ""
+8:    Expected (files_[row])                      : "/tmp/vision-scope-filter-ui-tests-itlXFa/images/001.png"
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(180)]
+8: FAIL!  : ScopeFilterUiTests::fixedRangeAndProgress(mode-1-row-2) Compared values are not the same
+8:    Actual   (window_->canvas_->result().source): ""
+8:    Expected (files_[row])                      : "/tmp/vision-scope-filter-ui-tests-SzefqS/images/001.png"
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(180)]
+8: FAIL!  : ScopeFilterUiTests::fixedRangeAndProgress(mode-2-row-0) Compared values are not the same
+8:    Actual   (window_->canvas_->result().source): ""
+8:    Expected (files_[row])                      : "/tmp/vision-scope-filter-ui-tests-ZoqXdH/images/002.png"
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(180)]
+8: FAIL!  : ScopeFilterUiTests::fixedRangeAndProgress(mode-2-row-1) Compared values are not the same
+8:    Actual   (window_->canvas_->result().source): ""
+8:    Expected (files_[row])                      : "/tmp/vision-scope-filter-ui-tests-peFErA/images/001.png"
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(180)]
+8: FAIL!  : ScopeFilterUiTests::fixedRangeAndProgress(mode-2-row-2) Compared values are not the same
+8:    Actual   (window_->canvas_->result().source): ""
+8:    Expected (files_[row])                      : "/tmp/vision-scope-filter-ui-tests-rTpFcM/images/001.png"
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(180)]
+8: QINFO  : ScopeFilterUiTests::fixedRangeAndProgress(single-mode-0) detection_scope_evidence: {"actual_device":"cpu","backend":"OpenCV DNN / CPU","completed":1,"first_queue_row":0,"kind":"range","last_queue_row":0,"mode":0,"queue_count":1,"range_outside_unprocessed":true,"review_matches_selection":true,"selected_row":0,"submitted_count":1}
+8: PASS   : ScopeFilterUiTests::fixedRangeAndProgress(single-mode-0)
+8: FAIL!  : ScopeFilterUiTests::fixedRangeAndProgress(sixty-one-mode-0) Compared values are not the same
+8:    Actual   (window_->canvas_->result().source): ""
+8:    Expected (files_[row])                      : "/tmp/vision-scope-filter-ui-tests-UfmzcS/images/001.png"
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(180)]
+8: QINFO  : ScopeFilterUiTests::fixedRangeAndProgress(single-mode-1) detection_scope_evidence: {"actual_device":"cpu","backend":"OpenCV DNN / CPU","completed":1,"first_queue_row":0,"kind":"range","last_queue_row":0,"mode":1,"queue_count":1,"range_outside_unprocessed":true,"review_matches_selection":true,"selected_row":0,"submitted_count":1}
+8: PASS   : ScopeFilterUiTests::fixedRangeAndProgress(single-mode-1)
+8: FAIL!  : ScopeFilterUiTests::fixedRangeAndProgress(sixty-one-mode-1) Compared values are not the same
+8:    Actual   (window_->canvas_->result().source): ""
+8:    Expected (files_[row])                      : "/tmp/vision-scope-filter-ui-tests-SSfhPE/images/001.png"
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(180)]
+8: QINFO  : ScopeFilterUiTests::fixedRangeAndProgress(single-mode-2) detection_scope_evidence: {"actual_device":"cpu","backend":"OpenCV DNN / CPU","completed":1,"first_queue_row":0,"kind":"range","last_queue_row":0,"mode":2,"queue_count":1,"range_outside_unprocessed":true,"review_matches_selection":true,"selected_row":0,"submitted_count":1}
+8: PASS   : ScopeFilterUiTests::fixedRangeAndProgress(single-mode-2)
+8: FAIL!  : ScopeFilterUiTests::fixedRangeAndProgress(sixty-one-mode-2) Compared values are not the same
+8:    Actual   (window_->canvas_->result().source): ""
+8:    Expected (files_[row])                      : "/tmp/vision-scope-filter-ui-tests-ctDsDg/images/001.png"
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(180)]
+8: FAIL!  : ScopeFilterUiTests::filtersAndScope(mode-0-filter-all) '!result.predictions.isEmpty()' returned FALSE. ()
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(221)]
+8: FAIL!  : ScopeFilterUiTests::filtersAndScope(mode-0-filter-32) 'window_->writeResult(result, target, &error)' returned FALSE. (没有可导出的真实结果。)
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(225)]
+8: FAIL!  : ScopeFilterUiTests::filtersAndScope(mode-0-filter-0,5,32) '!result.predictions.isEmpty()' returned FALSE. ()
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(221)]
+8: FAIL!  : ScopeFilterUiTests::filtersAndScope(mode-0-filter-5，0 5，32) '!result.predictions.isEmpty()' returned FALSE. ()
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(221)]
+8: FAIL!  : ScopeFilterUiTests::filtersAndScope(mode-1-filter-all) '!result.predictions.isEmpty()' returned FALSE. ()
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(221)]
+8: FAIL!  : ScopeFilterUiTests::filtersAndScope(mode-1-filter-32) 'window_->writeResult(result, target, &error)' returned FALSE. (没有可导出的真实结果。)
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(225)]
+8: FAIL!  : ScopeFilterUiTests::filtersAndScope(mode-1-filter-0,5,32) '!result.predictions.isEmpty()' returned FALSE. ()
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(221)]
+8: FAIL!  : ScopeFilterUiTests::filtersAndScope(mode-1-filter-5，0 5，32) '!result.predictions.isEmpty()' returned FALSE. ()
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(221)]
+8: QINFO  : ScopeFilterUiTests::filtersAndScope(mode-2-filter-all) detection_scope_evidence: {"actual_device":"cpu","backend":"OpenCV DNN / CPU","completed":1,"export_matches_preview":true,"filter_text":"","kind":"scope-and-filter","mode":2,"original_ids_retained":true,"zero_match_is_completed":false}
+8: PASS   : ScopeFilterUiTests::filtersAndScope(mode-2-filter-all)
+8: QINFO  : ScopeFilterUiTests::filtersAndScope(mode-2-filter-32) detection_scope_evidence: {"actual_device":"cpu","backend":"OpenCV DNN / CPU","completed":1,"export_matches_preview":true,"filter_text":"32","kind":"scope-and-filter","mode":2,"original_ids_retained":true,"zero_match_is_completed":true}
+8: PASS   : ScopeFilterUiTests::filtersAndScope(mode-2-filter-32)
+8: QINFO  : ScopeFilterUiTests::filtersAndScope(mode-2-filter-0,5,32) detection_scope_evidence: {"actual_device":"cpu","backend":"OpenCV DNN / CPU","completed":1,"export_matches_preview":true,"filter_text":"0,5,32","kind":"scope-and-filter","mode":2,"original_ids_retained":true,"zero_match_is_completed":false}
+8: PASS   : ScopeFilterUiTests::filtersAndScope(mode-2-filter-0,5,32)
+8: QINFO  : ScopeFilterUiTests::filtersAndScope(mode-2-filter-5，0 5，32) detection_scope_evidence: {"actual_device":"cpu","backend":"OpenCV DNN / CPU","completed":1,"export_matches_preview":true,"filter_text":"5，0 5，32","kind":"scope-and-filter","mode":2,"original_ids_retained":true,"zero_match_is_completed":false}
+8: PASS   : ScopeFilterUiTests::filtersAndScope(mode-2-filter-5，0 5，32)
+8: QINFO  : ScopeFilterUiTests::selectionRequiredAndStreamingVisibility() detection_scope_evidence: {"actual_device":"cpu","backend":"OpenCV DNN","kind":"selection-and-stream","missing_selection_blocks_tail_and_current":true,"stream_range_hidden":true,"whole_queue_works_without_selection":true}
+8: PASS   : ScopeFilterUiTests::selectionRequiredAndStreamingVisibility()
+8: QINFO  : ScopeFilterUiTests::invalidFilterAndModelChange() detection_scope_evidence: {"actual_device":"cpu","backend":"OpenCV DNN","classification_filter_disabled":true,"coco_classes":80,"invalid_inputs_block_start":true,"kind":"validation","replacement_model_classes":1}
+8: PASS   : ScopeFilterUiTests::invalidFilterAndModelChange()
+8: FAIL!  : ScopeFilterUiTests::validCacheOutsideRangeAndChangedParameters() Compared doubles are not the same (fuzzy compare)
+8:    Actual   (window_->canvas_->result().inferenceMs): 0
+8:    Expected (original.inferenceMs)                  : 50.663243
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(329)]
+8: FAIL!  : ScopeFilterUiTests::stoppedRangePreservesCompletedResultsAndExport() Compared values are not the same
+8:    Actual   (window_->canvas_->result().inferenceMs > 0): 0
+8:    Expected (processed)                                 : 1
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(385)]
+8: QINFO  : ScopeFilterUiTests::dynamicClassMetadataResolvedByActualInference() detection_scope_evidence: {"actual_class_count":1,"actual_device":"cpu","backend":"OpenCV DNN","kind":"dynamic-class-metadata","submitted_class_count":0,"ui_and_export_configuration_synchronized":true}
+8: PASS   : ScopeFilterUiTests::dynamicClassMetadataResolvedByActualInference()
+8: QINFO  : ScopeFilterUiTests::workbenchScopeFilterVisualArtifact() detection_scope_evidence: {"actual_device":"cpu","actual_inference":true,"backend":"OpenCV DNN / CPU","filter":"0,5","kind":"workbench-visual","mode":2,"optional_screenshot":"/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/artifacts/scope-filter-workbench.png","queue_count":64,"selected_row":50}
+8: PASS   : ScopeFilterUiTests::workbenchScopeFilterVisualArtifact()
+8: QINFO  : ScopeFilterUiTests::externalModelReplacementDuringTaskCannotRelabelCache() detection_scope_evidence: {"actual_device":"cpu","backend":"OpenCV DNN","identity_changed":true,"job_identity_frozen":true,"kind":"model-identity-during-task","later_results_not_relabelled":true,"stale_cache_unavailable":true}
+8: PASS   : ScopeFilterUiTests::externalModelReplacementDuringTaskCannotRelabelCache()
+8: FAIL!  : ScopeFilterUiTests::submittedSourceIdentityIsNotReplacedByLaterDiskVersion() 'window_->canvas_->result().inferenceMs > 0' returned FALSE. ()
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(521)]
+8: FAIL!  : ScopeFilterUiTests::equivalentFiltersAndChangedSourceFile() 'window_->canvas_->result().inferenceMs > 0' returned FALSE. ()
+8:    Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/tests/scope_filter_ui_tests.cpp(537)]
+8: PASS   : ScopeFilterUiTests::cleanupTestCase()
+8: Totals: 14 passed, 24 failed, 0 skipped, 0 blacklisted, 24860ms
+8: ********* Finished testing of ScopeFilterUiTests *********
+1/1 Test #8: vision-scope-filter-ui-tests .....***Failed   24.98 sec
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =  24.98 sec
+
+The following tests FAILED:
+	  8 - vision-scope-filter-ui-tests (Failed)
+Errors while running CTest
+Output from these tests are in: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/Testing/Temporary/LastTest.log
+Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.

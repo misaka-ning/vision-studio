@@ -1,0 +1,611 @@
+{
+  "schema_version": 1,
+  "version": "2.5.0",
+  "old_version": "2.3.1",
+  "preview_only": true,
+  "deletions_performed": [],
+  "eligible_to_execute_cleanup_now": false,
+  "remote_verification_executed_by_this_audit": false,
+  "generated_at_utc": "2026-10-21T02:12:19.918006+00:00",
+  "candidates": [
+    {
+      "label": "worktree_frozen_source_export",
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/clean-source",
+      "exists": true,
+      "root_is_symlink": false,
+      "kind": "frozen_source_export",
+      "action": "preview_only_no_deletion",
+      "totals": {
+        "files": 4178,
+        "directories": 2722,
+        "symlinks": 0,
+        "special": 0,
+        "logical_file_bytes": 124176495
+      },
+      "nested_git": [],
+      "special_entries": [],
+      "git_and_corresponding_source_proof": {
+        "archive_input_commit": "40418b7f74f6d2674fc923c8c6e487ad3e066933",
+        "source_commit": "cfe21880b386f09dc4ef20ac6bc38d0e90dcfd8b",
+        "archive_input_tree": "f60d04239cc526766b66cd712712926e7de243d5",
+        "source_commit_tree": "f60d04239cc526766b66cd712712926e7de243d5",
+        "tag_commit": "1029f642152e75bdfd60a5def60168fea53b6e5b",
+        "missing": [],
+        "mismatched": [],
+        "extra_files": [
+          "runtime-info.json"
+        ],
+        "git_archive_files": 4177,
+        "runtime_info_sha256": "15b239dc233e80b4ddaa8b22f87f07fb71bfe4d90332985a708bce04d6019f1b",
+        "runtime_info_matches_freeze": true,
+        "success": true
+      },
+      "application_archive_proof": {
+        "expected_sha256": "81100cd43f1101213c89bbe2759c78b685e8b80d8038a6580c1201b76bc74ea9",
+        "actual_sha256": "81100cd43f1101213c89bbe2759c78b685e8b80d8038a6580c1201b76bc74ea9",
+        "members": 4176,
+        "mismatches": [],
+        "success": true
+      },
+      "recommendation": "Exact source export is recoverable from immutable Git and matching corresponding-source archive after required remote revalidation."
+    },
+    {
+      "label": "worktree_cmake_build",
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release",
+      "exists": true,
+      "root_is_symlink": false,
+      "kind": "cmake_build",
+      "action": "preview_only_no_deletion",
+      "totals": {
+        "files": 288,
+        "directories": 131,
+        "symlinks": 0,
+        "special": 0,
+        "logical_file_bytes": 32410571
+      },
+      "nested_git": [],
+      "special_entries": [],
+      "proof": {
+        "cache_version": false,
+        "cache_release": true,
+        "cache_source_worktree": true,
+        "cache_resource_root": true,
+        "application_sha256": "d8db18d7444e431598e2c2a512843334e61ae052047a003f5be54d978b3df667",
+        "application_matches_historical_ctest": true,
+        "test_binaries": [
+          {
+            "name": "vision-core-tests",
+            "sha256": "bafeebcc58b5b237d544442cb579587e9b0ff4b891a4815107879e54211c84b0",
+            "matches_historical_ctest": true
+          },
+          {
+            "name": "vision-inference-delivery-tests",
+            "sha256": "31983b8c783c23cd394d8604c8da9b7e0fe327b363d6ea55cd40c64818e98fd7",
+            "matches_historical_ctest": true
+          },
+          {
+            "name": "vision-recording-tests",
+            "sha256": "3a1f27eee1facbe505b87aecf9ba4d964d362fd562219c349bcd416d4e0e5ab0",
+            "matches_historical_ctest": true
+          },
+          {
+            "name": "vision-pt-tests",
+            "sha256": "80c8df07cd13b0065c01cf5f7e74d1e387985091e6bbb68f1e460ba233dbc080",
+            "matches_historical_ctest": true
+          },
+          {
+            "name": "vision-gpu-tests",
+            "sha256": "3770c3a832da38870981391a086ec91bf3aaae44f8d636a66217a4fc994baa4b",
+            "matches_historical_ctest": true
+          },
+          {
+            "name": "vision-ui-tests",
+            "sha256": "39a716cdc6fa1613ccd5f97b2ab3e014c91ff133142701a5c74a138737db84d5",
+            "matches_historical_ctest": true
+          },
+          {
+            "name": "vision-batch-responsiveness-tests",
+            "sha256": "c4340f58fe7cc9b3dba05dd6534a71985d1dfbd073ce0cd61d19989ee79a29fd",
+            "matches_historical_ctest": true
+          },
+          {
+            "name": "vision-scope-filter-ui-tests",
+            "sha256": "d7aba33207187199b525c7e0944bb5db49eef28c2e2e87fb8d48969877f64297",
+            "matches_historical_ctest": true
+          },
+          {
+            "name": "vision-modelviewer-tests",
+            "sha256": "3fd3ca6dbbf0c9c0421372790989b2862bab310946f33d6c83b1ffc9fc3ea9fd",
+            "matches_historical_ctest": true
+          },
+          {
+            "name": "vision-conversion-ui-tests",
+            "sha256": "1fadd3e4bd8492b701c5474470253430c1ae2a2b8b50d1066d31411b02557599",
+            "matches_historical_ctest": true
+          },
+          {
+            "name": "vision-conversion-inference-tests",
+            "sha256": "5337449d2ef82e0821002dece7a35f2a3cf92632da0463199febe93cfb7db385",
+            "matches_historical_ctest": true
+          },
+          {
+            "name": "vision-evaluation-worker-tests",
+            "sha256": "b9e12fcc8c9dcbf11a3f490950427299870f2005bc113b152f2e17df3b31a11e",
+            "matches_historical_ctest": true
+          },
+          {
+            "name": "vision-evaluation-panel-tests",
+            "sha256": "9b5cf5dd3bd8fb6f00317c1ea2942b4bb56bcd9987efd071addcb37bcbe01519",
+            "matches_historical_ctest": true
+          },
+          {
+            "name": "vision-evaluation-integration-tests",
+            "sha256": "2ade09ff8329f3ce441b973312868fa65e9c0713b27da3585e2e00405b35b472",
+            "matches_historical_ctest": true
+          }
+        ],
+        "unique_logs_need_preservation": [
+          {
+            "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/.ninja_log",
+            "bytes": 20910,
+            "sha256": "74e8a5176b7305b6d0e9f616880cb9a2cbff39393c8592df62503b428f046a99",
+            "existing_evidence_copies": [],
+            "suggested_preserved_copy": "docs/releases/evidence/2.5.0/cleanup-old-231-unique-logs/build/.ninja_log",
+            "preservation_performed_by_this_audit": false,
+            "purpose": "Original Ninja build execution history, not reproducible from Git alone."
+          },
+          {
+            "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/CMakeFiles/CMakeOutput.log",
+            "bytes": 25055,
+            "sha256": "aac71e05fa9511394164d6a9701dd72ff9649615e6d5ffb2007b4dc44b14bc45",
+            "existing_evidence_copies": [],
+            "suggested_preserved_copy": "docs/releases/evidence/2.5.0/cleanup-old-231-unique-logs/build/CMakeFiles/CMakeOutput.log",
+            "preservation_performed_by_this_audit": false,
+            "purpose": "Original CMake compiler and platform probing log, not reproducible byte-for-byte from Git."
+          },
+          {
+            "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/Testing/Temporary/CTestCostData.txt",
+            "bytes": 668,
+            "sha256": "0e80bd30cdaf8caa4ec85812e66dc13d420931bf128a6b1a8ae4e7dc38920cb3",
+            "existing_evidence_copies": [],
+            "suggested_preserved_copy": "docs/releases/evidence/2.5.0/cleanup-old-231-unique-logs/build/Testing/Temporary/CTestCostData.txt",
+            "preservation_performed_by_this_audit": false,
+            "purpose": "Original local CTest elapsed-cost history."
+          },
+          {
+            "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/Testing/Temporary/LastTest.log",
+            "bytes": 894,
+            "sha256": "e40ef12e2f2fb83039d0f520ecc3bbcecf33a3ff34a0c1e559b655f59c503fac",
+            "existing_evidence_copies": [],
+            "suggested_preserved_copy": "docs/releases/evidence/2.5.0/cleanup-old-231-unique-logs/build/Testing/Temporary/LastTest.log",
+            "preservation_performed_by_this_audit": false,
+            "purpose": "Original most recent CTest run log."
+          }
+        ],
+        "unclassified_files": [],
+        "reviewed_logs": [
+          {
+            "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/.ninja_log",
+            "bytes": 20910,
+            "sha256": "74e8a5176b7305b6d0e9f616880cb9a2cbff39393c8592df62503b428f046a99",
+            "existing_evidence_copies": []
+          },
+          {
+            "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/CMakeFiles/CMakeOutput.log",
+            "bytes": 25055,
+            "sha256": "aac71e05fa9511394164d6a9701dd72ff9649615e6d5ffb2007b4dc44b14bc45",
+            "existing_evidence_copies": []
+          },
+          {
+            "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/Testing/Temporary/CTestCostData.txt",
+            "bytes": 668,
+            "sha256": "0e80bd30cdaf8caa4ec85812e66dc13d420931bf128a6b1a8ae4e7dc38920cb3",
+            "existing_evidence_copies": []
+          },
+          {
+            "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/Testing/Temporary/LastTest.log",
+            "bytes": 894,
+            "sha256": "e40ef12e2f2fb83039d0f520ecc3bbcecf33a3ff34a0c1e559b655f59c503fac",
+            "existing_evidence_copies": []
+          }
+        ],
+        "binary_and_cache_proof_success": true,
+        "generated_static_library_proof": {
+          "path": "libvision-core.a",
+          "bytes": 846706,
+          "sha256": "898bc93dae76ba251a98015598c5670820785d6e6c0be3c0a4fe891364957979",
+          "ninja_rule": "build libvision-core.a: CXX_STATIC_LIBRARY_LINKER__vision-core_Release CMakeFiles/vision-core.dir/vision-core_autogen/mocs_compilation.cpp.o CMakeFiles/vision-core.dir/src/core/evaluationworker.cpp.o CMakeFiles/vision-core.dir/src/core/evaluationmatch.cpp.o CMakeFiles/vision-core.dir/src/core/evaluationreview.cpp.o CMakeFiles/vision-core.dir/src/core/visionengine.cpp.o CMakeFiles/vision-core.dir/src/core/inferenceworker.cpp.o CMakeFiles/vision-core.dir/src/core/ptbackend.cpp.o CMakeFiles/vision-core.dir/src/core/videorecorder.cpp.o CMakeFiles/vision-core.dir/src/core/gpuruntime.cpp.o CMakeFiles/vision-core.dir/src/core/onnxcudabackend.cpp.o || vision-core_autogen vision-core_autogen_timestamp_deps /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Gui.so.6.8.3 /usr/lib/x86_64-linux-gnu/libopencv_dnn.so.4.5.4d /usr/lib/x86_64-linux-gnu/libopencv_videoio.so.4.5.4d /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6.8.3 /usr/lib/x86_64-linux-gnu/libopencv_imgcodecs.so.4.5.4d /usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.4.5.4d /usr/lib/x86_64-linux-gnu/libopencv_core.so.4.5.4d",
+          "archive_members": [
+            "mocs_compilation.cpp.o",
+            "evaluationworker.cpp.o",
+            "evaluationmatch.cpp.o",
+            "evaluationreview.cpp.o",
+            "visionengine.cpp.o",
+            "inferenceworker.cpp.o",
+            "ptbackend.cpp.o",
+            "videorecorder.cpp.o",
+            "gpuruntime.cpp.o",
+            "onnxcudabackend.cpp.o"
+          ],
+          "purpose": "CMake-generated vision-core static library from frozen application source; rebuildable output, not user data.",
+          "member_byte_checks": [
+            {
+              "archive_member": "mocs_compilation.cpp.o",
+              "object_path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/CMakeFiles/vision-core.dir/vision-core_autogen/mocs_compilation.cpp.o",
+              "bytes": 72496,
+              "sha256": "2904da1fc3a8cdeaba3d75ba152498c67c12320595bd4375bf92ff3612bfb09f",
+              "archive_bytes_match_generated_object": true
+            },
+            {
+              "archive_member": "evaluationworker.cpp.o",
+              "object_path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/CMakeFiles/vision-core.dir/src/core/evaluationworker.cpp.o",
+              "bytes": 159792,
+              "sha256": "b758f84f6c3ceff7f52e5cc706db39239d28c950a761e3db0597b236a1a3ec01",
+              "archive_bytes_match_generated_object": true
+            },
+            {
+              "archive_member": "evaluationmatch.cpp.o",
+              "object_path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/CMakeFiles/vision-core.dir/src/core/evaluationmatch.cpp.o",
+              "bytes": 20784,
+              "sha256": "517efdebe6c1138507681c5dc17a37ac4dd0da2644f5786f43cefc0736d8ea09",
+              "archive_bytes_match_generated_object": true
+            },
+            {
+              "archive_member": "evaluationreview.cpp.o",
+              "object_path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/CMakeFiles/vision-core.dir/src/core/evaluationreview.cpp.o",
+              "bytes": 63968,
+              "sha256": "ee3dae062dff275baeff6b79a7f72b08fa26c684895c9ee7e1d3277a843e0f05",
+              "archive_bytes_match_generated_object": true
+            },
+            {
+              "archive_member": "visionengine.cpp.o",
+              "object_path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/CMakeFiles/vision-core.dir/src/core/visionengine.cpp.o",
+              "bytes": 153704,
+              "sha256": "4414f0348638a9af2d46e5e1be404f7debe6886359a859fa9dfd6193b26823d4",
+              "archive_bytes_match_generated_object": true
+            },
+            {
+              "archive_member": "inferenceworker.cpp.o",
+              "object_path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/CMakeFiles/vision-core.dir/src/core/inferenceworker.cpp.o",
+              "bytes": 54928,
+              "sha256": "65f9d9900b974f65a2a20ca33a6146dd66e2788ee6824a4d42bf9c6c5bad125b",
+              "archive_bytes_match_generated_object": true
+            },
+            {
+              "archive_member": "ptbackend.cpp.o",
+              "object_path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/CMakeFiles/vision-core.dir/src/core/ptbackend.cpp.o",
+              "bytes": 112664,
+              "sha256": "3d4b01d88620413715fd430564f2fa518f18fbb90cba30e5bbf5b18d194f1efc",
+              "archive_bytes_match_generated_object": true
+            },
+            {
+              "archive_member": "videorecorder.cpp.o",
+              "object_path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/CMakeFiles/vision-core.dir/src/core/videorecorder.cpp.o",
+              "bytes": 80328,
+              "sha256": "22325117d6b4c7b3b07f089939087d9be0880d292f41d51820712e4530061171",
+              "archive_bytes_match_generated_object": true
+            },
+            {
+              "archive_member": "gpuruntime.cpp.o",
+              "object_path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/CMakeFiles/vision-core.dir/src/core/gpuruntime.cpp.o",
+              "bytes": 33264,
+              "sha256": "47825d3af66ee0e3a187b3dece531f30066cf37ab6a559b6d8bcae5565ea029e",
+              "archive_bytes_match_generated_object": true
+            },
+            {
+              "archive_member": "onnxcudabackend.cpp.o",
+              "object_path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/CMakeFiles/vision-core.dir/src/core/onnxcudabackend.cpp.o",
+              "bytes": 72896,
+              "sha256": "fb124b3ba82bea8c7bf3e25db35c937f821973c2e97bce8e3ad23715e9313e5c",
+              "archive_bytes_match_generated_object": true
+            }
+          ],
+          "all_ninja_object_members_match_exactly": true,
+          "ninja_rule_sha256": "408b4be0d15075f959daa5a9c04a4504d09d66202f85f78472e0fdf7e7882009"
+        },
+        "cache_version_initial_check": {
+          "pattern": "(?m)^VisionStudio_VERSION[^=]*=2\\.3\\.1$",
+          "matched": false,
+          "reason": "The initial audit queried a non-cached project variable. This CMake cache stores the project version under CMAKE_PROJECT_VERSION, so the false result was an audit-key mismatch, not a historical application version mismatch."
+        },
+        "cache_version_actual_check": {
+          "variable": "CMAKE_PROJECT_VERSION",
+          "raw_cache_line": "CMAKE_PROJECT_VERSION:STATIC=2.3.1",
+          "expected_version": "2.3.1",
+          "matches_expected": true,
+          "cache_file_sha256": "b5b7cbfa4bd6be20d20a8a7d10fce25cfa22f4c55a8be44c66eb7fae28d48ff6"
+        }
+      },
+      "recommendation": "Generated build can be recreated; preserve listed unique logs and classify all unknown files before exact deletion after remote verification."
+    },
+    {
+      "label": "worktree_debian_staging",
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.3.1-1",
+      "exists": true,
+      "root_is_symlink": false,
+      "kind": "debian_staging",
+      "action": "preview_only_no_deletion",
+      "totals": {
+        "files": 36725,
+        "directories": 7911,
+        "symlinks": 29,
+        "special": 0,
+        "logical_file_bytes": 1690235732
+      },
+      "nested_git": [],
+      "special_entries": [],
+      "proof": {
+        "deb_sha256": "1e959057337832f2dac8d950d738426ad426ea124aee7cefc925286792d19758",
+        "deb_matches_historical_final_asset": true,
+        "members_verified": 44664,
+        "mismatches": [],
+        "missing": [],
+        "extra": [],
+        "generated_control_parent_allowed": "DEBIAN",
+        "control_version": "2.3.1-1",
+        "success": true
+      },
+      "recommendation": "Exact staging copy is recoverable by extracting the immutable matching DEB after remote revalidation."
+    },
+    {
+      "label": "worktree_immutable_release_copy",
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.1",
+      "exists": true,
+      "root_is_symlink": false,
+      "kind": "immutable_release_copy",
+      "action": "preview_only_no_deletion",
+      "totals": {
+        "files": 66,
+        "directories": 1,
+        "symlinks": 0,
+        "special": 0,
+        "logical_file_bytes": 2085284721
+      },
+      "nested_git": [],
+      "special_entries": [],
+      "assets": [
+        {
+          "name": "vision-studio_2.3.1-1_amd64.deb",
+          "bytes": 387141452,
+          "sha256": "1e959057337832f2dac8d950d738426ad426ea124aee7cefc925286792d19758",
+          "matches_historical_final_asset": true
+        },
+        {
+          "name": "vision-studio-2.3.1-complete-source.tar.xz",
+          "bytes": 847507304,
+          "sha256": "bcf9e2dcfb27e96db3c411dfa71da3e7dc248ed81ed1adb0c554ee08ba7d29e6",
+          "matches_historical_final_asset": true
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 207,
+          "sha256": "f68adff3fd49fbad4bd73c1562a8b28ceaa904721c87a67f037fa56ac2a1e24e",
+          "matches_historical_final_asset": true
+        }
+      ],
+      "unarchived_metadata_need_preservation": [
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.1/vision-studio_2.3.1-1_amd64.deb.sha256",
+          "bytes": 98,
+          "sha256": "7bbdb66c385e698db55e011a672873cc89652127c2fbd878f896b029b7e4d1cf"
+        },
+        {
+          "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.1/final-local-state.json",
+          "bytes": 348,
+          "sha256": "7893d52a791372b5bc9dd4d3227acba5af6e7aaf4fa05feb9c0d427668a2e667"
+        }
+      ],
+      "recommendation": "Use official release-tool prune only after new/old remote verification and preserving any unarchived metadata; shared upstream hardlinks must not be counted as freed while retained versions reference them."
+    },
+    {
+      "label": "primary_frozen_source_export",
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/v2.3.1/clean-source",
+      "exists": false,
+      "root_is_symlink": false,
+      "kind": "frozen_source_export",
+      "action": "preview_only_no_deletion",
+      "totals": {
+        "files": 0,
+        "directories": 0,
+        "symlinks": 0,
+        "special": 0,
+        "logical_file_bytes": 0
+      },
+      "nested_git": [],
+      "special_entries": []
+    },
+    {
+      "label": "primary_cmake_build",
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/build/2.3.1-release",
+      "exists": false,
+      "root_is_symlink": false,
+      "kind": "cmake_build",
+      "action": "preview_only_no_deletion",
+      "totals": {
+        "files": 0,
+        "directories": 0,
+        "symlinks": 0,
+        "special": 0,
+        "logical_file_bytes": 0
+      },
+      "nested_git": [],
+      "special_entries": []
+    },
+    {
+      "label": "primary_debian_staging",
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/deb-stage/2.3.1-1",
+      "exists": false,
+      "root_is_symlink": false,
+      "kind": "debian_staging",
+      "action": "preview_only_no_deletion",
+      "totals": {
+        "files": 0,
+        "directories": 0,
+        "symlinks": 0,
+        "special": 0,
+        "logical_file_bytes": 0
+      },
+      "nested_git": [],
+      "special_entries": []
+    },
+    {
+      "label": "primary_immutable_release_copy",
+      "path": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.1",
+      "exists": true,
+      "root_is_symlink": false,
+      "kind": "immutable_release_copy",
+      "action": "preview_only_no_deletion",
+      "totals": {
+        "files": 66,
+        "directories": 1,
+        "symlinks": 0,
+        "special": 0,
+        "logical_file_bytes": 2085284721
+      },
+      "nested_git": [],
+      "special_entries": [],
+      "assets": [
+        {
+          "name": "vision-studio_2.3.1-1_amd64.deb",
+          "bytes": 387141452,
+          "sha256": "1e959057337832f2dac8d950d738426ad426ea124aee7cefc925286792d19758",
+          "matches_historical_final_asset": true
+        },
+        {
+          "name": "vision-studio-2.3.1-complete-source.tar.xz",
+          "bytes": 847507304,
+          "sha256": "bcf9e2dcfb27e96db3c411dfa71da3e7dc248ed81ed1adb0c554ee08ba7d29e6",
+          "matches_historical_final_asset": true
+        },
+        {
+          "name": "SHA256SUMS",
+          "bytes": 207,
+          "sha256": "f68adff3fd49fbad4bd73c1562a8b28ceaa904721c87a67f037fa56ac2a1e24e",
+          "matches_historical_final_asset": true
+        }
+      ],
+      "unarchived_metadata_need_preservation": [
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.1/vision-studio_2.3.1-1_amd64.deb.sha256",
+          "bytes": 98,
+          "sha256": "7bbdb66c385e698db55e011a672873cc89652127c2fbd878f896b029b7e4d1cf"
+        },
+        {
+          "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.1/final-local-state.json",
+          "bytes": 348,
+          "sha256": "7893d52a791372b5bc9dd4d3227acba5af6e7aaf4fa05feb9c0d427668a2e667"
+        }
+      ],
+      "recommendation": "Use official release-tool prune only after new/old remote verification and preserving any unarchived metadata; shared upstream hardlinks must not be counted as freed while retained versions reference them."
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "required_retained_versions_after_remote_verification": [
+    "2.5.0",
+    "2.4.0"
+  ],
+  "required_before_any_deletion": [
+    "Publish and independently verify final v2.5.0 tag, public release, and exact three asset sizes/SHA256.",
+    "Freshly remotely reverify immutable v2.3.1 tag and all three core assets.",
+    "Use scripts/github_release.py prune preview and execute for release roots; do not broad-delete directories.",
+    "Preserve any unique build/log/metadata listed here, then recheck all exact members and hashes immediately before cleanup.",
+    "Refuse deletion if paths change, gain extra members, become links, or contain active processes; protect every noncandidate QA/private/user path."
+  ],
+  "reference_previous_cleanup": {
+    "script": "docs/releases/evidence/2.4.0/cleanup_verified_copies.py",
+    "script_sha256": "aa50e864018f64e9bd74cbeb3a7423c3e9ac266650f980b7fde8249b50b0c0e5",
+    "preview": "docs/releases/evidence/2.4.0/cleanup-old-230-preview.json",
+    "preview_sha256": "2398e295094dd834030695f43dbe15ccc962e2f8a7c15add6ef9bff5f5d3e961"
+  },
+  "protected_paths": [
+    "/home/misaka/.codex/worktrees/ef0b/yolo",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/.git",
+    "/home/misaka/文档/ChatGPT/yolo",
+    "/home/misaka/文档/ChatGPT/yolo/.git",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1 EXCEPT exact clean-source child",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.4.0",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa",
+    "/home/misaka/文档/ChatGPT/yolo/output EXCEPT separately verified release/2.3.1",
+    "/home/misaka/Qt",
+    "/opt/VisionStudio",
+    "/opt/VisionStudio/runtime",
+    "/home/misaka/.local/share/vision-studio",
+    "/home/misaka/文档/ChatGPT/yolo/build/qt-imageformats-prefix",
+    "/home/misaka/文档/ChatGPT/yolo/build/release-runtime",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/build/release-runtime",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.4.0",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.4.0-1",
+    "/home/misaka/文档/ChatGPT/yolo/output/releases/2.4.0",
+    "/home/misaka/文档/ChatGPT/yolo/output/build/2.4.0-release",
+    "/home/misaka/文档/ChatGPT/yolo/output/deb-stage/2.4.0-1",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.5.0-1",
+    "/home/misaka/文档/ChatGPT/yolo/output/releases/2.5.0",
+    "/home/misaka/文档/ChatGPT/yolo/output/build/2.5.0-release",
+    "/home/misaka/文档/ChatGPT/yolo/output/deb-stage/2.5.0-1"
+  ],
+  "historical_evidence": {
+    "source-freeze.json": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.3.1/source-freeze.json",
+      "sha256": "5a5c00a3081f12afb944a906dcf7f094f405be6844560659db33439b0b129e68"
+    },
+    "source-bundle-qa.json": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.3.1/source-bundle-qa.json",
+      "sha256": "5c2e81c31e4ee6b2f02caca172a1b964b39f46cc62b472d6f3135ac852fe6a74"
+    },
+    "ctest-qa.json": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.3.1/ctest-qa.json",
+      "sha256": "b0e6f35110670ad28c001df6f7a2c9dea13a894c2abae1dc60bced9998640748"
+    },
+    "final-assets.json": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.3.1/final-assets.json",
+      "sha256": "01eb0b1cf17409300e607bc6752be4b316f0919e69f49468db067fe65cec9108"
+    }
+  },
+  "git_tracked_output_paths": [
+    "output/.gitkeep"
+  ],
+  "active_process_references": [],
+  "unreadable_proc_links": 0,
+  "version_parent_preserved_children": [
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/cleanup-old-220-final-audit.json",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/cleanup-old-220-preview.json",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/cleanup-old-220-stage-members.jsonl.gz",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/local-install",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/native-ui",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/production-inputs-before.json",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/qa-full"
+  ],
+  "primary_shared_qt_imageformats_exists": true,
+  "local_proof_summary": {
+    "source_matches_git_and_complete_source_chain": true,
+    "staging_exactly_matches_immutable_deb": true,
+    "build_binaries_match_historical_qa": true,
+    "build_unique_logs_count": 4,
+    "build_unclassified_files_count": 0,
+    "active_old_processes": 0,
+    "build_cache_initial_wrong_key_matched": false,
+    "build_cache_actual_project_version": "2.3.1",
+    "static_library_members_match_generated_objects": true
+  },
+  "elapsed_seconds": 28.375,
+  "space_estimate": {
+    "logical_file_bytes_in_all_candidates": 6017392240,
+    "distinct_inode_allocated_bytes": 4049809408,
+    "estimated_allocated_bytes_if_all_candidate_links_removed": 3255513088,
+    "shared_inode_count_with_links_outside_candidates": 19,
+    "note": "Read-only estimate excludes directory metadata and does not promise reclaimed bytes. Shared upstream hardlinks still retained by 2.4.0/2.5.0 are not counted as freed."
+  },
+  "recommendation_summary": [
+    "Source export is byte-equal to immutable Git archive plus the explicitly hashed runtime-info.json and matching application corresponding-source archive.",
+    "All staging payload and DEBIAN control members exactly match the historical final 2.3.1-1 DEB; no extra/mismatched members found.",
+    "Build application and 14 native tests match historical CTest SHA256, production CMake configuration matches, and every file has generated-build or preserved-log purpose.",
+    "Four original build logs and two metadata filenames per release copy lack matching old-version evidence copies; preserve them before deletion or official prune.",
+    "Primary has no exact old source/build/stage directories; protect its shared QtImageFormats SDK, release-runtime and all unrelated output.",
+    "This audit performs no cleanup and authorizes no immediate deletion; fresh new/old remote verification and all preservation/rechecks remain mandatory."
+  ]
+}
