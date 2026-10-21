@@ -6,6 +6,8 @@
 #include "core/visionengine.h"
 #include "icons.h"
 #include "imagecanvas.h"
+#include "lazyimagequeue.h"
+#include "asyncimagepreview.h"
 #include "modelviewer.h"
 #include "modelconversionpage.h"
 #include <QAction>
@@ -186,12 +188,7 @@ QFrame *card(const char *name = "card")
     w->setObjectName(name);
     return w;
 }
-QImage readImage(const QString &path)
-{
-    QImageReader reader(path);
-    reader.setAutoTransform(true);
-    return reader.read();
-}
+
 QLabel *section(const QString &title, const QString &number)
 {
     auto *l = text(number + "   " + title, "sectionTitle");
@@ -525,7 +522,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
                  if (!busy_)
                      importModel();
              });
-    shortcut(QKeySequence("Ctrl+R"), [this] { startInference(); });
+    shortcut(QKeySequence("Ctrl+R"), [this] { startWorkbenchTask(); });
     shortcut(QKeySequence("Ctrl+E"),
              [this]
              {
@@ -663,6 +660,7 @@ QWidget *MainWindow::buildWorkbench()
     all->setSpacing(12);
     auto *metrics = new QHBoxLayout;
     metrics->setSpacing(12);
+    metrics->setContentsMargins(0, 0, 0, 0);
     auto metric = [&](const QString &label, const QString &symbol, QLabel *&value, const QString &unit)
     {
         auto *f = card("metricCard");
@@ -688,7 +686,10 @@ QWidget *MainWindow::buildWorkbench()
     metric("模型推理", "cpu", latencyMetric_, "ms");
     metric("识别类别", "model", classMetric_, "classes");
     metric("输入分辨率", "image", sizeMetric_, "px");
-    all->addLayout(metrics);
+    auto *previewMetrics = new QWidget;
+    previewMetrics->setObjectName("previewMetrics");
+    previewMetrics->setLayout(metrics);
+    all->addWidget(previewMetrics);
     auto *inputCommands = card("commandBar");
     auto *commandLayout = new QVBoxLayout(inputCommands);
     commandLayout->setContentsMargins(12, 7, 12, 7);
@@ -698,24 +699,11 @@ QWidget *MainWindow::buildWorkbench()
     evaluation_ = new EvaluationPanel;
     auto *datasetButton = button("YOLO 数据集", "folder");
     datasetButton->setObjectName("openYoloDatasetButton");
-    datasetButton->setToolTip("选择标准 YOLO 数据集文件夹 · Ctrl+O");
+    datasetButton->setToolTip("选择标准 YOLO 数据集文件夹或 YAML 配置 · Ctrl+O");
+    evaluation_->setModeControlVisible(false);
     commands->addWidget(datasetButton);
     lockedControls_.append(datasetButton);
     connect(datasetButton, &QPushButton::clicked, evaluation_, &EvaluationPanel::chooseDataset);
-    auto *datasetOptions = new QToolButton;
-    datasetOptions->setObjectName("openYoloDatasetOptionsButton");
-    datasetOptions->setAccessibleName("数据集导入方式");
-    datasetOptions->setArrowType(Qt::DownArrow);
-    datasetOptions->setPopupMode(QToolButton::InstantPopup);
-    datasetOptions->setFixedSize(26, 34);
-    datasetOptions->setStyleSheet("QToolButton { background:#303030; color:#E6E6E6; border:1px solid #454545; border-radius:4px; } QToolButton:hover { background:#3B3B3B; } QToolButton::menu-indicator { image:none; }");
-    auto *datasetMenu = new QMenu(datasetOptions);
-    auto *yamlAction = datasetMenu->addAction("选择 YAML 配置文件…");
-    yamlAction->setObjectName("openYoloDatasetYamlAction");
-    connect(yamlAction, &QAction::triggered, evaluation_, &EvaluationPanel::chooseDatasetFile);
-    datasetOptions->setMenu(datasetMenu);
-    commands->addWidget(datasetOptions);
-    lockedControls_.append(datasetOptions);
     auto *video = button("视频", "video");
     video->setObjectName("openVideoButton");
     auto *camera = button("摄像头", "camera");
@@ -1004,7 +992,7 @@ QWidget *MainWindow::buildWorkbench()
     runButton_->setObjectName("startDetectionButton");
     runButton_->setMinimumHeight(44);
     cl->addWidget(runButton_);
-    connect(runButton_, &QPushButton::clicked, this, &MainWindow::startInference);
+    connect(runButton_, &QPushButton::clicked, this, &MainWindow::startWorkbenchTask);
     stopButton_ = button("停止运行", "stop", "danger");
     stopButton_->hide();
     cl->addWidget(stopButton_);
@@ -1073,12 +1061,7 @@ QWidget *MainWindow::buildWorkbench()
     zoomLabel_ = text("100%", "tiny");
     cb->addWidget(zoomLabel_);
     cf->addLayout(cb);
-    workbenchTabs_ = new QTabWidget;
-    workbenchTabs_->setObjectName("workbenchAnalysisTabs");
-    workbenchTabs_->addTab(canvasFrame, "图像预览 / 标注对照");
-    workbenchTabs_->addTab(evaluation_, "评估与阈值");
-    workbenchTabs_->setTabEnabled(1, false);
-    ml->addWidget(workbenchTabs_, 1);
+    ml->addWidget(canvasFrame, 1);
     connect(showGroundTruth_, &QCheckBox::toggled, canvas_, &ImageCanvas::setGroundTruthVisible);
     connect(fit, &QPushButton::clicked, canvas_, &ImageCanvas::fitToView);
     connect(actual, &QPushButton::clicked, canvas_, &ImageCanvas::actualSize);
@@ -1123,7 +1106,7 @@ QWidget *MainWindow::buildWorkbench()
                 updateSourceUi();
             });
     ql->addLayout(qh);
-    queue_ = new QListWidget;
+    queue_ = new LazyImageQueue;
     queue_->setObjectName("inputQueue");
     queue_->setFlow(QListView::LeftToRight);
     queue_->setViewMode(QListView::IconMode);
@@ -1229,7 +1212,61 @@ QWidget *MainWindow::buildWorkbench()
     columns->setStretchFactor(1, 1);
     columns->setStretchFactor(2, 0);
     columns->setSizes({280, 660, 270});
-    all->addWidget(columns, 1);
+    auto *previewPage = new QWidget;
+    previewPage->setObjectName("imagePreviewPage");
+    auto *previewLayout = new QVBoxLayout(previewPage);
+    previewLayout->setContentsMargins(0, 0, 0, 0);
+    previewLayout->addWidget(columns);
+    auto *evaluationPage = new QWidget;
+    evaluationPage->setObjectName("evaluationWorkspacePage");
+    auto *evaluationLayout = new QVBoxLayout(evaluationPage);
+    evaluationLayout->setContentsMargins(0, 0, 0, 0);
+    evaluationLayout->setSpacing(8);
+    auto *taskCard = card("evaluationTaskBar");
+    auto *taskLayout = new QVBoxLayout(taskCard);
+    taskLayout->setContentsMargins(14, 10, 14, 10);
+    taskLayout->setSpacing(5);
+    auto *taskActions = new QHBoxLayout;
+    evaluationTaskSummary_ = text("导入带标注的 YOLO 数据集，开始模型评估", "muted");
+    evaluationTaskSummary_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    taskActions->addWidget(evaluationTaskSummary_, 1);
+    evaluationRange_ = new QComboBox;
+    evaluationRange_->setObjectName("evaluationRangeCombo");
+    for (int i = 0; i < detectionRange_->count(); ++i) evaluationRange_->addItem(detectionRange_->itemText(i));
+    taskActions->addWidget(evaluationRange_);
+    lockedControls_.append(evaluationRange_);
+    connect(evaluationRange_, &QComboBox::currentIndexChanged, detectionRange_, &QComboBox::setCurrentIndex);
+    connect(detectionRange_, &QComboBox::currentIndexChanged, evaluationRange_, &QComboBox::setCurrentIndex);
+    auto *configure = button("推理配置", "settings");
+    configure->setObjectName("evaluationConfigureButton");
+    taskActions->addWidget(configure);
+    connect(configure, &QPushButton::clicked, this, [this] { workbenchTabs_->setCurrentIndex(0); });
+    auto *review = button("查看错例", "eye");
+    review->setObjectName("evaluationReviewButton");
+    taskActions->addWidget(review);
+    connect(review, &QPushButton::clicked, this, [this] { workbenchTabs_->setCurrentIndex(0); });
+    evaluationStartButton_ = button("开始评估", "play", "primary");
+    evaluationStartButton_->setObjectName("evaluationStartButton");
+    taskActions->addWidget(evaluationStartButton_);
+    connect(evaluationStartButton_, &QPushButton::clicked, this, &MainWindow::startWorkbenchTask);
+    evaluationStopButton_ = button("停止评估", "stop", "danger");
+    evaluationStopButton_->setObjectName("evaluationStopButton");
+    evaluationStopButton_->hide();
+    taskActions->addWidget(evaluationStopButton_);
+    connect(evaluationStopButton_, &QPushButton::clicked, this, &MainWindow::stopInference);
+    taskLayout->addLayout(taskActions);
+    evaluationRangeHint_ = text("请先导入 YOLO 数据集；评估需要有效标注与类别映射。", "tiny");
+    evaluationRangeHint_->setObjectName("evaluationRangeHint");
+    evaluationRangeHint_->setWordWrap(true);
+    taskLayout->addWidget(evaluationRangeHint_);
+    evaluationLayout->addWidget(taskCard);
+    evaluationLayout->addWidget(evaluation_, 1);
+    workbenchTabs_ = new QTabWidget;
+    workbenchTabs_->setObjectName("workbenchAnalysisTabs");
+    workbenchTabs_->addTab(previewPage, "图像预览");
+    workbenchTabs_->addTab(evaluationPage, "评估与阈值");
+    all->addWidget(workbenchTabs_, 1);
+    connect(workbenchTabs_, &QTabWidget::currentChanged, this, [this](int) { updateSourceUi(); });
     return page;
 }
 
@@ -1625,6 +1662,8 @@ QWidget *MainWindow::buildRecordings()
 
 void MainWindow::clearImageResults()
 {
+    ++imagePreviewGeneration_;
+    if (imagePreviewLoader_) imagePreviewLoader_->cancel();
     ++imageResultGeneration_;
     imageResults_.clear();
     imageResultDirectory_.reset();
@@ -1728,71 +1767,69 @@ void MainWindow::saveImageResultInBackground(const vision::InferenceResult &resu
 
 void MainWindow::selectQueueImage(int row)
 {
-    if (busy_ || sourceKind_ != vision::SourceKind::Images || row < 0 || row >= files_.size())
+    if (busy_ || queuePopulating_ || sourceKind_ != vision::SourceKind::Images || row < 0 || row >= files_.size())
         return;
     updateRangeUi();
-    if (evaluationReviewActive_) { reviewEvaluationImage(row); return; }
-    if (!imageResults_.isEmpty() && imageConfigFingerprint_ != inferenceFingerprint())
-        clearImageResults();
+    if (evaluationReviewActive_) {
+        ++imagePreviewGeneration_;
+        if (imagePreviewLoader_) imagePreviewLoader_->cancel();
+        reviewEvaluationImage(row); return;
+    }
+    if (!imageResults_.isEmpty() && imageConfigFingerprint_ != inferenceFingerprint()) clearImageResults();
     const QString source = files_.at(row);
     auto cached = imageResults_.constFind(source);
     const QString currentSourceIdentity = fileIdentity(source);
-    // A deleted original can still be reviewed from its accepted snapshot. An
-    // externally replaced original must not reuse the previous file's results.
-    if (cached != imageResults_.cend() && !currentSourceIdentity.isEmpty() &&
-        currentSourceIdentity != cached->sourceIdentity) {
-        imageResults_.remove(source);
-        queue_->item(row)->setForeground(QBrush());
-        cached = imageResults_.cend();
+    if (cached != imageResults_.cend() && !currentSourceIdentity.isEmpty() && currentSourceIdentity != cached->sourceIdentity) {
+        imageResults_.remove(source); queue_->item(row)->setForeground(QBrush()); cached = imageResults_.cend();
     }
-    bool cacheUnreadable = false;
-    if (cached != imageResults_.cend())
-    {
-        auto result = cached->result;
-        if (!cached->snapshotPath.isEmpty())
-        {
-            result.originalImage = readImage(cached->snapshotPath);
-            result.image = vision::inputPreviewImage(result.originalImage, cached->config.colorMode);
-            if (!result.sourceFrameSize.isEmpty() && result.originalImage.size() != result.sourceFrameSize)
-                result.image = {};
-        }
-        if (!result.image.isNull())
-        {
-            lastConfig_ = cached->config;
-            displayResult(result);
-            return;
-        }
-        cacheUnreadable = true;
-        imageResults_.remove(source);
-        queue_->item(row)->setForeground(QBrush());
+    if (cached != imageResults_.cend() && !cached->result.image.isNull()) {
+        ++imagePreviewGeneration_; if (imagePreviewLoader_) imagePreviewLoader_->cancel();
+        lastConfig_ = cached->config; displayResult(cached->result); return;
     }
-    vision::InferenceResult preview;
-    preview.source = source;
-    preview.originalImage = readImage(source);
-    preview.image = vision::inputPreviewImage(preview.originalImage, currentConfig().colorMode);
-    lastResult_ = {};
-    if (preview.image.isNull())
-        canvas_->clear();
-    else
-        canvas_->setResult(preview);
-    attachGroundTruth(preview);
-    canvas_->setResult(preview);
+    if (cached != imageResults_.cend() && lastResult_.source == source && !lastResult_.image.isNull() &&
+        canvas_->result().source == source && !canvas_->result().image.isNull()) return;
+    if (!imagePreviewLoader_) {
+        imagePreviewLoader_ = new AsyncImagePreview(this);
+        connect(imagePreviewLoader_, &AsyncImagePreview::ready, this,
+            [this](quint64 generation, const QString &, const QImage &original, const QImage &image, bool primaryUsed, const QString &) {
+            if (generation != imagePreviewGeneration_ || busy_ || closing_ || evaluationReviewActive_ ||
+                sourceKind_ != vision::SourceKind::Images || queue_->currentRow() < 0 || queue_->currentRow() >= files_.size()) return;
+            const QString source = files_.at(queue_->currentRow());
+            auto cached = imageResults_.constFind(source);
+            const bool hadCache = cached != imageResults_.cend();
+            const QString sourceIdentity = fileIdentity(source);
+            if (hadCache && !sourceIdentity.isEmpty() && sourceIdentity != cached->sourceIdentity) {
+                imageResults_.remove(source); queue_->item(queue_->currentRow())->setForeground(QBrush());
+                selectQueueImage(queue_->currentRow()); return;
+            }
+            if (hadCache && primaryUsed && !image.isNull() &&
+                (cached->result.sourceFrameSize.isEmpty() || original.size() == cached->result.sourceFrameSize)) {
+                auto result = cached->result; result.originalImage = original; result.image = image;
+                lastConfig_ = cached->config; displayResult(result); return;
+            }
+            if (hadCache) {
+                imageResults_.remove(source); queue_->item(queue_->currentRow())->setForeground(QBrush());
+                showNotice("此图片的临时结果缓存无法读取，请重新检测。", true);
+                if (primaryUsed) { selectQueueImage(queue_->currentRow()); return; }
+            }
+            vision::InferenceResult preview;
+            preview.source = source; preview.task = currentConfig().task;
+            preview.originalImage = original; preview.image = image;
+            attachGroundTruth(preview); canvas_->setResult(preview);
+            sizeMetric_->setText(image.isNull() ? "—" : QString("%1 × %2").arg(image.width()).arg(image.height()));
+            resultInfo_->setText(image.isNull() ? "无法读取此图片，请检查文件是否存在。" : "图片已就绪，点击开始检测。");
+        });
+    }
+    const quint64 generation = ++imagePreviewGeneration_;
+    lastResult_ = {}; canvas_->clear();
     canvasTitle_->setText(QFileInfo(source).fileName());
-    sizeMetric_->setText(preview.image.isNull()
-                             ? "—"
-                             : QString("%1 × %2").arg(preview.image.width()).arg(preview.image.height()));
-    sizeMetric_->setToolTip("预览与导出图像尺寸");
-    countMetric_->setText("—");
-    latencyMetric_->setText("—");
-    classMetric_->setText("—");
-    predictionTable_->setRowCount(0);
-    emptyResults_->show();
-    emptyResults_->setText("此图片尚无检测结果。");
-    resultInfo_->setText(preview.image.isNull() ? "无法读取此图片，请检查文件是否存在。"
-                                               : "图片已就绪，点击开始检测。");
-    exportButton_->setEnabled(false);
-    if (cacheUnreadable)
-        showNotice("此图片的临时结果缓存无法读取，请重新检测。", true);
+    sizeMetric_->setText("—"); sizeMetric_->setToolTip("预览与导出图像尺寸");
+    countMetric_->setText("—"); latencyMetric_->setText("—"); classMetric_->setText("—");
+    predictionTable_->setRowCount(0); emptyResults_->show(); emptyResults_->setText("此图片尚无检测结果。");
+    resultInfo_->setText("正在载入图片…"); exportButton_->setEnabled(false);
+    const bool snapshot = cached != imageResults_.cend() && !cached->snapshotPath.isEmpty();
+    imagePreviewLoader_->request(generation, snapshot ? cached->snapshotPath : source,
+        snapshot ? source : QString(), cached != imageResults_.cend() ? cached->config.colorMode : currentConfig().colorMode);
 }
 
 void MainWindow::updateInputPreview()
@@ -1806,13 +1843,8 @@ void MainWindow::updateInputPreview()
     for (int index = 0; index < queue_->count(); ++index) queue_->item(index)->setHidden(false);
     clearImageResults();
     const auto mode = currentConfig().colorMode;
-    for (int index = 0; index < queue_->count(); ++index)
-    {
-        auto *item = queue_->item(index);
-        const QImage thumbnail = item->data(Qt::UserRole + 1).value<QImage>();
-        if (!thumbnail.isNull())
-            item->setIcon(QIcon(QPixmap::fromImage(vision::inputPreviewImage(thumbnail, mode))));
-    }
+    static_cast<LazyImageQueue *>(queue_)->setColorMode(mode);
+    if (sourceKind_ == vision::SourceKind::Images) { selectQueueImage(queue_->currentRow()); return; }
     const auto previous = canvas_->result();
     if (previous.image.isNull())
         return;
@@ -2257,6 +2289,8 @@ void MainWindow::updateSourceUi()
     // and the image-only recording placeholder so the canvas fits a small window.
     for (QLabel *value : {countMetric_, latencyMetric_, classMetric_, sizeMetric_})
         value->parentWidget()->setVisible(!datasetContext && (streaming || !files_.isEmpty()));
+    countMetric_->parentWidget()->parentWidget()->setVisible(!datasetContext && (streaming || !files_.isEmpty()) &&
+        (!workbenchTabs_ || workbenchTabs_->currentIndex() == 0));
     if (evaluation_) evaluation_->controlsWidget()->setVisible(datasetContext || !evaluation_->datasetYaml().isEmpty());
     sourceLabel_->setVisible(!datasetContext);
     recordButton_->setVisible(streaming);
@@ -2395,12 +2429,36 @@ void MainWindow::updateStartEligibility()
     if (!runButton_ || !classFilter_) return;
     QString rangeError;
     if (sourceKind_ == vision::SourceKind::Images) selectedImageRange(&rangeError);
-    runButton_->setEnabled(!busy_ && !gpuSetupProcess_ && !resultIoPending_ && !modelPath_.isEmpty() &&
-                           rangeError.isEmpty() && (evaluation_ && evaluation_->evaluationMode()
-                               ? evaluation_->canEvaluate() && !modelInspectionPending_
-                               : classFilterError_.isEmpty()) &&
-                           (!modelConversion_ || !modelConversion_->isBusy()));
-    runButton_->setText(evaluation_ && evaluation_->evaluationMode() ? "开始评估" : "开始检测");
+    const bool ready = !busy_ && !queuePopulating_ && !gpuSetupProcess_ && !resultIoPending_ &&
+        !modelPath_.isEmpty() && rangeError.isEmpty() && (!modelConversion_ || !modelConversion_->isBusy());
+    const bool canEvaluate = evaluation_ && sourceKind_ == vision::SourceKind::Images &&
+        !datasetManifest_.isEmpty() && evaluation_->canEvaluate() && !modelInspectionPending_;
+    const bool evaluationPage = workbenchTabs_ && workbenchTabs_->currentIndex() == 1;
+    runButton_->setEnabled(ready && (evaluationPage ? canEvaluate : classFilterError_.isEmpty()));
+    runButton_->setText("开始检测");
+    if (evaluationStartButton_) {
+        evaluationStartButton_->setEnabled(ready && canEvaluate);
+        evaluationStartButton_->setVisible(!busy_);
+        evaluationStopButton_->setVisible(busy_);
+        evaluationStopButton_->setEnabled(busy_ && stopButton_->isEnabled());
+        evaluationRange_->setEnabled(!busy_ && sourceKind_ == vision::SourceKind::Images && !files_.isEmpty());
+        evaluationTaskSummary_->setText(QString("%1 · %2 px · %3 张图片")
+            .arg(modelDisplayName(modelPath_)).arg(inputSize_->value()).arg(files_.size()));
+        evaluationTaskSummary_->setToolTip(modelPath_);
+        evaluationRangeHint_->setText(sourceKind_ != vision::SourceKind::Images || datasetManifest_.isEmpty()
+            ? "评估需要带标注的 YOLO 数据集；视频与摄像头请在图像预览页运行。"
+            : rangeHint_->text());
+    }
+}
+
+void MainWindow::startWorkbenchTask()
+{
+    if (busy_ || queuePopulating_) return;
+    const bool evaluate = workbenchTabs_ && workbenchTabs_->currentIndex() == 1;
+    if (evaluate && !evaluation_->canEvaluate()) return;
+    evaluation_->setMode(evaluate);
+    if (evaluate) startEvaluation();
+    else startInference();
 }
 
 void MainWindow::inspectSelectedModel()
@@ -2476,20 +2534,12 @@ void MainWindow::addFiles(const QStringList &input)
         const QString absolute = QFileInfo(p).absoluteFilePath();
         if (files_.contains(absolute))
             continue;
-        const QImage img = readImage(absolute);
-        if (img.isNull())
-        {
-            showNotice("无法读取图片：" + QFileInfo(p).fileName(), true);
-            continue;
-        }
-        if (first < 0)
-            first = files_.size();
+        QImageReader reader(absolute);
+        if (!reader.canRead()) continue;
+        if (first < 0) first = files_.size();
         files_.append(absolute);
-        const QImage thumbnail = img.scaled(64, 46, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        auto *item = new QListWidgetItem(
-            QIcon(QPixmap::fromImage(vision::inputPreviewImage(thumbnail, currentConfig().colorMode))),
-            QFileInfo(p).fileName());
-        item->setData(Qt::UserRole + 1, thumbnail);
+        auto *item = new QListWidgetItem(ui::icon("image"), QFileInfo(p).fileName());
+        item->setData(Qt::UserRole, absolute);
         item->setToolTip(absolute);
         queue_->addItem(item);
     }
@@ -2799,9 +2849,22 @@ void MainWindow::stopInference()
 {
     if (!busy_)
         return;
+    if (datasetImportCancellation_) datasetImportCancellation_->store(true);
+    if (queuePopulating_) {
+        ++queuePopulationGeneration_;
+        if (queuePopulationTimer_) { queuePopulationTimer_->stop(); queuePopulationTimer_->deleteLater(); queuePopulationTimer_ = nullptr; }
+        queuePopulating_ = false;
+        clearDatasetContext(); files_.clear(); queue_->clear(); canvas_->clear(); lastResult_ = {};
+        if (evaluationWorker_) evaluationWorker_->requestStop();
+        else setBusy(false);
+        updateSourceUi(); showNotice("已取消队列载入，可重新导入数据集。");
+        if (closing_ && !evaluationWorker_) QTimer::singleShot(0, this, &QWidget::close);
+        return;
+    }
     if (evaluationWorker_) {
         evaluationWorker_->requestStop();
         stopButton_->setEnabled(false);
+        updateStartEligibility();
         showNotice("停止请求已发送 · 已完成样本将保留，未完成任务不会作为完整评估成绩");
         return;
     }
@@ -2811,11 +2874,13 @@ void MainWindow::stopInference()
     worker_->requestStop();
     updateRecordingUi();
     stopButton_->setEnabled(false);
+    updateStartEligibility();
     showNotice("停止请求已发送 · 正在结束当前推理，已完成结果保留");
 }
 void MainWindow::setBusy(bool busy)
 {
     busy_ = busy;
+    if (busy && imagePreviewLoader_) { ++imagePreviewGeneration_; imagePreviewLoader_->cancel(); }
     if (evaluation_) evaluation_->setBusy(busy);
     if (modelConversion_) modelConversion_->setEnabled(!busy);
     if (!busy)
@@ -4067,6 +4132,7 @@ void MainWindow::selectRoute(int index)
 {
     if (!pages_ || index < 0 || index >= pages_->count())
         return;
+    if (evaluation_) evaluation_->hideDatasetSettings();
     pages_->setCurrentIndex(index);
     if (index != 5)
         stopRecordingPlayback();
@@ -4196,7 +4262,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
         }
         if (e->key() == Qt::Key_R)
         {
-            startInference();
+            startWorkbenchTask();
             return;
         }
         if (e->key() == Qt::Key_E && !busy_)

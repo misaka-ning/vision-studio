@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "evaluationpanel.h"
 
+#include <QAbstractItemView>
+#include <QApplication>
 #include <QComboBox>
+#include <QDialogButtonBox>
 #include <QDateTime>
 #include <QDesktopServices>
 #include <QDir>
@@ -18,17 +21,23 @@
 #include <QSaveFile>
 #include <QJsonArray>
 #include <QLabel>
+#include <QKeyEvent>
 #include <QLineEdit>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPainterPath>
+#include <QPalette>
 #include <QPushButton>
 #include <QRunnable>
 #include <QScrollArea>
+#include <QScreen>
+#include <QShortcut>
 #include <QSignalBlocker>
 #include <QSpinBox>
 #include <QStandardItemModel>
 #include <QTableWidget>
+#include <QTextDocument>
+#include <QTextEdit>
 #include <QThreadPool>
 #include <QToolButton>
 #include <QUrl>
@@ -42,6 +51,175 @@
 
 namespace
 {
+// QFileDialog's built-in file modes treat a selected directory as navigation.
+// Keep its normal browser and double-click navigation, but explicitly accept a
+// directory when the user presses the primary button or Enter in the name edit.
+class DatasetSourceDialog final : public QFileDialog
+{
+public:
+    explicit DatasetSourceDialog(QWidget *parent, const QString &source) : QFileDialog(parent)
+    {
+        setObjectName("yoloDatasetSourceDialog");
+        setWindowTitle("导入 YOLO 数据集 · 文件夹或 YAML");
+        QPalette colors = parent ? parent->palette() : palette();
+        colors.setColor(QPalette::Window, QColor("#202020"));
+        colors.setColor(QPalette::WindowText, QColor("#F5F5F5"));
+        colors.setColor(QPalette::Base, QColor("#303030"));
+        colors.setColor(QPalette::Text, QColor("#F5F5F5"));
+        colors.setColor(QPalette::Button, QColor("#333333"));
+        colors.setColor(QPalette::ButtonText, QColor("#F5F5F5"));
+        colors.setColor(QPalette::Highlight, QColor("#354C59"));
+        colors.setColor(QPalette::HighlightedText, Qt::white);
+        setPalette(colors);
+        setOption(QFileDialog::DontUseNativeDialog);
+        setOption(QFileDialog::ReadOnly);
+        setFileMode(QFileDialog::AnyFile);
+        setAcceptMode(QFileDialog::AcceptOpen);
+        setNameFilter("YOLO 数据集配置 (*.yaml *.yml *.YAML *.YML)");
+        setFilter(QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot);
+        setLabelText(QFileDialog::FileName, "文件夹或配置：");
+        setLabelText(QFileDialog::Accept, "导入所选项");
+        const QFileInfo current(source);
+        setDirectory(source.isEmpty() ? QDir::homePath() : current.isDir() ? current.absoluteFilePath() : current.absolutePath());
+        if (current.isFile()) selectFile(current.fileName());
+        hint_ = new QLabel("单击文件夹后点击导入，或选择 YAML 配置；双击文件夹可继续浏览。", this);
+        hint_->setObjectName("yoloDatasetSourceHint");
+        hint_->setTextFormat(Qt::PlainText);
+        hint_->setWordWrap(true);
+        hint_->setStyleSheet("color:#B8B8B8; font-size:12px; padding:4px 0;");
+        if (auto *grid = qobject_cast<QGridLayout *>(layout())) grid->addWidget(hint_, grid->rowCount(), 0, 1, grid->columnCount());
+        else if (layout()) layout()->addWidget(hint_);
+        connect(this, &QFileDialog::currentChanged, this, [this](const QString &path) {
+            selected_ = path; selectionDirectory_ = directory().absolutePath(); refresh(path);
+        });
+        connect(this, &QFileDialog::directoryEntered, this, [this](const QString &) { selected_.clear(); refresh({}); });
+        if (auto *edit = findChild<QLineEdit *>("fileNameEdit"))
+        {
+            connect(edit, &QLineEdit::textChanged, this, [this] { refresh({}); });
+            connect(edit, &QLineEdit::textEdited, this, [this] { selected_.clear(); });
+        }
+        refresh({});
+        resize(840, 580);
+    }
+    QString source() const { return source_; }
+    void accept() override
+    {
+        QString candidate;
+        if (auto *edit = findChild<QLineEdit *>("fileNameEdit")) candidate = edit->text().trimmed();
+        if (!selected_.isEmpty() && selectionDirectory_ == directory().absolutePath()) candidate = selected_;
+        if (candidate.startsWith('"') && candidate.endsWith('"') && candidate.size() > 1) candidate = candidate.mid(1, candidate.size() - 2);
+        if (candidate.isEmpty()) candidate = selectedFiles().value(0, directory().absolutePath());
+        if (QDir::isRelativePath(candidate)) candidate = directory().absoluteFilePath(candidate);
+        const QFileInfo info(candidate);
+        const QString suffix = info.suffix().toLower();
+        if ((!info.isDir() && (!info.isFile() || (suffix != "yaml" && suffix != "yml"))) || !info.isReadable()) {
+            hint_->setText("请选择可读取的现有文件夹，或 .yaml／.yml 数据集配置文件。");
+            hint_->setStyleSheet("color:#FFB4AB; font-size:12px; padding:4px 0;");
+            return;
+        }
+        source_ = info.absoluteFilePath();
+        QDialog::accept();
+    }
+protected:
+    void showEvent(QShowEvent *event) override
+    {
+        QFileDialog::showEvent(event);
+        refresh({});
+    }
+private:
+    void refresh(const QString &selected)
+    {
+        const QString candidate = selected.isEmpty() ? selectedFiles().value(0, directory().absolutePath()) : selected;
+        const QFileInfo info(candidate);
+        hint_->setText(info.isDir() ? "将导入此文件夹；双击文件夹可继续浏览。也可直接选择 YAML 配置。"
+                                    : "可导入现有文件夹或 YAML 配置；双击文件夹可继续浏览。");
+        hint_->setStyleSheet("color:#B8B8B8; font-size:12px; padding:4px 0;");
+        if (auto *buttons = findChild<QDialogButtonBox *>())
+            if (auto *open = buttons->button(QDialogButtonBox::Open)) {
+                open->setText(info.isDir() ? "导入此文件夹" : "导入所选项");
+                open->setEnabled(true);
+            }
+    }
+    QLabel *hint_ = nullptr;
+    QString source_, selected_, selectionDirectory_;
+};
+class DatasetSettingsPopup final : public QFrame
+{
+public:
+    explicit DatasetSettingsPopup(QWidget *parent) : QFrame(parent, Qt::Popup | Qt::FramelessWindowHint)
+    {
+        setAttribute(Qt::WA_NoMouseReplay);
+        setFocusPolicy(Qt::StrongFocus);
+    }
+protected:
+    void keyPressEvent(QKeyEvent *event) override
+    {
+        if (event->key() == Qt::Key_Escape) { hide(); event->accept(); }
+        else QFrame::keyPressEvent(event);
+    }
+    void mousePressEvent(QMouseEvent *event) override
+    {
+        if (!rect().contains(event->position().toPoint())) {
+            setAttribute(Qt::WA_NoMouseReplay);
+            hide(); event->accept(); return;
+        }
+        QFrame::mousePressEvent(event);
+    }
+};
+// A selectable plain-text error can contain one very long path or traceback
+// token. QTextEdit provides wrapping and selection without inserting characters
+// into the original text; the outer settings scroller owns vertical scrolling.
+class WrappedErrorLabel final : public QLabel
+{
+public:
+    WrappedErrorLabel()
+    {
+        editor_ = new QTextEdit(this);
+        editor_->setReadOnly(true);
+        editor_->setAcceptRichText(false);
+        editor_->setFrameShape(QFrame::NoFrame);
+        editor_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        editor_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        editor_->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+        editor_->document()->setDocumentMargin(0);
+        editor_->setTabChangesFocus(true);
+        QSizePolicy policy(QSizePolicy::Ignored, QSizePolicy::Minimum);
+        policy.setHeightForWidth(true); setSizePolicy(policy);
+    }
+    void setContent(const QString &text, const QString &color)
+    {
+        QLabel::setText(text);
+        editor_->setPlainText(text);
+        editor_->setStyleSheet(QString("QTextEdit { color:%1; background:transparent; border:0; padding:0; font-size:11px; }").arg(color));
+        editor_->ensurePolished();
+        editor_->setAccessibleName("数据集校验详情");
+        editor_->setAccessibleDescription(text);
+        updateGeometry();
+    }
+    int heightForWidth(int width) const override
+    {
+        QTextDocument document;
+        document.setDefaultFont(editor_->font());
+        document.setDocumentMargin(0);
+        auto option = document.defaultTextOption();
+        option.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+        document.setDefaultTextOption(option);
+        document.setPlainText(text());
+        document.setTextWidth(qMax(1, width - 4));
+        return int(std::ceil(document.size().height())) + 4;
+    }
+    QSize sizeHint() const override { return {320, heightForWidth(320)}; }
+    QSize minimumSizeHint() const override { return {0, editor_->fontMetrics().lineSpacing() + 4}; }
+protected:
+    void resizeEvent(QResizeEvent *event) override
+    {
+        QLabel::resizeEvent(event);
+        editor_->setGeometry(contentsRect());
+    }
+    void paintEvent(QPaintEvent *) override {}
+private:
+    QTextEdit *editor_ = nullptr;
+};
 template <class Base> class NoWheel final : public Base
 {
 protected:
@@ -336,7 +514,9 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     configuration->setSpacing(2);
     auto *modeRow = new QHBoxLayout;
     modeRow->setSpacing(8);
-    modeRow->addWidget(label("工作模式", "sectionTitle"));
+    modeTitle_ = label("工作模式", "sectionTitle");
+    modeTitle_->setObjectName("evaluationModeLabel");
+    modeRow->addWidget(modeTitle_);
     mode_ = new NoWheel<QComboBox>;
     mode_->setObjectName("evaluationModeCombo");
     mode_->addItem("检测预览", false); mode_->addItem("评估调优", true);
@@ -377,31 +557,59 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     modeRow->addWidget(datasetSettingsButton_);
     configuration->addLayout(modeRow);
 
-    datasetSettings_ = new QWidget;
+    datasetSettings_ = new DatasetSettingsPopup(controls_);
     datasetSettings_->setObjectName("evaluationDatasetSettings");
-    datasetSettings_->setStyleSheet("#evaluationDatasetSettings { background:#242424; border:1px solid #353535; border-radius:5px; }");
-    auto *settingsLayout = new QVBoxLayout(datasetSettings_);
-    settingsLayout->setContentsMargins(8, 2, 8, 2);
-    settingsLayout->setSpacing(4);
-    configuration->addWidget(datasetSettings_);
+    datasetSettings_->setStyleSheet("#evaluationDatasetSettings { background:#272727; border:1px solid #505050; border-radius:8px; } #evaluationDatasetSettingsContent, #evaluationDatasetSettingsScroll, #evaluationDatasetSettingsScroll > QWidget > QWidget { background:#272727; }");
+    datasetSettings_->setAccessibleName("数据集设置");
+    auto *popupLayout = new QVBoxLayout(datasetSettings_);
+    popupLayout->setContentsMargins(14, 12, 14, 12);
+    popupLayout->setSpacing(10);
+    auto *popupHeader = new QHBoxLayout;
+    popupHeader->addWidget(label("数据集设置", "sectionTitle"));
+    popupHeader->addStretch();
+    auto *closeSettings = new QToolButton;
+    closeSettings->setObjectName("evaluationDatasetSettingsCloseButton");
+    closeSettings->setText("×");
+    closeSettings->setToolTip("关闭数据集设置（Esc）");
+    closeSettings->setAccessibleName("关闭数据集设置");
+    closeSettings->setStyleSheet("QToolButton { color:#D2D2D2; background:transparent; border:0; border-radius:4px; padding:2px 8px; font-size:18px; } QToolButton:hover { background:#3B3B3B; }");
+    popupHeader->addWidget(closeSettings);
+    popupLayout->addLayout(popupHeader);
+    datasetSettingsScroll_ = new QScrollArea;
+    datasetSettingsScroll_->setObjectName("evaluationDatasetSettingsScroll");
+    datasetSettingsScroll_->setFrameShape(QFrame::NoFrame);
+    datasetSettingsScroll_->setWidgetResizable(true);
+    datasetSettingsScroll_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    datasetSettingsContent_ = new QWidget;
+    datasetSettingsContent_->setObjectName("evaluationDatasetSettingsContent");
+    auto *settingsLayout = new QVBoxLayout(datasetSettingsContent_);
+    settingsLayout->setContentsMargins(0, 0, 4, 0);
+    settingsLayout->setSpacing(10);
+    datasetSettingsScroll_->setWidget(datasetSettingsContent_);
+    popupLayout->addWidget(datasetSettingsScroll_, 1);
+    connect(closeSettings, &QToolButton::clicked, this, &EvaluationPanel::hideDatasetSettings);
+    auto *dismissSettings = new QShortcut(QKeySequence(Qt::Key_Escape), datasetSettings_);
+    dismissSettings->setContext(Qt::WidgetWithChildrenShortcut);
+    connect(dismissSettings, &QShortcut::activated, this, &EvaluationPanel::hideDatasetSettings);
+    controls_->installEventFilter(this);
+    datasetSettings_->installEventFilter(this);
     datasetSettings_->hide();
     connect(datasetSettingsButton_, &QToolButton::toggled, this, [this](bool expanded) {
-        datasetSettings_->setVisible(expanded);
-        datasetSettingsButton_->setArrowType(expanded ? Qt::DownArrow : Qt::RightArrow);
+        if (expanded) showDatasetSettings(); else hideDatasetSettings();
     });
     connect(eligibilityStatus_, &QToolButton::clicked, this, [this] {
-        datasetSettingsButton_->setChecked(true);
+        showDatasetSettings();
     });
 
-    validation_ = label({}, "evaluationValidationHint");
+    validation_ = new WrappedErrorLabel;
+    validation_->setObjectName("evaluationValidationHint");
     validation_->setStyleSheet("color:#FFB4AB; font-size:11px;");
-    validation_->setMaximumHeight(44);
-    validation_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    validation_->setMinimumWidth(0);
     settingsLayout->addWidget(validation_);
     datasetControls_ = new QWidget;
     auto *datasetConfiguration = new QVBoxLayout(datasetControls_);
     datasetConfiguration->setContentsMargins(0, 0, 0, 0);
-    datasetConfiguration->setSpacing(2);
+    datasetConfiguration->setSpacing(10);
     settingsLayout->addWidget(datasetControls_);
     auto *mapping = new QHBoxLayout;
     mapping->setSpacing(9);
@@ -411,10 +619,10 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     mapping->addWidget(label("模型 ID", "muted")); mapping->addWidget(modelId_);
     mapping->addWidget(label("→ 数据集 ID", "muted")); mapping->addWidget(datasetId_);
     mappingHint_ = label({}, "evaluationMappingHint");
-    mappingHint_->setWordWrap(false);
+    mappingHint_->setWordWrap(true);
     mappingHint_->setStyleSheet("color:#B8B8B8; font-size:11px;");
-    mappingHint_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
-    mapping->addWidget(mappingHint_, 1);
+    mappingHint_->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    mapping->addStretch();
     auto *advancedToggle = new QToolButton;
     advancedToggle->setObjectName("evaluationAdvancedButton");
     advancedToggle->setText("高级参数"); advancedToggle->setCheckable(true); advancedToggle->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
@@ -422,6 +630,7 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     advancedToggle->setStyleSheet(toggleStyle);
     mapping->addWidget(advancedToggle);
     datasetConfiguration->addLayout(mapping);
+    datasetConfiguration->addWidget(mappingHint_);
 
     auto *advanced = new QWidget;
     advanced->setObjectName("evaluationAdvancedControls");
@@ -433,25 +642,29 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     metadataRow->addWidget(metadata_, 1);
     metadataBrowse_ = button("审核文件", "evaluationMetadataBrowseButton");
     metadataRow->addWidget(metadataBrowse_);
-    auto *parameters = new QHBoxLayout;
-    parameters->setSpacing(8);
+    auto *parameters = new QGridLayout;
+    parameters->setHorizontalSpacing(10);
+    parameters->setVerticalSpacing(8);
     matchIou_ = number("evaluationMatchIouSpin", .05, 1, .05, .5);
     scanStart_ = number("evaluationScanStartSpin", .001, .999, .01, .05, 3);
     scanEnd_ = number("evaluationScanEndSpin", .001, .999, .01, .95, 3);
     scanStep_ = number("evaluationScanStepSpin", .001, .5, .01, .01, 3);
     for (auto *spin : {matchIou_, scanStart_, scanEnd_, scanStep_}) spin->setFixedWidth(88);
-    parameters->addWidget(label("匹配 IoU", "muted")); parameters->addWidget(matchIou_);
-    parameters->addWidget(label("扫描起点", "muted")); parameters->addWidget(scanStart_);
-    parameters->addWidget(label("终点", "muted")); parameters->addWidget(scanEnd_);
-    parameters->addWidget(label("步长", "muted")); parameters->addWidget(scanStep_);
+    parameters->addWidget(label("匹配 IoU", "muted"), 0, 0); parameters->addWidget(matchIou_, 0, 1);
+    parameters->addWidget(label("扫描起点", "muted"), 0, 2); parameters->addWidget(scanStart_, 0, 3);
+    parameters->addWidget(label("扫描终点", "muted"), 1, 0); parameters->addWidget(scanEnd_, 1, 1);
+    parameters->addWidget(label("扫描步长", "muted"), 1, 2); parameters->addWidget(scanStep_, 1, 3);
+    parameters->setColumnStretch(0, 1); parameters->setColumnStretch(2, 1);
     metadata_->setMinimumWidth(100);
     metadata_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
     metadata_->setToolTip("可选审核 metadata.csv；标准 YOLO 标签无需此文件。扫描复用低分预测，NMS 使用检测配置。");
-    parameters->addLayout(metadataRow, 1);
     advancedLayout->addLayout(parameters);
+    advancedLayout->addLayout(metadataRow);
+    advancedLayout->addWidget(label("扫描复用低分预测，NMS 使用检测配置。标准 YOLO 标签无需审核文件。", "tiny"));
     datasetConfiguration->addWidget(advanced); advanced->hide();
-    connect(advancedToggle, &QToolButton::toggled, this, [advanced, advancedToggle](bool enabled) {
+    connect(advancedToggle, &QToolButton::toggled, this, [this, advanced, advancedToggle](bool enabled) {
         advanced->setVisible(enabled); advancedToggle->setArrowType(enabled ? Qt::DownArrow : Qt::RightArrow);
+        if (datasetSettings_->isVisible()) positionDatasetSettings();
     });
 
     auto *outer = new QVBoxLayout(this); outer->setContentsMargins(0, 0, 0, 0);
@@ -462,7 +675,7 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     reportStatus_ = label("尚无评估报告", "evaluationReportStatus");
     reportStatus_->setStyleSheet("font-size:16px; font-weight:600; color:#F5F5F5;");
     layout->addWidget(reportStatus_);
-    reportIdentity_ = label("在左侧选择评估调优，检查数据集与类别映射后开始。", "evaluationReportIdentity");
+    reportIdentity_ = label("导入带标注的 YOLO 数据集，检查类别映射后点击开始评估。", "evaluationReportIdentity");
     reportIdentity_->setTextInteractionFlags(Qt::TextSelectableByMouse);
     layout->addWidget(reportIdentity_);
     auto *metricGrid = new QGridLayout; metricGrid->setSpacing(10);
@@ -576,23 +789,124 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     updateMapping(); updateEligibility(); updateRecommendation();
 }
 
+EvaluationPanel::~EvaluationPanel()
+{
+    if (qApp) qApp->removeEventFilter(this);
+    if (datasetSettingsHost_) datasetSettingsHost_->removeEventFilter(this);
+    if (controls_) controls_->removeEventFilter(this);
+    if (datasetSettings_) {
+        datasetSettings_->removeEventFilter(this);
+        datasetSettings_->hide();
+    }
+}
+bool EvaluationPanel::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == datasetSettings_ && (event->type() == QEvent::Hide || event->type() == QEvent::Destroy)) {
+        if (qApp) qApp->removeEventFilter(this);
+        if (datasetSettingsButton_) {
+            QSignalBlocker blocker(datasetSettingsButton_);
+            datasetSettingsButton_->setChecked(false);
+            datasetSettingsButton_->setArrowType(Qt::RightArrow);
+        }
+    } else if (datasetSettings_ && datasetSettings_->isVisible() && event->type() == QEvent::KeyPress &&
+               static_cast<QKeyEvent *>(event)->key() == Qt::Key_Escape) {
+        hideDatasetSettings(); event->accept(); return true;
+    } else if (datasetSettings_ && datasetSettings_->isVisible() && event->type() == QEvent::MouseButtonPress) {
+        auto *target = qobject_cast<QWidget *>(watched);
+        const auto *mouse = static_cast<QMouseEvent *>(event);
+        const QPoint global = mouse->globalPosition().toPoint();
+        const bool inPopup = datasetSettings_->rect().contains(datasetSettings_->mapFromGlobal(global));
+        // Descendant popup windows (for example a combobox list) are allowed
+        // to extend outside the settings card while editing its controls.
+        const bool childPopup = target && target != datasetSettings_ && datasetSettings_->isAncestorOf(target);
+        if (!inPopup && !childPopup) {
+            const bool anchor = datasetSettingsButton_ && datasetSettingsButton_->rect().contains(datasetSettingsButton_->mapFromGlobal(global));
+            hideDatasetSettings();
+            if (anchor || target == datasetSettings_) { event->accept(); return true; }
+        }
+    } else if (datasetSettings_ && datasetSettings_->isVisible() &&
+               (watched == controls_ || watched == datasetSettingsHost_)) {
+        switch (event->type()) {
+        case QEvent::Hide:
+        case QEvent::HideToParent:
+        case QEvent::Move:
+        case QEvent::Resize:
+        case QEvent::Close:
+        case QEvent::ParentChange:
+            hideDatasetSettings();
+            break;
+        default: break;
+        }
+    }
+    return QWidget::eventFilter(watched, event);
+}
+void EvaluationPanel::hideDatasetSettings()
+{
+    if (qApp) qApp->removeEventFilter(this);
+    if (datasetSettings_) datasetSettings_->hide();
+    if (datasetSettingsButton_) {
+        QSignalBlocker blocker(datasetSettingsButton_);
+        datasetSettingsButton_->setChecked(false);
+        datasetSettingsButton_->setArrowType(Qt::RightArrow);
+    }
+}
+void EvaluationPanel::positionDatasetSettings()
+{
+    auto *screen = datasetSettingsButton_->screen();
+    const QRect available = screen ? screen->availableGeometry() : QRect(0, 0, 1280, 800);
+    const int width = qMin(620, qMax(1, available.width() - 24));
+    const int bodyWidth = qMax(1, width - 48);
+    validation_->setMaximumWidth(bodyWidth);
+    validation_->setMinimumHeight(validation_->isHidden() ? 0 : validation_->heightForWidth(bodyWidth));
+    mappingHint_->setMaximumWidth(bodyWidth);
+    auto *bodyLayout = datasetSettingsContent_->layout();
+    bodyLayout->invalidate();
+    bodyLayout->activate();
+    const int bodyHeight = bodyLayout->hasHeightForWidth() ? bodyLayout->heightForWidth(bodyWidth) : bodyLayout->sizeHint().height();
+    datasetSettingsContent_->setMinimumHeight(bodyHeight);
+    const int height = qMin(qMax(140, bodyHeight + 68), qMax(1, available.height() - 24));
+    datasetSettings_->setFixedSize(width, height);
+    const QRect anchor(datasetSettingsButton_->mapToGlobal(QPoint()), datasetSettingsButton_->size());
+    const int left = std::clamp(anchor.right() - width + 1, available.left() + 8, available.right() - width - 7);
+    int top = anchor.bottom() + 8;
+    if (top + height > available.bottom() - 8) top = anchor.top() - height - 8;
+    top = std::clamp(top, available.top() + 8, available.bottom() - height - 7);
+    datasetSettings_->move(left, top);
+}
+void EvaluationPanel::showDatasetSettings()
+{
+    if (busy_ || (yaml_.isEmpty() && manifest_.isEmpty()) || !datasetSettingsButton_->isVisible()) {
+        hideDatasetSettings(); return;
+    }
+    QWidget *host = controls_ ? controls_->window() : nullptr;
+    if (datasetSettingsHost_ != host) {
+        if (datasetSettingsHost_) datasetSettingsHost_->removeEventFilter(this);
+        datasetSettingsHost_ = host;
+        if (host) host->installEventFilter(this);
+    }
+    positionDatasetSettings();
+    {
+        QSignalBlocker blocker(datasetSettingsButton_);
+        datasetSettingsButton_->setChecked(true);
+        datasetSettingsButton_->setArrowType(Qt::DownArrow);
+    }
+    datasetSettings_->show();
+    if (qApp) qApp->installEventFilter(this);
+    datasetSettings_->raise();
+    datasetSettings_->setFocus(Qt::PopupFocusReason);
+}
 void EvaluationPanel::chooseDataset()
 {
     if (busy_) return;
-    const QFileInfo current(yaml_);
-    const QString initial = current.isDir() ? current.absoluteFilePath() : current.absolutePath();
-    const QString directory = QFileDialog::getExistingDirectory(this, "选择标准 YOLO 数据集文件夹", initial);
-    if (directory.isEmpty()) return;
-    setDatasetSource(directory, datasetSplit(), metadataPath());
+    hideDatasetSettings();
+    DatasetSourceDialog dialog(controls_ ? controls_->window() : this, yaml_);
+    if (dialog.exec() != QDialog::Accepted || dialog.source().isEmpty()) return;
+    setDatasetSource(dialog.source(), datasetSplit(), metadataPath());
     emit datasetRequested(yaml_, datasetSplit(), metadataPath());
 }
 void EvaluationPanel::chooseDatasetFile()
 {
-    if (busy_) return;
-    const QString file = QFileDialog::getOpenFileName(this, "选择 YOLO 数据集 YAML 配置", yaml_, "YOLO 数据集 (*.yaml *.yml *.YAML *.YML)");
-    if (file.isEmpty()) return;
-    setDatasetSource(file, datasetSplit(), metadataPath());
-    emit datasetRequested(yaml_, datasetSplit(), metadataPath());
+    chooseDataset();
 }
 void EvaluationPanel::setDatasetSource(const QString &source, const QString &split, const QString &metadata)
 {
@@ -665,13 +979,20 @@ void EvaluationPanel::setModel(const vision::ModelConfig &config)
 }
 void EvaluationPanel::setBusy(bool busy)
 {
-    busy_ = busy; updateEligibility();
+    busy_ = busy;
+    if (busy_) hideDatasetSettings();
+    updateEligibility();
 }
 void EvaluationPanel::setMode(bool evaluation)
 {
     if (busy_) return;
     mode_->setCurrentIndex(evaluation && canEvaluate() ? 1 : 0);
     updateEligibility();
+}
+void EvaluationPanel::setModeControlVisible(bool visible)
+{
+    mode_->setVisible(visible);
+    modeTitle_->setVisible(visible);
 }
 bool EvaluationPanel::evaluationMode() const { return mode_->currentData().toBool(); }
 QString EvaluationPanel::validationMessage() const
@@ -713,7 +1034,7 @@ void EvaluationPanel::updateMapping()
         .arg(modelClassId()).arg(modelName).arg(datasetClassId()).arg(dataName.isEmpty() ? QStringLiteral("待导入") : dataName);
     if (modelClassId() == 32 && modelName.compare("sports ball", Qt::CaseInsensitive) == 0)
         text += "\nCOCO 32 是 sports ball，包含多种运动球；映射到足球不代表模型只识别足球。";
-    mappingHint_->setText(text.section('\n', 0, 0));
+    mappingHint_->setText(text);
     mappingHint_->setToolTip(text);
 }
 void EvaluationPanel::updateEligibility()
@@ -731,21 +1052,20 @@ void EvaluationPanel::updateEligibility()
     mode_->setEnabled(!busy_);
     datasetControls_->setVisible(!manifest_.isEmpty());
     datasetSettingsButton_->setVisible(hasSource);
-    datasetSettings_->setVisible(hasSource && datasetSettingsButton_->isChecked());
+    datasetSettingsButton_->setEnabled(!busy_);
+    eligibilityStatus_->setEnabled(!busy_);
+    if (!hasSource || busy_) hideDatasetSettings();
     split_->setVisible(!yaml_.isEmpty()); reload_->setVisible(!yaml_.isEmpty());
     for (QWidget *control : QList<QWidget *>{split_, reload_, metadata_, metadataBrowse_, modelId_, datasetId_, matchIou_, scanStart_, scanEnd_, scanStep_})
         control->setEnabled(!busy_);
     reload_->setEnabled(!busy_ && !yaml_.isEmpty());
-    QString summary = detail.section('\n', 0, 0).trimmed();
-    if (summary.size() > 160) summary = summary.left(160) + "…";
-    if (summary != detail.trimmed() && !summary.endsWith("…")) summary += "…";
-    validation_->setText(summary);
+    const bool warning = !importFailed && !invalidDataset &&
+        (model_.task == vision::ModelTask::Classification || model_.modelPath.isEmpty() || model_.modelClassCount <= 0);
+    static_cast<WrappedErrorLabel *>(validation_)->setContent(detail, warning ? "#E8C688" : "#FFB4AB");
     validation_->setToolTip(detail);
     validation_->setAccessibleDescription(detail);
     validation_->setVisible(!detail.isEmpty() && hasSource);
-    validation_->setStyleSheet(!importFailed && !invalidDataset &&
-                              (model_.task == vision::ModelTask::Classification || model_.modelPath.isEmpty() || model_.modelClassCount <= 0)
-                                  ? "color:#E8C688; font-size:11px;" : "color:#FFB4AB; font-size:11px;");
+    validation_->setStyleSheet(warning ? "color:#E8C688; font-size:11px;" : "color:#FFB4AB; font-size:11px;");
     QString status, color;
     if (importFailed) { status = "导入失败"; color = "#FFB4AB"; }
     else if (manifest_.isEmpty()) { status = busy_ ? "正在检查" : "待导入"; color = "#E8C688"; }
@@ -758,8 +1078,9 @@ void EvaluationPanel::updateEligibility()
     eligibilityStatus_->setText(status);
     eligibilityStatus_->setVisible(hasSource);
     eligibilityStatus_->setStyleSheet(QString("QToolButton { color:%1; background:transparent; border:1px solid transparent; border-radius:4px; padding:4px 6px; font-size:11px; } QToolButton:hover { background:#333333; border-color:#454545; }").arg(color));
-    eligibilityStatus_->setToolTip((detail.isEmpty() ? QStringLiteral("数据集与目标类别映射有效，可以选择评估调优。") : detail) + "\n点击查看数据集设置。");
+    eligibilityStatus_->setToolTip((detail.isEmpty() ? QStringLiteral("数据集与目标类别映射有效，可以开始评估。") : detail) + "\n点击查看数据集设置。");
     eligibilityStatus_->setAccessibleName("评估状态：" + status);
+    if (datasetSettings_->isVisible()) positionDatasetSettings();
     const bool rows = !report_.value("rows").toArray().isEmpty();
     apply_->setEnabled(!busy_ && rows);
     threshold_->setEnabled(rows); filter_->setEnabled(rows);
@@ -800,7 +1121,7 @@ void EvaluationPanel::setReport(const QJsonObject &report, const QString &direct
     updating_ = false;
     if (report.isEmpty()) {
         reportStatus_->setText("尚无评估报告");
-        reportIdentity_->setText("在左侧选择评估调优，检查数据集与类别映射后开始。");
+        reportIdentity_->setText("导入带标注的 YOLO 数据集，检查类别映射后点击开始评估。");
     } else {
         const bool complete = report.value("status").toString() == "complete";
         const bool full = report.value("full_split").toBool();

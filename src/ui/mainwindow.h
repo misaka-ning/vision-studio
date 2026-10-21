@@ -8,6 +8,7 @@
 #include <QVariantMap>
 #include <memory>
 #include <atomic>
+#include <functional>
 class QComboBox;
 class QLineEdit;
 class QDoubleSpinBox;
@@ -31,6 +32,7 @@ class ModelViewer;
 class ModelConversionPage;
 class EvaluationPanel;
 class QTabWidget;
+class AsyncImagePreview;
 namespace cv
 {
 class VideoCapture;
@@ -96,6 +98,8 @@ class MainWindow : public QMainWindow
     bool applyConvertedModelProfile(const QString &path);
     void addFiles(const QStringList &files);
     void startInference();
+    void startWorkbenchTask();
+    void populateDatasetQueue(const QJsonObject &manifest, const std::function<void()> &completed);
     void stopInference();
     void onResult(const vision::InferenceResult &result, quint64 ticket = 0);
     void displayResult(const vision::InferenceResult &result);
@@ -167,6 +171,13 @@ class MainWindow : public QMainWindow
     QVariantMap modelEvaluationProfiles_;
     EvaluationPanel *evaluation_ = nullptr;
     QTabWidget *workbenchTabs_ = nullptr;
+    QComboBox *evaluationRange_ = nullptr;
+    QPushButton *evaluationStartButton_ = nullptr, *evaluationStopButton_ = nullptr;
+    QLabel *evaluationTaskSummary_ = nullptr, *evaluationRangeHint_ = nullptr;
+    QTimer *queuePopulationTimer_ = nullptr;
+    bool queuePopulating_ = false;
+    quint64 queuePopulationGeneration_ = 0, imagePreviewGeneration_ = 0;
+    AsyncImagePreview *imagePreviewLoader_ = nullptr;
     vision::EvaluationWorker *evaluationWorker_ = nullptr;
     QJsonObject datasetManifest_, evaluationReport_;
     QString evaluationDirectory_, evaluationRunFingerprint_, evaluationReviewFilter_ = "all";
@@ -174,7 +185,7 @@ class MainWindow : public QMainWindow
     QHash<QString, int> evaluationSampleIndices_;
     QHash<QString, QJsonObject> datasetSamples_;
     bool loadingDataset_ = false, evaluationReviewActive_ = false;
-    std::shared_ptr<std::atomic_bool> evaluationPreviewCancellation_, evaluationFilterCancellation_;
+    std::shared_ptr<std::atomic_bool> evaluationPreviewCancellation_, evaluationFilterCancellation_, datasetImportCancellation_;
     quint64 evaluationPreviewGeneration_ = 0, evaluationFilterGeneration_ = 0;
     QCheckBox *showGroundTruth_ = nullptr;
     QStringList nativeLabels_;

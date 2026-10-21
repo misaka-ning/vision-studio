@@ -1,4 +1,5 @@
 #include "ui/imagecanvas.h"
+#include "ui/lazyimagequeue.h"
 #include "ui/mainwindow.h"
 #include "ui/modelviewer.h"
 
@@ -49,6 +50,7 @@
 #include <QTemporaryDir>
 #include <QTest>
 #include <QTimer>
+#include <QToolButton>
 #include <QTreeView>
 #include <QUrl>
 #include <QWebEnginePage>
@@ -348,7 +350,16 @@ class UiTests final : public QObject
         if (files.isEmpty()) return false;
         window_->clearImageResults(); window_->files_.clear(); window_->queue_->clear();
         window_->addFiles(files);
-        return window_->files_ == files;
+        QElapsedTimer timer; timer.start();
+        while (timer.elapsed() < 10000) {
+            QApplication::processEvents();
+            auto *canvas = workbenchCanvas(window_.get());
+            const int row = window_->queue_->currentRow();
+            if (window_->files_ == files && window_->queue_->count() == files.size() && row >= 0 && row < files.size() &&
+                canvas && canvas->result().source == files[row] && !canvas->result().image.isNull()) return true;
+            QTest::qWait(5);
+        }
+        return false;
     }
   private slots:
     void initTestCase()
@@ -452,6 +463,7 @@ class UiTests final : public QObject
         QVERIFY(!findButton(window_.get(), QStringLiteral("文件夹")));
         QVERIFY(!findButton(window_.get(), QStringLiteral("运行示例")));
         QVERIFY(window_->findChild<QPushButton *>(QStringLiteral("openYoloDatasetButton")));
+        QVERIFY(!window_->findChild<QToolButton *>(QStringLiteral("openYoloDatasetOptionsButton")));
         QVERIFY(findButton(window_.get(), QStringLiteral("视频")));
         QVERIFY(findButton(window_.get(), QStringLiteral("摄像头")));
         QCOMPARE(queue->count(), 0);
@@ -490,9 +502,9 @@ class UiTests final : public QObject
         QCOMPARE(starts.size(), 1);
         QCOMPARE(qvariant_cast<vision::JobRequest>(starts.first().at(0)).config.device,
                  vision::ComputeDevice::CPU);
-        QCOMPARE(canvas->result().requestedDevice, vision::ComputeDevice::CPU);
-        QCOMPARE(canvas->result().device, vision::ComputeDevice::CPU);
-        QCOMPARE(canvas->result().deviceIndex, -1);
+        QTRY_COMPARE(canvas->result().requestedDevice, vision::ComputeDevice::CPU);
+        QTRY_COMPARE(canvas->result().device, vision::ComputeDevice::CPU);
+        QTRY_COMPARE(canvas->result().deviceIndex, -1);
         auto *actual = window_->findChild<QLabel *>(QStringLiteral("actualDeviceBadge"));
         QVERIFY(actual);
         QVERIFY(actual->text().contains(QStringLiteral("CPU")));
@@ -502,7 +514,7 @@ class UiTests final : public QObject
         QVERIFY(footer->height() >= footer->fontMetrics().height());
         QVERIFY(footer->text().contains(QStringLiteral("OpenCV")));
         QVERIFY(window_->rect().contains(QRect(footer->mapTo(window_.get(), QPoint()), footer->size())));
-        QCOMPARE(canvas->result().image.size(),
+        QTRY_COMPARE(canvas->result().image.size(),
                  QImage(fixture_->path() + QStringLiteral("/assets/bus.jpg")).size());
         QCOMPARE(table->rowCount(), canvas->result().predictions.size());
 
@@ -1230,8 +1242,8 @@ class UiTests final : public QObject
         window_->addFiles({second});
         QCOMPARE(queue->count(), 2);
         QCOMPARE(queue->currentRow(), 1);
-        QCOMPARE(canvas->result().source, second);
-        QVERIFY(!canvas->result().image.isNull());
+        QTRY_COMPARE(canvas->result().source, second);
+        QTRY_VERIFY(!canvas->result().image.isNull());
         QVERIFY(canvas->result().predictions.isEmpty());
         QCOMPARE(table->rowCount(), 0);
         QVERIFY(!exportButton->isEnabled());
@@ -1349,14 +1361,16 @@ class UiTests final : public QObject
         for (int row : {0, 1, 0, 1, 0})
         {
             queue->setCurrentRow(row);
+            QTRY_COMPARE_WITH_TIMEOUT(canvas->result().source, detected[row].source, 10000);
+            QTRY_COMPARE_WITH_TIMEOUT(canvas->result().image, detected[row].image, 10000);
             const auto &actual = canvas->result();
             const auto &expected = detected[row];
-            QCOMPARE(actual.source, expected.source);
-            QCOMPARE(actual.image, expected.image);
-            QCOMPARE(actual.originalImage, expected.originalImage);
+            QTRY_COMPARE(actual.source, expected.source);
+            QTRY_COMPARE(actual.image, expected.image);
+            QTRY_COMPARE(actual.originalImage, expected.originalImage);
             QCOMPARE(actual.modelName, expected.modelName);
             QCOMPARE(actual.backend, expected.backend);
-            QCOMPARE(actual.inferenceMs, expected.inferenceMs);
+            QTRY_COMPARE(actual.inferenceMs, expected.inferenceMs);
             QCOMPARE(actual.totalMs, expected.totalMs);
             QCOMPARE(actual.device, expected.device);
             QCOMPARE(actual.predictions.size(), expected.predictions.size());
@@ -1430,13 +1444,14 @@ class UiTests final : public QObject
         QVERIFY(original.save(unprocessed));
         window_->addFiles({unprocessed});
         QCOMPARE(queue->count(), 3);
-        QCOMPARE(canvas->result().source, unprocessed);
-        QVERIFY(!canvas->result().image.isNull());
+        QTRY_COMPARE(canvas->result().source, unprocessed);
+        QTRY_VERIFY(!canvas->result().image.isNull());
         QVERIFY(canvas->result().predictions.isEmpty());
         QCOMPARE(table->rowCount(), 0);
         QVERIFY(!exportButton->isEnabled());
         queue->setCurrentRow(1);
-        QCOMPARE(canvas->result().predictions.size(), detected[1].predictions.size());
+        QTRY_COMPARE_WITH_TIMEOUT(canvas->result().source, detected[1].source, 10000);
+        QTRY_COMPARE(canvas->result().predictions.size(), detected[1].predictions.size());
         QVERIFY(exportButton->isEnabled());
 
         // A changed inference threshold is a different configuration. The
@@ -1445,7 +1460,7 @@ class UiTests final : public QObject
         for (int row : {0, 1, 0, 1})
         {
             queue->setCurrentRow(row);
-            QCOMPARE(canvas->result().inferenceMs, 0.0);
+            QTRY_COMPARE(canvas->result().inferenceMs, 0.0);
             QVERIFY(canvas->result().predictions.isEmpty());
             QCOMPARE(table->rowCount(), 0);
             for (int metric = 0; metric < 3; ++metric)
@@ -1460,11 +1475,12 @@ class UiTests final : public QObject
         for (int row : {0, 1, 2, 1})
         {
             queue->setCurrentRow(row);
-            QVERIFY(canvas->result().predictions.isEmpty());
-            QCOMPARE(table->rowCount(), 0);
+            QTRY_COMPARE_WITH_TIMEOUT(canvas->result().source, queue->item(row)->data(Qt::UserRole).toString(), 10000);
+            QTRY_VERIFY(canvas->result().predictions.isEmpty());
+            QTRY_COMPARE(table->rowCount(), 0);
             QVERIFY(!exportButton->isEnabled());
             if (!canvas->result().image.isNull())
-                QCOMPARE(canvas->result().image.isGrayscale(),
+                QTRY_COMPARE(canvas->result().image.isGrayscale(),
                          changedColorMode == QStringLiteral("grayscale"));
         }
     }
@@ -1573,12 +1589,14 @@ class UiTests final : public QObject
             {
                 const int row = direction < 0 ? imageCount - 1 - step : step;
                 queue->setCurrentRow(row);
+                QTRY_COMPARE_WITH_TIMEOUT(canvas->result().source, detected[row].source, 10000);
+                QTRY_COMPARE_WITH_TIMEOUT(canvas->result().image, detected[row].image, 10000);
                 const auto &actual = canvas->result();
                 const auto &expected = detected[row];
-                QCOMPARE(actual.source, expected.source);
-                QCOMPARE(actual.image, expected.image);
-                QCOMPARE(actual.originalImage, expected.originalImage);
-                QCOMPARE(actual.inferenceMs, expected.inferenceMs);
+                QTRY_COMPARE(actual.source, expected.source);
+                QTRY_COMPARE(actual.image, expected.image);
+                QTRY_COMPARE(actual.originalImage, expected.originalImage);
+                QTRY_COMPARE(actual.inferenceMs, expected.inferenceMs);
                 QCOMPARE(actual.totalMs, expected.totalMs);
                 QCOMPARE(actual.backend, expected.backend);
                 QCOMPARE(actual.device, expected.device);
@@ -1655,18 +1673,19 @@ class UiTests final : public QObject
         const int completed = QJsonDocument::fromJson(completedHistory).array().size();
         QVERIFY(completed > 0 && completed < imageCount);
         queue->setCurrentRow(imageCount - 1);
-        QCOMPARE(canvas->result().source, files.last());
-        QVERIFY(!canvas->result().image.isNull());
-        QCOMPARE(canvas->result().inferenceMs, 0.0);
+        QTRY_COMPARE(canvas->result().source, files.last());
+        QTRY_VERIFY(!canvas->result().image.isNull());
+        QTRY_COMPARE(canvas->result().inferenceMs, 0.0);
         QVERIFY(!exportButton->isEnabled());
         for (int row = completed - 1; row >= 0; --row)
         {
             queue->setCurrentRow(row);
+            QTRY_COMPARE_WITH_TIMEOUT(canvas->result().source, files[row], 10000);
             const auto &actual = canvas->result();
-            QCOMPARE(actual.source, files[row]);
-            QCOMPARE(actual.image, detected[row].image);
-            QCOMPARE(actual.originalImage, detected[row].originalImage);
-            QCOMPARE(actual.inferenceMs, detected[row].inferenceMs);
+            QTRY_COMPARE(actual.source, files[row]);
+            QTRY_COMPARE(actual.image, detected[row].image);
+            QTRY_COMPARE(actual.originalImage, detected[row].originalImage);
+            QTRY_COMPARE(actual.inferenceMs, detected[row].inferenceMs);
             QVERIFY(actual.inferenceMs > 0);
             QVERIFY(actual.predictions.isEmpty());
             QCOMPARE(table->rowCount(), 0);
@@ -1740,17 +1759,17 @@ class UiTests final : public QObject
             QCOMPARE(table->rowCount(), 0);
             if (row == 0)
             {
-                QCOMPARE(canvas->result().source, files[0]);
-                QCOMPARE(canvas->result().image, detected.image);
-                QCOMPARE(canvas->result().originalImage, detected.originalImage);
-                QCOMPARE(canvas->result().inferenceMs, detected.inferenceMs);
+                QTRY_COMPARE(canvas->result().source, files[0]);
+                QTRY_COMPARE(canvas->result().image, detected.image);
+                QTRY_COMPARE(canvas->result().originalImage, detected.originalImage);
+                QTRY_COMPARE(canvas->result().inferenceMs, detected.inferenceMs);
                 QVERIFY(exportButton->isEnabled());
             }
             else
             {
-                QCOMPARE(canvas->result().inferenceMs, 0.0);
+                QTRY_COMPARE(canvas->result().inferenceMs, 0.0);
                 QVERIFY(!exportButton->isEnabled());
-                QCOMPARE(canvas->result().image.isNull(), row == 1);
+                QTRY_COMPARE(canvas->result().image.isNull(), row == 1);
             }
         }
         QCOMPARE(starts.size(), 1);
@@ -1801,7 +1820,8 @@ class UiTests final : public QObject
         for (int row : {0, 1})
         {
             queue->setCurrentRow(row);
-            QVERIFY(!canvas->result().predictions.isEmpty());
+            QTRY_COMPARE_WITH_TIMEOUT(canvas->result().source, files[row], 10000);
+            QTRY_VERIFY(!canvas->result().predictions.isEmpty());
             QVERIFY(canvas->result().inferenceMs > 0);
             QVERIFY(exportButton->isEnabled());
         }
@@ -1822,10 +1842,10 @@ class UiTests final : public QObject
         for (int row : {0, 1, 0})
         {
             queue->setCurrentRow(row);
-            QCOMPARE(canvas->result().source, files[row]);
-            QCOMPARE(canvas->result().image.convertToFormat(QImage::Format_RGB888),
+            QTRY_COMPARE(canvas->result().source, files[row]);
+            QTRY_COMPARE(canvas->result().image.convertToFormat(QImage::Format_RGB888),
                      original.convertToFormat(QImage::Format_RGB888));
-            QCOMPARE(canvas->result().inferenceMs, 0.0);
+            QTRY_COMPARE(canvas->result().inferenceMs, 0.0);
             QVERIFY(canvas->result().predictions.isEmpty());
             QCOMPARE(table->rowCount(), 0);
             for (int metric = 0; metric < 3; ++metric)
@@ -1875,8 +1895,8 @@ class UiTests final : public QObject
         for (int row : {0, 1, 0})
         {
             queue->setCurrentRow(row);
-            QCOMPARE(canvas->result().source, row == 0 ? first : second);
-            QCOMPARE(canvas->result().image.convertToFormat(QImage::Format_RGB888),
+            QTRY_COMPARE(canvas->result().source, row == 0 ? first : second);
+            QTRY_COMPARE(canvas->result().image.convertToFormat(QImage::Format_RGB888),
                      row == 0 ? firstImage : secondImage);
             QVERIFY(canvas->result().predictions.isEmpty());
             QVERIFY(canvas->result().inferenceMs > 0);
@@ -1915,8 +1935,8 @@ class UiTests final : public QObject
         for (int row : {1, 0})
         {
             queue->setCurrentRow(row);
-            QCOMPARE(canvas->result().source, row == 0 ? first : second);
-            QVERIFY(!canvas->result().image.isNull());
+            QTRY_COMPARE(canvas->result().source, row == 0 ? first : second);
+            QTRY_VERIFY(!canvas->result().image.isNull());
             QVERIFY(canvas->result().predictions.isEmpty());
             QVERIFY(canvas->result().inferenceMs > 0);
             QCOMPARE(table->rowCount(), 0);
@@ -1968,7 +1988,7 @@ class UiTests final : public QObject
                  QStringLiteral("grayscale"));
 
         color->setCurrentIndex(color->findData(QStringLiteral("rgb")));
-        QCOMPARE(canvas->result().image.convertToFormat(QImage::Format_RGB888),
+        QTRY_COMPARE(canvas->result().image.convertToFormat(QImage::Format_RGB888),
                  grayResult.originalImage.convertToFormat(QImage::Format_RGB888));
         QVERIFY(!canvas->result().image.isGrayscale());
         QVERIFY(canvas->result().predictions.isEmpty());
@@ -2131,13 +2151,13 @@ class UiTests final : public QObject
                                      (exportButton->isEnabled() && !canvas->result().image.isNull()),
                                  45000);
         QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
-        QCOMPARE(canvas->result().stereoView, vision::StereoView::Left);
-        QCOMPARE(canvas->result().sourceFrameSize, QSize(320, 96));
-        QCOMPARE(canvas->result().image.size(), QSize(160, 96));
+        QTRY_COMPARE(canvas->result().stereoView, vision::StereoView::Left);
+        QTRY_COMPARE(canvas->result().sourceFrameSize, QSize(320, 96));
+        QTRY_COMPARE(canvas->result().image.size(), QSize(160, 96));
         const QColor pixel = canvas->result().image.pixelColor(80, 48);
         QCOMPARE(pixel.red(), pixel.green());
         QCOMPARE(pixel.green(), pixel.blue());
-        QCOMPARE(canvas->result().originalImage.size(), QSize(160, 96));
+        QTRY_COMPARE(canvas->result().originalImage.size(), QSize(160, 96));
         const QColor originalPixel = canvas->result().originalImage.pixelColor(80, 48);
         QVERIFY(originalPixel.red() > originalPixel.blue() + 100);
         auto *modelMeta = window_->findChild<QLabel *>(QStringLiteral("modelMetadata"));
@@ -2181,8 +2201,8 @@ class UiTests final : public QObject
                                      (exportButton->isEnabled() && !canvas->result().image.isNull()),
                                  45000);
         QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
-        QCOMPARE(canvas->result().stereoView, vision::StereoView::Full);
-        QCOMPARE(canvas->result().image.size(),
+        QTRY_COMPARE(canvas->result().stereoView, vision::StereoView::Full);
+        QTRY_COMPARE(canvas->result().image.size(),
                  QImage(fixture_->path() + QStringLiteral("/assets/bus.jpg")).size());
     }
 

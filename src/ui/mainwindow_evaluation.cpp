@@ -2,6 +2,8 @@
 #include "mainwindow.h"
 #include "evaluationpanel.h"
 #include "imagecanvas.h"
+#include "lazyimagequeue.h"
+#include "asyncimagepreview.h"
 #include "modelconversionpage.h"
 #include "icons.h"
 #include "core/evaluationworker.h"
@@ -118,16 +120,16 @@ void MainWindow::connectEvaluation()
         ++evaluationPreviewGeneration_; ++evaluationFilterGeneration_;
         if (!mode) for (int row = 0; row < queue_->count(); ++row) queue_->item(row)->setHidden(false);
         evaluationReviewActive_ = mode && !evaluationReport_.isEmpty();
-        workbenchTabs_->setTabEnabled(1, mode || !evaluationReport_.isEmpty());
         if (mode) workbenchTabs_->setCurrentIndex(1);
         else workbenchTabs_->setCurrentIndex(0);
         updateStartEligibility();
         selectQueueImage(queue_->currentRow());
     });
     connect(workbenchTabs_, &QTabWidget::currentChanged, this, [this](int index) {
-        if (busy_) return;
-        if (index == 1 && !evaluationReport_.isEmpty() && !evaluation_->evaluationMode()) evaluation_->setMode(true);
-        if (index == 0 && evaluationReviewActive_) reviewEvaluationImage(queue_->currentRow());
+        evaluation_->hideDatasetSettings();
+        updateStartEligibility();
+        // Navigation is presentation only: retain task mode, parameters and caches.
+        if (!busy_ && index == 0) selectQueueImage(queue_->currentRow());
     });
     connect(evaluation_, &EvaluationPanel::thresholdChanged, this, [this](double) {
         if (!busy_ && !evaluationReport_.isEmpty()) {
@@ -168,13 +170,18 @@ QString MainWindow::evaluationFingerprint() const
 void MainWindow::clearDatasetContext()
 {
     if (loadingDataset_ || !evaluation_) return;
+    ++queuePopulationGeneration_;
+    if (queuePopulationTimer_) { queuePopulationTimer_->stop(); queuePopulationTimer_->deleteLater(); queuePopulationTimer_ = nullptr; }
+    queuePopulating_ = false;
+    ++imagePreviewGeneration_;
+    if (imagePreviewLoader_) imagePreviewLoader_->cancel();
     if (evaluationPreviewCancellation_) evaluationPreviewCancellation_->store(true);
     if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
     ++evaluationPreviewGeneration_; ++evaluationFilterGeneration_;
     datasetManifest_ = {}; datasetSamples_.clear(); evaluationSampleIndices_.clear();
     evaluationReport_ = {}; evaluationDirectory_.clear(); evaluationReviewActive_ = false;
     evaluation_->clearDataset(); evaluation_->clearReport();
-    workbenchTabs_->setCurrentIndex(0); workbenchTabs_->setTabEnabled(1, false);
+    workbenchTabs_->setCurrentIndex(0);
     showGroundTruth_->hide();
     for (int row = 0; queue_ && row < queue_->count(); ++row) queue_->item(row)->setHidden(false);
 }
@@ -184,6 +191,8 @@ void MainWindow::loadDataset(const QString &yaml, const QString &split, const QS
     if (busy_ || evaluationWorker_ || gpuSetupProcess_ || (modelConversion_ && modelConversion_->isBusy())) return;
     auto *worker = new vision::EvaluationWorker(this);
     const auto delivered = std::make_shared<bool>(false);
+    const auto cancelled = std::make_shared<std::atomic_bool>(false);
+    datasetImportCancellation_ = cancelled;
     const auto importError = std::make_shared<QString>();
     evaluation_->setDatasetSource(yaml, split, metadata);
     evaluationWorker_ = worker;
@@ -198,7 +207,8 @@ void MainWindow::loadDataset(const QString &yaml, const QString &split, const QS
         else evaluation_->setDataset(datasetManifest_);
         showNotice(message, true);
     });
-    connect(worker, &vision::EvaluationWorker::datasetReady, this, [this, delivered](const QJsonObject &manifest) {
+    connect(worker, &vision::EvaluationWorker::datasetReady, this, [this, delivered, cancelled](const QJsonObject &manifest) {
+        if (cancelled->load()) return;
         *delivered = true;
         clearDatasetContext();
         datasetManifest_ = manifest; datasetSamples_.clear();
@@ -207,35 +217,74 @@ void MainWindow::loadDataset(const QString &yaml, const QString &split, const QS
         clearImageResults(); files_.clear(); queue_->clear();
         canvas_->clear(); predictionTable_->setRowCount(0); exportButton_->setEnabled(false);
         sourceKind_ = vision::SourceKind::Images;
-        for (const auto &value : manifest.value("samples").toArray()) {
-            const auto sample = value.toObject();
-            const auto path = sample.value("image").toString();
-            datasetSamples_.insert(path, sample); files_.append(path);
-            auto *item = new QListWidgetItem(ui::icon("image"), QFileInfo(path).fileName());
-            item->setToolTip(path + "\nGT · " + QString::number(sample.value("gt").toArray().size()) + " 个标注");
-            queue_->addItem(item);
-        }
         showGroundTruth_->show();
         detectionRange_->setCurrentIndex(0);
-        workbenchTabs_->setTabEnabled(1, true); workbenchTabs_->setCurrentIndex(0);
-        queue_->setCurrentRow(files_.isEmpty() ? -1 : 0);
-        lastResult_ = {}; updateSourceUi();
-        QString notice = QString("数据集预检查完成 · %1 张有效图片 · %2").arg(files_.size()).arg(manifest.value("split").toString());
-        if (manifest.value("root_relocated").toBool()) notice += " · 旧路径已按当前文件夹读取，原文件未修改";
-        showNotice(notice);
+        workbenchTabs_->setCurrentIndex(0);
+        lastResult_ = {};
+        populateDatasetQueue(manifest, [this, manifest] {
+            if (!evaluationWorker_) setBusy(false);
+            updateEvaluationModel(); updateSourceUi();
+            queue_->setCurrentRow(files_.isEmpty() ? -1 : 0);
+            selectQueueImage(queue_->currentRow());
+            QString notice = QString("数据集预检查完成 · %1 张有效图片 · %2").arg(files_.size()).arg(manifest.value("split").toString());
+            if (manifest.value("root_relocated").toBool()) notice += " · 旧路径已按当前文件夹读取，原文件未修改";
+            showNotice(notice);
+        });
     });
-    connect(worker, &QThread::finished, this, [this, worker, delivered, importError] {
+    connect(worker, &QThread::finished, this, [this, worker, delivered, importError, cancelled] {
         if (!*delivered) {
             if (datasetManifest_.isEmpty()) evaluation_->showDatasetImportError(importError->isEmpty() ? QStringLiteral("数据集检查已取消，可重新检查。") : *importError);
             else evaluation_->setDataset(datasetManifest_);
         }
         evaluationWorker_ = nullptr; worker->deleteLater();
-        setBusy(false); updateEvaluationModel();
-        updateSourceUi();
-        selectQueueImage(queue_->currentRow());
+        if (datasetImportCancellation_ == cancelled) datasetImportCancellation_.reset();
+        if (!queuePopulating_) {
+            setBusy(false); updateEvaluationModel(); updateSourceUi();
+            selectQueueImage(queue_->currentRow());
+        }
         if (closing_) QTimer::singleShot(0, this, &QWidget::close);
     });
     worker->start();
+}
+
+void MainWindow::populateDatasetQueue(const QJsonObject &manifest, const std::function<void()> &completed)
+{
+    const quint64 generation = ++queuePopulationGeneration_;
+    queuePopulating_ = true;
+    if (queuePopulationTimer_) { queuePopulationTimer_->stop(); queuePopulationTimer_->deleteLater(); }
+    queuePopulationTimer_ = new QTimer(this);
+    queuePopulationTimer_->setInterval(0);
+    auto samples = std::make_shared<QJsonArray>(manifest.value("samples").toArray());
+    auto offset = std::make_shared<int>(0);
+    auto *timer = queuePopulationTimer_;
+    const QIcon placeholder = ui::icon("image");
+    static_cast<LazyImageQueue *>(queue_)->setColorMode(currentConfig().colorMode);
+    connect(timer, &QTimer::timeout, this, [this, generation, samples, offset, timer, placeholder, completed] {
+        if (generation != queuePopulationGeneration_) { timer->stop(); timer->deleteLater(); return; }
+        QElapsedTimer budget; budget.start();
+        {
+            const QSignalBlocker queueSignals(queue_);
+            queue_->setUpdatesEnabled(false);
+            int added = 0;
+            while (*offset < samples->size() && added < 96 && budget.elapsed() < 5) {
+                const auto sample = samples->at((*offset)++).toObject();
+                const QString path = sample.value("image").toString();
+                files_.append(path); datasetSamples_.insert(path, sample);
+                auto *item = new QListWidgetItem(placeholder, QFileInfo(path).fileName());
+                item->setData(Qt::UserRole, path);
+                item->setToolTip(path + "\nGT · " + QString::number(sample.value("gt").toArray().size()) + " 个标注");
+                queue_->addItem(item); ++added;
+            }
+            queue_->setUpdatesEnabled(true);
+        }
+        progress_->setRange(0, samples->size()); progress_->setValue(*offset);
+        showNotice(QString("正在载入队列 · %1 / %2 张").arg(*offset).arg(samples->size()));
+        if (*offset < samples->size()) return;
+        timer->stop(); timer->deleteLater(); queuePopulationTimer_ = nullptr; queuePopulating_ = false;
+        static_cast<LazyImageQueue *>(queue_)->scheduleVisibleThumbnails();
+        completed();
+    });
+    timer->start();
 }
 
 void MainWindow::startEvaluation()
@@ -346,16 +395,15 @@ void MainWindow::loadEvaluationReport(const QString &directory)
     if (manifest.value("samples").toArray().isEmpty()) { showNotice("评估报告没有有效数据集快照。", true); return; }
     clearImageResults(); datasetManifest_ = manifest; datasetSamples_.clear();
     files_.clear(); queue_->clear(); sourceKind_ = vision::SourceKind::Images;
-    for (const auto &value : manifest.value("samples").toArray()) {
-        const auto sample = value.toObject(); const auto path = sample.value("image").toString();
-        files_.append(path); datasetSamples_.insert(path, sample);
-        auto *item = new QListWidgetItem(ui::icon("image"), QFileInfo(path).fileName()); item->setToolTip(path); queue_->addItem(item);
-    }
     evaluation_->setDataset(manifest); showGroundTruth_->show();
-    acceptEvaluationReport(report, directory, false);
-    evaluationRunFingerprint_.clear(); // Historical report identity remains explicit until a new task is started.
-    queue_->setCurrentRow(files_.isEmpty() ? -1 : 0);
-    updateSourceUi(); selectRoute(0);
+    setBusy(true); selectRoute(0);
+    populateDatasetQueue(manifest, [this, report, directory] {
+        setBusy(false);
+        acceptEvaluationReport(report, directory, false);
+        evaluationRunFingerprint_.clear(); // Historical snapshot remains explicit.
+        queue_->setCurrentRow(files_.isEmpty() ? -1 : 0);
+        updateSourceUi();
+    });
 }
 
 void MainWindow::attachGroundTruth(vision::InferenceResult &result) const
@@ -419,7 +467,6 @@ void MainWindow::reviewEvaluationImage(int row)
             lastResult_ = {}; exportButton_->setEnabled(false); countMetric_->setText("—"); latencyMetric_->setText("—"); classMetric_->setText("—");
             resultInfo_->setText("该图片未在当前评估任务中完成推理，GT 仅用于标注预览。");
         }
-        queue_->item(row)->setIcon(QPixmap::fromImage(output->result.image.scaled(64, 46, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
     });
     connect(thread, &QThread::finished, thread, &QObject::deleteLater);
     thread->start();
