@@ -1,0 +1,13 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "original_file_commitment": {
+    "file": "dataset-session-artifacts.json",
+    "bytes": 17736,
+    "sha256": "03937beb4569ce1c9ce87c413768a14ae314277bcc6355b1b62c69b8b5b91313"
+  }
+}

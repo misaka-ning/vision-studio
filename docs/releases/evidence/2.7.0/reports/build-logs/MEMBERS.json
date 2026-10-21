@@ -1,0 +1,10 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "version": "2.7.0",
+  "original_file_commitment": {
+    "file": "build-logs/MEMBERS.json",
+    "bytes": 924,
+    "sha256": "34dca13b74bf339071a4b0665ee34cdc86076d9d5315fd88d5c6de385de254ca"
+  }
+}

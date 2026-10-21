@@ -1,0 +1,25 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "final_deb_binding_and_readonly": true,
+      "yolov8n.pt_four_views_cache_export_and_original_bytes": true,
+      "yolov5n.pt_four_views_cache_export_and_original_bytes": true,
+      "yolov5n.onnx_four_views_cache_export_and_original_bytes": true,
+      "pt_architecture_values_and_types_equal_static_original": true,
+      "all_twelve_pngs_fully_decoded": true,
+      "onnx_explicit_missing_architecture": true,
+      "original_public_models_unchanged": true
+    }
+  },
+  "original_file_commitment": {
+    "file": "packaged-model-yaml-qa.json",
+    "bytes": 42209,
+    "sha256": "76937952dce1323f33786777ab0355ad56e76383a7e67157824e5a7801f6b4d8"
+  }
+}

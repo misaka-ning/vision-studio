@@ -1,0 +1,10 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "original_file_commitment": {
+    "file": "diagnostics/drop-preflight/public-evaluation/status.json",
+    "bytes": 234,
+    "sha256": "d49a12df7823fd3a402890c6d4b863ab7c1525e380b3e1c353007503ccc13e7b"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "original_file_commitment": {
+    "file": "source-bundle-qa.json",
+    "bytes": 2322193,
+    "sha256": "7c64293cfd0f6a4e2fcd9050575fd16c77d607183f35fa63a2ff3a50528bead4"
+  }
+}

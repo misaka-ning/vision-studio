@@ -1,0 +1,11 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.0",
+  "original_file_commitment": {
+    "file": "diagnostics/model-preflight-r2/visual-inspection.json",
+    "bytes": 2031,
+    "sha256": "2760b9fa210fb95ea73d5ac7205f23e443a9c75604ca8e52078c9c553f58cc71"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "original_file_commitment": {
+    "file": "diagnostics/model-preflight-r2/model-preflight-report.json",
+    "bytes": 16659,
+    "sha256": "ccacc021c0f892ba775a2008e3e0934b05c5d79bec5b4a2c722c338f799e0c56"
+  }
+}

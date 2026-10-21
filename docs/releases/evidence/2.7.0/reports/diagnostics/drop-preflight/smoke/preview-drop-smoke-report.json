@@ -1,0 +1,28 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.0",
+  "original_success": true,
+  "boolean_checks": {
+    "checks": {
+      "append_preserves_originals_gt_and_session": true,
+      "busy_drop_does_not_mutate_queue": true,
+      "cancel_preserves_dataset": true,
+      "directory_drop_loads_dataset": true,
+      "full_evaluation_excludes_temporaries": true,
+      "mixed_types_rejected": true,
+      "replace_clears_dataset_context_without_saving_temporary_session": true,
+      "temporary_real_cpu_inference_without_gt": true,
+      "temporary_selected_export": true,
+      "temporary_suffix_and_single_evaluation_blocked": true,
+      "video_drop_selected": true,
+      "yaml_drop_loads_dataset": true
+    }
+  },
+  "original_file_commitment": {
+    "file": "diagnostics/drop-preflight/smoke/preview-drop-smoke-report.json",
+    "bytes": 2604,
+    "sha256": "9d0eddeab1c29a0da58937fa9f571cd8196b5d5b37f0a8e46178420fb4b9cc93"
+  }
+}

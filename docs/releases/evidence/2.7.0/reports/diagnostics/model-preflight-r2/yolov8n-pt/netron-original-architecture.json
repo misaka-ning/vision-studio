@@ -1,0 +1,10 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "original_file_commitment": {
+    "file": "diagnostics/model-preflight-r2/yolov8n-pt/netron-original-architecture.json",
+    "bytes": 2969,
+    "sha256": "b527d25a056c2d2463beb277f64a8802af02ae4614c07891bf9dd0c57404b413"
+  }
+}

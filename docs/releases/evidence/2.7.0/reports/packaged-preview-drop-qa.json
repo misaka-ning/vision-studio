@@ -1,0 +1,29 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "full_evaluation_excludes_temporaries": true,
+      "video_drop_selected": true,
+      "mixed_types_rejected": true,
+      "cancel_preserves_dataset": true,
+      "temporary_suffix_and_single_evaluation_blocked": true,
+      "directory_drop_loads_dataset": true,
+      "temporary_real_cpu_inference_without_gt": true,
+      "temporary_selected_export": true,
+      "append_preserves_originals_gt_and_session": true,
+      "replace_clears_dataset_context_without_saving_temporary_session": true,
+      "yaml_drop_loads_dataset": true,
+      "busy_drop_does_not_mutate_queue": true
+    }
+  },
+  "original_file_commitment": {
+    "file": "packaged-preview-drop-qa.json",
+    "bytes": 10094,
+    "sha256": "3f241d493726cce3a084776dc399f0d6f9071017e13d21e3066f6eea1c3cf61d"
+  }
+}

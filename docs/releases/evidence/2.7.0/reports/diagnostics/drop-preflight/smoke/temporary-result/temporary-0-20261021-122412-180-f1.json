@@ -1,0 +1,10 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "version": "2.7.0",
+  "original_file_commitment": {
+    "file": "diagnostics/drop-preflight/smoke/temporary-result/temporary-0-20261021-122412-180-f1.json",
+    "bytes": 1831,
+    "sha256": "9d5436c8b8d43be28069309f46b7cf49f8275d759a872779fe62240d1e49ad57"
+  }
+}
