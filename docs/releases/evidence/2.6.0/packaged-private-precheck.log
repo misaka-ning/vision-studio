@@ -1,0 +1,1 @@
+{"success": true, "selected_images": 1223, "validation": {"positive_images": 813, "negative_images": 410, "missing_labels": 0, "excluded": 0}, "input_files_unchanged": true, "model_inference": false, "dataset_writes": false}

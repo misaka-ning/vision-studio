@@ -1,0 +1,6 @@
+﻿mAP50,mAP75,mAP50_95,ap_per_iou,ultralytics_max_f1_precision,ultralytics_max_f1_recall,confidence,match_iou,TP,FP,FN,precision,recall,F1,images,gt_boxes,predicted_boxes,no_ball_images,no_ball_false_positive_images,no_ball_false_positive_rate,no_ball_fpr_wilson95,no_ball_false_positive_boxes,no_ball_fp_boxes_per_image,fp_boxes_per_image,positive_images,positive_images_with_no_matched_ball,positive_image_miss_rate
+,,,"[null, null, null, null, null, null, null, null, null, null]",,,0.1,0.5,1,0,0,1.0,1.0,1.0,1,1,1,0,0,,,0,,0.0,1,0,0.0
+,,,"[null, null, null, null, null, null, null, null, null, null]",,,0.3,0.5,1,0,0,1.0,1.0,1.0,1,1,1,0,0,,,0,,0.0,1,0,0.0
+,,,"[null, null, null, null, null, null, null, null, null, null]",,,0.5,0.5,1,0,0,1.0,1.0,1.0,1,1,1,0,0,,,0,,0.0,1,0,0.0
+,,,"[null, null, null, null, null, null, null, null, null, null]",,,0.7,0.5,1,0,0,1.0,1.0,1.0,1,1,1,0,0,,,0,,0.0,1,0,0.0
+,,,"[null, null, null, null, null, null, null, null, null, null]",,,0.9,0.5,0,0,1,0.0,0.0,0.0,1,1,0,0,0,,,0,,0.0,1,1,1.0

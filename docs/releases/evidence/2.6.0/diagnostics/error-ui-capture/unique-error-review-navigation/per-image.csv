@@ -1,0 +1,5 @@
+﻿image,TP,FP,FN,negative,kept_prediction_indices,matched_indices,fp_indices,matched_gt_indices,missed_gt_indices
+/tmp/vision-evaluation-integration-tests-eQSaCZ/dataset-4/images/val/0000.png,1,0,0,False,[0],[0],[],[0],[]
+/tmp/vision-evaluation-integration-tests-eQSaCZ/dataset-4/images/val/0001.png,0,1,1,False,[0],[],[0],[],[0]
+/tmp/vision-evaluation-integration-tests-eQSaCZ/dataset-4/images/val/0002.png,0,1,0,True,[0],[],[0],[],[]
+/tmp/vision-evaluation-integration-tests-eQSaCZ/dataset-4/images/val/0003.png,1,0,0,False,[0],[0],[],[0],[]
