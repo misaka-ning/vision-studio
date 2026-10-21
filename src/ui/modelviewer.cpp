@@ -762,6 +762,9 @@ ModelViewer::ModelViewer(QWidget *parent) : QWidget(parent)
     parameterLayout->addWidget(m_parameters);
     m_stack->addWidget(m_parametersPage);
     m_yamlPage = new QWidget(m_stack);
+    m_yamlPage->setObjectName("modelYamlPage");
+    m_yamlPage->setAttribute(Qt::WA_StyledBackground, true);
+    m_yamlPage->setStyleSheet("#modelYamlPage { background:#202020; }");
     auto *yamlLayout = new QVBoxLayout(m_yamlPage);
     yamlLayout->setContentsMargins(0, 0, 0, 0);
     m_yamlStatus = new QLabel(m_yamlPage);

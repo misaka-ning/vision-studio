@@ -1491,7 +1491,7 @@ QWidget *MainWindow::buildModelDisplay()
             [this](ModelViewer::State state)
             {
                 structureStatus_->setText(state == ModelViewer::State::Loading ? "后台加载中…"
-                                          : state == ModelViewer::State::Ready ? QString("三种视图已缓存")
+                                          : state == ModelViewer::State::Ready ? QString("四种视图已缓存")
                                           : state == ModelViewer::State::Error ? "无法显示"
                                                                                : "等待模型");
             });
@@ -1508,7 +1508,7 @@ QWidget *MainWindow::buildModelDisplay()
                 if (pages_->currentIndex() == 2)
                     showNotice(error, true);
             });
-    auto *note = text("使用模型库中全局选中的模型，三种视图共用后台解析缓存。结构图可缩放与平移；层级树和参数"
+    auto *note = text("使用模型库中全局选中的模型，四种视图共用后台解析缓存。结构图可缩放与平移；层级树和参数"
                       "表支持搜索与详情查看。",
                       "tiny");
     note->setWordWrap(true);
