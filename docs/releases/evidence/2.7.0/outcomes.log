@@ -1,0 +1,680 @@
+SANITIZED OUTCOME EXTRACTION: this is not an original complete raw log.
+Only PASS/SKIP/FAIL/Totals/Ran/OK result lines are selected.
+Original complete logs remain local-only; source commitments identify them.
+Final suite totals come only from the final ctest projection; diagnostics are not added.
+
+# original relative file: diagnostics/build-and-launch/github-release-tests.log
+# original sha256: 094d20e5bcee3c8194e4329fed87bb5a9b2744e9fb13bbed6bb90626703f0872
+# diagnostic/other run; do not add to final suite counts
+Ran 48 tests in 0.152s
+OK
+
+# original relative file: diagnostics/build-and-launch/release-metadata-tests.log
+# original sha256: 2a9650d65d574f823ce18572b87776fb89419964c1c519cd041b9768a314ef05
+# diagnostic/other run; do not add to final suite counts
+Ran 11 tests in 0.010s
+OK
+
+# original relative file: diagnostics/feature-preflight/vision-input-drop-ui-tests.log
+# original sha256: b40ab55eb24ef10ad94edc5ebe4cbabe687221f6a4e346c9565bc103504a0524
+# diagnostic/other run; do not add to final suite counts
+PASS   : InputDropUiTests::initTestCase()
+PASS   : InputDropUiTests::nativeDropAcceptsDatasetAndVideoSources(directory)
+PASS   : InputDropUiTests::nativeDropAcceptsDatasetAndVideoSources(yaml)
+PASS   : InputDropUiTests::nativeDropAcceptsDatasetAndVideoSources(yml)
+PASS   : InputDropUiTests::nativeDropAcceptsDatasetAndVideoSources(video)
+PASS   : InputDropUiTests::looseImagesKeepMimeOrderAndOnlyLiveInTheQueue()
+PASS   : InputDropUiTests::datasetConflictHonorsReplaceAppendAndCancel(replace)
+PASS   : InputDropUiTests::datasetConflictHonorsReplaceAppendAndCancel(append)
+PASS   : InputDropUiTests::datasetConflictHonorsReplaceAppendAndCancel(cancel)
+PASS   : InputDropUiTests::nativePreviewChildDropCancelsPendingAutomaticSessionRestore(preview-page)
+PASS   : InputDropUiTests::nativePreviewChildDropCancelsPendingAutomaticSessionRestore(toolbar-label)
+PASS   : InputDropUiTests::nativePreviewChildDropCancelsPendingAutomaticSessionRestore(queue-viewport)
+PASS   : InputDropUiTests::invalidMixedDropDoesNotPartiallyReplaceValidInput()
+PASS   : InputDropUiTests::runningDetectionRejectsDropWithoutReplacingItsQueue()
+PASS   : InputDropUiTests::appendedTemporaryImagesPreserveDatasetCacheTruthAndSelectedExports()
+PASS   : InputDropUiTests::evaluationRangesOnlyIncludeOriginalLabeledSamples(whole-dataset)
+PASS   : InputDropUiTests::evaluationRangesOnlyIncludeOriginalLabeledSamples(dataset-tail)
+PASS   : InputDropUiTests::evaluationRangesOnlyIncludeOriginalLabeledSamples(one-original-sample)
+PASS   : InputDropUiTests::currentAndTailOfTemporaryItemDoNotStartEvaluation()
+PASS   : InputDropUiTests::largeTemporaryDropStaysResponsiveAndDiscardsStaleImageReplies()
+PASS   : InputDropUiTests::stoppingPartialTemporaryAppendRestoresOriginalQueueAndSession()
+PASS   : InputDropUiTests::cleanupTestCase()
+Totals: 22 passed, 0 failed, 0 skipped, 0 blacklisted, 15084ms
+
+# original relative file: diagnostics/feature-preflight/vision-model-yaml-tests.log
+# original sha256: 0e1084bc6ecb7b5c8212ae331c75a48e661b315518d2f6f213d2ec16e3ca35b4
+# diagnostic/other run; do not add to final suite counts
+PASS   : ModelYamlTests::initTestCase()
+PASS   : ModelYamlTests::blueprintRowsPreserveAllOriginalTypesAndOrder()
+PASS   : ModelYamlTests::modernScalesAndLegacyAnchorsArePreserved()
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(missing)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(array-not-dictionary)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(boolean-class-count)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(unknown-global-field)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(invalid-scale)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(incomplete-anchor-pair)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(self-reference)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(bad-negative)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(fractional-repeat)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(expression-module)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(non-list-args)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(oversized-string)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(excessive-depth)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(excessive-layer-count)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(excessive-document-bytes)
+PASS   : ModelYamlTests::newFileExportNeverOverwritesSourceExistingOrSymlink()
+PASS   : ModelYamlTests::concurrentExportsOnlyOneWriterCreatesDestination()
+PASS   : ModelYamlTests::cleanupTestCase()
+Totals: 21 passed, 0 failed, 0 skipped, 0 blacklisted, 9ms
+
+# original relative file: diagnostics/feature-preflight/vision-modelviewer-tests.log
+# original sha256: dabed47d38f2b01e16bf91bfefc6bc91571aa6cf710035ea14e3d3f58e6f7b31
+# diagnostic/other run; do not add to final suite counts
+PASS   : ModelViewerTests::initTestCase()
+PASS   : ModelViewerTests::realModelsRenderGraphs(onnx-structure)
+PASS   : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy)
+PASS   : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx)
+PASS   : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch)
+PASS   : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict)
+PASS   : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward)
+PASS   : ModelViewerTests::changingOrStoppingModelClearsOldMetadata()
+PASS   : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate()
+PASS   : ModelViewerTests::browserParsingFailuresAreChinese(unknown-format)
+PASS   : ModelViewerTests::browserParsingFailuresAreChinese(corrupt-onnx)
+PASS   : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel()
+PASS   : ModelViewerTests::hiddenStackedPagePreloadsAndKeepsCachedGraph()
+PASS   : ModelViewerTests::stopDuringLoadingReleasesStartedBrowserAndService()
+PASS   : ModelViewerTests::missingHelperOrRuntimeHasActionableChineseError()
+PASS   : ModelViewerTests::fourthYamlModeUsesRealSavedBlueprintAndSameCache(modern-yolov8-checkpoint)
+PASS   : ModelViewerTests::fourthYamlModeUsesRealSavedBlueprintAndSameCache(legacy-yolov5-checkpoint)
+PASS   : ModelViewerTests::fourthYamlModeUsesRealSavedBlueprintAndSameCache(onnx-without-architecture)
+PASS   : ModelViewerTests::fourthYamlModeUsesRealSavedBlueprintAndSameCache(weights-without-architecture)
+PASS   : ModelViewerTests::fourthYamlModeUsesRealSavedBlueprintAndSameCache(torchscript-without-architecture)
+PASS   : ModelViewerTests::yamlBridgeRejectsNonprimitiveCyclesAndLimitsWithoutTouchingCachedGraph()
+PASS   : ModelViewerTests::yamlFastSwitchClearsOldDocumentAndRejectsStaleCallbacks()
+PASS   : ModelViewerTests::maliciousCheckpointCannotExecuteNativePythonToShowYaml()
+PASS   : ModelViewerTests::cleanupTestCase()
+Totals: 24 passed, 0 failed, 0 skipped, 0 blacklisted, 19974ms
+
+# original relative file: diagnostics/qa-interrupted/vision-core-tests.log
+# original sha256: 33b81a1e5a1b0fcfef4088063bb3d8f9f8466c10604c51d7afaa436b8ac023e7
+# diagnostic/other run; do not add to final suite counts
+PASS   : CoreTests::initTestCase()
+PASS   : CoreTests::classFilterParsingAndValidation()
+PASS   : CoreTests::classFilterUsesActualOnnxClassCountAndOriginalIds()
+PASS   : CoreTests::classFilter32IsNotRenumberedAndZeroMatchSucceeds()
+PASS   : CoreTests::realOnnxClassFilterMatchesUnfilteredSubset()
+PASS   : CoreTests::classificationRejectsDetectionClassFilter()
+PASS   : CoreTests::yoloV8LetterboxClippingAndNms()
+PASS   : CoreTests::yoloV5UsesObjectnessAndClassScores()
+PASS   : CoreTests::classificationLogitsBecomeProbabilities()
+PASS   : CoreTests::classificationProbabilitiesRemainUnchanged()
+PASS   : CoreTests::preprocessingRespectsColorChannels()
+PASS   : CoreTests::preprocessingSubtractsMeanBeforeScaling()
+PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgb888-padded-scanlines)
+PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgba8888)
+PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgb32)
+PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(red)
+PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(green)
+PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(blue)
+PASS   : CoreTests::grayscaleThreeChannelsReplicateOneIntensity()
+PASS   : CoreTests::grayscaleDetectionPaddingUses114(single-channel)
+PASS   : CoreTests::grayscaleDetectionPaddingUses114(replicated-three-channel)
+PASS   : CoreTests::colorInputRejectsSingleChannelModel()
+PASS   : CoreTests::unsupportedONNXInputChannels(four-channels)
+PASS   : CoreTests::unsupportedONNXInputChannels(symbolic-channel-axis)
+PASS   : CoreTests::initializerGraphInputsRemainCompatible()
+PASS   : CoreTests::missingModelReportsFailure()
+PASS   : CoreTests::unsupportedDetectionOutputReportsFailure()
+PASS   : CoreTests::emptyImageReportsFailure()
+PASS   : CoreTests::workerProcessesEveryImageInBatch()
+PASS   : CoreTests::workerStopsBatchAndCanRunAgain()
+PASS   : CoreTests::workerDeliversVideoLastFrameAtEndOfFile()
+PASS   : CoreTests::workerReportsUnreadableInputAndFinishes()
+PASS   : CoreTests::stereoOddWidthSelectionAndInference()
+PASS   : CoreTests::stereoSelectionRejectsEmptyAndTooNarrowFrames()
+PASS   : CoreTests::workerSelectsSideBySideVideoView(full-frame)
+PASS   : CoreTests::workerSelectsSideBySideVideoView(left-eye)
+PASS   : CoreTests::workerSelectsSideBySideVideoView(right-eye)
+PASS   : CoreTests::workerKeepsImagesWholeWhenStereoViewSelected()
+PASS   : CoreTests::cleanupTestCase()
+Totals: 39 passed, 0 failed, 0 skipped, 0 blacklisted, 695ms
+
+# original relative file: diagnostics/qa-interrupted/vision-inference-delivery-tests.log
+# original sha256: 32bb4dbdfb9f3da7065bf796f78124919ee9094424b0d001ca344759e222d60f
+# diagnostic/other run; do not add to final suite counts
+PASS   : InferenceDeliveryTests::initTestCase()
+PASS   : InferenceDeliveryTests::slowConsumerBoundsDeliveryAndStopReleasesUnacknowledgedResult()
+PASS   : InferenceDeliveryTests::lateAcknowledgementFromCancelledJobCannotAdvanceNextJob()
+PASS   : InferenceDeliveryTests::acknowledgedBatchCompletesAllImagesWithoutLegacyDuplicateDelivery()
+PASS   : InferenceDeliveryTests::unboundedStandaloneWorkerRetainsExistingResultSignal()
+PASS   : InferenceDeliveryTests::cleanupTestCase()
+Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 1406ms
+
+# original relative file: diagnostics/qa-interrupted/vision-recording-tests.log
+# original sha256: 960cdefdc0f8f8b33a95bfd0fe5313d251bf590973e4c56e96cd4d05667c73bd
+# diagnostic/other run; do not add to final suite counts
+PASS   : RecordingTests::initTestCase()
+PASS   : RecordingTests::realClassFilteredResultIsRecordedWithOriginalIdMetadata()
+PASS   : RecordingTests::videoIsAnnotatedPlayableAndPublishedOnlyAtFinish()
+PASS   : RecordingTests::grayscaleOddEyePreservesContentAndAddsOnlyEdgePadding()
+PASS   : RecordingTests::cameraTimingUsesMeasuredDurationAndDecodesAllFrames()
+PASS   : RecordingTests::emptyDiscardAndInvalidDirectoryNeverPublishBrokenClips()
+PASS   : RecordingTests::changedResolutionEndsClipWithoutLosingItsPreviousFrames()
+PASS   : RecordingTests::workerRecordsEveryFrameAndFinishesAtEof()
+PASS   : RecordingTests::gpuRightEyeGrayscaleRecordingPreservesActualDevice()
+PASS   : RecordingTests::workerStartAfterFirstPreviewAndCancelClosesOnlyRecordedFrames()
+PASS   : RecordingTests::recordingFailureDoesNotInterruptInference()
+PASS   : RecordingTests::manualStopKeepsInferenceRunningAndRestartCreatesANewClip()
+PASS   : RecordingTests::stoppingDuringOnnxForwardRecordsTheLastCompletedFrame()
+PASS   : RecordingTests::stoppingWithPendingRecordingNeverOpensANewClip()
+PASS   : RecordingTests::cleanupTestCase()
+Totals: 15 passed, 0 failed, 0 skipped, 0 blacklisted, 2709ms
+
+# original relative file: qa-full/vision-batch-responsiveness-tests.log
+# original sha256: 3d87d1f1e023d4370c28c11c8ee6ed5ef741522a80a505ec34639438e49510bb
+# final complete run
+PASS   : BatchResponsivenessTests::initTestCase()
+PASS   : BatchResponsivenessTests::largeQueueLoadsOnlyVisibleThumbnailsAndCancelsStalePreviews()
+PASS   : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(1920x1080-rgb-random)
+PASS   : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(3840x2160-rgb-random)
+PASS   : BatchResponsivenessTests::automaticExportDiskFailureStopsWithoutDeadlockAndBatchCanRecover()
+PASS   : BatchResponsivenessTests::cleanupTestCase()
+Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 9237ms
+
+# original relative file: qa-full/vision-conversion-inference-tests.log
+# original sha256: fcd88a18419b5a0c256fc1ea57d742be0b731d49693474a9a29ffa06b41d0a64
+# final complete run
+PASS   : ConversionInferenceTests::initTestCase()
+PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(modern-gray-onnx)
+PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(legacy-focus-gray-onnx)
+PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(script-gray-detection-onnx)
+PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(script-gray-classification-onnx)
+PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(modern-c3-classification-torchscript-preserves-gray)
+PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(script-color-detection-torchscript)
+PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov8n-640-onnx-cpu)
+PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov5n-640-onnx-cpu)
+PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov8n-640-onnx-cuda)
+PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov5n-640-onnx-cuda)
+PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov8n-640-torchscript-cuda)
+PASS   : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(full-yolov5n-640-torchscript-cuda)
+PASS   : ConversionInferenceTests::cleanupTestCase()
+Totals: 14 passed, 0 failed, 0 skipped, 0 blacklisted, 118662ms
+
+# original relative file: qa-full/vision-conversion-ui-tests.log
+# original sha256: 3abee79cff5bdc1c0552f012ccf6bb0ad4fabc2d30df76dd375c03c1a3af06fb
+# final complete run
+PASS   : ConversionUiTests::initTestCase()
+PASS   : ConversionUiTests::formatAndUnsupportedSource()
+PASS   : ConversionUiTests::successKeepsJobSourceAndUsesLatestSelectionNextTime()
+PASS   : ConversionUiTests::existingOutputIsNeverOverwritten()
+PASS   : ConversionUiTests::cancelIsResponsiveAndKeepsUnrelatedDirectories()
+PASS   : ConversionUiTests::completedArtifactCanStillCancelStuckWorker()
+PASS   : ConversionUiTests::workerCannotRedirectCleanupToAnotherDirectory()
+PASS   : ConversionUiTests::cleanupTestCase()
+Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 660ms
+
+# original relative file: qa-full/vision-core-tests.log
+# original sha256: 15900377dd298be1f24101ecf011f3d687b7f4a47fedb3360c9263a57103e61f
+# final complete run
+PASS   : CoreTests::initTestCase()
+PASS   : CoreTests::classFilterParsingAndValidation()
+PASS   : CoreTests::classFilterUsesActualOnnxClassCountAndOriginalIds()
+PASS   : CoreTests::classFilter32IsNotRenumberedAndZeroMatchSucceeds()
+PASS   : CoreTests::realOnnxClassFilterMatchesUnfilteredSubset()
+PASS   : CoreTests::classificationRejectsDetectionClassFilter()
+PASS   : CoreTests::yoloV8LetterboxClippingAndNms()
+PASS   : CoreTests::yoloV5UsesObjectnessAndClassScores()
+PASS   : CoreTests::classificationLogitsBecomeProbabilities()
+PASS   : CoreTests::classificationProbabilitiesRemainUnchanged()
+PASS   : CoreTests::preprocessingRespectsColorChannels()
+PASS   : CoreTests::preprocessingSubtractsMeanBeforeScaling()
+PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgb888-padded-scanlines)
+PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgba8888)
+PASS   : CoreTests::inputPreviewUsesModelLuminanceAndPreservesColor(rgb32)
+PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(red)
+PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(green)
+PASS   : CoreTests::grayscaleSingleChannelUsesLuminance(blue)
+PASS   : CoreTests::grayscaleThreeChannelsReplicateOneIntensity()
+PASS   : CoreTests::grayscaleDetectionPaddingUses114(single-channel)
+PASS   : CoreTests::grayscaleDetectionPaddingUses114(replicated-three-channel)
+PASS   : CoreTests::colorInputRejectsSingleChannelModel()
+PASS   : CoreTests::unsupportedONNXInputChannels(four-channels)
+PASS   : CoreTests::unsupportedONNXInputChannels(symbolic-channel-axis)
+PASS   : CoreTests::initializerGraphInputsRemainCompatible()
+PASS   : CoreTests::missingModelReportsFailure()
+PASS   : CoreTests::unsupportedDetectionOutputReportsFailure()
+PASS   : CoreTests::emptyImageReportsFailure()
+PASS   : CoreTests::workerProcessesEveryImageInBatch()
+PASS   : CoreTests::workerStopsBatchAndCanRunAgain()
+PASS   : CoreTests::workerDeliversVideoLastFrameAtEndOfFile()
+PASS   : CoreTests::workerReportsUnreadableInputAndFinishes()
+PASS   : CoreTests::stereoOddWidthSelectionAndInference()
+PASS   : CoreTests::stereoSelectionRejectsEmptyAndTooNarrowFrames()
+PASS   : CoreTests::workerSelectsSideBySideVideoView(full-frame)
+PASS   : CoreTests::workerSelectsSideBySideVideoView(left-eye)
+PASS   : CoreTests::workerSelectsSideBySideVideoView(right-eye)
+PASS   : CoreTests::workerKeepsImagesWholeWhenStereoViewSelected()
+PASS   : CoreTests::cleanupTestCase()
+Totals: 39 passed, 0 failed, 0 skipped, 0 blacklisted, 697ms
+
+# original relative file: qa-full/vision-dataset-session-tests.log
+# original sha256: f03fa7630cecbe23c98ed33617842f11be31b479cd327fe7f2505acd760442b5
+# final complete run
+PASS   : DatasetSessionTests::initTestCase()
+PASS   : DatasetSessionTests::missingFileDoesNotCreateAnything()
+PASS   : DatasetSessionTests::roundTripPreservesOriginalSourceAndSplit(train)
+PASS   : DatasetSessionTests::roundTripPreservesOriginalSourceAndSplit(val)
+PASS   : DatasetSessionTests::roundTripPreservesOriginalSourceAndSplit(test)
+PASS   : DatasetSessionTests::optionalMetadataAndUnavailableSourceAreNotFilesystemValidation()
+PASS   : DatasetSessionTests::nonFileRecordReportsIoErrorWithoutDeletingIt()
+PASS   : DatasetSessionTests::invalidJsonIsPreserved(truncated)
+PASS   : DatasetSessionTests::invalidJsonIsPreserved(array)
+PASS   : DatasetSessionTests::invalidJsonIsPreserved(unknown-schema)
+PASS   : DatasetSessionTests::invalidJsonIsPreserved(wrong-field-type)
+PASS   : DatasetSessionTests::invalidJsonIsPreserved(relative-source)
+PASS   : DatasetSessionTests::invalidJsonIsPreserved(bad-split)
+PASS   : DatasetSessionTests::invalidJsonIsPreserved(relative-metadata)
+PASS   : DatasetSessionTests::oversizedInputIsRejectedWithoutChangingIt()
+PASS   : DatasetSessionTests::invalidSaveDoesNotReplaceValidRecord()
+PASS   : DatasetSessionTests::unwritableParentDoesNotFallBackToTruncatingExistingFile()
+PASS   : DatasetSessionTests::concurrentReadersObserveCompleteOldOrNewRecords()
+PASS   : DatasetSessionTests::cleanupTestCase()
+Totals: 19 passed, 0 failed, 0 skipped, 0 blacklisted, 57ms
+
+# original relative file: qa-full/vision-dataset-session-ui-tests.log
+# original sha256: 3ac4234818305e5d38906d74e6b37f567e38b4948f4c600ba068a29701d81724
+# final complete run
+PASS   : DatasetSessionUiTests::initTestCase()
+PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-train)
+PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-val)
+PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-test)
+PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(yaml-train)
+PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(yaml-val)
+PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(yaml-test)
+PASS   : DatasetSessionUiTests::failedImportKeepsLastSuccessfulRecord()
+PASS   : DatasetSessionUiTests::cancelledQueuePopulationKeepsLastSuccessfulRecord()
+PASS   : DatasetSessionUiTests::missingCorruptAndUnavailableSessionsRecoverSafely(missing-json)
+PASS   : DatasetSessionUiTests::missingCorruptAndUnavailableSessionsRecoverSafely(corrupt-json)
+PASS   : DatasetSessionUiTests::missingCorruptAndUnavailableSessionsRecoverSafely(unknown-schema)
+PASS   : DatasetSessionUiTests::missingCorruptAndUnavailableSessionsRecoverSafely(missing-source)
+PASS   : DatasetSessionUiTests::explicitManualSelectionWinsBeforeDeferredRestore(manual-then-restore)
+PASS   : DatasetSessionUiTests::explicitManualSelectionWinsBeforeDeferredRestore(restore-then-manual-without-event-loop)
+PASS   : DatasetSessionUiTests::openingAndCancellingPickerSuppressesPendingRestore()
+PASS   : DatasetSessionUiTests::cleanupTestCase()
+Totals: 17 passed, 0 failed, 0 skipped, 0 blacklisted, 6651ms
+
+# original relative file: qa-full/vision-evaluation-integration-tests.log
+# original sha256: c7b075e0044b31e60d3665fcea8648dce12918b729a69f1e3f13d7c6203d506a
+# final complete run
+PASS   : EvaluationIntegrationTests::initTestCase()
+PASS   : EvaluationIntegrationTests::datasetInputSharesQueueGroundTruthAndPreviewMode()
+PASS   : EvaluationIntegrationTests::shortcutOpensDatasetDirectoryInsteadOfLooseImagePicker()
+PASS   : EvaluationIntegrationTests::canvasAcceptsDatasetsAndCanCancelTemporaryImagesWithoutChangingQueue()
+PASS   : EvaluationIntegrationTests::directoryImportFindsConventionalDatasetBesideTrainingConfiguration()
+PASS   : EvaluationIntegrationTests::explicitYamlOptionDisambiguatesDirectoryWithoutGuessing()
+PASS   : EvaluationIntegrationTests::firstImportMissingValKeepsDirectoryForExplicitTrainRetry()
+PASS   : EvaluationIntegrationTests::relocatedDatasetFolderRemainsUsableWhenSwitchingSplit()
+PASS   : EvaluationIntegrationTests::minimumWindowContainsEntireCanvas()
+PASS   : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cpu-layout-only)
+PASS   : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cuda-layout-only)
+PASS   : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cpu-layout-only)
+PASS   : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cuda-layout-only)
+PASS   : EvaluationIntegrationTests::fullWidthTabsChangeOnlyViewAndShareDetectionRange()
+PASS   : EvaluationIntegrationTests::missingCurrentSelectionDoesNotExpandTask()
+PASS   : EvaluationIntegrationTests::missingLabelsNeverBecomeNegativeSamples()
+PASS   : EvaluationIntegrationTests::failedSplitChangeDoesNotMislabelPreviousDataset()
+PASS   : EvaluationIntegrationTests::rangesAndMetrics(all-starts-at-first)
+PASS   : EvaluationIntegrationTests::rangesAndMetrics(tail-includes-selected)
+PASS   : EvaluationIntegrationTests::rangesAndMetrics(current-only)
+PASS   : EvaluationIntegrationTests::rangesAndMetrics(single-current)
+PASS   : EvaluationIntegrationTests::rangesAndMetrics(sixty-one-all)
+PASS   : EvaluationIntegrationTests::rangesAndMetrics(sixty-one-tail)
+PASS   : EvaluationIntegrationTests::rangesAndMetrics(sixty-one-current-last)
+PASS   : EvaluationIntegrationTests::thresholdCurveFiltersAndAdoptedConfiguration()
+PASS   : EvaluationIntegrationTests::errorReviewNavigatesUniqueImagesAtCurrentThresholdWithoutInference()
+PASS   : EvaluationIntegrationTests::zeroErrorReviewDoesNotInventErrorsOutsideCurrentImageRange()
+PASS   : EvaluationIntegrationTests::adoptedConfidencePreservesThreeDecimalWorkingPoints()
+PASS   : EvaluationIntegrationTests::selectedResultExportUsesCurrentThresholdAndTruth()
+PASS   : EvaluationIntegrationTests::historyReopenDoesNotSelectAnotherGlobalModel()
+PASS   : EvaluationIntegrationTests::evaluationScopeDoesNotBorrowOrdinaryPreviewCache()
+PASS   : EvaluationIntegrationTests::switchingToPreviewLeavesEvaluationReview()
+PASS   : EvaluationIntegrationTests::changedPreprocessingRestoresPureGroundTruthPreview()
+PASS   : EvaluationIntegrationTests::smallerModelInvalidatesMappingWithoutInventingFalseNegatives()
+PASS   : EvaluationIntegrationTests::stoppingPreservesCompletedPrefixAndReview()
+PASS   : EvaluationIntegrationTests::cleanupTestCase()
+Totals: 36 passed, 0 failed, 0 skipped, 0 blacklisted, 65783ms
+
+# original relative file: qa-full/vision-evaluation-panel-tests.log
+# original sha256: eee1575dc0538ed1f6a84f5a1cb81b56f36ef597d732eecd92f57e6caaeb86df
+# final complete run
+PASS   : EvaluationPanelTests::initTestCase()
+PASS   : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml()
+PASS   : EvaluationPanelTests::cancellingOrBusyDoesNotRequestDataset()
+PASS   : EvaluationPanelTests::unifiedPickerRejectsInvalidSourceInline()
+PASS   : EvaluationPanelTests::failedFirstImportKeepsSourceAndAllowsExplicitSplitRetry()
+PASS   : EvaluationPanelTests::modeRequiresValidDatasetAndDetection()
+PASS   : EvaluationPanelTests::missingLabelsAndNegativeSamples()
+PASS   : EvaluationPanelTests::mappingPreservesOriginalIdsAndValidatesNewModel()
+PASS   : EvaluationPanelTests::refreshDoesNotEmitRecursiveConfigurationSignals()
+PASS   : EvaluationPanelTests::sameManifestRestoresFailedDatasetSelectionWithoutRecursiveSignals()
+PASS   : EvaluationPanelTests::busyLocksConfigurationAndMapping()
+PASS   : EvaluationPanelTests::spinBoxesIgnoreWheel()
+PASS   : EvaluationPanelTests::operatingPointSelectionNeverAutoApplies()
+PASS   : EvaluationPanelTests::arrowsSelectAdjacentComputedThresholds()
+PASS   : EvaluationPanelTests::tableAndCurveSelectActualRows()
+PASS   : EvaluationPanelTests::unavailableAndPartialMetricsRemainNA()
+PASS   : EvaluationPanelTests::constrainedRecommendationAndTestPolicy()
+PASS   : EvaluationPanelTests::recommendationPlateauUsesHighestConfidence()
+PASS   : EvaluationPanelTests::scanValidationAndImageFilter()
+PASS   : EvaluationPanelTests::exportedCopyKeepsOriginalAndAddsAnalysisSnapshot()
+PASS   : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges()
+PASS   : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar()
+PASS   : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode()
+PASS   : EvaluationPanelTests::captureFluentLayout()
+PASS   : EvaluationPanelTests::cleanupTestCase()
+Totals: 25 passed, 0 failed, 0 skipped, 0 blacklisted, 748ms
+
+# original relative file: qa-full/vision-evaluation-python-tests.log
+# original sha256: 97a68b09e7c37e2f978c2d3774c6a416e6a7ea2cc40c3f9ea1e100fcfee1318c
+# final complete run
+Ran 49 tests in 4.858s
+OK
+
+# original relative file: qa-full/vision-evaluation-worker-tests.log
+# original sha256: 7863bd7170d86cd2036d4102068281aba043a3f4a70f27228d40387c63af5aea
+# final complete run
+PASS   : EvaluationWorkerTests::initTestCase()
+PASS   : EvaluationWorkerTests::prepareUsesRealDimensionsAndFlagsMissingLabels()
+PASS   : EvaluationWorkerTests::actualOnnxAllAndSubsets(all-three)
+PASS   : EvaluationWorkerTests::actualOnnxAllAndSubsets(from-second)
+PASS   : EvaluationWorkerTests::actualOnnxAllAndSubsets(only-last)
+PASS   : EvaluationWorkerTests::actualOnnxAllAndSubsets(more-than-fifty-all)
+PASS   : EvaluationWorkerTests::actualOnnxAllAndSubsets(more-than-fifty-tail)
+PASS   : EvaluationWorkerTests::stopRetainsOnlyCompletedPrefix()
+PASS   : EvaluationWorkerTests::stopBeforeLoadProducesEmptyCancelledReport()
+PASS   : EvaluationWorkerTests::staleDatasetRejectedBeforePrediction()
+PASS   : EvaluationWorkerTests::duplicateAndForeignRangesRejected()
+PASS   : EvaluationWorkerTests::invalidMappingAndScanPreventInference()
+PASS   : EvaluationWorkerTests::backgroundReviewKeepsSnapshotAndGrayscale()
+PASS   : EvaluationWorkerTests::unprocessedPreviewCannotBecomeCompletedResult()
+PASS   : EvaluationWorkerTests::reviewRejectsWrongRowAndChangedPixels()
+PASS   : EvaluationWorkerTests::modifiedPredictionCacheCannotDisagreeWithSavedMetrics()
+PASS   : EvaluationWorkerTests::filtersReadCompactCacheWithoutOpeningImages()
+PASS   : EvaluationWorkerTests::cleanupTestCase()
+Totals: 18 passed, 0 failed, 0 skipped, 0 blacklisted, 27873ms
+
+# original relative file: qa-full/vision-gpu-runtime-tests.log
+# original sha256: aa23924ad440af30e2893671c75a3a745bd142377fde34261679e40b8a376e79
+# final complete run
+Ran 21 tests in 1.252s
+OK
+
+# original relative file: qa-full/vision-gpu-tests.log
+# original sha256: 89174833cb19b2ef9f6d3d616d75568627e945e2e0ed1703ffd71d13ee9c7ede
+# final complete run
+PASS   : GpuBackendTests::initTestCase()
+PASS   : GpuBackendTests::classFilterCpuAndCudaKeepIdenticalOriginalIds()
+PASS   : GpuBackendTests::realModernAndLegacyPtColorAndGrayscale()
+PASS   : GpuBackendTests::torchScriptC1AndC3GrayscaleDetectionAndClassification()
+PASS   : GpuBackendTests::nativeGrayC1C3Classification()
+PASS   : GpuBackendTests::modernAndLegacyRealSingleChannelStems()
+PASS   : GpuBackendTests::realOnnxCudaMatchesCpuAndExecutesCudaNodes()
+PASS   : GpuBackendTests::onnxC1AndC3GrayPixelsMatchModelInput()
+PASS   : GpuBackendTests::onnxCudaCancellationTerminatesRunAndSessionCanRecover()
+PASS   : GpuBackendTests::ptCudaCancellationStopsChildAndCudaReloadWorks()
+PASS   : GpuBackendTests::cleanupTestCase()
+Totals: 11 passed, 0 failed, 0 skipped, 0 blacklisted, 133720ms
+
+# original relative file: qa-full/vision-inference-delivery-tests.log
+# original sha256: 1c138b958ddc1d8ad2279447efedcd082a94774c8fdcfcc1595451560d0c13f5
+# final complete run
+PASS   : InferenceDeliveryTests::initTestCase()
+PASS   : InferenceDeliveryTests::slowConsumerBoundsDeliveryAndStopReleasesUnacknowledgedResult()
+PASS   : InferenceDeliveryTests::lateAcknowledgementFromCancelledJobCannotAdvanceNextJob()
+PASS   : InferenceDeliveryTests::acknowledgedBatchCompletesAllImagesWithoutLegacyDuplicateDelivery()
+PASS   : InferenceDeliveryTests::unboundedStandaloneWorkerRetainsExistingResultSignal()
+PASS   : InferenceDeliveryTests::cleanupTestCase()
+Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 1448ms
+
+# original relative file: qa-full/vision-input-drop-ui-tests.log
+# original sha256: f071dcbfb781dc6793d976584d6b9985c0ddb9afa121e0b73d79bf17ecf73768
+# final complete run
+PASS   : InputDropUiTests::initTestCase()
+PASS   : InputDropUiTests::nativeDropAcceptsDatasetAndVideoSources(directory)
+PASS   : InputDropUiTests::nativeDropAcceptsDatasetAndVideoSources(yaml)
+PASS   : InputDropUiTests::nativeDropAcceptsDatasetAndVideoSources(yml)
+PASS   : InputDropUiTests::nativeDropAcceptsDatasetAndVideoSources(video)
+PASS   : InputDropUiTests::looseImagesKeepMimeOrderAndOnlyLiveInTheQueue()
+PASS   : InputDropUiTests::datasetConflictHonorsReplaceAppendAndCancel(replace)
+PASS   : InputDropUiTests::datasetConflictHonorsReplaceAppendAndCancel(append)
+PASS   : InputDropUiTests::datasetConflictHonorsReplaceAppendAndCancel(cancel)
+PASS   : InputDropUiTests::nativePreviewChildDropCancelsPendingAutomaticSessionRestore(preview-page)
+PASS   : InputDropUiTests::nativePreviewChildDropCancelsPendingAutomaticSessionRestore(toolbar-label)
+PASS   : InputDropUiTests::nativePreviewChildDropCancelsPendingAutomaticSessionRestore(queue-viewport)
+PASS   : InputDropUiTests::invalidMixedDropDoesNotPartiallyReplaceValidInput()
+PASS   : InputDropUiTests::runningDetectionRejectsDropWithoutReplacingItsQueue()
+PASS   : InputDropUiTests::appendedTemporaryImagesPreserveDatasetCacheTruthAndSelectedExports()
+PASS   : InputDropUiTests::evaluationRangesOnlyIncludeOriginalLabeledSamples(whole-dataset)
+PASS   : InputDropUiTests::evaluationRangesOnlyIncludeOriginalLabeledSamples(dataset-tail)
+PASS   : InputDropUiTests::evaluationRangesOnlyIncludeOriginalLabeledSamples(one-original-sample)
+PASS   : InputDropUiTests::currentAndTailOfTemporaryItemDoNotStartEvaluation()
+PASS   : InputDropUiTests::largeTemporaryDropStaysResponsiveAndDiscardsStaleImageReplies()
+PASS   : InputDropUiTests::stoppingPartialTemporaryAppendRestoresOriginalQueueAndSession()
+PASS   : InputDropUiTests::cleanupTestCase()
+Totals: 22 passed, 0 failed, 0 skipped, 0 blacklisted, 15081ms
+
+# original relative file: qa-full/vision-model-conversion-tests.log
+# original sha256: 6af531d4cbe4ec69b04712737c26af400a9cace2127e8ee42cff9f1cb8a4e286
+# final complete run
+Ran 20 tests in 112.163s
+OK
+
+# original relative file: qa-full/vision-model-yaml-tests.log
+# original sha256: 7ece9856802435fc7d4018b257c80ddbe8444d5b90fb78098fb4a90b42b8fdb9
+# final complete run
+PASS   : ModelYamlTests::initTestCase()
+PASS   : ModelYamlTests::blueprintRowsPreserveAllOriginalTypesAndOrder()
+PASS   : ModelYamlTests::modernScalesAndLegacyAnchorsArePreserved()
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(missing)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(array-not-dictionary)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(boolean-class-count)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(unknown-global-field)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(invalid-scale)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(incomplete-anchor-pair)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(self-reference)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(bad-negative)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(fractional-repeat)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(expression-module)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(non-list-args)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(oversized-string)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(excessive-depth)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(excessive-layer-count)
+PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(excessive-document-bytes)
+PASS   : ModelYamlTests::newFileExportNeverOverwritesSourceExistingOrSymlink()
+PASS   : ModelYamlTests::concurrentExportsOnlyOneWriterCreatesDestination()
+PASS   : ModelYamlTests::cleanupTestCase()
+Totals: 21 passed, 0 failed, 0 skipped, 0 blacklisted, 10ms
+
+# original relative file: qa-full/vision-modelviewer-tests.log
+# original sha256: ddd301a116aaffd6cbd19596ccba5064c3461345c10560e77d902d671ef63d2b
+# final complete run
+PASS   : ModelViewerTests::initTestCase()
+PASS   : ModelViewerTests::realModelsRenderGraphs(onnx-structure)
+PASS   : ModelViewerTests::realModelsRenderGraphs(pt-module-hierarchy)
+PASS   : ModelViewerTests::threeModesShowRealMetadataWithoutReload(onnx)
+PASS   : ModelViewerTests::threeModesShowRealMetadataWithoutReload(pytorch)
+PASS   : ModelViewerTests::threeModesShowRealMetadataWithoutReload(state-dict)
+PASS   : ModelViewerTests::threeModesShowRealMetadataWithoutReload(torchscript-forward)
+PASS   : ModelViewerTests::changingOrStoppingModelClearsOldMetadata()
+PASS   : ModelViewerTests::nestedOnnxGraphsKeepSameNamedParametersSeparate()
+PASS   : ModelViewerTests::browserParsingFailuresAreChinese(unknown-format)
+PASS   : ModelViewerTests::browserParsingFailuresAreChinese(corrupt-onnx)
+PASS   : ModelViewerTests::rapidSwitchOnlyCompletesLatestModel()
+PASS   : ModelViewerTests::hiddenStackedPagePreloadsAndKeepsCachedGraph()
+PASS   : ModelViewerTests::stopDuringLoadingReleasesStartedBrowserAndService()
+PASS   : ModelViewerTests::missingHelperOrRuntimeHasActionableChineseError()
+PASS   : ModelViewerTests::fourthYamlModeUsesRealSavedBlueprintAndSameCache(modern-yolov8-checkpoint)
+PASS   : ModelViewerTests::fourthYamlModeUsesRealSavedBlueprintAndSameCache(legacy-yolov5-checkpoint)
+PASS   : ModelViewerTests::fourthYamlModeUsesRealSavedBlueprintAndSameCache(onnx-without-architecture)
+PASS   : ModelViewerTests::fourthYamlModeUsesRealSavedBlueprintAndSameCache(weights-without-architecture)
+PASS   : ModelViewerTests::fourthYamlModeUsesRealSavedBlueprintAndSameCache(torchscript-without-architecture)
+PASS   : ModelViewerTests::yamlBridgeRejectsNonprimitiveCyclesAndLimitsWithoutTouchingCachedGraph()
+PASS   : ModelViewerTests::yamlFastSwitchClearsOldDocumentAndRejectsStaleCallbacks()
+PASS   : ModelViewerTests::maliciousCheckpointCannotExecuteNativePythonToShowYaml()
+PASS   : ModelViewerTests::samePathReplacementInvalidatesAndRebuildsYamlCache()
+PASS   : ModelViewerTests::sourceChangedDuringParsingCannotCommitReadyOrYaml()
+PASS   : ModelViewerTests::cleanupTestCase()
+Totals: 26 passed, 0 failed, 0 skipped, 0 blacklisted, 21398ms
+
+# original relative file: qa-full/vision-netron-server-tests.log
+# original sha256: c9963b2649be52760341b454f0f5989f50e8350d399ab7e8f5ad7f8b1609d906
+# final complete run
+Ran 11 tests in 4.577s
+OK
+
+# original relative file: qa-full/vision-pt-tests.log
+# original sha256: 232c2e1e6ee13fca1239d0a15220fd94ac5c8e92016157b05fa1be7d0ce8e312
+# final complete run
+PASS   : PtBackendTests::initTestCase()
+PASS   : PtBackendTests::realPtClassFilterMatchesOriginalIds(modern-yolov8)
+PASS   : PtBackendTests::realPtClassFilterMatchesOriginalIds(legacy-yolov5)
+PASS   : PtBackendTests::torchScriptClassFilterUsesModelMetadataAndRejectsClassification()
+PASS   : PtBackendTests::modelInspectionIgnoresUserLabelsAndFiltering()
+PASS   : PtBackendTests::torchScriptClass32RemainsOriginalId()
+PASS   : PtBackendTests::realCheckpointLoadsNamesAndProcessesConsecutiveImages()
+PASS   : PtBackendTests::unavailableCudaIsExplicitAndAutoFallbackIsRecorded()
+PASS   : PtBackendTests::cpuRequestRejectsUnexpectedCudaHandshake()
+PASS   : PtBackendTests::realModernAndLegacyGrayscalePreviewPreservesOriginalPixels()
+PASS   : PtBackendTests::grayscaleThreeChannelsAreEqualAndUseBgrToGrayWeights()
+PASS   : PtBackendTests::grayscaleSingleChannelIsInferredFromTorchScriptConv()
+PASS   : PtBackendTests::nativeClassificationSupportsOneAndThreeGrayChannels()
+PASS   : PtBackendTests::grayscaleTorchScriptDetectionRestoresLetterboxCoordinates()
+PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(red)
+PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(green)
+PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(blue)
+PASS   : PtBackendTests::sixteenBitGrayscalePreviewMatchesActualPtInput(rgba64)
+PASS   : PtBackendTests::sixteenBitGrayscalePreviewMatchesActualPtInput(grayscale16)
+PASS   : PtBackendTests::realYoloSingleChannelStemsPreserveGrayscalePredictions()
+PASS   : PtBackendTests::invalidTorchScriptChannelMetadataIsRejected()
+PASS   : PtBackendTests::detectionInputSizeMustBeMultipleOf32AtLoad()
+PASS   : PtBackendTests::torchScriptWithoutInputConstraintsRequiresActionableMetadata()
+PASS   : PtBackendTests::processHandshakeCannotGuessMissingOrInvalidInputChannels()
+PASS   : PtBackendTests::missingExplicitPythonReportsFailure()
+PASS   : PtBackendTests::officialLegacyYoloV5CheckpointRunsWithBundledFramework()
+PASS   : PtBackendTests::invalidCheckpointCannotLeavePreviousModelLoaded()
+PASS   : PtBackendTests::bareStateDictionaryReportsMissingArchitecture()
+PASS   : PtBackendTests::metadataBearingTorchScriptClassificationUsesTopK()
+PASS   : PtBackendTests::customOnnxPreprocessingCannotSilentlyChangePtInference()
+PASS   : PtBackendTests::cancellationInterruptsBlockedModelInitialization()
+PASS   : PtBackendTests::cancellationInterruptsBlockedInference()
+PASS   : PtBackendTests::invalidProcessProtocolResetsBackend()
+PASS   : PtBackendTests::substitutedModelHandshakeIsRejected()
+PASS   : PtBackendTests::shortenedInitializationDeadlineStopsBackend()
+PASS   : PtBackendTests::cleanupTestCase()
+Totals: 36 passed, 0 failed, 0 skipped, 0 blacklisted, 249108ms
+
+# original relative file: qa-full/vision-recording-tests.log
+# original sha256: d2b654433934d184074f74940c21d672b360d2329622a24226f035c0861e5d3c
+# final complete run
+PASS   : RecordingTests::initTestCase()
+PASS   : RecordingTests::realClassFilteredResultIsRecordedWithOriginalIdMetadata()
+PASS   : RecordingTests::videoIsAnnotatedPlayableAndPublishedOnlyAtFinish()
+PASS   : RecordingTests::grayscaleOddEyePreservesContentAndAddsOnlyEdgePadding()
+PASS   : RecordingTests::cameraTimingUsesMeasuredDurationAndDecodesAllFrames()
+PASS   : RecordingTests::emptyDiscardAndInvalidDirectoryNeverPublishBrokenClips()
+PASS   : RecordingTests::changedResolutionEndsClipWithoutLosingItsPreviousFrames()
+PASS   : RecordingTests::workerRecordsEveryFrameAndFinishesAtEof()
+PASS   : RecordingTests::gpuRightEyeGrayscaleRecordingPreservesActualDevice()
+PASS   : RecordingTests::workerStartAfterFirstPreviewAndCancelClosesOnlyRecordedFrames()
+PASS   : RecordingTests::recordingFailureDoesNotInterruptInference()
+PASS   : RecordingTests::manualStopKeepsInferenceRunningAndRestartCreatesANewClip()
+PASS   : RecordingTests::stoppingDuringOnnxForwardRecordsTheLastCompletedFrame()
+PASS   : RecordingTests::stoppingWithPendingRecordingNeverOpensANewClip()
+PASS   : RecordingTests::cleanupTestCase()
+Totals: 15 passed, 0 failed, 0 skipped, 0 blacklisted, 2843ms
+
+# original relative file: qa-full/vision-scope-filter-ui-tests.log
+# original sha256: d22f1b1f1f1c9c3f0cedad2cf198caecb831966963e6046825ae88380aa97069
+# final complete run
+PASS   : ScopeFilterUiTests::initTestCase()
+PASS   : ScopeFilterUiTests::fixedRangeAndProgress(mode-0-row-0)
+PASS   : ScopeFilterUiTests::fixedRangeAndProgress(mode-0-row-1)
+PASS   : ScopeFilterUiTests::fixedRangeAndProgress(mode-0-row-2)
+PASS   : ScopeFilterUiTests::fixedRangeAndProgress(mode-1-row-0)
+PASS   : ScopeFilterUiTests::fixedRangeAndProgress(mode-1-row-1)
+PASS   : ScopeFilterUiTests::fixedRangeAndProgress(mode-1-row-2)
+PASS   : ScopeFilterUiTests::fixedRangeAndProgress(mode-2-row-0)
+PASS   : ScopeFilterUiTests::fixedRangeAndProgress(mode-2-row-1)
+PASS   : ScopeFilterUiTests::fixedRangeAndProgress(mode-2-row-2)
+PASS   : ScopeFilterUiTests::fixedRangeAndProgress(single-mode-0)
+PASS   : ScopeFilterUiTests::fixedRangeAndProgress(sixty-one-mode-0)
+PASS   : ScopeFilterUiTests::fixedRangeAndProgress(single-mode-1)
+PASS   : ScopeFilterUiTests::fixedRangeAndProgress(sixty-one-mode-1)
+PASS   : ScopeFilterUiTests::fixedRangeAndProgress(single-mode-2)
+PASS   : ScopeFilterUiTests::fixedRangeAndProgress(sixty-one-mode-2)
+PASS   : ScopeFilterUiTests::filtersAndScope(mode-0-filter-all)
+PASS   : ScopeFilterUiTests::filtersAndScope(mode-0-filter-32)
+PASS   : ScopeFilterUiTests::filtersAndScope(mode-0-filter-0,5,32)
+PASS   : ScopeFilterUiTests::filtersAndScope(mode-1-filter-all)
+PASS   : ScopeFilterUiTests::filtersAndScope(mode-1-filter-32)
+PASS   : ScopeFilterUiTests::filtersAndScope(mode-1-filter-0,5,32)
+PASS   : ScopeFilterUiTests::filtersAndScope(mode-2-filter-all)
+PASS   : ScopeFilterUiTests::filtersAndScope(mode-2-filter-32)
+PASS   : ScopeFilterUiTests::filtersAndScope(mode-2-filter-0,5,32)
+PASS   : ScopeFilterUiTests::selectionRequiredAndStreamingVisibility()
+PASS   : ScopeFilterUiTests::invalidFilterAndModelChange()
+PASS   : ScopeFilterUiTests::validCacheOutsideRangeAndChangedParameters()
+PASS   : ScopeFilterUiTests::stoppedRangePreservesCompletedResultsAndExport()
+PASS   : ScopeFilterUiTests::dynamicClassMetadataResolvedByActualInference()
+PASS   : ScopeFilterUiTests::workbenchScopeFilterVisualArtifact()
+PASS   : ScopeFilterUiTests::externalModelReplacementDuringTaskCannotRelabelCache()
+PASS   : ScopeFilterUiTests::submittedSourceIdentityIsNotReplacedByLaterDiskVersion()
+PASS   : ScopeFilterUiTests::equivalentFiltersAndChangedSourceFile()
+PASS   : ScopeFilterUiTests::cleanupTestCase()
+Totals: 38 passed, 0 failed, 0 skipped, 0 blacklisted, 31276ms
+
+# original relative file: qa-full/vision-ui-tests.log
+# original sha256: 78a6fc32eddb2915d66f57be7f9045fbe9017f641d29bde52ffb139e5b55a165
+# final complete run
+PASS   : UiTests::initTestCase()
+PASS   : UiTests::professionalWorkbenchStartsEmptyAndAcceptsTemporaryImageDrops()
+PASS   : UiTests::realInferenceSelectionAndNavigation()
+PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(input-size-unfocused)
+PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(input-size-focused)
+PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(confidence-unfocused)
+PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(confidence-focused)
+PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(nms-iou-unfocused)
+PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(nms-iou-focused)
+PASS   : UiTests::automaticSaveDirectoryButtonOpensConfiguredLocalFolder(default-results-directory)
+PASS   : UiTests::automaticSaveDirectoryButtonOpensConfiguredLocalFolder(configured-directory-with-spaces)
+PASS   : UiTests::modelLibraryInternalMovesPreserveGlobalSelectionAndPersistAfterRestart()
+PASS   : UiTests::modelContextMenuTargetsPointerWithoutChangingGlobalSelection()
+PASS   : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart()
+PASS   : UiTests::modelRemovalPreservesFilesAndDoesNotReAddBundledModelsOnRestart()
+PASS   : UiTests::missingModelContextActionsKeepTheValidGlobalModel()
+PASS   : UiTests::busyModelContextMenuAllowsLocationAndPreventsMutations()
+PASS   : UiTests::globalModelSelectionPreloadsAndCachesStructure()
+PASS   : UiTests::shortcutsCancelAndRestartFromFocusedControls()
+PASS   : UiTests::directPtInferenceReadsNamesAndExportsNativeBackend()
+PASS   : UiTests::queueChangeAndClearInvalidateOldResults()
+PASS   : UiTests::completedFolderResultsCanBeReviewedAndExported(rgb)
+PASS   : UiTests::completedFolderResultsCanBeReviewedAndExported(grayscale)
+PASS   : UiTests::importedFolderLargerThanFiftyImagesIsFullyProcessedAndReviewable()
+PASS   : UiTests::partiallyCompletedFolderResultsRemainReviewableAfterStopping()
+PASS   : UiTests::completedFolderResultsRemainReviewableAfterLaterImageReadFails()
+PASS   : UiTests::completedFolderResultsAreInvalidatedWhenModelOrDeviceChanges(global-model)
+PASS   : UiTests::completedFolderResultsAreInvalidatedWhenModelOrDeviceChanges(compute-device)
+PASS   : UiTests::zeroDetectionFolderResultsSurviveReviewAndCancelledRerunPreservesThem()
+PASS   : UiTests::grayscalePreviewAndColorSwitchInvalidatePredictions()
+PASS   : UiTests::legacyColorPreferenceMigration(legacy-rgb)
+PASS   : UiTests::legacyColorPreferenceMigration(legacy-bgr)
+PASS   : UiTests::grayscaleAndStereoPreferencesSurviveRestartAndPtSwitch()
+PASS   : UiTests::stereoVideoRequestExportAndImageIsolation()
+PASS   : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo()
+PASS   : UiTests::explicitCudaSmokeFailureDoesNotClaimCpuInference()
+PASS   : UiTests::automaticDeviceDefaultAndPreferencesPreserveInputModes()
+PASS   : UiTests::gpuPreparationReportsProgressCancelsAndRefreshesWithoutBlocking()
+PASS   : UiTests::cleanupTestCase()
+Totals: 39 passed, 0 failed, 0 skipped, 0 blacklisted, 45013ms

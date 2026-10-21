@@ -10,13 +10,19 @@
 
 当前工程版本：**2.7.0**。模型显示新增「YOLO YAML」，与结构图、层级树和参数表组成四种展示模式；仅从模型实际保存的架构字典生成等价配置，元信息缺失时明确提示，不猜测原始网络。图像预览支持拖入数据集目录、YAML／YML、视频或单张／多张图片。已有数据集时，可选择替换、临时加入或取消，默认取消；临时图片仅在当前会话检测，不计入 GT／评估，也不写入 `dataset-session.json`。保留数据集启动恢复与当前阈值错例浏览。沿用 C++17／Qt 6.8.3、Fluent 深色界面及现有 CPU／NVIDIA GPU 后端，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。
 
-2.7.0 的回归、最终包与发布状态**待验证**，以[发行说明](docs/releases/2.7.0.md)及[同版证据](docs/releases/evidence/2.7.0/README.md)为准，未执行检查不写作通过。发行平台仍为 Ubuntu 22.04 amd64；Windows 已发布补充包仍为 2.1.0。下方保留实际 2.5.0 截图展示既有界面，不冒充 2.7.0 新功能或运行证据。
+2.7.0 已完成完整 22 套回归（396 项 Qt、101 项 Python，零失败／跳过）及最终包 CPU／CUDA、隔离安装、对应源码验收；实际范围与发行状态以[发行说明](docs/releases/2.7.0.md)及[同版证据](docs/releases/evidence/2.7.0/README.md)为准，未执行检查不写作通过。发行平台仍为 Ubuntu 22.04 amd64；Windows 已发布补充包仍为 2.1.0。下方保留实际 2.5.0 截图展示既有界面，不冒充 2.7.0 新功能或运行证据。
 
 ![Vision Studio 2.5.0 图像预览：真实 ONNX CPU 检测与 GT 对照](docs/screenshots/workbench-2.5.0.png)
 
 ![Vision Studio 2.5.0 评估与阈值：真实 ONNX CUDA 评估](docs/screenshots/evaluation-2.5.0.png)
 
 以上为最终 2.5.0 只读 DEB 的实际 Qt 窗口，使用公开 COCO8 四张 Val 图片和随附 YOLOv5n 模型，分别展示 CPU 图像预览与 CUDA「评估与阈值」。截图用于展示界面和管线，不是足球精度或部署性能基准；工作台页脚的设备验证提示是该页实时状态，实际后端以报告为准。来源、原始日志及限制见 [2.5.0 验收证据](docs/releases/evidence/2.5.0/README.md)。
+
+![Vision Studio 2.7.0：真实 PT 模型的 YOLO YAML 架构与深色语法高亮](docs/screenshots/model-yaml-2.7.0.png)
+
+![Vision Studio 2.7.0：已有数据集时拖入图片的替换／临时加入／取消](docs/screenshots/preview-drop-dialog-2.7.0.png)
+
+以上两张 2.7.0 截图分别来自最终 DEB 的隔离安装和只读解包运行；YAML 来自公开 YOLOv8n 模型，拖入使用公开 COCO8 素材。仅展示实际界面与交互，来源和目检范围见[截图记录](docs/releases/evidence/2.7.0/screenshots.json)。
 
 ## 功能
 
@@ -42,7 +48,7 @@
 
 ## 下载与安装
 
-从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下为 2.7.0 发布后的安装命令。每版只上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
+从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下为 2.7.0 的安装命令。每版只上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
 
 页面另外显示 GitHub 自动提供的 **Source code (zip)** 和 **Source code (tar.gz)** 两个源码入口，它们由平台生成，不能从 Release 中移除。下载三个手动附件后，先校验，再安装：
 
@@ -106,7 +112,7 @@ D:/Qt/6.8.3/msvc2022_64/bin/windeployqt.exe --release build-windows/bin/vision-s
 ./build-windows/bin/vision-studio.exe --device cpu
 ```
 
-开发构建可直接双击 `build-windows/bin/vision-studio.exe`，但该目录仍依赖项目资源。需要分发时使用 [Windows 完整打包流程](packaging/windows/README.md)，生成包含 Qt、OpenCV、独立 Python、PT／Netron／转换依赖、模型与文档的单文件安装器。默认安装到 `C:\Users\用户名\VisionStudio`，可自选目录，无需接收者配置开发环境。用户数据独立保存在 `%LOCALAPPDATA%\vision-studio`，卸载保留个人文件。
+开发构建可直接双击 `build-windows/bin/vision-studio.exe`，但该目录仍依赖项目资源。需要分发时使用 [Windows 完整打包流程](packaging/windows/README.md)，生成包含 Qt、OpenCV、独立 Python、PT／Netron／转换依赖、模型与文档的单文件安装器。默认安装到 `%USERPROFILE%\VisionStudio`，可自选目录，无需接收者配置开发环境。用户数据独立保存在 `%LOCALAPPDATA%\vision-studio`，卸载保留个人文件。
 
 Windows 使用独立的 CUDA wheel 哈希锁和 GPU 准备流程，首次准备需要网络及兼容的 NVIDIA 显卡驱动；不复用 Linux runtime，不安装或修改驱动。CPU、模型显示与转换可在安装后离线使用。Windows 验收材料单独保存在 `docs/releases/evidence/2.1.0/windows/`，不替代或修改现有 Linux 发行证据。
 
@@ -148,14 +154,14 @@ GPU 依赖使用独立的 `requirements-gpu.txt`／`requirements-gpu.lock.txt`�
 
 ## 验证与发行
 
-2.7.0 的完整回归、真实模型、拖入与 YOLO YAML、最终包 CPU／CUDA、安装及对应源码验收正在准备；结果待验证，原始日志和限制以[同版证据](docs/releases/evidence/2.7.0/README.md)为准。既有版本通过结论不代替本版执行，物理摄像头与 Windows 2.7.0 也不预先记为已验收。
+2.7.0 已完整执行 22 套回归：396 项 Qt、101 项 Python，零失败／跳过；最终包 CPU／CUDA、隔离安装、转换、公开评估、拖入与 YOLO YAML 以及完整对应源码均已通过。去标识验收结果、真实截图、原件校验承诺及边界见[同版证据](docs/releases/evidence/2.7.0/README.md)。Qt 计数含初始化和清理，公开四图只验证功能；物理摄像头与 Windows 2.7.0 未列为本轮验收。
 
 普通检测在同一配置下逐图更新结果，停止前未重算的图片与范围外有效缓存保留；修改模型、预处理、阈值、设备、类别名称映射或类别筛选会清除不兼容的临时缓存。评估使用独立配置、标注和预测快照，历史统计不会被新配置改写。源文件内容变化会阻止新任务作为有效评估发布；历史图像叠加仍需核对原图哈希，原图已移动或改变时保留统计并提示，避免错配。范围及筛选组合、超过 50 张、停止后回看、零匹配、类别映射与原始 ID 保留均属于验证范围。
 
 ```bash
-./build/bin/vision-studio --smoke /tmp/vision-studio-onnx-smoke
-./build/bin/vision-studio --smoke-pt /tmp/vision-studio-pt-smoke
-./build/bin/vision-studio --smoke-model /tmp/vision-studio-model-smoke
+./build/bin/vision-studio --smoke ./output/smoke/onnx
+./build/bin/vision-studio --smoke-pt ./output/smoke/pt
+./build/bin/vision-studio --smoke-model ./output/smoke/model
 ```
 
 每次更新按 [版本管理](docs/版本管理.md) 完成适用验收、源码与带说明标签、三个手动附件上传及远端核验后，再精确保留最新两版；本版执行结果见[发行说明](docs/releases/2.7.0.md)。用户设置、模型、评估、录像、共享 SDK／runtime 及未备份资料保留，既有公开标签与核心附件不覆盖。

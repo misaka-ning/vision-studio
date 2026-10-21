@@ -1,0 +1,11 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.0",
+  "original_file_commitment": {
+    "file": "diagnostics/MEMBERS.json",
+    "bytes": 46767,
+    "sha256": "a2e1db3ab698bc63bcadb2383a8530b43231df4123c30cd14630c74fba4a3f85"
+  }
+}

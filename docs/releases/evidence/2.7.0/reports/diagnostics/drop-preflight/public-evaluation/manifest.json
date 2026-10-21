@@ -1,0 +1,10 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "original_file_commitment": {
+    "file": "diagnostics/drop-preflight/public-evaluation/manifest.json",
+    "bytes": 10047,
+    "sha256": "600f8babfee43c361fa31cc7e8b5e9a9b88c2ac3d5dac50eba0b4c5009618402"
+  }
+}

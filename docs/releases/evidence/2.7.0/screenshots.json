@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "version": "2.7.0",
+  "only_three_maintainer_pixel_reviewed_images": true,
+  "images": [
+    {
+      "file": "screenshots/model-yaml.png",
+      "sha256": "74773a2bc8340caabaa7dec96d81b2c4b9134bc1d8dfa42d86900a22f3549a3a",
+      "bytes": 184772,
+      "byte_identical_to_reviewed_original": true,
+      "width": 1580,
+      "height": 960,
+      "full_pixel_decode": true
+    },
+    {
+      "file": "screenshots/preview-drop-dialog.png",
+      "sha256": "a6a581a23b88aa391b1f2367d8df62e4d433fa1d145fd65e93df6aa06d30652e",
+      "bytes": 21084,
+      "byte_identical_to_reviewed_original": true,
+      "width": 480,
+      "height": 179,
+      "full_pixel_decode": true
+    },
+    {
+      "file": "screenshots/evaluation-original-set.png",
+      "sha256": "91d87590293737cdf64c552db174037aa7c931718fe2ff34b4ed76bfa4f1613d",
+      "bytes": 180727,
+      "byte_identical_to_reviewed_original": true,
+      "width": 1580,
+      "height": 960,
+      "full_pixel_decode": true
+    }
+  ]
+}

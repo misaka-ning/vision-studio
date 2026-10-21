@@ -1,0 +1,11 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "version": "2.7.0",
+  "original_success": true,
+  "original_file_commitment": {
+    "file": "diagnostics/model-preflight/yolov8n-pt/model-display/model-display-report.json",
+    "bytes": 1297,
+    "sha256": "38d082c000ee1d00e407faec55390bb06831d27f560e3b6194bf9215ae590c2f"
+  }
+}

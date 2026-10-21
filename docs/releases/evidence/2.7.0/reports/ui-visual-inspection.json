@@ -1,0 +1,13 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "original_file_commitment": {
+    "file": "ui-visual-inspection.json",
+    "bytes": 2042,
+    "sha256": "cb7082d8faaa958ea64ad7721511309cbc415d5dd771d8f9128ac07f80cf71ed"
+  }
+}

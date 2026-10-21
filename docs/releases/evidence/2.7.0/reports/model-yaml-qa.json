@@ -1,0 +1,29 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "blueprintRowsPreserveAllOriginalTypesAndOrder": true,
+      "modernScalesAndLegacyAnchorsArePreserved": true,
+      "newFileExportNeverOverwritesSourceExistingOrSymlink": true,
+      "concurrentExportsOnlyOneWriterCreatesDestination": true,
+      "strict_schema_and_resource_limits": true,
+      "real_models_fourth_view_and_explicit_empty_states": true,
+      "yamlBridgeRejectsNonprimitiveCyclesAndLimitsWithoutTouchingCachedGraph": true,
+      "yamlFastSwitchClearsOldDocumentAndRejectsStaleCallbacks": true,
+      "maliciousCheckpointCannotExecuteNativePythonToShowYaml": true,
+      "samePathReplacementInvalidatesAndRebuildsYamlCache": true,
+      "sourceChangedDuringParsingCannotCommitReadyOrYaml": true,
+      "final_readonly_deb_three_models_and_independent_static_oracle": true
+    }
+  },
+  "original_file_commitment": {
+    "file": "model-yaml-qa.json",
+    "bytes": 9958,
+    "sha256": "500a8a5cb0b369495107075726030df586f93548852cba3c77c60accc76793b7"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "version": "2.7.0",
+  "original_success": false,
+  "original_file_commitment": {
+    "file": "diagnostics/qa-interrupted/interruption.json",
+    "bytes": 505,
+    "sha256": "ed1001b2bb239ba2a38bfb80115a1566abe34e56f3e13b567a792489f578f472"
+  }
+}

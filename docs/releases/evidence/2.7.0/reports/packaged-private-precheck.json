@@ -1,0 +1,13 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "original_file_commitment": {
+    "file": "packaged-private-precheck.json",
+    "bytes": 1507,
+    "sha256": "ca0c7120886eaa1fe36a6cd2073d223dc597c30e47c1035d54495d490c9ac457"
+  }
+}
