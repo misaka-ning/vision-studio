@@ -303,6 +303,7 @@ class MainWindow : public QMainWindow
     QDoubleSpinBox *confidence_ = nullptr, *iou_ = nullptr, *scale_ = nullptr, *meanR_ = nullptr,
                    *meanG_ = nullptr, *meanB_ = nullptr;
     QCheckBox *autoExport_ = nullptr, *showBoxes_ = nullptr, *showLabels_ = nullptr;
+    QCheckBox *restoreDatasetOnStartup_ = nullptr;
     QProgressBar *progress_ = nullptr;
     ImageCanvas *canvas_ = nullptr;
     ImageCanvas *recordingCanvas_ = nullptr;

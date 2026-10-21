@@ -214,11 +214,13 @@ void MainWindow::restoreDatasetSession()
 {
     if (datasetSessionRestoreRequested_) return;
     datasetSessionRestoreRequested_ = true;
+    if (!settings_->value("restoreDatasetOnStartup", true).toBool()) return;
     const quint64 generation = datasetSessionRestoreGeneration_;
     QTimer::singleShot(0, this, [this, generation] {
         // A startup convenience must never replace an explicit input choice or
         // begin while a native/modal chooser owns a nested event loop.
-        if (generation != datasetSessionRestoreGeneration_ || datasetSessionUserInteracted_ ||
+        if (!settings_->value("restoreDatasetOnStartup", true).toBool() ||
+            generation != datasetSessionRestoreGeneration_ || datasetSessionUserInteracted_ ||
             closing_ || busy_ || queuePopulating_ || evaluationWorker_ || gpuSetupProcess_ ||
             (modelConversion_ && modelConversion_->isBusy()) || QApplication::activeModalWidget() ||
             sourceKind_ != vision::SourceKind::Images || !files_.isEmpty() || !datasetManifest_.isEmpty()) return;
