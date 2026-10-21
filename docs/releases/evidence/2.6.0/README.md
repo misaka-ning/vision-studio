@@ -32,7 +32,7 @@
 
 ## 交付与边界
 
-三个手动资产大小／SHA256 见 [final-assets.json](final-assets.json) 及 [SHA256SUMS](SHA256SUMS)。构建源码为合并的 `8507624689d9f409d81badd7a847b036f8646aa0`；后续证据和文档提交不改生产输入。正式发布、远端 Latest／标签／资产核验和清理凭证完成后另随 `main` 提交，不改写冻结资产或标签。
+三个手动资产大小／SHA256 见 [final-assets.json](final-assets.json) 及 [SHA256SUMS](SHA256SUMS)。构建源码为合并的 `8507624689d9f409d81badd7a847b036f8646aa0`；后续证据和文档提交不改生产输入。正式发布、远端 Latest／标签／资产核验及两版保留均已完成，见[发布后凭证](post-publication/README.md)。这些材料另随 `main` 提交，不改写冻结资产或标签。
 
 不公开私人图片、标签、配置、文件清单或实际用户路径 JSON。公开四图及合成／派生标注只验证功能与管线，不代表足球模型能力、通用精度或部署性能。Windows、物理摄像头、断电及部分关闭／磁盘错误 UI 时序未验收，见[源码审查](source-review.md)。
 

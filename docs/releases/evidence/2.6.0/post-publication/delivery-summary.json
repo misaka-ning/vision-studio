@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "version": "2.6.0",
+  "success": true,
+  "scope": "Public delivery summary only. Original host paths, process identities, private filenames and detailed machine receipts are retained locally and are intentionally not uploaded.",
+  "published_tag": "v2.6.0",
+  "published_commit": "a533bbe222fbc1abfd4172793904cc73e13e1a77",
+  "retained_formal_versions": [
+    "2.6.0",
+    "2.5.0"
+  ],
+  "old_version_removed": "2.4.0",
+  "source_build_stage_copies_removed": 3,
+  "release_locations_pruned": 2,
+  "historical_git_source_files_verified": 4284,
+  "historical_native_test_binaries_verified": 14,
+  "historical_deb_members_verified": 44665,
+  "active_candidate_references_found": 0,
+  "unreviewed_processes_remaining": 0,
+  "separately_reviewed_non_dumpable_session_process_count": 2,
+  "old_release_metadata_files_preserved_locally": 103,
+  "protected_user_files_unchanged": 4,
+  "shared_plugin_files_unchanged": 5,
+  "bundled_runtime_distribution_metadata_files_unchanged": 59,
+  "tested_production_inputs_and_native_binaries_unchanged": true,
+  "host_upgrade_performed": false,
+  "local_original_evidence_sha256": {
+    "cleanup-240-preview.json": "8c2703327dc8b7913c8f7433a7f3369fde35c75476877bb348ba32e7b67d741c",
+    "cleanup-240-executed.json": "eeb6ee07beecded60d735c7364ff3fa9cec75f4608c78a5bf2722227a5030dbf",
+    "cleanup-240-build-members.jsonl.gz": "8fb7606ebc82dcfe7ee7352602741fc63faa83c22e53f8491b5f6dc5b8793518",
+    "cleanup-240-source-members.jsonl.gz": "68263bd7900d472473c08fbedf39c44cfad2e3200d2d2c4e2f497f9583984cf7",
+    "cleanup-240-stage-members.jsonl.gz": "1166379fbd40348d30200745f4e5377dd70c2e54d01ef73b98dd0f9ca1831781",
+    "prune-worktree-preview.json": "c8477204fc0f892b0e3263cd17a4dbfc9fa8a3c7eee46d60b5506db1a493e08c",
+    "prune-worktree-executed.json": "2ebd65bdb875052cdfca5f629fba211f02e70d29149fbf6dd1139aeac5cf4d38",
+    "prune-primary-preview.json": "ece44ef3bca287401327d24bd2c9a4b299dd5bd1c9126793073d543e78752418",
+    "prune-primary-executed.json": "eda4beead243fb06c318121607b729c4916bc3906850595bfbca9821d1b3e90c",
+    "final-local-state.json": "271870e1ce41ff10fe3b2cf50539dd270a642757371f85fb2fab2137976831ff",
+    "primary-source-and-release-sync.json": "0ccefc33c40da1703952ceadbe5902b495f7828a4057d7b17c63e09eaaeffd28"
+  }
+}
