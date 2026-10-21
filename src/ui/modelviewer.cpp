@@ -81,8 +81,13 @@ class YamlEditor final : public QPlainTextEdit
         fixed.setPointSize(11);
         setFont(fixed);
         setTabStopDistance(fontMetrics().horizontalAdvance(QLatin1Char(' ')) * 4);
-        setStyleSheet("QPlainTextEdit { background:#282C34; color:#ABB2BF; selection-background-color:#3E4451; "
-                     "selection-color:#FFFFFF; border:1px solid #3E4451; border-radius:6px; padding:6px 0; }");
+        // The application stylesheet specifies a UI font on QWidget. Keep the
+        // code font explicit here so that inherited QSS cannot replace it.
+        QString family = fixed.family();
+        family.replace('\'', QStringLiteral("\\'"));
+        setStyleSheet(QString("QPlainTextEdit { background:#282C34; color:#ABB2BF; selection-background-color:#3E4451; "
+                             "selection-color:#FFFFFF; border:1px solid #3E4451; border-radius:6px; padding:6px 0; "
+                             "font-family:'%1'; font-size:11pt; }").arg(family));
         document()->setDocumentMargin(10);
         connect(this, &QPlainTextEdit::blockCountChanged, this, [this] { updateGutter(); });
         connect(this, &QPlainTextEdit::updateRequest, this, [this](const QRect &rect, int dy) {

@@ -8,6 +8,8 @@
 #include <QEventLoop>
 #include <QFile>
 #include <QFileInfo>
+#include <QFontInfo>
+#include <QFontMetricsF>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -903,7 +905,13 @@ class ModelViewerTests : public QObject
 
     void yamlOneDarkEditorHasReadableTokensAndScrollingLineNumbers()
     {
-        ModelViewer viewer; viewer.resize(960, 660); viewer.show();
+        QWidget host;
+        // Match the main window's inherited UI font rule. A standalone viewer
+        // would miss a stylesheet overriding its programmatic fixed-font choice.
+        host.setStyleSheet("QWidget { color:#F5F5F5; font-family:'Noto Sans CJK SC'; font-size:13px; }");
+        auto *layout = new QVBoxLayout(&host);
+        ModelViewer viewer(&host); layout->addWidget(&viewer);
+        host.resize(960, 660); host.show();
         auto *editor = viewer.findChild<QPlainTextEdit *>("modelYamlEditor");
         auto *numbers = viewer.findChild<QWidget *>("modelYamlLineNumbers");
         auto *page = viewer.findChild<QWidget *>("modelYamlPage");
@@ -912,6 +920,14 @@ class ModelViewerTests : public QObject
         // Presentation-only fixture text, never a fabricated model result.
         stack->setCurrentWidget(page);
         editor->show();
+        QTRY_VERIFY(QFontInfo(editor->font()).fixedPitch());
+        const QFontMetricsF editorMetrics(editor->font());
+        QVERIFY(qAbs(editorMetrics.horizontalAdvance(QLatin1Char('i')) -
+                     editorMetrics.horizontalAdvance(QLatin1Char('W'))) < 0.01);
+        QVERIFY(QFontInfo(editor->document()->defaultFont()).fixedPitch());
+        const QFontMetricsF documentMetrics(editor->document()->defaultFont());
+        QVERIFY(qAbs(documentMetrics.horizontalAdvance(QStringLiteral("iiii")) -
+                     documentMetrics.horizontalAdvance(QStringLiteral("WWWW"))) < 0.01);
         editor->setPlainText("# architecture comment\nnc: 1\nscales:\n  n: [0.50, 0.25, 1024]\nbackbone:\n"
                              "  - [-1, 1, Conv, [64, 3, 2]]\n"
                              "  - [-1, 1, C2f, [true, 'hash# literal', \"# literal\"]] # note\n");
