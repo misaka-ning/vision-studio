@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "version": "2.6.0",
+  "success": true,
+  "errors": [],
+  "generated_at_utc": "2026-10-21T03:43:05.908755+00:00",
+  "checks": {
+    "missing_json_creates_nothing": true,
+    "non_file_json_preserved": true,
+    "optional_metadata_and_missing_source_record": true,
+    "oversized_record_preserved": true,
+    "invalid_save_preserves_valid_record": true,
+    "failed_atomic_replace_keeps_original": true,
+    "concurrent_readers_see_only_complete_records": true,
+    "failed_import_keeps_previous_success": true,
+    "cancelled_queue_keeps_previous_success": true,
+    "picker_cancel_suppresses_pending_restore": true,
+    "unique_fp_union_fn_threshold_navigation": true,
+    "zero_errors_and_current_range_remain_empty": true,
+    "stopped_completed_prefix_error_review": true,
+    "store_three_splits": true,
+    "seven_malformed_records_preserved": true,
+    "six_source_split_metadata_restore_rows": true,
+    "four_invalid_startup_rows_recover": true,
+    "manual_selection_wins_both_orders": true,
+    "packaged_yaml_separate_process_restore": true,
+    "packaged_directory_separate_process_restore": true
+  },
+  "scope": "Actual native JSON/session/review regressions and two separate final-package Qt process pairs; raw reports and logs re-opened and hashed during aggregation.",
+  "details": {
+    "deb_sha256": "0189cb2aa7819b3f0e2e98c723de110418d86df38c5a10adba750b04e50b6431",
+    "deb_bytes": 387218220,
+    "packaged_binary_sha256": "fee6be0ab1e694ffc83a614fd4224ab2bae29ac2c81b190fe89acbbdd4157c19",
+    "production_unstripped_binary_sha256": "c355cd5add789edf699ed0a9c623954a141080675b0fdc60b80748f78c5dc312",
+    "ctest_report": "ctest-qa.json",
+    "hardware": "NVIDIA GeForce RTX 4060",
+    "aggregation_only": "No new inference was executed by this report aggregation.",
+    "packaged_report": "packaged-dataset-session-qa.json",
+    "data_rows": {
+      "store_three_splits": [
+        "train",
+        "val",
+        "test"
+      ],
+      "seven_malformed_records_preserved": [
+        "truncated",
+        "array",
+        "unknown-schema",
+        "wrong-field-type",
+        "relative-source",
+        "bad-split",
+        "relative-metadata"
+      ],
+      "six_source_split_metadata_restore_rows": [
+        "directory-train",
+        "directory-val",
+        "directory-test",
+        "yaml-train",
+        "yaml-val",
+        "yaml-test"
+      ],
+      "four_invalid_startup_rows_recover": [
+        "missing-json",
+        "corrupt-json",
+        "unknown-schema",
+        "missing-source"
+      ],
+      "manual_selection_wins_both_orders": [
+        "manual-then-restore",
+        "restore-then-manual-without-event-loop"
+      ]
+    },
+    "atomic_save_observation": [
+      "8818",
+      "120"
+    ],
+    "restore_observations": [
+      [
+        "directory",
+        "train",
+        "1",
+        "1",
+        "0",
+        "12",
+        "16"
+      ],
+      [
+        "directory",
+        "val",
+        "2",
+        "1",
+        "0",
+        "12",
+        "15"
+      ],
+      [
+        "directory",
+        "test",
+        "3",
+        "1",
+        "0",
+        "12",
+        "13"
+      ],
+      [
+        "yaml",
+        "train",
+        "1",
+        "1",
+        "0",
+        "12",
+        "15"
+      ],
+      [
+        "yaml",
+        "val",
+        "2",
+        "1",
+        "0",
+        "12",
+        "14"
+      ],
+      [
+        "yaml",
+        "test",
+        "3",
+        "1",
+        "0",
+        "12",
+        "17"
+      ]
+    ],
+    "cancelled_population_observation": [
+      "96",
+      "3"
+    ],
+    "error_review_observation": [
+      "2",
+      "3",
+      "4",
+      "0"
+    ],
+    "package_cases": {
+      "yaml": {
+        "completed_images": 4,
+        "evaluation_command": {
+          "arguments": [
+            "/tmp/vision-studio-evaluation-qa-fvrq3q1f/extracted/opt/VisionStudio/run-installed.sh",
+            "--smoke-evaluation",
+            "/tmp/vision-studio-dataset-session-260-by0mn5jl/yaml/evaluation-smoke",
+            "--evaluation-request",
+            "/tmp/vision-studio-dataset-session-260-by0mn5jl/yaml/request.json"
+          ],
+          "pid": 862127,
+          "exit_code": 0,
+          "began_at_utc": "2026-10-21T03:42:25.465832+00:00",
+          "ended_at_utc": "2026-10-21T03:42:29.086171+00:00",
+          "elapsed_seconds": 3.62,
+          "stdout": "/tmp/vision-studio-dataset-session-260-by0mn5jl/yaml/evaluation.stdout.log",
+          "stderr": "/tmp/vision-studio-dataset-session-260-by0mn5jl/yaml/evaluation.stderr.log",
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+        },
+        "restore_command": {
+          "arguments": [
+            "/tmp/vision-studio-evaluation-qa-fvrq3q1f/extracted/opt/VisionStudio/run-installed.sh",
+            "--smoke-dataset-session",
+            "/tmp/vision-studio-dataset-session-260-by0mn5jl/yaml/restored-smoke"
+          ],
+          "pid": 862259,
+          "exit_code": 0,
+          "began_at_utc": "2026-10-21T03:42:29.097426+00:00",
+          "ended_at_utc": "2026-10-21T03:42:29.712273+00:00",
+          "elapsed_seconds": 0.615,
+          "stdout": "/tmp/vision-studio-dataset-session-260-by0mn5jl/yaml/restore.stdout.log",
+          "stderr": "/tmp/vision-studio-dataset-session-260-by0mn5jl/yaml/restore.stderr.log",
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+        },
+        "evaluation_smoke_sha256": "9d994633248f2249fcb79614dab2f871563bc5e4ef53c09983390e77da37d180",
+        "restore_smoke_sha256": "fb9e295301b9ba6225a513e35c042a2903eabf3e82bd964a1a0f9bcf84205a3a",
+        "screenshot": {
+          "width": 1580,
+          "height": 960,
+          "mode": "RGB",
+          "sha256": "4134ef43ade0a42da6810f88ab0be3e892fa96f0889dcc936d1c111009a34e31",
+          "bytes": 498790,
+          "full_pixel_decode": true
+        }
+      },
+      "directory": {
+        "completed_images": 4,
+        "evaluation_command": {
+          "arguments": [
+            "/tmp/vision-studio-evaluation-qa-fvrq3q1f/extracted/opt/VisionStudio/run-installed.sh",
+            "--smoke-evaluation",
+            "/tmp/vision-studio-dataset-session-260-by0mn5jl/directory/evaluation-smoke",
+            "--evaluation-request",
+            "/tmp/vision-studio-dataset-session-260-by0mn5jl/directory/request.json"
+          ],
+          "pid": 862356,
+          "exit_code": 0,
+          "began_at_utc": "2026-10-21T03:42:29.781216+00:00",
+          "ended_at_utc": "2026-10-21T03:42:33.401749+00:00",
+          "elapsed_seconds": 3.621,
+          "stdout": "/tmp/vision-studio-dataset-session-260-by0mn5jl/directory/evaluation.stdout.log",
+          "stderr": "/tmp/vision-studio-dataset-session-260-by0mn5jl/directory/evaluation.stderr.log",
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+        },
+        "restore_command": {
+          "arguments": [
+            "/tmp/vision-studio-evaluation-qa-fvrq3q1f/extracted/opt/VisionStudio/run-installed.sh",
+            "--smoke-dataset-session",
+            "/tmp/vision-studio-dataset-session-260-by0mn5jl/directory/restored-smoke"
+          ],
+          "pid": 862488,
+          "exit_code": 0,
+          "began_at_utc": "2026-10-21T03:42:33.428352+00:00",
+          "ended_at_utc": "2026-10-21T03:42:34.043689+00:00",
+          "elapsed_seconds": 0.615,
+          "stdout": "/tmp/vision-studio-dataset-session-260-by0mn5jl/directory/restore.stdout.log",
+          "stderr": "/tmp/vision-studio-dataset-session-260-by0mn5jl/directory/restore.stderr.log",
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+        },
+        "evaluation_smoke_sha256": "4c2deeefdceb8319d81f55befb9939b6585039396b5168cb81e5d107a1ebcdb6",
+        "restore_smoke_sha256": "09e46e6a0021acbc36f8d10f564264f07aca6c259ef54757febfccc3a25cf116",
+        "screenshot": {
+          "width": 1580,
+          "height": 960,
+          "mode": "RGB",
+          "sha256": "4134ef43ade0a42da6810f88ab0be3e892fa96f0889dcc936d1c111009a34e31",
+          "bytes": 498790,
+          "full_pixel_decode": true
+        }
+      }
+    },
+    "methods": {
+      "missing_json_creates_nothing": {
+        "class": "DatasetSessionTests",
+        "method": "missingFileDoesNotCreateAnything"
+      },
+      "non_file_json_preserved": {
+        "class": "DatasetSessionTests",
+        "method": "nonFileRecordReportsIoErrorWithoutDeletingIt"
+      },
+      "optional_metadata_and_missing_source_record": {
+        "class": "DatasetSessionTests",
+        "method": "optionalMetadataAndUnavailableSourceAreNotFilesystemValidation"
+      },
+      "oversized_record_preserved": {
+        "class": "DatasetSessionTests",
+        "method": "oversizedInputIsRejectedWithoutChangingIt"
+      },
+      "invalid_save_preserves_valid_record": {
+        "class": "DatasetSessionTests",
+        "method": "invalidSaveDoesNotReplaceValidRecord"
+      },
+      "failed_atomic_replace_keeps_original": {
+        "class": "DatasetSessionTests",
+        "method": "unwritableParentDoesNotFallBackToTruncatingExistingFile"
+      },
+      "concurrent_readers_see_only_complete_records": {
+        "class": "DatasetSessionTests",
+        "method": "concurrentReadersObserveCompleteOldOrNewRecords"
+      },
+      "failed_import_keeps_previous_success": {
+        "class": "DatasetSessionUiTests",
+        "method": "failedImportKeepsLastSuccessfulRecord"
+      },
+      "cancelled_queue_keeps_previous_success": {
+        "class": "DatasetSessionUiTests",
+        "method": "cancelledQueuePopulationKeepsLastSuccessfulRecord"
+      },
+      "picker_cancel_suppresses_pending_restore": {
+        "class": "DatasetSessionUiTests",
+        "method": "openingAndCancellingPickerSuppressesPendingRestore"
+      },
+      "unique_fp_union_fn_threshold_navigation": {
+        "class": "EvaluationIntegrationTests",
+        "method": "errorReviewNavigatesUniqueImagesAtCurrentThresholdWithoutInference"
+      },
+      "zero_errors_and_current_range_remain_empty": {
+        "class": "EvaluationIntegrationTests",
+        "method": "zeroErrorReviewDoesNotInventErrorsOutsideCurrentImageRange"
+      },
+      "stopped_completed_prefix_error_review": {
+        "class": "EvaluationIntegrationTests",
+        "method": "stoppingPreservesCompletedPrefixAndReview"
+      }
+    },
+    "limitations": [
+      "Native error-review cases use deterministic cached four-image candidates to verify FP/FN union, navigation and threshold changes without new inference.",
+      "Packaged restart uses four public COCO8 Val images; six native source/split cases cover single-class review metadata and train/test restoration."
+    ]
+  }
+}

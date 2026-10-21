@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="5"
+	timestamp="2026-10-21T11:35:43"
+	>
+	<testcase name="vision-evaluation-python-tests" classname="vision-evaluation-python-tests" time="5.16802" status="run">
+		<system-out>.................................................
+----------------------------------------------------------------------
+Ran 49 tests in 4.811s
+
+OK
+</system-out>
+	</testcase>
+</testsuite>

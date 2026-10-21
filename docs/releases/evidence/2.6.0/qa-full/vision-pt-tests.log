@@ -1,0 +1,67 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.6.0-release
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.6.0-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.6.0-release/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.6.0-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.6.0-release/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.6.0-release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 4
+    Start 4: vision-pt-tests
+
+4: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.6.0-release/vision-pt-tests
+4: Environment variables: 
+4:  QT_QPA_PLATFORM=offscreen
+4: Test timeout computed to be: 300
+4: ********* Start testing of PtBackendTests *********
+4: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+4: PASS   : PtBackendTests::initTestCase()
+4: PASS   : PtBackendTests::realPtClassFilterMatchesOriginalIds(modern-yolov8)
+4: PASS   : PtBackendTests::realPtClassFilterMatchesOriginalIds(legacy-yolov5)
+4: PASS   : PtBackendTests::torchScriptClassFilterUsesModelMetadataAndRejectsClassification()
+4: PASS   : PtBackendTests::modelInspectionIgnoresUserLabelsAndFiltering()
+4: PASS   : PtBackendTests::torchScriptClass32RemainsOriginalId()
+4: PASS   : PtBackendTests::realCheckpointLoadsNamesAndProcessesConsecutiveImages()
+4: PASS   : PtBackendTests::unavailableCudaIsExplicitAndAutoFallbackIsRecorded()
+4: PASS   : PtBackendTests::cpuRequestRejectsUnexpectedCudaHandshake()
+4: PASS   : PtBackendTests::realModernAndLegacyGrayscalePreviewPreservesOriginalPixels()
+4: PASS   : PtBackendTests::grayscaleThreeChannelsAreEqualAndUseBgrToGrayWeights()
+4: PASS   : PtBackendTests::grayscaleSingleChannelIsInferredFromTorchScriptConv()
+4: PASS   : PtBackendTests::nativeClassificationSupportsOneAndThreeGrayChannels()
+4: PASS   : PtBackendTests::grayscaleTorchScriptDetectionRestoresLetterboxCoordinates()
+4: PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(red)
+4: PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(green)
+4: PASS   : PtBackendTests::grayscalePreviewMatchesActualPtInputLuminance(blue)
+4: PASS   : PtBackendTests::sixteenBitGrayscalePreviewMatchesActualPtInput(rgba64)
+4: PASS   : PtBackendTests::sixteenBitGrayscalePreviewMatchesActualPtInput(grayscale16)
+4: PASS   : PtBackendTests::realYoloSingleChannelStemsPreserveGrayscalePredictions()
+4: PASS   : PtBackendTests::invalidTorchScriptChannelMetadataIsRejected()
+4: PASS   : PtBackendTests::detectionInputSizeMustBeMultipleOf32AtLoad()
+4: PASS   : PtBackendTests::torchScriptWithoutInputConstraintsRequiresActionableMetadata()
+4: PASS   : PtBackendTests::processHandshakeCannotGuessMissingOrInvalidInputChannels()
+4: PASS   : PtBackendTests::missingExplicitPythonReportsFailure()
+4: PASS   : PtBackendTests::officialLegacyYoloV5CheckpointRunsWithBundledFramework()
+4: PASS   : PtBackendTests::invalidCheckpointCannotLeavePreviousModelLoaded()
+4: PASS   : PtBackendTests::bareStateDictionaryReportsMissingArchitecture()
+4: PASS   : PtBackendTests::metadataBearingTorchScriptClassificationUsesTopK()
+4: PASS   : PtBackendTests::customOnnxPreprocessingCannotSilentlyChangePtInference()
+4: PASS   : PtBackendTests::cancellationInterruptsBlockedModelInitialization()
+4: PASS   : PtBackendTests::cancellationInterruptsBlockedInference()
+4: PASS   : PtBackendTests::invalidProcessProtocolResetsBackend()
+4: PASS   : PtBackendTests::substitutedModelHandshakeIsRejected()
+4: PASS   : PtBackendTests::shortenedInitializationDeadlineStopsBackend()
+4: PASS   : PtBackendTests::cleanupTestCase()
+4: Totals: 36 passed, 0 failed, 0 skipped, 0 blacklisted, 241013ms
+4: ********* Finished testing of PtBackendTests *********
+1/1 Test #4: vision-pt-tests ..................   Passed  241.04 sec
+
+The following tests passed:
+	vision-pt-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) = 241.04 sec

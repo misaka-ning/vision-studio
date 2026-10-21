@@ -8,7 +8,7 @@
 
 [下载发行版](https://github.com/misaka-ning/vision-studio/releases) · [更新日志](CHANGELOG.md) · [使用指南](docs/使用指南.md) · [报告问题](https://github.com/misaka-ning/vision-studio/issues)
 
-当前工程版本：**2.6.0**。最近一次完整成功载入的 YOLO 数据集会记录到用户数据目录的 `dataset-session.json`；下次普通启动自动后台预检查并恢复原文件夹／YAML 入口、集合及可选审核文件。只恢复输入，不自动开始检测或评估，也不恢复过期预测。本版还修复「查看错例」：按当前阈值筛出全部 FP／FN 错图，去重显示错图／已评估／集合数并支持前后逐张浏览。使用 Qt `QSaveFile` 在同目录写入临时文件并原子提交，禁用原地截断回退，失败保留旧记录；缺失、损坏或失效路径使用行内提示。C++17／Qt 6.8.3、Fluent 深色界面与现有 CPU／NVIDIA GPU 后端保持，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。
+当前工程版本：**2.6.0**。最近一次完整成功载入的 YOLO 数据集会记录到用户数据目录的 `dataset-session.json`；下次普通启动自动后台预检查并恢复原文件夹／YAML 入口、集合及可选审核文件。只恢复输入，不自动开始检测或评估，也不恢复过期预测。本版还修复「查看错例」：按当前阈值筛出全部 FP／FN 错图，去重显示错图／已评估／集合数并支持前后逐张浏览。使用 Qt `QSaveFile` 在同目录写入临时文件并原子提交，禁用原地截断回退，失败保留旧记录；没有记录时正常启动，损坏记录或失效路径使用行内提示。C++17／Qt 6.8.3、Fluent 深色界面与现有 CPU／NVIDIA GPU 后端保持，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。
 
 2.6.0 的真实验证、安装包与发布状态见[发行说明](docs/releases/2.6.0.md)及[同版证据](docs/releases/evidence/2.6.0/README.md)，未执行检查不写作通过。发行平台仍为 Ubuntu 22.04 amd64；Windows 已发布补充包仍为 2.1.0。本版界面沿用下方实际 2.5.0 截图，截图不冒充新版运行证据。
 
@@ -42,7 +42,7 @@
 
 ## 下载与安装
 
-从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下命令用于 2.6.0 完成发布后安装。每版只上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
+从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下为 2.6.0 安装命令。每版只上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
 
 页面另外显示 GitHub 自动提供的 **Source code (zip)** 和 **Source code (tar.gz)** 两个源码入口，它们由平台生成，不能从 Release 中移除。下载三个手动附件后，先校验，再安装：
 
@@ -148,7 +148,7 @@ GPU 依赖使用独立的 `requirements-gpu.txt`／`requirements-gpu.lock.txt`�
 
 ## 验证与发行
 
-2.6.0 的实际测试范围、原始日志及最终包验收以[同版证据](docs/releases/evidence/2.6.0/README.md)为准；不沿用旧版通过结论。物理摄像头与 Windows 2.6.0 不作为本版已验收项目。
+2.6.0 已完成一次完整的 20 套回归（343 项 Qt、101 项 Python，零失败／跳过），以及最终包 CPU／CUDA、隔离安装与 YAML／目录跨进程恢复验收。实际范围、原始日志及最终包验收以[同版证据](docs/releases/evidence/2.6.0/README.md)为准；不沿用旧版通过结论。物理摄像头与 Windows 2.6.0 不作为本版已验收项目。
 
 普通检测在同一配置下逐图更新结果，停止前未重算的图片与范围外有效缓存保留；修改模型、预处理、阈值、设备、类别名称映射或类别筛选会清除不兼容的临时缓存。评估使用独立配置、标注和预测快照，历史统计不会被新配置改写。源文件内容变化会阻止新任务作为有效评估发布；历史图像叠加仍需核对原图哈希，原图已移动或改变时保留统计并提示，避免错配。范围及筛选组合、超过 50 张、停止后回看、零匹配、类别映射与原始 ID 保留均属于验证范围。
 

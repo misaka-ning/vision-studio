@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "version": "2.6.0",
+  "scope": "Independent actual CPU fixture visual capture of only two frozen native integration slots; not an additional complete regression run.",
+  "started_at_utc": "2026-10-21T03:24:57.363396+00:00",
+  "finished_at_utc": "2026-10-21T03:25:03.388432+00:00",
+  "elapsed_seconds": 6.025034496968146,
+  "command": [
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.6.0-release/vision-evaluation-integration-tests",
+    "errorReviewNavigatesUniqueImagesAtCurrentThresholdWithoutInference",
+    "zeroErrorReviewDoesNotInventErrorsOutsideCurrentImageRange",
+    "-o",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.6.0/error-ui-capture/native-tests.log,txt",
+    "-o",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.6.0/error-ui-capture/native-tests.junit.xml,junitxml"
+  ],
+  "environment_overrides": {
+    "QT_QPA_PLATFORM": "offscreen",
+    "QT_PLUGIN_PATH": "/home/misaka/Qt/6.8.3/gcc_64/plugins",
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "/home/misaka/Qt/6.8.3/gcc_64/plugins/platforms",
+    "LD_LIBRARY_PATH": "/home/misaka/Qt/6.8.3/gcc_64/lib",
+    "QTWEBENGINE_CHROMIUM_FLAGS": "--disable-gpu",
+    "VISION_STUDIO_HOME": "/opt/VisionStudio",
+    "VISION_STUDIO_SYSTEM_INSTALL": "1",
+    "VISION_STUDIO_PYTHON": "/opt/VisionStudio/runtime/bin/python",
+    "VISION_STUDIO_EVALUATION_PYTHON": "/opt/VisionStudio/runtime/bin/python",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "CUDA_VISIBLE_DEVICES": "",
+    "VISION_EVALUATION_INTEGRATION_EVIDENCE": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.6.0/error-ui-capture",
+    "VISION_STUDIO_UI_CAPTURE_DIR": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.6.0/error-ui-capture"
+  },
+  "working_directory": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.6.0-release",
+  "exit_code": 0,
+  "timeout": false,
+  "selected_slots": [
+    "errorReviewNavigatesUniqueImagesAtCurrentThresholdWithoutInference",
+    "zeroErrorReviewDoesNotInventErrorsOutsideCurrentImageRange"
+  ],
+  "production_binary": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.6.0-release/bin/vision-studio",
+  "production_binary_sha256": "c355cd5add789edf699ed0a9c623954a141080675b0fdc60b80748f78c5dc312",
+  "native_binary": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.6.0-release/vision-evaluation-integration-tests",
+  "native_binary_sha256": "1afcb2aebd2f87d18857ac2a8608a5350d04912112146f4b69f1acaaf3fd1267",
+  "snapshot_file": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.6.0/production-inputs-before.json",
+  "snapshot_sha256": "956208c2ffd987cd56f8b809627c4f8382ed3d3ad305e44f72eea7ef35e0511c",
+  "production_binary_matches_before_snapshot": true,
+  "native_binary_matches_before_snapshot": true,
+  "gpu_requested": false,
+  "full_regression_totals_incremented": false
+}

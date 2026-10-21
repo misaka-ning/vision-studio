@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "version": "2.6.0",
+  "source_commit": "8507624689d9f409d81badd7a847b036f8646aa0",
+  "archive_input_commit": "8507624689d9f409d81badd7a847b036f8646aa0",
+  "source_tree": "7c32e7b4c462ef4159694b9e548d3cd22b2c7dea",
+  "clean_export": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.6.0/clean-source",
+  "source_method": "git archive of merged main, byte-verified after both builders; only extra runtime-info.json is separately hashed. Removed only tools-generated excluded release_metadata CPython cache before verification.",
+  "runtime_info_sha256": "15b239dc233e80b4ddaa8b22f87f07fb71bfe4d90332985a708bce04d6019f1b",
+  "main_tree_identical_to_archive_input": true,
+  "git_archive_files_verified": 4612,
+  "production_application_unchanged": true,
+  "private_untracked_files_excluded": true,
+  "initial_export_record": {
+    "schema_version": 1,
+    "created_at_utc": "2026-10-21T03:29:04.002330+00:00",
+    "commit": "8507624689d9f409d81badd7a847b036f8646aa0",
+    "tree": "7c32e7b4c462ef4159694b9e548d3cd22b2c7dea",
+    "git_archive_sha256": "c4f2de5bfdfd2e74e85b09be0de6c3b0b63af024b626fe269e3ef09ddbfdc59f",
+    "source_root": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.6.0/clean-source",
+    "additional_runtime_info_sha256": "15b239dc233e80b4ddaa8b22f87f07fb71bfe4d90332985a708bce04d6019f1b",
+    "private_untracked_files_excluded": true
+  }
+}

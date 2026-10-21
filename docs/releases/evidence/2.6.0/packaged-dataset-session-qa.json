@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "version": "2.6.0",
+  "success": true,
+  "errors": [],
+  "created_at_utc": "2026-10-21T03:42:09.042804+00:00",
+  "workdir": "/tmp/vision-studio-dataset-session-260-by0mn5jl",
+  "scope": "Two real final-package Qt processes per YAML/directory public source: actual ONNX CPU evaluation saves the independent JSON, then startup restores it without inference or report/history mutation.",
+  "checks": {
+    "final_deb_binding_and_readonly": true,
+    "yaml_two_process_restore": true,
+    "directory_two_process_restore": true,
+    "public_inputs_unchanged": true,
+    "packaged_application_unchanged": true,
+    "restore_has_no_inference_history_or_report_writes": true
+  },
+  "cases": {
+    "yaml": {
+      "source_kind": "yaml",
+      "requested_source": "/tmp/vision-studio-evaluation-public-230/coco8-qa.yaml",
+      "state_directory": "/tmp/vision-studio-dataset-session-260-by0mn5jl/yaml",
+      "evaluation_command": {
+        "arguments": [
+          "/tmp/vision-studio-evaluation-qa-fvrq3q1f/extracted/opt/VisionStudio/run-installed.sh",
+          "--smoke-evaluation",
+          "/tmp/vision-studio-dataset-session-260-by0mn5jl/yaml/evaluation-smoke",
+          "--evaluation-request",
+          "/tmp/vision-studio-dataset-session-260-by0mn5jl/yaml/request.json"
+        ],
+        "pid": 862127,
+        "exit_code": 0,
+        "began_at_utc": "2026-10-21T03:42:25.465832+00:00",
+        "ended_at_utc": "2026-10-21T03:42:29.086171+00:00",
+        "elapsed_seconds": 3.62,
+        "stdout": "/tmp/vision-studio-dataset-session-260-by0mn5jl/yaml/evaluation.stdout.log",
+        "stderr": "/tmp/vision-studio-dataset-session-260-by0mn5jl/yaml/evaluation.stderr.log",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+      },
+      "saved_session": {
+        "metadata_path": "",
+        "schema_version": 1,
+        "source_path": "/tmp/vision-studio-evaluation-public-230/coco8-qa.yaml",
+        "split": "val"
+      },
+      "session_sha256_before_restore": "6c57e2e587f8aaa103f61bee99c880bec583c76b4810dfbf29daedc2248bf101",
+      "evaluation_smoke_sha256": "9d994633248f2249fcb79614dab2f871563bc5e4ef53c09983390e77da37d180",
+      "evaluation_report_sha256": "b97e5aa0d6cfeb354fb6942608b521b5778a1e08366c5efcd9ce26cea7866f7e",
+      "completed_images": 4,
+      "history_sha256_before_restore": "3e6bbc0064814b92c4bbbf0663a06192e07437a668424b9c1b7e57309952e650",
+      "evaluations_before_restore": {
+        "20261021-034225-936-ac6be345/REPORT.md": "1d8da1bb17290177e82ee1d4e444eef2b11d16b6bde4a4f4c5d314654fca3e3a",
+        "20261021-034225-936-ac6be345/errors.csv": "992b103ac3d8e761471c423bcb21d422b51fc881053857894ecf5ea2465fefde",
+        "20261021-034225-936-ac6be345/helper.log": "cf12f501752381901af767d2a45c8ab05c2b7807e3515f645400487bf269a704",
+        "20261021-034225-936-ac6be345/manifest.json": "266a496dd208a60af7d5d53880848c3d4073bb275b24946bbd4ad7b8ca4cab2a",
+        "20261021-034225-936-ac6be345/negative-false-positive-rate.png": "903f272b1b1cc1f63d12de477d3a3870663fc53edb814499ef214c3d91d3575e",
+        "20261021-034225-936-ac6be345/negative-false-positive-rate.svg": "30a1ff47553d0a7c0c324d082aec76dba8bca54fecb61dc252917b8b86fbbbc6",
+        "20261021-034225-936-ac6be345/per-image.csv": "3714f9327dfdc1f081e860b7931bc673e69c2874598a9d0a357f4f2f9baeb82b",
+        "20261021-034225-936-ac6be345/plot-config/fontlist-v390.json": "e708303860b0c7d77aee2b5bffa8992a9ff2d686ec7e0d19dd7eec6728525480",
+        "20261021-034225-936-ac6be345/predictions.jsonl": "5b5045ef73f881aebca11426c32c971cded8a2671ddff44abb2db141b8eaa4c9",
+        "20261021-034225-936-ac6be345/report.json": "b97e5aa0d6cfeb354fb6942608b521b5778a1e08366c5efcd9ce26cea7866f7e",
+        "20261021-034225-936-ac6be345/request.json": "99e72f12ec77f165dc7351115183eec83c7790b69c2751c5a73302bea1c530db",
+        "20261021-034225-936-ac6be345/samples/0.json": "74c48feef0818e7d1d1fbd460102c1752d47146052653918962b112e161a4905",
+        "20261021-034225-936-ac6be345/samples/0.sha256": "340662701fbf455c4eacff34cc9010d394a01f0783b34c084e5c6dbc7e86a466",
+        "20261021-034225-936-ac6be345/samples/1.json": "305c2f398c473540204ed66d5b137a93f05c65b7306272c55a3b6e6936f3d1eb",
+        "20261021-034225-936-ac6be345/samples/1.sha256": "88f6a56d4d1880902c8f073ffebed370860708a65e50a116bba354c0d035ac9a",
+        "20261021-034225-936-ac6be345/samples/2.json": "eba850404cf07ff4a5d8f22c9b3e3dec79b317c6fd253299b6d6f20d86c555d8",
+        "20261021-034225-936-ac6be345/samples/2.sha256": "844b032585144462ffc5a734a52898fe11074cac0f2f1b8fabb007b98b35e1da",
+        "20261021-034225-936-ac6be345/samples/3.json": "c3f404973fb7aff6632ad44b72836cdf3d3c54a100291602d75d00676b4b096c",
+        "20261021-034225-936-ac6be345/samples/3.sha256": "9d716d132fc70e8e3f1d6851ecab03175a9494dd2ad27a40d09dc9a379cdfe53",
+        "20261021-034225-936-ac6be345/status.json": "b77dcccfbbf45d2e411532251fd102b0e0a2029ec939c516685d2c88d6ae6749",
+        "20261021-034225-936-ac6be345/threshold-performance.png": "55b21f9048d0b8eb08783a645ce1a03159a06136a02ea9d7b1dff3cdc4f113f4",
+        "20261021-034225-936-ac6be345/threshold-performance.svg": "afcd7a7c11554fe343b280462b830e7cd8621c3b88caac62bd679f27dcc19a84",
+        "20261021-034225-936-ac6be345/thresholds.csv": "b80611663eb634ffdcc08636b8ac2eb8e9d9296f8b1905e68b3ed474fa4cc220"
+      },
+      "restore_command": {
+        "arguments": [
+          "/tmp/vision-studio-evaluation-qa-fvrq3q1f/extracted/opt/VisionStudio/run-installed.sh",
+          "--smoke-dataset-session",
+          "/tmp/vision-studio-dataset-session-260-by0mn5jl/yaml/restored-smoke"
+        ],
+        "pid": 862259,
+        "exit_code": 0,
+        "began_at_utc": "2026-10-21T03:42:29.097426+00:00",
+        "ended_at_utc": "2026-10-21T03:42:29.712273+00:00",
+        "elapsed_seconds": 0.615,
+        "stdout": "/tmp/vision-studio-dataset-session-260-by0mn5jl/yaml/restore.stdout.log",
+        "stderr": "/tmp/vision-studio-dataset-session-260-by0mn5jl/yaml/restore.stderr.log",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+      },
+      "restore_smoke_sha256": "fb9e295301b9ba6225a513e35c042a2903eabf3e82bd964a1a0f9bcf84205a3a",
+      "screenshot": {
+        "width": 1580,
+        "height": 960,
+        "mode": "RGB",
+        "sha256": "4134ef43ade0a42da6810f88ab0be3e892fa96f0889dcc936d1c111009a34e31",
+        "bytes": 498790,
+        "full_pixel_decode": true
+      },
+      "success": true
+    },
+    "directory": {
+      "source_kind": "directory",
+      "requested_source": "/tmp/vision-studio-evaluation-public-230",
+      "state_directory": "/tmp/vision-studio-dataset-session-260-by0mn5jl/directory",
+      "evaluation_command": {
+        "arguments": [
+          "/tmp/vision-studio-evaluation-qa-fvrq3q1f/extracted/opt/VisionStudio/run-installed.sh",
+          "--smoke-evaluation",
+          "/tmp/vision-studio-dataset-session-260-by0mn5jl/directory/evaluation-smoke",
+          "--evaluation-request",
+          "/tmp/vision-studio-dataset-session-260-by0mn5jl/directory/request.json"
+        ],
+        "pid": 862356,
+        "exit_code": 0,
+        "began_at_utc": "2026-10-21T03:42:29.781216+00:00",
+        "ended_at_utc": "2026-10-21T03:42:33.401749+00:00",
+        "elapsed_seconds": 3.621,
+        "stdout": "/tmp/vision-studio-dataset-session-260-by0mn5jl/directory/evaluation.stdout.log",
+        "stderr": "/tmp/vision-studio-dataset-session-260-by0mn5jl/directory/evaluation.stderr.log",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+      },
+      "saved_session": {
+        "metadata_path": "",
+        "schema_version": 1,
+        "source_path": "/tmp/vision-studio-evaluation-public-230",
+        "split": "val"
+      },
+      "session_sha256_before_restore": "8e776f7ec4ab43725b4197a3d7b23108693c7b4fe28382ebfe0f4562ba8229fa",
+      "evaluation_smoke_sha256": "4c2deeefdceb8319d81f55befb9939b6585039396b5168cb81e5d107a1ebcdb6",
+      "evaluation_report_sha256": "35cd447ef44bbd4d77b79c1560839640cde7187607858b7f36c8dde079192031",
+      "completed_images": 4,
+      "history_sha256_before_restore": "fe2915c3f3c7d493291208cc738467647b5f4e5447ca36052f8c13f634e1436f",
+      "evaluations_before_restore": {
+        "20261021-034230-249-221b5cf1/REPORT.md": "1d8da1bb17290177e82ee1d4e444eef2b11d16b6bde4a4f4c5d314654fca3e3a",
+        "20261021-034230-249-221b5cf1/errors.csv": "992b103ac3d8e761471c423bcb21d422b51fc881053857894ecf5ea2465fefde",
+        "20261021-034230-249-221b5cf1/helper.log": "0d8a6a35f22d5443b9e97648170fe572d8b031a4dc6e6ad3db96bcdc0a9ecc8b",
+        "20261021-034230-249-221b5cf1/manifest.json": "79904c60faeb9fba6b036d137b73d0dd909c2c639e5651a181202f6aabf3f2bb",
+        "20261021-034230-249-221b5cf1/negative-false-positive-rate.png": "903f272b1b1cc1f63d12de477d3a3870663fc53edb814499ef214c3d91d3575e",
+        "20261021-034230-249-221b5cf1/negative-false-positive-rate.svg": "f122cb72b464777ba7c8e441bb9c7a4f6b9ffafaaed39549ff8f64d14cdae92b",
+        "20261021-034230-249-221b5cf1/per-image.csv": "3714f9327dfdc1f081e860b7931bc673e69c2874598a9d0a357f4f2f9baeb82b",
+        "20261021-034230-249-221b5cf1/plot-config/fontlist-v390.json": "04b2bdf2b6afca4edbdabdd8a88e5a2a5bba44d38b91ae98b3af9c79d6d139ed",
+        "20261021-034230-249-221b5cf1/predictions.jsonl": "c0b3e59c5700cc529587eb01f1b45fd089771ce365beac2d757a741af0f5899f",
+        "20261021-034230-249-221b5cf1/report.json": "35cd447ef44bbd4d77b79c1560839640cde7187607858b7f36c8dde079192031",
+        "20261021-034230-249-221b5cf1/request.json": "99e72f12ec77f165dc7351115183eec83c7790b69c2751c5a73302bea1c530db",
+        "20261021-034230-249-221b5cf1/samples/0.json": "ada65cf40604e140f929ffb5e7d824c86d99a0e87750b97abcd6f02082520cd8",
+        "20261021-034230-249-221b5cf1/samples/0.sha256": "3f1f8546851433aec4c0f85fbbaa448a481f605385698cfbf1bcce05988aa9a4",
+        "20261021-034230-249-221b5cf1/samples/1.json": "d587d2326078aadcdd72479906af89323d1d161e1cd7617095805842f78c8125",
+        "20261021-034230-249-221b5cf1/samples/1.sha256": "b79d1bd0aa4d72fa7cb812afe074c87f90ea80576217ca6a7d3a74ddc035ae39",
+        "20261021-034230-249-221b5cf1/samples/2.json": "19eadb2573f2a026d3037e12d0529b4186eff7d0876ef8a86fae02974545f43f",
+        "20261021-034230-249-221b5cf1/samples/2.sha256": "f7ed037e631b0d0a3899a0ee9fe3ea787049d32735334df521a0978c99d78326",
+        "20261021-034230-249-221b5cf1/samples/3.json": "a046c70e9478bed2bb95692a9f7e4971f666291c2858c315ab58c6f1f0b59b4c",
+        "20261021-034230-249-221b5cf1/samples/3.sha256": "e22d5839eea5a93167407e54c2c2d06e3310ce36ed778ef68d1182faf13b14a8",
+        "20261021-034230-249-221b5cf1/status.json": "213f0b113a646a49afe66ba63501e8cabb185569f9355d819e878900631f7753",
+        "20261021-034230-249-221b5cf1/threshold-performance.png": "55b21f9048d0b8eb08783a645ce1a03159a06136a02ea9d7b1dff3cdc4f113f4",
+        "20261021-034230-249-221b5cf1/threshold-performance.svg": "c9150091b55f7ff4528551867203f44fd943c4f70d612947d80dc224883315a4",
+        "20261021-034230-249-221b5cf1/thresholds.csv": "b80611663eb634ffdcc08636b8ac2eb8e9d9296f8b1905e68b3ed474fa4cc220"
+      },
+      "restore_command": {
+        "arguments": [
+          "/tmp/vision-studio-evaluation-qa-fvrq3q1f/extracted/opt/VisionStudio/run-installed.sh",
+          "--smoke-dataset-session",
+          "/tmp/vision-studio-dataset-session-260-by0mn5jl/directory/restored-smoke"
+        ],
+        "pid": 862488,
+        "exit_code": 0,
+        "began_at_utc": "2026-10-21T03:42:33.428352+00:00",
+        "ended_at_utc": "2026-10-21T03:42:34.043689+00:00",
+        "elapsed_seconds": 0.615,
+        "stdout": "/tmp/vision-studio-dataset-session-260-by0mn5jl/directory/restore.stdout.log",
+        "stderr": "/tmp/vision-studio-dataset-session-260-by0mn5jl/directory/restore.stderr.log",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+      },
+      "restore_smoke_sha256": "09e46e6a0021acbc36f8d10f564264f07aca6c259ef54757febfccc3a25cf116",
+      "screenshot": {
+        "width": 1580,
+        "height": 960,
+        "mode": "RGB",
+        "sha256": "4134ef43ade0a42da6810f88ab0be3e892fa96f0889dcc936d1c111009a34e31",
+        "bytes": 498790,
+        "full_pixel_decode": true
+      },
+      "success": true
+    }
+  },
+  "limitations": [
+    "Four public COCO8 Val images verify persistence and application integration, not football accuracy.",
+    "Train/test split and reviewed single-class metadata restoration use separate native UI regressions.",
+    "No private data, host installation, model training or runtime modification."
+  ],
+  "deb_version": "2.6.0-1",
+  "deb_sha256": "0189cb2aa7819b3f0e2e98c723de110418d86df38c5a10adba750b04e50b6431",
+  "code_sha256": {
+    "build/bin/vision-studio": "fee6be0ab1e694ffc83a614fd4224ab2bae29ac2c81b190fe89acbbdd4157c19",
+    "models/yolov5n.onnx": "60c130eb3cd8e3f378673ea71c8b54da8afa0c051d82a1ea1490c36bbf10c820",
+    "models/yolov8n.pt": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+    "run-installed.sh": "b7da7af0e0888c4fe5d3d2c3c3b80d07cb9a558346b0e6dc9f0e227ec6dfbd94",
+    "scripts/evaluation_data.py": "8f67638afd42e07ab8783a1db25db233c0e7cc34d2798b8356f5810d8d22961c",
+    "scripts/evaluation_metrics.py": "fe4b5683cb23d455978dd39a3c1a615ae0e11da65792f3696d4d71e001fde234",
+    "scripts/evaluation_worker.py": "4b825f7ef26dac79c0ca5658ed8431d5d375f827d9333b34ef937360b4a699c8",
+    "scripts/model_convert.py": "b0262cff2c0fee9063b8df55bdea1be5e922b6b4bbf3280796a89c90cfc44bda",
+    "scripts/pt_worker.py": "2752326ee741385441187aa1b6e0b6bd2cee8c507f0f3e5e09587d0a68095c9e"
+  },
+  "package_bound": true,
+  "read_only_application": true,
+  "binary_sha256": "fee6be0ab1e694ffc83a614fd4224ab2bae29ac2c81b190fe89acbbdd4157c19",
+  "matrix_report_sha256": "786cc4b5f5581eeb71f2176777dbf4528f988c32b179fad0b3a96e9cbbb3ea5c",
+  "public_input_sha256": {
+    "/tmp/vision-studio-evaluation-public-230/coco8-qa.yaml": "7258a71117ef520036345818544c3c8a7ffd50a38ba6a7b42c752544b7631c1c",
+    "/tmp/vision-studio-evaluation-public-230/provenance.json": "5f5712021ed2edaf209b13c7bf704e58b3a0c82643a68b254206874579af0e38",
+    "/tmp/vision-studio-evaluation-public-230/coco8/images/val/000000000036.jpg": "4c28394898302bef227834d63498a0fc54e4295f11c590c8a8ebcba51347bc03",
+    "/tmp/vision-studio-evaluation-public-230/coco8/labels/val/000000000036.txt": "638773d69e1348c8d213cc0fdaf4107d170df7811af56f2cce372ca245556149",
+    "/tmp/vision-studio-evaluation-public-230/coco8/images/val/000000000042.jpg": "c87afb6dfe55db1cada52479ed939a231e030d64f5e3c3eaf7eb1544591f853a",
+    "/tmp/vision-studio-evaluation-public-230/coco8/labels/val/000000000042.txt": "c0e1ac95cf47310a3de9692cf0505fbf1ddcabceed575a3ecfac3c87f184f168",
+    "/tmp/vision-studio-evaluation-public-230/coco8/images/val/000000000049.jpg": "86b46022d382f67b0934147fe515e1c3c3f5c04db45045516214b5e3092148e3",
+    "/tmp/vision-studio-evaluation-public-230/coco8/labels/val/000000000049.txt": "0c0973cfb10a591266b92769e7cd43686133ea12faaa9d583702bf1c55e126e3",
+    "/tmp/vision-studio-evaluation-public-230/coco8/images/val/000000000061.jpg": "6460e4a7cc80e34815aba8910a23152a16a24a416fa598138bd9231cccd413e2",
+    "/tmp/vision-studio-evaluation-public-230/coco8/labels/val/000000000061.txt": "d7988d745a68480c7331b323adeec29adb1b0a4df53b072ed45d9650893eb812"
+  }
+}

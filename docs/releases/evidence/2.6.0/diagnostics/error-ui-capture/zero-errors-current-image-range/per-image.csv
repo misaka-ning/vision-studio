@@ -1,0 +1,2 @@
+﻿image,TP,FP,FN,negative,kept_prediction_indices,matched_indices,fp_indices,matched_gt_indices,missed_gt_indices
+/tmp/vision-evaluation-integration-tests-SOPSlO/dataset-4/images/val/0000.png,1,0,0,False,[0],[0],[],[0],[]

@@ -1,0 +1,41 @@
+Running vision-core-tests
+{"name": "vision-core-tests", "success": true, "elapsed_seconds": 0.771}
+Running vision-inference-delivery-tests
+{"name": "vision-inference-delivery-tests", "success": true, "elapsed_seconds": 1.574}
+Running vision-recording-tests
+{"name": "vision-recording-tests", "success": true, "elapsed_seconds": 3.031}
+Running vision-pt-tests
+{"name": "vision-pt-tests", "success": true, "elapsed_seconds": 241.047}
+Running vision-gpu-tests
+{"name": "vision-gpu-tests", "success": true, "elapsed_seconds": 135.779}
+Running vision-ui-tests
+{"name": "vision-ui-tests", "success": true, "elapsed_seconds": 52.72}
+Running vision-batch-responsiveness-tests
+{"name": "vision-batch-responsiveness-tests", "success": true, "elapsed_seconds": 9.557}
+Running vision-scope-filter-ui-tests
+{"name": "vision-scope-filter-ui-tests", "success": true, "elapsed_seconds": 31.027}
+Running vision-modelviewer-tests
+{"name": "vision-modelviewer-tests", "success": true, "elapsed_seconds": 12.969}
+Running vision-conversion-ui-tests
+{"name": "vision-conversion-ui-tests", "success": true, "elapsed_seconds": 0.675}
+Running vision-conversion-inference-tests
+{"name": "vision-conversion-inference-tests", "success": true, "elapsed_seconds": 120.984}
+Running vision-model-conversion-tests
+{"name": "vision-model-conversion-tests", "success": true, "elapsed_seconds": 113.745}
+Running vision-netron-server-tests
+{"name": "vision-netron-server-tests", "success": true, "elapsed_seconds": 4.158}
+Running vision-gpu-runtime-tests
+{"name": "vision-gpu-runtime-tests", "success": true, "elapsed_seconds": 1.132}
+Running vision-evaluation-worker-tests
+{"name": "vision-evaluation-worker-tests", "success": true, "elapsed_seconds": 29.121}
+Running vision-evaluation-panel-tests
+{"name": "vision-evaluation-panel-tests", "success": true, "elapsed_seconds": 0.814}
+Running vision-evaluation-python-tests
+{"name": "vision-evaluation-python-tests", "success": true, "elapsed_seconds": 5.176}
+Running vision-evaluation-integration-tests
+{"name": "vision-evaluation-integration-tests", "success": true, "elapsed_seconds": 65.883}
+Running vision-dataset-session-tests
+{"name": "vision-dataset-session-tests", "success": true, "elapsed_seconds": 0.08}
+Running vision-dataset-session-ui-tests
+{"name": "vision-dataset-session-ui-tests", "success": true, "elapsed_seconds": 6.863}
+{"success": true, "errors": [], "report": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.6.0/qa-full/detection-regression-qa.json"}

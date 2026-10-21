@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "version": "2.6.0",
+  "success": true,
+  "errors": [],
+  "generated_at_utc": "2026-10-21T03:26:12.276270+00:00",
+  "scope": "Independent actual CPU-only native screenshot capture of two existing frozen integration cases; visual inspection only supplements the complete 20-suite run and never adds to its totals.",
+  "capture_directory": ".",
+  "execution": "capture-execution.json",
+  "execution_sha256": "7295818c79677e602a5eaa7be967da981dbd3fb76074fa8bc81242cebfacf880",
+  "production_binary_sha256": "c355cd5add789edf699ed0a9c623954a141080675b0fdc60b80748f78c5dc312",
+  "native_binary_sha256": "1afcb2aebd2f87d18857ac2a8608a5350d04912112146f4b69f1acaaf3fd1267",
+  "binary_sha256_match_frozen_before_snapshot": true,
+  "raw_log": "native-tests.log",
+  "raw_junit": "native-tests.junit.xml",
+  "actual_selected_slots": [
+    "errorReviewNavigatesUniqueImagesAtCurrentThresholdWithoutInference",
+    "zeroErrorReviewDoesNotInventErrorsOutsideCurrentImageRange"
+  ],
+  "qt_reported_passes_including_init_cleanup": 4,
+  "selected_function_cases": 2,
+  "failed": 0,
+  "skipped": 0,
+  "gpu_requested": false,
+  "evaluation_backend": "OpenCV DNN / CPU",
+  "new_inference_requests_during_review_observed": 0,
+  "initial_fixture_evaluation_performed": true,
+  "count_toward_complete_regression_totals": false,
+  "ui_review_observations": {
+    "threshold_0_7_unique_errors": 2,
+    "threshold_0_9_unique_errors": 3,
+    "evaluated_images": 4
+  },
+  "visual_inspection": [
+    {
+      "scenario": "unique-error-review-navigation",
+      "image": "unique-error-review-navigation/native-window.png",
+      "width": 1380,
+      "height": 940,
+      "bit_depth": 8,
+      "color_type": 2,
+      "crc_and_complete_zlib_payload_verified": true,
+      "observed_ui_state": {
+        "current_threshold": 0.7,
+        "error_images": 2,
+        "evaluated_images": 4,
+        "collection_images": 4,
+        "position": 2,
+        "navigation_size": 2
+      },
+      "fixture_report_completed_images": 4,
+      "fixture_report_saved_confidence": 0.3,
+      "visual_inspection": {
+        "performed": true,
+        "full_preview_width_bar": true,
+        "single_line_controls_readable": true,
+        "count_filter_and_position_visible": true,
+        "previous_next_boundary_state_visible": true,
+        "no_overlapping_or_overflowing_controls_observed": true,
+        "dark_theme_text_contrast_readable": true,
+        "empty_state_clears_previous_predictions": false
+      },
+      "note": "Actual native Qt window; synthetic deterministic CPU Conv fixture, not a model-accuracy benchmark."
+    },
+    {
+      "scenario": "zero-errors-current-image-range",
+      "image": "zero-errors-current-image-range/native-window.png",
+      "width": 1380,
+      "height": 940,
+      "bit_depth": 8,
+      "color_type": 2,
+      "crc_and_complete_zlib_payload_verified": true,
+      "observed_ui_state": {
+        "current_threshold": 0.7,
+        "error_images": 0,
+        "evaluated_images": 1,
+        "collection_images": 4,
+        "position": 0,
+        "navigation_size": 0
+      },
+      "fixture_report_completed_images": 1,
+      "fixture_report_saved_confidence": 0.3,
+      "visual_inspection": {
+        "performed": true,
+        "full_preview_width_bar": true,
+        "single_line_controls_readable": true,
+        "count_filter_and_position_visible": true,
+        "previous_next_boundary_state_visible": true,
+        "no_overlapping_or_overflowing_controls_observed": true,
+        "dark_theme_text_contrast_readable": true,
+        "empty_state_clears_previous_predictions": true
+      },
+      "note": "Actual native Qt window; synthetic deterministic CPU Conv fixture, not a model-accuracy benchmark."
+    }
+  ],
+  "file_count": 18,
+  "files": [
+    {
+      "file": "capture-execution.json",
+      "bytes": 2801,
+      "sha256": "7295818c79677e602a5eaa7be967da981dbd3fb76074fa8bc81242cebfacf880"
+    },
+    {
+      "file": "launcher.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "native-tests.junit.xml",
+      "bytes": 3332,
+      "sha256": "865f3421ecf735f543f88e16b2afbc7349888d56313f1e95b2650bb110413abf"
+    },
+    {
+      "file": "native-tests.log",
+      "bytes": 3315,
+      "sha256": "20c1298991eb406c2526684e8ddc2bf3e720ded8fc5b0c855b6405020c675720"
+    },
+    {
+      "file": "unique-error-review-navigation/REPORT.md",
+      "bytes": 1264,
+      "sha256": "eb0afafd30487666d8d328f74b186d4e996d6b4d42bfe09657639dfa24ce4a92"
+    },
+    {
+      "file": "unique-error-review-navigation/errors.csv",
+      "bytes": 332,
+      "sha256": "141439c3b6e414a57fd4aba3d44912f3f4b6c0d4f3db5b6075ab2cf1a5ea4359"
+    },
+    {
+      "file": "unique-error-review-navigation/native-window.png",
+      "bytes": 181939,
+      "sha256": "be7ce274e307ce4ae1e0b3d281fbaa39da7ad4cd155a661137a3351906f2475b"
+    },
+    {
+      "file": "unique-error-review-navigation/per-image.csv",
+      "bytes": 550,
+      "sha256": "5d1d7961a5ec9cb69874d60c1ba055aae312f59897a078790558b7a43dce3a18"
+    },
+    {
+      "file": "unique-error-review-navigation/report.json",
+      "bytes": 71123,
+      "sha256": "a754a05e16cd5cad6fb82e2b77126e3cfe3c1e1204eeb6131eaa4ecff802b2fa"
+    },
+    {
+      "file": "unique-error-review-navigation/status.json",
+      "bytes": 204,
+      "sha256": "e67dea66d4fc96b12dadbc9c1325905c6b00fa36a252d5c16c72fc49affea787"
+    },
+    {
+      "file": "unique-error-review-navigation/thresholds.csv",
+      "bytes": 1479,
+      "sha256": "87a28c6f3d49f361f7656f4d34ca8a51518068992a71fd9ce69147948618bbb7"
+    },
+    {
+      "file": "zero-errors-current-image-range/REPORT.md",
+      "bytes": 1466,
+      "sha256": "def5f12a9bdba48e78a85b4ee88672b1604947e003f10b17b2da509b7d6e7128"
+    },
+    {
+      "file": "zero-errors-current-image-range/errors.csv",
+      "bytes": 28,
+      "sha256": "3f50a22b548bac364f2d7601852359cb4737101e038eeb3ef1570f7cf6bf5eb0"
+    },
+    {
+      "file": "zero-errors-current-image-range/native-window.png",
+      "bytes": 181441,
+      "sha256": "f08f4b2b4fcfd13582ab3c8474ece7752729a80392508a1d34aba1c82d852b89"
+    },
+    {
+      "file": "zero-errors-current-image-range/per-image.csv",
+      "bytes": 225,
+      "sha256": "4cbe5d6f305051b6031f6648ab413ca5eebebe7db979c88429080180f5591775"
+    },
+    {
+      "file": "zero-errors-current-image-range/report.json",
+      "bytes": 67166,
+      "sha256": "bc555f4857bf6ddf57689a422daa56e0482d55d03e0cf4a3ca68954003f32ead"
+    },
+    {
+      "file": "zero-errors-current-image-range/status.json",
+      "bytes": 204,
+      "sha256": "c43570050f1ba50fa37c71ce209de0c2ed376eae2ff0393b5e7940ad38e93132"
+    },
+    {
+      "file": "zero-errors-current-image-range/thresholds.csv",
+      "bytes": 1030,
+      "sha256": "5cf95cee3d323930479cd8ea8836233565fbba771adb7eb0dcc02951b1af8d3b"
+    }
+  ],
+  "limitations": [
+    "Native integration harness init explicitly sets QCoreApplication version to 2.5.0, so the screenshot sidebar shows 2.5.0. This capture is bound to the actual frozen 2.6.0 native/production hashes, not an installed 2.6.0 DEB UI claim.",
+    "The existing test init fixes the native window to 1380 x 940; 1260-wide and 1580-wide error-bar states were not separately captured here.",
+    "The report/CSV artifacts remain immutable at their saved analysis confidence 0.3, while the captured browser uses current threshold 0.7; reviewing does not rewrite historical metrics.",
+    "The analysis-page error summary is checked by the selected native assertions but is not visible in these two preview-page screenshots.",
+    "At zero errors the canvas uses its existing generic empty-source artwork; the zero-count bar and right-side no-matching-images message distinguish the actual filtered empty state.",
+    "Synthetic image/model fixtures verify matching, interaction and pixels; these values are not football accuracy or deployment performance.",
+    "Original full regression logs and JUnit are not modified or replaced by this independent two-case visual run."
+  ],
+  "source_report": {
+    "file": "original/error-ui-capture-qa.json",
+    "sha256": "3dba15610cb1d4c5e8a9e79092ce4d35024ca23be3e326a9cbb2b39ead9c08e7",
+    "bytes": 8435,
+    "original_local_path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.6.0/error-ui-capture-qa.json",
+    "original_capture_directory": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.6.0/error-ui-capture",
+    "original_bytes_preserved": true
+  },
+  "archive_context": {
+    "created_at_utc": "2026-10-21T03:30:13.386838+00:00",
+    "path_base": "All archive artifact paths in this adapted report are relative to this report directory.",
+    "recorded_binary_paths_are_execution_provenance_only": true,
+    "unchanged_raw_execution_metadata": "capture-execution.json retains the original absolute commands, runtime paths and snapshot location as historical execution provenance, not files distributed in this diagnostic archive.",
+    "no_tests_rerun_by_archiving": true,
+    "no_full_regression_totals_changed": true,
+    "recorded_production_binary_path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.6.0-release/bin/vision-studio",
+    "recorded_native_binary_path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.6.0-release/vision-evaluation-integration-tests"
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "version": "2.6.0",
+  "scope": "Byte-preserving public synthetic-fixture diagnostic archiving only; not a new test execution.",
+  "created_at_utc": "2026-10-21T03:30:13.387035+00:00",
+  "source_report_sha256": "3dba15610cb1d4c5e8a9e79092ce4d35024ca23be3e326a9cbb2b39ead9c08e7",
+  "original_files": [
+    {
+      "file": "capture-execution.json",
+      "bytes": 2801,
+      "sha256": "7295818c79677e602a5eaa7be967da981dbd3fb76074fa8bc81242cebfacf880",
+      "original_capture_relative_path": "capture-execution.json",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "launcher.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_capture_relative_path": "launcher.log",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "native-tests.junit.xml",
+      "bytes": 3332,
+      "sha256": "865f3421ecf735f543f88e16b2afbc7349888d56313f1e95b2650bb110413abf",
+      "original_capture_relative_path": "native-tests.junit.xml",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "native-tests.log",
+      "bytes": 3315,
+      "sha256": "20c1298991eb406c2526684e8ddc2bf3e720ded8fc5b0c855b6405020c675720",
+      "original_capture_relative_path": "native-tests.log",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "unique-error-review-navigation/REPORT.md",
+      "bytes": 1264,
+      "sha256": "eb0afafd30487666d8d328f74b186d4e996d6b4d42bfe09657639dfa24ce4a92",
+      "original_capture_relative_path": "unique-error-review-navigation/REPORT.md",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "unique-error-review-navigation/errors.csv",
+      "bytes": 332,
+      "sha256": "141439c3b6e414a57fd4aba3d44912f3f4b6c0d4f3db5b6075ab2cf1a5ea4359",
+      "original_capture_relative_path": "unique-error-review-navigation/errors.csv",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "unique-error-review-navigation/native-window.png",
+      "bytes": 181939,
+      "sha256": "be7ce274e307ce4ae1e0b3d281fbaa39da7ad4cd155a661137a3351906f2475b",
+      "original_capture_relative_path": "unique-error-review-navigation/native-window.png",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "unique-error-review-navigation/per-image.csv",
+      "bytes": 550,
+      "sha256": "5d1d7961a5ec9cb69874d60c1ba055aae312f59897a078790558b7a43dce3a18",
+      "original_capture_relative_path": "unique-error-review-navigation/per-image.csv",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "unique-error-review-navigation/report.json",
+      "bytes": 71123,
+      "sha256": "a754a05e16cd5cad6fb82e2b77126e3cfe3c1e1204eeb6131eaa4ecff802b2fa",
+      "original_capture_relative_path": "unique-error-review-navigation/report.json",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "unique-error-review-navigation/status.json",
+      "bytes": 204,
+      "sha256": "e67dea66d4fc96b12dadbc9c1325905c6b00fa36a252d5c16c72fc49affea787",
+      "original_capture_relative_path": "unique-error-review-navigation/status.json",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "unique-error-review-navigation/thresholds.csv",
+      "bytes": 1479,
+      "sha256": "87a28c6f3d49f361f7656f4d34ca8a51518068992a71fd9ce69147948618bbb7",
+      "original_capture_relative_path": "unique-error-review-navigation/thresholds.csv",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "zero-errors-current-image-range/REPORT.md",
+      "bytes": 1466,
+      "sha256": "def5f12a9bdba48e78a85b4ee88672b1604947e003f10b17b2da509b7d6e7128",
+      "original_capture_relative_path": "zero-errors-current-image-range/REPORT.md",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "zero-errors-current-image-range/errors.csv",
+      "bytes": 28,
+      "sha256": "3f50a22b548bac364f2d7601852359cb4737101e038eeb3ef1570f7cf6bf5eb0",
+      "original_capture_relative_path": "zero-errors-current-image-range/errors.csv",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "zero-errors-current-image-range/native-window.png",
+      "bytes": 181441,
+      "sha256": "f08f4b2b4fcfd13582ab3c8474ece7752729a80392508a1d34aba1c82d852b89",
+      "original_capture_relative_path": "zero-errors-current-image-range/native-window.png",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "zero-errors-current-image-range/per-image.csv",
+      "bytes": 225,
+      "sha256": "4cbe5d6f305051b6031f6648ab413ca5eebebe7db979c88429080180f5591775",
+      "original_capture_relative_path": "zero-errors-current-image-range/per-image.csv",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "zero-errors-current-image-range/report.json",
+      "bytes": 67166,
+      "sha256": "bc555f4857bf6ddf57689a422daa56e0482d55d03e0cf4a3ca68954003f32ead",
+      "original_capture_relative_path": "zero-errors-current-image-range/report.json",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "zero-errors-current-image-range/status.json",
+      "bytes": 204,
+      "sha256": "c43570050f1ba50fa37c71ce209de0c2ed376eae2ff0393b5e7940ad38e93132",
+      "original_capture_relative_path": "zero-errors-current-image-range/status.json",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "zero-errors-current-image-range/thresholds.csv",
+      "bytes": 1030,
+      "sha256": "5cf95cee3d323930479cd8ea8836233565fbba771adb7eb0dcc02951b1af8d3b",
+      "original_capture_relative_path": "zero-errors-current-image-range/thresholds.csv",
+      "original_bytes_preserved": true
+    },
+    {
+      "file": "original/error-ui-capture-qa.json",
+      "bytes": 8435,
+      "sha256": "3dba15610cb1d4c5e8a9e79092ce4d35024ca23be3e326a9cbb2b39ead9c08e7",
+      "original_bytes_preserved": true
+    }
+  ],
+  "derived_files": [
+    {
+      "file": "error-ui-capture-qa.json",
+      "bytes": 9352,
+      "sha256": "d5b226635e90d9b15954c3203f3db996a54590e012719d1b421d7b5a1046fbfb"
+    },
+    {
+      "file": "README.md",
+      "bytes": 2795,
+      "sha256": "eba03f628cd6d9f8cc0ef267584cedf0e3d112698886130a4a3ef2c82c9aff11"
+    }
+  ],
+  "no_runtime_models_or_private_user_materials_copied": true,
+  "no_test_executed": true
+}

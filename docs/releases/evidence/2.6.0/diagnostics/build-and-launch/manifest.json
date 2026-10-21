@@ -1,0 +1,45 @@
+{
+  "scope": "Actual final configuration, build, source export, all-suite launcher and summary logs. Targeted preflight is separately retained and not counted twice.",
+  "files": [
+    {
+      "file": "configure-final.log",
+      "sha256": "10539127003459b7b3f68ff1635fe7a01c0ff08796a03caeac943f3e6f982106",
+      "bytes": 439
+    },
+    {
+      "file": "build-feature.log",
+      "sha256": "ccf1a7d1d9da03132b3e269aa0d8260152f1812fbb3f4d52e769231bdf15ddd5",
+      "bytes": 3041
+    },
+    {
+      "file": "build-deb.log",
+      "sha256": "6156b63c0658efbafbbc41dbb1d28bc4cf6ad28626ce2ebf1b29fa90f03ae42e",
+      "bytes": 676
+    },
+    {
+      "file": "build-source.log",
+      "sha256": "a47b1a667fe401bca9cbdeab998cf323a446bf3edd5974e450661d0d8b9f3716",
+      "bytes": 127
+    },
+    {
+      "file": "inventory.log",
+      "sha256": "3b026411096f119ff3e61c3bf02120f86ce9d0edba3e905f8edc01f09a0220dc",
+      "bytes": 62
+    },
+    {
+      "file": "qa-full.log",
+      "sha256": "a079ea26c9329638b6cdbfcb23bca45ebe26dfd781381bfd75b2ddbb419625ee",
+      "bytes": 2491
+    },
+    {
+      "file": "summarize-regressions.log",
+      "sha256": "faa69be65f69c7f5f0ca70d354aebdaf78dddead873c37d81afa260ecfe90dce",
+      "bytes": 182
+    },
+    {
+      "file": "source-freeze.json",
+      "sha256": "f1f3ff6ed52413c98c060020513658323dcdcc95f919c3a859b23e89b93f72a8",
+      "bytes": 519
+    }
+  ]
+}
