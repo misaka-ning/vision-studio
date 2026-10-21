@@ -1,0 +1,550 @@
+{
+  "schema_version": 1,
+  "version": "2.5.0",
+  "success": true,
+  "errors": [],
+  "warnings": [],
+  "created_at_utc": "2026-10-21T02:40:12.868820+00:00",
+  "read_only_audit": true,
+  "deletions_performed": [],
+  "eligible_to_delete_now_without_further_authorization": false,
+  "exact_candidate_paths": [
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/vision-studio-2.5.0-complete-source.tar.xz",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/vision-studio-2.5.0-sources.tar.xz",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/source-input.tar"
+  ],
+  "scope": "Only old unpublished complete/app archives in pre-async-source and the named source-input.tar. No deletion or cleanup-script modification.",
+  "preserved_checksum_and_qa_records": [
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/SHA256SUMS",
+      "bytes": 207,
+      "sha256": "41f62c050d2906f61a62bb93e9f6d6cef443c6cf717ae8aa917310c5ca565bf9",
+      "device": 66308,
+      "inode": 31614229,
+      "mtime_ns": 1792548572253047203,
+      "mode": 436
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/SOURCE-SHA256SUMS",
+      "bytes": 2206,
+      "sha256": "d359e04b3860bd00bc55b9b1afc4adafacaadd41b0169dc5a8f4efcd8ddbe1b4",
+      "device": 66308,
+      "inode": 31614227,
+      "mtime_ns": 1792548483766042883,
+      "mode": 436
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/SOURCE-INVENTORY.json",
+      "bytes": 8027,
+      "sha256": "5e062e5f75af50c594229c2e411c16be792b3856194f6c816f36b7132c065e5a",
+      "device": 66308,
+      "inode": 31614220,
+      "mtime_ns": 1792548461952041817,
+      "mode": 436
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/source-freeze.json",
+      "bytes": 731,
+      "sha256": "f8f1327d3562514087a1a0edae1d19af75726b231c04b8ceb879bf6e1de85c91",
+      "device": 66308,
+      "inode": 31614218,
+      "mtime_ns": 1792548385688038094,
+      "mode": 436
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/source-bundle-qa.json",
+      "bytes": 2229260,
+      "sha256": "33da72a0eb9dd1d44020d9c11178255a24ce0fce8b0fed2e221fd8bcc940ddbc",
+      "device": 66308,
+      "inode": 31614235,
+      "mtime_ns": 1792548618600049466,
+      "mode": 436
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/source-bundle-qa.log",
+      "bytes": 448,
+      "sha256": "5118b911053583abd18aa1240ebff6efe2c908a953f80ab5ca46e29f824e19d2",
+      "device": 66308,
+      "inode": 31614232,
+      "mtime_ns": 1792548618600049466,
+      "mode": 436
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/qa-report.json",
+      "bytes": 119535,
+      "sha256": "aa18108353dc48b21af0879f7aae99bb652df23ead6c5dce5f6e863e90e179c5",
+      "device": 66308,
+      "inode": 31607031,
+      "mtime_ns": 1792548688372052873,
+      "mode": 436
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/qa-report.log",
+      "bytes": 147,
+      "sha256": "54e61a9884f210c99778391f2099ff42a2ab2bf663247b39b1b8b9167537685a",
+      "device": 66308,
+      "inode": 31607029,
+      "mtime_ns": 1792548688372052873,
+      "mode": 436
+    }
+  ],
+  "git_reconstruction": {
+    "initial_commit": "e1c2f12d308c3435323a9586cd354a60cd7cfbc2",
+    "initial_tree": "b340effff8271bc131eebd026e47cb34b4c9231a",
+    "initial_is_main_ancestor": false,
+    "final_commit": "949727adf14692e2793a31470e1befeb5861d90e",
+    "final_tree": "0a04b5067ec93bd28479d4be89c730f3b078dfcd",
+    "final_is_formal_tag_ancestor": true,
+    "changed_paths": [
+      "docs/release/SOURCE-INVENTORY.json",
+      "tests/scope_filter_ui_tests.cpp"
+    ],
+    "preserved_raw_initial_commit": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation/initial-source-commit.raw",
+      "bytes": 297,
+      "sha256": "2b127f36df4698c19bd763c0b9b2ec23a2406968661b11f3b1a03dd754349265",
+      "device": 66308,
+      "inode": 31614626,
+      "mtime_ns": 1792550414252137145,
+      "mode": 436
+    },
+    "preserved_initial_inventory": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation/initial-git-SOURCE-INVENTORY.json",
+      "bytes": 8027,
+      "sha256": "d6e33ae7a38bc145fadda74876c4cdf2b9decd9cf226cbb3856a5fcd10612c96",
+      "device": 66308,
+      "inode": 31614627,
+      "mtime_ns": 1792550414254137145,
+      "mode": 436
+    },
+    "preserved_full_git_diff": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation/initial-to-final-source.diff",
+      "bytes": 7815,
+      "sha256": "36229eddc110d6ffcf907d5cda92b25dde137f1007d3d926423dc6c1ae437e28",
+      "device": 66308,
+      "inode": 31614628,
+      "mtime_ns": 1792550414256137145,
+      "mode": 436
+    },
+    "note": "Original commit is not relied on as a permanent remote branch ref; all old blob contents are reconstructed below from final immutable Git plus retained old scope/inventory."
+  },
+  "application_archive_reconstruction": {
+    "old": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/vision-studio-2.5.0-sources.tar.xz",
+      "bytes": 89213772,
+      "sha256": "c5baa2e04338f3ad4326f5fb6cf5912b7824ee33b9df2ead71fe1d4c84d3f222",
+      "device": 66308,
+      "inode": 31614226,
+      "mtime_ns": 1792548483318042861,
+      "mode": 436
+    },
+    "retained_final": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/vision-studio-2.5.0-sources.tar.xz",
+      "bytes": 89214024,
+      "sha256": "cc552604f5ad11fa39d5807edeab1072f631ab608ee91c1fe9b7bdbe8f4bb3a0",
+      "device": 66308,
+      "inode": 31614298,
+      "mtime_ns": 1792549161121075957,
+      "mode": 436
+    },
+    "members": 4434,
+    "changed_member_names": [
+      "tests/scope_filter_ui_tests.cpp"
+    ],
+    "every_other_member_byte_identical": true,
+    "original_scope_gzip": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.5.0/async-review-repair/original-scope_filter_ui_tests.cpp.gz",
+      "bytes": 6606,
+      "sha256": "46adf9536e2d9205848bb641404777d6f2dc50a5e9f965ee7221717074ab7e6e",
+      "device": 66308,
+      "inode": 31614387,
+      "mtime_ns": 1792549438186089485,
+      "mode": 436
+    },
+    "reviewed_patch": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.5.0/async-review-repair/scope_filter_ui_tests.diff",
+      "bytes": 6496,
+      "sha256": "d5c2086898ee23ad6c7d95937da4c61f3dda10881e3a00696380c8f95256c3e3",
+      "device": 66308,
+      "inode": 31614388,
+      "mtime_ns": 1792549438186089485,
+      "mode": 436
+    },
+    "original_scope_sha256": "4e79907500dd3cc1e1f3c6c2002b2a180b1428e0964d3fdff4b9d52f9ace401d",
+    "final_scope_sha256": "d21fed31ea28b0f9c0915cbcea5bb1fbb97843457fb510d7b830f0582fff5d5c",
+    "old_inventory_and_runtime_equal_final": true,
+    "old_member_manifest": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation/old-application-members.jsonl.gz",
+      "bytes": 296888,
+      "sha256": "d9ae31edeadbc41c294547211a266bff7f69e8c70c5f49686d583cd2fe2b29ab",
+      "device": 66308,
+      "inode": 31614629,
+      "mtime_ns": 1792550417395137298,
+      "mode": 436
+    },
+    "new_member_manifest": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation/retained-final-application-members.jsonl.gz",
+      "bytes": 296889,
+      "sha256": "2b92a25887832a241dd872f67c4f708b6a4213bc0138b697378f0c3232aa9798",
+      "device": 66308,
+      "inode": 31614630,
+      "mtime_ns": 1792550417425137300,
+      "mode": 436
+    },
+    "recoverable_without_initial_remote_branch": true
+  },
+  "complete_archive_reconstruction": {
+    "old": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/vision-studio-2.5.0-complete-source.tar.xz",
+      "bytes": 883232632,
+      "sha256": "3be333b14c4a7495a4240d6ac67b73358ecbb43c67d14b5d3e29ff657af9b612",
+      "device": 66308,
+      "inode": 31614228,
+      "mtime_ns": 1792548571604047172,
+      "mode": 436
+    },
+    "retained_final": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/vision-studio-2.5.0-complete-source.tar.xz",
+      "bytes": 883232864,
+      "sha256": "6cda2f9be5dbda8e06e07868cf0225d30a1fe2d7c8f87a5fd83913da812b990f",
+      "device": 66308,
+      "inode": 31614300,
+      "mtime_ns": 1792549249400080267,
+      "mode": 436
+    },
+    "members": 28,
+    "changed_member_names": [
+      "vision-studio-2.5.0-sources.tar.xz",
+      "SOURCE-SHA256SUMS"
+    ],
+    "all_18_upstream_materials_byte_identical": true,
+    "upstream_materials": [
+      {
+        "file": "sources/qtbase-everywhere-src-6.8.3.tar.xz",
+        "bytes": 48426536,
+        "sha256": "56001b905601bb9023d399f3ba780d7fa940f3e4861e496a7c490331f49e0b80",
+        "url": "https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtbase-everywhere-src-6.8.3.tar.xz",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/qtsvg-everywhere-src-6.8.3.tar.xz",
+        "bytes": 2009072,
+        "sha256": "35eb516460f00f264eb504baa253432384351cf23fb9980a5857190e8deef438",
+        "url": "https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtsvg-everywhere-src-6.8.3.tar.xz",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/qtwayland-everywhere-src-6.8.3.tar.xz",
+        "bytes": 1141132,
+        "sha256": "20fe385887d21190165a3180c17dcfc8b9a0e1da4ec76865b6334bdc709994b0",
+        "url": "https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtwayland-everywhere-src-6.8.3.tar.xz",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/qtimageformats-everywhere-src-6.8.3.tar.xz",
+        "bytes": 2035140,
+        "sha256": "049bfb99845e4801672aca07c3c4fc4c140f932a3a33faa899419579e33ef1c8",
+        "url": "https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtimageformats-everywhere-src-6.8.3.tar.xz",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/qtdeclarative-everywhere-src-6.8.3.tar.xz",
+        "bytes": 36503988,
+        "sha256": "1f03a2b8f5588b4face7da87926e9b2c1372b3a32157c52df07a75067a9db1af",
+        "url": "https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtdeclarative-everywhere-src-6.8.3.tar.xz",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/qtwebchannel-everywhere-src-6.8.3.tar.xz",
+        "bytes": 209372,
+        "sha256": "967046b2650b7fc7b27547522e998e35d62291d795b20d9497e4bcc714831262",
+        "url": "https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtwebchannel-everywhere-src-6.8.3.tar.xz",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/qtpositioning-everywhere-src-6.8.3.tar.xz",
+        "bytes": 663612,
+        "sha256": "6ab69a7e71a7795aab9ca2798eea126e36df55159a771ebd2f37cad3da63e9d3",
+        "url": "https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtpositioning-everywhere-src-6.8.3.tar.xz",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/qtwebengine-everywhere-src-6.8.3.tar.xz",
+        "bytes": 566553436,
+        "sha256": "df4e19ba2b3a540551b6f998d62597377ffa688c1cff564589b7da2e2bf87337",
+        "url": "https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtwebengine-everywhere-src-6.8.3.tar.xz",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/ultralytics-8.4.173.tar.gz",
+        "bytes": 1267669,
+        "sha256": "cfb50c462a9138a187f7e5957ad2c91e3e757f6f0569da0c896574282d553840",
+        "url": "https://files.pythonhosted.org/packages/ce/0e/789436c01f925c2957e5cdb272235294a9f7e669247966f3594a09847899/ultralytics-8.4.173.tar.gz",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/ultralytics_thop-2.2.2.tar.gz",
+        "bytes": 39543,
+        "sha256": "149a89c26c2be35b709fa25951f4644dea13d63017025569a193159a5908e3ed",
+        "url": "https://files.pythonhosted.org/packages/b1/bf/b7b993e3b2411fc9894a26b8679931ca07c0d013f05bb620c63ae1911c5f/ultralytics_thop-2.2.2.tar.gz",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/opencv-python-headless-4.11.0.86.tar.gz",
+        "bytes": 95177929,
+        "sha256": "996eb282ca4b43ec6a3972414de0e2331f5d9cda2b41091a49739c19fb843798",
+        "url": "https://files.pythonhosted.org/packages/36/2f/5b2b3ba52c864848885ba988f24b7f105052f68da9ab0e693cc7c25b0b30/opencv-python-headless-4.11.0.86.tar.gz",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/opencv-python-86.tar.gz",
+        "bytes": 1126800,
+        "sha256": "8f8f21b10e60ecaf22241e39ad04b1ac2766925d471e1c5ddc4ed397f0099e91",
+        "url": "https://codeload.github.com/opencv/opencv-python/tar.gz/refs/tags/86",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/opencv-python-86-Dockerfile_x86_64",
+        "bytes": 6363,
+        "sha256": "19d7609f4beef721d40d526b350d094af791d84fb9b572f2c95d9161943912dc",
+        "url": "https://raw.githubusercontent.com/opencv/opencv-python/86/docker/manylinux2014/Dockerfile_x86_64",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/ffmpeg-5.1.6.tar.xz",
+        "bytes": 10021428,
+        "sha256": "f4fa066278f7a47feab316fef905f4db0d5e9b589451949740f83972b30901bd",
+        "url": "https://ffmpeg.org/releases/ffmpeg-5.1.6.tar.xz",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/netron-9.3.1-source.tar.gz",
+        "bytes": 5176979,
+        "sha256": "612d8a064d0c7e166b47208c41bb8ac2ae7f95d5a5f0d659e3f41d82c3cd5507",
+        "url": "https://codeload.github.com/lutzroeder/netron/tar.gz/refs/tags/v9.3.1",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/onnx-1.17.0.tar.gz",
+        "bytes": 12165120,
+        "sha256": "48ca1a91ff73c1d5e3ea2eef20ae5d0e709bb8a2355ed798ffc2169753013fd3",
+        "url": "https://files.pythonhosted.org/packages/9a/54/0e385c26bf230d223810a9c7d06628d954008a5e5e4b73ee26ef02327282/onnx-1.17.0.tar.gz",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/protobuf-33.0.tar.gz",
+        "bytes": 6872665,
+        "sha256": "cbc536064706b628dcfe507bef386ef3e2214d563657612296f1781aa155ee07",
+        "url": "https://github.com/protocolbuffers/protobuf/releases/download/v33.0/protobuf-33.0.tar.gz",
+        "verification": "checked against preserved download provenance"
+      },
+      {
+        "file": "sources/protobuf-cpp-3.21.12.tar.gz",
+        "bytes": 4842303,
+        "sha256": "4eab9b524aa5913c6fffb20b2a8abf5ef7f95a80bc0701f3a6dbb4c607f73460",
+        "url": "https://github.com/protocolbuffers/protobuf/releases/download/v21.12/protobuf-cpp-3.21.12.tar.gz",
+        "verification": "checked against preserved download provenance"
+      }
+    ],
+    "all_other_members_byte_identical": true,
+    "old_metadata_retained": true,
+    "old_manifest": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation/old-complete-members.jsonl.gz",
+      "bytes": 2606,
+      "sha256": "ac1521c583c3146626edd4951723beb692eefc6c2f852988835d84a2c00cb66b",
+      "device": 66308,
+      "inode": 31614631,
+      "mtime_ns": 1792550420502137450,
+      "mode": 436
+    },
+    "new_manifest": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation/retained-final-complete-members.jsonl.gz",
+      "bytes": 2608,
+      "sha256": "e51edd1f05b2f312d37e49c86606b8676d174f9e9c7baea3a142d2ff90598fb8",
+      "device": 66308,
+      "inode": 31614632,
+      "mtime_ns": 1792550420502137450,
+      "mode": 436
+    }
+  },
+  "source_input_tar_reconstruction": {
+    "candidate": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/source-input.tar",
+      "bytes": 182722560,
+      "sha256": "00374b79bd8bb4ae644440397663e3e3ae841a6fc2a201407a23e7e69230781a",
+      "device": 66308,
+      "inode": 31607040,
+      "mtime_ns": 1792548385531038086,
+      "mode": 436
+    },
+    "git_pax_commit": "e1c2f12d308c3435323a9586cd354a60cd7cfbc2",
+    "members": 4435,
+    "matches_all_original_git_blob_ids": true,
+    "regenerated_git_archive_sha256": "00374b79bd8bb4ae644440397663e3e3ae841a6fc2a201407a23e7e69230781a",
+    "byte_identical_to_regenerated_git_archive": true,
+    "same_paths_as_immutable_final_git": true,
+    "only_changed_paths": [
+      "docs/release/SOURCE-INVENTORY.json",
+      "tests/scope_filter_ui_tests.cpp"
+    ],
+    "old_blob_content_preserved_independently": true,
+    "manifest": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation/initial-git-source-input-members.jsonl.gz",
+      "bytes": 296910,
+      "sha256": "92b03a4f3b9586f2736e965e36d0cf1e16a93b11fd7490fcb2f757af1782b1d0",
+      "device": 66308,
+      "inode": 31614633,
+      "mtime_ns": 1792550421373137492,
+      "mode": 436
+    }
+  },
+  "final_remote_verified_replacement": {
+    "receipt": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/release-verify.json",
+      "bytes": 1006,
+      "sha256": "f4fdf14e1d4b81643c061eb715d4f45a7ededc0c5433215597a3d6233060197b",
+      "device": 66308,
+      "inode": 31606999,
+      "mtime_ns": 1792550276869130436,
+      "mode": 436
+    },
+    "tag": "v2.5.0",
+    "commit": "f25961a125d23dd2d8568a9b9a3cd144b3a16e86",
+    "verified_assets": [
+      {
+        "name": "vision-studio_2.5.0-1_amd64.deb",
+        "bytes": 387201252,
+        "sha256": "9abc153c5699852ec40b16cb7b261f12796a103642601be4dda47f464d07fe03",
+        "asset_id": 661130551,
+        "verification": "GitHub REST sha256 digest"
+      },
+      {
+        "name": "vision-studio-2.5.0-complete-source.tar.xz",
+        "bytes": 883232864,
+        "sha256": "6cda2f9be5dbda8e06e07868cf0225d30a1fe2d7c8f87a5fd83913da812b990f",
+        "asset_id": 661131702,
+        "verification": "GitHub REST sha256 digest"
+      },
+      {
+        "name": "SHA256SUMS",
+        "bytes": 207,
+        "sha256": "2066875a7fd67e577f330a3af478ce72230da59c3aa3f02eee9a5879d2052024",
+        "asset_id": 661135086,
+        "verification": "GitHub REST sha256 digest"
+      }
+    ]
+  },
+  "candidates": [
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/vision-studio-2.5.0-complete-source.tar.xz",
+      "bytes": 883232632,
+      "sha256": "3be333b14c4a7495a4240d6ac67b73358ecbb43c67d14b5d3e29ff657af9b612",
+      "device": 66308,
+      "inode": 31614228,
+      "mtime_ns": 1792548571604047172,
+      "mode": 436
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/vision-studio-2.5.0-sources.tar.xz",
+      "bytes": 89213772,
+      "sha256": "c5baa2e04338f3ad4326f5fb6cf5912b7824ee33b9df2ead71fe1d4c84d3f222",
+      "device": 66308,
+      "inode": 31614226,
+      "mtime_ns": 1792548483318042861,
+      "mode": 436
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/source-input.tar",
+      "bytes": 182722560,
+      "sha256": "00374b79bd8bb4ae644440397663e3e3ae841a6fc2a201407a23e7e69230781a",
+      "device": 66308,
+      "inode": 31607040,
+      "mtime_ns": 1792548385531038086,
+      "mode": 436
+    }
+  ],
+  "total_logical_candidate_bytes": 1155168964,
+  "candidate_contents_and_metadata_unchanged": true,
+  "eligible_after_explicit_cleanup_authorization": true,
+  "required_preservation_before_any_future_deletion": {
+    "keep_old_checksum_inventory_freeze_qa_and_logs": [
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/SHA256SUMS",
+        "bytes": 207,
+        "sha256": "41f62c050d2906f61a62bb93e9f6d6cef443c6cf717ae8aa917310c5ca565bf9",
+        "device": 66308,
+        "inode": 31614229,
+        "mtime_ns": 1792548572253047203,
+        "mode": 436
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/SOURCE-SHA256SUMS",
+        "bytes": 2206,
+        "sha256": "d359e04b3860bd00bc55b9b1afc4adafacaadd41b0169dc5a8f4efcd8ddbe1b4",
+        "device": 66308,
+        "inode": 31614227,
+        "mtime_ns": 1792548483766042883,
+        "mode": 436
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/SOURCE-INVENTORY.json",
+        "bytes": 8027,
+        "sha256": "5e062e5f75af50c594229c2e411c16be792b3856194f6c816f36b7132c065e5a",
+        "device": 66308,
+        "inode": 31614220,
+        "mtime_ns": 1792548461952041817,
+        "mode": 436
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/source-freeze.json",
+        "bytes": 731,
+        "sha256": "f8f1327d3562514087a1a0edae1d19af75726b231c04b8ceb879bf6e1de85c91",
+        "device": 66308,
+        "inode": 31614218,
+        "mtime_ns": 1792548385688038094,
+        "mode": 436
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/source-bundle-qa.json",
+        "bytes": 2229260,
+        "sha256": "33da72a0eb9dd1d44020d9c11178255a24ce0fce8b0fed2e221fd8bcc940ddbc",
+        "device": 66308,
+        "inode": 31614235,
+        "mtime_ns": 1792548618600049466,
+        "mode": 436
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/source-bundle-qa.log",
+        "bytes": 448,
+        "sha256": "5118b911053583abd18aa1240ebff6efe2c908a953f80ab5ca46e29f824e19d2",
+        "device": 66308,
+        "inode": 31614232,
+        "mtime_ns": 1792548618600049466,
+        "mode": 436
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/qa-report.json",
+        "bytes": 119535,
+        "sha256": "aa18108353dc48b21af0879f7aae99bb652df23ead6c5dce5f6e863e90e179c5",
+        "device": 66308,
+        "inode": 31607031,
+        "mtime_ns": 1792548688372052873,
+        "mode": 436
+      },
+      {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/qa-report.log",
+        "bytes": 147,
+        "sha256": "54e61a9884f210c99778391f2099ff42a2ab2bf663247b39b1b8b9167537685a",
+        "device": 66308,
+        "inode": 31607029,
+        "mtime_ns": 1792548688372052873,
+        "mode": 436
+      }
+    ],
+    "keep_small_reconstruction_artifacts_directory": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation",
+    "keep_committed_original_scope_and_patch": "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.5.0/async-review-repair",
+    "recheck_each_exact_candidate_sha256_immediately_before_delete": true,
+    "deletion_scope_must_not_include_diagnostic_directory_or_final_release": true
+  },
+  "elapsed_seconds": 9.722
+}

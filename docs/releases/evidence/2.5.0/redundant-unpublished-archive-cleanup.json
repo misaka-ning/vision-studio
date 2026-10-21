@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "version": "2.5.0",
+  "success": true,
+  "errors": [],
+  "scope": "Exactly three unpublished duplicate source intermediates; final assets and diagnostics are retained",
+  "audit_sha256": "42dac481e610aa7a9f95812665d5439eaeedff7bbc55fd1099146b51bce686bb",
+  "script_sha256": "7529866d4051014681b1a5748c68a5a52e16ddb281cbc91101577f2e1757a978",
+  "remote_tag": "v2.5.0",
+  "remote_commit": "f25961a125d23dd2d8568a9b9a3cd144b3a16e86",
+  "preserved_small_proof_files": [
+    "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.5.0/async-review-repair/original-scope_filter_ui_tests.cpp.gz",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.5.0/async-review-repair/scope_filter_ui_tests.diff",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/SHA256SUMS",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/SOURCE-INVENTORY.json",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/SOURCE-SHA256SUMS",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/qa-report.json",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/qa-report.log",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/source-bundle-qa.json",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/source-bundle-qa.log",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/source-freeze.json",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation/initial-git-SOURCE-INVENTORY.json",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation/initial-git-source-input-members.jsonl.gz",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation/initial-source-commit.raw",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation/initial-to-final-source.diff",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation/old-application-members.jsonl.gz",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation/old-complete-members.jsonl.gz",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation/retained-final-application-members.jsonl.gz",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/redundant-unpublished-archive-preservation/retained-final-complete-members.jsonl.gz"
+  ],
+  "deletions_performed": [
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/vision-studio-2.5.0-complete-source.tar.xz",
+      "bytes": 883232632,
+      "sha256": "3be333b14c4a7495a4240d6ac67b73358ecbb43c67d14b5d3e29ff657af9b612",
+      "device": 66308,
+      "inode": 31614228,
+      "mtime_ns": 1792548571604047172,
+      "mode": 436
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/diagnostics/pre-async-source/vision-studio-2.5.0-sources.tar.xz",
+      "bytes": 89213772,
+      "sha256": "c5baa2e04338f3ad4326f5fb6cf5912b7824ee33b9df2ead71fe1d4c84d3f222",
+      "device": 66308,
+      "inode": 31614226,
+      "mtime_ns": 1792548483318042861,
+      "mode": 436
+    },
+    {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/source-input.tar",
+      "bytes": 182722560,
+      "sha256": "00374b79bd8bb4ae644440397663e3e3ae841a6fc2a201407a23e7e69230781a",
+      "device": 66308,
+      "inode": 31607040,
+      "mtime_ns": 1792548385531038086,
+      "mode": 436
+    }
+  ],
+  "timestamp_utc": "2026-10-21T02:42:24.446789+00:00",
+  "logical_bytes_removed": 1155168964
+}

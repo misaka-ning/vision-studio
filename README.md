@@ -10,7 +10,7 @@
 
 当前工程版本：**2.5.0**。数据集文件夹和 YAML 共用一个导入选择器；缩略图按可见范围后台读取，原图与结果回看异步加载，大队列分片填入界面。工作台拆分为占用完整工作区的「图像预览」和「评估与阈值」两个子页，数据集设置改为悬浮卡片，切页只改变查看位置，任务配置、预测缓存和历史报告保持独立。在同一工作台串联「导入带标注数据集 → 评估目标类 → 分析阈值与错例 → 采用检测配置」。界面保留 [Fluent-Qt](https://github.com/calvinhxx/Fluent-Qt) 风格，复用全局模型与现有推理后端。本次发行平台：**Ubuntu 22.04 LTS amd64**；安装文件以 Releases 实际发布为准。Windows 已发布安装包仍为 2.1.0 补充版，本版不宣称完成 Windows 2.5.0 验收。应用代码采用 **AGPL-3.0-only**。
 
-本版已完成有效 18 套回归（305 项 Qt、101 项 Python）、真实 CPU／CUDA、最终包与对应源码验收；有效结果由原 17 套通过加相同 38 项 scope CPU 复验组成，并非一次完整 18 套全部通过，初轮失败记录保留。当前宿主升级等待 Polkit，GitHub 发布与旧版清理另按完成凭证记录。[验收详情与边界](docs/releases/evidence/2.5.0/README.md)。
+本版已完成有效 18 套回归（305 项 Qt、101 项 Python）、真实 CPU／CUDA、最终包与对应源码验收；有效结果由原 17 套通过加相同 38 项 scope CPU 复验组成，并非一次完整 18 套全部通过，初轮失败记录保留。2.5.0 已正式发布并完成远端三附件核验，本地发行／源码／构建保留 2.5.0 与 2.4.0；宿主升级仍等待 Polkit。[发布与清理凭证](docs/releases/evidence/2.5.0/publication.md)。[验收详情与边界](docs/releases/evidence/2.5.0/README.md)。
 
 ![Vision Studio 2.5.0 图像预览：真实 ONNX CPU 检测与 GT 对照](docs/screenshots/workbench-2.5.0.png)
 
@@ -41,7 +41,7 @@
 
 ## 下载与安装
 
-从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下命令用于 2.5.0 正式发布后安装。每版只上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
+从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下命令安装已发布的 2.5.0。每版只上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
 
 页面另外显示 GitHub 自动提供的 **Source code (zip)** 和 **Source code (tar.gz)** 两个源码入口，它们由平台生成，不能从 Release 中移除。下载三个手动附件后，先校验，再安装：
 
@@ -155,7 +155,7 @@ GPU 依赖使用独立的 `requirements-gpu.txt`／`requirements-gpu.lock.txt`�
 ./build/bin/vision-studio --smoke-model /tmp/vision-studio-model-smoke
 ```
 
-发布按 [版本管理](docs/版本管理.md) 执行：源码与带说明标签 `v2.5.0` 推送，三个手动附件远端核验成功后才清理旧发行／独立构建副本，届时本地保留 2.5.0 与 2.4.0；完成前继续保留现有发行备份。用户设置、模型、评估、录像、共享 SDK／runtime 及未备份资料保留。历史 [2.4.0](docs/releases/2.4.0.md)、[2.3.1](docs/releases/2.3.1.md)、[2.3.0](docs/releases/2.3.0.md)、[2.2.0](docs/releases/2.2.0.md)、[2.1.0](docs/releases/2.1.0.md) 及其原始证据和归档保持不变。
+本版按 [版本管理](docs/版本管理.md) 完成源码与带说明标签 `v2.5.0` 推送、三个手动附件远端核验及旧副本精确清理，本地保留 2.5.0 与 2.4.0；详见[发布凭证](docs/releases/evidence/2.5.0/publication.md)。用户设置、模型、评估、录像、共享 SDK／runtime 及未备份资料保留。历史 [2.4.0](docs/releases/2.4.0.md)、[2.3.1](docs/releases/2.3.1.md)、[2.3.0](docs/releases/2.3.0.md)、[2.2.0](docs/releases/2.2.0.md)、[2.1.0](docs/releases/2.1.0.md) 及其原始证据和远端核心附件保持不变。
 
 ## 文档、贡献与许可
 

@@ -1,0 +1,23 @@
+Start testing: Oct 20 18:30 HKT
+----------------------------------------------------------
+14/18 Testing: vision-gpu-runtime-tests
+14/18 Test: vision-gpu-runtime-tests
+Command: "/usr/bin/python3.10" "/home/misaka/.codex/worktrees/ef0b/yolo/tests/gpu_runtime_tests.py"
+Directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release
+"vision-gpu-runtime-tests" start time: Oct 20 18:30 HKT
+Output:
+----------------------------------------------------------
+.....................
+----------------------------------------------------------------------
+Ran 21 tests in 1.160s
+
+OK
+<end of output>
+Test time =   1.22 sec
+----------------------------------------------------------
+Test Passed.
+"vision-gpu-runtime-tests" end time: Oct 20 18:30 HKT
+"vision-gpu-runtime-tests" time elapsed: 00:00:01
+----------------------------------------------------------
+
+End testing: Oct 20 18:30 HKT

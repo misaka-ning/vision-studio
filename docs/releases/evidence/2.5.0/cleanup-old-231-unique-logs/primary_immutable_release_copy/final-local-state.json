@@ -1,0 +1,12 @@
+{
+  "success": true,
+  "current_main_commit": "76259f2b745d78f74f5723e3bd435fa3a17fe89b",
+  "frozen_release_tag_commit": "1029f642152e75bdfd60a5def60168fea53b6e5b",
+  "installed_debian_version": "2.3.1-1",
+  "production_inputs_unchanged": true,
+  "unrelated_user_files_unchanged": 4,
+  "retained_release_versions": [
+    "2.3.1",
+    "2.3.0"
+  ]
+}

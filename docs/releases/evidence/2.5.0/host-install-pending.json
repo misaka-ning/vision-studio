@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "version": "2.5.0",
+  "status": "awaiting_system_administrator_authentication",
+  "host_upgrade_completed": false,
+  "installed_debian_version_observed": "2.4.0-1",
+  "pending_target_version": "2.5.0-1",
+  "isolated_install_qa_passed": true,
+  "user_files_snapshotted_before_request": 2465,
+  "small_settings_backup_created": true,
+  "snapshot_and_backups_private_not_published": true,
+  "timestamp_utc": "2026-10-21T02:40:42.168715+00:00",
+  "note": "Native Polkit request was made; no administrator credential was requested in chat. This record does not assert a host upgrade or post-install verification."
+}
