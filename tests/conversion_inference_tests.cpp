@@ -252,6 +252,10 @@ class ConversionInferenceTests final : public QObject
         auto *device = window_->findChild<QComboBox *>("computeDevice");
         QVERIFY(device);
         device->setCurrentIndex(device->findData(cuda ? "cuda" : "cpu"));
+        auto *workbench = window_->findChild<QWidget *>("workbenchPage");
+        auto *canvas = workbench ? workbench->findChild<ImageCanvas *>() : nullptr; QVERIFY(canvas);
+        QTRY_COMPARE_WITH_TIMEOUT(canvas->result().source, datasetImage_, 10000);
+        QTRY_VERIFY_WITH_TIMEOUT(!canvas->result().image.isNull(), 10000);
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
         QTest::mouseClick(namedButton(window_.get(), "开始检测"), Qt::LeftButton);
         QCOMPARE(starts.size(), 1);

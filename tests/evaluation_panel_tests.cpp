@@ -13,6 +13,9 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QScreen>
+#include <QScrollArea>
+#include <QScrollBar>
 #include <QSignalSpy>
 #include <QSpinBox>
 #include <QStandardItemModel>
@@ -23,6 +26,7 @@
 #include <QWheelEvent>
 #include <QtTest>
 #include <functional>
+#include <memory>
 
 namespace {
 QJsonObject dataset()
@@ -71,23 +75,24 @@ class EvaluationPanelTests final : public QObject
             for (auto *widget : QApplication::topLevelWidgets()) {
                 auto *dialog = qobject_cast<QFileDialog *>(widget);
                 if (!dialog || !dialog->isVisible()) continue;
-                correctMode = dialog->fileMode() == (directory ? QFileDialog::Directory : QFileDialog::ExistingFile);
+                correctMode = dialog->objectName() == "yoloDatasetSourceDialog" && dialog->fileMode() == QFileDialog::AnyFile;
                 if (cancel || elapsed.elapsed() > 15000) { dialog->reject(); return; }
                 if (!seen) { seen = true; dialog->setDirectory(QFileInfo(path).absolutePath()); }
-                if (auto *filename = dialog->findChild<QLineEdit *>("fileNameEdit")) filename->setText(path);
-                if (!dialog->selectedFiles().isEmpty() && QFileInfo(dialog->selectedFiles().first()).absoluteFilePath() == path)
-                    QMetaObject::invokeMethod(dialog, "accept", Qt::QueuedConnection);
+                if (auto *filename = dialog->findChild<QLineEdit *>("fileNameEdit")) {
+                    if (filename->text() != path) { filename->setFocus(); filename->selectAll(); QTest::keyClicks(filename, path); }
+                    if (filename->text() == path) QMetaObject::invokeMethod(dialog, "accept", Qt::QueuedConnection);
+                }
             }
         });
         timer.start(10); open(); timer.stop();
-        return correctMode && (cancel || seen) && elapsed.elapsed() < 15000;
+        return correctMode && (cancel || (seen && QFileInfo(path).isDir() == directory)) && elapsed.elapsed() < 15000;
     }
 private slots:
     void initTestCase()
     {
         QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
     }
-    void directoryImportIsDefaultAndYamlRemainsExplicit()
+    void sameDatasetPickerAcceptsDirectoryAndYaml()
     {
         QTemporaryDir area; QVERIFY(area.isValid());
         const QString yaml = area.path() + "/dataset.yaml";
@@ -96,7 +101,7 @@ private slots:
         QVERIFY(choosePath([&] { panel.chooseDataset(); }, area.path(), true));
         QCOMPARE(requested.count(), 1); QCOMPARE(requested.takeFirst().at(0).toString(), area.path());
         QCOMPARE(panel.datasetYaml(), area.path());
-        QVERIFY(choosePath([&] { panel.chooseDatasetFile(); }, yaml, false));
+        QVERIFY(choosePath([&] { panel.chooseDataset(); }, yaml, false));
         QCOMPARE(requested.count(), 1); QCOMPARE(requested.takeFirst().at(0).toString(), yaml);
         QCOMPARE(panel.datasetYaml(), yaml);
     }
@@ -106,10 +111,36 @@ private slots:
         QSignalSpy requested(&panel, &EvaluationPanel::datasetRequested);
         QVERIFY(choosePath([&] { panel.chooseDataset(); }, {}, true, true));
         QCOMPARE(requested.count(), 0); QCOMPARE(panel.datasetYaml(), QString("/dataset/data.yaml"));
-        QVERIFY(choosePath([&] { panel.chooseDatasetFile(); }, {}, false, true));
+        QVERIFY(choosePath([&] { panel.chooseDataset(); }, {}, false, true));
         QCOMPARE(requested.count(), 0); QCOMPARE(panel.datasetYaml(), QString("/dataset/data.yaml"));
-        panel.setBusy(true); panel.chooseDataset(); panel.chooseDatasetFile();
+        panel.setBusy(true); panel.chooseDataset(); panel.chooseDataset();
         QCOMPARE(requested.count(), 0); QCOMPARE(panel.datasetYaml(), QString("/dataset/data.yaml"));
+    }
+    void unifiedPickerRejectsInvalidSourceInline()
+    {
+        QTemporaryDir area; QVERIFY(area.isValid()); const QString invalid = area.path() + "/weights.pt";
+        QFile file(invalid); QVERIFY(file.open(QIODevice::WriteOnly)); file.write("not a dataset configuration"); file.close();
+        EvaluationPanel panel; QSignalSpy requested(&panel, &EvaluationPanel::datasetRequested);
+        bool seen = false, rejectedInline = false, attempted = false; QElapsedTimer elapsed; elapsed.start(); QTimer timer;
+        connect(&timer, &QTimer::timeout, this, [&] {
+            auto *dialog = qobject_cast<QFileDialog *>(QApplication::activeModalWidget());
+            if (!dialog || dialog->objectName() != "yoloDatasetSourceDialog") return;
+            seen = true;
+            if (elapsed.elapsed() > 10000) { dialog->reject(); return; }
+            if (!attempted) {
+                dialog->setDirectory(area.path());
+                if (auto *editor = dialog->findChild<QLineEdit *>("fileNameEdit")) {
+                    editor->setFocus(); editor->selectAll(); QTest::keyClicks(editor, invalid);
+                }
+                attempted = true; QMetaObject::invokeMethod(dialog, "accept", Qt::QueuedConnection); return;
+            }
+            auto *hint = dialog->findChild<QLabel *>("yoloDatasetSourceHint");
+            if (hint && hint->isVisible() && hint->text().startsWith("请选择")) {
+                rejectedInline = dialog->isVisible() && requested.isEmpty(); dialog->reject();
+            }
+        });
+        timer.start(10); panel.chooseDataset(); timer.stop();
+        QVERIFY(seen); QVERIFY(rejectedInline); QCOMPARE(requested.count(), 0); QVERIFY(panel.datasetYaml().isEmpty());
     }
     void failedFirstImportKeepsSourceAndAllowsExplicitSplitRetry()
     {
@@ -312,93 +343,107 @@ private slots:
         QCOMPARE(QDir(source).entryList(QDir::Dirs | QDir::NoDotAndDotDot).size(), 0);
         QVERIFY(control<QLabel>(panel, "evaluationRecommendationHint")->text().contains("不能位于原报告内部"));
     }
-    void compactToolbarFitsMinimumWorkbenchWidth()
+    void settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges()
     {
         QWidget window; window.setObjectName("workspace"); auto *layout = new QVBoxLayout(&window);
-        auto *panel = new EvaluationPanel; layout->addWidget(panel->controlsWidget());
+        auto panelOwner = std::make_unique<EvaluationPanel>(); auto *panel = panelOwner.get(); layout->addWidget(panel->controlsWidget()); layout->addStretch();
         QFile theme(QStringLiteral(VISION_PROJECT_DIR) + "/assets/fluent-dark.qss"); QVERIFY(theme.open(QIODevice::ReadOnly));
         window.setStyleSheet(QString::fromUtf8(theme.readAll()));
-        window.resize(970, 500); panel->setModel(model()); window.show(); QTest::qWait(10);
-        QVERIFY(panel->controlsWidget()->sizeHint().height() <= 48);
-        panel->setDataset(dataset()); QTest::qWait(10);
-        QVERIFY(panel->controlsWidget()->sizeHint().height() <= 48);
+        window.resize(970, 600); panel->setModel(model()); panel->setDataset(dataset()); window.show(); QTest::qWait(20);
         auto *settings = control<QWidget>(*panel, "evaluationDatasetSettings");
         auto *settingsButton = control<QToolButton>(*panel, "evaluationDatasetSettingsButton");
         auto *advanced = control<QWidget>(*panel, "evaluationAdvancedControls");
-        QVERIFY(settings && settingsButton && advanced);
+        QVERIFY(settings && settingsButton && advanced); QCOMPARE(settings->windowType(), Qt::Popup);
         QVERIFY(!settings->isVisible()); QVERIFY(!advanced->isVisible());
-        for (const char *name : {"evaluationModelClassIdSpin", "evaluationDatasetClassIdSpin", "evaluationMetadataEdit", "evaluationMatchIouSpin", "evaluationScanStartSpin", "evaluationScanEndSpin", "evaluationScanStepSpin"})
-            QVERIFY2(!control<QWidget>(*panel, name)->isVisible(), name);
-        settingsButton->click(); QTest::qWait(10); QVERIFY(settings->isVisible());
+        QVERIFY(panel->controlsWidget()->sizeHint().height() <= 48);
+        const QRect toolbar = panel->controlsWidget()->geometry();
+        const bool mode = panel->evaluationMode(); const int modelId = panel->modelClassId(), datasetId = panel->datasetClassId();
+        const double scanStart = panel->scanStart(), scanEnd = panel->scanEnd(), scanStep = panel->scanStep();
+        QTest::mouseClick(settingsButton, Qt::LeftButton); QTRY_VERIFY(settings->isVisible());
+        QCOMPARE(panel->controlsWidget()->geometry(), toolbar);
         QVERIFY(control<QWidget>(*panel, "evaluationModelClassIdSpin")->isVisible());
-        QVERIFY(control<QWidget>(*panel, "evaluationDatasetClassIdSpin")->isVisible());
-        QVERIFY(!advanced->isVisible());
-        control<QToolButton>(*panel, "evaluationAdvancedButton")->click(); QTest::qWait(10);
-        for (const char *name : {"evaluationModeCombo", "evaluationSplitCombo", "evaluationModelClassIdSpin", "evaluationDatasetClassIdSpin", "evaluationMetadataEdit", "evaluationMatchIouSpin", "evaluationScanStartSpin", "evaluationScanEndSpin", "evaluationScanStepSpin"}) {
-            auto *widget = control<QWidget>(*panel, name); QVERIFY2(widget->isVisible(), name);
-            const QRect bounds(widget->mapTo(panel->controlsWidget(), QPoint()), widget->size());
-            QVERIFY2(panel->controlsWidget()->rect().contains(bounds), name);
+        QTest::mouseClick(control<QToolButton>(*panel, "evaluationAdvancedButton"), Qt::LeftButton);
+        QTRY_VERIFY(advanced->isVisible()); QCOMPARE(panel->controlsWidget()->geometry(), toolbar);
+        for (const char *name : {"evaluationModelClassIdSpin", "evaluationDatasetClassIdSpin", "evaluationMetadataEdit", "evaluationMatchIouSpin", "evaluationScanStartSpin", "evaluationScanEndSpin", "evaluationScanStepSpin"}) {
+            auto *widget = control<QWidget>(*panel, name); QVERIFY2(widget && widget->isVisible(), name);
+            QVERIFY2(settings->rect().contains(QRect(widget->mapTo(settings, QPoint()), widget->size())), name);
             QVERIFY2(widget->height() >= 30, name);
         }
-        settingsButton->click(); QTest::qWait(10); QVERIFY(!settings->isVisible());
-        QVERIFY(panel->controlsWidget()->sizeHint().height() <= 48);
-        // The detached analysis view is not inserted into this toolbar-only test.
-        delete panel;
+        const QString capture = qEnvironmentVariable("VISION_STUDIO_UI_CAPTURE_DIR");
+        if (!capture.isEmpty()) { QVERIFY(QDir().mkpath(capture)); QVERIFY(settings->grab().save(capture + "/panel-dataset-settings.png")); }
+        const QSize popupSize = settings->size();
+        QTest::keyClick(settings, Qt::Key_Escape); QTRY_VERIFY(!settings->isVisible());
+        QVERIFY(!settingsButton->isChecked()); QCOMPARE(panel->controlsWidget()->geometry(), toolbar);
+        QTest::mouseClick(settingsButton, Qt::LeftButton); QTRY_VERIFY(settings->isVisible());
+        QTest::mouseClick(&window, Qt::LeftButton, Qt::NoModifier, QPoint(2, window.height() - 2));
+        QTRY_VERIFY(!settings->isVisible()); QVERIFY(!settingsButton->isChecked());
+        QCOMPARE(panel->controlsWidget()->geometry(), toolbar);
+        QCOMPARE(panel->evaluationMode(), mode); QCOMPARE(panel->modelClassId(), modelId); QCOMPARE(panel->datasetClassId(), datasetId);
+        QCOMPARE(panel->scanStart(), scanStart); QCOMPARE(panel->scanEnd(), scanEnd); QCOMPARE(panel->scanStep(), scanStep);
+        QTest::mouseClick(settingsButton, Qt::LeftButton); QTRY_VERIFY(settings->isVisible());
+        panel->setBusy(true); QTRY_VERIFY(!settings->isVisible()); QVERIFY(!settingsButton->isEnabled());
+        panel->setBusy(false); QVERIFY(settingsButton->isEnabled());
+        qInfo().noquote() << "dataset_popup_evidence" << "toolbar" << toolbar << "popup" << popupSize
+                         << "outside_click_closed" << !settings->isVisible() << "configuration_unchanged" << (panel->modelClassId() == modelId);
+        panelOwner.reset();
     }
-    void longImportErrorsRemainCompactAndKeepCompleteDetailsAccessible()
+    void longImportErrorsAreReadableInPopupWithoutGrowingToolbar()
     {
         QWidget window; window.setObjectName("workspace"); auto *layout = new QVBoxLayout(&window);
-        auto *panel = new EvaluationPanel; layout->addWidget(panel->controlsWidget());
-        QFile theme(QStringLiteral(VISION_PROJECT_DIR) + "/assets/fluent-dark.qss"); QVERIFY(theme.open(QIODevice::ReadOnly));
-        window.setStyleSheet(QString::fromUtf8(theme.readAll()));
-        window.resize(970, 450); panel->setModel(model()); window.show();
+        auto panelOwner = std::make_unique<EvaluationPanel>(); auto *panel = panelOwner.get(); layout->addWidget(panel->controlsWidget()); layout->addStretch();
+        window.resize(970, 600); panel->setModel(model()); window.show();
         panel->setDatasetSource("/dataset/invalid", "val", {});
         const QString error = "ValueError: " + QString(8192, 'x') + "\nTraceback (most recent call last):\n" + QString(8192, 'y');
         panel->showDatasetImportError(error); QTest::qWait(10);
         auto *status = control<QToolButton>(*panel, "evaluationEligibilityStatusButton");
         auto *settings = control<QWidget>(*panel, "evaluationDatasetSettings");
         auto *validation = control<QLabel>(*panel, "evaluationValidationHint");
-        QVERIFY(status && settings && validation); QCOMPARE(status->text(), QString("导入失败"));
+        auto *scroll = control<QScrollArea>(*panel, "evaluationDatasetSettingsScroll");
+        QVERIFY(status && settings && validation && scroll); QCOMPARE(status->text(), QString("导入失败"));
         QVERIFY(!settings->isVisible()); QVERIFY(panel->controlsWidget()->sizeHint().height() <= 48);
-        status->click(); QTest::qWait(10); QVERIFY(settings->isVisible());
-        QVERIFY(panel->controlsWidget()->sizeHint().height() <= 160);
-        QVERIFY(validation->height() <= 44); QVERIFY(validation->text().size() <= 161);
-        QVERIFY(validation->text().endsWith("…")); QVERIFY(!validation->text().contains('\n'));
-        QCOMPARE(validation->toolTip(), error); QCOMPARE(validation->accessibleDescription(), error);
+        const QRect toolbar = panel->controlsWidget()->geometry();
+        QTest::mouseClick(status, Qt::LeftButton); QTRY_VERIFY(settings->isVisible());
+        QCOMPARE(panel->controlsWidget()->geometry(), toolbar);
+        QCOMPARE(validation->text(), error); QCOMPARE(validation->toolTip(), error); QCOMPARE(validation->accessibleDescription(), error);
         QVERIFY(status->toolTip().contains(error));
-        const QRect bounds(validation->mapTo(panel->controlsWidget(), QPoint()), validation->size());
-        QVERIFY(panel->controlsWidget()->rect().contains(bounds));
+        QTRY_VERIFY(scroll->verticalScrollBar()->maximum() > 0);
+        scroll->verticalScrollBar()->setValue(scroll->verticalScrollBar()->maximum());
+        QCOMPARE(scroll->verticalScrollBar()->value(), scroll->verticalScrollBar()->maximum());
         QVERIFY(!panel->canEvaluate());
-        delete panel;
+        QTest::keyClick(settings, Qt::Key_Escape); QTRY_VERIFY(!settings->isVisible());
+        QCOMPARE(panel->controlsWidget()->geometry(), toolbar);
+        panelOwner.reset();
     }
     void collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode()
     {
-        EvaluationPanel panel; panel.setModel(model()); panel.setDataset(dataset());
-        auto *status = control<QToolButton>(panel, "evaluationEligibilityStatusButton");
-        auto *settings = control<QWidget>(panel, "evaluationDatasetSettings");
-        auto *settingsButton = control<QToolButton>(panel, "evaluationDatasetSettingsButton");
-        auto *mode = control<QComboBox>(panel, "evaluationModeCombo");
+        QWidget window; auto *layout = new QVBoxLayout(&window); auto panelOwner = std::make_unique<EvaluationPanel>(); auto *panel = panelOwner.get();
+        layout->addWidget(panel->controlsWidget()); layout->addStretch(); window.resize(970, 600); window.show();
+        panel->setModel(model()); panel->setDataset(dataset());
+        auto *status = control<QToolButton>(*panel, "evaluationEligibilityStatusButton");
+        auto *settings = control<QWidget>(*panel, "evaluationDatasetSettings");
+        auto *settingsButton = control<QToolButton>(*panel, "evaluationDatasetSettingsButton");
+        auto *mode = control<QComboBox>(*panel, "evaluationModeCombo");
         QVERIFY(status && settings && settingsButton && mode);
         auto classification = model(); classification.task = vision::ModelTask::Classification;
-        panel.setModel(classification);
+        panel->setModel(classification);
         QVERIFY(!settingsButton->isChecked()); QVERIFY(settings->isHidden());
         QVERIFY(status->text().contains("仅预览")); QVERIFY(status->toolTip().contains("分类"));
-        QVERIFY(!panel.canEvaluate()); QVERIFY(!panel.evaluationMode());
+        QVERIFY(!panel->canEvaluate()); QVERIFY(!panel->evaluationMode());
         auto *items = qobject_cast<QStandardItemModel *>(mode->model()); QVERIFY(items);
         QVERIFY(!items->item(1)->isEnabled());
-        status->click(); QVERIFY(settingsButton->isChecked()); QVERIFY(!settings->isHidden());
-        QVERIFY(control<QLabel>(panel, "evaluationValidationHint")->text().contains("分类"));
-        QVERIFY(!panel.evaluationMode());
-        settingsButton->click(); panel.setModel(model());
+        QTest::mouseClick(status, Qt::LeftButton); QTRY_VERIFY(settings->isVisible());
+        QVERIFY(settingsButton->isChecked()); QVERIFY(control<QLabel>(*panel, "evaluationValidationHint")->text().contains("分类"));
+        QVERIFY(!panel->evaluationMode());
+        QTest::keyClick(settings, Qt::Key_Escape); QTRY_VERIFY(settings->isHidden()); panel->setModel(model());
         QVERIFY(status->text().contains("可评估")); QVERIFY(items->item(1)->isEnabled());
-        QVERIFY(settings->isHidden());
+        panelOwner.reset();
     }
     void captureFluentLayout()
     {
         const QString output = qEnvironmentVariable("VISION_EVALUATION_PANEL_SCREENSHOT");
         if (output.isEmpty()) return;
         QWidget window; window.setObjectName("workspace"); auto *layout = new QVBoxLayout(&window);
-        auto *panel = new EvaluationPanel;
+        auto panelOwner = std::make_unique<EvaluationPanel>(); auto *panel = panelOwner.get();
         panel->setDataset(dataset()); panel->setModel(model());
         control<QSpinBox>(*panel, "evaluationModelClassIdSpin")->setValue(32); panel->setMode(true); panel->setReport(report());
         layout->addWidget(panel->controlsWidget()); layout->addWidget(panel, 1);

@@ -1,9 +1,12 @@
 #include "ui/imagecanvas.h"
+#include "ui/lazyimagequeue.h"
 #include "ui/mainwindow.h"
 #include "ui/modelviewer.h"
 
 #include <QApplication>
+#include <QAbstractItemModel>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QDir>
 #include <QElapsedTimer>
 #include <QFile>
@@ -24,6 +27,7 @@
 #include <QTimer>
 #include <QtTest>
 #include <algorithm>
+#include <cmath>
 #include <memory>
 
 namespace
@@ -132,7 +136,8 @@ class BatchResponsivenessTests final : public QObject
             QVERIFY(QDir().mkpath(fixture_->path() + "/" + directory));
         const QString project = QStringLiteral(VISION_PROJECT_DIR);
         for (const QString &path : {QStringLiteral("models/yolov5n.onnx"), QStringLiteral("assets/bus.jpg"),
-                                    QStringLiteral("scripts/netron_server.py")})
+                                    QStringLiteral("scripts/netron_server.py"), QStringLiteral("scripts/evaluation_worker.py"),
+                                    QStringLiteral("scripts/evaluation_data.py"), QStringLiteral("scripts/evaluation_metrics.py")})
             QVERIFY(QFile::copy(project + "/" + path, fixture_->path() + "/" + path));
         qputenv("VISION_STUDIO_HOME", fixture_->path().toUtf8());
         qputenv("VISION_STUDIO_DATA_DIR", (fixture_->path() + QStringLiteral("/output")).toUtf8());
@@ -176,6 +181,108 @@ class BatchResponsivenessTests final : public QObject
                 qunsetenv(iterator.key().constData());
         oldEnvironment_.clear();
         hadEnvironment_.clear();
+    }
+
+    void largeQueueLoadsOnlyVisibleThumbnailsAndCancelsStalePreviews()
+    {
+        constexpr int count = 2000;
+        const QString directory = fixture_->path() + "/large-lazy-queue";
+        QVERIFY(QDir().mkpath(directory + "/images/val")); QVERIFY(QDir().mkpath(directory + "/labels/val"));
+        QStringList files;
+        for (int index = 0; index < count; ++index) {
+            QImage image(48 + index % 3, 32 + index % 5, QImage::Format_RGB888);
+            image.fill(QColor((index * 37) % 255, (index * 71 + 20) % 255, (index * 19 + 90) % 255));
+            const QString stem = QString("%1").arg(index, 4, 10, QChar('0'));
+            const QString path = directory + "/images/val/" + stem + ".png";
+            QVERIFY(image.save(path)); files.append(path);
+            QFile label(directory + "/labels/val/" + stem + ".txt"); QVERIFY(label.open(QIODevice::WriteOnly)); label.close();
+        }
+        const QString yaml = directory + "/data.yaml"; QFile configuration(yaml); QVERIFY(configuration.open(QIODevice::WriteOnly));
+        const QByteArray yamlContents("path: .\nval: images/val\nnames: [queue_fixture]\n");
+        QCOMPARE(configuration.write(yamlContents), qint64(yamlContents.size())); configuration.close();
+        auto *images = window_->findChild<LazyImageQueue *>("inputQueue"); auto *view = canvas();
+        auto *clear = findButton(window_.get(), "清空"); auto *exportButton = findButton(window_.get(), "导出结果");
+        auto *color = window_->findChild<QComboBox *>("inputColorMode");
+        QVERIFY(images && view && clear && exportButton && color);
+        int ticks = 0; qint64 maximumGap = 0, previous = 0; QElapsedTimer elapsed; elapsed.start(); QTimer heartbeat;
+        connect(&heartbeat, &QTimer::timeout, this, [&] {
+            const qint64 now = elapsed.elapsed(); maximumGap = std::max(maximumGap, now - previous); previous = now; ++ticks;
+        }); heartbeat.start(10);
+        QSignalSpy starts(window_.get(), &MainWindow::startRequested);
+        QObject populationObserver; bool probeScheduled = false, sawPartialPopulation = false, controlsLocked = false; int partialCount = -1;
+        const auto partialProbe = connect(images->model(), &QAbstractItemModel::rowsInserted, &populationObserver,
+            [&](const QModelIndex &, int, int) {
+                if (probeScheduled || !window_->queuePopulating_) return;
+                probeScheduled = true;
+                QTimer::singleShot(0, &populationObserver, [&] {
+                    partialCount = images->count();
+                    sawPartialPopulation = window_->queuePopulating_ && partialCount > 0 && partialCount < count;
+                    auto *datasetButton = window_->findChild<QPushButton *>("openYoloDatasetButton");
+                    controlsLocked = window_->busy_ && !clear->isEnabled() && !window_->runButton_->isEnabled() &&
+                                     datasetButton && !datasetButton->isEnabled();
+                });
+            });
+        window_->loadDataset(yaml, "val");
+        QVERIFY(window_->busy_); QVERIFY(!clear->isEnabled());
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->busy_ && !window_->evaluationWorker_ && !window_->queuePopulating_, 30000);
+        disconnect(partialProbe);
+        QCOMPARE(images->count(), count); QCOMPARE(window_->files_, files);
+        QVERIFY(probeScheduled); QVERIFY(sawPartialPopulation); QVERIFY(controlsLocked);
+        QCOMPARE(window_->datasetManifest_.value("samples").toArray().size(), count);
+        for (int row : {0, 1000, 1999}) QCOMPARE(images->item(row)->data(Qt::UserRole).toString(), files[row]);
+        images->setCurrentRow(0); images->scrollToItem(images->item(0));
+        QTRY_COMPARE_WITH_TIMEOUT(view->result().source, files[0], 10000);
+        QTRY_VERIFY_WITH_TIMEOUT(!view->result().image.isNull(), 10000);
+        QTRY_VERIFY_WITH_TIMEOUT(images->cachedThumbnailCount() > 0, 10000);
+        QVERIFY(images->cachedThumbnailCount() <= 128); QVERIFY(images->activeThumbnailJobs() <= 4);
+        int loaded = 0;
+        for (int row = 0; row < count; ++row)
+            if (!qvariant_cast<QImage>(images->item(row)->data(Qt::UserRole + 1)).isNull()) ++loaded;
+        QVERIFY(loaded > 0 && loaded <= 128); QVERIFY(loaded < count);
+        for (int row : {1999, 750, 25, 1300, 3, 1998}) images->setCurrentRow(row);
+        QTRY_COMPARE_WITH_TIMEOUT(view->result().source, files[1998], 10000);
+        QTRY_COMPARE_WITH_TIMEOUT(view->result().originalImage.convertToFormat(QImage::Format_RGB888),
+                                  QImage(files[1998]).convertToFormat(QImage::Format_RGB888), 10000);
+        QTest::qWait(120); QCOMPARE(view->result().source, files[1998]);
+        color->setCurrentIndex(color->findData("grayscale"));
+        QTRY_VERIFY_WITH_TIMEOUT(view->result().source == files[1998] && view->result().image.isGrayscale() &&
+                                  !view->result().image.isNull(), 10000);
+        QCOMPARE(view->result().image.format(), QImage::Format_Grayscale8);
+        const QColor originalPixel = QImage(files[1998]).pixelColor(0, 0), grayPixel = view->result().image.pixelColor(0, 0);
+        QCOMPARE(grayPixel.red(), grayPixel.green()); QCOMPARE(grayPixel.green(), grayPixel.blue());
+        QVERIFY(std::abs(grayPixel.red() - (.299 * originalPixel.red() + .587 * originalPixel.green() + .114 * originalPixel.blue())) <= 1.0);
+        const QString capture = qEnvironmentVariable("VISION_STUDIO_UI_CAPTURE_DIR");
+        if (!capture.isEmpty()) { QVERIFY(QDir().mkpath(capture)); window_->saveScreenshot(capture + "/lazy-queue-grayscale-preview.png"); }
+        images->setCurrentRow(17); images->setCurrentRow(500); QTest::mouseClick(clear, Qt::LeftButton);
+        QTRY_COMPARE(images->count(), 0); QTRY_VERIFY(view->result().image.isNull());
+        QTRY_COMPARE_WITH_TIMEOUT(images->activeThumbnailJobs(), 0, 10000);
+        QTest::qWait(120); QVERIFY(view->result().image.isNull()); QVERIFY(!exportButton->isEnabled());
+        QCOMPARE(images->cachedThumbnailCount(), 0); QCOMPARE(starts.count(), 0);
+        // Reuse the same real dataset and cancel after an actual partial chunk.
+        bool stopScheduled = false, stoppedPopulation = false; int countAtStop = -1; qint64 stopDispatchMs = -1;
+        const auto cancelProbe = connect(images->model(), &QAbstractItemModel::rowsInserted, &populationObserver,
+            [&](const QModelIndex &, int, int) {
+                if (stopScheduled || !window_->queuePopulating_) return;
+                stopScheduled = true;
+                QTimer::singleShot(0, &populationObserver, [&] {
+                    countAtStop = images->count();
+                    if (!window_->queuePopulating_ || countAtStop <= 0 || countAtStop >= count) return;
+                    stoppedPopulation = true; QElapsedTimer stopTime; stopTime.start();
+                    QTest::mouseClick(window_->stopButton_, Qt::LeftButton); stopDispatchMs = stopTime.elapsed();
+                });
+            });
+        window_->loadDataset(yaml, "val");
+        QTRY_VERIFY_WITH_TIMEOUT(stoppedPopulation && !window_->busy_ && !window_->evaluationWorker_ && !window_->queuePopulating_, 30000);
+        disconnect(cancelProbe);
+        QVERIFY(stopDispatchMs >= 0 && stopDispatchMs < 250);
+        QCOMPARE(images->count(), 0); QVERIFY(window_->files_.isEmpty()); QVERIFY(view->result().image.isNull());
+        QTest::qWait(120); QCOMPARE(images->count(), 0); QVERIFY(window_->files_.isEmpty());
+        heartbeat.stop(); QVERIFY(ticks >= 10); QVERIFY2(maximumGap < 500, qPrintable(QString("GUI heartbeat gap: %1 ms").arg(maximumGap)));
+        qInfo().noquote() << "lazy_queue_evidence" << "standard_yolo_dataset" << count << "partial_count" << partialCount
+                         << "population_controls_locked" << controlsLocked << "stop_at_count" << countAtStop << "stop_dispatch_ms" << stopDispatchMs
+                         << "initial_loaded_thumbnails" << loaded
+                         << "heartbeat_ticks" << ticks << "maximum_gap_ms" << maximumGap << "rapid_selection_final_index" << 1998
+                         << "clear_cancelled_jobs" << images->activeThumbnailJobs();
     }
 
     void highResolutionAutomaticExportCanStopWithoutBlockingUi_data()
@@ -269,15 +376,16 @@ class BatchResponsivenessTests final : public QObject
             QVERIFY(QFile::remove(result.source));
         }
         images->setCurrentRow(2); // This image was not processed.
-        QCOMPARE(view->result().inferenceMs, 0.0);
+        QTRY_COMPARE(view->result().source, files[2]);
+        QTRY_COMPARE(view->result().inferenceMs, 0.0);
         QVERIFY(!exportButton->isEnabled());
         for (int row = 0; row < accepted.size(); ++row)
         {
             images->setCurrentRow(row);
-            QCOMPARE(view->result().source, accepted[row].source);
-            QCOMPARE(view->result().image, accepted[row].image);
-            QCOMPARE(view->result().originalImage, accepted[row].originalImage);
-            QCOMPARE(view->result().inferenceMs, accepted[row].inferenceMs);
+            QTRY_COMPARE(view->result().source, accepted[row].source);
+            QTRY_COMPARE(view->result().image, accepted[row].image);
+            QTRY_COMPARE(view->result().originalImage, accepted[row].originalImage);
+            QTRY_COMPARE(view->result().inferenceMs, accepted[row].inferenceMs);
             QVERIFY(exportButton->isEnabled());
         }
         QCOMPARE(contents(fixture_->path() + QStringLiteral("/output/history.json")), savedHistory);
@@ -331,7 +439,7 @@ class BatchResponsivenessTests final : public QObject
         images->setCurrentRow(2);
         QVERIFY(!exportButton->isEnabled());
         images->setCurrentRow(0);
-        QCOMPARE(view->result().image, accepted.image);
+        QTRY_COMPARE(view->result().image, accepted.image);
         QVERIFY(exportButton->isEnabled());
         QCheckBox *automatic = nullptr;
         for (auto *check : window_->findChildren<QCheckBox *>())
@@ -346,7 +454,7 @@ class BatchResponsivenessTests final : public QObject
         for (int row : {0, 1, 2})
         {
             images->setCurrentRow(row);
-            QCOMPARE(view->result().source, files[row]);
+            QTRY_COMPARE(view->result().source, files[row]);
             QVERIFY(view->result().inferenceMs > 0);
             QVERIFY(exportButton->isEnabled());
         }

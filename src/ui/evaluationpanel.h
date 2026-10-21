@@ -11,6 +11,7 @@ class QLabel;
 class QLineEdit;
 class QPushButton;
 class QSpinBox;
+class QScrollArea;
 class QTableWidget;
 class QToolButton;
 class EvaluationCurve;
@@ -22,6 +23,7 @@ class EvaluationPanel final : public QWidget
     Q_OBJECT
 public:
     explicit EvaluationPanel(QWidget *parent = nullptr);
+    ~EvaluationPanel() override;
     QWidget *controlsWidget() const { return controls_; }
     void chooseDataset();
     void chooseDatasetFile();
@@ -34,6 +36,7 @@ public:
     void setReport(const QJsonObject &report, const QString &directory = {});
     void clearReport();
     void setMode(bool evaluation);
+    void setModeControlVisible(bool visible);
     bool evaluationMode() const;
     bool canEvaluate() const;
     QString validationMessage() const;
@@ -52,6 +55,7 @@ public:
     void setAnalysisThreshold(double threshold);
     void setOperatingMetrics(const QJsonObject &metrics);
     void exportReportTo(const QString &parentDirectory);
+    void hideDatasetSettings();
 
 signals:
     void datasetRequested(const QString &yaml, const QString &split, const QString &metadata);
@@ -62,25 +66,33 @@ signals:
     void imageFilterChanged(const QString &filter);
     void reportOpenRequested(const QString &path);
 
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
 private:
     void updateEligibility();
     void updateMapping();
     void updateMetrics();
     void updateRecommendation();
     void requestDataset();
+    void showDatasetSettings();
+    void positionDatasetSettings();
     QJsonObject selectedRow() const;
     void exportReport();
 
     QPointer<QWidget> controls_;
     QWidget *datasetControls_ = nullptr;
-    QWidget *datasetSettings_ = nullptr;
-    QToolButton *datasetSettingsButton_ = nullptr, *eligibilityStatus_ = nullptr;
+    QPointer<QWidget> datasetSettings_;
+    QWidget *datasetSettingsContent_ = nullptr;
+    QScrollArea *datasetSettingsScroll_ = nullptr;
+    QPointer<QWidget> datasetSettingsHost_;
+    QPointer<QToolButton> datasetSettingsButton_, eligibilityStatus_;
     QComboBox *mode_ = nullptr, *split_ = nullptr, *filter_ = nullptr, *strategy_ = nullptr;
     QSpinBox *modelId_ = nullptr, *datasetId_ = nullptr;
     QDoubleSpinBox *threshold_ = nullptr, *matchIou_ = nullptr, *scanStart_ = nullptr,
                    *scanEnd_ = nullptr, *scanStep_ = nullptr, *constraint_ = nullptr;
     QLineEdit *metadata_ = nullptr;
-    QLabel *datasetHint_ = nullptr, *mappingHint_ = nullptr, *validation_ = nullptr,
+    QLabel *modeTitle_ = nullptr, *datasetHint_ = nullptr, *mappingHint_ = nullptr, *validation_ = nullptr,
            *reportStatus_ = nullptr, *reportIdentity_ = nullptr, *recommendation_ = nullptr,
            *counts_ = nullptr;
     QList<QLabel *> metrics_;

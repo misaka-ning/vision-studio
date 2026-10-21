@@ -2,6 +2,7 @@
 #include "ui/mainwindow.h"
 #include "ui/evaluationpanel.h"
 #include "ui/imagecanvas.h"
+#include "ui/lazyimagequeue.h"
 #include "ui/modelviewer.h"
 #include "core/evaluationworker.h"
 
@@ -19,6 +20,8 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QLabel>
+#include <QLayout>
+#include <QFrame>
 #include <QLineEdit>
 #include <QListWidget>
 #include <QMenu>
@@ -162,7 +165,7 @@ class EvaluationIntegrationTests final : public QObject
         connect(&chooser, &QTimer::timeout, this, [this, &pickerTimeout, &pickerSeen, &correctMode, selected, directYaml] {
             for (auto *widget : QApplication::topLevelWidgets())
                 if (auto *dialog = qobject_cast<QFileDialog *>(widget); dialog && dialog->isVisible()) {
-                    correctMode = dialog->fileMode() == (directYaml ? QFileDialog::ExistingFile : QFileDialog::Directory);
+                    correctMode = dialog->objectName() == "yoloDatasetSourceDialog" && dialog->fileMode() == QFileDialog::AnyFile;
                     if (pickerTimeout.elapsed() > 15000) { unexpectedDialog_ = "YOLO dataset chooser did not accept the existing selection"; dialog->reject(); return; }
                     if (!pickerSeen) {
                         pickerSeen = true; dialog->setDirectory(QFileInfo(selected).absolutePath());
@@ -170,20 +173,14 @@ class EvaluationIntegrationTests final : public QObject
                     // QFileSystemModel may finish loading after setDirectory and
                     // replace an early selection. Keep the filename editor in
                     // sync without restarting the directory model every tick.
-                    if (auto *filename = dialog->findChild<QLineEdit *>("fileNameEdit")) filename->setText(selected);
-                    if (!dialog->selectedFiles().isEmpty() && QFileInfo(dialog->selectedFiles().first()).absoluteFilePath() == selected)
-                        QMetaObject::invokeMethod(dialog, "accept", Qt::QueuedConnection);
+                    if (auto *filename = dialog->findChild<QLineEdit *>("fileNameEdit")) {
+                        if (filename->text() != selected) { filename->setFocus(); filename->selectAll(); QTest::keyClicks(filename, selected); }
+                        if (filename->text() == selected) QMetaObject::invokeMethod(dialog, "accept", Qt::QueuedConnection);
+                    }
                 }
         });
         chooser.start(10);
-        if (directYaml) {
-            auto *options = window_->findChild<QToolButton *>("openYoloDatasetOptionsButton");
-            if (!options || !options->menu()) return false;
-            QAction *yamlAction = nullptr;
-            for (auto *action : options->menu()->actions()) if (action->text().contains("YAML")) yamlAction = action;
-            if (!yamlAction) return false;
-            yamlAction->trigger();
-        } else if (keyboardShortcut) {
+        if (keyboardShortcut) {
             window_->activateWindow(); window_->canvas_->setFocus();
             QTest::keyClick(window_->canvas_, Qt::Key_O, Qt::ControlModifier);
         } else {
@@ -201,7 +198,9 @@ class EvaluationIntegrationTests final : public QObject
             if (!selectDatasetPath()) return false;
         } else window_->loadDataset(yaml_, "val");
         if (!waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; })) return false;
-        return window_->files_ == images_ && window_->datasetManifest_.value("samples").toArray().size() == count;
+        return waitUntil([this, count] { return window_->files_ == images_ && window_->queue_->count() == count &&
+            window_->datasetManifest_.value("samples").toArray().size() == count &&
+            window_->canvas_->result().source == images_.first() && !window_->canvas_->result().image.isNull(); });
     }
     void configureEvaluation()
     {
@@ -213,10 +212,15 @@ class EvaluationIntegrationTests final : public QObject
     bool runEvaluation(int range, int selection)
     {
         configureEvaluation(); window_->queue_->setCurrentRow(selection); window_->detectionRange_->setCurrentIndex(range);
-        if (!window_->runButton_->isEnabled()) return false;
-        window_->runButton_->click();
+        window_->workbenchTabs_->setCurrentIndex(1);
+        auto *start = window_->findChild<QPushButton *>("evaluationStartButton");
+        if (!start || !start->isVisible() || !start->isEnabled()) return false;
+        QTest::mouseClick(start, Qt::LeftButton);
         if (!window_->busy_ || !window_->evaluationWorker_) return false;
-        return waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; }) && !window_->evaluationReport_.isEmpty();
+        const bool complete = waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_ && !window_->queuePopulating_; }) && !window_->evaluationReport_.isEmpty();
+        if (complete) qInfo().noquote() << "evaluation_start_button_evidence" << start->objectName()
+                                      << "completed_images" << window_->evaluationReport_.value("completed_images").toInt();
+        return complete;
     }
     void evidence(const QString &scenario)
     {
@@ -246,7 +250,7 @@ private slots:
     {
         QApplication::setStyle("Fusion"); QApplication::setFont(QFont("Noto Sans CJK SC", 10));
         QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
-        QCoreApplication::setApplicationVersion("2.4.0");
+        QCoreApplication::setApplicationVersion("2.5.0");
         for (QString candidate : {qEnvironmentVariable("VISION_STUDIO_EVALUATION_PYTHON"), qEnvironmentVariable("VISION_STUDIO_PYTHON"),
             QStringLiteral(VISION_PROJECT_DIR) + "/runtime/bin/python", QStringLiteral(VISION_PROJECT_DIR) + "/runtime/python.exe",
             QStringLiteral("/opt/VisionStudio/runtime/bin/python")}) {
@@ -305,10 +309,11 @@ private slots:
         QCOMPARE(window_->canvas_->result().source, images_.first());
         QVERIFY(window_->canvas_->result().hasGroundTruth); QCOMPARE(window_->canvas_->result().groundTruth.size(), 1);
         QCOMPARE(window_->canvas_->result().predictions.size(), 0); QVERIFY(!window_->exportButton_->isEnabled());
-        window_->queue_->setCurrentRow(2); QVERIFY(window_->canvas_->result().hasGroundTruth);
-        QCOMPARE(window_->canvas_->result().groundTruth.size(), 0);
+        window_->queue_->setCurrentRow(2); QTRY_COMPARE_WITH_TIMEOUT(window_->canvas_->result().source, images_[2], 10000);
+        QVERIFY(window_->canvas_->result().hasGroundTruth); QCOMPARE(window_->canvas_->result().groundTruth.size(), 0);
         configureEvaluation(); QVERIFY(window_->evaluation_->evaluationMode());
-        QCOMPARE(window_->workbenchTabs_->currentWidget(), static_cast<QWidget *>(window_->evaluation_));
+        QCOMPARE(window_->workbenchTabs_->currentIndex(), 1);
+        QVERIFY(window_->workbenchTabs_->currentWidget() == window_->evaluation_ || window_->workbenchTabs_->currentWidget()->isAncestorOf(window_->evaluation_));
         window_->evaluation_->setMode(false); QCOMPARE(window_->workbenchTabs_->currentIndex(), 0);
         QCOMPARE(window_->files_, images_);
     }
@@ -362,7 +367,9 @@ private slots:
         QCOMPARE(window_->datasetManifest_.value("data_yaml").toString(), conventional);
         QCOMPARE(window_->evaluation_->datasetYaml(), directory);
         QCOMPARE(window_->files_, images_); QCOMPARE(window_->queue_->count(), 4);
-        QVERIFY(window_->canvas_->result().hasGroundTruth); QVERIFY(window_->evaluation_->canEvaluate());
+        QTRY_COMPARE_WITH_TIMEOUT(window_->canvas_->result().source, images_.first(), 10000);
+        QTRY_VERIFY_WITH_TIMEOUT(window_->canvas_->result().hasGroundTruth, 10000);
+        QCOMPARE(window_->canvas_->result().groundTruth.size(), 1); QVERIFY(window_->evaluation_->canEvaluate());
     }
     void explicitYamlOptionDisambiguatesDirectoryWithoutGuessing()
     {
@@ -403,7 +410,10 @@ private slots:
         QCOMPARE(window_->datasetManifest_.value("split").toString(), QString("train"));
         QCOMPARE(window_->evaluation_->datasetSplit(), QString("train"));
         QCOMPARE(window_->evaluation_->datasetYaml(), directory); QCOMPARE(window_->files_, images_);
-        QVERIFY(window_->evaluation_->canEvaluate()); QVERIFY(window_->canvas_->result().hasGroundTruth);
+        QVERIFY(window_->evaluation_->canEvaluate());
+        QTRY_COMPARE_WITH_TIMEOUT(window_->canvas_->result().source, images_.first(), 10000);
+        QTRY_VERIFY_WITH_TIMEOUT(window_->canvas_->result().hasGroundTruth, 10000);
+        QCOMPARE(window_->canvas_->result().groundTruth.size(), 1);
     }
     void relocatedDatasetFolderRemainsUsableWhenSwitchingSplit()
     {
@@ -465,8 +475,7 @@ private slots:
         QFETCH(int, width); QFETCH(QString, device);
         window_->resize(width, 820);
         // This checks device-selector layout only; no CUDA inference is claimed.
-        window_->computeDevice_->setCurrentIndex(window_->computeDevice_->findData(device));
-        QTest::qWait(40);
+        window_->computeDevice_->setCurrentIndex(window_->computeDevice_->findData(device)); QTest::qWait(40);
         auto *bar = window_->findChild<QWidget *>("commandBar"); QVERIFY(bar && bar->isVisible());
         QVERIFY2(bar->height() <= 112, qPrintable(QString("empty command bar: %1 px").arg(bar->height())));
         QVERIFY2(loadDataset(), qPrintable(state())); QTest::qWait(40);
@@ -474,12 +483,14 @@ private slots:
         auto *settingsButton = window_->evaluation_->controlsWidget()->findChild<QToolButton *>("evaluationDatasetSettingsButton");
         auto *advanced = window_->evaluation_->controlsWidget()->findChild<QWidget *>("evaluationAdvancedControls");
         auto *advancedButton = window_->evaluation_->controlsWidget()->findChild<QToolButton *>("evaluationAdvancedButton");
-        QVERIFY(settings && settingsButton && advanced && advancedButton);
+        QVERIFY(settings && settingsButton && advanced && advancedButton); QCOMPARE(settings->windowType(), Qt::Popup);
         QVERIFY(!settings->isVisible()); QVERIFY(!advanced->isVisible());
+        QVERIFY(!window_->findChild<QToolButton *>("openYoloDatasetOptionsButton"));
+        auto *modeControl = window_->findChild<QComboBox *>("evaluationModeCombo"); QVERIFY(modeControl && !modeControl->isVisible());
         QVERIFY2(bar->height() <= 112, qPrintable(QString("dataset command bar: %1 px").arg(bar->height())));
+        const QRect barBounds = bar->geometry(), canvasBounds(window_->canvas_->mapTo(window_.get(), QPoint()), window_->canvas_->size());
         QVERIFY(window_->canvas_->height() >= 280);
-        QVERIFY(window_->canvas_->parentWidget()->rect().contains(QRect(window_->canvas_->pos(), window_->canvas_->size())));
-        for (const char *name : {"openYoloDatasetButton", "openYoloDatasetOptionsButton", "openVideoButton", "openCameraButton", "computeDevice", "evaluationModeCombo", "evaluationSplitCombo", "evaluationReloadDatasetButton", "evaluationDatasetSettingsButton"}) {
+        for (const char *name : {"openYoloDatasetButton", "openVideoButton", "openCameraButton", "computeDevice", "evaluationSplitCombo", "evaluationReloadDatasetButton", "evaluationDatasetSettingsButton"}) {
             auto *control = bar->findChild<QWidget *>(name); QVERIFY2(control && control->isVisible(), name);
             QVERIFY2(bar->rect().contains(QRect(control->mapTo(bar, QPoint()), control->size())), name);
         }
@@ -487,39 +498,95 @@ private slots:
             auto *gpu = bar->findChild<QComboBox *>("gpuDeviceIndex"); QVERIFY(gpu && gpu->isVisible());
             QVERIFY(bar->rect().contains(QRect(gpu->mapTo(bar, QPoint()), gpu->size())));
         }
-        const QString screenshotRoot = qEnvironmentVariable("VISION_EVALUATION_INTEGRATION_EVIDENCE");
+        const QString screenshotRoot = qEnvironmentVariable("VISION_STUDIO_UI_CAPTURE_DIR",
+            qEnvironmentVariable("VISION_EVALUATION_INTEGRATION_EVIDENCE"));
         const auto screenshot = [this, screenshotRoot, width, device](const QString &state) {
             if (screenshotRoot.isEmpty()) return true;
             if (!QDir().mkpath(screenshotRoot)) return false;
             const QString path = screenshotRoot + QString("/compact-%1-%2-%3.png").arg(width).arg(device, state);
-            window_->saveScreenshot(path);
-            return QImage(path).size() == window_->size();
+            window_->saveScreenshot(path); return QImage(path).size() == window_->size();
         };
         QVERIFY(screenshot("collapsed"));
-        settingsButton->click(); QTest::qWait(30);
-        QVERIFY(settings->isVisible());
-        QVERIFY(bar->findChild<QSpinBox *>("evaluationModelClassIdSpin")->isVisible());
-        QVERIFY(bar->findChild<QSpinBox *>("evaluationDatasetClassIdSpin")->isVisible());
-        advancedButton->click(); QTest::qWait(30); QVERIFY(advanced->isVisible());
-        for (const char *name : {"evaluationMetadataEdit", "evaluationMatchIouSpin", "evaluationScanStartSpin", "evaluationScanEndSpin", "evaluationScanStepSpin"}) {
-            auto *control = bar->findChild<QWidget *>(name); QVERIFY2(control && control->isVisible(), name);
-            QVERIFY2(bar->rect().contains(QRect(control->mapTo(bar, QPoint()), control->size())), name);
+        const auto fingerprint = window_->inferenceFingerprint(); const auto mode = window_->evaluation_->evaluationMode();
+        QTest::mouseClick(settingsButton, Qt::LeftButton); QTRY_VERIFY(settings->isVisible());
+        QCOMPARE(bar->geometry(), barBounds);
+        QCOMPARE(QRect(window_->canvas_->mapTo(window_.get(), QPoint()), window_->canvas_->size()), canvasBounds);
+        QTest::mouseClick(advancedButton, Qt::LeftButton); QTRY_VERIFY(advanced->isVisible());
+        for (const char *name : {"evaluationModelClassIdSpin", "evaluationDatasetClassIdSpin", "evaluationMetadataEdit", "evaluationMatchIouSpin", "evaluationScanStartSpin", "evaluationScanEndSpin", "evaluationScanStepSpin"}) {
+            auto *control = settings->findChild<QWidget *>(name); QVERIFY2(control && control->isVisible(), name);
+            QVERIFY2(settings->rect().contains(QRect(control->mapTo(settings, QPoint()), control->size())), name);
         }
-        const QRect expandedCanvas(window_->canvas_->mapTo(window_.get(), QPoint()), window_->canvas_->size());
-        qInfo().noquote() << "expanded_workbench_geometry" << width << device << "command_bar_px" << bar->height()
-                         << "canvas" << QRect(window_->canvas_->pos(), window_->canvas_->size())
-                         << "canvas_parent" << window_->canvas_->parentWidget()->rect()
-                         << "canvas_in_window" << expandedCanvas << "window" << window_->rect();
-        QVERIFY(screenshot("expanded"));
-        QVERIFY(window_->rect().contains(expandedCanvas));
+        QCOMPARE(bar->geometry(), barBounds);
+        QCOMPARE(QRect(window_->canvas_->mapTo(window_.get(), QPoint()), window_->canvas_->size()), canvasBounds);
+        QVERIFY(screenshot("popup-context"));
+        if (!screenshotRoot.isEmpty()) QVERIFY(settings->grab().save(screenshotRoot + QString("/settings-popup-%1-%2.png").arg(width).arg(device)));
+        QTest::keyClick(settings, Qt::Key_Escape); QTRY_VERIFY(!settings->isVisible());
+        QTest::mouseClick(settingsButton, Qt::LeftButton); QTRY_VERIFY(settings->isVisible());
+        QTest::mouseClick(window_.get(), Qt::LeftButton, Qt::NoModifier, QPoint(4, window_->height() - 4));
+        QTRY_VERIFY(!settings->isVisible()); QVERIFY(!settingsButton->isChecked());
+        QCOMPARE(window_->inferenceFingerprint(), fingerprint); QCOMPARE(window_->evaluation_->evaluationMode(), mode);
+        QCOMPARE(bar->geometry(), barBounds);
+        QCOMPARE(QRect(window_->canvas_->mapTo(window_.get(), QPoint()), window_->canvas_->size()), canvasBounds);
         QVERIFY(window_->canvas_->parentWidget()->rect().contains(QRect(window_->canvas_->pos(), window_->canvas_->size())));
-        QVERIFY(window_->canvas_->height() >= 280);
-        settingsButton->click(); QTest::qWait(30);
-        QVERIFY(!settings->isVisible());
-        QVERIFY2(bar->height() <= 112, qPrintable(QString("recollapsed command bar: %1 px").arg(bar->height())));
-        QVERIFY(window_->canvas_->height() >= 280);
-        qInfo().noquote() << "compact_workbench_evidence" << width << device << "command_bar_px" << bar->height()
-                         << "canvas" << window_->canvas_->size();
+        qInfo().noquote() << "popup_workbench_geometry" << width << device << "command_bar_px" << bar->height()
+                         << "canvas" << window_->canvas_->size() << "popup" << settings->size();
+    }
+    void fullWidthTabsChangeOnlyViewAndShareDetectionRange()
+    {
+        QVERIFY2(loadDataset(), qPrintable(state()));
+        auto *tabs = window_->workbenchTabs_; QCOMPARE(tabs->objectName(), QString("workbenchAnalysisTabs"));
+        QCOMPARE(tabs->count(), 2); auto *preview = tabs->widget(0); auto *analysis = tabs->widget(1);
+        QVERIFY(preview->isAncestorOf(window_->canvas_)); QVERIFY(preview->isAncestorOf(window_->queue_));
+        QVERIFY(preview->isAncestorOf(window_->inputColorMode_)); QVERIFY(preview->isAncestorOf(window_->predictionTable_));
+        QVERIFY(analysis == window_->evaluation_ || analysis->isAncestorOf(window_->evaluation_));
+        auto *range = window_->findChild<QComboBox *>("evaluationRangeCombo");
+        auto *start = window_->findChild<QPushButton *>("evaluationStartButton");
+        auto *stop = window_->findChild<QPushButton *>("evaluationStopButton"); QVERIFY(range && start && stop);
+        window_->runButton_->click();
+        QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->resultIoPending_; }), qPrintable(state()));
+        QVERIFY(!window_->imageResults_.isEmpty());
+        const auto model = window_->modelPath_, fingerprint = window_->inferenceFingerprint();
+        const auto mode = window_->evaluation_->evaluationMode(); const auto cached = window_->imageResults_.size();
+        QTest::qWait(30);
+        auto *metrics = window_->findChild<QWidget *>("previewMetrics"); QVERIFY(metrics);
+        const auto cards = metrics->findChildren<QFrame *>("metricCard"); QCOMPARE(cards.size(), 4);
+        QVERIFY(!metrics->isVisible());
+        auto *metricsLayout = metrics->parentWidget()->layout(); QVERIFY(metricsLayout);
+        const int metricsIndex = metricsLayout->indexOf(metrics); QVERIFY(metricsIndex >= 0);
+        QVERIFY(metricsLayout->itemAt(metricsIndex)->isEmpty());
+        qInfo().noquote() << "preview_metrics_evidence" << "dataset_context" << "visible" << metrics->isVisible() << "geometry" << metrics->geometry();
+        for (auto *card : cards) {
+            QVERIFY(!card->isVisible()); qInfo().noquote() << "metric_card_evidence" << "dataset_context" << card->isVisible() << card->geometry();
+        }
+        const QString capture = qEnvironmentVariable("VISION_STUDIO_UI_CAPTURE_DIR");
+        if (!capture.isEmpty()) { QVERIFY(QDir().mkpath(capture)); window_->saveScreenshot(capture + "/workspace-preview.png"); }
+        tabs->setCurrentIndex(1); QTest::qWait(30);
+        QVERIFY(window_->evaluation_->isVisible()); QVERIFY(!window_->inputColorMode_->isVisible());
+        QVERIFY(window_->evaluation_->width() >= int(tabs->width() * .9)); QVERIFY(start->isVisible());
+        QVERIFY(!metrics->isVisible());
+        if (!capture.isEmpty()) window_->saveScreenshot(capture + "/workspace-evaluation.png");
+        QCOMPARE(window_->evaluation_->evaluationMode(), mode); QCOMPARE(window_->modelPath_, model);
+        QCOMPARE(window_->inferenceFingerprint(), fingerprint); QCOMPARE(window_->imageResults_.size(), cached);
+        range->setCurrentIndex(1); QCOMPARE(window_->detectionRange_->currentIndex(), 1);
+        tabs->setCurrentIndex(0); QTest::qWait(20); QVERIFY(window_->canvas_->isVisible());
+        QCOMPARE(window_->evaluation_->evaluationMode(), mode); QCOMPARE(window_->inferenceFingerprint(), fingerprint);
+        QCOMPARE(window_->detectionRange_->currentIndex(), 1); QCOMPARE(window_->imageResults_.size(), cached);
+        window_->detectionRange_->setCurrentIndex(2); QCOMPARE(range->currentIndex(), 2);
+        tabs->setCurrentIndex(1); QCOMPARE(window_->evaluation_->evaluationMode(), mode);
+        QCOMPARE(window_->detectionRange_->currentIndex(), 2);
+        qInfo().noquote() << "workspace_tabs_evidence" << "tab_width" << tabs->width() << "analysis_width" << window_->evaluation_->width()
+                         << "mode_unchanged" << (window_->evaluation_->evaluationMode() == mode) << "cached_results" << cached
+                         << "mirrored_range_index" << range->currentIndex();
+        // Selecting a camera only configures input; no hardware connection is opened.
+        auto *camera = window_->findChild<QPushButton *>("openCameraButton"); QVERIFY(camera); QTest::mouseClick(camera, Qt::LeftButton);
+        QTRY_COMPARE(tabs->currentIndex(), 0); QTRY_VERIFY(metrics->isVisible());
+        for (auto *card : cards) {
+            QTRY_VERIFY(card->isVisible()); QVERIFY(card->height() >= 50);
+            auto *value = card->findChild<QLabel *>("metricValue"); QVERIFY(value && !value->text().isEmpty());
+            QVERIFY(card->rect().contains(QRect(value->mapTo(card, QPoint()), value->size())));
+            qInfo().noquote() << "metric_card_evidence" << "live_input_context" << card->isVisible() << card->geometry();
+        }
+        tabs->setCurrentIndex(1); QTest::qWait(30); QVERIFY(!metrics->isVisible());
     }
 
     void missingCurrentSelectionDoesNotExpandTask()
@@ -716,8 +783,9 @@ private slots:
         window_->models_.append(another); window_->setModel(another);
         QVERIFY2(waitUntil([this] { return !window_->modelInspectionPending_ && window_->modelClassCount_ == 1; }, 30000), qPrintable(state()));
         window_->loadEvaluationReport(report);
+        QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_ && !window_->queuePopulating_; }), qPrintable(state()));
         QCOMPARE(window_->modelPath_, another); QCOMPARE(window_->evaluationDirectory_, report);
-        QCOMPARE(window_->queue_->count(), 4); QTRY_COMPARE_WITH_TIMEOUT(window_->lastResult_.source, images_[0], 10000);
+        QTRY_COMPARE_WITH_TIMEOUT(window_->queue_->count(), 4, 10000); QTRY_COMPARE_WITH_TIMEOUT(window_->lastResult_.source, images_[0], 10000);
         QCOMPARE(window_->lastResult_.predictions.size(), 1); QCOMPARE(window_->lastResult_.matchedPredictions.size(), 1);
         window_->confidence_->setValue(.4); window_->evaluation_->findChild<QPushButton *>("evaluationApplyThresholdButton")->click();
         QCOMPARE(window_->modelPath_, another); QCOMPARE(window_->confidence_->value(), .4);
@@ -731,7 +799,8 @@ private slots:
         window_->runButton_->click();
         QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->resultIoPending_; }), qPrintable(state()));
         QCOMPARE(window_->imageResults_.size(), 4);
-        window_->queue_->setCurrentRow(0); QCOMPARE(window_->lastResult_.predictions.size(), 1);
+        window_->queue_->setCurrentRow(0); QTRY_COMPARE_WITH_TIMEOUT(window_->lastResult_.source, images_[0], 10000);
+        QTRY_COMPARE_WITH_TIMEOUT(window_->lastResult_.predictions.size(), 1, 10000);
         QVERIFY2(runEvaluation(2, 1), qPrintable(state()));
         QCOMPARE(window_->evaluationSampleIndices_.size(), 1);
         window_->queue_->setCurrentRow(0);
@@ -748,6 +817,7 @@ private slots:
         QVERIFY2(loadDataset(), qPrintable(state())); QVERIFY2(runEvaluation(0, 0), qPrintable(state()));
         QVERIFY(window_->evaluationReviewActive_); window_->evaluation_->setMode(false);
         QVERIFY(!window_->evaluationReviewActive_); window_->queue_->setCurrentRow(1);
+        QTRY_COMPARE_WITH_TIMEOUT(window_->canvas_->result().source, images_[1], 10000);
         QTRY_VERIFY_WITH_TIMEOUT(window_->canvas_->result().predictions.isEmpty(), 10000); QVERIFY(window_->canvas_->result().hasGroundTruth);
         QCOMPARE(window_->workbenchTabs_->currentIndex(), 0);
         window_->evaluation_->setMode(true); window_->evaluation_->setAnalysisThreshold(.7);
@@ -762,6 +832,8 @@ private slots:
         QVERIFY(!window_->canvas_->result().evaluationReport.isEmpty());
         const auto frozen = window_->evaluationReport_;
         window_->inputColorMode_->setCurrentIndex(window_->inputColorMode_->findData("grayscale"));
+        QTRY_COMPARE_WITH_TIMEOUT(window_->canvas_->result().source, images_[0], 10000);
+        QTRY_VERIFY_WITH_TIMEOUT(window_->canvas_->result().image.isGrayscale() && window_->canvas_->result().predictions.isEmpty(), 10000);
         const auto preview = window_->canvas_->result();
         QCOMPARE(preview.source, images_[0]); QVERIFY(preview.hasGroundTruth);
         QCOMPARE(preview.groundTruth.size(), 1); QVERIFY(preview.predictions.isEmpty());
@@ -799,14 +871,16 @@ private slots:
         window_->models_.append(slower); window_->setModel(slower); window_->inputSize_->setValue(640);
         QVERIFY2(waitUntil([this] { return !window_->modelInspectionPending_ && window_->modelClassCount_ == 1; }, 30000), qPrintable(state()));
         configureEvaluation(); window_->detectionRange_->setCurrentIndex(0); window_->queue_->setCurrentRow(0);
-        QVERIFY(window_->runButton_->isEnabled()); window_->runButton_->click(); QVERIFY(window_->evaluationWorker_);
+        auto *publicStart = window_->findChild<QPushButton *>("evaluationStartButton");
+        auto *publicStop = window_->findChild<QPushButton *>("evaluationStopButton"); QVERIFY(publicStart && publicStop);
+        QVERIFY(publicStart->isVisible() && publicStart->isEnabled()); QTest::mouseClick(publicStart, Qt::LeftButton); QVERIFY(window_->evaluationWorker_);
         bool clicked = false; qint64 clickDuration = -1; int firstCompleted = 0; int heartbeats = 0;
         QTimer heartbeat; connect(&heartbeat, &QTimer::timeout, this, [&] { ++heartbeats; }); heartbeat.start(10);
         connect(window_->evaluationWorker_, &vision::EvaluationWorker::progress, this,
                 [&](int completed, int, const QString &) {
             if (!clicked && completed >= 1 && window_->busy_) {
                 firstCompleted = completed; clicked = true;
-                QElapsedTimer timer; timer.start(); window_->stopButton_->click(); clickDuration = timer.elapsed();
+                QElapsedTimer timer; timer.start(); QTest::mouseClick(publicStop, Qt::LeftButton); clickDuration = timer.elapsed();
             }
         });
         QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; }, 90000), qPrintable(state()));
