@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "version": "2.7.1",
+  "repository": "misaka-ning/vision-studio",
+  "release_url": "https://github.com/misaka-ning/vision-studio/releases/tag/v2.7.1",
+  "tag": "v2.7.1",
+  "commit": "dd891ad7936cf8a7c47e2111a2f3bcdca4c4b255",
+  "public_projection": true,
+  "not_an_application_qa_report": true,
+  "remote_verification_success": true,
+  "latest_snapshot_tag_matches": true,
+  "draft": false,
+  "prerelease": false,
+  "manual_asset_count": 3,
+  "assets": [
+    {
+      "name": "vision-studio_2.7.1-1_amd64.deb",
+      "bytes": 387333512,
+      "sha256": "1cf4c70c78687820dad0acb8f367c9a722b21a63ee6e6d664af9af27785a0bbe"
+    },
+    {
+      "name": "vision-studio-2.7.1-complete-source.tar.xz",
+      "bytes": 916197360,
+      "sha256": "8a61e48e8a0c32cc5bf8c810830a51cb4e2f363e190a93a1070f7d9fa93d7c7d"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 207,
+      "sha256": "7f905a3f2fef69fe56f33e5b309d5198ff4942f2429f580879206460208fdb66"
+    }
+  ],
+  "local_retention": {
+    "success": true,
+    "retained_versions": [
+      "2.7.1",
+      "2.7.0"
+    ],
+    "old_version": "2.6.0",
+    "removed_generated_copy_count": 3,
+    "removed_release_copy_count": 2,
+    "generated_members_verified": 52504,
+    "generated_metadata_files_preserved": 242,
+    "loose_release_metadata_files_preserved": 78,
+    "loose_release_files_verified": 128,
+    "protected_user_files_per_checkout": 4,
+    "protected_checkout_count": 2,
+    "shared_environment_sentinels_unchanged": 66,
+    "manual_exact_session_identity_exception_count": 2,
+    "full_protected_process_fd_visibility_claimed": false,
+    "process_identity_information_published": false,
+    "remote_history_preserved": true,
+    "local_cleanup_report_sha256": "967caf0a3352086da128ad1f124d717a65d8b30ee1f3b92537eae3952bb8e411",
+    "local_release_prune_report_sha256": [
+      "572f23c79bd10f753516f74e4f1045e7a8bb3ca1dea823c117f68991bffd76c2",
+      "2ed865eeb2a083494a5f730d6c50aefd4077b032987c1242c363c7eddb6cdd18"
+    ]
+  }
+}
