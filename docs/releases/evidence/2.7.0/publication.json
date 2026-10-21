@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "version": "2.7.0",
+  "repository": "misaka-ning/vision-studio",
+  "repository_url": "https://github.com/misaka-ning/vision-studio",
+  "release_url": "https://github.com/misaka-ning/vision-studio/releases/tag/v2.7.0",
+  "tag": "v2.7.0",
+  "commit": "2a5d7bbd35f3ae54f0c89db95ffe7f8c73cf0d21",
+  "public_projection": true,
+  "not_an_application_qa_report": true,
+  "remote_verification_success": true,
+  "latest_snapshot_tag_matches_verified_tag": true,
+  "draft": false,
+  "prerelease": false,
+  "manual_asset_count": 3,
+  "assets": [
+    {
+      "name": "vision-studio_2.7.0-1_amd64.deb",
+      "bytes": 387334472,
+      "sha256": "1528bf1ba8e24010d08ac279b988d88fa10712cedb99ebf4a307574cea79dcc2",
+      "url": "https://github.com/misaka-ning/vision-studio/releases/download/v2.7.0/vision-studio_2.7.0-1_amd64.deb"
+    },
+    {
+      "name": "vision-studio-2.7.0-complete-source.tar.xz",
+      "bytes": 915847584,
+      "sha256": "43f6b38e7522f7494f265c03879fc5cfe7bfbf820ba926b7195169db1d624408",
+      "url": "https://github.com/misaka-ning/vision-studio/releases/download/v2.7.0/vision-studio-2.7.0-complete-source.tar.xz"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 207,
+      "sha256": "23094a24342f39c7e32b110ff0f1e1d51081d993d153e61ae668ba76d463bbb0",
+      "url": "https://github.com/misaka-ning/vision-studio/releases/download/v2.7.0/SHA256SUMS"
+    }
+  ],
+  "official_publish_completed": true,
+  "local_retention": {
+    "success": true,
+    "retained_formal_versions": [
+      "2.7.0",
+      "2.6.0"
+    ],
+    "old_version": "2.5.0",
+    "removed_generated_copy_count": 3,
+    "removed_release_copy_count": 2,
+    "generated_members_verified": 52268,
+    "generated_metadata_files_preserved": 223,
+    "loose_release_metadata_files_preserved": 101,
+    "loose_release_files_verified": 151,
+    "protected_user_files_per_checkout": 4,
+    "protected_checkout_count": 2,
+    "shared_environment_sentinels_unchanged": 66,
+    "known_active_candidate_references": 0,
+    "manual_exact_session_identity_exception_count": 2,
+    "full_protected_process_fd_visibility_claimed": false,
+    "raw_process_identity_information_published": false,
+    "remote_history_preserved": true,
+    "local_original_report_sha256": "ffd09142382556f04f0c7b400cf0812259d5721ea4797e78bd6187f68452b35c",
+    "local_release_prune_report_sha256": [
+      "af803230e18539c12e486ffa531f178b614305acfb2b166f3bcc0c61e3718324",
+      "d132c33b96bab8dcdda362167d0946a679a5638c2b657d7d54fb7d3dadd7a2a2"
+    ]
+  },
+  "host_installation_performed_by_this_release_task": false
+}
