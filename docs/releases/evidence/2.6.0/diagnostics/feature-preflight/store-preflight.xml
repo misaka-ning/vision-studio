@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite name="DatasetSessionTests" timestamp="2026&#x002D;10&#x002D;21T11:10:31" hostname="misaka&#x002D;System&#x002D;Product&#x002D;Name" tests="19" failures="0" errors="0" skipped="0" time="0.061">
+  <properties>
+    <property name="QTestVersion" value="6.8.3"/>
+    <property name="QtVersion" value="6.8.3"/>
+    <property name="QtBuild" value="Qt 6.8.3 (x86_64&#x002D;little_endian&#x002D;lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1&#x002D;1))"/>
+  </properties>
+  <testcase name="initTestCase" classname="DatasetSessionTests" time="0.000"/>
+  <testcase name="missingFileDoesNotCreateAnything" classname="DatasetSessionTests" time="0.000"/>
+  <testcase name="roundTripPreservesOriginalSourceAndSplit(train)" classname="DatasetSessionTests" time="0.001"/>
+  <testcase name="roundTripPreservesOriginalSourceAndSplit(val)" classname="DatasetSessionTests" time="0.001"/>
+  <testcase name="roundTripPreservesOriginalSourceAndSplit(test)" classname="DatasetSessionTests" time="0.001"/>
+  <testcase name="optionalMetadataAndUnavailableSourceAreNotFilesystemValidation" classname="DatasetSessionTests" time="0.000"/>
+  <testcase name="nonFileRecordReportsIoErrorWithoutDeletingIt" classname="DatasetSessionTests" time="0.000"/>
+  <testcase name="invalidJsonIsPreserved(truncated)" classname="DatasetSessionTests" time="0.000"/>
+  <testcase name="invalidJsonIsPreserved(array)" classname="DatasetSessionTests" time="0.000"/>
+  <testcase name="invalidJsonIsPreserved(unknown&#x002D;schema)" classname="DatasetSessionTests" time="0.000"/>
+  <testcase name="invalidJsonIsPreserved(wrong&#x002D;field&#x002D;type)" classname="DatasetSessionTests" time="0.000"/>
+  <testcase name="invalidJsonIsPreserved(relative&#x002D;source)" classname="DatasetSessionTests" time="0.000"/>
+  <testcase name="invalidJsonIsPreserved(bad&#x002D;split)" classname="DatasetSessionTests" time="0.000"/>
+  <testcase name="invalidJsonIsPreserved(relative&#x002D;metadata)" classname="DatasetSessionTests" time="0.000"/>
+  <testcase name="oversizedInputIsRejectedWithoutChangingIt" classname="DatasetSessionTests" time="0.000"/>
+  <testcase name="invalidSaveDoesNotReplaceValidRecord" classname="DatasetSessionTests" time="0.001"/>
+  <testcase name="unwritableParentDoesNotFallBackToTruncatingExistingFile" classname="DatasetSessionTests" time="0.001"/>
+  <testcase name="concurrentReadersObserveCompleteOldOrNewRecords" classname="DatasetSessionTests" time="0.054">
+    <system-out>
+      <![CDATA[dataset_session_atomic_read_observations 9903 committed_replacements 120]]>
+    </system-out>
+  </testcase>
+  <testcase name="cleanupTestCase" classname="DatasetSessionTests" time="0.000"/>
+</testsuite>

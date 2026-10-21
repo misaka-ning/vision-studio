@@ -113,6 +113,11 @@ QJsonObject readJson(const QString &path)
     QFile file(path); if (!file.open(QIODevice::ReadOnly)) return {};
     return QJsonDocument::fromJson(file.readAll()).object();
 }
+QByteArray readBytes(const QString &path)
+{
+    QFile file(path);
+    return file.open(QIODevice::ReadOnly) ? file.readAll() : QByteArray();
+}
 }
 
 class EvaluationIntegrationTests final : public QObject
@@ -221,6 +226,36 @@ class EvaluationIntegrationTests final : public QObject
         if (complete) qInfo().noquote() << "evaluation_start_button_evidence" << start->objectName()
                                       << "completed_images" << window_->evaluationReport_.value("completed_images").toInt();
         return complete;
+    }
+    QVector<int> visibleReviewRows() const
+    {
+        QVector<int> rows;
+        for (int row = 0; row < window_->queue_->count(); ++row)
+            if (!window_->queue_->item(row)->isHidden()) rows.append(row);
+        return rows;
+    }
+    bool reviewedImageReady(int row)
+    {
+        return waitUntil([this, row] {
+            return row >= 0 && row < images_.size() && !window_->evaluationReviewPending_ &&
+                !window_->busy_ && !window_->evaluationWorker_ && window_->queue_->currentRow() == row &&
+                window_->canvas_->result().source == images_[row] && !window_->canvas_->result().image.isNull() &&
+                window_->lastResult_.source == images_[row] && !window_->lastResult_.image.isNull() &&
+                window_->lastResult_.hasGroundTruth && window_->lastResult_.hasEvaluationMatches;
+        }, 10000);
+    }
+    bool errorReviewReady(const QVector<int> &expected, int completed)
+    {
+        return waitUntil([this, expected, completed] {
+            const auto *previewSummary = window_->findChild<QLabel *>("evaluationReviewSummaryLabel");
+            const auto *analysisSummary = window_->findChild<QLabel *>("evaluationErrorSummaryLabel");
+            const QString counts = QString("错图 %1 / 已评估 %2 / 集合 %3")
+                .arg(expected.size()).arg(completed).arg(images_.size());
+            return !window_->evaluationReviewPending_ && window_->evaluationReviewAvailable_ &&
+                window_->evaluationEvaluatedCount_ == completed && window_->evaluationErrorRows_ == expected &&
+                visibleReviewRows() == expected && previewSummary && analysisSummary &&
+                previewSummary->text().contains(counts) && analysisSummary->text().contains(counts);
+        }, 10000);
     }
     void evidence(const QString &scenario)
     {
@@ -672,6 +707,22 @@ private slots:
                 QTRY_VERIFY_WITH_TIMEOUT(window_->canvas_->result().predictions.isEmpty(), 10000); QVERIFY(!window_->exportButton_->isEnabled());
             }
         }
+        QVector<int> expectedErrorRows;
+        for (int row = 0; row < images_.size(); ++row)
+            if (expected.contains(images_[row]) && (row % 4 == 1 || row % 4 == 2)) expectedErrorRows.append(row);
+        QSignalSpy reviewStarts(window_.get(), &MainWindow::startRequested);
+        window_->evaluation_->setAnalysisThreshold(.7);
+        auto *review = window_->findChild<QPushButton *>("evaluationReviewButton"); QVERIFY(review);
+        review->click();
+        QVERIFY2(errorReviewReady(expectedErrorRows, expected.size()), qPrintable(state()));
+        if (!expectedErrorRows.isEmpty()) QVERIFY2(reviewedImageReady(expectedErrorRows.first()), qPrintable(state()));
+        else {
+            QTRY_VERIFY_WITH_TIMEOUT(window_->canvas_->result().image.isNull(), 10000);
+            QVERIFY(!window_->exportButton_->isEnabled());
+        }
+        QCOMPARE(window_->evaluationReport_, report);
+        QCOMPARE(reviewStarts.count(), 0);
+        QCOMPARE(window_->taskRangeFiles_, expected);
         evidence(QString("range-%1-count-%2-selection-%3").arg(range).arg(count).arg(selection));
     }
     void thresholdCurveFiltersAndAdoptedConfiguration()
@@ -708,6 +759,147 @@ private slots:
         QTRY_COMPARE_WITH_TIMEOUT(window_->lastResult_.source, images_[0], 10000);
         QTRY_COMPARE_WITH_TIMEOUT(window_->lastResult_.predictions.size(), 1, 10000);
         evidence("threshold-filter-adopt");
+    }
+    void errorReviewNavigatesUniqueImagesAtCurrentThresholdWithoutInference()
+    {
+        QVERIFY2(loadDataset(), qPrintable(state()));
+        QVERIFY2(runEvaluation(0, 0), qPrintable(state()));
+        const auto report = window_->evaluationReport_;
+        const auto history = window_->history_;
+        const QString directory = window_->evaluationDirectory_;
+        const QByteArray reportBytes = readBytes(directory + "/report.json");
+        const auto sampleFiles = QDir(directory + "/samples").entryList(QDir::Files);
+        const double workingConfidence = window_->confidence_->value();
+        QSignalSpy starts(window_.get(), &MainWindow::startRequested);
+        auto *review = window_->findChild<QPushButton *>("evaluationReviewButton");
+        auto *previous = window_->findChild<QPushButton *>("evaluationReviewPreviousButton");
+        auto *next = window_->findChild<QPushButton *>("evaluationReviewNextButton");
+        auto *filter = window_->findChild<QComboBox *>("evaluationPreviewFilterCombo");
+        auto *summary = window_->findChild<QLabel *>("evaluationReviewSummaryLabel");
+        QVERIFY(review && previous && next && filter && summary);
+        window_->evaluation_->setAnalysisThreshold(.7);
+        QVERIFY(review->isVisible() && review->isEnabled());
+        QTest::mouseClick(review, Qt::LeftButton);
+        QTRY_COMPARE_WITH_TIMEOUT(window_->workbenchTabs_->currentIndex(), 0, 10000);
+        QVERIFY2(errorReviewReady({1, 2}, 4), qPrintable(state()));
+        QVERIFY2(reviewedImageReady(1), qPrintable(state()));
+        const auto *reviewBar = window_->findChild<QWidget *>("evaluationReviewBar");
+        QVERIFY(reviewBar && reviewBar->isVisible());
+        QVERIFY(summary->isVisible());
+        QVERIFY(!summary->text().isEmpty());
+        QVERIFY(summary->text().contains("阈值 0.700"));
+        QVERIFY(summary->text().contains("当前 1/2"));
+        QCOMPARE(filter->currentData().toString(), QString("errors"));
+        QVERIFY(!previous->isEnabled()); QVERIFY(next->isEnabled());
+        // One displaced prediction is both FP and FN in image 1. The image is
+        // counted once even though the aggregate FP+FN total is three.
+        QCOMPARE(window_->lastResult_.predictions.size(), 1);
+        QCOMPARE(window_->lastResult_.groundTruth.size(), 1);
+        QVERIFY(window_->lastResult_.matchedPredictions.isEmpty());
+        QCOMPARE(window_->predictionTable_->rowCount(), 2);
+        QString error;
+        const QString output = area_->path() + "/error-review-export";
+        QVERIFY2(window_->writeResult(window_->lastResult_, output, &error), qPrintable(error));
+        const auto exports = QDir(output).entryList({"*.json"}, QDir::Files);
+        QCOMPARE(exports.size(), 1);
+        const auto exported = readJson(output + "/" + exports.first());
+        QCOMPARE(exported.value("source").toString(), images_[1]);
+        QCOMPARE(exported.value("predictions").toArray().size(), 1);
+        QCOMPARE(exported.value("ground_truth").toArray().size(), 1);
+        QTest::mouseClick(next, Qt::LeftButton);
+        QVERIFY2(reviewedImageReady(2), qPrintable(state()));
+        QVERIFY(previous->isEnabled()); QVERIFY(!next->isEnabled());
+        QVERIFY(summary->text().contains("当前 2/2"));
+        QCOMPARE(window_->lastResult_.predictions.size(), 1);
+        QVERIFY(window_->lastResult_.groundTruth.isEmpty()); // Negative-image false positive.
+        QTest::mouseClick(next, Qt::LeftButton);
+        QCOMPARE(window_->queue_->currentRow(), 2);
+        QTest::mouseClick(previous, Qt::LeftButton);
+        QVERIFY2(reviewedImageReady(1), qPrintable(state()));
+        QVERIFY(!previous->isEnabled());
+
+        filter->setCurrentIndex(filter->findData("fn"));
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->evaluationReviewPending_ && visibleReviewRows() == QVector<int>({1}), 10000);
+        QVERIFY2(reviewedImageReady(1), qPrintable(state()));
+        QVERIFY(!previous->isEnabled() && !next->isEnabled());
+        filter->setCurrentIndex(filter->findData("negative_fp"));
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->evaluationReviewPending_ && visibleReviewRows() == QVector<int>({2}), 10000);
+        QVERIFY2(reviewedImageReady(2), qPrintable(state()));
+        QVERIFY(window_->lastResult_.groundTruth.isEmpty());
+        filter->setCurrentIndex(filter->findData("fp"));
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->evaluationReviewPending_ && visibleReviewRows() == QVector<int>({1, 2}), 10000);
+        QTest::mouseClick(previous, Qt::LeftButton);
+        QVERIFY2(reviewedImageReady(1), qPrintable(state()));
+        filter->setCurrentIndex(filter->findData("errors"));
+        QVERIFY2(errorReviewReady({1, 2}, 4), qPrintable(state()));
+
+        window_->evaluation_->setAnalysisThreshold(.9);
+        QVERIFY2(errorReviewReady({0, 1, 3}, 4), qPrintable(state()));
+        QVERIFY(summary->text().contains("阈值 0.900"));
+        QTest::mouseClick(previous, Qt::LeftButton);
+        QVERIFY2(reviewedImageReady(0), qPrintable(state()));
+        QVERIFY(!previous->isEnabled());
+        QTest::mouseClick(next, Qt::LeftButton);
+        QTest::mouseClick(next, Qt::LeftButton);
+        QVERIFY2(reviewedImageReady(3), qPrintable(state())); // Skip negative image 2.
+        QVERIFY(!next->isEnabled());
+        QVERIFY(window_->lastResult_.predictions.isEmpty());
+        QCOMPARE(window_->lastResult_.groundTruth.size(), 1);
+
+        // Older filter and image-decoder replies must not overwrite the final
+        // threshold or selection when several user actions arrive together.
+        window_->evaluation_->setAnalysisThreshold(.7);
+        window_->evaluation_->setAnalysisThreshold(.9);
+        window_->evaluation_->setAnalysisThreshold(.7);
+        QVERIFY2(errorReviewReady({1, 2}, 4), qPrintable(state()));
+        QVERIFY2(reviewedImageReady(1), qPrintable(state()));
+        QTest::mouseClick(next, Qt::LeftButton);
+        QTest::mouseClick(previous, Qt::LeftButton);
+        QTest::mouseClick(next, Qt::LeftButton);
+        QVERIFY2(reviewedImageReady(2), qPrintable(state()));
+        QCOMPARE(window_->lastResult_.predictions.size(), 1);
+        QVERIFY(window_->lastResult_.groundTruth.isEmpty());
+        QCOMPARE(starts.count(), 0);
+        QVERIFY(!window_->busy_ && !window_->evaluationWorker_);
+        QCOMPARE(window_->confidence_->value(), workingConfidence);
+        QCOMPARE(window_->evaluationReport_, report);
+        QCOMPARE(window_->history_, history);
+        QCOMPARE(window_->evaluationDirectory_, directory);
+        QCOMPARE(readBytes(directory + "/report.json"), reportBytes);
+        QCOMPARE(QDir(directory + "/samples").entryList(QDir::Files), sampleFiles);
+        qInfo() << "evaluation_error_review_evidence" << "threshold_0.7_unique_errors" << 2
+                << "threshold_0.9_unique_errors" << 3 << "completed_images" << 4 << "inference_requests" << starts.count();
+        evidence("unique-error-review-navigation");
+    }
+    void zeroErrorReviewDoesNotInventErrorsOutsideCurrentImageRange()
+    {
+        QVERIFY2(loadDataset(), qPrintable(state()));
+        QVERIFY2(runEvaluation(2, 0), qPrintable(state()));
+        const auto report = window_->evaluationReport_;
+        QSignalSpy starts(window_.get(), &MainWindow::startRequested);
+        window_->evaluation_->setAnalysisThreshold(.7);
+        auto *review = window_->findChild<QPushButton *>("evaluationReviewButton");
+        auto *previous = window_->findChild<QPushButton *>("evaluationReviewPreviousButton");
+        auto *next = window_->findChild<QPushButton *>("evaluationReviewNextButton");
+        auto *summary = window_->findChild<QLabel *>("evaluationErrorSummaryLabel");
+        QVERIFY(review && previous && next && summary);
+        // A zero-error action may remain enabled to show the explicit empty
+        // state; it must never fall back to the other three unprocessed images.
+        review->click();
+        QVERIFY2(errorReviewReady({}, 1), qPrintable(state()));
+        QVERIFY(!previous->isEnabled() && !next->isEnabled());
+        QTRY_VERIFY_WITH_TIMEOUT(window_->canvas_->result().image.isNull(), 10000);
+        QVERIFY(window_->lastResult_.image.isNull());
+        QVERIFY(!window_->exportButton_->isEnabled());
+        QCOMPARE(window_->evaluationSampleIndices_.size(), 1);
+        QCOMPARE(window_->queue_->count(), 4);
+        QVERIFY(!summary->text().isEmpty());
+        const auto *previewSummary = window_->findChild<QLabel *>("evaluationReviewSummaryLabel");
+        QVERIFY(previewSummary && previewSummary->text().contains("当前 0/0"));
+        QCOMPARE(starts.count(), 0);
+        QVERIFY(!window_->busy_ && !window_->evaluationWorker_);
+        QCOMPARE(window_->evaluationReport_, report);
+        evidence("zero-errors-current-image-range");
     }
     void adoptedConfidencePreservesThreeDecimalWorkingPoints()
     {
@@ -898,6 +1090,29 @@ private slots:
         window_->queue_->setCurrentRow(done); QTRY_COMPARE_WITH_TIMEOUT(window_->canvas_->result().source, images_[done], 10000);
         QTRY_VERIFY_WITH_TIMEOUT(window_->canvas_->result().predictions.isEmpty(), 10000); QVERIFY(!window_->exportButton_->isEnabled());
         QVERIFY(report.value("metrics").toObject().value("mAP50").isNull());
+        QVector<int> completedErrors;
+        for (int row = 0; row < done; ++row)
+            if (row % 4 == 1 || row % 4 == 2) completedErrors.append(row);
+        QSignalSpy reviewStarts(window_.get(), &MainWindow::startRequested);
+        window_->evaluation_->setAnalysisThreshold(.7);
+        auto *review = window_->findChild<QPushButton *>("evaluationReviewButton"); QVERIFY(review);
+        review->click();
+        QVERIFY2(errorReviewReady(completedErrors, done), qPrintable(state()));
+        if (!completedErrors.isEmpty()) {
+            QVERIFY2(reviewedImageReady(completedErrors.first()), qPrintable(state()));
+            auto *next = window_->findChild<QPushButton *>("evaluationReviewNextButton"); QVERIFY(next);
+            for (int index = 1; index < completedErrors.size(); ++index) {
+                QTest::mouseClick(next, Qt::LeftButton);
+                QVERIFY2(reviewedImageReady(completedErrors[index]), qPrintable(state()));
+            }
+            QVERIFY(!next->isEnabled());
+        } else {
+            QTRY_VERIFY_WITH_TIMEOUT(window_->canvas_->result().image.isNull(), 10000);
+            QVERIFY(!window_->exportButton_->isEnabled());
+        }
+        QCOMPARE(reviewStarts.count(), 0);
+        QCOMPARE(window_->evaluationReport_, report);
+        QCOMPARE(QDir(window_->evaluationDirectory_ + "/samples").entryList({"*.json"}, QDir::Files).size(), countBefore);
         qInfo() << "stop_button_return_ms" << clickDuration << "completed_prefix" << done << "heartbeats" << heartbeats;
         evidence("stop-prefix-review");
     }

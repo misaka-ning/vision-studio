@@ -1,0 +1,1218 @@
+{
+  "schema_version": 1,
+  "version": "2.6.0",
+  "success": true,
+  "errors": [],
+  "created_at_utc": "2026-10-21T03:22:52.554809+00:00",
+  "scope": "Actual size/SHA256 verification and hard-link reuse of the exact 2.5.0 upstream materials. No tests, builds, inventory, packaging, old reports, runtime or SDK mutation.",
+  "source_release": "2.5.0",
+  "reference_report": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/upstream-source-reuse.json",
+  "reference_report_sha256": "b37a480457970bc74774fff3c19693ee10e19f7c681a7872dbf99a199f628ec1",
+  "upstream_material_count": 18,
+  "compressed_archive_count": 17,
+  "plain_upstream_source_count": 1,
+  "provenance_file_count": 1,
+  "file_count": 19,
+  "total_reused_bytes": 794246018,
+  "files": [
+    {
+      "name": "ffmpeg-5.1.6.tar.xz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/ffmpeg-5.1.6.tar.xz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/ffmpeg-5.1.6.tar.xz",
+      "bytes": 10021428,
+      "sha256": "f4fa066278f7a47feab316fef905f4db0d5e9b589451949740f83972b30901bd",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946758,
+        "bytes": 10021428,
+        "mtime_ns": 1791194720034054599,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946758,
+        "bytes": 10021428,
+        "mtime_ns": 1791194720034054599,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946758,
+        "bytes": 10021428,
+        "mtime_ns": 1791194720034054599,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "ffmpeg-5.1.6.tar.xz"
+    },
+    {
+      "name": "netron-9.3.1-source.tar.gz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/netron-9.3.1-source.tar.gz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/netron-9.3.1-source.tar.gz",
+      "bytes": 5176979,
+      "sha256": "612d8a064d0c7e166b47208c41bb8ac2ae7f95d5a5f0d659e3f41d82c3cd5507",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946752,
+        "bytes": 5176979,
+        "mtime_ns": 1791340731023911408,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946752,
+        "bytes": 5176979,
+        "mtime_ns": 1791340731023911408,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946752,
+        "bytes": 5176979,
+        "mtime_ns": 1791340731023911408,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "netron-9.3.1-source.tar.gz"
+    },
+    {
+      "name": "onnx-1.17.0.tar.gz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/onnx-1.17.0.tar.gz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/onnx-1.17.0.tar.gz",
+      "bytes": 12165120,
+      "sha256": "48ca1a91ff73c1d5e3ea2eef20ae5d0e709bb8a2355ed798ffc2169753013fd3",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946745,
+        "bytes": 12165120,
+        "mtime_ns": 1791516103118800612,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946745,
+        "bytes": 12165120,
+        "mtime_ns": 1791516103118800612,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946745,
+        "bytes": 12165120,
+        "mtime_ns": 1791516103118800612,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "output/releases/2.1.0/sources/onnx-1.17.0.tar.gz"
+    },
+    {
+      "name": "opencv-python-86-Dockerfile_x86_64",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/opencv-python-86-Dockerfile_x86_64",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/opencv-python-86-Dockerfile_x86_64",
+      "bytes": 6363,
+      "sha256": "19d7609f4beef721d40d526b350d094af791d84fb9b572f2c95d9161943912dc",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946757,
+        "bytes": 6363,
+        "mtime_ns": 1791194488895461720,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946757,
+        "bytes": 6363,
+        "mtime_ns": 1791194488895461720,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946757,
+        "bytes": 6363,
+        "mtime_ns": 1791194488895461720,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "opencv-python-86-Dockerfile_x86_64"
+    },
+    {
+      "name": "opencv-python-86.tar.gz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/opencv-python-86.tar.gz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/opencv-python-86.tar.gz",
+      "bytes": 1126800,
+      "sha256": "8f8f21b10e60ecaf22241e39ad04b1ac2766925d471e1c5ddc4ed397f0099e91",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946756,
+        "bytes": 1126800,
+        "mtime_ns": 1791194488135460296,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946756,
+        "bytes": 1126800,
+        "mtime_ns": 1791194488135460296,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946756,
+        "bytes": 1126800,
+        "mtime_ns": 1791194488135460296,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "opencv-python-86.tar.gz"
+    },
+    {
+      "name": "opencv-python-headless-4.11.0.86.tar.gz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/opencv-python-headless-4.11.0.86.tar.gz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/opencv-python-headless-4.11.0.86.tar.gz",
+      "bytes": 95177929,
+      "sha256": "996eb282ca4b43ec6a3972414de0e2331f5d9cda2b41091a49739c19fb843798",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946759,
+        "bytes": 95177929,
+        "mtime_ns": 1791194491532466663,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946759,
+        "bytes": 95177929,
+        "mtime_ns": 1791194491532466663,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946759,
+        "bytes": 95177929,
+        "mtime_ns": 1791194491532466663,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "opencv-python-headless-4.11.0.86.tar.gz"
+    },
+    {
+      "name": "protobuf-33.0.tar.gz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/protobuf-33.0.tar.gz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/protobuf-33.0.tar.gz",
+      "bytes": 6872665,
+      "sha256": "cbc536064706b628dcfe507bef386ef3e2214d563657612296f1781aa155ee07",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946760,
+        "bytes": 6872665,
+        "mtime_ns": 1791516088326812932,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946760,
+        "bytes": 6872665,
+        "mtime_ns": 1791516088326812932,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946760,
+        "bytes": 6872665,
+        "mtime_ns": 1791516088326812932,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "output/releases/2.1.0/sources/protobuf-33.0.tar.gz"
+    },
+    {
+      "name": "protobuf-cpp-3.21.12.tar.gz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/protobuf-cpp-3.21.12.tar.gz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/protobuf-cpp-3.21.12.tar.gz",
+      "bytes": 4842303,
+      "sha256": "4eab9b524aa5913c6fffb20b2a8abf5ef7f95a80bc0701f3a6dbb4c607f73460",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946762,
+        "bytes": 4842303,
+        "mtime_ns": 1791516075912823288,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946762,
+        "bytes": 4842303,
+        "mtime_ns": 1791516075912823288,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946762,
+        "bytes": 4842303,
+        "mtime_ns": 1791516075912823288,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "output/releases/2.1.0/sources/protobuf-cpp-3.21.12.tar.gz"
+    },
+    {
+      "name": "qtbase-everywhere-src-6.8.3.tar.xz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/qtbase-everywhere-src-6.8.3.tar.xz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/qtbase-everywhere-src-6.8.3.tar.xz",
+      "bytes": 48426536,
+      "sha256": "56001b905601bb9023d399f3ba780d7fa940f3e4861e496a7c490331f49e0b80",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946754,
+        "bytes": 48426536,
+        "mtime_ns": 1791194272287063466,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946754,
+        "bytes": 48426536,
+        "mtime_ns": 1791194272287063466,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946754,
+        "bytes": 48426536,
+        "mtime_ns": 1791194272287063466,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "qtbase-everywhere-src-6.8.3.tar.xz"
+    },
+    {
+      "name": "qtdeclarative-everywhere-src-6.8.3.tar.xz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/qtdeclarative-everywhere-src-6.8.3.tar.xz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/qtdeclarative-everywhere-src-6.8.3.tar.xz",
+      "bytes": 36503988,
+      "sha256": "1f03a2b8f5588b4face7da87926e9b2c1372b3a32157c52df07a75067a9db1af",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946749,
+        "bytes": 36503988,
+        "mtime_ns": 1791340799192018990,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946749,
+        "bytes": 36503988,
+        "mtime_ns": 1791340799192018990,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946749,
+        "bytes": 36503988,
+        "mtime_ns": 1791340799192018990,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "qtdeclarative-everywhere-src-6.8.3.tar.xz"
+    },
+    {
+      "name": "qtimageformats-everywhere-src-6.8.3.tar.xz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/qtimageformats-everywhere-src-6.8.3.tar.xz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/qtimageformats-everywhere-src-6.8.3.tar.xz",
+      "bytes": 2035140,
+      "sha256": "049bfb99845e4801672aca07c3c4fc4c140f932a3a33faa899419579e33ef1c8",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946761,
+        "bytes": 2035140,
+        "mtime_ns": 1791194163014869823,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946761,
+        "bytes": 2035140,
+        "mtime_ns": 1791194163014869823,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946761,
+        "bytes": 2035140,
+        "mtime_ns": 1791194163014869823,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "qtimageformats-everywhere-src-6.8.3.tar.xz"
+    },
+    {
+      "name": "qtpositioning-everywhere-src-6.8.3.tar.xz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/qtpositioning-everywhere-src-6.8.3.tar.xz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/qtpositioning-everywhere-src-6.8.3.tar.xz",
+      "bytes": 663612,
+      "sha256": "6ab69a7e71a7795aab9ca2798eea126e36df55159a771ebd2f37cad3da63e9d3",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946747,
+        "bytes": 663612,
+        "mtime_ns": 1791340728381907005,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946747,
+        "bytes": 663612,
+        "mtime_ns": 1791340728381907005,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946747,
+        "bytes": 663612,
+        "mtime_ns": 1791340728381907005,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "qtpositioning-everywhere-src-6.8.3.tar.xz"
+    },
+    {
+      "name": "qtsvg-everywhere-src-6.8.3.tar.xz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/qtsvg-everywhere-src-6.8.3.tar.xz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/qtsvg-everywhere-src-6.8.3.tar.xz",
+      "bytes": 2009072,
+      "sha256": "35eb516460f00f264eb504baa253432384351cf23fb9980a5857190e8deef438",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946751,
+        "bytes": 2009072,
+        "mtime_ns": 1791194155026855905,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946751,
+        "bytes": 2009072,
+        "mtime_ns": 1791194155026855905,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946751,
+        "bytes": 2009072,
+        "mtime_ns": 1791194155026855905,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "qtsvg-everywhere-src-6.8.3.tar.xz"
+    },
+    {
+      "name": "qtwayland-everywhere-src-6.8.3.tar.xz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/qtwayland-everywhere-src-6.8.3.tar.xz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/qtwayland-everywhere-src-6.8.3.tar.xz",
+      "bytes": 1141132,
+      "sha256": "20fe385887d21190165a3180c17dcfc8b9a0e1da4ec76865b6334bdc709994b0",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946748,
+        "bytes": 1141132,
+        "mtime_ns": 1791194151044848980,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946748,
+        "bytes": 1141132,
+        "mtime_ns": 1791194151044848980,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946748,
+        "bytes": 1141132,
+        "mtime_ns": 1791194151044848980,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "qtwayland-everywhere-src-6.8.3.tar.xz"
+    },
+    {
+      "name": "qtwebchannel-everywhere-src-6.8.3.tar.xz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/qtwebchannel-everywhere-src-6.8.3.tar.xz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/qtwebchannel-everywhere-src-6.8.3.tar.xz",
+      "bytes": 209372,
+      "sha256": "967046b2650b7fc7b27547522e998e35d62291d795b20d9497e4bcc714831262",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946763,
+        "bytes": 209372,
+        "mtime_ns": 1791340727191905017,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946763,
+        "bytes": 209372,
+        "mtime_ns": 1791340727191905017,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946763,
+        "bytes": 209372,
+        "mtime_ns": 1791340727191905017,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "qtwebchannel-everywhere-src-6.8.3.tar.xz"
+    },
+    {
+      "name": "qtwebengine-everywhere-src-6.8.3.tar.xz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/qtwebengine-everywhere-src-6.8.3.tar.xz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/qtwebengine-everywhere-src-6.8.3.tar.xz",
+      "bytes": 566553436,
+      "sha256": "df4e19ba2b3a540551b6f998d62597377ffa688c1cff564589b7da2e2bf87337",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946755,
+        "bytes": 566553436,
+        "mtime_ns": 1791341088909373338,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946755,
+        "bytes": 566553436,
+        "mtime_ns": 1791341088909373338,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946755,
+        "bytes": 566553436,
+        "mtime_ns": 1791341088909373338,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "qtwebengine-everywhere-src-6.8.3.tar.xz"
+    },
+    {
+      "name": "ultralytics-8.4.173.tar.gz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/ultralytics-8.4.173.tar.gz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/ultralytics-8.4.173.tar.gz",
+      "bytes": 1267669,
+      "sha256": "cfb50c462a9138a187f7e5957ad2c91e3e757f6f0569da0c896574282d553840",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946746,
+        "bytes": 1267669,
+        "mtime_ns": 1791194520140520411,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946746,
+        "bytes": 1267669,
+        "mtime_ns": 1791194520140520411,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946746,
+        "bytes": 1267669,
+        "mtime_ns": 1791194520140520411,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "ultralytics-8.4.173.tar.gz"
+    },
+    {
+      "name": "ultralytics_thop-2.2.2.tar.gz",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/ultralytics_thop-2.2.2.tar.gz",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/ultralytics_thop-2.2.2.tar.gz",
+      "bytes": 39543,
+      "sha256": "149a89c26c2be35b709fa25951f4644dea13d63017025569a193159a5908e3ed",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 30946753,
+        "bytes": 39543,
+        "mtime_ns": 1791194487320458768,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 30946753,
+        "bytes": 39543,
+        "mtime_ns": 1791194487320458768,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 30946753,
+        "bytes": 39543,
+        "mtime_ns": 1791194487320458768,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "ultralytics_thop-2.2.2.tar.gz"
+    },
+    {
+      "name": "DOWNLOAD-PROVENANCE.json",
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/sources/DOWNLOAD-PROVENANCE.json",
+      "destination": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.6.0/sources/DOWNLOAD-PROVENANCE.json",
+      "bytes": 6931,
+      "sha256": "e92f113f288b6809e4911092ab59ce87d871a21707811e9813d05f98b36ba312",
+      "source_identity_before_verification": {
+        "device": 66308,
+        "inode": 31199507,
+        "bytes": 6931,
+        "mtime_ns": 1791516359643589983,
+        "mode": 436
+      },
+      "source_identity_after_verification": {
+        "device": 66308,
+        "inode": 31199507,
+        "bytes": 6931,
+        "mtime_ns": 1791516359643589983,
+        "mode": 436
+      },
+      "destination_identity": {
+        "device": 66308,
+        "inode": 31199507,
+        "bytes": 6931,
+        "mtime_ns": 1791516359643589983,
+        "mode": 436
+      },
+      "method": "hardlink",
+      "same_device_and_inode": true,
+      "source_and_destination_sha256_match": true,
+      "size_and_sha256_match": true,
+      "source_size_mode_mtime_unchanged": true,
+      "matches_original_2_5_reuse_record": true,
+      "original_provenance_match": true,
+      "original_provenance_file": "DOWNLOAD-PROVENANCE.json (preserved exact prior provenance bytes)"
+    }
+  ],
+  "all_original_provenance_verified": true,
+  "old_file_content_verified_against_original_provenance": true,
+  "cpu_runtime": {
+    "runtime_directory": "/opt/VisionStudio/runtime",
+    "python_executable_readable": true,
+    "installed_info_path": "/opt/VisionStudio/runtime-info.json",
+    "installed_info_sha256": "15b239dc233e80b4ddaa8b22f87f07fb71bfe4d90332985a708bce04d6019f1b",
+    "workspace_info_sha256": "15b239dc233e80b4ddaa8b22f87f07fb71bfe4d90332985a708bce04d6019f1b",
+    "workspace_and_installed_info_identical": true,
+    "device": "cpu",
+    "torch": "2.9.1+cpu",
+    "torchvision": "0.24.1+cpu",
+    "netron": "9.3.1",
+    "runtime_distribution_metadata_count": 59,
+    "actual_versions_equal_recorded_distributions": true,
+    "metadata_record_aggregate_method": "SHA256 of compact sorted-key UTF-8 JSON of the listed actual METADATA records; paths are included.",
+    "runtime_metadata_aggregate_sha256": "5cb2c81ef9ab613d2150e30a4da8568f0aab165f4bd23b70ee87af9b295564be",
+    "metadata_records": [
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/asttokens-3.0.2.dist-info/METADATA",
+        "name": "asttokens",
+        "version": "3.0.2",
+        "bytes": 5713,
+        "sha256": "8b3567b29654e6e9a60ab50fde2c317899152790acadaab7868a708bf931c3d3"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/certifi-2026.7.22.dist-info/METADATA",
+        "name": "certifi",
+        "version": "2026.7.22",
+        "bytes": 2474,
+        "sha256": "ef5af1638fbb23676ac3c5777dfcfc2cd9c348fe4172ed5ba3d277655b248090"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/charset_normalizer-3.5.2.dist-info/METADATA",
+        "name": "charset-normalizer",
+        "version": "3.5.2",
+        "bytes": 46395,
+        "sha256": "89ce6362bb7be88558f4be99a98f5d1b4da93d19cd0323e5ee0bac05cf883dfb"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/contourpy-1.3.2.dist-info/METADATA",
+        "name": "contourpy",
+        "version": "1.3.2",
+        "bytes": 5461,
+        "sha256": "0d860f7cb8af8e85005c209499e0ca25da8515b4b67915ee8b88b8852c316c08"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/cycler-0.12.1.dist-info/METADATA",
+        "name": "cycler",
+        "version": "0.12.1",
+        "bytes": 3779,
+        "sha256": "23289e19b76f1e01394227696e6af2b6cd1ce79e89731209bf9195148b18ed36"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/decorator-5.3.1.dist-info/METADATA",
+        "name": "decorator",
+        "version": "5.3.1",
+        "bytes": 3886,
+        "sha256": "2133792485403bbd739e1db5960228bedbcde6d00c0acc052b27f39dbae5b5c4"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/exceptiongroup-1.3.1.dist-info/METADATA",
+        "name": "exceptiongroup",
+        "version": "1.3.1",
+        "bytes": 6725,
+        "sha256": "81984a523a2f7a522ad12bea784a8bb85edec0805ebbd0fb4e350169a36dd802"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/executing-2.2.1.dist-info/METADATA",
+        "name": "executing",
+        "version": "2.2.1",
+        "bytes": 8914,
+        "sha256": "d7586d1ae225bee126c4237eb0c4d7699a8580b81eb558cc500c263d29a633ff"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/filelock-3.32.3.dist-info/METADATA",
+        "name": "filelock",
+        "version": "3.32.3",
+        "bytes": 2028,
+        "sha256": "2d80f43bd905689145c00b3133bc95895d654ced70a96a1802e9237e0d66599f"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/fonttools-4.65.0.dist-info/METADATA",
+        "name": "fonttools",
+        "version": "4.65.0",
+        "bytes": 125002,
+        "sha256": "767c772df5fec424631e48baa13cfa55498f4d7be9b41d1071b34bf52cc28fa8"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/fsspec-2026.7.0.dist-info/METADATA",
+        "name": "fsspec",
+        "version": "2026.7.0",
+        "bytes": 10561,
+        "sha256": "88b1657585de14e3bb82aa5278aa9595b30aa4ca74ead073d8950615c808099d"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/idna-3.20.dist-info/METADATA",
+        "name": "idna",
+        "version": "3.20",
+        "bytes": 7207,
+        "sha256": "dbd8c14c1e4ca1e0c9824a6dbc7cbbf78884f38eb52d91148cd3025f671e4b85"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/ipython-8.39.0.dist-info/METADATA",
+        "name": "ipython",
+        "version": "8.39.0",
+        "bytes": 5051,
+        "sha256": "91f8aad15630af8a0972e7e1365d7b3ea2ea64147a80142b544c1874080cd3aa"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/jedi-0.20.0.dist-info/METADATA",
+        "name": "jedi",
+        "version": "0.20.0",
+        "bytes": 23452,
+        "sha256": "436bd0fb249b82dee15e85e2fb91d08d8e797481a16af48a725b8e4fb5340478"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/jinja2-3.1.6.dist-info/METADATA",
+        "name": "Jinja2",
+        "version": "3.1.6",
+        "bytes": 2871,
+        "sha256": "68c5548fb67c4132a13898d9b31ec50c6bea2abdd915d921f214355c3a6499c8"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/kiwisolver-1.5.1.dist-info/METADATA",
+        "name": "kiwisolver",
+        "version": "1.5.1",
+        "bytes": 5152,
+        "sha256": "f07b7b6c0c9c2a624c8a31f931e16712f2cf3490e7dfd51643d68e9d42d4b2c9"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/markupsafe-3.0.3.dist-info/METADATA",
+        "name": "MarkupSafe",
+        "version": "3.0.3",
+        "bytes": 2690,
+        "sha256": "12b4cc61a7fa288cf7667ee3f213786d9619db57fb33ff6f934afbcb5c12ec81"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/matplotlib-3.10.9.dist-info/METADATA",
+        "name": "matplotlib",
+        "version": "3.10.9",
+        "bytes": 52837,
+        "sha256": "bea8a4672bbe4f26b7a4fe5bc5e5023a08c4fb7069cc951f39eef26a403c7ea6"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/matplotlib_inline-0.2.2.dist-info/METADATA",
+        "name": "matplotlib-inline",
+        "version": "0.2.2",
+        "bytes": 2394,
+        "sha256": "fedb3d587ec2d3fa4b0a81fd5353df697d2534c8ee714dbf050009afc60bcab7"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/mpmath-1.3.0.dist-info/METADATA",
+        "name": "mpmath",
+        "version": "1.3.0",
+        "bytes": 8630,
+        "sha256": "44b66ea444b9c0d19ae94815d356bf047ae6b680c19268b5c265687cd6a81406"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/netron-9.3.1.dist-info/METADATA",
+        "name": "netron",
+        "version": "9.3.1",
+        "bytes": 1516,
+        "sha256": "a3f23b9110bd407fb0868db4fee9594f35a2b008d0df99649efc2db6aa65556c"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/networkx-3.4.2.dist-info/METADATA",
+        "name": "networkx",
+        "version": "3.4.2",
+        "bytes": 6349,
+        "sha256": "2e5265dda876ef3c44fefa9e9553499bc564c89a16c95e38bdaf9babc556d1d7"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/numpy-2.2.6.dist-info/METADATA",
+        "name": "numpy",
+        "version": "2.2.6",
+        "bytes": 62026,
+        "sha256": "22d648f53848429464ca643b40d73b49a920d47876fc77c395d4dca4e834904a"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/nvidia_ml_py-13.615.71.dist-info/METADATA",
+        "name": "nvidia-ml-py",
+        "version": "13.615.71",
+        "bytes": 9715,
+        "sha256": "df52f2f04ac78c5259e776be3194ae3bfee274cadc0623576be6a699621ef6a8"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/onnx-1.17.0.dist-info/METADATA",
+        "name": "onnx",
+        "version": "1.17.0",
+        "bytes": 16022,
+        "sha256": "b1a48597a3dad5c3e62a70a914a9ceb10020366af0e54ccc4c1c3a282b615f57"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/opencv_python_headless-4.11.0.86.dist-info/METADATA",
+        "name": "opencv-python-headless",
+        "version": "4.11.0.86",
+        "bytes": 20300,
+        "sha256": "33b8bffb26546642a9e96d317d6e0776f041939c7c695a8ac39e566822af08f3"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/packaging-26.3.dist-info/METADATA",
+        "name": "packaging",
+        "version": "26.3",
+        "bytes": 3544,
+        "sha256": "70fdb89fc4d4a9a043bf7372b8972bcc883fddff34ab55e9cf80d73875384763"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/pandas-2.3.3.dist-info/METADATA",
+        "name": "pandas",
+        "version": "2.3.3",
+        "bytes": 91215,
+        "sha256": "40ee953dc7ca155840b639a1881ff84578075187fce0ac20eeda55a7fa0d9a90"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/parso-0.8.7.dist-info/METADATA",
+        "name": "parso",
+        "version": "0.8.7",
+        "bytes": 8180,
+        "sha256": "2fd8c9f8209218163a6c086ba8075d177122430645fea770cc02c53cd426119d"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/pexpect-4.9.0.dist-info/METADATA",
+        "name": "pexpect",
+        "version": "4.9.0",
+        "bytes": 2463,
+        "sha256": "2d7c5ac5fdefde4a0194ec522fbcc0ca70e99e1a2a956eea444168f8591650aa"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/pillow-12.3.0.dist-info/METADATA",
+        "name": "pillow",
+        "version": "12.3.0",
+        "bytes": 9093,
+        "sha256": "8fc07146cab33ef7582361dab6eac596d340b03ec648f18217da7894f73838c8"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/polars-1.44.2.dist-info/METADATA",
+        "name": "polars",
+        "version": "1.44.2",
+        "bytes": 11378,
+        "sha256": "b20f29aa21e8dbc2317684d2c7d7701f63b14529281da71f7281f2533c0481cb"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/polars_runtime_32-1.44.2.dist-info/METADATA",
+        "name": "polars-runtime-32",
+        "version": "1.44.2",
+        "bytes": 1480,
+        "sha256": "caec98fd131a0fafa69cdad8ac8f9f3dbbc226fd3954f894b370488e7d3c55b1"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/prompt_toolkit-3.0.53.dist-info/METADATA",
+        "name": "prompt_toolkit",
+        "version": "3.0.53",
+        "bytes": 6447,
+        "sha256": "d04994e4401b88abf884ca54fb3b85e50a8b4fb1fde1ed7eb3ece9d8bf5459a9"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/protobuf-6.33.0.dist-info/METADATA",
+        "name": "protobuf",
+        "version": "6.33.0",
+        "bytes": 593,
+        "sha256": "56b9ff3cdb16013d60f1740e2d8c4d8025e92b644fe284b9d665933b9849a4d8"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/psutil-7.2.2.dist-info/METADATA",
+        "name": "psutil",
+        "version": "7.2.2",
+        "bytes": 22187,
+        "sha256": "525f8ba78523cf7bc3759d62a105e7c57fd679ea702402b9449fb0746aa0217f"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/ptyprocess-0.7.0.dist-info/METADATA",
+        "name": "ptyprocess",
+        "version": "0.7.0",
+        "bytes": 1312,
+        "sha256": "c3c2b96b5d9a55da5958c34d08c18a0849f56609026cc46d5c95b8b77fcf3e0c"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/pure_eval-0.2.4.dist-info/METADATA",
+        "name": "pure_eval",
+        "version": "0.2.4",
+        "bytes": 6351,
+        "sha256": "4fe70f69411b9963d7275084210743afa819c2350899a29150bc43b1abf105d0"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/pygments-2.21.0.dist-info/METADATA",
+        "name": "Pygments",
+        "version": "2.21.0",
+        "bytes": 2527,
+        "sha256": "1dde075570136774c706bf0009183a793fe0ee262e4a5590cc6eff8453eedd43"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/pyparsing-3.3.3.dist-info/METADATA",
+        "name": "pyparsing",
+        "version": "3.3.3",
+        "bytes": 5857,
+        "sha256": "f2ca34052d720622d300023472ef8ae94fe5b57d69acbb28a8667f6dd0e13497"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/python_dateutil-2.9.0.post0.dist-info/METADATA",
+        "name": "python-dateutil",
+        "version": "2.9.0.post0",
+        "bytes": 8354,
+        "sha256": "a9d436da322be808332f98d88325998e87cb693a678a9969feb4cfad729a6e93"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/pytz-2026.5.dist-info/METADATA",
+        "name": "pytz",
+        "version": "2026.5",
+        "bytes": 22904,
+        "sha256": "4d20d16f6004b1d7f9b01a96f4d3eb462c0c2a8413d9aa878effe50a21535929"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/pyyaml-6.0.3.dist-info/METADATA",
+        "name": "PyYAML",
+        "version": "6.0.3",
+        "bytes": 2351,
+        "sha256": "03c3b415ed38d09faedc49360e930769b40c58f68585e6de00e2e4916a858d34"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/requests-2.34.2.dist-info/METADATA",
+        "name": "requests",
+        "version": "2.34.2",
+        "bytes": 4806,
+        "sha256": "8c384ba3e979480faae2859d3c5e6c1276dd2c3616e322e124d52c8cfc556f27"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/seaborn-0.13.2.dist-info/METADATA",
+        "name": "seaborn",
+        "version": "0.13.2",
+        "bytes": 5381,
+        "sha256": "98cfe2b7a5004466cdd5c7c8ccf016ebdcfa0337fc177ea7aad27f527c53fc96"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/setuptools-59.6.0.dist-info/METADATA",
+        "name": "setuptools",
+        "version": "59.6.0",
+        "bytes": 5017,
+        "sha256": "32b16b4bfaf761e537f92e4e73dd06035ad429502f89641cec80e50d2c53469d"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/six-1.17.0.dist-info/METADATA",
+        "name": "six",
+        "version": "1.17.0",
+        "bytes": 1658,
+        "sha256": "562042078c2752549f6d8a7c86dbc5dd708088a7be6d80672ec7b07100b72468"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/stack_data-0.6.3.dist-info/METADATA",
+        "name": "stack-data",
+        "version": "0.6.3",
+        "bytes": 18440,
+        "sha256": "f28a66f2adde54e7031355e09a166e437bc0d023a31c10c973ac494288ca4c6f"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/sympy-1.14.0.dist-info/METADATA",
+        "name": "sympy",
+        "version": "1.14.0",
+        "bytes": 12816,
+        "sha256": "b756c2fbfd5be05ac5bdb0ebca61f55618f30f633ed92d88a5687429313a7595"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/torch-2.9.1+cpu.dist-info/METADATA",
+        "name": "torch",
+        "version": "2.9.1+cpu",
+        "bytes": 29103,
+        "sha256": "8c7548e1ac8ff4459eb2e8e71e3a8cd7345215fb49bc7d08368fa427666af1ed"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/torchvision-0.24.1+cpu.dist-info/METADATA",
+        "name": "torchvision",
+        "version": "0.24.1+cpu",
+        "bytes": 5940,
+        "sha256": "78e423e566774f06da0b78502a9d32fe1d39220c09a4c1d28a383695e980b63e"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/tqdm-4.70.1.dist-info/METADATA",
+        "name": "tqdm",
+        "version": "4.70.1",
+        "bytes": 57366,
+        "sha256": "a5da70b966afea3a759716041bad7187f2ece02c22348cf9e7c0a512bbf15f57"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/traitlets-5.16.1.dist-info/METADATA",
+        "name": "traitlets",
+        "version": "5.16.1",
+        "bytes": 10832,
+        "sha256": "e42b503240c058625ffb30c390818d72933117840cb25060614cb24f0be9e587"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/typing_extensions-4.16.0.dist-info/METADATA",
+        "name": "typing_extensions",
+        "version": "4.16.0",
+        "bytes": 3310,
+        "sha256": "b05084ca1d50879865178d9fff9fabeab61bdfb1f361bfbde95421ffc8f9be46"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/tzdata-2026.5.dist-info/METADATA",
+        "name": "tzdata",
+        "version": "2026.5",
+        "bytes": 1358,
+        "sha256": "e0780e8b6dc8882ce87e871a9d4589d59cb05a0c2d64f58b1ba62cde1ee91f6a"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/ultralytics-8.4.173.dist-info/METADATA",
+        "name": "ultralytics",
+        "version": "8.4.173",
+        "bytes": 46902,
+        "sha256": "e32aa393fb2e80734eb4560332fd8a10dbcb840d583abb66cb333abc0cb467e1"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/ultralytics_thop-2.2.2.dist-info/METADATA",
+        "name": "ultralytics-thop",
+        "version": "2.2.2",
+        "bytes": 14387,
+        "sha256": "3ab718bbf2f4dd9ff7ca72f5be1fc521a47559a9cff77b03aeebf36e526feb0b"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/urllib3-2.8.0.dist-info/METADATA",
+        "name": "urllib3",
+        "version": "2.8.0",
+        "bytes": 7389,
+        "sha256": "10898c620e8007c030e07fa5622b68358a43010025dfbd78a1cb797699de2bb4"
+      },
+      {
+        "path": "/opt/VisionStudio/runtime/lib/python3.10/site-packages/wcwidth-0.9.2.dist-info/METADATA",
+        "name": "wcwidth",
+        "version": "0.9.2",
+        "bytes": 23692,
+        "sha256": "cce73426c72bcd655c08f6229262e5868bf69c1e9e10130119b275ebd200e2b8"
+      }
+    ],
+    "runtime_copied": false,
+    "runtime_executed": false,
+    "runtime_modified": false
+  },
+  "extra_qt_plugins": {
+    "root": "/home/misaka/文档/ChatGPT/yolo/build/qt-imageformats-prefix/plugins",
+    "readable_so_count": 5,
+    "files": [
+      {
+        "path": "/home/misaka/文档/ChatGPT/yolo/build/qt-imageformats-prefix/plugins/imageformats/libqicns.so",
+        "bytes": 59016,
+        "sha256": "d474f4d165ecbc291b615e6567a8faa09b2523f46caa39b757e5669798446b8d",
+        "identity": {
+          "device": 66308,
+          "inode": 25201586,
+          "bytes": 59016,
+          "mtime_ns": 1791194519000000000,
+          "mode": 420
+        },
+        "readable": true,
+        "matches_2_5_record": true
+      },
+      {
+        "path": "/home/misaka/文档/ChatGPT/yolo/build/qt-imageformats-prefix/plugins/imageformats/libqtga.so",
+        "bytes": 36232,
+        "sha256": "016ab43269067a336b3903c7cac62a188ee58b628de5c5a702a2ad5bafaaae45",
+        "identity": {
+          "device": 66308,
+          "inode": 25201554,
+          "bytes": 36232,
+          "mtime_ns": 1791194515000000000,
+          "mode": 420
+        },
+        "readable": true,
+        "matches_2_5_record": true
+      },
+      {
+        "path": "/home/misaka/文档/ChatGPT/yolo/build/qt-imageformats-prefix/plugins/imageformats/libqtiff.so",
+        "bytes": 56976,
+        "sha256": "8baab44286fe454aa0a99d9ff0bbf7af763f677d334b7ac5c4e4bf93fbd89868",
+        "identity": {
+          "device": 66308,
+          "inode": 25201570,
+          "bytes": 56976,
+          "mtime_ns": 1791194516000000000,
+          "mode": 420
+        },
+        "readable": true,
+        "matches_2_5_record": true
+      },
+      {
+        "path": "/home/misaka/文档/ChatGPT/yolo/build/qt-imageformats-prefix/plugins/imageformats/libqwbmp.so",
+        "bytes": 35640,
+        "sha256": "3812241af0df351b4287f3da665800a413093a3045345d0437d7a1a9db22b8d5",
+        "identity": {
+          "device": 66308,
+          "inode": 25201562,
+          "bytes": 35640,
+          "mtime_ns": 1791194515000000000,
+          "mode": 420
+        },
+        "readable": true,
+        "matches_2_5_record": true
+      },
+      {
+        "path": "/home/misaka/文档/ChatGPT/yolo/build/qt-imageformats-prefix/plugins/imageformats/libqwebp.so",
+        "bytes": 567112,
+        "sha256": "3327db7fbdd9a15c840323239df6530808ef1dc3f4509985dd2bbae7051e4234",
+        "identity": {
+          "device": 66308,
+          "inode": 25201578,
+          "bytes": 567112,
+          "mtime_ns": 1791194518000000000,
+          "mode": 420
+        },
+        "readable": true,
+        "matches_2_5_record": true
+      }
+    ],
+    "copied": false,
+    "modified": false
+  },
+  "invariant": "Only exact new 2.6.0/sources hardlinks and this fresh receipt were created. Never chmod, truncate or edit shared upstream files in place. Hardlink creation changes link counts only; all source bytes/size/mode/mtime remain unchanged."
+}

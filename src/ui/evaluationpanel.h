@@ -54,10 +54,16 @@ public:
     QJsonObject report() const { return report_; }
     void setAnalysisThreshold(double threshold);
     void setOperatingMetrics(const QJsonObject &metrics);
+    QString imageFilter() const;
+    void setImageFilter(const QString &filter, bool notify = true);
+    void setErrorSummary(int evaluated, int errors, int falsePositive, int falseNegative,
+                         int negativeFalsePositive, int collection, bool pending = false,
+                         bool available = true, const QString &error = {});
     void exportReportTo(const QString &parentDirectory);
     void hideDatasetSettings();
 
 signals:
+    void datasetSelectionStarted();
     void datasetRequested(const QString &yaml, const QString &split, const QString &metadata);
     void modeChanged(bool evaluation);
     void configChanged();
@@ -94,7 +100,7 @@ private:
     QLineEdit *metadata_ = nullptr;
     QLabel *modeTitle_ = nullptr, *datasetHint_ = nullptr, *mappingHint_ = nullptr, *validation_ = nullptr,
            *reportStatus_ = nullptr, *reportIdentity_ = nullptr, *recommendation_ = nullptr,
-           *counts_ = nullptr;
+           *counts_ = nullptr, *errorSummary_ = nullptr;
     QList<QLabel *> metrics_;
     QPushButton *reload_ = nullptr, *metadataBrowse_ = nullptr, *apply_ = nullptr,
                 *useRecommended_ = nullptr, *openFolder_ = nullptr, *openReport_ = nullptr,

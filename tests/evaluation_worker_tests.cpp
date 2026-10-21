@@ -489,6 +489,10 @@ class EvaluationWorkerTests final : public QObject
         QHash<QString, int> indices; indices.insert(value.files[0], 0); indices.insert(value.files[1], 1);
         QVERIFY(vision::filterEvaluationSamples(value.files, indices, directory, 0, 0, .5, .5, "fp", {}, &error).isEmpty());
         QVERIFY(error.contains(QStringLiteral("校验失败")));
+        const auto summary = vision::summarizeEvaluationSamples(value.files, indices, directory, 0, 0, .5, .5, "errors");
+        QVERIFY(!summary.valid);
+        QVERIFY(summary.error.contains(QStringLiteral("校验失败")));
+        QVERIFY(summary.visible.isEmpty());
         QCOMPARE(readJson(directory + "/report.json").value("metrics"), report.value("metrics"));
         writeFile(base + ".json", originalBytes);
         QVERIFY2(!vision::EvaluationWorker::readSample(directory, 0, &error).isEmpty(), qPrintable(error));
@@ -520,11 +524,47 @@ class EvaluationWorkerTests final : public QObject
                  QVector<bool>({false, false, true}));
         QCOMPARE(vision::filterEvaluationSamples(value.files, indices, directory, 0, 0, .9, .5, "fn"),
                  QVector<bool>({true, true, false}));
+        QCOMPARE(vision::filterEvaluationSamples(value.files, indices, directory, 0, 0, .5, .5, "errors"),
+                 QVector<bool>({false, false, true}));
+        const auto low = vision::summarizeEvaluationSamples(value.files, indices, directory, 0, 0, .5, .5, "errors");
+        QVERIFY2(low.valid, qPrintable(low.error));
+        QCOMPARE(low.visible, QVector<bool>({false, false, true}));
+        QCOMPARE(low.evaluatedRows, QVector<int>({0, 1, 2}));
+        QCOMPARE(low.errorRows, QVector<int>({2}));
+        QCOMPARE(low.falsePositiveRows, QVector<int>({2}));
+        QVERIFY(low.falseNegativeRows.isEmpty());
+        QCOMPARE(low.negativeFalsePositiveRows, QVector<int>({2}));
+        const auto high = vision::summarizeEvaluationSamples(value.files, indices, directory, 0, 0, .9, .5, "errors");
+        QVERIFY2(high.valid, qPrintable(high.error));
+        QCOMPARE(high.visible, QVector<bool>({true, true, false}));
+        QCOMPARE(high.errorRows, QVector<int>({0, 1}));
+        QVERIFY(high.falsePositiveRows.isEmpty());
+        QCOMPARE(high.falseNegativeRows, QVector<int>({0, 1}));
+        QVERIFY(high.negativeFalsePositiveRows.isEmpty());
+        // The manifest still has three images, but this report mapping says
+        // only row 0 completed. Unprocessed rows never become false negatives.
+        QHash<QString, int> partialIndices{{value.files[0], 0}};
+        const auto partial = vision::summarizeEvaluationSamples(value.files, partialIndices, directory, 0, 0, .9, .5, "errors");
+        QVERIFY2(partial.valid, qPrintable(partial.error));
+        QCOMPARE(partial.visible, QVector<bool>({true, false, false}));
+        QCOMPARE(partial.evaluatedRows, QVector<int>({0}));
+        QCOMPARE(partial.errorRows, QVector<int>({0}));
+        QCOMPARE(partial.falseNegativeRows, QVector<int>({0}));
+        const auto noError = vision::summarizeEvaluationSamples(value.files, partialIndices, directory, 0, 0, .5, .5, "errors");
+        QVERIFY2(noError.valid, qPrintable(noError.error));
+        QCOMPARE(noError.visible, QVector<bool>({false, false, false}));
+        QCOMPARE(noError.evaluatedRows, QVector<int>({0}));
+        QVERIFY(noError.errorRows.isEmpty());
         QCOMPARE(vision::filterEvaluationSamples(value.files, {}, "missing", 0, 0, .5, .5, "all"),
                  QVector<bool>({true, true, true}));
         QVERIFY(vision::filterEvaluationSamples(value.files, indices, directory, 0, 0, .5, .5, "fp",
                     [] { return true; }, &error).isEmpty());
         QVERIFY(!error.isEmpty());
+        const auto cancelledSummary = vision::summarizeEvaluationSamples(value.files, indices, directory, 0, 0, .5, .5,
+                                                                        "errors", [] { return true; });
+        QVERIFY(!cancelledSummary.valid);
+        QVERIFY(!cancelledSummary.error.isEmpty());
+        QVERIFY(cancelledSummary.visible.isEmpty());
         auto cancelled = vision::loadEvaluationPreview({}, [] { return true; });
         QVERIFY(!cancelled.error.isEmpty());
         QVERIFY(cancelled.result.image.isNull());

@@ -9,7 +9,9 @@
 #include "core/evaluationworker.h"
 #include "core/evaluationmatch.h"
 #include "core/evaluationreview.h"
+#include "core/datasetsessionstore.h"
 #include "core/gpuruntime.h"
+#include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QCryptographicHash>
@@ -26,6 +28,7 @@
 #include <QListWidget>
 #include <QProgressBar>
 #include <QPushButton>
+#include <QPixmap>
 #include <QSaveFile>
 #include <QSettings>
 #include <QSignalBlocker>
@@ -100,11 +103,13 @@ QString datasetName(const QJsonObject &manifest, int id)
 
 void MainWindow::connectEvaluation()
 {
+    connect(evaluation_, &EvaluationPanel::datasetSelectionStarted, this, &MainWindow::cancelPendingDatasetSessionRestore);
     connect(evaluation_, &EvaluationPanel::datasetRequested, this, &MainWindow::loadDataset);
     connect(evaluation_, &EvaluationPanel::configChanged, this, [this] {
         if (busy_) return;
         if (evaluationReviewActive_ && evaluationRunFingerprint_ != evaluationFingerprint()) {
             evaluationReviewActive_ = false;
+            resetEvaluationReviewNavigation();
             if (evaluationPreviewCancellation_) evaluationPreviewCancellation_->store(true);
             if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
             ++evaluationPreviewGeneration_; ++evaluationFilterGeneration_;
@@ -120,10 +125,12 @@ void MainWindow::connectEvaluation()
         ++evaluationPreviewGeneration_; ++evaluationFilterGeneration_;
         if (!mode) for (int row = 0; row < queue_->count(); ++row) queue_->item(row)->setHidden(false);
         evaluationReviewActive_ = mode && !evaluationReport_.isEmpty();
+        if (!evaluationReviewActive_) resetEvaluationReviewNavigation();
         if (mode) workbenchTabs_->setCurrentIndex(1);
         else workbenchTabs_->setCurrentIndex(0);
         updateStartEligibility();
         selectQueueImage(queue_->currentRow());
+        if (evaluationReviewActive_) applyEvaluationFilter(evaluationReviewFilter_);
     });
     connect(workbenchTabs_, &QTabWidget::currentChanged, this, [this](int index) {
         evaluation_->hideDatasetSettings();
@@ -134,7 +141,6 @@ void MainWindow::connectEvaluation()
     connect(evaluation_, &EvaluationPanel::thresholdChanged, this, [this](double) {
         if (!busy_ && !evaluationReport_.isEmpty()) {
             evaluationReviewActive_ = true;
-            reviewEvaluationImage(queue_->currentRow());
             applyEvaluationFilter(evaluationReviewFilter_);
         }
     });
@@ -170,6 +176,7 @@ QString MainWindow::evaluationFingerprint() const
 void MainWindow::clearDatasetContext()
 {
     if (loadingDataset_ || !evaluation_) return;
+    resetEvaluationReviewNavigation();
     ++queuePopulationGeneration_;
     if (queuePopulationTimer_) { queuePopulationTimer_->stop(); queuePopulationTimer_->deleteLater(); queuePopulationTimer_ = nullptr; }
     queuePopulating_ = false;
@@ -188,7 +195,49 @@ void MainWindow::clearDatasetContext()
 
 void MainWindow::loadDataset(const QString &yaml, const QString &split, const QString &metadata)
 {
+    cancelPendingDatasetSessionRestore();
+    beginDatasetImport(yaml, split, metadata);
+}
+
+QString MainWindow::datasetSessionFilePath() const
+{
+    return dataRoot_ + "/dataset-session.json";
+}
+
+void MainWindow::cancelPendingDatasetSessionRestore()
+{
+    datasetSessionUserInteracted_ = true;
+    ++datasetSessionRestoreGeneration_;
+}
+
+void MainWindow::restoreDatasetSession()
+{
+    if (datasetSessionRestoreRequested_) return;
+    datasetSessionRestoreRequested_ = true;
+    const quint64 generation = datasetSessionRestoreGeneration_;
+    QTimer::singleShot(0, this, [this, generation] {
+        // A startup convenience must never replace an explicit input choice or
+        // begin while a native/modal chooser owns a nested event loop.
+        if (generation != datasetSessionRestoreGeneration_ || datasetSessionUserInteracted_ ||
+            closing_ || busy_ || queuePopulating_ || evaluationWorker_ || gpuSetupProcess_ ||
+            (modelConversion_ && modelConversion_->isBusy()) || QApplication::activeModalWidget() ||
+            sourceKind_ != vision::SourceKind::Images || !files_.isEmpty() || !datasetManifest_.isEmpty()) return;
+        const auto result = vision::DatasetSessionStore::load(datasetSessionFilePath());
+        if (result.status == vision::DatasetSessionStatus::Missing) return;
+        if (result.status != vision::DatasetSessionStatus::Loaded) {
+            showNotice("未能恢复上次数据集：" + result.error, true);
+            return;
+        }
+        beginDatasetImport(result.session.sourcePath, result.session.split, result.session.metadataPath);
+    });
+}
+
+void MainWindow::beginDatasetImport(const QString &yaml, const QString &split, const QString &metadata)
+{
     if (busy_ || evaluationWorker_ || gpuSetupProcess_ || (modelConversion_ && modelConversion_->isBusy())) return;
+    if (closing_) return;
+    const quint64 generation = ++datasetImportGeneration_;
+    const QString source = QDir::cleanPath(QFileInfo(yaml).absoluteFilePath());
     auto *worker = new vision::EvaluationWorker(this);
     const auto delivered = std::make_shared<bool>(false);
     const auto cancelled = std::make_shared<std::atomic_bool>(false);
@@ -200,15 +249,19 @@ void MainWindow::loadDataset(const QString &yaml, const QString &split, const QS
     taskRangeFiles_.clear(); completed_ = 0;
     setBusy(true);
     updateSourceUi();
-    connect(worker, &vision::EvaluationWorker::progress, this, [this](int, int, const QString &stage) { showNotice(stage); });
-    connect(worker, &vision::EvaluationWorker::failed, this, [this, importError](const QString &message) {
+    connect(worker, &vision::EvaluationWorker::progress, this, [this, worker, generation, cancelled](int, int, const QString &stage) {
+        if (generation == datasetImportGeneration_ && evaluationWorker_ == worker && !cancelled->load() && !closing_)
+            showNotice(stage);
+    });
+    connect(worker, &vision::EvaluationWorker::failed, this, [this, worker, generation, cancelled, importError](const QString &message) {
+        if (generation != datasetImportGeneration_ || evaluationWorker_ != worker || cancelled->load() || closing_) return;
         *importError = message;
         if (datasetManifest_.isEmpty()) evaluation_->showDatasetImportError(message);
         else evaluation_->setDataset(datasetManifest_);
         showNotice(message, true);
     });
-    connect(worker, &vision::EvaluationWorker::datasetReady, this, [this, delivered, cancelled](const QJsonObject &manifest) {
-        if (cancelled->load()) return;
+    connect(worker, &vision::EvaluationWorker::datasetReady, this, [this, worker, generation, source, delivered, cancelled](const QJsonObject &manifest) {
+        if (generation != datasetImportGeneration_ || evaluationWorker_ != worker || cancelled->load() || closing_) return;
         *delivered = true;
         clearDatasetContext();
         datasetManifest_ = manifest; datasetSamples_.clear();
@@ -221,7 +274,8 @@ void MainWindow::loadDataset(const QString &yaml, const QString &split, const QS
         detectionRange_->setCurrentIndex(0);
         workbenchTabs_->setCurrentIndex(0);
         lastResult_ = {};
-        populateDatasetQueue(manifest, [this, manifest] {
+        populateDatasetQueue(manifest, [this, generation, source, cancelled, manifest] {
+            if (generation != datasetImportGeneration_ || cancelled->load() || closing_) return;
             if (!evaluationWorker_) setBusy(false);
             updateEvaluationModel(); updateSourceUi();
             queue_->setCurrentRow(files_.isEmpty() ? -1 : 0);
@@ -229,9 +283,22 @@ void MainWindow::loadDataset(const QString &yaml, const QString &split, const QS
             QString notice = QString("数据集预检查完成 · %1 张有效图片 · %2").arg(files_.size()).arg(manifest.value("split").toString());
             if (manifest.value("root_relocated").toBool()) notice += " · 旧路径已按当前文件夹读取，原文件未修改";
             showNotice(notice);
+            // Only a completely accepted import becomes the next startup
+            // source. Keep the directory/YAML entry point, not data_yaml.
+            vision::DatasetSession session;
+            session.sourcePath = source;
+            session.split = manifest.value("split").toString("val");
+            session.metadataPath = manifest.value("metadata_path").toString();
+            QString error;
+            if (!vision::DatasetSessionStore::save(datasetSessionFilePath(), session, &error))
+                showNotice("数据集已载入，但无法保存下次启动记录：" + error, true);
         });
     });
-    connect(worker, &QThread::finished, this, [this, worker, delivered, importError, cancelled] {
+    connect(worker, &QThread::finished, this, [this, worker, generation, delivered, importError, cancelled] {
+        if (generation != datasetImportGeneration_ || evaluationWorker_ != worker) {
+            worker->deleteLater();
+            return;
+        }
         if (!*delivered) {
             if (datasetManifest_.isEmpty()) evaluation_->showDatasetImportError(importError->isEmpty() ? QStringLiteral("数据集检查已取消，可重新检查。") : *importError);
             else evaluation_->setDataset(datasetManifest_);
@@ -309,6 +376,7 @@ void MainWindow::startEvaluation()
     ++evaluationPreviewGeneration_; ++evaluationFilterGeneration_;
     for (int row = 0; row < queue_->count(); ++row) queue_->item(row)->setHidden(false);
     evaluationReviewActive_ = false;
+    resetEvaluationReviewNavigation();
     taskRangeFiles_ = range; taskRangeFirst_ = files_.indexOf(range.first()) + 1; taskRangeLast_ = files_.indexOf(range.last()) + 1;
     completed_ = 0;
     auto *worker = new vision::EvaluationWorker(this); evaluationWorker_ = worker;
@@ -325,7 +393,8 @@ void MainWindow::startEvaluation()
     });
     connect(worker, &QThread::finished, this, [this, worker] {
         evaluationWorker_ = nullptr; worker->deleteLater(); setBusy(false);
-        if (evaluationReviewActive_) reviewEvaluationImage(queue_->currentRow());
+        if (evaluationReviewActive_ && !evaluationReviewPending_ && !evaluationReviewAvailable_)
+            applyEvaluationFilter(evaluationReviewFilter_);
         refreshHistory();
         if (closing_) QTimer::singleShot(0, this, &QWidget::close);
     });
@@ -334,6 +403,7 @@ void MainWindow::startEvaluation()
 
 void MainWindow::acceptEvaluationReport(const QJsonObject &report, const QString &directory, bool record)
 {
+    resetEvaluationReviewNavigation();
     if (evaluationPreviewCancellation_) evaluationPreviewCancellation_->store(true);
     if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
     ++evaluationPreviewGeneration_; ++evaluationFilterGeneration_;
@@ -379,11 +449,14 @@ void MainWindow::acceptEvaluationReport(const QJsonObject &report, const QString
     showNotice(QString("%1 · %2 张已完成样本 · 可分析阈值、回看错例与导出报告")
         .arg(report.value("status").toString() == "cancelled" ? "评估已停止" :
              report.value("full_split").toBool() ? "完整集合评估完成" : "子集评估完成").arg(completed));
+    updateEvaluationReviewUi();
+    if (!busy_) applyEvaluationFilter("all");
 }
 
 void MainWindow::loadEvaluationReport(const QString &directory)
 {
     if (busy_ || directory.isEmpty()) return;
+    cancelPendingDatasetSessionRestore();
     auto report = jsonFile(directory + "/report.json");
     auto status = jsonFile(directory + "/status.json");
     if (report.value("schema_version").toInt() != 1 ||
@@ -430,7 +503,8 @@ void MainWindow::attachGroundTruth(vision::InferenceResult &result) const
 
 void MainWindow::reviewEvaluationImage(int row)
 {
-    if (busy_ || row < 0 || row >= files_.size()) return;
+    if (busy_ || evaluationReviewPending_ || row < 0 || row >= files_.size()) return;
+    updateEvaluationReviewUi();
     if (evaluationPreviewCancellation_) evaluationPreviewCancellation_->store(true);
     const auto cancelled = evaluationPreviewCancellation_ = std::make_shared<std::atomic_bool>(false);
     const quint64 generation = ++evaluationPreviewGeneration_;
@@ -446,7 +520,7 @@ void MainWindow::reviewEvaluationImage(int row)
     request.datasetClassName = datasetName(datasetManifest_, request.datasetClassId);
     request.confidence = evaluation_->analysisThreshold();
     request.matchIou = parameters.value("match_iou").toDouble(.5);
-    lastResult_ = {}; exportButton_->setEnabled(false);
+    lastResult_ = {}; canvas_->clear(); predictionTable_->setRowCount(0); exportButton_->setEnabled(false);
     resultInfo_->setText("正在读取并校验评估图像…");
     const auto output = std::make_shared<vision::EvaluationPreview>();
     auto *thread = QThread::create([request, cancelled, output] {
@@ -472,41 +546,137 @@ void MainWindow::reviewEvaluationImage(int row)
     thread->start();
 }
 
+void MainWindow::resetEvaluationReviewNavigation()
+{
+    if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
+    ++evaluationFilterGeneration_;
+    evaluationReviewPending_ = evaluationReviewAvailable_ = evaluationReviewSelectFirst_ = false;
+    evaluationReviewRows_.clear(); evaluationErrorRows_.clear(); evaluationReviewError_.clear();
+    evaluationEvaluatedCount_ = evaluationFalsePositiveCount_ = evaluationFalseNegativeCount_ = evaluationNegativeFalsePositiveCount_ = 0;
+    evaluationReviewFilter_ = "all";
+    if (evaluation_) evaluation_->setImageFilter("all", false);
+    if (evaluationPreviewFilter_) {
+        QSignalBlocker blocker(evaluationPreviewFilter_);
+        evaluationPreviewFilter_->setCurrentIndex(evaluationPreviewFilter_->findData("all"));
+    }
+    updateEvaluationReviewUi();
+}
+
+void MainWindow::updateEvaluationReviewUi()
+{
+    if (!evaluationReviewBar_) return;
+    const bool report = !evaluationReport_.isEmpty() && sourceKind_ == vision::SourceKind::Images;
+    evaluationReviewBar_->setVisible(report && evaluationReviewActive_ && !busy_);
+    evaluationReviewButton_->setEnabled(report && !busy_ && !files_.isEmpty());
+    evaluationPreviewFilter_->setEnabled(!busy_ && report);
+    const int position = evaluationReviewRows_.indexOf(queue_->currentRow());
+    const bool ready = !busy_ && evaluationReviewActive_ && evaluationReviewAvailable_ && !evaluationReviewPending_;
+    evaluationReviewPreviousButton_->setEnabled(ready && position > 0);
+    evaluationReviewNextButton_->setEnabled(ready && position >= 0 && position + 1 < evaluationReviewRows_.size());
+    QString summary = QString("阈值 %1 · ").arg(evaluation_->analysisThreshold(), 0, 'f', 3);
+    if (evaluationReviewPending_) summary += "正在整理错例…";
+    else if (!evaluationReviewAvailable_) summary += evaluationReviewError_.isEmpty() ? "错例统计尚未就绪" : "错例统计不可用";
+    else summary += QString("错图 %1 / 已评估 %2 / 集合 %3 · 当前 %4/%5")
+        .arg(evaluationErrorRows_.size()).arg(evaluationEvaluatedCount_).arg(files_.size())
+        .arg(position < 0 ? 0 : position + 1).arg(evaluationReviewRows_.size());
+    evaluationReviewSummaryLabel_->setText(summary);
+    evaluationReviewSummaryLabel_->setToolTip(evaluationReviewError_.isEmpty() ? summary +
+        "\n错图按图片去重，包含当前阈值下的误检或漏检；导航按当前筛选的队列顺序。" : evaluationReviewError_);
+    evaluation_->setErrorSummary(evaluationEvaluatedCount_, evaluationErrorRows_.size(), evaluationFalsePositiveCount_,
+        evaluationFalseNegativeCount_, evaluationNegativeFalsePositiveCount_, files_.size(), evaluationReviewPending_,
+        evaluationReviewAvailable_, evaluationReviewError_);
+}
+
+void MainWindow::showEvaluationErrors()
+{
+    if (busy_ || evaluationReport_.isEmpty() || files_.isEmpty() || sourceKind_ != vision::SourceKind::Images) return;
+    evaluationReviewActive_ = true;
+    evaluationReviewSelectFirst_ = true;
+    applyEvaluationFilter("errors");
+    workbenchTabs_->setCurrentIndex(0);
+}
+
+void MainWindow::navigateEvaluationReview(int step)
+{
+    if (busy_ || evaluationReviewPending_ || !evaluationReviewAvailable_ || !evaluationReviewActive_) return;
+    const int position = evaluationReviewRows_.indexOf(queue_->currentRow());
+    const int next = position + step;
+    if (position < 0 || next < 0 || next >= evaluationReviewRows_.size()) return;
+    const int row = evaluationReviewRows_[next];
+    queue_->setCurrentRow(row);
+    queue_->scrollToItem(queue_->item(row), QAbstractItemView::EnsureVisible);
+    updateEvaluationReviewUi();
+}
+
 void MainWindow::applyEvaluationFilter(const QString &filter)
 {
-    evaluationReviewFilter_ = filter;
     if (busy_ || evaluationReport_.isEmpty()) return;
+    if (!QStringList{"all", "errors", "fp", "fn", "negative_fp"}.contains(filter)) return;
+    evaluationReviewFilter_ = filter;
+    evaluationReviewActive_ = true;
+    evaluation_->setImageFilter(filter, false);
+    {
+        QSignalBlocker blocker(evaluationPreviewFilter_);
+        evaluationPreviewFilter_->setCurrentIndex(evaluationPreviewFilter_->findData(filter));
+    }
     if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
+    if (evaluationPreviewCancellation_) evaluationPreviewCancellation_->store(true);
+    ++evaluationPreviewGeneration_;
     const auto cancelled = evaluationFilterCancellation_ = std::make_shared<std::atomic_bool>(false);
     const quint64 generation = ++evaluationFilterGeneration_;
+    const bool selectFirst = evaluationReviewSelectFirst_;
+    evaluationReviewSelectFirst_ = false;
+    evaluationReviewPending_ = true; evaluationReviewAvailable_ = false; evaluationReviewError_.clear();
+    evaluationReviewRows_.clear(); evaluationErrorRows_.clear();
+    lastResult_ = {}; canvas_->clear(); predictionTable_->setRowCount(0); exportButton_->setEnabled(false);
+    resultInfo_->setText("正在整理当前阈值的评估图片与错例…");
+    updateEvaluationReviewUi();
     const auto parameters = evaluationReport_.value("request").toObject();
     const auto files = files_; const auto indices = evaluationSampleIndices_; const auto directory = evaluationDirectory_;
     const auto threshold = evaluation_->analysisThreshold();
-    struct Filter { QVector<bool> visible; QString error; };
-    const auto result = std::make_shared<Filter>();
+    const auto result = std::make_shared<vision::EvaluationReviewSummary>();
     auto *thread = QThread::create([result, files, indices, directory, threshold, parameters, filter, cancelled] {
-        result->visible = vision::filterEvaluationSamples(files, indices, directory,
+        *result = vision::summarizeEvaluationSamples(files, indices, directory,
             parameters.value("model_class_id").toInt(), parameters.value("dataset_class_id").toInt(), threshold,
-            parameters.value("match_iou").toDouble(.5), filter, [cancelled] { return cancelled->load(); }, &result->error);
+            parameters.value("match_iou").toDouble(.5), filter, [cancelled] { return cancelled->load(); });
     });
-    connect(thread, &QThread::finished, this, [this, result, generation, cancelled, files, directory] {
+    connect(thread, &QThread::finished, this, [this, result, generation, cancelled, files, directory, selectFirst] {
         if (cancelled->load() || generation != evaluationFilterGeneration_ || busy_ || !evaluationReviewActive_ ||
             directory != evaluationDirectory_ || files != files_) return;
-        if (result->visible.size() != files_.size()) {
-            if (!result->error.isEmpty()) showNotice(result->error, true);
+        evaluationReviewPending_ = false;
+        if (!result->valid || result->visible.size() != files_.size()) {
+            evaluationReviewAvailable_ = false;
+            evaluationReviewError_ = result->error.isEmpty() ? QStringLiteral("评估缓存校验失败，无法整理错例。") : result->error;
+            resultInfo_->setText("错例统计不可用，请检查报告缓存；不能将校验失败视作零错例。");
+            showNotice(evaluationReviewError_, true);
+            updateEvaluationReviewUi();
             return;
         }
-        for (int row = 0; row < files_.size(); ++row) queue_->item(row)->setHidden(!result->visible[row]);
-        if (queue_->currentRow() < 0 || queue_->item(queue_->currentRow())->isHidden()) {
-            int first = -1;
-            for (int row = 0; row < files_.size(); ++row) if (result->visible[row]) { first = row; break; }
-            queue_->setCurrentRow(first);
-            if (first < 0) {
-                queue_->clearSelection(); lastResult_ = {}; canvas_->clear(); predictionTable_->setRowCount(0);
-                exportButton_->setEnabled(false); resultInfo_->setText("当前阈值下没有符合此筛选的已完成图片。评估范围保持不变。");
-            }
+        evaluationReviewAvailable_ = true;
+        evaluationErrorRows_ = result->errorRows;
+        evaluationEvaluatedCount_ = result->evaluatedRows.size();
+        evaluationFalsePositiveCount_ = result->falsePositiveRows.size();
+        evaluationFalseNegativeCount_ = result->falseNegativeRows.size();
+        evaluationNegativeFalsePositiveCount_ = result->negativeFalsePositiveRows.size();
+        evaluationReviewRows_.clear();
+        for (int row = 0; row < files_.size(); ++row) {
+            queue_->item(row)->setHidden(!result->visible[row]);
+            if (result->visible[row]) evaluationReviewRows_.append(row);
         }
-        updateRangeUi();
+        int row = queue_->currentRow();
+        if (selectFirst || !evaluationReviewRows_.contains(row))
+            row = evaluationReviewRows_.isEmpty() ? -1 : evaluationReviewRows_.first();
+        const bool changed = row != queue_->currentRow();
+        queue_->setCurrentRow(row);
+        if (row < 0) {
+            queue_->clearSelection(); lastResult_ = {}; canvas_->clear(); predictionTable_->setRowCount(0);
+            exportButton_->setEnabled(false);
+            resultInfo_->setText("当前阈值下没有符合此筛选的已完成图片。评估范围保持不变。");
+        } else {
+            queue_->scrollToItem(queue_->item(row), QAbstractItemView::EnsureVisible);
+            if (!changed) selectQueueImage(row);
+        }
+        updateRangeUi(); updateEvaluationReviewUi();
     });
     connect(thread, &QThread::finished, thread, &QObject::deleteLater);
     thread->start();
@@ -623,5 +793,131 @@ void MainWindow::runEvaluationSmoke(const QString &directory, const QString &req
         if (*done) return;
         if (evaluationWorker_) evaluationWorker_->requestStop();
         finish(false, "Evaluation smoke timed out: " + statusLabel_->text());
+    });
+}
+
+void MainWindow::runDatasetSessionSmoke(const QString &directory)
+{
+    const QString output = QFileInfo(directory).absoluteFilePath();
+    if (!QDir().mkpath(output)) {
+        qCritical("Cannot create dataset session smoke output directory");
+        QCoreApplication::exit(2);
+        return;
+    }
+    const QString sessionPath = datasetSessionFilePath();
+    const auto expected = vision::DatasetSessionStore::load(sessionPath);
+    const auto initialSession = jsonFile(sessionPath);
+    const auto initialHistory = history_;
+    const QString initialHistoryHash = sha256(dataRoot_ + "/history.json");
+    const auto evaluationDirectories = [this] {
+        return QDir(dataRoot_ + "/evaluations").entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
+    };
+    const auto initialDirectories = evaluationDirectories();
+    const auto starts = std::make_shared<int>(0);
+    const auto done = std::make_shared<bool>(false);
+    const auto elapsed = std::make_shared<QElapsedTimer>();
+    elapsed->start();
+    connect(this, &MainWindow::startRequested, this, [starts](const vision::JobRequest &) { ++*starts; });
+    auto *timer = new QTimer(this);
+    timer->setInterval(25);
+    const auto finish = [this, output, sessionPath, initialSession, initialHistory, initialHistoryHash,
+                         initialDirectories, evaluationDirectories, starts, done, elapsed, timer]
+                        (bool success, const QString &error, const QJsonObject &checks) {
+        if (*done) return;
+        *done = true;
+        timer->stop();
+        const auto first = canvas_->result();
+        QJsonArray paths, queueDetails;
+        for (int index = 0; index < queue_->count(); ++index) {
+            const QString path = queue_->item(index)->data(Qt::UserRole).toString();
+            paths.append(path);
+            queueDetails.append(QJsonObject{{"index", index}, {"image", path},
+                {"ground_truth_boxes", datasetSamples_.value(path).value("gt").toArray().size()}});
+        }
+        const auto finalDirectories = evaluationDirectories();
+        QJsonObject report{{"schema_version", 1}, {"success", success}, {"error", error},
+            {"version", QCoreApplication::applicationVersion()}, {"qt", qVersion()},
+            {"scope", "Actual startup restoration through restoreDatasetSession; no detection or evaluation is requested."},
+            {"session_file", sessionPath}, {"initial_session_json", initialSession},
+            {"session_json", jsonFile(sessionPath)}, {"session_sha256", sha256(sessionPath)},
+            {"manifest", QJsonObject{{"dataset_source", datasetManifest_.value("dataset_source")},
+                {"data_yaml", datasetManifest_.value("data_yaml")}, {"split", datasetManifest_.value("split")},
+                {"metadata_path", datasetManifest_.value("metadata_path")},
+                {"fingerprint", datasetManifest_.value("fingerprint")},
+                {"sample_count", datasetManifest_.value("samples").toArray().size()}}},
+            {"queue_count", queue_->count()}, {"queue_paths", paths}, {"queue_ground_truth", queueDetails},
+            {"first_image", QJsonObject{{"source", first.source}, {"width", first.image.width()},
+                {"height", first.image.height()}, {"non_null", !first.image.isNull()},
+                {"ground_truth_boxes", first.groundTruth.size()}, {"prediction_count", first.predictions.size()},
+                {"inference_ms", first.inferenceMs}}},
+            {"start_requested_count", *starts}, {"history_before_count", initialHistory.size()},
+            {"history_after_count", history_.size()}, {"history_unchanged", history_ == initialHistory},
+            {"history_file_sha256_before", initialHistoryHash},
+            {"history_file_sha256_after", sha256(dataRoot_ + "/history.json")},
+            {"evaluation_directories_before", QJsonArray::fromStringList(initialDirectories)},
+            {"evaluation_directories_after", QJsonArray::fromStringList(finalDirectories)},
+            {"checks", checks}, {"elapsed_ms", double(elapsed->elapsed())},
+            {"status", statusLabel_->toolTip()}};
+        if (!success) saveScreenshot(output + "/dataset-session-failure.png");
+        QSaveFile file(output + "/dataset-session-smoke-report.json");
+        file.setDirectWriteFallback(false);
+        const auto bytes = QJsonDocument(report).toJson(QJsonDocument::Indented);
+        const bool saved = file.open(QIODevice::WriteOnly) && file.write(bytes) == bytes.size() && file.commit();
+        if (!saved) qCritical("Cannot save dataset session smoke report");
+        if (evaluationWorker_) evaluationWorker_->requestStop();
+        QCoreApplication::exit(success && saved ? 0 : 1);
+    };
+    connect(timer, &QTimer::timeout, this, [this, output, expected, starts, done, initialHistory,
+                                          initialHistoryHash, initialDirectories, evaluationDirectories, finish] {
+        if (*done || busy_ || evaluationWorker_ || queuePopulating_) return;
+        if (expected.status != vision::DatasetSessionStatus::Loaded || datasetManifest_.isEmpty() || files_.isEmpty()) {
+            finish(false, "Dataset session did not restore: " + statusLabel_->toolTip(), {});
+            return;
+        }
+        const auto first = canvas_->result();
+        if (first.image.isNull() || first.source != files_.first()) return;
+        const auto samples = datasetManifest_.value("samples").toArray();
+        if (samples.isEmpty()) {
+            finish(false, "Restored queue has no dataset samples", {});
+            return;
+        }
+        bool orderMatches = queue_->count() == samples.size() && files_.size() == samples.size();
+        for (int index = 0; orderMatches && index < samples.size(); ++index)
+            orderMatches = files_[index] == samples[index].toObject().value("image").toString() &&
+                queue_->item(index)->data(Qt::UserRole).toString() == files_[index] && datasetSamples_.contains(files_[index]);
+        const auto currentSession = vision::DatasetSessionStore::load(datasetSessionFilePath());
+        const QString requestedSource = QDir::cleanPath(QFileInfo(expected.session.sourcePath).absoluteFilePath());
+        const QString canonicalSource = QFileInfo(requestedSource).canonicalFilePath();
+        const QString expectedMetadata = expected.session.metadataPath.isEmpty() ? QString() :
+            QFileInfo(expected.session.metadataPath).canonicalFilePath();
+        const auto firstSample = samples.first().toObject();
+        QJsonObject checks{
+            {"session_loaded", currentSession.status == vision::DatasetSessionStatus::Loaded},
+            {"source_entry_preserved", currentSession.session.sourcePath == requestedSource},
+            {"manifest_source_matches", datasetManifest_.value("dataset_source").toString() == canonicalSource},
+            {"split_matches", datasetManifest_.value("split").toString() == expected.session.split &&
+                currentSession.session.split == expected.session.split},
+            {"metadata_matches", datasetManifest_.value("metadata_path").toString() == expectedMetadata &&
+                currentSession.session.metadataPath == expectedMetadata},
+            {"queue_complete_in_manifest_order", orderMatches},
+            {"first_source_and_pixels_loaded", first.source == files_.first() && !first.image.isNull() &&
+                first.image.width() == firstSample.value("width").toInt() && first.image.height() == firstSample.value("height").toInt()},
+            {"no_detection_start", *starts == 0},
+            {"no_predictions", first.predictions.isEmpty() && first.inferenceMs == 0},
+            {"history_unchanged", history_ == initialHistory && sha256(dataRoot_ + "/history.json") == initialHistoryHash},
+            {"no_evaluation_run", evaluationDirectories() == initialDirectories && evaluationReport_.isEmpty() && evaluationDirectory_.isEmpty() && !evaluation_->evaluationMode()}};
+        const bool screenshotSaved = grab().save(output + "/dataset-session-restored.png");
+        QImageReader screenshot(output + "/dataset-session-restored.png");
+        checks.insert("screenshot_written", screenshotSaved && screenshot.canRead() && screenshot.size().width() > 0 && screenshot.size().height() > 0);
+        bool success = true;
+        for (auto it = checks.constBegin(); it != checks.constEnd(); ++it) success = success && it.value().toBool();
+        finish(success, success ? QString() : QStringLiteral("Restored state failed one or more actual checks"), checks);
+    });
+    restoreDatasetSession();
+    timer->start();
+    QTimer::singleShot(45000, this, [this, done, finish] {
+        if (*done) return;
+        stopInference();
+        finish(false, "Dataset session restoration timed out: " + statusLabel_->toolTip(), {});
     });
 }

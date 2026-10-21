@@ -1,0 +1,29 @@
+********* Start testing of DatasetSessionUiTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : DatasetSessionUiTests::initTestCase()
+QINFO  : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-train) dataset_session_restore_evidence directory train images 1 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 15
+PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-train)
+QINFO  : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-val) dataset_session_restore_evidence directory val images 2 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 15
+PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-val)
+QINFO  : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-test) dataset_session_restore_evidence directory test images 3 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 16
+PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-test)
+QINFO  : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(yaml-train) dataset_session_restore_evidence yaml train images 1 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 14
+PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(yaml-train)
+QINFO  : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(yaml-val) dataset_session_restore_evidence yaml val images 2 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 16
+PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(yaml-val)
+QINFO  : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(yaml-test) dataset_session_restore_evidence yaml test images 3 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 14
+PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(yaml-test)
+PASS   : DatasetSessionUiTests::failedImportKeepsLastSuccessfulRecord()
+QINFO  : DatasetSessionUiTests::cancelledQueuePopulationKeepsLastSuccessfulRecord() dataset_session_cancel_evidence partial_count 96 stop_return_ms 3
+PASS   : DatasetSessionUiTests::cancelledQueuePopulationKeepsLastSuccessfulRecord()
+PASS   : DatasetSessionUiTests::missingCorruptAndUnavailableSessionsRecoverSafely(missing-json)
+PASS   : DatasetSessionUiTests::missingCorruptAndUnavailableSessionsRecoverSafely(corrupt-json)
+PASS   : DatasetSessionUiTests::missingCorruptAndUnavailableSessionsRecoverSafely(unknown-schema)
+PASS   : DatasetSessionUiTests::missingCorruptAndUnavailableSessionsRecoverSafely(missing-source)
+PASS   : DatasetSessionUiTests::explicitManualSelectionWinsBeforeDeferredRestore(manual-then-restore)
+PASS   : DatasetSessionUiTests::explicitManualSelectionWinsBeforeDeferredRestore(restore-then-manual-without-event-loop)
+QWARN  : DatasetSessionUiTests::openingAndCancellingPickerSuppressesPendingRestore() This plugin does not support propagateSizeHints()
+PASS   : DatasetSessionUiTests::openingAndCancellingPickerSuppressesPendingRestore()
+PASS   : DatasetSessionUiTests::cleanupTestCase()
+Totals: 17 passed, 0 failed, 0 skipped, 0 blacklisted, 6730ms
+********* Finished testing of DatasetSessionUiTests *********

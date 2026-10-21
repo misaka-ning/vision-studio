@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite name="EvaluationWorkerTests" timestamp="2026&#x002D;10&#x002D;21T11:19:44" hostname="misaka&#x002D;System&#x002D;Product&#x002D;Name" tests="18" failures="0" errors="0" skipped="0" time="28.228">
+  <properties>
+    <property name="QTestVersion" value="6.8.3"/>
+    <property name="QtVersion" value="6.8.3"/>
+    <property name="QtBuild" value="Qt 6.8.3 (x86_64&#x002D;little_endian&#x002D;lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1&#x002D;1))"/>
+  </properties>
+  <testcase name="initTestCase" classname="EvaluationWorkerTests" time="0.000"/>
+  <testcase name="prepareUsesRealDimensionsAndFlagsMissingLabels" classname="EvaluationWorkerTests" time="0.167"/>
+  <testcase name="actualOnnxAllAndSubsets(all&#x002D;three)" classname="EvaluationWorkerTests" time="2.555"/>
+  <testcase name="actualOnnxAllAndSubsets(from&#x002D;second)" classname="EvaluationWorkerTests" time="2.517"/>
+  <testcase name="actualOnnxAllAndSubsets(only&#x002D;last)" classname="EvaluationWorkerTests" time="2.443"/>
+  <testcase name="actualOnnxAllAndSubsets(more&#x002D;than&#x002D;fifty&#x002D;all)" classname="EvaluationWorkerTests" time="2.702"/>
+  <testcase name="actualOnnxAllAndSubsets(more&#x002D;than&#x002D;fifty&#x002D;tail)" classname="EvaluationWorkerTests" time="2.546"/>
+  <testcase name="stopRetainsOnlyCompletedPrefix" classname="EvaluationWorkerTests" time="2.520"/>
+  <testcase name="stopBeforeLoadProducesEmptyCancelledReport" classname="EvaluationWorkerTests" time="2.431"/>
+  <testcase name="staleDatasetRejectedBeforePrediction" classname="EvaluationWorkerTests" time="0.084"/>
+  <testcase name="duplicateAndForeignRangesRejected" classname="EvaluationWorkerTests" time="0.083"/>
+  <testcase name="invalidMappingAndScanPreventInference" classname="EvaluationWorkerTests" time="0.078"/>
+  <testcase name="backgroundReviewKeepsSnapshotAndGrayscale" classname="EvaluationWorkerTests" time="2.483"/>
+  <testcase name="unprocessedPreviewCannotBecomeCompletedResult" classname="EvaluationWorkerTests" time="0.078"/>
+  <testcase name="reviewRejectsWrongRowAndChangedPixels" classname="EvaluationWorkerTests" time="2.497"/>
+  <testcase name="modifiedPredictionCacheCannotDisagreeWithSavedMetrics" classname="EvaluationWorkerTests" time="2.510"/>
+  <testcase name="filtersReadCompactCacheWithoutOpeningImages" classname="EvaluationWorkerTests" time="2.534"/>
+  <testcase name="cleanupTestCase" classname="EvaluationWorkerTests" time="0.000"/>
+</testsuite>

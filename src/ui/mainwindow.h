@@ -49,6 +49,7 @@ class MainWindow : public QMainWindow
     friend class BatchResponsivenessTests;
     friend class ScopeFilterUiTests;
     friend class EvaluationIntegrationTests;
+    friend class DatasetSessionUiTests;
   public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
@@ -59,8 +60,11 @@ class MainWindow : public QMainWindow
     void runPtSmoke(const QString &outputDir);
     void runModelSmoke(const QString &outputDir, const QString &model = {});
     void runEvaluationSmoke(const QString &outputDir, const QString &requestPath);
+    void runDatasetSessionSmoke(const QString &outputDir);
     void showModelStructure(const QString &model = {});
     void setComputeDevice(vision::ComputeDevice device, int index = 0);
+    void restoreDatasetSession();
+    QString datasetSessionFilePath() const;
   signals:
     void startRequested(vision::JobRequest request);
 
@@ -121,12 +125,18 @@ class MainWindow : public QMainWindow
     void exportResult();
     void connectEvaluation();
     void loadDataset(const QString &yaml, const QString &split, const QString &metadata = {});
+    void beginDatasetImport(const QString &source, const QString &split, const QString &metadata);
+    void cancelPendingDatasetSessionRestore();
     void clearDatasetContext();
     void startEvaluation();
     void loadEvaluationReport(const QString &directory);
     void acceptEvaluationReport(const QJsonObject &report, const QString &directory, bool record);
     void reviewEvaluationImage(int row);
     void applyEvaluationFilter(const QString &filter);
+    void showEvaluationErrors();
+    void navigateEvaluationReview(int step);
+    void updateEvaluationReviewUi();
+    void resetEvaluationReviewNavigation();
     void applyEvaluationProfile(double threshold);
     void updateEvaluationModel();
     QString evaluationFingerprint() const;
@@ -174,6 +184,17 @@ class MainWindow : public QMainWindow
     QComboBox *evaluationRange_ = nullptr;
     QPushButton *evaluationStartButton_ = nullptr, *evaluationStopButton_ = nullptr;
     QLabel *evaluationTaskSummary_ = nullptr, *evaluationRangeHint_ = nullptr;
+    QWidget *evaluationReviewBar_ = nullptr;
+    QLabel *evaluationReviewSummaryLabel_ = nullptr;
+    QComboBox *evaluationPreviewFilter_ = nullptr;
+    QPushButton *evaluationReviewButton_ = nullptr, *evaluationReviewPreviousButton_ = nullptr,
+                *evaluationReviewNextButton_ = nullptr;
+    QVector<int> evaluationReviewRows_, evaluationErrorRows_;
+    int evaluationEvaluatedCount_ = 0, evaluationFalsePositiveCount_ = 0,
+        evaluationFalseNegativeCount_ = 0, evaluationNegativeFalsePositiveCount_ = 0;
+    bool evaluationReviewPending_ = false, evaluationReviewAvailable_ = false,
+        evaluationReviewSelectFirst_ = false;
+    QString evaluationReviewError_;
     QTimer *queuePopulationTimer_ = nullptr;
     bool queuePopulating_ = false;
     quint64 queuePopulationGeneration_ = 0, imagePreviewGeneration_ = 0;
@@ -185,6 +206,8 @@ class MainWindow : public QMainWindow
     QHash<QString, int> evaluationSampleIndices_;
     QHash<QString, QJsonObject> datasetSamples_;
     bool loadingDataset_ = false, evaluationReviewActive_ = false;
+    bool datasetSessionRestoreRequested_ = false, datasetSessionUserInteracted_ = false;
+    quint64 datasetSessionRestoreGeneration_ = 0, datasetImportGeneration_ = 0;
     std::shared_ptr<std::atomic_bool> evaluationPreviewCancellation_, evaluationFilterCancellation_, datasetImportCancellation_;
     quint64 evaluationPreviewGeneration_ = 0, evaluationFilterGeneration_ = 0;
     QCheckBox *showGroundTruth_ = nullptr;

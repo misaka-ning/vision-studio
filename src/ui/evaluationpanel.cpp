@@ -690,6 +690,11 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     layout->addLayout(metricGrid);
     counts_ = label("TP / FP / FN 与样本数量将在评估后显示。", "evaluationCounts");
     layout->addWidget(counts_);
+    errorSummary_ = label({}, "evaluationErrorSummaryLabel");
+    errorSummary_->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    errorSummary_->setStyleSheet("color:#F9CC9D; font-weight:600;");
+    errorSummary_->hide();
+    layout->addWidget(errorSummary_);
     auto *analysis = card(); auto *analysisLayout = new QVBoxLayout(analysis);
     auto *thresholdRow = new QHBoxLayout;
     thresholdRow->addWidget(label("分析阈值", "sectionTitle"));
@@ -725,6 +730,7 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     filterRow->addWidget(label("阈值明细与错例", "sectionTitle"), 1);
     filter_ = new NoWheel<QComboBox>; filter_->setObjectName("evaluationImageFilterCombo");
     filter_->addItem("全部图片", "all"); filter_->addItem("包含误检", "fp"); filter_->addItem("包含漏检", "fn"); filter_->addItem("无目标图片误报", "negative_fp");
+    filter_->addItem("全部错例（误检或漏检）", "errors");
     filterRow->addWidget(filter_); tableLayout->addLayout(filterRow);
     table_ = new QTableWidget(0, 8); table_->setObjectName("evaluationThresholdTable");
     table_->setHorizontalHeaderLabels({"置信度", "Precision", "Recall", "F1", "无目标误报率", "TP", "FP", "FN"});
@@ -898,6 +904,7 @@ void EvaluationPanel::showDatasetSettings()
 void EvaluationPanel::chooseDataset()
 {
     if (busy_) return;
+    emit datasetSelectionStarted();
     hideDatasetSettings();
     DatasetSourceDialog dialog(controls_ ? controls_->window() : this, yaml_);
     if (dialog.exec() != QDialog::Accepted || dialog.source().isEmpty()) return;
@@ -1083,7 +1090,7 @@ void EvaluationPanel::updateEligibility()
     if (datasetSettings_->isVisible()) positionDatasetSettings();
     const bool rows = !report_.value("rows").toArray().isEmpty();
     apply_->setEnabled(!busy_ && rows);
-    threshold_->setEnabled(rows); filter_->setEnabled(rows);
+    threshold_->setEnabled(rows && !busy_); filter_->setEnabled(rows && !busy_);
     const bool files = !directory_.isEmpty() && QFileInfo(directory_).isDir();
     openFolder_->setEnabled(files); export_->setEnabled(files && !busy_ && !exporting_);
     openReport_->setEnabled(files && !markdownPath(directory_).isEmpty());
@@ -1100,6 +1107,7 @@ void EvaluationPanel::setReport(const QJsonObject &report, const QString &direct
     const auto rows = report.value("rows").toArray();
     const auto request = requestOf(report);
     updating_ = true;
+    setImageFilter("all", false);
     const double initial = nearestConfidence(rows, request.value("analysis_threshold").toDouble(request.value("confidence").toDouble(analysisThreshold())));
     static_cast<ThresholdSpin *>(threshold_)->setRows(rows);
     threshold_->setValue(initial);
@@ -1140,7 +1148,35 @@ void EvaluationPanel::setReport(const QJsonObject &report, const QString &direct
         const QString device = config.value("resolved_device").toString(config.value("device").toString("未记录"));
         reportIdentity_->setText(reportIdentity_->text() + QString("\n%1 · %2 · %3 · NMS IoU %4\nAP 仅针对映射的目标类别；无目标图片指没有此目标类 GT 的图片。").arg(input, color, device).arg(config.value("nms_iou").toDouble(.45), 0, 'f', 2));
     }
+    errorSummary_->setVisible(!report.isEmpty());
+    setErrorSummary(0, 0, 0, 0, 0, manifest_.value("samples").toArray().size(), !report.isEmpty(), false);
     updateMetrics(); updateEligibility();
+}
+QString EvaluationPanel::imageFilter() const { return filter_->currentData().toString(); }
+void EvaluationPanel::setImageFilter(const QString &filter, bool notify)
+{
+    const int index = filter_->findData(filter);
+    if (index < 0) return;
+    if (notify) {
+        if (filter_->currentIndex() == index) emit imageFilterChanged(filter);
+        else filter_->setCurrentIndex(index);
+    } else {
+        QSignalBlocker blocker(filter_);
+        filter_->setCurrentIndex(index);
+    }
+}
+void EvaluationPanel::setErrorSummary(int evaluated, int errors, int falsePositive, int falseNegative,
+                                    int negativeFalsePositive, int collection, bool pending,
+                                    bool available, const QString &error)
+{
+    errorSummary_->setVisible(!report_.isEmpty());
+    const QString text = pending ? QStringLiteral("正在整理当前阈值的错例…") :
+        !available ? (error.isEmpty() ? QStringLiteral("当前阈值的错例统计尚未就绪。") :
+                       QStringLiteral("错例统计不可用 · ") + error.section('\n', 0, 0)) :
+        QString("错图 %1 / 已评估 %2 / 集合 %3 · 误检图 %4 · 漏检图 %5 · 无目标误报图 %6")
+            .arg(errors).arg(evaluated).arg(collection).arg(falsePositive).arg(falseNegative).arg(negativeFalsePositive);
+    errorSummary_->setText(text);
+    errorSummary_->setToolTip(error.isEmpty() ? text + "\n错图按图片去重：包含误检或漏检；仅统计本次已完成评估的样本。" : error);
 }
 void EvaluationPanel::setOperatingMetrics(const QJsonObject &metrics)
 {
