@@ -1,0 +1,184 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 18
+    Start 18: vision-evaluation-integration-tests
+
+18: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-evaluation-integration-tests
+18: Environment variables: 
+18:  QT_QPA_PLATFORM=offscreen
+18:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+18: Test timeout computed to be: 600
+18: ********* Start testing of EvaluationIntegrationTests *********
+18: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+18: PASS   : EvaluationIntegrationTests::initTestCase()
+18: QWARN  : EvaluationIntegrationTests::datasetInputSharesQueueGroundTruthAndPreviewMode() This plugin does not support propagateSizeHints()
+18: QWARN  : EvaluationIntegrationTests::datasetInputSharesQueueGroundTruthAndPreviewMode() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::datasetInputSharesQueueGroundTruthAndPreviewMode() This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::datasetInputSharesQueueGroundTruthAndPreviewMode() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::datasetInputSharesQueueGroundTruthAndPreviewMode() This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::datasetInputSharesQueueGroundTruthAndPreviewMode() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::datasetInputSharesQueueGroundTruthAndPreviewMode() This plugin does not support grabbing the keyboard
+18: PASS   : EvaluationIntegrationTests::datasetInputSharesQueueGroundTruthAndPreviewMode()
+18: QWARN  : EvaluationIntegrationTests::shortcutOpensDatasetDirectoryInsteadOfLooseImagePicker() This plugin does not support propagateSizeHints()
+18: QWARN  : EvaluationIntegrationTests::shortcutOpensDatasetDirectoryInsteadOfLooseImagePicker() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::shortcutOpensDatasetDirectoryInsteadOfLooseImagePicker() This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::shortcutOpensDatasetDirectoryInsteadOfLooseImagePicker() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::shortcutOpensDatasetDirectoryInsteadOfLooseImagePicker() This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::shortcutOpensDatasetDirectoryInsteadOfLooseImagePicker() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::shortcutOpensDatasetDirectoryInsteadOfLooseImagePicker() This plugin does not support grabbing the keyboard
+18: PASS   : EvaluationIntegrationTests::shortcutOpensDatasetDirectoryInsteadOfLooseImagePicker()
+18: PASS   : EvaluationIntegrationTests::canvasAcceptsDatasetsAndRejectsLooseImagesWithoutChangingQueue()
+18: QWARN  : EvaluationIntegrationTests::directoryImportFindsConventionalDatasetBesideTrainingConfiguration() This plugin does not support propagateSizeHints()
+18: QWARN  : EvaluationIntegrationTests::directoryImportFindsConventionalDatasetBesideTrainingConfiguration() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::directoryImportFindsConventionalDatasetBesideTrainingConfiguration() This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::directoryImportFindsConventionalDatasetBesideTrainingConfiguration() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::directoryImportFindsConventionalDatasetBesideTrainingConfiguration() This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::directoryImportFindsConventionalDatasetBesideTrainingConfiguration() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::directoryImportFindsConventionalDatasetBesideTrainingConfiguration() This plugin does not support grabbing the keyboard
+18: PASS   : EvaluationIntegrationTests::directoryImportFindsConventionalDatasetBesideTrainingConfiguration()
+18: QWARN  : EvaluationIntegrationTests::explicitYamlOptionDisambiguatesDirectoryWithoutGuessing() This plugin does not support propagateSizeHints()
+18: QWARN  : EvaluationIntegrationTests::explicitYamlOptionDisambiguatesDirectoryWithoutGuessing() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::explicitYamlOptionDisambiguatesDirectoryWithoutGuessing() This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::explicitYamlOptionDisambiguatesDirectoryWithoutGuessing() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::explicitYamlOptionDisambiguatesDirectoryWithoutGuessing() This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::explicitYamlOptionDisambiguatesDirectoryWithoutGuessing() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::explicitYamlOptionDisambiguatesDirectoryWithoutGuessing() This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::explicitYamlOptionDisambiguatesDirectoryWithoutGuessing() This plugin does not support propagateSizeHints()
+18: QWARN  : EvaluationIntegrationTests::explicitYamlOptionDisambiguatesDirectoryWithoutGuessing() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::explicitYamlOptionDisambiguatesDirectoryWithoutGuessing() This plugin does not support grabbing the keyboard
+18: PASS   : EvaluationIntegrationTests::explicitYamlOptionDisambiguatesDirectoryWithoutGuessing()
+18: QWARN  : EvaluationIntegrationTests::firstImportMissingValKeepsDirectoryForExplicitTrainRetry() This plugin does not support propagateSizeHints()
+18: QWARN  : EvaluationIntegrationTests::firstImportMissingValKeepsDirectoryForExplicitTrainRetry() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::firstImportMissingValKeepsDirectoryForExplicitTrainRetry() This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::firstImportMissingValKeepsDirectoryForExplicitTrainRetry() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::firstImportMissingValKeepsDirectoryForExplicitTrainRetry() This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::firstImportMissingValKeepsDirectoryForExplicitTrainRetry() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::firstImportMissingValKeepsDirectoryForExplicitTrainRetry() This plugin does not support grabbing the keyboard
+18: PASS   : EvaluationIntegrationTests::firstImportMissingValKeepsDirectoryForExplicitTrainRetry()
+18: QWARN  : EvaluationIntegrationTests::relocatedDatasetFolderRemainsUsableWhenSwitchingSplit() This plugin does not support propagateSizeHints()
+18: QWARN  : EvaluationIntegrationTests::relocatedDatasetFolderRemainsUsableWhenSwitchingSplit() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::relocatedDatasetFolderRemainsUsableWhenSwitchingSplit() This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::relocatedDatasetFolderRemainsUsableWhenSwitchingSplit() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::relocatedDatasetFolderRemainsUsableWhenSwitchingSplit() This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::relocatedDatasetFolderRemainsUsableWhenSwitchingSplit() This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::relocatedDatasetFolderRemainsUsableWhenSwitchingSplit() This plugin does not support grabbing the keyboard
+18: QINFO  : EvaluationIntegrationTests::relocatedDatasetFolderRemainsUsableWhenSwitchingSplit() evaluation_start_button_evidence evaluationStartButton completed_images 4
+18: QINFO  : EvaluationIntegrationTests::relocatedDatasetFolderRemainsUsableWhenSwitchingSplit() evaluation_integration_evidence: {"backend":"OpenCV DNN / CPU","completed_images":4,"full_split":true,"metrics":{"F1":0.5714285714285714,"FN":1,"FP":2,"TP":2,"ap_per_iou":[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5],"confidence":0.3,"fp_boxes_per_image":0.5,"gt_boxes":3,"images":4,"mAP50":0.5,"mAP50_95":0.5,"mAP75":0.5,"match_iou":0.5,"no_ball_false_positive_boxes":1,"no_ball_false_positive_images":1,"no_ball_false_positive_rate":1,"no_ball_fp_boxes_per_image":1,"no_ball_fpr_wilson95":[0.20654931437723745,1],"no_ball_images":1,"positive_image_miss_rate":0.3333333333333333,"positive_images":3,"positive_images_with_no_matched_ball":1,"precision":0.5,"predicted_boxes":4,"recall":0.6666666666666666,"ultralytics_max_f1_precision":0.5,"ultralytics_max_f1_recall":0.6666666666666666},"report_directory":"/tmp/vision-evaluation-integration-tests-zCIytF/data/evaluations/20261021-021828-182-03e72af1","scenario":"relocated-folder-evaluation","status":"complete"}
+18: PASS   : EvaluationIntegrationTests::relocatedDatasetFolderRemainsUsableWhenSwitchingSplit()
+18: PASS   : EvaluationIntegrationTests::minimumWindowContainsEntireCanvas()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cpu-layout-only) This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cpu-layout-only) This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cpu-layout-only) This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cpu-layout-only) This plugin does not support propagateSizeHints()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cpu-layout-only) This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cpu-layout-only) This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cpu-layout-only) This plugin does not support raise()
+18: QINFO  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cpu-layout-only) popup_workbench_geometry 1260 cpu command_bar_px 96 canvas QSize(422, 369) popup QSize(620, 309)
+18: PASS   : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cpu-layout-only)
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cuda-layout-only) This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cuda-layout-only) This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cuda-layout-only) This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cuda-layout-only) This plugin does not support propagateSizeHints()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cuda-layout-only) This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cuda-layout-only) This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cuda-layout-only) This plugin does not support raise()
+18: QINFO  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cuda-layout-only) popup_workbench_geometry 1260 cuda command_bar_px 96 canvas QSize(422, 369) popup QSize(620, 309)
+18: PASS   : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1260-cuda-layout-only)
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cpu-layout-only) This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cpu-layout-only) This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cpu-layout-only) This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cpu-layout-only) This plugin does not support propagateSizeHints()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cpu-layout-only) This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cpu-layout-only) This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cpu-layout-only) This plugin does not support raise()
+18: QINFO  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cpu-layout-only) popup_workbench_geometry 1380 cpu command_bar_px 96 canvas QSize(542, 369) popup QSize(620, 309)
+18: PASS   : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cpu-layout-only)
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cuda-layout-only) This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cuda-layout-only) This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cuda-layout-only) This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cuda-layout-only) This plugin does not support propagateSizeHints()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cuda-layout-only) This plugin does not support raise()
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cuda-layout-only) This plugin does not support grabbing the keyboard
+18: QWARN  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cuda-layout-only) This plugin does not support raise()
+18: QINFO  : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cuda-layout-only) popup_workbench_geometry 1380 cuda command_bar_px 96 canvas QSize(542, 369) popup QSize(620, 309)
+18: PASS   : EvaluationIntegrationTests::compactCommandBarPreservesCanvasAndCollapsesDatasetDetails(1380-cuda-layout-only)
+18: QINFO  : EvaluationIntegrationTests::fullWidthTabsChangeOnlyViewAndShareDetectionRange() preview_metrics_evidence dataset_context visible false geometry QRect(0,0 640x59)
+18: QINFO  : EvaluationIntegrationTests::fullWidthTabsChangeOnlyViewAndShareDetectionRange() metric_card_evidence dataset_context false QRect(0,0 640x480)
+18: QINFO  : EvaluationIntegrationTests::fullWidthTabsChangeOnlyViewAndShareDetectionRange() metric_card_evidence dataset_context false QRect(0,0 640x480)
+18: QINFO  : EvaluationIntegrationTests::fullWidthTabsChangeOnlyViewAndShareDetectionRange() metric_card_evidence dataset_context false QRect(0,0 640x480)
+18: QINFO  : EvaluationIntegrationTests::fullWidthTabsChangeOnlyViewAndShareDetectionRange() metric_card_evidence dataset_context false QRect(0,0 640x480)
+18: QINFO  : EvaluationIntegrationTests::fullWidthTabsChangeOnlyViewAndShareDetectionRange() workspace_tabs_evidence tab_width 1120 analysis_width 1118 mode_unchanged true cached_results 4 mirrored_range_index 2
+18: QINFO  : EvaluationIntegrationTests::fullWidthTabsChangeOnlyViewAndShareDetectionRange() metric_card_evidence live_input_context true QRect(0,0 271x82)
+18: QINFO  : EvaluationIntegrationTests::fullWidthTabsChangeOnlyViewAndShareDetectionRange() metric_card_evidence live_input_context true QRect(283,0 271x82)
+18: QINFO  : EvaluationIntegrationTests::fullWidthTabsChangeOnlyViewAndShareDetectionRange() metric_card_evidence live_input_context true QRect(566,0 271x82)
+18: QINFO  : EvaluationIntegrationTests::fullWidthTabsChangeOnlyViewAndShareDetectionRange() metric_card_evidence live_input_context true QRect(849,0 271x82)
+18: PASS   : EvaluationIntegrationTests::fullWidthTabsChangeOnlyViewAndShareDetectionRange()
+18: PASS   : EvaluationIntegrationTests::missingCurrentSelectionDoesNotExpandTask()
+18: PASS   : EvaluationIntegrationTests::missingLabelsNeverBecomeNegativeSamples()
+18: PASS   : EvaluationIntegrationTests::failedSplitChangeDoesNotMislabelPreviousDataset()
+18: QINFO  : EvaluationIntegrationTests::rangesAndMetrics(all-starts-at-first) evaluation_start_button_evidence evaluationStartButton completed_images 4
+18: QINFO  : EvaluationIntegrationTests::rangesAndMetrics(all-starts-at-first) evaluation_integration_evidence: {"backend":"OpenCV DNN / CPU","completed_images":4,"full_split":true,"metrics":{"F1":0.5714285714285714,"FN":1,"FP":2,"TP":2,"ap_per_iou":[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5],"confidence":0.3,"fp_boxes_per_image":0.5,"gt_boxes":3,"images":4,"mAP50":0.5,"mAP50_95":0.5,"mAP75":0.5,"match_iou":0.5,"no_ball_false_positive_boxes":1,"no_ball_false_positive_images":1,"no_ball_false_positive_rate":1,"no_ball_fp_boxes_per_image":1,"no_ball_fpr_wilson95":[0.20654931437723745,1],"no_ball_images":1,"positive_image_miss_rate":0.3333333333333333,"positive_images":3,"positive_images_with_no_matched_ball":1,"precision":0.5,"predicted_boxes":4,"recall":0.6666666666666666,"ultralytics_max_f1_precision":0.5,"ultralytics_max_f1_recall":0.6666666666666666},"report_directory":"/tmp/vision-evaluation-integration-tests-oGXgAJ/data/evaluations/20261021-021834-051-45e90986","scenario":"range-0-count-4-selection-2","status":"complete"}
+18: PASS   : EvaluationIntegrationTests::rangesAndMetrics(all-starts-at-first)
+18: QINFO  : EvaluationIntegrationTests::rangesAndMetrics(tail-includes-selected) evaluation_start_button_evidence evaluationStartButton completed_images 3
+18: QINFO  : EvaluationIntegrationTests::rangesAndMetrics(tail-includes-selected) evaluation_integration_evidence: {"backend":"OpenCV DNN / CPU","completed_images":3,"full_split":false,"metrics":{"F1":0.4,"FN":1,"FP":2,"TP":1,"ap_per_iou":[null,null,null,null,null,null,null,null,null,null],"confidence":0.3,"fp_boxes_per_image":0.6666666666666666,"gt_boxes":2,"images":3,"mAP50":null,"mAP50_95":null,"mAP75":null,"match_iou":0.5,"no_ball_false_positive_boxes":1,"no_ball_false_positive_images":1,"no_ball_false_positive_rate":1,"no_ball_fp_boxes_per_image":1,"no_ball_fpr_wilson95":[0.20654931437723745,1],"no_ball_images":1,"positive_image_miss_rate":0.5,"positive_images":2,"positive_images_with_no_matched_ball":1,"precision":0.3333333333333333,"predicted_boxes":3,"recall":0.5,"ultralytics_max_f1_precision":null,"ultralytics_max_f1_recall":null},"report_directory":"/tmp/vision-evaluation-integration-tests-exKYDB/data/evaluations/20261021-021836-866-97f2621f","scenario":"range-1-count-4-selection-1","status":"complete"}
+18: PASS   : EvaluationIntegrationTests::rangesAndMetrics(tail-includes-selected)
+18: QINFO  : EvaluationIntegrationTests::rangesAndMetrics(current-only) evaluation_start_button_evidence evaluationStartButton completed_images 1
+18: QINFO  : EvaluationIntegrationTests::rangesAndMetrics(current-only) evaluation_integration_evidence: {"backend":"OpenCV DNN","completed_images":1,"full_split":false,"metrics":{"F1":0,"FN":1,"FP":1,"TP":0,"ap_per_iou":[null,null,null,null,null,null,null,null,null,null],"confidence":0.3,"fp_boxes_per_image":1,"gt_boxes":1,"images":1,"mAP50":null,"mAP50_95":null,"mAP75":null,"match_iou":0.5,"no_ball_false_positive_boxes":0,"no_ball_false_positive_images":0,"no_ball_false_positive_rate":null,"no_ball_fp_boxes_per_image":null,"no_ball_fpr_wilson95":null,"no_ball_images":0,"positive_image_miss_rate":1,"positive_images":1,"positive_images_with_no_matched_ball":1,"precision":0,"predicted_boxes":1,"recall":0,"ultralytics_max_f1_precision":null,"ultralytics_max_f1_recall":null},"report_directory":"/tmp/vision-evaluation-integration-tests-cSmCMv/data/evaluations/20261021-021839-704-7a3f21ee","scenario":"range-2-count-4-selection-1","status":"complete"}
+18: PASS   : EvaluationIntegrationTests::rangesAndMetrics(current-only)
+18: QINFO  : EvaluationIntegrationTests::rangesAndMetrics(single-current) evaluation_start_button_evidence evaluationStartButton completed_images 1
+18: QINFO  : EvaluationIntegrationTests::rangesAndMetrics(single-current) evaluation_integration_evidence: {"backend":"OpenCV DNN / CPU","completed_images":1,"full_split":true,"metrics":{"F1":1,"FN":0,"FP":0,"TP":1,"ap_per_iou":[null,null,null,null,null,null,null,null,null,null],"confidence":0.3,"fp_boxes_per_image":0,"gt_boxes":1,"images":1,"mAP50":null,"mAP50_95":null,"mAP75":null,"match_iou":0.5,"no_ball_false_positive_boxes":0,"no_ball_false_positive_images":0,"no_ball_false_positive_rate":null,"no_ball_fp_boxes_per_image":null,"no_ball_fpr_wilson95":null,"no_ball_images":0,"positive_image_miss_rate":0,"positive_images":1,"positive_images_with_no_matched_ball":0,"precision":1,"predicted_boxes":1,"recall":1,"ultralytics_max_f1_precision":null,"ultralytics_max_f1_recall":null},"report_directory":"/tmp/vision-evaluation-integration-tests-uFSVHl/data/evaluations/20261021-021842-493-b59dcb0e","scenario":"range-2-count-1-selection-0","status":"complete"}
+18: PASS   : EvaluationIntegrationTests::rangesAndMetrics(single-current)
+18: QINFO  : EvaluationIntegrationTests::rangesAndMetrics(sixty-one-all) evaluation_start_button_evidence evaluationStartButton completed_images 61
+18: QINFO  : EvaluationIntegrationTests::rangesAndMetrics(sixty-one-all) evaluation_integration_evidence: {"backend":"OpenCV DNN / CPU","completed_images":61,"full_split":true,"metrics":{"F1":0.5794392523364486,"FN":15,"FP":30,"TP":31,"ap_per_iou":[0.3658318193784445,0.3658318193784445,0.3658318193784445,0.3658318193784445,0.3658318193784445,0.3658318193784445,0.3658318193784445,0.3658318193784445,0.3658318193784445,0.3658318193784445],"confidence":0.3,"fp_boxes_per_image":0.4918032786885246,"gt_boxes":46,"images":61,"mAP50":0.3658318193784445,"mAP50_95":0.36583181937844456,"mAP75":0.3658318193784445,"match_iou":0.5,"no_ball_false_positive_boxes":15,"no_ball_false_positive_images":15,"no_ball_false_positive_rate":1,"no_ball_fp_boxes_per_image":1,"no_ball_fpr_wilson95":[0.7961166989641515,1],"no_ball_images":15,"positive_image_miss_rate":0.32608695652173914,"positive_images":46,"positive_images_with_no_matched_ball":15,"precision":0.5081967213114754,"predicted_boxes":61,"recall":0.6739130434782609,"ultralytics_max_f1_precision":0.5081967213114754,"ultralytics_max_f1_recall":0.6739130434782609},"report_directory":"/tmp/vision-evaluation-integration-tests-hQXufn/data/evaluations/20261021-021845-096-351f2e9a","scenario":"range-0-count-61-selection-50","status":"complete"}
+18: PASS   : EvaluationIntegrationTests::rangesAndMetrics(sixty-one-all)
+18: QINFO  : EvaluationIntegrationTests::rangesAndMetrics(sixty-one-tail) evaluation_start_button_evidence evaluationStartButton completed_images 11
+18: QINFO  : EvaluationIntegrationTests::rangesAndMetrics(sixty-one-tail) evaluation_integration_evidence: {"backend":"OpenCV DNN / CPU","completed_images":11,"full_split":false,"metrics":{"F1":0.631578947368421,"FN":2,"FP":5,"TP":6,"ap_per_iou":[null,null,null,null,null,null,null,null,null,null],"confidence":0.3,"fp_boxes_per_image":0.45454545454545453,"gt_boxes":8,"images":11,"mAP50":null,"mAP50_95":null,"mAP75":null,"match_iou":0.5,"no_ball_false_positive_boxes":3,"no_ball_false_positive_images":3,"no_ball_false_positive_rate":1,"no_ball_fp_boxes_per_image":1,"no_ball_fpr_wilson95":[0.4385029682449546,1],"no_ball_images":3,"positive_image_miss_rate":0.25,"positive_images":8,"positive_images_with_no_matched_ball":2,"precision":0.5454545454545454,"predicted_boxes":11,"recall":0.75,"ultralytics_max_f1_precision":null,"ultralytics_max_f1_recall":null},"report_directory":"/tmp/vision-evaluation-integration-tests-BzXHCH/data/evaluations/20261021-021850-958-1a31d635","scenario":"range-1-count-61-selection-50","status":"complete"}
+18: PASS   : EvaluationIntegrationTests::rangesAndMetrics(sixty-one-tail)
+18: QINFO  : EvaluationIntegrationTests::rangesAndMetrics(sixty-one-current-last) evaluation_start_button_evidence evaluationStartButton completed_images 1
+18: QINFO  : EvaluationIntegrationTests::rangesAndMetrics(sixty-one-current-last) evaluation_integration_evidence: {"backend":"OpenCV DNN / CPU","completed_images":1,"full_split":false,"metrics":{"F1":1,"FN":0,"FP":0,"TP":1,"ap_per_iou":[null,null,null,null,null,null,null,null,null,null],"confidence":0.3,"fp_boxes_per_image":0,"gt_boxes":1,"images":1,"mAP50":null,"mAP50_95":null,"mAP75":null,"match_iou":0.5,"no_ball_false_positive_boxes":0,"no_ball_false_positive_images":0,"no_ball_false_positive_rate":null,"no_ball_fp_boxes_per_image":null,"no_ball_fpr_wilson95":null,"no_ball_images":0,"positive_image_miss_rate":0,"positive_images":1,"positive_images_with_no_matched_ball":0,"precision":1,"predicted_boxes":1,"recall":1,"ultralytics_max_f1_precision":null,"ultralytics_max_f1_recall":null},"report_directory":"/tmp/vision-evaluation-integration-tests-QcnifM/data/evaluations/20261021-021856-808-532844c9","scenario":"range-2-count-61-selection-60","status":"complete"}
+18: PASS   : EvaluationIntegrationTests::rangesAndMetrics(sixty-one-current-last)
+18: QINFO  : EvaluationIntegrationTests::thresholdCurveFiltersAndAdoptedConfiguration() evaluation_start_button_evidence evaluationStartButton completed_images 4
+18: QINFO  : EvaluationIntegrationTests::thresholdCurveFiltersAndAdoptedConfiguration() evaluation_integration_evidence: {"backend":"OpenCV DNN / CPU","completed_images":4,"full_split":true,"metrics":{"F1":0.5714285714285714,"FN":1,"FP":2,"TP":2,"ap_per_iou":[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5],"confidence":0.3,"fp_boxes_per_image":0.5,"gt_boxes":3,"images":4,"mAP50":0.5,"mAP50_95":0.5,"mAP75":0.5,"match_iou":0.5,"no_ball_false_positive_boxes":1,"no_ball_false_positive_images":1,"no_ball_false_positive_rate":1,"no_ball_fp_boxes_per_image":1,"no_ball_fpr_wilson95":[0.20654931437723745,1],"no_ball_images":1,"positive_image_miss_rate":0.3333333333333333,"positive_images":3,"positive_images_with_no_matched_ball":1,"precision":0.5,"predicted_boxes":4,"recall":0.6666666666666666,"ultralytics_max_f1_precision":0.5,"ultralytics_max_f1_recall":0.6666666666666666},"report_directory":"/tmp/vision-evaluation-integration-tests-IlNyCl/data/evaluations/20261021-021902-522-fb1d8393","scenario":"threshold-filter-adopt","status":"complete"}
+18: PASS   : EvaluationIntegrationTests::thresholdCurveFiltersAndAdoptedConfiguration()
+18: QINFO  : EvaluationIntegrationTests::adoptedConfidencePreservesThreeDecimalWorkingPoints() minimum_canvas_geometry QRect(1,43 422x369) parent_rect QRect(0,0 424x435) fully_in_parent true
+18: QINFO  : EvaluationIntegrationTests::adoptedConfidencePreservesThreeDecimalWorkingPoints() evaluation_integration_evidence: {"backend":"OpenCV DNN / CPU","completed_images":4,"full_split":true,"metrics":{"F1":0.5714285714285714,"FN":1,"FP":2,"TP":2,"ap_per_iou":[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5],"confidence":0.3,"fp_boxes_per_image":0.5,"gt_boxes":3,"images":4,"mAP50":0.5,"mAP50_95":0.5,"mAP75":0.5,"match_iou":0.5,"no_ball_false_positive_boxes":1,"no_ball_false_positive_images":1,"no_ball_false_positive_rate":1,"no_ball_fp_boxes_per_image":1,"no_ball_fpr_wilson95":[0.20654931437723745,1],"no_ball_images":1,"positive_image_miss_rate":0.3333333333333333,"positive_images":3,"positive_images_with_no_matched_ball":1,"precision":0.5,"predicted_boxes":4,"recall":0.6666666666666666,"ultralytics_max_f1_precision":0.5,"ultralytics_max_f1_recall":0.6666666666666666},"report_directory":"/tmp/vision-evaluation-integration-tests-VPXZVy/data/evaluations/20261021-021905-474-09630e3d","scenario":"precise-adopted-working-points","status":"complete"}
+18: PASS   : EvaluationIntegrationTests::adoptedConfidencePreservesThreeDecimalWorkingPoints()
+18: QINFO  : EvaluationIntegrationTests::selectedResultExportUsesCurrentThresholdAndTruth() evaluation_start_button_evidence evaluationStartButton completed_images 4
+18: QINFO  : EvaluationIntegrationTests::selectedResultExportUsesCurrentThresholdAndTruth() evaluation_integration_evidence: {"backend":"OpenCV DNN / CPU","completed_images":4,"full_split":true,"metrics":{"F1":0.5714285714285714,"FN":1,"FP":2,"TP":2,"ap_per_iou":[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5],"confidence":0.3,"fp_boxes_per_image":0.5,"gt_boxes":3,"images":4,"mAP50":0.5,"mAP50_95":0.5,"mAP75":0.5,"match_iou":0.5,"no_ball_false_positive_boxes":1,"no_ball_false_positive_images":1,"no_ball_false_positive_rate":1,"no_ball_fp_boxes_per_image":1,"no_ball_fpr_wilson95":[0.20654931437723745,1],"no_ball_images":1,"positive_image_miss_rate":0.3333333333333333,"positive_images":3,"positive_images_with_no_matched_ball":1,"precision":0.5,"predicted_boxes":4,"recall":0.6666666666666666,"ultralytics_max_f1_precision":0.5,"ultralytics_max_f1_recall":0.6666666666666666},"report_directory":"/tmp/vision-evaluation-integration-tests-xUTEty/data/evaluations/20261021-021908-076-07a0833f","scenario":"selected-result-export","status":"complete"}
+18: PASS   : EvaluationIntegrationTests::selectedResultExportUsesCurrentThresholdAndTruth()
+18: QINFO  : EvaluationIntegrationTests::historyReopenDoesNotSelectAnotherGlobalModel() evaluation_start_button_evidence evaluationStartButton completed_images 4
+18: QINFO  : EvaluationIntegrationTests::historyReopenDoesNotSelectAnotherGlobalModel() evaluation_integration_evidence: {"backend":"OpenCV DNN","completed_images":4,"full_split":true,"metrics":{"F1":0.5714285714285714,"FN":1,"FP":2,"TP":2,"ap_per_iou":[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5],"confidence":0.3,"fp_boxes_per_image":0.5,"gt_boxes":3,"images":4,"mAP50":0.5,"mAP50_95":0.5,"mAP75":0.5,"match_iou":0.5,"no_ball_false_positive_boxes":1,"no_ball_false_positive_images":1,"no_ball_false_positive_rate":1,"no_ball_fp_boxes_per_image":1,"no_ball_fpr_wilson95":[0.20654931437723745,1],"no_ball_images":1,"positive_image_miss_rate":0.3333333333333333,"positive_images":3,"positive_images_with_no_matched_ball":1,"precision":0.5,"predicted_boxes":4,"recall":0.6666666666666666,"ultralytics_max_f1_precision":0.5,"ultralytics_max_f1_recall":0.6666666666666666},"report_directory":"/tmp/vision-evaluation-integration-tests-pRHnXO/data/evaluations/20261021-021910-798-0b40615d","scenario":"history-other-global-model","status":"complete"}
+18: PASS   : EvaluationIntegrationTests::historyReopenDoesNotSelectAnotherGlobalModel()
+18: QINFO  : EvaluationIntegrationTests::evaluationScopeDoesNotBorrowOrdinaryPreviewCache() evaluation_start_button_evidence evaluationStartButton completed_images 1
+18: QINFO  : EvaluationIntegrationTests::evaluationScopeDoesNotBorrowOrdinaryPreviewCache() evaluation_integration_evidence: {"backend":"OpenCV DNN / CPU","completed_images":1,"full_split":false,"metrics":{"F1":0,"FN":1,"FP":1,"TP":0,"ap_per_iou":[null,null,null,null,null,null,null,null,null,null],"confidence":0.3,"fp_boxes_per_image":1,"gt_boxes":1,"images":1,"mAP50":null,"mAP50_95":null,"mAP75":null,"match_iou":0.5,"no_ball_false_positive_boxes":0,"no_ball_false_positive_images":0,"no_ball_false_positive_rate":null,"no_ball_fp_boxes_per_image":null,"no_ball_fpr_wilson95":null,"no_ball_images":0,"positive_image_miss_rate":1,"positive_images":1,"positive_images_with_no_matched_ball":1,"precision":0,"predicted_boxes":1,"recall":0,"ultralytics_max_f1_precision":null,"ultralytics_max_f1_recall":null},"report_directory":"/tmp/vision-evaluation-integration-tests-LwOXPD/data/evaluations/20261021-021913-668-10b9a40d","scenario":"evaluation-scope-versus-ordinary-cache","status":"complete"}
+18: PASS   : EvaluationIntegrationTests::evaluationScopeDoesNotBorrowOrdinaryPreviewCache()
+18: QINFO  : EvaluationIntegrationTests::switchingToPreviewLeavesEvaluationReview() evaluation_start_button_evidence evaluationStartButton completed_images 4
+18: PASS   : EvaluationIntegrationTests::switchingToPreviewLeavesEvaluationReview()
+18: QINFO  : EvaluationIntegrationTests::changedPreprocessingRestoresPureGroundTruthPreview() evaluation_start_button_evidence evaluationStartButton completed_images 4
+18: PASS   : EvaluationIntegrationTests::changedPreprocessingRestoresPureGroundTruthPreview()
+18: PASS   : EvaluationIntegrationTests::smallerModelInvalidatesMappingWithoutInventingFalseNegatives()
+18: QINFO  : EvaluationIntegrationTests::stoppingPreservesCompletedPrefixAndReview() Sandboxing disabled by user.
+18: QINFO  : EvaluationIntegrationTests::stoppingPreservesCompletedPrefixAndReview() stop_button_return_ms 3 completed_prefix 1 heartbeats 226
+18: QINFO  : EvaluationIntegrationTests::stoppingPreservesCompletedPrefixAndReview() evaluation_integration_evidence: {"backend":"OpenCV DNN","completed_images":1,"full_split":false,"metrics":{"F1":1,"FN":0,"FP":0,"TP":1,"ap_per_iou":[null,null,null,null,null,null,null,null,null,null],"confidence":0.3,"fp_boxes_per_image":0,"gt_boxes":1,"images":1,"mAP50":null,"mAP50_95":null,"mAP75":null,"match_iou":0.5,"no_ball_false_positive_boxes":0,"no_ball_false_positive_images":0,"no_ball_false_positive_rate":null,"no_ball_fp_boxes_per_image":null,"no_ball_fpr_wilson95":null,"no_ball_images":0,"positive_image_miss_rate":0,"positive_images":1,"positive_images_with_no_matched_ball":0,"precision":1,"predicted_boxes":1,"recall":1,"ultralytics_max_f1_precision":null,"ultralytics_max_f1_recall":null},"report_directory":"/tmp/vision-evaluation-integration-tests-fysuyP/data/evaluations/20261021-021922-306-4238e4a3","scenario":"stop-prefix-review","status":"cancelled"}
+18: PASS   : EvaluationIntegrationTests::stoppingPreservesCompletedPrefixAndReview()
+18: PASS   : EvaluationIntegrationTests::cleanupTestCase()
+18: Totals: 34 passed, 0 failed, 0 skipped, 0 blacklisted, 59417ms
+18: ********* Finished testing of EvaluationIntegrationTests *********
+1/1 Test #18: vision-evaluation-integration-tests ...   Passed   59.55 sec
+
+The following tests passed:
+	vision-evaluation-integration-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =  59.55 sec

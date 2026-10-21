@@ -1,0 +1,30 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 14
+    Start 14: vision-gpu-runtime-tests
+
+14: Test command: /home/misaka/miniconda3/bin/python3.1 "/home/misaka/.codex/worktrees/ef0b/yolo/tests/gpu_runtime_tests.py"
+14: Test timeout computed to be: 60
+14: .....................
+14: ----------------------------------------------------------------------
+14: Ran 21 tests in 1.190s
+14: 
+14: OK
+1/1 Test #14: vision-gpu-runtime-tests .........   Passed    1.28 sec
+
+The following tests passed:
+	vision-gpu-runtime-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   1.29 sec

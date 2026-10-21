@@ -1,0 +1,1026 @@
+{
+  "schema_version": 1,
+  "version": "2.5.0",
+  "success": false,
+  "errors": [
+    "vision-scope-filter-ui-tests: command failure, skip, timeout, or missing JUnit test result"
+  ],
+  "generated_at_utc": "2026-10-21T02:19:25.137584+00:00",
+  "scope": "Actual selected CTest regression execution; not DEB, install, source or release acceptance",
+  "selected_tests": [
+    "vision-core-tests",
+    "vision-inference-delivery-tests",
+    "vision-recording-tests",
+    "vision-pt-tests",
+    "vision-gpu-tests",
+    "vision-ui-tests",
+    "vision-batch-responsiveness-tests",
+    "vision-scope-filter-ui-tests",
+    "vision-modelviewer-tests",
+    "vision-conversion-ui-tests",
+    "vision-conversion-inference-tests",
+    "vision-model-conversion-tests",
+    "vision-netron-server-tests",
+    "vision-gpu-runtime-tests",
+    "vision-evaluation-worker-tests",
+    "vision-evaluation-panel-tests",
+    "vision-evaluation-python-tests",
+    "vision-evaluation-integration-tests"
+  ],
+  "real_cuda_requested": true,
+  "binary": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/bin/vision-studio",
+  "binary_sha256": "254fef04b5493cd1bd72188b669aafa2328f2fe980326efe53f77c5eb97e3cc1",
+  "build_directory": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+  "runs": [
+    {
+      "name": "vision-core-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-core\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-core-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.772,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 39,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-core-tests.log",
+      "log_sha256": "3696dda33a1b3498f30edcbe2d8daf33e97490072820f12dd3806b3839d5dc77",
+      "junit": "vision-core-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-inference-delivery-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-inference\\-delivery\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-inference-delivery-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.482,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-inference-delivery-tests.log",
+      "log_sha256": "f2fc614b56c4e80652c661f527db81de202e010993a84f9c1ca95c6b7eb63e15",
+      "junit": "vision-inference-delivery-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-recording-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-recording\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-recording-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.927,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 15,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-recording-tests.log",
+      "log_sha256": "e0241ad0407edcfa78238eadf436b34a0664936b6245116ba3bb574f4c5345a9",
+      "junit": "vision-recording-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-pt-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-pt\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-pt-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 246.762,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 36,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-pt-tests.log",
+      "log_sha256": "bafd1b52812d9e0d060a35b083da73edda47540982ee6191c88d5be41212ab0e",
+      "junit": "vision-pt-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-gpu-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-gpu\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-gpu-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 135.387,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 11,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-gpu-tests.log",
+      "log_sha256": "db0d2bd9a2a72ea0d3450055583a48b75c595b2606be07f284cb0f44fca148d9",
+      "junit": "vision-gpu-tests.xml",
+      "feature_evidence": [
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "all",
+            "cpu_backend": "OpenCV DNN / CPU",
+            "cpu_count": 5,
+            "cpu_original_ids": [
+              0,
+              5
+            ],
+            "cuda_backend": "ONNX Runtime / CUDA",
+            "cuda_count": 5,
+            "cuda_original_ids": [
+              0,
+              5
+            ],
+            "filter": [],
+            "model": "yolov5n.onnx",
+            "model_class_count": 80,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "32",
+            "cpu_backend": "OpenCV DNN / CPU",
+            "cpu_count": 0,
+            "cpu_original_ids": [],
+            "cuda_backend": "ONNX Runtime / CUDA",
+            "cuda_count": 0,
+            "cuda_original_ids": [],
+            "filter": [
+              32
+            ],
+            "model": "yolov5n.onnx",
+            "model_class_count": 80,
+            "zero_match": true
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "multi",
+            "cpu_backend": "OpenCV DNN / CPU",
+            "cpu_count": 5,
+            "cpu_original_ids": [
+              0,
+              5
+            ],
+            "cuda_backend": "ONNX Runtime / CUDA",
+            "cuda_count": 5,
+            "cuda_original_ids": [
+              0,
+              5
+            ],
+            "filter": [
+              0,
+              5
+            ],
+            "model": "yolov5n.onnx",
+            "model_class_count": 80,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "all",
+            "cpu_backend": "PyTorch / Ultralytics / CPU",
+            "cpu_count": 5,
+            "cpu_original_ids": [
+              0,
+              5
+            ],
+            "cuda_backend": "PyTorch / Ultralytics / CUDA",
+            "cuda_count": 5,
+            "cuda_original_ids": [
+              0,
+              5
+            ],
+            "filter": [],
+            "model": "yolov8n.pt",
+            "model_class_count": 80,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "32",
+            "cpu_backend": "PyTorch / Ultralytics / CPU",
+            "cpu_count": 0,
+            "cpu_original_ids": [],
+            "cuda_backend": "PyTorch / Ultralytics / CUDA",
+            "cuda_count": 0,
+            "cuda_original_ids": [],
+            "filter": [
+              32
+            ],
+            "model": "yolov8n.pt",
+            "model_class_count": 80,
+            "zero_match": true
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "multi",
+            "cpu_backend": "PyTorch / Ultralytics / CPU",
+            "cpu_count": 5,
+            "cpu_original_ids": [
+              0,
+              5
+            ],
+            "cuda_backend": "PyTorch / Ultralytics / CUDA",
+            "cuda_count": 5,
+            "cuda_original_ids": [
+              0,
+              5
+            ],
+            "filter": [
+              0,
+              5
+            ],
+            "model": "yolov8n.pt",
+            "model_class_count": 80,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "all",
+            "cpu_backend": "PyTorch / YOLOv5 / CPU",
+            "cpu_count": 5,
+            "cpu_original_ids": [
+              0,
+              5
+            ],
+            "cuda_backend": "PyTorch / YOLOv5 / CUDA",
+            "cuda_count": 5,
+            "cuda_original_ids": [
+              0,
+              5
+            ],
+            "filter": [],
+            "model": "yolov5n.pt",
+            "model_class_count": 80,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "32",
+            "cpu_backend": "PyTorch / YOLOv5 / CPU",
+            "cpu_count": 0,
+            "cpu_original_ids": [],
+            "cuda_backend": "PyTorch / YOLOv5 / CUDA",
+            "cuda_count": 0,
+            "cuda_original_ids": [],
+            "filter": [
+              32
+            ],
+            "model": "yolov5n.pt",
+            "model_class_count": 80,
+            "zero_match": true
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "multi",
+            "cpu_backend": "PyTorch / YOLOv5 / CPU",
+            "cpu_count": 5,
+            "cpu_original_ids": [
+              0,
+              5
+            ],
+            "cuda_backend": "PyTorch / YOLOv5 / CUDA",
+            "cuda_count": 5,
+            "cuda_original_ids": [
+              0,
+              5
+            ],
+            "filter": [
+              0,
+              5
+            ],
+            "model": "yolov5n.pt",
+            "model_class_count": 80,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "all",
+            "cpu_backend": "PyTorch / TorchScript / CPU",
+            "cpu_count": 1,
+            "cpu_original_ids": [
+              32
+            ],
+            "cuda_backend": "PyTorch / TorchScript / CUDA",
+            "cuda_count": 1,
+            "cuda_original_ids": [
+              32
+            ],
+            "filter": [],
+            "model": "gpu-3-1-33-32.pt",
+            "model_class_count": 33,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "32",
+            "cpu_backend": "PyTorch / TorchScript / CPU",
+            "cpu_count": 1,
+            "cpu_original_ids": [
+              32
+            ],
+            "cuda_backend": "PyTorch / TorchScript / CUDA",
+            "cuda_count": 1,
+            "cuda_original_ids": [
+              32
+            ],
+            "filter": [
+              32
+            ],
+            "model": "gpu-3-1-33-32.pt",
+            "model_class_count": 33,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "multi",
+            "cpu_backend": "PyTorch / TorchScript / CPU",
+            "cpu_count": 1,
+            "cpu_original_ids": [
+              32
+            ],
+            "cuda_backend": "PyTorch / TorchScript / CUDA",
+            "cuda_count": 1,
+            "cuda_original_ids": [
+              32
+            ],
+            "filter": [
+              0,
+              32
+            ],
+            "model": "gpu-3-1-33-32.pt",
+            "model_class_count": 33,
+            "zero_match": false
+          }
+        },
+        {
+          "kind": "CLASS_FILTER_EVIDENCE",
+          "value": {
+            "actual_cuda_device": "NVIDIA GeForce RTX 4060",
+            "case": "zero",
+            "cpu_backend": "PyTorch / TorchScript / CPU",
+            "cpu_count": 0,
+            "cpu_original_ids": [],
+            "cuda_backend": "PyTorch / TorchScript / CUDA",
+            "cuda_count": 0,
+            "cuda_original_ids": [],
+            "filter": [
+              1
+            ],
+            "model": "gpu-3-1-33-32.pt",
+            "model_class_count": 33,
+            "zero_match": true
+          }
+        },
+        {
+          "kind": "ORT_PROFILE_EVIDENCE",
+          "value": {
+            "cuda_node_events": 364,
+            "distinct_cuda_nodes": 182,
+            "profile": "onnx-cuda-0_2026-10-21_10-12-15.json"
+          }
+        },
+        {
+          "kind": "ORT_PROFILE_EVIDENCE",
+          "value": {
+            "cuda_node_events": 364,
+            "distinct_cuda_nodes": 182,
+            "profile": "onnx-cuda-1_2026-10-21_10-12-16.json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vision-ui-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-ui\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-ui-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 45.663,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 39,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-ui-tests.log",
+      "log_sha256": "3abc096dcd2a67f3839bed7ed8eb6db7c40558418e3c4e47db4dab0207c90f2a",
+      "junit": "vision-ui-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-batch-responsiveness-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-batch\\-responsiveness\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-batch-responsiveness-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 10.101,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-batch-responsiveness-tests.log",
+      "log_sha256": "f79e6befe8d49033c3b16a4c84707945e29865aec128e4f6258ac44a35007a2d",
+      "junit": "vision-batch-responsiveness-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-scope-filter-ui-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-scope\\-filter\\-ui\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-scope-filter-ui-tests.xml"
+      ],
+      "exit_code": 8,
+      "elapsed_seconds": 24.986,
+      "success": false,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 14,
+          "failed": 24,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-scope-filter-ui-tests.log",
+      "log_sha256": "eb6b3c123b04fd54850d7bbf08d1c0a09632b6c124e1f8aea08b8bb214dff496",
+      "junit": "vision-scope-filter-ui-tests.xml",
+      "feature_evidence": [
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 0,
+            "mode": 0,
+            "queue_count": 1,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 0,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 0,
+            "mode": 1,
+            "queue_count": 1,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 0,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 0,
+            "mode": 2,
+            "queue_count": 1,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 0,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "export_matches_preview": true,
+            "filter_text": "",
+            "kind": "scope-and-filter",
+            "mode": 2,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "export_matches_preview": true,
+            "filter_text": "32",
+            "kind": "scope-and-filter",
+            "mode": 2,
+            "original_ids_retained": true,
+            "zero_match_is_completed": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "export_matches_preview": true,
+            "filter_text": "0,5,32",
+            "kind": "scope-and-filter",
+            "mode": 2,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "export_matches_preview": true,
+            "filter_text": "5，0 5，32",
+            "kind": "scope-and-filter",
+            "mode": 2,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "kind": "selection-and-stream",
+            "missing_selection_blocks_tail_and_current": true,
+            "stream_range_hidden": true,
+            "whole_queue_works_without_selection": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "classification_filter_disabled": true,
+            "coco_classes": 80,
+            "invalid_inputs_block_start": true,
+            "kind": "validation",
+            "replacement_model_classes": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_class_count": 1,
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "kind": "dynamic-class-metadata",
+            "submitted_class_count": 0,
+            "ui_and_export_configuration_synchronized": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "actual_inference": true,
+            "backend": "OpenCV DNN / CPU",
+            "filter": "0,5",
+            "kind": "workbench-visual",
+            "mode": 2,
+            "optional_screenshot": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/artifacts/scope-filter-workbench.png",
+            "queue_count": 64,
+            "selected_row": 50
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "identity_changed": true,
+            "job_identity_frozen": true,
+            "kind": "model-identity-during-task",
+            "later_results_not_relabelled": true,
+            "stale_cache_unavailable": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "vision-modelviewer-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-modelviewer\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-modelviewer-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 12.484,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 16,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-modelviewer-tests.log",
+      "log_sha256": "6477bc0497890d00277c4471ccc8f7d776ef10dc996613f35a62719633c80080",
+      "junit": "vision-modelviewer-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-conversion-ui-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-conversion\\-ui\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-conversion-ui-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.709,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 8,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-conversion-ui-tests.log",
+      "log_sha256": "34313295bbdda40fb7c4059e90e232f408e48b953541d3bff52922b967ec9981",
+      "junit": "vision-conversion-ui-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-conversion-inference-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-conversion\\-inference\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-conversion-inference-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 119.256,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 14,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-conversion-inference-tests.log",
+      "log_sha256": "34dabbe08ba31e880db20e7b3d6ec380130a757c12dfefe3de207612249ff953",
+      "junit": "vision-conversion-inference-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-model-conversion-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-model\\-conversion\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-model-conversion-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 112.707,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [],
+      "log": "vision-model-conversion-tests.log",
+      "log_sha256": "b7230afcc8bcfd4cb4832b6ad39afd22337dd64bccc04852542990a0ae140558",
+      "junit": "vision-model-conversion-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-netron-server-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-netron\\-server\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-netron-server-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 4.757,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [],
+      "log": "vision-netron-server-tests.log",
+      "log_sha256": "e6b289eb217f63f81b093ef5598675c13aaaeb5e2c9386ea7e6f029e6a05398b",
+      "junit": "vision-netron-server-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-gpu-runtime-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-gpu\\-runtime\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-gpu-runtime-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.295,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [],
+      "log": "vision-gpu-runtime-tests.log",
+      "log_sha256": "8469867997641306f88bb2f382047c0b7f933abb8f913025ef1bb0f6add9c281",
+      "junit": "vision-gpu-runtime-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-evaluation-worker-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-evaluation\\-worker\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-evaluation-worker-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 27.615,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 18,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-evaluation-worker-tests.log",
+      "log_sha256": "2d4e64ba8c57961d9eb5a0736c07dea82cd9fe98c975358973c29f827720a421",
+      "junit": "vision-evaluation-worker-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-evaluation-panel-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-evaluation\\-panel\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-evaluation-panel-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.818,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 25,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-evaluation-panel-tests.log",
+      "log_sha256": "94dee34dce9c2e42118a03bfaae8c9b7644d329cf52b525b328e396b43a8ed06",
+      "junit": "vision-evaluation-panel-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-evaluation-python-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-evaluation\\-python\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-evaluation-python-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 5.03,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [],
+      "log": "vision-evaluation-python-tests.log",
+      "log_sha256": "8dc2e4c3f1f1344d5f5469702f4114c1aa9228001fade619e8da0f14126e4b48",
+      "junit": "vision-evaluation-python-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-evaluation-integration-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-evaluation\\-integration\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/vision-evaluation-integration-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 59.56,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 34,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-evaluation-integration-tests.log",
+      "log_sha256": "18c048d4fe4c228c778487a152f5a19d800a7c4a4dc7311fb3d9ff80a6077b91",
+      "junit": "vision-evaluation-integration-tests.xml",
+      "feature_evidence": []
+    }
+  ],
+  "artifacts_directory": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/qa-full/artifacts",
+  "coverage_note": "Feature coverage is defined by the actual assertions in the selected suites. A successful suite is not a measurement of performance or proof of unexecuted cases."
+}

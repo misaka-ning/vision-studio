@@ -1,0 +1,362 @@
+{
+  "schema_version": 1,
+  "version": "2.5.0",
+  "success": true,
+  "errors": [],
+  "scope": "Preservation of 16 original native Qt UI screenshots plus three bounded original diagnostic logs; no new inference or UI test was run by archiving.",
+  "archive": {
+    "file": "native-ui-artifacts.zip",
+    "bytes": 1746830,
+    "sha256": "1ed452abad81c0c87ae4f7248357f30a53dd1aca7ba798442f58cf2b19c9d2f6"
+  },
+  "repository_copy": {
+    "file": "docs/releases/evidence/2.5.0/native-ui-artifacts.zip",
+    "bytes": 1746830,
+    "sha256": "1ed452abad81c0c87ae4f7248357f30a53dd1aca7ba798442f58cf2b19c9d2f6"
+  },
+  "file_count": 19,
+  "files": [
+    {
+      "file": "diagnostics/preflight-native.log",
+      "bytes": 30446,
+      "sha256": "959382aefba6f6812d63c3f91dbcaf81825441f8a700a334c63676926b7887d1"
+    },
+    {
+      "file": "diagnostics/preflight-sandbox-and-popup.log",
+      "bytes": 20598,
+      "sha256": "8ccd62db31a91186ec57a527b53f6f9a7a486eaca05591f37256c9a5882b9a56"
+    },
+    {
+      "file": "diagnostics/scope-async-rerun.log",
+      "bytes": 14321,
+      "sha256": "edf7e967952020ee1243c0d24250ade2310705277034df5d4f12af0756668aab"
+    },
+    {
+      "file": "ui/compact-1260-cpu-collapsed.png",
+      "bytes": 151207,
+      "sha256": "82208204e7c388c6d61021f8c0e0818e206d033ffe2a9d05f4e90e2f49784246"
+    },
+    {
+      "file": "ui/compact-1260-cpu-popup-context.png",
+      "bytes": 151476,
+      "sha256": "cdc4a3deafda63a798e1109c8849be7dd64e5839ad832ebe4d6c19f6698b583d"
+    },
+    {
+      "file": "ui/compact-1260-cuda-collapsed.png",
+      "bytes": 155120,
+      "sha256": "6ea2c72464cd7964dfe6202578a584133a4c69b3f48ac17c6329cf12945dd778"
+    },
+    {
+      "file": "ui/compact-1260-cuda-popup-context.png",
+      "bytes": 155353,
+      "sha256": "ba715c75b89ff30030c988f1f30733cf49a01dc88169830e8097b5c3f3fcd592"
+    },
+    {
+      "file": "ui/compact-1380-cpu-collapsed.png",
+      "bytes": 153378,
+      "sha256": "2eb03cb9620e811b3d879ba9fa19bd0db35c4bd3673826d3c0d79b54da5d001d"
+    },
+    {
+      "file": "ui/compact-1380-cpu-popup-context.png",
+      "bytes": 153625,
+      "sha256": "b884281b504f03b291c14ba9af6c89a88f5e5607c2c0e9d65efae16c0ccc07d7"
+    },
+    {
+      "file": "ui/compact-1380-cuda-collapsed.png",
+      "bytes": 157323,
+      "sha256": "5cf36681b855abd346e9984e42abdc3ee197b245d58e157ef88ef2d380c6d12e"
+    },
+    {
+      "file": "ui/compact-1380-cuda-popup-context.png",
+      "bytes": 157587,
+      "sha256": "b6260589c5bf4f3c9135e7428c17717ba99b56a29f7cdc092181c6472a44ed5e"
+    },
+    {
+      "file": "ui/lazy-queue-grayscale-preview.png",
+      "bytes": 149999,
+      "sha256": "c4cb57406f07e63f5f99ddae1b347f67a8f696bfc999bc29d8462fdbc36c5d8e"
+    },
+    {
+      "file": "ui/panel-dataset-settings.png",
+      "bytes": 40106,
+      "sha256": "5bcd800f8c6e868020435c62708ea32bac7c56bb60b318c748c08fa2399d8859"
+    },
+    {
+      "file": "ui/settings-popup-1260-cpu.png",
+      "bytes": 39530,
+      "sha256": "2090b9b64233234873037a6de6301e4542fdd86fa7c215f7bfc3de60d7281351"
+    },
+    {
+      "file": "ui/settings-popup-1260-cuda.png",
+      "bytes": 39530,
+      "sha256": "2090b9b64233234873037a6de6301e4542fdd86fa7c215f7bfc3de60d7281351"
+    },
+    {
+      "file": "ui/settings-popup-1380-cpu.png",
+      "bytes": 39530,
+      "sha256": "2090b9b64233234873037a6de6301e4542fdd86fa7c215f7bfc3de60d7281351"
+    },
+    {
+      "file": "ui/settings-popup-1380-cuda.png",
+      "bytes": 39530,
+      "sha256": "2090b9b64233234873037a6de6301e4542fdd86fa7c215f7bfc3de60d7281351"
+    },
+    {
+      "file": "ui/workspace-evaluation.png",
+      "bytes": 138380,
+      "sha256": "38c5ce8a2de2b90a88d97ae47f279d7c9cca8f15d236054df661f2d53183b3ac"
+    },
+    {
+      "file": "ui/workspace-preview.png",
+      "bytes": 175408,
+      "sha256": "0becabd1f8c852c5466fbf2d85269c5c3c7e07d116b2b3b759799145b83be827"
+    }
+  ],
+  "uncompressed_bytes": 1962447,
+  "png_fully_decoded_count": 16,
+  "png_complete_decode": [
+    {
+      "file": "ui/compact-1260-cpu-collapsed.png",
+      "width": 1260,
+      "height": 820,
+      "mode": "RGB",
+      "complete_decode": true,
+      "metadata_keys": [
+        "dpi"
+      ]
+    },
+    {
+      "file": "ui/compact-1260-cpu-popup-context.png",
+      "width": 1260,
+      "height": 820,
+      "mode": "RGB",
+      "complete_decode": true,
+      "metadata_keys": [
+        "dpi"
+      ]
+    },
+    {
+      "file": "ui/compact-1260-cuda-collapsed.png",
+      "width": 1260,
+      "height": 820,
+      "mode": "RGB",
+      "complete_decode": true,
+      "metadata_keys": [
+        "dpi"
+      ]
+    },
+    {
+      "file": "ui/compact-1260-cuda-popup-context.png",
+      "width": 1260,
+      "height": 820,
+      "mode": "RGB",
+      "complete_decode": true,
+      "metadata_keys": [
+        "dpi"
+      ]
+    },
+    {
+      "file": "ui/compact-1380-cpu-collapsed.png",
+      "width": 1380,
+      "height": 820,
+      "mode": "RGB",
+      "complete_decode": true,
+      "metadata_keys": [
+        "dpi"
+      ]
+    },
+    {
+      "file": "ui/compact-1380-cpu-popup-context.png",
+      "width": 1380,
+      "height": 820,
+      "mode": "RGB",
+      "complete_decode": true,
+      "metadata_keys": [
+        "dpi"
+      ]
+    },
+    {
+      "file": "ui/compact-1380-cuda-collapsed.png",
+      "width": 1380,
+      "height": 820,
+      "mode": "RGB",
+      "complete_decode": true,
+      "metadata_keys": [
+        "dpi"
+      ]
+    },
+    {
+      "file": "ui/compact-1380-cuda-popup-context.png",
+      "width": 1380,
+      "height": 820,
+      "mode": "RGB",
+      "complete_decode": true,
+      "metadata_keys": [
+        "dpi"
+      ]
+    },
+    {
+      "file": "ui/lazy-queue-grayscale-preview.png",
+      "width": 1260,
+      "height": 820,
+      "mode": "RGB",
+      "complete_decode": true,
+      "metadata_keys": [
+        "dpi"
+      ]
+    },
+    {
+      "file": "ui/panel-dataset-settings.png",
+      "width": 620,
+      "height": 309,
+      "mode": "RGB",
+      "complete_decode": true,
+      "metadata_keys": [
+        "dpi"
+      ]
+    },
+    {
+      "file": "ui/settings-popup-1260-cpu.png",
+      "width": 620,
+      "height": 309,
+      "mode": "RGB",
+      "complete_decode": true,
+      "metadata_keys": [
+        "dpi"
+      ]
+    },
+    {
+      "file": "ui/settings-popup-1260-cuda.png",
+      "width": 620,
+      "height": 309,
+      "mode": "RGB",
+      "complete_decode": true,
+      "metadata_keys": [
+        "dpi"
+      ]
+    },
+    {
+      "file": "ui/settings-popup-1380-cpu.png",
+      "width": 620,
+      "height": 309,
+      "mode": "RGB",
+      "complete_decode": true,
+      "metadata_keys": [
+        "dpi"
+      ]
+    },
+    {
+      "file": "ui/settings-popup-1380-cuda.png",
+      "width": 620,
+      "height": 309,
+      "mode": "RGB",
+      "complete_decode": true,
+      "metadata_keys": [
+        "dpi"
+      ]
+    },
+    {
+      "file": "ui/workspace-evaluation.png",
+      "width": 1380,
+      "height": 940,
+      "mode": "RGB",
+      "complete_decode": true,
+      "metadata_keys": [
+        "dpi"
+      ]
+    },
+    {
+      "file": "ui/workspace-preview.png",
+      "width": 1380,
+      "height": 940,
+      "mode": "RGB",
+      "complete_decode": true,
+      "metadata_keys": [
+        "dpi"
+      ]
+    }
+  ],
+  "zip_crc_and_member_sha256_verified": true,
+  "data_provenance": {
+    "source_directory": "output/v2.5.0/ui-final",
+    "integration_images": "Program-generated RGB images, labels and known Conv/GlobalAveragePool/Reshape ONNX fixture from tests/evaluation_integration_tests.cpp; not private data or an accuracy benchmark.",
+    "large_queue": "2000 program-generated PNGs with empty annotations from tests/batch_responsiveness_tests.cpp; grayscale preview without inference.",
+    "panel": "Generated names/model metadata from tests/evaluation_panel_tests.cpp.",
+    "private_data_included": false,
+    "image_metadata_private_markers_found": false,
+    "diagnostic_private_markers_found": false
+  },
+  "diagnostic_observations": [
+    {
+      "file": "diagnostics/preflight-native.log",
+      "qt_totals": [
+        {
+          "passed": 31,
+          "failed": 3,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "segmentation_fault_observed": false,
+      "status": "failed_or_incomplete_preflight_not_release_pass",
+      "count_toward_release_totals": false
+    },
+    {
+      "file": "diagnostics/preflight-sandbox-and-popup.log",
+      "qt_totals": [
+        {
+          "passed": 38,
+          "failed": 1,
+          "skipped": 0,
+          "blacklisted": 0
+        },
+        {
+          "passed": 2,
+          "failed": 4,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "segmentation_fault_observed": true,
+      "status": "failed_or_incomplete_preflight_not_release_pass",
+      "count_toward_release_totals": false
+    },
+    {
+      "file": "diagnostics/scope-async-rerun.log",
+      "qt_totals": [
+        {
+          "passed": 38,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "segmentation_fault_observed": false,
+      "status": "diagnostic_replay_only",
+      "count_toward_release_totals": false
+    }
+  ],
+  "limitations": [
+    "Native test-harness screenshots are not a separate final-DEB installation or UI execution.",
+    "CPU/CUDA selector layout rows do not execute GPU inference or prove hardware availability.",
+    "Synthetic known-network outputs and timings verify UI/data flow, not football accuracy, mAP or throughput.",
+    "lazy-queue-grayscale-preview.png displays applicationVersion 2.0.0 because its test harness explicitly fixes that metadata value; it is an unmodified 2.5.0-source UI test image, not an older product capture.",
+    "Original failed/incomplete diagnostics and one isolated successful replay are not additional release passes; formal results remain in README.md and ctest-qa.json."
+  ],
+  "excluded": [
+    "Private image/model/dataset inputs and reports",
+    "Isolated preferences and cache",
+    "Model weights and runtimes",
+    "Build products and executable tests",
+    "Duplicate preflight screenshots"
+  ],
+  "inspection": {
+    "representative_images_visually_reviewed": [
+      "ui/workspace-preview.png",
+      "ui/workspace-evaluation.png",
+      "ui/lazy-queue-grayscale-preview.png",
+      "ui/settings-popup-1260-cuda.png"
+    ],
+    "review_result": "Actual Qt generated-fixture preview/evaluation windows, grayscale queue and popup reviewed. Selected materials contain no private image, private model path, credential or personal dataset content."
+  }
+}

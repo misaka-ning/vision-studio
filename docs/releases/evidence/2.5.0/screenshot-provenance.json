@@ -1,0 +1,18 @@
+{
+  "version": "2.5.0",
+  "source": "Actual final DEB COCO8 UI smoke windows; not a benchmark",
+  "images": [
+    {
+      "file": "docs/screenshots/workbench-2.5.0.png",
+      "source": "onnx_cpu/ui-smoke/evaluation-preview.png",
+      "sha256": "63f05a59375c8530beeb1e3c5b2c470c61c3069c25eb5775ac1c43baa0479a13",
+      "visually_reviewed": true
+    },
+    {
+      "file": "docs/screenshots/evaluation-2.5.0.png",
+      "source": "onnx_cuda/ui-smoke/evaluation-analysis.png",
+      "sha256": "5de9b23eb8fcf577ed079edb98e76a50ffac2703298bc2c760dee5233c745799",
+      "visually_reviewed": true
+    }
+  ]
+}

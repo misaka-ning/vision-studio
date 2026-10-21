@@ -1,0 +1,108 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 16
+    Start 16: vision-evaluation-panel-tests
+
+16: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release/vision-evaluation-panel-tests
+16: Environment variables: 
+16:  QT_QPA_PLATFORM=offscreen
+16: Test timeout computed to be: 120
+16: ********* Start testing of EvaluationPanelTests *********
+16: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+16: PASS   : EvaluationPanelTests::initTestCase()
+16: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support raise()
+16: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support grabbing the keyboard
+16: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support raise()
+16: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support grabbing the keyboard
+16: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support raise()
+16: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support grabbing the keyboard
+16: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support raise()
+16: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support grabbing the keyboard
+16: PASS   : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml()
+16: QWARN  : EvaluationPanelTests::cancellingOrBusyDoesNotRequestDataset() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::cancellingOrBusyDoesNotRequestDataset() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::cancellingOrBusyDoesNotRequestDataset() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::cancellingOrBusyDoesNotRequestDataset() This plugin does not support propagateSizeHints()
+16: PASS   : EvaluationPanelTests::cancellingOrBusyDoesNotRequestDataset()
+16: QWARN  : EvaluationPanelTests::unifiedPickerRejectsInvalidSourceInline() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::unifiedPickerRejectsInvalidSourceInline() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::unifiedPickerRejectsInvalidSourceInline() This plugin does not support raise()
+16: QWARN  : EvaluationPanelTests::unifiedPickerRejectsInvalidSourceInline() This plugin does not support grabbing the keyboard
+16: QWARN  : EvaluationPanelTests::unifiedPickerRejectsInvalidSourceInline() This plugin does not support raise()
+16: QWARN  : EvaluationPanelTests::unifiedPickerRejectsInvalidSourceInline() This plugin does not support grabbing the keyboard
+16: PASS   : EvaluationPanelTests::unifiedPickerRejectsInvalidSourceInline()
+16: PASS   : EvaluationPanelTests::failedFirstImportKeepsSourceAndAllowsExplicitSplitRetry()
+16: PASS   : EvaluationPanelTests::modeRequiresValidDatasetAndDetection()
+16: PASS   : EvaluationPanelTests::missingLabelsAndNegativeSamples()
+16: PASS   : EvaluationPanelTests::mappingPreservesOriginalIdsAndValidatesNewModel()
+16: PASS   : EvaluationPanelTests::refreshDoesNotEmitRecursiveConfigurationSignals()
+16: PASS   : EvaluationPanelTests::sameManifestRestoresFailedDatasetSelectionWithoutRecursiveSignals()
+16: PASS   : EvaluationPanelTests::busyLocksConfigurationAndMapping()
+16: PASS   : EvaluationPanelTests::spinBoxesIgnoreWheel()
+16: PASS   : EvaluationPanelTests::operatingPointSelectionNeverAutoApplies()
+16: PASS   : EvaluationPanelTests::arrowsSelectAdjacentComputedThresholds()
+16: QWARN  : EvaluationPanelTests::tableAndCurveSelectActualRows() This plugin does not support propagateSizeHints()
+16: PASS   : EvaluationPanelTests::tableAndCurveSelectActualRows()
+16: PASS   : EvaluationPanelTests::unavailableAndPartialMetricsRemainNA()
+16: PASS   : EvaluationPanelTests::constrainedRecommendationAndTestPolicy()
+16: PASS   : EvaluationPanelTests::recommendationPlateauUsesHighestConfidence()
+16: PASS   : EvaluationPanelTests::scanValidationAndImageFilter()
+16: PASS   : EvaluationPanelTests::exportedCopyKeepsOriginalAndAddsAnalysisSnapshot()
+16: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support raise()
+16: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support grabbing the keyboard
+16: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support raise()
+16: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support raise()
+16: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support grabbing the keyboard
+16: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support raise()
+16: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support raise()
+16: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support grabbing the keyboard
+16: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support raise()
+16: QINFO  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() dataset_popup_evidence toolbar QRect(11,11 948x40) popup QSize(620, 309) outside_click_closed true configuration_unchanged true
+16: PASS   : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges()
+16: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support raise()
+16: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support grabbing the keyboard
+16: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support raise()
+16: PASS   : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar()
+16: QWARN  : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode() This plugin does not support propagateSizeHints()
+16: QWARN  : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode() This plugin does not support raise()
+16: QWARN  : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode() This plugin does not support grabbing the keyboard
+16: QWARN  : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode() This plugin does not support raise()
+16: PASS   : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode()
+16: PASS   : EvaluationPanelTests::captureFluentLayout()
+16: PASS   : EvaluationPanelTests::cleanupTestCase()
+16: Totals: 25 passed, 0 failed, 0 skipped, 0 blacklisted, 794ms
+16: ********* Finished testing of EvaluationPanelTests *********
+1/1 Test #16: vision-evaluation-panel-tests ....   Passed    0.81 sec
+
+The following tests passed:
+	vision-evaluation-panel-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.81 sec

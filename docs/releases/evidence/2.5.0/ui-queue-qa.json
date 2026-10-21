@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "version": "2.5.0",
+  "success": true,
+  "errors": [],
+  "generated_at_utc": "2026-10-21T02:24:27.252358+00:00",
+  "checks": {
+    "unified_directory_and_yaml_picker": true,
+    "invalid_source_inline": true,
+    "popup_dismissal_geometry_busy_lock": true,
+    "complete_long_error_accessible": true,
+    "full_workbench_pages_preserve_configuration": true,
+    "lazy_queue_heartbeat_pixels_stale_cancel": true,
+    "popup_workbench_geometry_all_four_layout_rows": true
+  },
+  "scope": "Effective production-native unified picker, popup, full-workbench-page and asynchronous queue tests. DEB hash is traceability binding; this is not a separate installed-package UI run.",
+  "details": {
+    "deb_sha256": "9abc153c5699852ec40b16cb7b261f12796a103642601be4dda47f464d07fe03",
+    "deb_bytes": 387201252,
+    "packaged_binary_sha256": "7939a1c156b4d8ef761cb35d00ff22284ee5f7049af977a0625c37c965e9341f",
+    "production_unstripped_binary_sha256": "254fef04b5493cd1bd72188b669aafa2328f2fe980326efe53f77c5eb97e3cc1",
+    "ctest_report": "ctest-qa.json",
+    "hardware": "NVIDIA GeForce RTX 4060",
+    "aggregation_only": "No new inference was executed by this report aggregation.",
+    "feature_methods": {
+      "unified_directory_and_yaml_picker": {
+        "suite": "vision-evaluation-panel-tests",
+        "class": "EvaluationPanelTests",
+        "method": "sameDatasetPickerAcceptsDirectoryAndYaml"
+      },
+      "invalid_source_inline": {
+        "suite": "vision-evaluation-panel-tests",
+        "class": "EvaluationPanelTests",
+        "method": "unifiedPickerRejectsInvalidSourceInline"
+      },
+      "popup_dismissal_geometry_busy_lock": {
+        "suite": "vision-evaluation-panel-tests",
+        "class": "EvaluationPanelTests",
+        "method": "settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges"
+      },
+      "complete_long_error_accessible": {
+        "suite": "vision-evaluation-panel-tests",
+        "class": "EvaluationPanelTests",
+        "method": "longImportErrorsAreReadableInPopupWithoutGrowingToolbar"
+      },
+      "full_workbench_pages_preserve_configuration": {
+        "suite": "vision-evaluation-integration-tests",
+        "class": "EvaluationIntegrationTests",
+        "method": "fullWidthTabsChangeOnlyViewAndShareDetectionRange"
+      },
+      "lazy_queue_heartbeat_pixels_stale_cancel": {
+        "suite": "vision-batch-responsiveness-tests",
+        "class": "BatchResponsivenessTests",
+        "method": "largeQueueLoadsOnlyVisibleThumbnailsAndCancelsStalePreviews"
+      }
+    },
+    "layout_rows": [
+      "1260-cpu-layout-only",
+      "1260-cuda-layout-only",
+      "1380-cpu-layout-only",
+      "1380-cuda-layout-only"
+    ],
+    "lazy_queue_observations": {
+      "fixture_images": 2000,
+      "initial_loaded_thumbnails": 6,
+      "dataset_format": "standard_yolo_dataset",
+      "observed_partial_population_count": 96,
+      "population_controls_locked": true,
+      "stopped_at_partial_count": 96,
+      "stop_dispatch_ms": 3,
+      "heartbeat_ticks": 136,
+      "maximum_gap_ms": 66,
+      "rapid_selection_final_index": 1998,
+      "remaining_jobs_after_clear": 0
+    },
+    "limitations": [
+      "Synthetic small-image fixture validates scheduling and stale-result rejection, not deployment accuracy.",
+      "Heartbeat values are this execution's observations, not a cross-hardware performance guarantee."
+    ]
+  }
+}
