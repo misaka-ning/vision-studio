@@ -56,10 +56,12 @@ int main(int argc, char **argv)
     parser.addOption({"screenshot", "保存工作台截图并退出", "path"});
     parser.addOption({"smoke", "执行真实示例 ONNX 推理、导出和 UI 自检后退出", "directory"});
     parser.addOption({"smoke-pt", "执行真实 .pt 推理、导出和 UI 自检后退出", "directory"});
-    parser.addOption({"smoke-model", "执行真实模型解析、三种视图与缓存自检后退出", "directory"});
+    parser.addOption({"smoke-model", "执行真实模型解析、四种视图与缓存自检后退出", "directory"});
     parser.addOption({"smoke-conversion", "执行模型转换界面、导出与实际推理自检后退出", "directory"});
     parser.addOption({"smoke-evaluation", "执行数据集评估、阈值分析、结果导出和界面自检后退出", "directory"});
     parser.addOption({"smoke-dataset-session", "恢复上次数据集并检查跨进程载入，不执行推理", "directory"});
+    parser.addOption({"smoke-preview-drop", "执行预览拖入、临时图片和原集合评估自检后退出", "directory"});
+    parser.addOption({"preview-drop-request", "预览拖入自检 JSON 请求文件", "path"});
     parser.addOption({"evaluation-request", "评估自检 JSON 请求文件（需配合 --smoke-evaluation）", "path"});
     parser.addOption({"conversion-source", "转换自检的本地 PT 模型", "path"});
     parser.addOption({"conversion-format", "转换自检格式：onnx 或 torchscript", "format", "onnx"});
@@ -90,6 +92,10 @@ int main(int argc, char **argv)
                                window.saveScreenshot(parser.value("screenshot"));
                                app.quit();
                            });
+    else if (parser.isSet("smoke-preview-drop"))
+        QTimer::singleShot(200, &window, [&] {
+            window.runPreviewDropSmoke(parser.value("smoke-preview-drop"), parser.value("preview-drop-request"));
+        });
     else if (parser.isSet("smoke-dataset-session"))
         QTimer::singleShot(200, &window, [&] { window.runDatasetSessionSmoke(parser.value("smoke-dataset-session")); });
     else if (parser.isSet("smoke-evaluation"))

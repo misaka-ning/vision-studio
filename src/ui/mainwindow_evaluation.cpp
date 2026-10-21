@@ -339,6 +339,7 @@ void MainWindow::populateDatasetQueue(const QJsonObject &manifest, const std::fu
                 files_.append(path); datasetSamples_.insert(path, sample);
                 auto *item = new QListWidgetItem(placeholder, QFileInfo(path).fileName());
                 item->setData(Qt::UserRole, path);
+                item->setData(Qt::UserRole + 11, false);
                 item->setToolTip(path + "\nGT · " + QString::number(sample.value("gt").toArray().size()) + " 个标注");
                 queue_->addItem(item); ++added;
             }
@@ -361,7 +362,7 @@ void MainWindow::startEvaluation()
         inspectSelectedModel(); showNotice("请等待当前模型类别信息加载完成后开始评估"); return;
     }
     QString error;
-    const auto range = selectedImageRange(&error);
+    const auto range = selectedEvaluationRange(&error);
     if (!error.isEmpty()) { showNotice(error, true); return; }
     vision::EvaluationRequest request;
     request.config = currentConfig(); request.manifest = datasetManifest_; request.files = range;
@@ -577,13 +578,13 @@ void MainWindow::updateEvaluationReviewUi()
     if (evaluationReviewPending_) summary += "正在整理错例…";
     else if (!evaluationReviewAvailable_) summary += evaluationReviewError_.isEmpty() ? "错例统计尚未就绪" : "错例统计不可用";
     else summary += QString("错图 %1 / 已评估 %2 / 集合 %3 · 当前 %4/%5")
-        .arg(evaluationErrorRows_.size()).arg(evaluationEvaluatedCount_).arg(files_.size())
+        .arg(evaluationErrorRows_.size()).arg(evaluationEvaluatedCount_).arg(datasetManifest_.value("samples").toArray().size())
         .arg(position < 0 ? 0 : position + 1).arg(evaluationReviewRows_.size());
     evaluationReviewSummaryLabel_->setText(summary);
     evaluationReviewSummaryLabel_->setToolTip(evaluationReviewError_.isEmpty() ? summary +
         "\n错图按图片去重，包含当前阈值下的误检或漏检；导航按当前筛选的队列顺序。" : evaluationReviewError_);
     evaluation_->setErrorSummary(evaluationEvaluatedCount_, evaluationErrorRows_.size(), evaluationFalsePositiveCount_,
-        evaluationFalseNegativeCount_, evaluationNegativeFalsePositiveCount_, files_.size(), evaluationReviewPending_,
+        evaluationFalseNegativeCount_, evaluationNegativeFalsePositiveCount_, datasetManifest_.value("samples").toArray().size(), evaluationReviewPending_,
         evaluationReviewAvailable_, evaluationReviewError_);
 }
 
@@ -660,11 +661,15 @@ void MainWindow::applyEvaluationFilter(const QString &filter)
         evaluationNegativeFalsePositiveCount_ = result->negativeFalsePositiveRows.size();
         evaluationReviewRows_.clear();
         for (int row = 0; row < files_.size(); ++row) {
-            queue_->item(row)->setHidden(!result->visible[row]);
-            if (result->visible[row]) evaluationReviewRows_.append(row);
+            const bool datasetImage = datasetSamples_.contains(files_.at(row));
+            const bool visible = result->visible[row] && (datasetImage || evaluationReviewFilter_ == "all");
+            queue_->item(row)->setHidden(!visible);
+            if (visible && datasetImage) evaluationReviewRows_.append(row);
         }
         int row = queue_->currentRow();
-        if (selectFirst || !evaluationReviewRows_.contains(row))
+        const bool temporarySelection = evaluationReviewFilter_ == "all" && row >= 0 && row < files_.size() &&
+            !datasetSamples_.contains(files_.at(row));
+        if (selectFirst || (!temporarySelection && !evaluationReviewRows_.contains(row)))
             row = evaluationReviewRows_.isEmpty() ? -1 : evaluationReviewRows_.first();
         const bool changed = row != queue_->currentRow();
         queue_->setCurrentRow(row);
@@ -706,7 +711,7 @@ void MainWindow::applyEvaluationProfile(double threshold)
     profile.insert("model_identity", identity(modelPath_)); profile.insert("model_sha256", request.value("model_sha256").toString());
     modelEvaluationProfiles_.insert(modelPath_, profile);
     evaluationReviewActive_ = true; // The immutable evaluation view remains available after adopting parameters.
-    reviewEvaluationImage(queue_->currentRow());
+    selectQueueImage(queue_->currentRow());
     persist(); refreshModelLibrary();
     showNotice(QString("已采用检测配置 · 置信度 %1 · 原始类别 ID %2 · 尺寸/颜色/NMS/设备与报告一致")
         .arg(threshold, 0, 'f', 3).arg(request.value("model_class_id").toInt()));

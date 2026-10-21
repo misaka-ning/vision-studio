@@ -538,6 +538,27 @@ def valid_model_display(output, report, exit_code):
     counts = (report.get("nodes", 0), report.get("hierarchy_items", 0), report.get("parameter_rows", 0))
     modes = report.get("display_modes", {})
     screenshots = (output / name for name in ("model-display.png", "model-hierarchy.png", "model-parameters.png"))
+    if release_metadata.version_key(report.get("version", "0.0.0"))[:3] >= (2, 7, 0):
+        yaml = report.get("yaml", {})
+        yaml_path = output / "model-architecture.yaml"
+        yaml_screenshot = output / "model-yaml.png"
+        if not (modes.get("yolo_yaml") is True and yaml_screenshot.is_file() and
+                yaml_screenshot.read_bytes().startswith(b"\x89PNG\r\n\x1a\n") and
+                re.fullmatch(r"[0-9a-f]{64}", yaml.get("source_sha256_before", "")) and
+                yaml.get("source_sha256_before") == yaml.get("source_sha256_after")):
+            return False
+        if Path(report.get("model", "")).suffix.lower() == ".onnx":
+            if yaml.get("available") is not False or not yaml.get("reason") or yaml_path.exists():
+                return False
+        elif yaml.get("available") is False:
+            if not yaml.get("reason") or yaml_path.exists() or Path(report.get("model", "")).name in ("yolov5n.pt", "yolov8n.pt"):
+                return False
+        elif not (yaml.get("available") is True and yaml.get("exported") is True and
+                  yaml.get("existing_export_refused") is True and yaml_path.is_file() and
+                  yaml_path.stat().st_size == yaml.get("bytes") and
+                  hashlib.sha256(yaml_path.read_bytes()).hexdigest() == yaml.get("sha256") == yaml.get("export_sha256") and
+                  b"# [from, repeats, module, args]" in yaml_path.read_bytes()):
+            return False
     return (exit_code == 0 and report.get("success") is True and report.get("cache_preserved") is True
             and all(isinstance(count, int) and not isinstance(count, bool) and count > 0 for count in counts)
             and isinstance(modes, dict) and all(modes.get(mode) is True for mode in ("graph", "hierarchy", "parameters"))
@@ -594,7 +615,7 @@ def smoke_tests(app, workspace, audit):
         report_file = output / "model-display-report.json"
         report = json.loads(report_file.read_text()) if report_file.is_file() else {}
         passed = valid_model_display(output, report, process.returncode)
-        audit.require(passed, f"Read-only non-root {model} three-view/cache smoke failed: " + process.stderr[-1800:])
+        audit.require(passed, f"Read-only non-root {model} four-view/cache smoke failed: " + process.stderr[-1800:])
         results[name] = {"success": passed, "exit_code": process.returncode,
                          "elapsed_seconds": round(time.monotonic() - started, 2), "report": report,
                          "rendering_flags": env["QTWEBENGINE_CHROMIUM_FLAGS"],

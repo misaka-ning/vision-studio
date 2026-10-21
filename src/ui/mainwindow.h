@@ -50,6 +50,7 @@ class MainWindow : public QMainWindow
     friend class ScopeFilterUiTests;
     friend class EvaluationIntegrationTests;
     friend class DatasetSessionUiTests;
+    friend class InputDropUiTests;
   public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
@@ -61,6 +62,7 @@ class MainWindow : public QMainWindow
     void runModelSmoke(const QString &outputDir, const QString &model = {});
     void runEvaluationSmoke(const QString &outputDir, const QString &requestPath);
     void runDatasetSessionSmoke(const QString &outputDir);
+    void runPreviewDropSmoke(const QString &outputDir, const QString &requestPath);
     void showModelStructure(const QString &model = {});
     void setComputeDevice(vision::ComputeDevice device, int index = 0);
     void restoreDatasetSession();
@@ -71,6 +73,7 @@ class MainWindow : public QMainWindow
   protected:
     void closeEvent(QCloseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
   private:
     QWidget *buildSidebar();
@@ -93,6 +96,11 @@ class MainWindow : public QMainWindow
     void setupStyle();
     void connectWorker();
     void chooseVideo();
+    void loadVideo(const QString &path);
+    bool handlePreviewDrop(const QStringList &paths);
+    bool previewDropLocked() const;
+    void importDroppedImages(const QStringList &paths, bool append);
+    void cancelDroppedImageImport();
     void chooseCamera();
     void importModel();
     void importLabels();
@@ -160,6 +168,7 @@ class MainWindow : public QMainWindow
     void updateClassFilterUi();
     void updateStartEligibility();
     QStringList selectedImageRange(QString *error = nullptr) const;
+    QStringList selectedEvaluationRange(QString *error = nullptr) const;
     void inspectSelectedModel();
     QString inferenceFingerprint(const QString &modelIdentity = {}) const;
     QString modelFileIdentity() const;
@@ -197,6 +206,10 @@ class MainWindow : public QMainWindow
     QString evaluationReviewError_;
     QTimer *queuePopulationTimer_ = nullptr;
     bool queuePopulating_ = false;
+    bool droppedImageImportActive_ = false, droppedImageAppend_ = false, droppedImageQueueChanged_ = false;
+    int droppedImageOriginalCount_ = 0, droppedImageOriginalRow_ = -1;
+    quint64 droppedImageImportGeneration_ = 0;
+    std::shared_ptr<std::atomic_bool> droppedImageImportCancellation_;
     quint64 queuePopulationGeneration_ = 0, imagePreviewGeneration_ = 0;
     AsyncImagePreview *imagePreviewLoader_ = nullptr;
     vision::EvaluationWorker *evaluationWorker_ = nullptr;

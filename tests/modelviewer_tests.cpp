@@ -1,6 +1,7 @@
 #include "ui/modelviewer.h"
 
 #include <QApplication>
+#include <QClipboard>
 #include <QAbstractButton>
 #include <QAbstractItemModel>
 #include <QDir>
@@ -13,6 +14,8 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPointer>
+#include <QPlainTextEdit>
+#include <QTextEdit>
 #include <QProcess>
 #include <QRegularExpression>
 #include <QSet>
@@ -779,6 +782,178 @@ class ModelViewerTests : public QObject
             QVERIFY(viewer.findChildren<QWebEngineView *>().isEmpty());
             QVERIFY(viewer.findChildren<QProcess *>().isEmpty());
         }
+    }
+
+    void fourthYamlModeUsesRealSavedBlueprintAndSameCache_data()
+    {
+        QTest::addColumn<QString>("path");
+        QTest::addColumn<int>("layers");
+        QTest::newRow("modern-yolov8-checkpoint") << m_pt << 23;
+        QTest::newRow("legacy-yolov5-checkpoint") << QString::fromUtf8(VISION_PROJECT_DIR) + "/models/yolov5n.pt" << 25;
+        QTest::newRow("onnx-without-architecture") << m_onnx << 0;
+        QTest::newRow("weights-without-architecture") << m_weights << 0;
+        QTest::newRow("torchscript-without-architecture") << m_script << 0;
+    }
+
+    void fourthYamlModeUsesRealSavedBlueprintAndSameCache()
+    {
+        QFETCH(QString, path); QFETCH(int, layers);
+        QFile source(path); QVERIFY(source.open(QIODevice::ReadOnly));
+        const QByteArray original = source.readAll(); source.close();
+        ModelViewer viewer; viewer.resize(1260, 820); viewer.show();
+        QSignalSpy loaded(&viewer, &ModelViewer::modelLoaded), failed(&viewer, &ModelViewer::loadFailed);
+        viewer.openModel(path);
+        QTRY_VERIFY_WITH_TIMEOUT(viewer.state() != ModelViewer::State::Loading, deadline);
+        QVERIFY2(viewer.state() == ModelViewer::State::Ready, qPrintable(viewer.errorString()));
+        QCOMPARE(loaded.count(), 1); QCOMPARE(failed.count(), 0);
+        // Ready must already include the completed YAML result, not a later
+        // asynchronous field that can race first entry into the fourth mode.
+        QCOMPARE(viewer.yamlAvailable(), layers > 0);
+        QVERIFY(!viewer.yamlReason().isEmpty());
+        QPointer<QProcess> service = viewer.findChild<QProcess *>();
+        QPointer<QWebEngineView> browser = viewer.findChild<QWebEngineView *>("netronWebView");
+        QVERIFY(service && browser); const qint64 pid = service->processId();
+        QSignalSpy pageLoads(browser->page(), &QWebEnginePage::loadStarted);
+        const QString cached = viewer.yamlText();
+        auto *editor = viewer.findChild<QPlainTextEdit *>("modelYamlEditor");
+        auto *button = viewer.findChild<QAbstractButton *>("modelYamlModeButton");
+        auto *copy = viewer.findChild<QAbstractButton *>("modelYamlCopyButton");
+        auto *save = viewer.findChild<QAbstractButton *>("modelYamlSaveButton");
+        auto *status = viewer.findChild<QLabel *>("modelYamlStatus");
+        auto *search = viewer.findChild<QLineEdit *>("modelStructureSearch");
+        QVERIFY(editor && button && copy && save && status && search);
+        QTest::mouseClick(button, Qt::LeftButton);
+        QCOMPARE(viewer.displayMode(), ModelViewer::DisplayMode::YoloYaml);
+        QVERIFY(status->isVisible()); QCOMPARE(status->text(), viewer.yamlReason());
+        QCOMPARE(copy->isEnabled(), layers > 0); QCOMPARE(save->isEnabled(), layers > 0);
+        QVERIFY(editor->isReadOnly());
+        QString error; const QString output = m_temporary->path() + "/" + QString::fromLatin1(QTest::currentDataTag()) + ".yaml";
+        if (layers > 0)
+        {
+            QVERIFY(editor->isVisible()); QCOMPARE(editor->toPlainText(), cached);
+            QCOMPARE(cached.count("  - ["), layers);
+            QVERIFY(cached.contains("nc: 80")); QVERIFY(cached.contains("depth_multiple: 0.33"));
+            QVERIFY(cached.contains("width_multiple: 0.25"));
+            QVERIFY(cached.contains("# [from, repeats, module, args]"));
+            QVERIFY(cached.contains("[15, 18, 21]") || cached.contains("[17, 20, 23]"));
+            QCOMPARE(cached.contains("anchors:"), layers == 25);
+            QVERIFY(viewer.yamlReason().contains(QStringLiteral("不是原始")));
+            search->setText("Detect"); QTest::keyClick(search, Qt::Key_Return);
+            QCOMPARE(editor->textCursor().selectedText(), QString("Detect"));
+            QVERIFY(!editor->extraSelections().isEmpty());
+            QTest::mouseClick(copy, Qt::LeftButton);
+            QCOMPARE(QApplication::clipboard()->text(), cached);
+            QVERIFY2(viewer.saveYaml(output, &error), qPrintable(error));
+            QFile file(output); QVERIFY(file.open(QIODevice::ReadOnly)); QCOMPARE(file.readAll(), cached.toUtf8()); file.close();
+            QVERIFY(!viewer.saveYaml(output, &error)); QVERIFY(!error.isEmpty());
+            QVERIFY(!viewer.saveYaml(path, &error));
+        }
+        else
+        {
+            QVERIFY(!editor->isVisible()); QVERIFY(cached.isEmpty());
+            QVERIFY(!search->isEnabled()); QVERIFY(containsChinese(status->text()));
+            QVERIFY(!viewer.saveYaml(output, &error)); QVERIFY(!QFileInfo::exists(output));
+        }
+        search->clear();
+        for (auto mode : {ModelViewer::DisplayMode::Graph, ModelViewer::DisplayMode::Hierarchy,
+                          ModelViewer::DisplayMode::Parameters, ModelViewer::DisplayMode::YoloYaml})
+            viewer.setDisplayMode(mode);
+        QCOMPARE(viewer.findChild<QProcess *>(), service.data());
+        QCOMPARE(viewer.findChild<QWebEngineView *>("netronWebView"), browser.data());
+        QCOMPARE(service->processId(), pid); QCOMPARE(pageLoads.count(), 0); QCOMPARE(loaded.count(), 1);
+        QCOMPARE(viewer.yamlText(), cached);
+        QVERIFY(source.open(QIODevice::ReadOnly)); QCOMPARE(source.readAll(), original);
+        qInfo() << "model_yaml_real_view_evidence" << QTest::currentDataTag() << "layers" << layers
+                << "cached_process" << pid << "page_reloads" << pageLoads.count();
+    }
+
+    void yamlBridgeRejectsNonprimitiveCyclesAndLimitsWithoutTouchingCachedGraph()
+    {
+        ModelViewer viewer; viewer.resize(1100, 760); viewer.show(); viewer.openModel(m_pt);
+        QTRY_COMPARE_WITH_TIMEOUT(viewer.state(), ModelViewer::State::Ready, deadline);
+        QVERIFY(viewer.yamlAvailable()); const QString cached = viewer.yamlText();
+        auto *browser = viewer.findChild<QWebEngineView *>("netronWebView"); QVERIFY(browser);
+        const QStringList values = {
+            "({type:{identifier:'unknown.Executable'},inputs:[]})",
+            "(()=>{const node={type:{identifier:'builtins.dict'},inputs:[]};node.inputs.push({name:'cycle',type:'object',value:node});return node;})()",
+            "({type:{identifier:'builtins.dict'},inputs:[{name:'backbone',type:'object[]',value:Array(2001).fill([])}]})",
+            "({type:{identifier:'builtins.dict'},inputs:[{name:'payload',type:'attribute',value:()=>{globalThis.__yamlExecuted=true;}}]})"
+        };
+        for (const auto &value : values)
+        {
+            const QString expression = QStringLiteral("(() => { globalThis.__yamlExecuted=false; const window={__view__:{model:{format:'PyTorch',modules:[{nodes:[{inputs:[{name:'yaml',type:'object',value:%1}]}]}]}}}; const result=JSON.parse(%2); result.executed=globalThis.__yamlExecuted; return JSON.stringify(result); })()")
+                .arg(value, vision::modelYamlExtractionScript());
+            const auto result = runJson(browser, expression);
+            QVERIFY(!result.value("available").toBool(true)); QVERIFY(!result.value("executed").toBool(true));
+            QVERIFY(containsChinese(result.value("message").toString()));
+        }
+        QCOMPARE(viewer.yamlText(), cached); QVERIFY(viewer.yamlAvailable());
+        QCOMPARE(viewer.state(), ModelViewer::State::Ready);
+    }
+
+    void yamlFastSwitchClearsOldDocumentAndRejectsStaleCallbacks()
+    {
+        ModelViewer viewer; viewer.resize(1100, 760); viewer.show(); viewer.openModel(m_pt);
+        QTRY_COMPARE_WITH_TIMEOUT(viewer.state(), ModelViewer::State::Ready, deadline);
+        QVERIFY(viewer.yamlAvailable()); viewer.setDisplayMode(ModelViewer::DisplayMode::YoloYaml);
+        QSignalSpy loaded(&viewer, &ModelViewer::modelLoaded);
+        viewer.openModel(m_onnx); QVERIFY(viewer.yamlText().isEmpty()); QVERIFY(!viewer.yamlAvailable());
+        viewer.openModel(m_pt); viewer.openModel(m_final);
+        QTRY_COMPARE_WITH_TIMEOUT(viewer.state(), ModelViewer::State::Ready, deadline);
+        QVERIFY(!viewer.yamlAvailable()); QVERIFY(viewer.yamlText().isEmpty());
+        QCOMPARE(loaded.count(), 1); QCOMPARE(viewer.modelPath(), QFileInfo(m_final).absoluteFilePath());
+        QTest::qWait(400); QVERIFY(!viewer.yamlAvailable()); QVERIFY(viewer.yamlText().isEmpty());
+        viewer.stop(); QVERIFY(viewer.yamlText().isEmpty()); QVERIFY(!viewer.yamlAvailable());
+    }
+
+    void maliciousCheckpointCannotExecuteNativePythonToShowYaml()
+    {
+        const QString marker = m_temporary->path() + "/model-yaml-executed";
+        const QString path = m_temporary->path() + "/malicious-yaml.pt";
+        QFile file(path); QVERIFY(file.open(QIODevice::WriteOnly));
+        const QByteArray payload = "cos\nsystem\n(S'touch " + marker.toUtf8() + "'\ntR.";
+        QCOMPARE(file.write(payload), payload.size()); file.close();
+        ModelViewer viewer; viewer.resize(1100, 760); viewer.show(); viewer.openModel(path);
+        QTRY_VERIFY_WITH_TIMEOUT(viewer.state() != ModelViewer::State::Loading, deadline);
+        QVERIFY(!QFileInfo::exists(marker)); QVERIFY(!viewer.yamlAvailable()); QVERIFY(viewer.yamlText().isEmpty());
+        viewer.stop(); QVERIFY(!QFileInfo::exists(marker));
+    }
+
+    void samePathReplacementInvalidatesAndRebuildsYamlCache()
+    {
+        const QString path = m_temporary->path() + "/same-path-model.pt";
+        QVERIFY(QFile::copy(m_pt, path));
+        ModelViewer viewer; viewer.resize(1100, 760); viewer.show(); viewer.openModel(path);
+        QTRY_COMPARE_WITH_TIMEOUT(viewer.state(), ModelViewer::State::Ready, deadline);
+        QVERIFY(viewer.matchesModelFile(path)); QVERIFY(viewer.yamlAvailable());
+        QCOMPARE(viewer.yamlText().count("  - ["), 23);
+        QVERIFY(QFile::remove(path));
+        QVERIFY(QFile::copy(QString::fromUtf8(VISION_PROJECT_DIR) + "/models/yolov5n.pt", path));
+        QVERIFY(!viewer.matchesModelFile(path)); QVERIFY(!viewer.yamlAvailable()); QVERIFY(viewer.yamlText().isEmpty());
+        QString error; QVERIFY(!viewer.saveYaml(m_temporary->path() + "/stale.yaml", &error));
+        QVERIFY(containsChinese(error));
+        viewer.setDisplayMode(ModelViewer::DisplayMode::YoloYaml);
+        auto *editor = viewer.findChild<QPlainTextEdit *>("modelYamlEditor");
+        QVERIFY(editor && !editor->isVisible());
+        QSignalSpy loaded(&viewer, &ModelViewer::modelLoaded);
+        viewer.openModel(path);
+        QTRY_COMPARE_WITH_TIMEOUT(viewer.state(), ModelViewer::State::Ready, deadline);
+        QCOMPARE(loaded.count(), 1); QVERIFY(viewer.matchesModelFile(path)); QVERIFY(viewer.yamlAvailable());
+        QCOMPARE(viewer.yamlText().count("  - ["), 25); QVERIFY(viewer.yamlText().contains("anchors:"));
+    }
+
+    void sourceChangedDuringParsingCannotCommitReadyOrYaml()
+    {
+        const QString path = m_temporary->path() + "/changed-during-parse.pt";
+        QVERIFY(QFile::copy(m_pt, path));
+        ModelViewer viewer; viewer.resize(1100, 760); viewer.show();
+        QSignalSpy loaded(&viewer, &ModelViewer::modelLoaded);
+        viewer.openModel(path);
+        QFile changed(path); QVERIFY(changed.open(QIODevice::Append)); QCOMPARE(changed.write("\0", 1), 1); changed.close();
+        QVERIFY(!viewer.matchesModelFile(path));
+        QTRY_VERIFY_WITH_TIMEOUT(viewer.state() != ModelViewer::State::Loading, deadline);
+        QCOMPARE(viewer.state(), ModelViewer::State::Error);
+        QCOMPARE(loaded.count(), 0); QVERIFY(!viewer.yamlAvailable()); QVERIFY(viewer.yamlText().isEmpty());
     }
 
     void cleanupTestCase()

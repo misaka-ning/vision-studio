@@ -361,7 +361,7 @@ private slots:
         QCOMPARE(window_->datasetManifest_.value("samples").toArray().size(), 4);
         QVERIFY(!window_->datasetManifest_.isEmpty());
     }
-    void canvasAcceptsDatasetsAndRejectsLooseImagesWithoutChangingQueue()
+    void canvasAcceptsDatasetsAndCanCancelTemporaryImagesWithoutChangingQueue()
     {
         const auto drop = [this](const QString &path) {
             QMimeData mime; mime.setUrls({QUrl::fromLocalFile(path)});
@@ -379,7 +379,25 @@ private slots:
         QCOMPARE(window_->files_, images_);
         const QJsonObject initialManifest = window_->datasetManifest_;
         const auto initialSource = window_->lastResult_.source;
-        QVERIFY(!drop(images_.last()));
+        const QString looseImage = area_->path() + "/temporary-drop.png";
+        QImage loose(64, 64, QImage::Format_RGB888); loose.fill(QColor("#209090"));
+        QVERIFY(loose.save(looseImage));
+        bool sawChoice = false;
+        QTimer cancelChoice;
+        connect(&cancelChoice, &QTimer::timeout, this, [&] {
+            for (auto *widget : QApplication::topLevelWidgets())
+                if (auto *dialog = qobject_cast<QDialog *>(widget); dialog && dialog->isVisible() &&
+                    dialog->objectName() == "imageDropDatasetConflictDialog") {
+                    sawChoice = true;
+                    if (auto *cancel = dialog->findChild<QPushButton *>("imageDropCancelButton")) cancel->click();
+                    else dialog->reject();
+                    cancelChoice.stop();
+                }
+        });
+        cancelChoice.start(10);
+        drop(looseImage);
+        cancelChoice.stop();
+        QVERIFY(sawChoice);
         QCOMPARE(window_->files_, images_); QCOMPARE(window_->datasetManifest_, initialManifest);
         QCOMPARE(window_->lastResult_.source, initialSource);
         QCOMPARE(window_->queue_->currentRow(), 0);

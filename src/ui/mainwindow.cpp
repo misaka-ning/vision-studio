@@ -20,7 +20,11 @@
 #include <QCryptographicHash>
 #include <QDebug>
 #include <QDesktopServices>
+#include <QDialog>
 #include <QDir>
+#include <QDragEnterEvent>
+#include <QDragMoveEvent>
+#include <QDropEvent>
 #include <QDoubleSpinBox>
 #include <QFileDialog>
 #include <QFileInfo>
@@ -39,6 +43,7 @@
 #include <QMenu>
 #include <QMouseEvent>
 #include <QMessageBox>
+#include <QMimeData>
 #include <QPlainTextEdit>
 #include <QPalette>
 #include <QPointer>
@@ -78,6 +83,40 @@
 
 namespace
 {
+enum class PreviewDropKind { Images, Dataset, Video };
+bool classifyPreviewDrop(const QStringList &input, QStringList *paths, PreviewDropKind *kind, QString *error)
+{
+    paths->clear();
+    if (input.isEmpty()) { *error = "请拖入本地文件。"; return false; }
+    const QStringList videos{"mp4", "avi", "mkv", "mov", "webm", "m4v"};
+    QSet<QString> imageFormats;
+    for (const auto &format : QImageReader::supportedImageFormats()) imageFormats.insert(QString::fromLatin1(format).toLower());
+    QSet<QString> seen;
+    int category = -1;
+    for (const QString &path : input) {
+        const QFileInfo info(path);
+        if (!info.exists() || !info.isReadable() || (!info.isFile() && !info.isDir())) {
+            *error = "无法读取拖入的路径：" + path; return false;
+        }
+        const QString suffix = info.suffix().toLower();
+        const int next = info.isDir() || suffix == "yaml" || suffix == "yml" ? 1 :
+            videos.contains(suffix) ? 2 : imageFormats.contains(suffix) ? 0 : -1;
+        if (next < 0) { *error = "不支持此文件。请拖入图片、视频或 YOLO 数据集目录 / YAML：" + path; return false; }
+        if (category >= 0 && category != next) {
+            *error = "一次拖入请只包含图片，或一个数据集目录 / YAML，或一个视频；不能混合输入类型。"; return false;
+        }
+        category = next;
+        const QString canonical = info.canonicalFilePath();
+        const QString absolute = next == 0 && !canonical.isEmpty() ? canonical : info.absoluteFilePath();
+        if (!seen.contains(absolute)) { seen.insert(absolute); paths->append(absolute); }
+    }
+    if (category != 0 && input.size() != 1) {
+        *error = "数据集或视频每次只能拖入一个；多张图片可以一起拖入。"; return false;
+    }
+    *kind = category == 1 ? PreviewDropKind::Dataset : category == 2 ? PreviewDropKind::Video : PreviewDropKind::Images;
+    return true;
+}
+
 class ModelLibraryList final : public QListWidget
 {
   public:
@@ -410,6 +449,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     w->addWidget(footer);
     body->addWidget(workspace, 1);
     setCentralWidget(base);
+    qApp->installEventFilter(this);
     resultIoPool_ = new QThreadPool(this);
     resultIoPool_->setMaxThreadCount(1);
     connectWorker();
@@ -545,6 +585,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 }
 MainWindow::~MainWindow()
 {
+    qApp->removeEventFilter(this);
+    if (droppedImageImportCancellation_) droppedImageImportCancellation_->store(true);
     if (evaluationPreviewCancellation_) evaluationPreviewCancellation_->store(true);
     if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
     if (modelInspectionCancellation_)
@@ -1009,7 +1051,8 @@ QWidget *MainWindow::buildWorkbench()
     cf->setContentsMargins(0, 0, 0, 0);
     cf->setSpacing(0);
     auto *toolbar = new QWidget;
-    toolbar->setObjectName("toolbar");
+    toolbar->setObjectName("imagePreviewToolbar");
+    toolbar->setStyleSheet("QWidget#imagePreviewToolbar { background:#2C2C2C; border-bottom:1px solid #3B3B3B; border-top-left-radius:8px; border-top-right-radius:8px; }");
     auto *tl = new QHBoxLayout(toolbar);
     tl->setContentsMargins(16, 3, 14, 3);
     tl->setSpacing(8);
@@ -1053,6 +1096,7 @@ QWidget *MainWindow::buildWorkbench()
     recordingClock_->setInterval(250);
     connect(recordingClock_, &QTimer::timeout, this, &MainWindow::updateRecordingUi);
     canvas_ = new ImageCanvas;
+    canvas_->setObjectName("imageCanvas");
     canvas_->setMinimumHeight(280);
     cf->addWidget(canvas_, 1);
     auto *cb = new QHBoxLayout;
@@ -1069,17 +1113,7 @@ QWidget *MainWindow::buildWorkbench()
     connect(showLabels_, &QCheckBox::toggled, canvas_, &ImageCanvas::setLabelsVisible);
     connect(canvas_, &ImageCanvas::zoomChanged, this,
             [this](int z) { zoomLabel_->setText(QString::number(z) + "%"); });
-    connect(canvas_, &ImageCanvas::fileDropped, this,
-            [this](const QString &p)
-            {
-                const QFileInfo input(p);
-                if (busy_) { showNotice("请先停止任务，再更换输入。"); return; }
-                cancelPendingDatasetSessionRestore();
-                if (input.isDir() || (input.isFile() && QStringList{"yaml", "yml"}.contains(input.suffix().toLower())))
-                    loadDataset(input.absoluteFilePath(), evaluation_->datasetSplit(), evaluation_->metadataPath());
-                else
-                    showNotice("请导入标准 YOLO 数据集，或选择视频／摄像头。", true);
-            });
+    connect(canvas_, &ImageCanvas::filesDropped, this, [this](const QStringList &paths) { handlePreviewDrop(paths); });
     auto *queueFrame = card();
     auto *ql = new QHBoxLayout(queueFrame);
     ql->setContentsMargins(12, 6, 12, 6);
@@ -1262,6 +1296,8 @@ QWidget *MainWindow::buildWorkbench()
     evaluationReviewBar_->hide();
     previewLayout->addWidget(evaluationReviewBar_);
     previewLayout->addWidget(columns);
+    previewPage->setAcceptDrops(true);
+    for (auto *child : previewPage->findChildren<QWidget *>()) child->setAcceptDrops(true);
     auto *evaluationPage = new QWidget;
     evaluationPage->setObjectName("evaluationWorkspacePage");
     auto *evaluationLayout = new QVBoxLayout(evaluationPage);
@@ -1455,7 +1491,7 @@ QWidget *MainWindow::buildModelDisplay()
             [this](ModelViewer::State state)
             {
                 structureStatus_->setText(state == ModelViewer::State::Loading ? "后台加载中…"
-                                          : state == ModelViewer::State::Ready ? QString("三种视图已缓存")
+                                          : state == ModelViewer::State::Ready ? QString("四种视图已缓存")
                                           : state == ModelViewer::State::Error ? "无法显示"
                                                                                : "等待模型");
             });
@@ -1472,7 +1508,7 @@ QWidget *MainWindow::buildModelDisplay()
                 if (pages_->currentIndex() == 2)
                     showNotice(error, true);
             });
-    auto *note = text("使用模型库中全局选中的模型，三种视图共用后台解析缓存。结构图可缩放与平移；层级树和参数"
+    auto *note = text("使用模型库中全局选中的模型，四种视图共用后台解析缓存。结构图可缩放与平移；层级树和参数"
                       "表支持搜索与详情查看。",
                       "tiny");
     note->setWordWrap(true);
@@ -1491,7 +1527,8 @@ void MainWindow::displayModelStructure()
     structureModelMeta_->setWordWrap(true);
     structureHint_->setVisible(!path.isEmpty() &&
                                QFileInfo(path).suffix().compare("onnx", Qt::CaseInsensitive) != 0);
-    if (modelViewer_->modelPath() != path || modelViewer_->state() == ModelViewer::State::Empty)
+    if (modelViewer_->modelPath() != path || !modelViewer_->matchesModelFile(path) ||
+        modelViewer_->state() == ModelViewer::State::Empty)
         modelViewer_->openModel(path);
 }
 
@@ -1816,7 +1853,7 @@ void MainWindow::selectQueueImage(int row)
     if (busy_ || queuePopulating_ || sourceKind_ != vision::SourceKind::Images || row < 0 || row >= files_.size())
         return;
     updateRangeUi();
-    if (evaluationReviewActive_) {
+    if (evaluationReviewActive_ && datasetSamples_.contains(files_.at(row))) {
         ++imagePreviewGeneration_;
         if (imagePreviewLoader_) imagePreviewLoader_->cancel();
         reviewEvaluationImage(row); return;
@@ -1838,7 +1875,8 @@ void MainWindow::selectQueueImage(int row)
         imagePreviewLoader_ = new AsyncImagePreview(this);
         connect(imagePreviewLoader_, &AsyncImagePreview::ready, this,
             [this](quint64 generation, const QString &, const QImage &original, const QImage &image, bool primaryUsed, const QString &) {
-            if (generation != imagePreviewGeneration_ || busy_ || closing_ || evaluationReviewActive_ ||
+            if (generation != imagePreviewGeneration_ || busy_ || closing_ ||
+                (evaluationReviewActive_ && datasetSamples_.contains(files_.value(queue_->currentRow()))) ||
                 sourceKind_ != vision::SourceKind::Images || queue_->currentRow() < 0 || queue_->currentRow() >= files_.size()) return;
             const QString source = files_.at(queue_->currentRow());
             auto cached = imageResults_.constFind(source);
@@ -1863,7 +1901,8 @@ void MainWindow::selectQueueImage(int row)
             preview.originalImage = original; preview.image = image;
             attachGroundTruth(preview); canvas_->setResult(preview);
             sizeMetric_->setText(image.isNull() ? "—" : QString("%1 × %2").arg(image.width()).arg(image.height()));
-            resultInfo_->setText(image.isNull() ? "无法读取此图片，请检查文件是否存在。" : "图片已就绪，点击开始检测。");
+            resultInfo_->setText(image.isNull() ? "无法读取此图片，请检查文件是否存在。" :
+                !datasetSamples_.contains(source) ? "临时图片已就绪 · 无 GT，仅参与检测，不计入数据集评估。" : "图片已就绪，点击开始检测。");
         });
     }
     const quint64 generation = ++imagePreviewGeneration_;
@@ -2157,7 +2196,7 @@ QWidget *MainWindow::buildGuide()
     html->setHtml(R"(
     <style>h1{color:#F5F5F5;font-size:28px}h2{color:#60CDFF;font-size:16px;margin-top:26px}p,li{line-height:1.8;color:#D2D2D2;font-size:13px}code{color:#D8ECF5}a{color:#60CDFF}</style>
     <h1>让你的视觉模型，真正运行起来。</h1><p>Vision Studio 是一个原生 C++ / Qt 桌面工作台。模型加载、图像处理与推理均在本机完成。</p>
-    <h2>01 / 开始你的第一次检测</h2><p>在模型库选用 ONNX 或 PT 模型，再导入标准 YOLO 数据集，或选择视频／摄像头。数据集支持检测预览与评估调优；普通图片和无标注文件夹导入已退出。Ctrl+O 直接选择数据集文件夹，详细类别映射与扫描参数位于“数据集设置”。PT 通过本机独立 PyTorch 环境推理。</p>
+    <h2>01 / 开始你的第一次检测</h2><p>在模型库选用 ONNX 或 PT 模型，再导入标准 YOLO 数据集，或选择视频／摄像头。图像预览区也支持拖入一个数据集目录、YAML/YML、视频，或单张／多张图片；一次拖入不能混合类型。图片按拖入顺序排列，相同本地路径去重。已有数据集时可选择替换或临时加入，临时图片仅参与检测，没有 GT，不作为负样本计入评估，也不会在下次启动恢复。Ctrl+O 选择数据集目录或 YAML，详细类别映射与扫描参数位于“数据集设置”。PT 通过本机独立 PyTorch 环境推理。</p>
     <h2>模型库与结构显示</h2><p>在“模型库”点击模型即可全局选用，工作台检测与模型显示使用同一模型。选择后在后台预加载，结构图、层级树、参数表共用一次解析缓存；进入或离开页面、切换展示模式不重复加载。结构图可以缩放、平移并点击节点查看输入输出及参数；层级树可以展开模块，参数表可以查看张量名称、类型与形状，两者支持搜索和详情。普通 PT 的树表示模块包含关系，只有权重的文件按参数名称分组，不补造计算连接。无法解析的文件显示文字说明，可点击“重试加载”。非 ONNX 文件显示：想看完整结构，建使用导出的 ONNX。</p>
     <h2>PT 模型</h2><p>Ultralytics YOLO 的 PT 检查点会自动读取任务和类别名称，预处理由原生后端执行。支持的旧版 YOLOv5 权重使用随附的本地兼容模块。只包含 state_dict 的任意 PT 文件无法单独重建网络，需要原始模型架构。分割、姿态和旋转框输出暂不支持。</p>
     <h2>02 / 正确匹配模型</h2><p>YOLOv5：原始输出 <code>[1,N,5+C]</code>，包含 objectness。YOLOv8 / YOLO11：原始输出 <code>[1,4+C,N]</code>。模型应为 batch=1、固定正方形输入、FP32、不包含 NMS。输入尺寸必须与导出模型一致。分割、姿态、旋转框和端到端输出暂不支持。</p>
@@ -2285,6 +2324,192 @@ void MainWindow::connectWorker()
     workerThread_->start();
 }
 
+bool MainWindow::previewDropLocked() const
+{
+    return busy_ || queuePopulating_ || droppedImageImportActive_ || evaluationWorker_ || gpuSetupProcess_ ||
+        resultIoPending_ || closing_ || (modelConversion_ && modelConversion_->isBusy()) || QApplication::activeModalWidget();
+}
+
+bool MainWindow::eventFilter(QObject *watched, QEvent *event)
+{
+    if (event->type() != QEvent::DragEnter && event->type() != QEvent::DragMove && event->type() != QEvent::Drop &&
+        event->type() != QEvent::DragLeave)
+        return QMainWindow::eventFilter(watched, event);
+    auto *widget = qobject_cast<QWidget *>(watched);
+    if (!widget || widget->window() != this) return QMainWindow::eventFilter(watched, event);
+    bool inPreview = false;
+    for (auto *parent = widget; parent; parent = parent->parentWidget())
+        if (parent->objectName() == "imagePreviewPage") { inPreview = true; break; }
+    if (!inPreview) return QMainWindow::eventFilter(watched, event);
+    if (event->type() == QEvent::DragLeave) {
+        canvas_->setDropActive(false);
+        return QMainWindow::eventFilter(watched, event);
+    }
+    auto *drop = static_cast<QDropEvent *>(event);
+    if (!drop->mimeData()->hasUrls()) return QMainWindow::eventFilter(watched, event);
+    drop->ignore();
+    canvas_->setDropActive(false);
+    if (previewDropLocked()) { showNotice("请先停止当前任务，再拖入新的输入。", true); return true; }
+    QStringList input;
+    for (const auto &url : drop->mimeData()->urls()) {
+        if (!url.isLocalFile()) { showNotice("只支持拖入本地文件，不能混入网络地址。", true); return true; }
+        input.append(url.toLocalFile());
+    }
+    QStringList paths; QString error; PreviewDropKind kind;
+    if (!classifyPreviewDrop(input, &paths, &kind, &error)) { showNotice(error, true); return true; }
+    if (event->type() == QEvent::Drop && !handlePreviewDrop(paths)) return true;
+    if (event->type() != QEvent::Drop) canvas_->setDropActive(true);
+    drop->setDropAction(Qt::CopyAction); drop->accept();
+    return true;
+}
+
+bool MainWindow::handlePreviewDrop(const QStringList &input)
+{
+    if (previewDropLocked()) { showNotice("请先停止当前任务，再拖入新的输入。", true); return false; }
+    cancelPendingDatasetSessionRestore();
+    QStringList paths; QString error; PreviewDropKind kind;
+    if (!classifyPreviewDrop(input, &paths, &kind, &error)) { showNotice(error, true); return false; }
+    if (kind == PreviewDropKind::Dataset) {
+        loadDataset(paths.first(), evaluation_->datasetSplit(), evaluation_->metadataPath()); return true;
+    }
+    if (kind == PreviewDropKind::Video) { loadVideo(paths.first()); return true; }
+    bool append = sourceKind_ == vision::SourceKind::Images && datasetManifest_.isEmpty();
+    if (!datasetManifest_.isEmpty()) {
+        // The modal decision must never apply to a source changed by a nested callback.
+        const auto previousFiles = files_;
+        const auto previousManifest = datasetManifest_;
+        const auto importGeneration = datasetImportGeneration_;
+        const auto queueGeneration = queuePopulationGeneration_;
+        QDialog dialog(this);
+        dialog.setObjectName("imageDropDatasetConflictDialog");
+        dialog.setPalette(palette());
+        dialog.setStyleSheet("QDialog#imageDropDatasetConflictDialog { background:#202020; border:1px solid #454545; }");
+        dialog.setWindowTitle("拖入图片"); dialog.setModal(true); dialog.setMinimumWidth(480);
+        auto *layout = new QVBoxLayout(&dialog); layout->setContentsMargins(24, 22, 24, 20); layout->setSpacing(14);
+        layout->addWidget(text("如何处理当前数据集？", "sectionTitle"));
+        auto *description = text(QString("已拖入 %1 张图片。临时加入会保留原数据集、标注与结果；新图片仅参与检测，不计入评估，也不会在下次启动恢复。").arg(paths.size()), "muted");
+        description->setWordWrap(true); description->setMaximumWidth(540); layout->addWidget(description);
+        auto *actions = new QHBoxLayout; actions->setSpacing(8);
+        auto *replace = button("替换整个数据集"); replace->setObjectName("imageDropReplaceButton");
+        auto *temporary = button("临时加入", {}, "primary"); temporary->setObjectName("imageDropAppendButton");
+        auto *cancel = button("取消"); cancel->setObjectName("imageDropCancelButton"); cancel->setDefault(true);
+        actions->addWidget(replace); actions->addWidget(temporary); actions->addWidget(cancel); layout->addLayout(actions);
+        connect(replace, &QPushButton::clicked, &dialog, [&dialog] { dialog.done(1); });
+        connect(temporary, &QPushButton::clicked, &dialog, [&dialog] { dialog.done(2); });
+        connect(cancel, &QPushButton::clicked, &dialog, &QDialog::reject);
+        cancel->setFocus();
+        const int choice = dialog.exec();
+        if (choice != 1 && choice != 2) return true;
+        if (previewDropLocked() || previousFiles != files_ || previousManifest != datasetManifest_ ||
+            importGeneration != datasetImportGeneration_ || queueGeneration != queuePopulationGeneration_) {
+            showNotice("输入状态已变化，请重新拖入图片。", true); return false;
+        }
+        append = choice == 2;
+    }
+    importDroppedImages(paths, append);
+    return true;
+}
+
+void MainWindow::importDroppedImages(const QStringList &paths, bool append)
+{
+    QStringList additions;
+    QSet<QString> seen;
+    if (append) for (const auto &path : files_) {
+        const auto canonical = QFileInfo(path).canonicalFilePath();
+        seen.insert(canonical.isEmpty() ? QFileInfo(path).absoluteFilePath() : canonical);
+    }
+    for (const auto &path : paths) if (!seen.contains(path)) { additions.append(path); seen.insert(path); }
+    if (additions.isEmpty()) { showNotice("拖入的图片已在队列中；相同本地路径只保留一次。"); return; }
+    droppedImageImportActive_ = true; droppedImageAppend_ = append; droppedImageQueueChanged_ = false;
+    droppedImageOriginalCount_ = files_.size(); droppedImageOriginalRow_ = queue_->currentRow();
+    const auto cancelled = droppedImageImportCancellation_ = std::make_shared<std::atomic_bool>(false);
+    const quint64 generation = ++droppedImageImportGeneration_;
+    const auto error = std::make_shared<QString>();
+    setBusy(true); progress_->setRange(0, 0); showNotice("正在后台检查拖入的图片…");
+    auto *thread = QThread::create([additions, cancelled, error] {
+        for (const auto &path : additions) {
+            if (cancelled->load()) return;
+            QImageReader reader(path);
+            if (!reader.canRead()) { *error = "无法读取图片，本次拖入未导入任何文件：" + path; return; }
+        }
+    });
+    connect(thread, &QThread::finished, this, [this, additions, cancelled, generation, error] {
+        if (cancelled->load() || generation != droppedImageImportGeneration_ || !droppedImageImportActive_ || closing_) return;
+        if (!error->isEmpty()) {
+            droppedImageImportActive_ = false; setBusy(false); selectQueueImage(queue_->currentRow()); showNotice(*error, true); return;
+        }
+        if (!droppedImageAppend_) {
+            clearDatasetContext(); clearImageResults(); files_.clear(); queue_->clear();
+            lastResult_ = {}; canvas_->clear(); predictionTable_->setRowCount(0); emptyResults_->show(); exportButton_->setEnabled(false);
+        }
+        sourceKind_ = vision::SourceKind::Images;
+        droppedImageQueueChanged_ = true;
+        const int first = files_.size();
+        const quint64 population = ++queuePopulationGeneration_;
+        queuePopulating_ = true;
+        auto offset = std::make_shared<int>(0);
+        auto *timer = queuePopulationTimer_ = new QTimer(this); timer->setInterval(0);
+        const QIcon placeholder = ui::icon("image");
+        static_cast<LazyImageQueue *>(queue_)->setColorMode(currentConfig().colorMode);
+        connect(timer, &QTimer::timeout, this, [this, additions, cancelled, generation, population, offset, first, timer, placeholder] {
+            if (cancelled->load() || generation != droppedImageImportGeneration_ || population != queuePopulationGeneration_) {
+                timer->stop(); timer->deleteLater(); return;
+            }
+            QElapsedTimer budget; budget.start();
+            {
+                QSignalBlocker blocker(queue_); queue_->setUpdatesEnabled(false);
+                int added = 0;
+                while (*offset < additions.size() && added < 96 && budget.elapsed() < 5) {
+                    const auto &path = additions.at((*offset)++);
+                    files_.append(path);
+                    auto *item = new QListWidgetItem(placeholder, QFileInfo(path).fileName());
+                    item->setData(Qt::UserRole, path); item->setData(Qt::UserRole + 11, true);
+                    item->setToolTip(path + "\n临时图片 · 无 GT，仅参与检测，不计入评估；下次启动不恢复");
+                    queue_->addItem(item); ++added;
+                }
+                queue_->setUpdatesEnabled(true);
+            }
+            progress_->setRange(0, additions.size()); progress_->setValue(*offset);
+            showNotice(QString("正在载入临时图片 · %1 / %2 张").arg(*offset).arg(additions.size()));
+            if (*offset < additions.size()) return;
+            timer->stop(); timer->deleteLater(); queuePopulationTimer_ = nullptr; queuePopulating_ = false;
+            droppedImageImportActive_ = false;
+            // New temporary pictures must be reachable even after an error-only review.
+            if (evaluationReviewActive_) {
+                if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
+                ++evaluationFilterGeneration_; evaluationReviewPending_ = false; evaluationReviewAvailable_ = false;
+                evaluationReviewFilter_ = "all";
+            }
+            for (int row = 0; row < queue_->count(); ++row) queue_->item(row)->setHidden(false);
+            { QSignalBlocker blocker(queue_); queue_->setCurrentRow(first); }
+            updateSourceUi(); setBusy(false); selectQueueImage(first);
+            static_cast<LazyImageQueue *>(queue_)->scheduleVisibleThumbnails();
+            if (evaluationReviewActive_ && !evaluationReviewPending_) applyEvaluationFilter("all");
+            showNotice(QString("已加入 %1 张临时图片 · 按拖入顺序排列，相同路径去重；不参与数据集评估").arg(additions.size()));
+        });
+        timer->start();
+    });
+    connect(thread, &QThread::finished, thread, &QObject::deleteLater); thread->start();
+}
+
+void MainWindow::cancelDroppedImageImport()
+{
+    if (!droppedImageImportActive_) return;
+    if (droppedImageImportCancellation_) droppedImageImportCancellation_->store(true);
+    ++droppedImageImportGeneration_; ++queuePopulationGeneration_;
+    if (queuePopulationTimer_) { queuePopulationTimer_->stop(); queuePopulationTimer_->deleteLater(); queuePopulationTimer_ = nullptr; }
+    queuePopulating_ = false; droppedImageImportActive_ = false;
+    if (droppedImageQueueChanged_) {
+        const QSignalBlocker blocker(queue_);
+        const int keep = droppedImageAppend_ ? droppedImageOriginalCount_ : 0;
+        while (files_.size() > keep) { files_.removeLast(); delete queue_->takeItem(queue_->count() - 1); }
+        queue_->setCurrentRow(droppedImageAppend_ ? droppedImageOriginalRow_ : -1);
+    }
+    setBusy(false); updateSourceUi(); selectQueueImage(queue_->currentRow());
+    showNotice("已取消图片载入 · 本次追加的临时图片已撤销，原数据集和启动恢复记录保留。");
+    if (closing_) QTimer::singleShot(0, this, &QWidget::close);
+}
+
 void MainWindow::chooseVideo()
 {
     if (busy_) return;
@@ -2293,6 +2518,11 @@ void MainWindow::chooseVideo()
         this, "选择视频", projectRoot_, "视频 (*.mp4 *.avi *.mkv *.mov *.webm *.m4v);;全部文件 (*)");
     if (p.isEmpty())
         return;
+    loadVideo(p);
+}
+
+void MainWindow::loadVideo(const QString &p)
+{
     clearDatasetContext();
     clearImageResults();
     sourceKind_ = vision::SourceKind::Video;
@@ -2350,8 +2580,10 @@ void MainWindow::updateSourceUi()
     const QString view = stereoName(stereoMode(stereoView_->currentData().toString()));
     if (sourceKind_ == vision::SourceKind::Images)
         sourceLabel_->setText(datasetManifest_.isEmpty()
-            ? (files_.isEmpty() ? QStringLiteral("选择数据集或连接实时输入") : QString("自检输入 · %1 张").arg(files_.size()))
-            : QString("YOLO 数据集 · %1 · %2 张有效图片").arg(datasetManifest_.value("split").toString()).arg(files_.size()));
+            ? (files_.isEmpty() ? QStringLiteral("拖入图片 / 数据集，或连接实时输入") : QString("临时图片 · %1 张 · 仅检测").arg(files_.size()))
+            : QString("YOLO 数据集 · %1 · %2 张标注图片%3").arg(datasetManifest_.value("split").toString())
+                  .arg(datasetManifest_.value("samples").toArray().size())
+                  .arg(files_.size() > datasetSamples_.size() ? QString(" + %1 张临时图片").arg(files_.size() - datasetSamples_.size()) : QString()));
     else if (sourceKind_ == vision::SourceKind::Video)
         sourceLabel_->setText("视频 · " + QFileInfo(streamPath_).fileName() + " · " + view);
     else
@@ -2404,7 +2636,7 @@ QStringList MainWindow::selectedImageRange(QString *error) const
 {
     if (error) error->clear();
     if (files_.isEmpty()) {
-        if (error) *error = "请先导入 YOLO 数据集";
+        if (error) *error = "请先拖入图片、导入 YOLO 数据集，或选择视频 / 摄像头";
         return {};
     }
     const int mode = detectionRange_->currentIndex();
@@ -2416,6 +2648,32 @@ QStringList MainWindow::selectedImageRange(QString *error) const
         return {};
     }
     return mode == 1 ? files_.mid(row) : QStringList{files_.at(row)};
+}
+
+QStringList MainWindow::selectedEvaluationRange(QString *error) const
+{
+    if (error) error->clear();
+    if (datasetManifest_.isEmpty() || datasetSamples_.isEmpty()) {
+        if (error) *error = "评估需要带标注的 YOLO 数据集；临时图片仅参与检测。";
+        return {};
+    }
+    const int mode = detectionRange_->currentIndex();
+    const int selected = queue_->currentRow();
+    if (mode != 0 && (selected < 0 || selected >= files_.size() || !queue_->selectionModel()->hasSelection())) {
+        if (error) *error = "请先选中一张原数据集图片，再选择此评估范围。";
+        return {};
+    }
+    if (mode != 0 && !datasetSamples_.contains(files_.at(selected))) {
+        if (error) *error = "当前选中的是临时图片，没有 GT；请选择原数据集图片，或评估整个原数据集。";
+        return {};
+    }
+    QStringList range;
+    const int first = mode == 0 ? 0 : selected;
+    const int end = mode == 2 ? first + 1 : files_.size();
+    for (int row = first; row < end; ++row)
+        if (datasetSamples_.contains(files_.at(row))) range.append(files_.at(row));
+    if (range.isEmpty() && error) *error = "本次范围没有可评估的原数据集图片。";
+    return range;
 }
 
 void MainWindow::updateRangeUi()
@@ -2478,10 +2736,13 @@ void MainWindow::updateStartEligibility()
     if (!runButton_ || !classFilter_) return;
     QString rangeError;
     if (sourceKind_ == vision::SourceKind::Images) selectedImageRange(&rangeError);
+    QString evaluationRangeError;
+    const auto evaluationFiles = selectedEvaluationRange(&evaluationRangeError);
     const bool ready = !busy_ && !queuePopulating_ && !gpuSetupProcess_ && !resultIoPending_ &&
         !modelPath_.isEmpty() && rangeError.isEmpty() && (!modelConversion_ || !modelConversion_->isBusy());
     const bool canEvaluate = evaluation_ && sourceKind_ == vision::SourceKind::Images &&
-        !datasetManifest_.isEmpty() && evaluation_->canEvaluate() && !modelInspectionPending_;
+        !datasetManifest_.isEmpty() && evaluationRangeError.isEmpty() && !evaluationFiles.isEmpty() &&
+        evaluation_->canEvaluate() && !modelInspectionPending_;
     const bool evaluationPage = workbenchTabs_ && workbenchTabs_->currentIndex() == 1;
     runButton_->setEnabled(ready && (evaluationPage ? canEvaluate : classFilterError_.isEmpty()));
     runButton_->setText("开始检测");
@@ -2490,13 +2751,19 @@ void MainWindow::updateStartEligibility()
         evaluationStartButton_->setVisible(!busy_);
         evaluationStopButton_->setVisible(busy_);
         evaluationStopButton_->setEnabled(busy_ && stopButton_->isEnabled());
-        evaluationRange_->setEnabled(!busy_ && sourceKind_ == vision::SourceKind::Images && !files_.isEmpty());
-        evaluationTaskSummary_->setText(QString("%1 · %2 px · %3 张图片")
-            .arg(modelDisplayName(modelPath_)).arg(inputSize_->value()).arg(files_.size()));
+        evaluationRange_->setEnabled(!busy_ && sourceKind_ == vision::SourceKind::Images && !datasetManifest_.isEmpty());
+        evaluationTaskSummary_->setText(QString("%1 · %2 px · 原数据集 %3 张")
+            .arg(modelDisplayName(modelPath_)).arg(inputSize_->value()).arg(datasetSamples_.size()));
         evaluationTaskSummary_->setToolTip(modelPath_);
         evaluationRangeHint_->setText(sourceKind_ != vision::SourceKind::Images || datasetManifest_.isEmpty()
             ? "评估需要带标注的 YOLO 数据集；视频与摄像头请在图像预览页运行。"
-            : rangeHint_->text());
+            : !evaluationRangeError.isEmpty() ? evaluationRangeError :
+              QString("本次评估 %1 张：原数据集第 %2～%3 张 · 临时图片不计入评估%4")
+                .arg(busy_ ? taskRangeFiles_.size() : evaluationFiles.size())
+                .arg(busy_ ? taskRangeFirst_ : files_.indexOf(evaluationFiles.first()) + 1)
+                .arg(busy_ ? taskRangeLast_ : files_.indexOf(evaluationFiles.last()) + 1)
+                .arg(busy_ ? QString(" · 完成 %1/%2").arg(completed_).arg(taskRangeFiles_.size()) : QString()));
+        evaluationRangeHint_->setStyleSheet(evaluationRangeError.isEmpty() ? QString() : "color: #FFB4AB;");
     }
 }
 
@@ -2900,6 +3167,7 @@ void MainWindow::stopInference()
     cancelPendingDatasetSessionRestore();
     if (!busy_)
         return;
+    if (droppedImageImportActive_) { cancelDroppedImageImport(); return; }
     if (datasetImportCancellation_) datasetImportCancellation_->store(true);
     if (queuePopulating_) {
         ++queuePopulationGeneration_;
@@ -3680,114 +3948,92 @@ void MainWindow::showModelStructure(const QString &model)
 void MainWindow::runModelSmoke(const QString &dir, const QString &model)
 {
     const QString output = QFileInfo(dir).absoluteFilePath();
-    if (!QDir().mkpath(output))
-    {
-        qCritical().noquote() << "无法创建模型显示自检目录：" << output;
-        QApplication::exit(2);
-        return;
-    }
+    if (!QDir().mkpath(output)) { QApplication::exit(2); return; }
     const auto completed = std::make_shared<bool>(false);
     const auto capturing = std::make_shared<bool>(false);
     const auto views = std::make_shared<QJsonObject>();
+    const auto yaml = std::make_shared<QJsonObject>();
     const auto cachePreserved = std::make_shared<bool>(false);
-    const auto writeReport =
-        [this, output, completed, views, cachePreserved](bool success, const QString &error)
-    {
-        if (*completed)
-            return;
+    const auto fileDigest = [](const QString &path) {
+        QFile file(path);
+        if (!file.open(QIODevice::ReadOnly)) return QString();
+        QCryptographicHash hash(QCryptographicHash::Sha256);
+        return hash.addData(&file) ? QString::fromLatin1(hash.result().toHex()) : QString();
+    };
+    const QString sourceHash = fileDigest(model);
+    const auto writeReport = [this, output, completed, views, yaml, cachePreserved](bool success, const QString &error) {
+        if (*completed) return;
         *completed = true;
-        if (!success)
-            saveScreenshot(output + "/model-display.png");
-        const QJsonObject report{{"success", success},
-                                 {"error", error},
-                                 {"application", "Vision Studio"},
-                                 {"version", QCoreApplication::applicationVersion()},
-                                 {"qt", qVersion()},
-                                 {"netron", "9.3.1"},
-                                 {"model", modelViewer_->modelPath()},
-                                 {"nodes", modelViewer_->graphNodeCount()},
-                                 {"hierarchy_items", modelViewer_->hierarchyItemCount()},
-                                 {"parameter_rows", modelViewer_->parameterCount()},
-                                 {"display_modes", *views},
-                                 {"cache_preserved", *cachePreserved},
-                                 {"onnx_hint_visible", structureHint_->isVisible()},
-                                 {"onnx_hint", structureHint_->text()}};
-        QString writeError;
-        const bool saved =
-            atomicWrite(output + "/model-display-report.json", QJsonDocument(report).toJson(), &writeError);
+        if (!success) saveScreenshot(output + "/model-display.png");
+        const QJsonObject report{{"success", success}, {"error", error}, {"application", "Vision Studio"},
+            {"version", QCoreApplication::applicationVersion()}, {"qt", qVersion()}, {"netron", "9.3.1"},
+            {"model", modelViewer_->modelPath()}, {"nodes", modelViewer_->graphNodeCount()},
+            {"hierarchy_items", modelViewer_->hierarchyItemCount()}, {"parameter_rows", modelViewer_->parameterCount()},
+            {"display_modes", *views}, {"yaml", *yaml}, {"cache_preserved", *cachePreserved},
+            {"onnx_hint_visible", structureHint_->isVisible()}, {"onnx_hint", structureHint_->text()}};
+        QString errorText;
+        const bool saved = atomicWrite(output + "/model-display-report.json", QJsonDocument(report).toJson(), &errorText);
         qInfo().noquote() << QJsonDocument(report).toJson(QJsonDocument::Compact);
         QApplication::exit(success && saved ? 0 : 2);
     };
-    const auto captureViews = [this, output, capturing, views, cachePreserved, writeReport]
-    {
-        if (*capturing)
-            return;
+    const auto captureViews = [this, output, capturing, views, yaml, cachePreserved, writeReport, fileDigest, sourceHash] {
+        if (*capturing) return;
         *capturing = true;
-        if (modelViewer_->state() != ModelViewer::State::Ready || modelViewer_->graphNodeCount() <= 0)
-        {
-            writeReport(false, "模型没有生成可显示的结构。");
-            return;
+        if (modelViewer_->state() != ModelViewer::State::Ready || modelViewer_->graphNodeCount() <= 0) {
+            writeReport(false, "模型没有生成可显示的结构。"); return;
         }
         const QPointer<QObject> browser = modelViewer_->findChild<QObject *>("netronWebView");
         const QPointer<QProcess> service = modelViewer_->findChild<QProcess *>();
         const qint64 processId = service ? service->processId() : 0;
         const QString path = modelViewer_->modelPath();
-        const int items = modelViewer_->hierarchyItemCount();
-        const int parameters = modelViewer_->parameterCount();
-        modelViewer_->setDisplayMode(ModelViewer::DisplayMode::Graph);
-        QTimer::singleShot(
-            300, this,
-            [this, output, views, cachePreserved, writeReport, browser, service, processId, path, items,
-             parameters]
-            {
-                saveScreenshot(output + "/model-display.png");
-                views->insert("graph", modelViewer_->displayMode() == ModelViewer::DisplayMode::Graph);
-                modelViewer_->setDisplayMode(ModelViewer::DisplayMode::Hierarchy);
-                QTimer::singleShot(
-                    200, this,
-                    [this, output, views, cachePreserved, writeReport, browser, service, processId, path,
-                     items, parameters]
-                    {
-                        saveScreenshot(output + "/model-hierarchy.png");
-                        views->insert("hierarchy",
-                                      modelViewer_->displayMode() == ModelViewer::DisplayMode::Hierarchy);
-                        modelViewer_->setDisplayMode(ModelViewer::DisplayMode::Parameters);
-                        QTimer::singleShot(
-                            200, this,
-                            [this, output, views, cachePreserved, writeReport, browser, service, processId,
-                             path, items, parameters]
-                            {
-                                saveScreenshot(output + "/model-parameters.png");
-                                views->insert("parameters", modelViewer_->displayMode() ==
-                                                                ModelViewer::DisplayMode::Parameters);
-                                modelViewer_->setDisplayMode(ModelViewer::DisplayMode::Graph);
-                                *cachePreserved =
-                                    browser && service && processId > 0 &&
-                                    modelViewer_->findChild<QObject *>("netronWebView") == browser &&
-                                    modelViewer_->findChild<QProcess *>() == service &&
-                                    service->processId() == processId &&
-                                    modelViewer_->state() == ModelViewer::State::Ready &&
-                                    modelViewer_->modelPath() == path &&
-                                    modelViewer_->hierarchyItemCount() == items &&
-                                    modelViewer_->parameterCount() == parameters;
-                                const bool success =
-                                    *cachePreserved && items > 0 && views->value("graph").toBool() &&
-                                    views->value("hierarchy").toBool() && views->value("parameters").toBool();
-                                writeReport(success,
-                                            success ? QString() : "模型视图切换或解析缓存自检失败。");
-                            });
-                    });
-            });
+        const int items = modelViewer_->hierarchyItemCount(), parameters = modelViewer_->parameterCount();
+        const QString text = modelViewer_->yamlText();
+        const bool available = modelViewer_->yamlAvailable();
+        QString exportError;
+        const QString destination = output + "/model-architecture.yaml";
+        const bool exported = available && modelViewer_->saveYaml(destination, &exportError);
+        QString refusedError;
+        const bool existingRefused = exported && !modelViewer_->saveYaml(destination, &refusedError) && !refusedError.isEmpty();
+        *yaml = QJsonObject{{"available", available}, {"reason", modelViewer_->yamlReason()},
+            {"bytes", text.toUtf8().size()}, {"sha256", QString::fromLatin1(QCryptographicHash::hash(text.toUtf8(), QCryptographicHash::Sha256).toHex())},
+            {"exported", exported}, {"export_error", exportError}, {"existing_export_refused", existingRefused},
+            {"export_sha256", exported ? fileDigest(destination) : QString()}, {"source_sha256_before", sourceHash}};
+        auto *timer = new QTimer(this);
+        auto step = std::make_shared<int>(-1);
+        const QList<ModelViewer::DisplayMode> modes{ModelViewer::DisplayMode::Graph, ModelViewer::DisplayMode::Hierarchy,
+            ModelViewer::DisplayMode::Parameters, ModelViewer::DisplayMode::YoloYaml};
+        const QStringList names{"graph", "hierarchy", "parameters", "yolo_yaml"};
+        const QStringList screenshots{"model-display.png", "model-hierarchy.png", "model-parameters.png", "model-yaml.png"};
+        connect(timer, &QTimer::timeout, this, [this, output, views, yaml, cachePreserved, writeReport, fileDigest,
+            sourceHash, timer, step, modes, names, screenshots, browser, service, processId, path, items, parameters, text, available] {
+            if (*step >= 0) {
+                saveScreenshot(output + '/' + screenshots[*step]);
+                views->insert(names[*step], modelViewer_->displayMode() == modes[*step]);
+            }
+            if (++*step < modes.size()) { modelViewer_->setDisplayMode(modes[*step]); return; }
+            timer->stop(); timer->deleteLater();
+            modelViewer_->setDisplayMode(ModelViewer::DisplayMode::Graph);
+            *cachePreserved = browser && service && processId > 0 &&
+                modelViewer_->findChild<QObject *>("netronWebView") == browser &&
+                modelViewer_->findChild<QProcess *>() == service && service->processId() == processId &&
+                modelViewer_->state() == ModelViewer::State::Ready && modelViewer_->modelPath() == path &&
+                modelViewer_->hierarchyItemCount() == items && modelViewer_->parameterCount() == parameters &&
+                modelViewer_->yamlAvailable() == available && modelViewer_->yamlText() == text;
+            yaml->insert("source_sha256_after", fileDigest(path));
+            bool success = *cachePreserved && items > 0 && !sourceHash.isEmpty() && fileDigest(path) == sourceHash;
+            for (const auto &name : names) success = success && views->value(name).toBool();
+            success = success && (available ? yaml->value("exported").toBool() && yaml->value("existing_export_refused").toBool() &&
+                yaml->value("export_sha256") == yaml->value("sha256") : !modelViewer_->yamlReason().isEmpty());
+            writeReport(success, success ? QString() : "模型视图、架构另存或解析缓存自检失败。");
+        });
+        timer->start(300);
     };
-    connect(
-        modelViewer_, &ModelViewer::modelLoaded, this, [this, captureViews](const QString &)
-        { QTimer::singleShot(300, this, captureViews); }, Qt::SingleShotConnection);
-    connect(
-        modelViewer_, &ModelViewer::loadFailed, this,
-        [writeReport](const QString &error) { writeReport(false, error); }, Qt::SingleShotConnection);
+    connect(modelViewer_, &ModelViewer::modelLoaded, this, [this, captureViews](const QString &) {
+        QTimer::singleShot(300, this, captureViews); }, Qt::SingleShotConnection);
+    connect(modelViewer_, &ModelViewer::loadFailed, this, [writeReport](const QString &error) {
+        writeReport(false, error); }, Qt::SingleShotConnection);
     showModelStructure(model);
-    if (modelViewer_->state() == ModelViewer::State::Ready)
-        QTimer::singleShot(300, this, captureViews);
+    if (modelViewer_->state() == ModelViewer::State::Ready) QTimer::singleShot(300, this, captureViews);
     else if (modelViewer_->state() == ModelViewer::State::Error)
         QTimer::singleShot(0, this, [this, writeReport] { writeReport(false, modelViewer_->errorString()); });
 }
