@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "version": "2.8.0",
+  "repository": "misaka-ning/vision-studio",
+  "release_url": "https://github.com/misaka-ning/vision-studio/releases/tag/v2.8.0",
+  "tag": "v2.8.0",
+  "commit": "f807e85b48573a43d49697351e69ec5045499732",
+  "public_projection": true,
+  "not_an_application_qa_report": true,
+  "remote_verification_success": true,
+  "latest_snapshot_tag_matches": true,
+  "draft": false,
+  "prerelease": false,
+  "manual_asset_count": 3,
+  "assets": [
+    {
+      "name": "vision-studio_2.8.0-1_amd64.deb",
+      "bytes": 387322828,
+      "sha256": "252518d1e0aeee26be78cf61ecaf1a79fe8660984d254ffbe2c9def17cd9f33c"
+    },
+    {
+      "name": "vision-studio-2.8.0-complete-source.tar.xz",
+      "bytes": 916210416,
+      "sha256": "06085dedeef343b4cb13409dcd19a5516067d7d3194abd650038b4785c849d04"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 207,
+      "sha256": "2955713855b01660d4fd0b53ac66b4d8ff1e01317bca41bd9ecf548f5fa381ac"
+    }
+  ],
+  "local_retention": {
+    "success": true,
+    "retained_versions": [
+      "2.8.0",
+      "2.7.1"
+    ],
+    "old_version": "2.7.0",
+    "removed_generated_copy_count": 3,
+    "removed_release_copy_count": 2,
+    "generated_members_verified": 52692,
+    "generated_metadata_files_preserved": 262,
+    "loose_release_metadata_files_preserved": 88,
+    "loose_release_files_verified": 138,
+    "protected_user_files_per_checkout": 4,
+    "protected_checkout_count": 2,
+    "shared_environment_sentinels_unchanged": 70,
+    "manual_exact_session_identity_exception_count": 2,
+    "full_protected_process_fd_visibility_claimed": false,
+    "process_identity_information_published": false,
+    "remote_history_preserved": true,
+    "local_cleanup_report_sha256": "eaa20e1bb356e4420852076e9074875c2c2aa5ef062089b8f238fd17f2fc5827",
+    "local_release_prune_report_sha256": [
+      "17eda026b3542771b1a99c93dc9dd0881a614e56ca8beb91a64f38fbf0d279f4",
+      "3e0991fb3b8f4df58077209f9ffe604e4b03911414b385f6bcde4324fa606a7a"
+    ]
+  }
+}
