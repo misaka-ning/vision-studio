@@ -1,0 +1,23 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.8.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "actual_same_version_prerequisites_final_deb_elf_code_and_readonly": true,
+      "disabled_actual_process_matches_preference_without_inference_or_data_writes": true,
+      "enabled_actual_process_matches_preference_without_inference_or_data_writes": true,
+      "default_missing_key_actual_process_matches_preference_without_inference_or_data_writes": true,
+      "original_genuine_session_case_unchanged": true,
+      "original_public_inputs_unchanged": true
+    }
+  },
+  "original_file_commitment": {
+    "file": "packaged-startup-preference-qa.json",
+    "bytes": 29088,
+    "sha256": "5812724391415fbbbc813bbd5bf2d0f15a1e6e73d0c933946af7b323138bade3"
+  }
+}

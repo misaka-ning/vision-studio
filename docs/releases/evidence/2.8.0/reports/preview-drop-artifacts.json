@@ -1,0 +1,13 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.8.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "original_file_commitment": {
+    "file": "preview-drop-artifacts.json",
+    "bytes": 9308,
+    "sha256": "ff1091b9a7e88c65b426229b9fdda5d2e1a6c871e1a12f91b56747de33c684b3"
+  }
+}

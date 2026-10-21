@@ -1,0 +1,12 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.8.0",
+  "original_success": true,
+  "original_file_commitment": {
+    "file": "native-ui-review.json",
+    "bytes": 2507,
+    "sha256": "3bbc84877882466d6e4165180e34530d4301bd8717b90f8c2f2c09e8a89b8183"
+  }
+}

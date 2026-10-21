@@ -1,0 +1,19 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "version": "2.8.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "packaged_onnx_cuda": true,
+      "packaged_pt_cuda": true,
+      "cpu_regression": true
+    }
+  },
+  "original_file_commitment": {
+    "file": "packaged-gpu-qa.json",
+    "bytes": 20899,
+    "sha256": "e59aab2ff1c2c2ad105c71b23280e767e0c24b737d9b86e785c8ae9e54881bfe"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.8.0",
+  "original_success": false,
+  "original_error_count": 1,
+  "original_file_commitment": {
+    "file": "diagnostics/startup-precheck-readiness/packaged-startup-preference-qa.json",
+    "bytes": 740,
+    "sha256": "84815d87de311515b91eb09ba03a511f00bfd9e8cf3ecf9763a715bbc2f9a503"
+  }
+}

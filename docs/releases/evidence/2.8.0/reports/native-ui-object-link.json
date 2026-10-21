@@ -1,0 +1,10 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_success": true,
+  "original_file_commitment": {
+    "file": "native-ui-object-link.json",
+    "bytes": 8563,
+    "sha256": "1fbe8e4603ca9ab74a14936792f588ee637acddab6bc285b8c769e8126f4ab44"
+  }
+}

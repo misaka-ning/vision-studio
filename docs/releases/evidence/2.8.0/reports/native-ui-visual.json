@@ -1,0 +1,25 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.8.0",
+  "original_success": true,
+  "boolean_checks": {
+    "checks": {
+      "actual_yaml_font_is_monospaced_after_qss": true,
+      "guide_evaluation_anchor_actually_scrolls": true,
+      "guide_visible_immediately_above_more": true,
+      "native_clicks_persist_off_and_on_in_isolated_preferences": true,
+      "native_tab_focus_follows_sidebar_visual_order": true,
+      "onnx_yaml_mode_hidden_and_unselectable": true,
+      "pt_yaml_available_and_visible": true,
+      "read_only_editor_and_line_number_gutter_visible": true,
+      "startup_preference_defaults_on": true
+    }
+  },
+  "original_file_commitment": {
+    "file": "native-ui-visual.json",
+    "bytes": 5214,
+    "sha256": "4e1dd3c942825e1f62eaee4908eb86129cd45be0156400a5a1c6746b3b8d1e64"
+  }
+}

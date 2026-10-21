@@ -1,0 +1,24 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.8.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "onnx_cuda_nodes": true,
+      "pt_cuda": true,
+      "packaged_onnx_cuda": true,
+      "packaged_pt_cuda": true,
+      "cpu_regression": true,
+      "grayscale_c1_c3": true,
+      "stereo_recording": true
+    }
+  },
+  "original_file_commitment": {
+    "file": "gpu-qa.json",
+    "bytes": 1548,
+    "sha256": "a0d24660f0fa853ff12f93998780aa464e666ac86d48f9741e5275dd5bf34b27"
+  }
+}
