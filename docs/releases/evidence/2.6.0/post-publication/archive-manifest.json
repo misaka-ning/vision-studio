@@ -1,0 +1,40 @@
+{
+  "scope": "Public GitHub responses and counts/digests only; no detailed local cleanup records. Original restricted payload has not been committed or pushed.",
+  "files": [
+    {
+      "file": "delivery-summary.json",
+      "bytes": 2301,
+      "sha256": "1a1959196eac7ed86089d104194c413375c188ef905d262d9c4d1a217188d872"
+    },
+    {
+      "file": "latest-release.json",
+      "bytes": 9128,
+      "sha256": "7b721799fd74babca3bb330d5dce473f0f7183cf15d5bca46b80947019e1ec96"
+    },
+    {
+      "file": "release-dry-run.json",
+      "bytes": 717,
+      "sha256": "509fdd1ad73efce480cefc759bcc868fffd89f57daeba1b1498e54ae897f2c25"
+    },
+    {
+      "file": "release-publish.json",
+      "bytes": 1580,
+      "sha256": "399f4a9a80f7ef54c2dad008a104f52129fe02ccdb757058427ca1585a41bede"
+    },
+    {
+      "file": "release-publish.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "release-verify.json",
+      "bytes": 1006,
+      "sha256": "1c65157ff6885e6fa5b5d1c7d5e4c08808229ca21f5f9ed5d25e4b581eed2995"
+    },
+    {
+      "file": "README.md",
+      "bytes": 1852,
+      "sha256": "5e41bbe391ccb54fddfffac572de9478668206619a89d8adb7d0c3ebe121b295"
+    }
+  ]
+}
