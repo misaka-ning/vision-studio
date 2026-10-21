@@ -7,6 +7,7 @@
 #include "ui/modelviewer.h"
 
 #include <QApplication>
+#include <QCheckBox>
 #include <QComboBox>
 #include <QDir>
 #include <QDoubleSpinBox>
@@ -18,12 +19,15 @@
 #include <QImage>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QLabel>
 #include <QListWidget>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QSettings>
 #include <QSignalSpy>
 #include <QSpinBox>
 #include <QStandardPaths>
+#include <QStackedWidget>
 #include <QTemporaryDir>
 #include <QTimer>
 #include <QtTest>
@@ -230,6 +234,91 @@ private slots:
         for (bool yaml : {false, true})
             for (const auto &split : {"train", "val", "test"})
                 QTest::newRow(qPrintable(QString("%1-%2").arg(yaml ? "yaml" : "directory", split))) << yaml << QString::fromLatin1(split);
+    }
+
+    void startupPreferenceDefaultsOnAndPersistsWithoutErasingTheSession()
+    {
+        auto *toggle = window_->findChild<QCheckBox *>("restoreDatasetOnStartup");
+        QVERIFY(toggle);
+        QVERIFY(toggle->isChecked());
+        const auto saved = fixture("saved-preference");
+        QVERIFY2(importDataset(saved, saved.root, "val"), qPrintable(state()));
+        const QByteArray record = contents(sessionPath());
+        const auto activeFiles = window_->files_;
+        toggle->setChecked(false);
+        QCOMPARE(contents(sessionPath()), record);
+        QCOMPARE(window_->files_, activeFiles);
+        restart();
+        toggle = window_->findChild<QCheckBox *>("restoreDatasetOnStartup");
+        QVERIFY(toggle && !toggle->isChecked());
+        QSignalSpy starts(window_.get(), &MainWindow::startRequested);
+        const quint64 generation = window_->datasetImportGeneration_;
+        window_->restoreDatasetSession();
+        QTest::qWait(100);
+        QCOMPARE(window_->datasetImportGeneration_, generation);
+        QVERIFY(window_->files_.isEmpty());
+        QVERIFY(window_->datasetManifest_.isEmpty());
+        QCOMPARE(contents(sessionPath()), record);
+        QCOMPARE(starts.count(), 0);
+
+        // Disabling restore does not disable imports or the atomic path record.
+        const auto manual = fixture("manual-while-disabled");
+        QVERIFY2(importDataset(manual, manual.yaml, "test"), qPrintable(state()));
+        const QByteArray updated = contents(sessionPath());
+        QVERIFY(updated != record);
+        restart();
+        window_->restoreDatasetSession();
+        QTest::qWait(60);
+        QVERIFY(window_->files_.isEmpty());
+        toggle = window_->findChild<QCheckBox *>("restoreDatasetOnStartup");
+        toggle->setChecked(true);
+        QTest::qWait(60);
+        QVERIFY(window_->files_.isEmpty()); // Turning it on affects the next start only.
+        QCOMPARE(contents(sessionPath()), updated);
+        restart();
+        QVERIFY(window_->findChild<QCheckBox *>("restoreDatasetOnStartup")->isChecked());
+        QSignalSpy restoredStarts(window_.get(), &MainWindow::startRequested);
+        window_->restoreDatasetSession();
+        QVERIFY2(ready(manual, manual.yaml, "test"), qPrintable(state()));
+        QCOMPARE(restoredStarts.count(), 0);
+    }
+
+    void switchingPreferenceOffInvalidatesAlreadyDeferredRestore()
+    {
+        const auto saved = fixture("deferred-preference");
+        QVERIFY2(importDataset(saved, saved.root, "val"), qPrintable(state()));
+        const QByteArray record = contents(sessionPath());
+        restart();
+        auto *toggle = window_->findChild<QCheckBox *>("restoreDatasetOnStartup");
+        QSignalSpy starts(window_.get(), &MainWindow::startRequested);
+        const quint64 generation = window_->datasetImportGeneration_;
+        window_->restoreDatasetSession();
+        toggle->setChecked(false);
+        toggle->setChecked(true);
+        QTest::qWait(100);
+        QVERIFY(idle());
+        QCOMPARE(window_->datasetImportGeneration_, generation);
+        QVERIFY(window_->files_.isEmpty());
+        QCOMPARE(contents(sessionPath()), record);
+        QCOMPARE(starts.count(), 0);
+    }
+
+    void guideImmediatelyPrecedesMoreWithoutChangingRouteTargets()
+    {
+        const QStringList titles{"检测工作台", "模型库", "模型显示", "运行记录", "录制视频", "模型转换", "使用指南", "更多"};
+        int previousBottom = -1;
+        for (const auto &title : titles) {
+            QPushButton *entry = nullptr;
+            for (auto *button : window_->navButtons_)
+                if (button->text() == title) { entry = button; break; }
+            QVERIFY2(entry, qPrintable(title));
+            QVERIFY(entry->isVisible());
+            QVERIFY(entry->y() > previousBottom);
+            previousBottom = entry->geometry().bottom();
+            entry->click();
+            QCOMPARE(window_->pageTitle_->text(), title);
+        }
+        QCOMPARE(window_->pages_->currentWidget()->objectName(), QString("morePage"));
     }
     void successfulImportRestoresOriginalSourceSplitAndMetadata()
     {

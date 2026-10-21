@@ -219,7 +219,7 @@ def verify(args, workspace, audit):
         path = display_root / "model-display-report.json"
         report = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {}
         passed = valid_model_display(display_root, report, result.returncode)
-        audit.require(passed, f"Installed offline non-root {model} four-view/cache smoke failed: " + result.stderr[-1800:])
+        audit.require(passed, f"Installed offline non-root {model} available-view/cache smoke failed: " + result.stderr[-1800:])
         smoke[name] = {"success": passed, "exit_code": result.returncode,
                        "elapsed_seconds": elapsed, "report": report,
                        "rendering_flags": "--disable-gpu", "sandbox_disabled_by_test": False}

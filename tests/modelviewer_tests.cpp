@@ -16,8 +16,11 @@
 #include <QPointer>
 #include <QPlainTextEdit>
 #include <QTextEdit>
+#include <QTextBlock>
+#include <QTextLayout>
 #include <QProcess>
 #include <QRegularExpression>
+#include <QScrollBar>
 #include <QSet>
 #include <QSignalSpy>
 #include <QStackedWidget>
@@ -802,7 +805,10 @@ class ModelViewerTests : public QObject
         const QByteArray original = source.readAll(); source.close();
         ModelViewer viewer; viewer.resize(1260, 820); viewer.show();
         QSignalSpy loaded(&viewer, &ModelViewer::modelLoaded), failed(&viewer, &ModelViewer::loadFailed);
+        auto *button = viewer.findChild<QAbstractButton *>("modelYamlModeButton");
+        QVERIFY(button); QVERIFY(button->isHidden());
         viewer.openModel(path);
+        QVERIFY(button->isHidden());
         QTRY_VERIFY_WITH_TIMEOUT(viewer.state() != ModelViewer::State::Loading, deadline);
         QVERIFY2(viewer.state() == ModelViewer::State::Ready, qPrintable(viewer.errorString()));
         QCOMPARE(loaded.count(), 1); QCOMPARE(failed.count(), 0);
@@ -816,20 +822,20 @@ class ModelViewerTests : public QObject
         QSignalSpy pageLoads(browser->page(), &QWebEnginePage::loadStarted);
         const QString cached = viewer.yamlText();
         auto *editor = viewer.findChild<QPlainTextEdit *>("modelYamlEditor");
-        auto *button = viewer.findChild<QAbstractButton *>("modelYamlModeButton");
         auto *copy = viewer.findChild<QAbstractButton *>("modelYamlCopyButton");
         auto *save = viewer.findChild<QAbstractButton *>("modelYamlSaveButton");
         auto *status = viewer.findChild<QLabel *>("modelYamlStatus");
         auto *search = viewer.findChild<QLineEdit *>("modelStructureSearch");
         QVERIFY(editor && button && copy && save && status && search);
-        QTest::mouseClick(button, Qt::LeftButton);
-        QCOMPARE(viewer.displayMode(), ModelViewer::DisplayMode::YoloYaml);
-        QVERIFY(status->isVisible()); QCOMPARE(status->text(), viewer.yamlReason());
-        QCOMPARE(copy->isEnabled(), layers > 0); QCOMPARE(save->isEnabled(), layers > 0);
+        QCOMPARE(button->isVisible(), layers > 0);
         QVERIFY(editor->isReadOnly());
         QString error; const QString output = m_temporary->path() + "/" + QString::fromLatin1(QTest::currentDataTag()) + ".yaml";
         if (layers > 0)
         {
+            QTest::mouseClick(button, Qt::LeftButton);
+            QCOMPARE(viewer.displayMode(), ModelViewer::DisplayMode::YoloYaml);
+            QVERIFY(status->isVisible()); QCOMPARE(status->text(), viewer.yamlReason());
+            QVERIFY(copy->isEnabled()); QVERIFY(save->isEnabled());
             QVERIFY(editor->isVisible()); QCOMPARE(editor->toPlainText(), cached);
             QCOMPARE(cached.count("  - ["), layers);
             QVERIFY(cached.contains("nc: 80")); QVERIFY(cached.contains("depth_multiple: 0.33"));
@@ -850,14 +856,18 @@ class ModelViewerTests : public QObject
         }
         else
         {
+            viewer.setDisplayMode(ModelViewer::DisplayMode::YoloYaml);
+            QCOMPARE(viewer.displayMode(), ModelViewer::DisplayMode::Graph);
             QVERIFY(!editor->isVisible()); QVERIFY(cached.isEmpty());
-            QVERIFY(!search->isEnabled()); QVERIFY(containsChinese(status->text()));
+            QVERIFY(copy->isHidden()); QVERIFY(save->isHidden());
+            QVERIFY(containsChinese(viewer.yamlReason()));
             QVERIFY(!viewer.saveYaml(output, &error)); QVERIFY(!QFileInfo::exists(output));
         }
         search->clear();
         for (auto mode : {ModelViewer::DisplayMode::Graph, ModelViewer::DisplayMode::Hierarchy,
                           ModelViewer::DisplayMode::Parameters, ModelViewer::DisplayMode::YoloYaml})
             viewer.setDisplayMode(mode);
+        QCOMPARE(viewer.displayMode(), layers > 0 ? ModelViewer::DisplayMode::YoloYaml : ModelViewer::DisplayMode::Parameters);
         QCOMPARE(viewer.findChild<QProcess *>(), service.data());
         QCOMPARE(viewer.findChild<QWebEngineView *>("netronWebView"), browser.data());
         QCOMPARE(service->processId(), pid); QCOMPARE(pageLoads.count(), 0); QCOMPARE(loaded.count(), 1);
@@ -891,16 +901,78 @@ class ModelViewerTests : public QObject
         QCOMPARE(viewer.state(), ModelViewer::State::Ready);
     }
 
+    void yamlOneDarkEditorHasReadableTokensAndScrollingLineNumbers()
+    {
+        ModelViewer viewer; viewer.resize(960, 660); viewer.show();
+        auto *editor = viewer.findChild<QPlainTextEdit *>("modelYamlEditor");
+        auto *numbers = viewer.findChild<QWidget *>("modelYamlLineNumbers");
+        auto *page = viewer.findChild<QWidget *>("modelYamlPage");
+        auto *stack = viewer.findChild<QStackedWidget *>();
+        QVERIFY(editor && numbers && page && stack);
+        // Presentation-only fixture text, never a fabricated model result.
+        stack->setCurrentWidget(page);
+        editor->show();
+        editor->setPlainText("# architecture comment\nnc: 1\nscales:\n  n: [0.50, 0.25, 1024]\nbackbone:\n"
+                             "  - [-1, 1, Conv, [64, 3, 2]]\n"
+                             "  - [-1, 1, C2f, [true, 'hash# literal', \"# literal\"]] # note\n");
+        const auto formatAt = [editor](int line, const QString &token) {
+            const QTextBlock block = editor->document()->findBlockByNumber(line);
+            const int position = block.text().indexOf(token);
+            for (const auto &range : block.layout()->formats())
+                if (position >= range.start && position < range.start + range.length) return range.format;
+            return QTextCharFormat();
+        };
+        QTRY_COMPARE(formatAt(0, "#").foreground().color(), QColor("#5C6370"));
+        QVERIFY(formatAt(0, "#").fontItalic());
+        QCOMPARE(formatAt(1, "nc").foreground().color(), QColor("#E06C75"));
+        QCOMPARE(formatAt(1, "1").foreground().color(), QColor("#D19A66"));
+        QCOMPARE(formatAt(3, "n:").foreground().color(), QColor("#E06C75"));
+        QCOMPARE(formatAt(3, "0.50").foreground().color(), QColor("#D19A66"));
+        QCOMPARE(formatAt(5, "-1").foreground().color(), QColor("#D19A66"));
+        QCOMPARE(formatAt(5, "Conv").foreground().color(), QColor("#98C379"));
+        QCOMPARE(formatAt(5, "[-1").foreground().color(), QColor("#D19A66"));
+        QCOMPARE(formatAt(5, "[64").foreground().color(), QColor("#C678DD"));
+        QCOMPARE(formatAt(6, "true").foreground().color(), QColor("#D19A66"));
+        QCOMPARE(formatAt(6, "C2f").foreground().color(), QColor("#98C379"));
+        QCOMPARE(formatAt(6, "hash# literal").foreground().color(), QColor("#98C379"));
+        QCOMPARE(formatAt(6, "# literal\"").foreground().color(), QColor("#98C379"));
+        QCOMPARE(formatAt(6, "# note").foreground().color(), QColor("#5C6370"));
+        QVERIFY(editor->isReadOnly()); QVERIFY(numbers->isVisible());
+        const int narrow = numbers->width();
+        QStringList lines;
+        for (int index = 0; index < 1001; ++index)
+            lines.append(QString("# %1 %2").arg(index).arg(QString(150, QLatin1Char('x'))));
+        editor->setPlainText(lines.join('\n'));
+        QTRY_VERIFY(numbers->width() > narrow);
+        QCOMPARE(editor->blockCount(), 1001);
+        const QRect gutter = numbers->geometry();
+        editor->horizontalScrollBar()->setValue(editor->horizontalScrollBar()->maximum());
+        QCOMPARE(numbers->geometry(), gutter);
+        QTextCursor cursor(editor->document()); cursor.movePosition(QTextCursor::End);
+        editor->setTextCursor(cursor); editor->ensureCursorVisible();
+        QTRY_COMPARE(editor->textCursor().blockNumber(), 1000);
+        QVERIFY(editor->verticalScrollBar()->value() > 0);
+        QVERIFY(!editor->extraSelections().isEmpty());
+        QCOMPARE(editor->extraSelections().first().format.background().color(), QColor("#2C313C"));
+        const QImage image = numbers->grab().toImage();
+        QVERIFY(!image.isNull());
+        QCOMPARE(image.pixelColor(image.width() - 2, 2), QColor("#282C34"));
+    }
+
     void yamlFastSwitchClearsOldDocumentAndRejectsStaleCallbacks()
     {
         ModelViewer viewer; viewer.resize(1100, 760); viewer.show(); viewer.openModel(m_pt);
         QTRY_COMPARE_WITH_TIMEOUT(viewer.state(), ModelViewer::State::Ready, deadline);
         QVERIFY(viewer.yamlAvailable()); viewer.setDisplayMode(ModelViewer::DisplayMode::YoloYaml);
+        auto *button = viewer.findChild<QAbstractButton *>("modelYamlModeButton");
+        QVERIFY(button && button->isVisible());
         QSignalSpy loaded(&viewer, &ModelViewer::modelLoaded);
         viewer.openModel(m_onnx); QVERIFY(viewer.yamlText().isEmpty()); QVERIFY(!viewer.yamlAvailable());
+        QVERIFY(button->isHidden()); QCOMPARE(viewer.displayMode(), ModelViewer::DisplayMode::Graph);
         viewer.openModel(m_pt); viewer.openModel(m_final);
         QTRY_COMPARE_WITH_TIMEOUT(viewer.state(), ModelViewer::State::Ready, deadline);
         QVERIFY(!viewer.yamlAvailable()); QVERIFY(viewer.yamlText().isEmpty());
+        QVERIFY(button->isHidden()); QCOMPARE(viewer.displayMode(), ModelViewer::DisplayMode::Graph);
         QCOMPARE(loaded.count(), 1); QCOMPARE(viewer.modelPath(), QFileInfo(m_final).absoluteFilePath());
         QTest::qWait(400); QVERIFY(!viewer.yamlAvailable()); QVERIFY(viewer.yamlText().isEmpty());
         viewer.stop(); QVERIFY(viewer.yamlText().isEmpty()); QVERIFY(!viewer.yamlAvailable());

@@ -17,12 +17,14 @@
 #include <QJsonObject>
 #include <QLabel>
 #include <QLineEdit>
+#include <QPainter>
 #include <QPlainTextEdit>
 #include <QProcess>
 #include <QProcessEnvironment>
 #include <QProgressBar>
 #include <QRegularExpression>
 #include <QPushButton>
+#include <QResizeEvent>
 #include <QSortFilterProxyModel>
 #include <QStackedLayout>
 #include <QStackedWidget>
@@ -53,6 +55,119 @@ namespace
 constexpr qsizetype outputLimit = 64 * 1024;
 constexpr auto netronVersion = "9.3.1";
 
+// A small native code viewer keeps the existing read-only/search behaviour,
+// while painting the gutter independently of document text and horizontal scroll.
+class YamlEditor final : public QPlainTextEdit
+{
+    class LineNumbers final : public QWidget
+    {
+      public:
+        explicit LineNumbers(YamlEditor *editor) : QWidget(editor), m_editor(editor)
+        {
+            setObjectName("modelYamlLineNumbers");
+        }
+      protected:
+        void paintEvent(QPaintEvent *event) override { m_editor->paintLineNumbers(event); }
+      private:
+        YamlEditor *m_editor;
+    };
+  public:
+    explicit YamlEditor(QWidget *parent) : QPlainTextEdit(parent), m_numbers(new LineNumbers(this))
+    {
+        setReadOnly(true);
+        setUndoRedoEnabled(false);
+        setLineWrapMode(QPlainTextEdit::NoWrap);
+        QFont fixed = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+        fixed.setPointSize(11);
+        setFont(fixed);
+        setTabStopDistance(fontMetrics().horizontalAdvance(QLatin1Char(' ')) * 4);
+        setStyleSheet("QPlainTextEdit { background:#282C34; color:#ABB2BF; selection-background-color:#3E4451; "
+                     "selection-color:#FFFFFF; border:1px solid #3E4451; border-radius:6px; padding:6px 0; }");
+        document()->setDocumentMargin(10);
+        connect(this, &QPlainTextEdit::blockCountChanged, this, [this] { updateGutter(); });
+        connect(this, &QPlainTextEdit::updateRequest, this, [this](const QRect &rect, int dy) {
+            if (dy) m_numbers->scroll(0, dy);
+            else m_numbers->update(0, rect.y(), m_numbers->width(), rect.height());
+            if (rect.contains(viewport()->rect())) updateGutter();
+        });
+        connect(this, &QPlainTextEdit::cursorPositionChanged, this, [this] {
+            m_numbers->update();
+            updateSelections();
+        });
+        updateGutter();
+        updateSelections();
+    }
+
+    void setSearchSelections(const QList<QTextEdit::ExtraSelection> &selections)
+    {
+        m_searchSelections = selections;
+        updateSelections();
+    }
+
+  protected:
+    void resizeEvent(QResizeEvent *event) override
+    {
+        QPlainTextEdit::resizeEvent(event);
+        updateGutterGeometry();
+    }
+
+  private:
+    int gutterWidth() const
+    {
+        return 22 + fontMetrics().horizontalAdvance(QLatin1Char('9')) *
+                        qMax(2, int(QString::number(blockCount()).size()));
+    }
+    void updateGutter()
+    {
+        setViewportMargins(gutterWidth(), 0, 0, 0);
+        updateGutterGeometry();
+        m_numbers->update();
+    }
+    void updateGutterGeometry()
+    {
+        const QRect area = contentsRect();
+        m_numbers->setGeometry(area.left(), viewport()->geometry().top(), gutterWidth(), viewport()->height());
+    }
+    void updateSelections()
+    {
+        QTextEdit::ExtraSelection current;
+        current.format.setBackground(QColor("#2C313C"));
+        current.format.setProperty(QTextFormat::FullWidthSelection, true);
+        current.cursor = textCursor();
+        current.cursor.clearSelection();
+        QList<QTextEdit::ExtraSelection> selections{current};
+        selections.append(m_searchSelections);
+        setExtraSelections(selections);
+    }
+    void paintLineNumbers(QPaintEvent *event)
+    {
+        QPainter painter(m_numbers);
+        painter.fillRect(event->rect(), QColor("#282C34"));
+        painter.setFont(font());
+        QTextBlock block = firstVisibleBlock();
+        int index = block.blockNumber();
+        int top = qRound(blockBoundingGeometry(block).translated(contentOffset()).top());
+        const int selected = textCursor().blockNumber();
+        while (block.isValid() && top <= event->rect().bottom())
+        {
+            const int height = qRound(blockBoundingRect(block).height());
+            if (block.isVisible() && top + height >= event->rect().top())
+            {
+                if (index == selected)
+                    painter.fillRect(0, top, m_numbers->width(), height, QColor("#2C313C"));
+                painter.setPen(QColor(index == selected ? "#ABB2BF" : "#636D83"));
+                painter.drawText(0, top, m_numbers->width() - 12, fontMetrics().height(),
+                                 Qt::AlignRight | Qt::AlignVCenter, QString::number(index + 1));
+            }
+            block = block.next();
+            top += height;
+            ++index;
+        }
+    }
+    LineNumbers *m_numbers;
+    QList<QTextEdit::ExtraSelection> m_searchSelections;
+};
+
 class YamlHighlighter final : public QSyntaxHighlighter
 {
   public:
@@ -61,28 +176,63 @@ class YamlHighlighter final : public QSyntaxHighlighter
     void highlightBlock(const QString &text) override
     {
         QTextCharFormat number, key, quoted, comment, word;
-        number.setForeground(QColor("#B5CEA8")); key.setForeground(QColor("#60CDFF"));
-        quoted.setForeground(QColor("#DCC08C")); comment.setForeground(QColor("#B8B8B8"));
-        word.setForeground(QColor("#4EC9B0"));
-        const auto apply = [this, &text](const QString &pattern, const QTextCharFormat &format) {
-            auto matches = QRegularExpression(pattern).globalMatch(text);
-            while (matches.hasNext()) { const auto match = matches.next(); setFormat(match.capturedStart(), match.capturedLength(), format); }
-        };
-        apply(QStringLiteral("\\b[-+]?[0-9]+(?:\\.[0-9]+)?\\b"), number);
-        apply(QStringLiteral("^[A-Za-z_][A-Za-z_0-9]*(?=:)"), key);
-        apply(QStringLiteral("\\b(?:Conv|C[123][A-Za-z0-9]*|Detect|Concat|SPPF|nn\\.[A-Za-z_0-9]+)\\b"), word);
-        int start = -1; bool escaped = false;
+        number.setForeground(QColor("#D19A66")); key.setForeground(QColor("#E06C75"));
+        quoted.setForeground(QColor("#98C379")); comment.setForeground(QColor("#5C6370"));
+        comment.setFontItalic(true); word.setForeground(QColor("#98C379"));
+        // Mark quoted spans/comments first: a # inside a string is not a comment.
+        QList<bool> protectedText(text.size(), false);
         for (int index = 0; index < text.size(); ++index)
         {
             const QChar character = text[index];
-            if (start >= 0)
+            if (character == '#')
             {
-                if (!escaped && character == '"') { setFormat(start, index - start + 1, quoted); start = -1; }
-                if (escaped) escaped = false; else escaped = character == '\\';
+                setFormat(index, text.size() - index, comment);
+                for (int tail = index; tail < text.size(); ++tail) protectedText[tail] = true;
+                break;
             }
-            else if (character == '"') { start = index; escaped = false; }
-            else if (character == '#') { setFormat(index, text.size() - index, comment); break; }
+            if (character != '"' && character != '\'') continue;
+            const int start = index;
+            const QChar quote = character;
+            while (++index < text.size())
+            {
+                if (quote == '"' && text[index] == '\\') { ++index; continue; }
+                if (text[index] != quote) continue;
+                if (quote == '\'' && index + 1 < text.size() && text[index + 1] == quote) { ++index; continue; }
+                break;
+            }
+            index = qMin(index, int(text.size()) - 1);
+            setFormat(start, index - start + 1, quoted);
+            for (int span = start; span <= index; ++span) protectedText[span] = true;
         }
+        const auto apply = [this, &text, &protectedText](const QString &pattern, const QTextCharFormat &format, int group = 0) {
+            auto matches = QRegularExpression(pattern).globalMatch(text);
+            while (matches.hasNext())
+            {
+                const auto match = matches.next();
+                const int start = match.capturedStart(group), size = match.capturedLength(group);
+                if (start >= 0 && size > 0 && !protectedText[start]) setFormat(start, size, format);
+            }
+        };
+        apply(QStringLiteral("\\b[A-Za-z_][A-Za-z_0-9.]*\\b"), word);
+        apply(QStringLiteral("\\b(?:true|false|True|False|null|Null|None)\\b"), number);
+        apply(QStringLiteral("(?<![A-Za-z_0-9.])[-+]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)(?:[eE][-+]?[0-9]+)?\\b"), number);
+        apply(QStringLiteral("(?:^|\\s)([A-Za-z_][A-Za-z_0-9.-]*|[0-9]+)(?=\\s*:)"), key, 1);
+        const QColor brackets[] = {QColor("#D19A66"), QColor("#C678DD"), QColor("#56B6C2")};
+        int depth = qMax(0, previousBlockState());
+        for (int index = 0; index < text.size(); ++index)
+        {
+            if (protectedText[index]) continue;
+            const QChar character = text[index];
+            if (character == '[' || character == '{' || character == ']' || character == '}')
+            {
+                const bool closing = character == ']' || character == '}';
+                if (closing) depth = qMax(0, depth - 1);
+                QTextCharFormat bracket; bracket.setForeground(brackets[depth % 3]);
+                setFormat(index, 1, bracket);
+                if (!closing) depth = qMin(1024, depth + 1);
+            }
+        }
+        setCurrentBlockState(depth);
     }
 };
 
@@ -778,14 +928,8 @@ ModelViewer::ModelViewer(QWidget *parent) : QWidget(parent)
     m_yamlSearchInfo->setObjectName("modelYamlSearchInfo");
     m_yamlSearchInfo->setStyleSheet("color:#B8B8B8; font-size:12px;");
     yamlLayout->addWidget(m_yamlSearchInfo);
-    m_yamlEditor = new QPlainTextEdit(m_yamlPage);
+    m_yamlEditor = new YamlEditor(m_yamlPage);
     m_yamlEditor->setObjectName("modelYamlEditor");
-    m_yamlEditor->setReadOnly(true);
-    m_yamlEditor->setUndoRedoEnabled(false);
-    m_yamlEditor->setLineWrapMode(QPlainTextEdit::NoWrap);
-    QFont fixed = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-    fixed.setPointSize(11); m_yamlEditor->setFont(fixed);
-    m_yamlEditor->setStyleSheet("QPlainTextEdit { background:#202020; color:#F5F5F5; selection-background-color:#36526A; selection-color:#FFFFFF; border:1px solid #454545; border-radius:6px; padding:12px; }");
     new YamlHighlighter(m_yamlEditor->document());
     yamlLayout->addWidget(m_yamlEditor, 1);
     m_stack->addWidget(m_yamlPage);
@@ -921,6 +1065,12 @@ void ModelViewer::setDisplayMode(DisplayMode mode)
 {
     if (mode != DisplayMode::Graph && mode != DisplayMode::Hierarchy && mode != DisplayMode::Parameters && mode != DisplayMode::YoloYaml)
         return;
+    // Unsupported or still-loading models have no YAML entry to activate.
+    if (mode == DisplayMode::YoloYaml && !yamlAvailable())
+    {
+        updateDisplay();
+        return;
+    }
     const bool changed = m_mode != mode;
     m_mode = mode;
     updateDisplay();
@@ -943,7 +1093,11 @@ int ModelViewer::parameterCount() const
     return m_parameterCount;
 }
 
-bool ModelViewer::yamlAvailable() const { return m_structureReady && m_yamlDocument.available && matchesModelFile(m_modelPath); }
+bool ModelViewer::yamlAvailable() const
+{
+    return m_structureReady && QFileInfo(m_modelPath).suffix().compare("onnx", Qt::CaseInsensitive) != 0 &&
+           m_yamlDocument.available && matchesModelFile(m_modelPath);
+}
 QString ModelViewer::yamlText() const { return matchesModelFile(m_modelPath) ? m_yamlDocument.text : QString(); }
 QString ModelViewer::yamlReason() const
 {
@@ -973,12 +1127,12 @@ void ModelViewer::updateYamlSearch()
             if (cursor.isNull()) break;
             QTextEdit::ExtraSelection selection;
             selection.cursor = cursor;
-            selection.format.setBackground(QColor("#5B4A16"));
-            selection.format.setForeground(QColor("#FFFFFF"));
+            selection.format.setBackground(QColor("#594834"));
+            selection.format.setForeground(QColor("#E5C07B"));
             selections.append(selection);
         }
     }
-    m_yamlEditor->setExtraSelections(selections);
+    static_cast<YamlEditor *>(m_yamlEditor)->setSearchSelections(selections);
     m_yamlSearchInfo->setText(query.isEmpty() ? QStringLiteral("只读架构 · 可搜索、复制与另存新文件") :
         QStringLiteral("%1%2 处匹配 · 按回车定位下一处").arg(selections.size()).arg(selections.size() == 1000 ? "+" : ""));
 }
@@ -1021,11 +1175,19 @@ void ModelViewer::clearStructure()
 
 void ModelViewer::updateDisplay()
 {
+    const bool resetYaml = m_mode == DisplayMode::YoloYaml && !yamlAvailable();
+    if (resetYaml) m_mode = DisplayMode::Graph;
     for (int index = 0; index < m_modeButtons.size(); ++index)
         m_modeButtons[index]->setChecked(index == static_cast<int>(m_mode));
+    m_modeButtons[static_cast<int>(DisplayMode::YoloYaml)]->setVisible(m_state == State::Ready && yamlAvailable());
     const bool ready = m_state == State::Ready && m_structureReady;
     const bool native = m_mode != DisplayMode::Graph;
     const bool yaml = m_mode == DisplayMode::YoloYaml;
+    // StackAll keeps Chromium rendering below the loading overlay. Native
+    // YAML content has no reason to remain visible below another mode.
+    m_yamlPage->setVisible(ready && yaml);
+    m_yamlEditor->setVisible(ready && yaml && yamlAvailable());
+    m_yamlSearchInfo->setVisible(ready && yaml && yamlAvailable());
     m_search->setVisible(native);
     m_search->setEnabled(ready && (!yaml || yamlAvailable()));
     m_yamlCopy->setVisible(yaml);
@@ -1042,8 +1204,6 @@ void ModelViewer::updateDisplay()
     {
         m_stack->setCurrentWidget(m_yamlPage);
         if (!matchesModelFile(m_modelPath)) m_yamlStatus->setText(yamlReason());
-        m_yamlEditor->setVisible(yamlAvailable());
-        m_yamlSearchInfo->setVisible(yamlAvailable());
         updateYamlSearch();
     }
     else if (ready && m_mode == DisplayMode::Hierarchy)
@@ -1066,6 +1226,7 @@ void ModelViewer::updateDisplay()
     }
     else
         m_stack->setCurrentWidget(ready && m_webView ? static_cast<QWidget *>(m_webView) : m_statusPage);
+    if (resetYaml) emit displayModeChanged(m_mode);
 }
 
 void ModelViewer::updateSelectionDetails(bool hierarchy)
@@ -1230,7 +1391,8 @@ void ModelViewer::extractYaml(quint64 generation)
             if (encoded.size() <= 256 * 1024)
             {
                 const auto object = QJsonDocument::fromJson(encoded).object();
-                if (object.value("schema").toInt() == 1 && object.value("available").toBool())
+                if (QFileInfo(self->m_modelPath).suffix().compare("onnx", Qt::CaseInsensitive) != 0 &&
+                    object.value("schema").toInt() == 1 && object.value("available").toBool())
                     self->m_yamlDocument = vision::modelYamlDocument(object.value("architecture"));
                 else
                     self->m_yamlDocument.notice = object.value("message").toString().left(2048);
@@ -1244,7 +1406,7 @@ void ModelViewer::extractYaml(quint64 generation)
             self->m_structurePending = false;
             self->m_structureReady = true;
             self->m_deadline->stop();
-            self->setState(State::Ready, QStringLiteral("四种展示模式的只读元信息已缓存。"));
+            self->setState(State::Ready, QStringLiteral("可用展示模式的只读元信息已缓存。"));
             if (!self || generation != self->m_generation || self->m_state != State::Ready) return;
             self->m_poll->setInterval(500);
             emit self->modelLoaded(self->m_modelPath);

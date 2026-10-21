@@ -18,6 +18,10 @@ PROJECT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT / "scripts"))
 import release_metadata as metadata
 
+# The existing source-checks runner loads this module explicitly. Keep the
+# package model-view contract in that CI job as well as its standalone module.
+from model_display_audit_tests import ModelDisplayAuditTests
+
 
 def load_tool(name, relative):
     spec = importlib.util.spec_from_file_location(name, PROJECT / relative)

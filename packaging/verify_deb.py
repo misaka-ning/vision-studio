@@ -542,11 +542,28 @@ def valid_model_display(output, report, exit_code):
         yaml = report.get("yaml", {})
         yaml_path = output / "model-architecture.yaml"
         yaml_screenshot = output / "model-yaml.png"
-        if not (modes.get("yolo_yaml") is True and yaml_screenshot.is_file() and
-                yaml_screenshot.read_bytes().startswith(b"\x89PNG\r\n\x1a\n") and
-                re.fullmatch(r"[0-9a-f]{64}", yaml.get("source_sha256_before", "")) and
+        if not (re.fullmatch(r"[0-9a-f]{64}", yaml.get("source_sha256_before", "")) and
                 yaml.get("source_sha256_before") == yaml.get("source_sha256_after")):
             return False
+        if release_metadata.version_key(report.get("version", "0.0.0"))[:3] >= (2, 8, 0):
+            # 2.8 hides the architecture-only mode when no blueprint exists.
+            # An unavailable mode must never be counted as a successful view.
+            if yaml.get("available") is True:
+                if yaml.get("mode_visible") is not True or modes.get("yolo_yaml") is not True:
+                    return False
+            elif yaml.get("available") is False:
+                if (yaml.get("mode_visible") is not False or "yolo_yaml" in modes or
+                        yaml_screenshot.exists()):
+                    return False
+            else:
+                return False
+        elif modes.get("yolo_yaml") is not True:
+            return False
+        if (yaml.get("available") is True or
+                release_metadata.version_key(report.get("version", "0.0.0"))[:3] < (2, 8, 0)):
+            if not (yaml_screenshot.is_file() and
+                    yaml_screenshot.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")):
+                return False
         if Path(report.get("model", "")).suffix.lower() == ".onnx":
             if yaml.get("available") is not False or not yaml.get("reason") or yaml_path.exists():
                 return False
@@ -615,7 +632,7 @@ def smoke_tests(app, workspace, audit):
         report_file = output / "model-display-report.json"
         report = json.loads(report_file.read_text()) if report_file.is_file() else {}
         passed = valid_model_display(output, report, process.returncode)
-        audit.require(passed, f"Read-only non-root {model} four-view/cache smoke failed: " + process.stderr[-1800:])
+        audit.require(passed, f"Read-only non-root {model} available-view/cache smoke failed: " + process.stderr[-1800:])
         results[name] = {"success": passed, "exit_code": process.returncode,
                          "elapsed_seconds": round(time.monotonic() - started, 2), "report": report,
                          "rendering_flags": env["QTWEBENGINE_CHROMIUM_FLAGS"],

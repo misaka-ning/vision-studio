@@ -677,8 +677,14 @@ QWidget *MainWindow::buildSidebar()
         auto *b = button(titles[i], icons[i], "nav");
         b->setCheckable(true);
         navButtons_.append(b);
-        l->addWidget(b);
         connect(b, &QPushButton::clicked, this, [this, i] { selectRoute(i); });
+    }
+    // Keep route IDs stable while placing help beside the application settings.
+    QPushButton *previousEntry = nullptr;
+    for (int route : {0, 1, 2, 3, 5, 6, 4, 7}) {
+        l->addWidget(navButtons_[route]);
+        if (previousEntry) QWidget::setTabOrder(previousEntry, navButtons_[route]);
+        previousEntry = navButtons_[route];
     }
     l->addStretch();
     auto *info = card();
@@ -1494,7 +1500,7 @@ QWidget *MainWindow::buildModelDisplay()
             [this](ModelViewer::State state)
             {
                 structureStatus_->setText(state == ModelViewer::State::Loading ? "后台加载中…"
-                                          : state == ModelViewer::State::Ready ? QString("四种视图已缓存")
+                                          : state == ModelViewer::State::Ready ? QString("可用视图已缓存")
                                           : state == ModelViewer::State::Error ? "无法显示"
                                                                                : "等待模型");
             });
@@ -1511,8 +1517,8 @@ QWidget *MainWindow::buildModelDisplay()
                 if (pages_->currentIndex() == 2)
                     showNotice(error, true);
             });
-    auto *note = text("使用模型库中全局选中的模型，四种视图共用后台解析缓存。结构图可缩放与平移；层级树和参数"
-                      "表支持搜索与详情查看。",
+    auto *note = text("使用模型库中全局选中的模型，各视图共用后台解析缓存。结构图可缩放与平移；层级树和参数"
+                      "表支持搜索与详情查看。包含受支持架构信息的 PT 模型还可查看 YOLO YAML。",
                       "tiny");
     note->setWordWrap(true);
     layout->addWidget(note);
@@ -1597,6 +1603,29 @@ QWidget *MainWindow::buildMore()
     outer->addWidget(scroll);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(16);
+    auto *startup = card();
+    auto *startupLayout = new QVBoxLayout(startup);
+    startupLayout->setContentsMargins(24, 18, 24, 18);
+    startupLayout->setSpacing(10);
+    startupLayout->addWidget(text("启动与数据集", "modelName"));
+    restoreDatasetOnStartup_ = new QCheckBox("启动时恢复上次数据集");
+    restoreDatasetOnStartup_->setObjectName("restoreDatasetOnStartup");
+    restoreDatasetOnStartup_->setChecked(settings_->value("restoreDatasetOnStartup", true).toBool());
+    startupLayout->addWidget(restoreDatasetOnStartup_);
+    auto *startupHint = text("默认开启。下次打开 Vision Studio 时，在后台载入上次成功导入的数据集与集合，不自动开始检测或评估。"
+                             "关闭后仍保留路径记录，当前已载入的数据集不受影响；重新开启在下次启动生效。", "muted");
+    startupHint->setObjectName("restoreDatasetOnStartupHint");
+    startupHint->setWordWrap(true);
+    startupHint->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    startupLayout->addWidget(startupHint);
+    connect(restoreDatasetOnStartup_, &QCheckBox::toggled, this, [this](bool enabled) {
+        settings_->setValue("restoreDatasetOnStartup", enabled);
+        settings_->sync();
+        // Suppress an entry already queued by ordinary startup. A preference
+        // change must never cancel an accepted manual dataset import.
+        if (!enabled) ++datasetSessionRestoreGeneration_;
+    });
+    layout->addWidget(startup);
     auto *environment = card();
     auto *gpuLayout = new QVBoxLayout(environment);
     gpuLayout->setContentsMargins(24, 18, 24, 18);
@@ -2192,33 +2221,17 @@ void MainWindow::exportRecording()
 QWidget *MainWindow::buildGuide()
 {
     auto *f = card();
+    f->setObjectName("guidePage");
     auto *l = new QVBoxLayout(f);
-    l->setContentsMargins(32, 22, 32, 22);
+    l->setContentsMargins(24, 18, 24, 18);
     auto *html = new QTextBrowser;
+    html->setObjectName("guideBrowser");
     html->setOpenExternalLinks(true);
-    html->setHtml(R"(
-    <style>h1{color:#F5F5F5;font-size:28px}h2{color:#60CDFF;font-size:16px;margin-top:26px}p,li{line-height:1.8;color:#D2D2D2;font-size:13px}code{color:#D8ECF5}a{color:#60CDFF}</style>
-    <h1>让你的视觉模型，真正运行起来。</h1><p>Vision Studio 是一个原生 C++ / Qt 桌面工作台。模型加载、图像处理与推理均在本机完成。</p>
-    <h2>01 / 开始你的第一次检测</h2><p>在模型库选用 ONNX 或 PT 模型，再导入标准 YOLO 数据集，或选择视频／摄像头。图像预览区也支持拖入一个数据集目录、YAML/YML、视频，或单张／多张图片；一次拖入不能混合类型。图片按拖入顺序排列，相同本地路径去重。已有数据集时可选择替换或临时加入，临时图片仅参与检测，没有 GT，不作为负样本计入评估，也不会在下次启动恢复。Ctrl+O 选择数据集目录或 YAML，详细类别映射与扫描参数位于“数据集设置”。PT 通过本机独立 PyTorch 环境推理。</p>
-    <h2>模型库与结构显示</h2><p>在“模型库”点击模型即可全局选用，工作台检测与模型显示使用同一模型。选择后在后台预加载，结构图、层级树、参数表共用一次解析缓存；进入或离开页面、切换展示模式不重复加载。结构图可以缩放、平移并点击节点查看输入输出及参数；层级树可以展开模块，参数表可以查看张量名称、类型与形状，两者支持搜索和详情。普通 PT 的树表示模块包含关系，只有权重的文件按参数名称分组，不补造计算连接。无法解析的文件显示文字说明，可点击“重试加载”。非 ONNX 文件显示：想看完整结构，建使用导出的 ONNX。</p>
-    <h2>PT 模型</h2><p>Ultralytics YOLO 的 PT 检查点会自动读取任务和类别名称，预处理由原生后端执行。支持的旧版 YOLOv5 权重使用随附的本地兼容模块。只包含 state_dict 的任意 PT 文件无法单独重建网络，需要原始模型架构。分割、姿态和旋转框输出暂不支持。</p>
-    <h2>02 / 正确匹配模型</h2><p>YOLOv5：原始输出 <code>[1,N,5+C]</code>，包含 objectness。YOLOv8 / YOLO11：原始输出 <code>[1,4+C,N]</code>。模型应为 batch=1、固定正方形输入、FP32、不包含 NMS。输入尺寸必须与导出模型一致。分割、姿态、旋转框和端到端输出暂不支持。</p>
-    <p>默认 640 px、RGB、1/255 缩放、零均值，适合常见 YOLO 模型。自定义检测模型必须导入数量匹配的 UTF-8 标签文本，每行一个名称，并保持训练时类别顺序。类别数量从实际模型读取；未导入标签时，仅 80 类检测模型使用默认 COCO 名称，其余显示原始数字类别。分类模型未配置标签时显示数字类别。</p>
-    <p>数据集检测预览可在开始按钮上方选择检测当前集合、从当前图片向后或只检测当前图片；当前集合指所选的 Train、Val 或 Test。开始时固定本次范围与顺序。后两种模式必须先在输入队列选图。运行期间禁止修改范围与输入，停止后已完成结果可回看、导出。范围外已有有效缓存保留，模型、推理参数或类别筛选变化会使旧结果失效。</p>
-    <p>“类别筛选”独立于名称标签：留空为全部类别，可输入 <code>32</code> 或 <code>0,2,32</code>，支持中文逗号与空格，保留模型原始 ID。非法或越界 ID 在行内提示并阻止启动；分类任务不使用此控件。COCO 的 ID 32 是 sports ball，包含多种运动球，并不等于只识别足球。</p>
-    <h2>03 / 调整结果与预处理</h2><p>置信度越高，保留的目标越少；NMS IoU 控制同类重叠框的抑制。不同类别独立执行 NMS。检测输入使用 letterbox 保持比例，并将框映射回原图。分类使用正方形缩放和 top-5 输出，可在“预处理设置”调整缩放和均值；本版不提供逐通道标准差除法。</p>
-    <p>输入源区域可直接选择 RGB、BGR 或灰度。灰度转换为图像明度：单通道模型直接接收灰度，三通道模型接收三个相同的灰度通道。ONNX 灰度输入统一使用“灰度均值”，G/B 均值不再分别参与计算；PT 可选 RGB 或灰度，归一化和零均值由原生后端执行。灰度模式同步显示灰度预览，模型载入后会显示实际输入通道数。</p>
-    <h2>04 / 计算设备与 GPU 准备</h2><p>工作台可选择“自动 · 优先 NVIDIA GPU”“CPU”或“NVIDIA GPU”，并指定 GPU 编号。自动模式在 GPU 不可用时说明原因并使用 CPU；显式 GPU 模式无法使用时会报错。运行状态与导出记录显示实际执行设备，不能仅凭选择框判断。切换设备不改变灰度、颜色或双目设置，运行期间设备选择锁定。</p>
-    <p>首次使用 GPU 请到“更多”检查并点击“准备 GPU 支持”。需要一次联网下载约 4 GB，建议至少预留 20 GB 空间；依赖保存在个人数据目录，CPU 环境保留，不安装或修改显卡驱动。准备过程中可查看进度与日志、取消本窗口启动的任务。完成后重新检查环境，再运行模型验证。</p>
-    <h2>05 / 批量、视频与摄像头</h2><p>YOLO 数据集按照所选集合及检测范围逐张推理。视频与摄像头连续处理每帧；实际速度取决于所选设备与模型，界面预览限流。点击“停止运行”结束任务。“更多”页可导出当前帧。视频或摄像头检测时可点击“开始录制”，再次点击结束；“录制视频”页可查看、播放及导出带检测标注的录像。</p>
-    <p>单设备左右并排（SBS）的双目摄像头或视频可选“完整画面”“双目左目”“双目右目”。选择单目时，沿水平中线裁出所选眼，再执行预览、推理和导出；结果坐标以该单目图像为基准，JSON 同时记录原始双目画面尺寸。数据集图片始终使用完整图像。运行中画面选择锁定，停止后可切换。</p>
-    <h2>05 / 保存你的洞察</h2><p>导出结果会生成标注 PNG、包含原始像素坐标的 JSON，以及可用于表格分析的 CSV。启用自动保存后，批量任务为每张图片保存结果，流式任务在结束时保存最后一帧。设置和运行记录自动保存在用户数据目录。</p>
-    <h2>键盘与画布</h2><p><code>Ctrl+O</code> 导入数据集　<code>Ctrl+M</code> 导入模型　<code>Ctrl+R</code> 开始　<code>Ctrl+E</code> 导出　<code>Esc</code> 停止<br>滚轮缩放，拖动画布平移，双击适应画布，点击检测框或结果列表定位目标。</p>
-    <h2>运行环境与兼容性</h2><p>界面为本机 C++ / Qt 6.8.3。ONNX 的 CPU 路径使用 OpenCV DNN，GPU 路径使用 ONNX Runtime CUDA；PT 使用本地 PyTorch 环境。兼容性取决于实际后端与模型算子。CPU 与 Netron 环境位于 runtime，GPU 支持安装在个人数据目录的 gpu-runtime。结构显示使用内嵌 Qt WebEngine 与本机 Netron，与推理设备选择无关。依赖准备完成后可离线运行模型。</p>
-    <p><a href="https://github.com/ultralytics/yolov5">YOLOv5 官方项目</a>　<a href="https://docs.ultralytics.com/modes/export/">Ultralytics ONNX 导出文档</a></p>
-    <h2>开源许可</h2><p>Copyright © 2026 misaka_ning。Vision Studio 应用代码按 GNU AGPL v3 发布，您可以依据许可证复制、修改和再分发。程序不提供任何担保。完整许可证、第三方许可和对应源码资料随发行版本提供。</p>
-    <p><a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL v3 完整许可证</a>　联系维护者：1468549029@qq.com</p>
-    )");
+    QFile guide(":/guide.html");
+    if (guide.open(QIODevice::ReadOnly))
+        html->setHtml(QString::fromUtf8(guide.readAll()));
+    else
+        html->setPlainText("使用指南资源无法读取，请查阅随版本提供的 docs/使用指南.md。");
     l->addWidget(html);
     return f;
 }
@@ -3992,21 +4005,28 @@ void MainWindow::runModelSmoke(const QString &dir, const QString &model)
         const int items = modelViewer_->hierarchyItemCount(), parameters = modelViewer_->parameterCount();
         const QString text = modelViewer_->yamlText();
         const bool available = modelViewer_->yamlAvailable();
+        const auto *yamlModeButton = modelViewer_->findChild<QPushButton *>("modelYamlModeButton");
+        const bool yamlModeVisible = yamlModeButton && yamlModeButton->isVisible();
         QString exportError;
         const QString destination = output + "/model-architecture.yaml";
         const bool exported = available && modelViewer_->saveYaml(destination, &exportError);
         QString refusedError;
         const bool existingRefused = exported && !modelViewer_->saveYaml(destination, &refusedError) && !refusedError.isEmpty();
-        *yaml = QJsonObject{{"available", available}, {"reason", modelViewer_->yamlReason()},
+        *yaml = QJsonObject{{"available", available}, {"mode_visible", yamlModeVisible}, {"reason", modelViewer_->yamlReason()},
             {"bytes", text.toUtf8().size()}, {"sha256", QString::fromLatin1(QCryptographicHash::hash(text.toUtf8(), QCryptographicHash::Sha256).toHex())},
             {"exported", exported}, {"export_error", exportError}, {"existing_export_refused", existingRefused},
             {"export_sha256", exported ? fileDigest(destination) : QString()}, {"source_sha256_before", sourceHash}};
         auto *timer = new QTimer(this);
         auto step = std::make_shared<int>(-1);
-        const QList<ModelViewer::DisplayMode> modes{ModelViewer::DisplayMode::Graph, ModelViewer::DisplayMode::Hierarchy,
-            ModelViewer::DisplayMode::Parameters, ModelViewer::DisplayMode::YoloYaml};
-        const QStringList names{"graph", "hierarchy", "parameters", "yolo_yaml"};
-        const QStringList screenshots{"model-display.png", "model-hierarchy.png", "model-parameters.png", "model-yaml.png"};
+        QList<ModelViewer::DisplayMode> modes{ModelViewer::DisplayMode::Graph, ModelViewer::DisplayMode::Hierarchy,
+            ModelViewer::DisplayMode::Parameters};
+        QStringList names{"graph", "hierarchy", "parameters"};
+        QStringList screenshots{"model-display.png", "model-hierarchy.png", "model-parameters.png"};
+        if (available) {
+            modes.append(ModelViewer::DisplayMode::YoloYaml);
+            names.append("yolo_yaml");
+            screenshots.append("model-yaml.png");
+        }
         connect(timer, &QTimer::timeout, this, [this, output, views, yaml, cachePreserved, writeReport, fileDigest,
             sourceHash, timer, step, modes, names, screenshots, browser, service, processId, path, items, parameters, text, available] {
             if (*step >= 0) {
@@ -4023,7 +4043,8 @@ void MainWindow::runModelSmoke(const QString &dir, const QString &model)
                 modelViewer_->hierarchyItemCount() == items && modelViewer_->parameterCount() == parameters &&
                 modelViewer_->yamlAvailable() == available && modelViewer_->yamlText() == text;
             yaml->insert("source_sha256_after", fileDigest(path));
-            bool success = *cachePreserved && items > 0 && !sourceHash.isEmpty() && fileDigest(path) == sourceHash;
+            bool success = *cachePreserved && items > 0 && !sourceHash.isEmpty() && fileDigest(path) == sourceHash &&
+                yaml->value("mode_visible").toBool() == available;
             for (const auto &name : names) success = success && views->value(name).toBool();
             success = success && (available ? yaml->value("exported").toBool() && yaml->value("existing_export_refused").toBool() &&
                 yaml->value("export_sha256") == yaml->value("sha256") : !modelViewer_->yamlReason().isEmpty());
@@ -4464,7 +4485,7 @@ void MainWindow::selectRoute(int index)
         "查看网络结构、输入输出与层参数。",           "回看每一次推理，沉淀可追溯的运行数据。",
         "从模型配置到结果导出，掌握完整的工作流程。", "查看、播放和导出已保存的检测录像。",
         "将当前模型导出为 ONNX 或 TorchScript，保留原始文件。",
-        "示例体验与检测结果导出，集中在这里。"};
+        "管理启动偏好、GPU 环境与检测结果导出。"};
     pageTitle_->setText(titles[index]);
     pageSubtitle_->setText(descriptions[index]);
 }
