@@ -1,0 +1,13 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "original_file_commitment": {
+    "file": "qa-full/detection-regression-qa.json",
+    "bytes": 46570,
+    "sha256": "54f6d6a4290ac1f658e6358a09031610398bedda8e15f14bcd9846908ca30928"
+  }
+}

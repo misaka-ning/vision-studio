@@ -1,0 +1,11 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "version": "2.7.1",
+  "original_success": true,
+  "original_file_commitment": {
+    "file": "upstream-source-reuse.json",
+    "bytes": 3303,
+    "sha256": "e2f4a7a864f304cc184c57c6e12e1887d864f913da6a04b97eecfb0553b3f7dd"
+  }
+}

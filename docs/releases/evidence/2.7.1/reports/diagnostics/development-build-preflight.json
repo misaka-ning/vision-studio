@@ -1,0 +1,13 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.1",
+  "original_success": false,
+  "original_error_count": 1,
+  "original_file_commitment": {
+    "file": "diagnostics/development-build-preflight.json",
+    "bytes": 216,
+    "sha256": "c1261bb7d5bea1266babd60879d8a9003c15ee3d587bafe30788614cba1c32bc"
+  }
+}

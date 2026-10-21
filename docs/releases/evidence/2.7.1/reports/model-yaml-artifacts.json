@@ -1,0 +1,13 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.7.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "original_file_commitment": {
+    "file": "model-yaml-artifacts.json",
+    "bytes": 8662,
+    "sha256": "1383d7f1ba50d037a57be9f6b52c236c1769f9fbc2b4be6e14d3e9c7b61219b8"
+  }
+}

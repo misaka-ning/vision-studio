@@ -8,9 +8,9 @@
 
 [下载发行版](https://github.com/misaka-ning/vision-studio/releases) · [更新日志](CHANGELOG.md) · [使用指南](docs/使用指南.md) · [报告问题](https://github.com/misaka-ning/vision-studio/issues)
 
-当前工程版本：**2.7.1（待验收）**。本次为兼容的界面修复，处理深色下拉弹窗顶部和底部出现浅色条的问题；不改变选项、操作逻辑、推理或评估。沿用 C++17／Qt 6.8.3、Fluent 深色界面及现有 CPU／NVIDIA GPU 后端，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。
+当前工程版本：**2.7.1**。本次为兼容的界面修复，处理深色下拉弹窗顶部和底部出现浅色条的问题；不改变选项、操作逻辑、推理或评估。沿用 C++17／Qt 6.8.3、Fluent 深色界面及现有 CPU／NVIDIA GPU 后端，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。
 
-2.7.1 的构建、下拉弹窗专项检查、完整 22 套回归及最终包验收尚待执行，实际进展见[发行说明](docs/releases/2.7.1.md)及[验收状态](docs/releases/evidence/2.7.1/README.md)。已发布的 2.7.0 及其[原验收结果](docs/releases/evidence/2.7.0/README.md)保持不变，不作为 2.7.1 的通过凭证。发行平台仍为 Ubuntu 22.04 amd64；Windows 已发布补充包仍为 2.1.0。下方截图均保留实际来源版本，不冒充本次补丁的运行证据。
+2.7.1 已完成四处真实下拉弹窗专项检查、完整22套回归（396项Qt、101项Python，零失败/跳过）及最终包CPU/CUDA、安装与对应源码验收，实际范围和发行状态见[发行说明](docs/releases/2.7.1.md)及[验收状态](docs/releases/evidence/2.7.1/README.md)。已发布的 2.7.0 及其[原验收结果](docs/releases/evidence/2.7.0/README.md)保持不变，不作为 2.7.1 的通过凭证。发行平台仍为 Ubuntu 22.04 amd64；Windows 已发布补充包仍为 2.1.0。下方截图均保留实际来源版本，不冒充本次补丁的运行证据。
 
 ![Vision Studio 2.5.0 图像预览：真实 ONNX CPU 检测与 GT 对照](docs/screenshots/workbench-2.5.0.png)
 

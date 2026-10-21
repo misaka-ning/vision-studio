@@ -1,0 +1,10 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "version": "2.7.1",
+  "original_file_commitment": {
+    "file": "qa-tool-adaptation.json",
+    "bytes": 3697,
+    "sha256": "992e09a466de3eaae61b4e065bc0e30b071ef0b4002ff580c954d086559b63ff"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "version": "2.7.1",
+  "original_success": true,
+  "original_file_commitment": {
+    "file": "popup-visual.json",
+    "bytes": 2007,
+    "sha256": "914e25b22874e190d2c3a3de3568c6eacee874754c50de0cdb594b5e455936f3"
+  }
+}
