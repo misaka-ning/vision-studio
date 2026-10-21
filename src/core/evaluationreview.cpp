@@ -9,6 +9,7 @@
 #include <QFileInfo>
 #include <QImageReader>
 #include <QJsonArray>
+#include <QSet>
 #include <cmath>
 #include <stdexcept>
 
@@ -194,45 +195,71 @@ EvaluationPreview loadEvaluationPreview(const EvaluationPreviewRequest &request,
     return preview;
 }
 
-QVector<bool> filterEvaluationSamples(const QStringList &files, const QHash<QString, int> &indices,
+EvaluationReviewSummary summarizeEvaluationSamples(const QStringList &files, const QHash<QString, int> &indices,
     const QString &directory, int modelClassId, int datasetClassId, double confidence,
-    double matchIou, const QString &filter, std::function<bool()> cancelled, QString *error)
+    double matchIou, const QString &filter, std::function<bool()> cancelled)
 {
-    if (error)
-        error->clear();
+    EvaluationReviewSummary summary;
     try
     {
         checkCancelled(cancelled);
         validateParameters(modelClassId, datasetClassId, confidence, matchIou);
-        if (filter == "all")
-            return QVector<bool>(files.size(), true);
-        if (filter != "fp" && filter != "fn" && filter != "negative_fp")
+        if (filter != "all" && filter != "errors" && filter != "fp" && filter != "fn" && filter != "negative_fp")
             fail(QStringLiteral("不支持的评估图片筛选条件。"));
-        QVector<bool> visible(files.size(), false);
+        summary.visible = QVector<bool>(files.size(), filter == "all");
+        QSet<QString> seen;
         for (int row = 0; row < files.size(); ++row)
         {
             checkCancelled(cancelled);
-            if (!indices.contains(files[row]))
+            if (!indices.contains(files[row]) || seen.contains(files[row]))
                 continue;
+            seen.insert(files[row]);
             QString readError;
             const auto sample = EvaluationWorker::readSample(directory, indices.value(files[row]), &readError);
             if (sample.isEmpty() || sample.value("image").toString() != files[row])
                 fail(readError.isEmpty() ? QStringLiteral("评估缓存中的图片顺序与任务不一致。") : readError);
             auto result = compactResult(sample, modelClassId, datasetClassId, confidence, {}, true, cancelled);
             matchEvaluation(result, matchIou);
-            const int matched = result.matchedPredictions.size();
-            visible[row] = filter == "fp" ? result.predictions.size() > matched :
-                           filter == "fn" ? result.groundTruth.size() > matched :
-                           result.groundTruth.isEmpty() && !result.predictions.isEmpty();
+            const bool fp = result.predictions.size() > result.matchedPredictions.size();
+            const bool fn = result.groundTruth.size() > result.matchedGroundTruth.size();
+            const bool negativeFp = result.groundTruth.isEmpty() && !result.predictions.isEmpty();
+            summary.evaluatedRows.append(row);
+            if (fp || fn) summary.errorRows.append(row);
+            if (fp) summary.falsePositiveRows.append(row);
+            if (fn) summary.falseNegativeRows.append(row);
+            if (negativeFp) summary.negativeFalsePositiveRows.append(row);
+            if (filter != "all")
+                summary.visible[row] = filter == "errors" ? fp || fn : filter == "fp" ? fp : filter == "fn" ? fn : negativeFp;
         }
         checkCancelled(cancelled);
-        return visible;
+        summary.valid = true;
     }
     catch (const std::exception &exception)
     {
-        if (error)
-            *error = QString::fromUtf8(exception.what());
-        return {};
+        summary = {};
+        summary.error = QString::fromUtf8(exception.what());
     }
+    return summary;
+}
+
+QVector<bool> filterEvaluationSamples(const QStringList &files, const QHash<QString, int> &indices,
+    const QString &directory, int modelClassId, int datasetClassId, double confidence,
+    double matchIou, const QString &filter, std::function<bool()> cancelled, QString *error)
+{
+    if (error) error->clear();
+    if (filter == "all") {
+        try {
+            checkCancelled(cancelled);
+            validateParameters(modelClassId, datasetClassId, confidence, matchIou);
+            return QVector<bool>(files.size(), true);
+        } catch (const std::exception &exception) {
+            if (error) *error = QString::fromUtf8(exception.what());
+            return {};
+        }
+    }
+    const auto summary = summarizeEvaluationSamples(files, indices, directory, modelClassId, datasetClassId,
+                                                    confidence, matchIou, filter, cancelled);
+    if (!summary.valid && error) *error = summary.error;
+    return summary.visible;
 }
 } // namespace vision

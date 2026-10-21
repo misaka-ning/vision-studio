@@ -1074,6 +1074,7 @@ QWidget *MainWindow::buildWorkbench()
             {
                 const QFileInfo input(p);
                 if (busy_) { showNotice("请先停止任务，再更换输入。"); return; }
+                cancelPendingDatasetSessionRestore();
                 if (input.isDir() || (input.isFile() && QStringList{"yaml", "yml"}.contains(input.suffix().toLower())))
                     loadDataset(input.absoluteFilePath(), evaluation_->datasetSplit(), evaluation_->metadataPath());
                 else
@@ -1093,6 +1094,7 @@ QWidget *MainWindow::buildWorkbench()
     connect(clear, &QPushButton::clicked, this,
             [this]
             {
+                cancelPendingDatasetSessionRestore();
                 clearDatasetContext();
                 clearImageResults();
                 files_.clear();
@@ -1216,6 +1218,49 @@ QWidget *MainWindow::buildWorkbench()
     previewPage->setObjectName("imagePreviewPage");
     auto *previewLayout = new QVBoxLayout(previewPage);
     previewLayout->setContentsMargins(0, 0, 0, 0);
+    previewLayout->setSpacing(6);
+    evaluationReviewBar_ = card("evaluationReviewBar");
+    auto *reviewLayout = new QHBoxLayout(evaluationReviewBar_);
+    reviewLayout->setContentsMargins(10, 5, 10, 5);
+    reviewLayout->setSpacing(6);
+    evaluationReviewSummaryLabel_ = text({}, "muted");
+    evaluationReviewSummaryLabel_->setObjectName("evaluationReviewSummaryLabel");
+    evaluationReviewSummaryLabel_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    reviewLayout->addWidget(evaluationReviewSummaryLabel_, 1);
+    evaluationPreviewFilter_ = new QComboBox;
+    evaluationPreviewFilter_->setObjectName("evaluationPreviewFilterCombo");
+    for (const auto &entry : QList<QPair<QString, QString>>{{"全部图片", "all"}, {"包含误检", "fp"},
+             {"包含漏检", "fn"}, {"无目标误报", "negative_fp"}, {"全部错例", "errors"}})
+        evaluationPreviewFilter_->addItem(entry.first, entry.second);
+    evaluationPreviewFilter_->setMaximumWidth(120);
+    reviewLayout->addWidget(evaluationPreviewFilter_);
+    connect(evaluationPreviewFilter_, &QComboBox::currentIndexChanged, this, [this] {
+        applyEvaluationFilter(evaluationPreviewFilter_->currentData().toString());
+    });
+    evaluationReviewPreviousButton_ = button("上一张");
+    evaluationReviewPreviousButton_->setObjectName("evaluationReviewPreviousButton");
+    evaluationReviewNextButton_ = button("下一张");
+    evaluationReviewNextButton_->setObjectName("evaluationReviewNextButton");
+    reviewLayout->addWidget(evaluationReviewPreviousButton_);
+    reviewLayout->addWidget(evaluationReviewNextButton_);
+    connect(evaluationReviewPreviousButton_, &QPushButton::clicked, this, [this] { navigateEvaluationReview(-1); });
+    connect(evaluationReviewNextButton_, &QPushButton::clicked, this, [this] { navigateEvaluationReview(1); });
+    auto *allReview = button("全部图片", "image");
+    allReview->setObjectName("evaluationReviewAllButton");
+    reviewLayout->addWidget(allReview);
+    connect(allReview, &QPushButton::clicked, this, [this] { applyEvaluationFilter("all"); });
+    auto *analysisReview = button("返回评估", "graph");
+    analysisReview->setObjectName("evaluationReviewAnalysisButton");
+    reviewLayout->addWidget(analysisReview);
+    connect(analysisReview, &QPushButton::clicked, this, [this] { workbenchTabs_->setCurrentIndex(1); });
+    for (auto *control : {evaluationReviewPreviousButton_, evaluationReviewNextButton_, allReview, analysisReview}) {
+        control->setMinimumHeight(30);
+        control->setIconSize(QSize(14, 14));
+    }
+    evaluationReviewSummaryLabel_->setStyleSheet("font-size:11px; color:#D2D2D2;");
+    evaluationPreviewFilter_->setStyleSheet("QComboBox { min-height:20px; padding:4px 6px; }");
+    evaluationReviewBar_->hide();
+    previewLayout->addWidget(evaluationReviewBar_);
     previewLayout->addWidget(columns);
     auto *evaluationPage = new QWidget;
     evaluationPage->setObjectName("evaluationWorkspacePage");
@@ -1241,10 +1286,11 @@ QWidget *MainWindow::buildWorkbench()
     configure->setObjectName("evaluationConfigureButton");
     taskActions->addWidget(configure);
     connect(configure, &QPushButton::clicked, this, [this] { workbenchTabs_->setCurrentIndex(0); });
-    auto *review = button("查看错例", "eye");
-    review->setObjectName("evaluationReviewButton");
-    taskActions->addWidget(review);
-    connect(review, &QPushButton::clicked, this, [this] { workbenchTabs_->setCurrentIndex(0); });
+    evaluationReviewButton_ = button("查看错例", "eye");
+    evaluationReviewButton_->setObjectName("evaluationReviewButton");
+    evaluationReviewButton_->setEnabled(false);
+    taskActions->addWidget(evaluationReviewButton_);
+    connect(evaluationReviewButton_, &QPushButton::clicked, this, &MainWindow::showEvaluationErrors);
     evaluationStartButton_ = button("开始评估", "play", "primary");
     evaluationStartButton_->setObjectName("evaluationStartButton");
     taskActions->addWidget(evaluationStartButton_);
@@ -1840,6 +1886,7 @@ void MainWindow::updateInputPreview()
     if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
     ++evaluationPreviewGeneration_; ++evaluationFilterGeneration_;
     evaluationReviewActive_ = false;
+    resetEvaluationReviewNavigation();
     for (int index = 0; index < queue_->count(); ++index) queue_->item(index)->setHidden(false);
     clearImageResults();
     const auto mode = currentConfig().colorMode;
@@ -2241,6 +2288,7 @@ void MainWindow::connectWorker()
 void MainWindow::chooseVideo()
 {
     if (busy_) return;
+    cancelPendingDatasetSessionRestore();
     const QString p = QFileDialog::getOpenFileName(
         this, "选择视频", projectRoot_, "视频 (*.mp4 *.avi *.mkv *.mov *.webm *.m4v);;全部文件 (*)");
     if (p.isEmpty())
@@ -2266,6 +2314,7 @@ void MainWindow::chooseVideo()
 void MainWindow::chooseCamera()
 {
     if (busy_) return;
+    cancelPendingDatasetSessionRestore();
     clearDatasetContext();
     clearImageResults();
     sourceKind_ = vision::SourceKind::Camera;
@@ -2763,6 +2812,7 @@ void MainWindow::startInference()
         return;
     if (evaluation_ && evaluation_->evaluationMode()) { startEvaluation(); return; }
     evaluationReviewActive_ = false;
+    resetEvaluationReviewNavigation();
     if (resultIoPending_)
     {
         showNotice("正在后台保存已完成结果，保存完成后即可开始新任务。");
@@ -2847,6 +2897,7 @@ void MainWindow::startInference()
 }
 void MainWindow::stopInference()
 {
+    cancelPendingDatasetSessionRestore();
     if (!busy_)
         return;
     if (datasetImportCancellation_) datasetImportCancellation_->store(true);
@@ -2880,6 +2931,12 @@ void MainWindow::stopInference()
 void MainWindow::setBusy(bool busy)
 {
     busy_ = busy;
+    if (busy && evaluationReviewPending_) {
+        if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
+        ++evaluationFilterGeneration_;
+        evaluationReviewPending_ = false;
+        evaluationReviewAvailable_ = false;
+    }
     if (busy && imagePreviewLoader_) { ++imagePreviewGeneration_; imagePreviewLoader_->cancel(); }
     if (evaluation_) evaluation_->setBusy(busy);
     if (modelConversion_) modelConversion_->setEnabled(!busy);
@@ -2906,6 +2963,10 @@ void MainWindow::setBusy(bool busy)
             progress_->setValue(0);
         } else progress_->setRange(0, 0);
     }
+    updateEvaluationReviewUi();
+    if (!busy && evaluationReviewActive_ && !evaluationReport_.isEmpty() && !evaluationReviewAvailable_ &&
+        !evaluationReviewPending_ && evaluationReviewError_.isEmpty())
+        applyEvaluationFilter(evaluationReviewFilter_);
 }
 void MainWindow::updateTaskUi()
 {
@@ -4204,6 +4265,7 @@ void MainWindow::persist()
 }
 void MainWindow::closeEvent(QCloseEvent *e)
 {
+    cancelPendingDatasetSessionRestore();
     if (evaluationPreviewCancellation_) evaluationPreviewCancellation_->store(true);
     if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
     if (modelInspectionCancellation_) modelInspectionCancellation_->store(true);

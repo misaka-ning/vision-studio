@@ -1,0 +1,24 @@
+********* Start testing of DatasetSessionTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : DatasetSessionTests::initTestCase()
+PASS   : DatasetSessionTests::missingFileDoesNotCreateAnything()
+PASS   : DatasetSessionTests::roundTripPreservesOriginalSourceAndSplit(train)
+PASS   : DatasetSessionTests::roundTripPreservesOriginalSourceAndSplit(val)
+PASS   : DatasetSessionTests::roundTripPreservesOriginalSourceAndSplit(test)
+PASS   : DatasetSessionTests::optionalMetadataAndUnavailableSourceAreNotFilesystemValidation()
+PASS   : DatasetSessionTests::nonFileRecordReportsIoErrorWithoutDeletingIt()
+PASS   : DatasetSessionTests::invalidJsonIsPreserved(truncated)
+PASS   : DatasetSessionTests::invalidJsonIsPreserved(array)
+PASS   : DatasetSessionTests::invalidJsonIsPreserved(unknown-schema)
+PASS   : DatasetSessionTests::invalidJsonIsPreserved(wrong-field-type)
+PASS   : DatasetSessionTests::invalidJsonIsPreserved(relative-source)
+PASS   : DatasetSessionTests::invalidJsonIsPreserved(bad-split)
+PASS   : DatasetSessionTests::invalidJsonIsPreserved(relative-metadata)
+PASS   : DatasetSessionTests::oversizedInputIsRejectedWithoutChangingIt()
+PASS   : DatasetSessionTests::invalidSaveDoesNotReplaceValidRecord()
+PASS   : DatasetSessionTests::unwritableParentDoesNotFallBackToTruncatingExistingFile()
+QINFO  : DatasetSessionTests::concurrentReadersObserveCompleteOldOrNewRecords() dataset_session_atomic_read_observations 9903 committed_replacements 120
+PASS   : DatasetSessionTests::concurrentReadersObserveCompleteOldOrNewRecords()
+PASS   : DatasetSessionTests::cleanupTestCase()
+Totals: 19 passed, 0 failed, 0 skipped, 0 blacklisted, 61ms
+********* Finished testing of DatasetSessionTests *********

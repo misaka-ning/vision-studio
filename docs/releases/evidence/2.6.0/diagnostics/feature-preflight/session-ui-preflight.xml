@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite name="DatasetSessionUiTests" timestamp="2026&#x002D;10&#x002D;21T11:19:37" hostname="misaka&#x002D;System&#x002D;Product&#x002D;Name" tests="17" failures="0" errors="0" skipped="0" time="6.730">
+  <properties>
+    <property name="QTestVersion" value="6.8.3"/>
+    <property name="QtVersion" value="6.8.3"/>
+    <property name="QtBuild" value="Qt 6.8.3 (x86_64&#x002D;little_endian&#x002D;lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1&#x002D;1))"/>
+  </properties>
+  <testcase name="initTestCase" classname="DatasetSessionUiTests" time="0.000"/>
+  <testcase name="successfulImportRestoresOriginalSourceSplitAndMetadata(directory&#x002D;train)" classname="DatasetSessionUiTests" time="0.378">
+    <system-out>
+      <![CDATA[dataset_session_restore_evidence directory train images 1 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 15]]>
+    </system-out>
+  </testcase>
+  <testcase name="successfulImportRestoresOriginalSourceSplitAndMetadata(directory&#x002D;val)" classname="DatasetSessionUiTests" time="0.359">
+    <system-out>
+      <![CDATA[dataset_session_restore_evidence directory val images 2 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 15]]>
+    </system-out>
+  </testcase>
+  <testcase name="successfulImportRestoresOriginalSourceSplitAndMetadata(directory&#x002D;test)" classname="DatasetSessionUiTests" time="0.340">
+    <system-out>
+      <![CDATA[dataset_session_restore_evidence directory test images 3 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 16]]>
+    </system-out>
+  </testcase>
+  <testcase name="successfulImportRestoresOriginalSourceSplitAndMetadata(yaml&#x002D;train)" classname="DatasetSessionUiTests" time="0.349">
+    <system-out>
+      <![CDATA[dataset_session_restore_evidence yaml train images 1 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 14]]>
+    </system-out>
+  </testcase>
+  <testcase name="successfulImportRestoresOriginalSourceSplitAndMetadata(yaml&#x002D;val)" classname="DatasetSessionUiTests" time="0.342">
+    <system-out>
+      <![CDATA[dataset_session_restore_evidence yaml val images 2 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 16]]>
+    </system-out>
+  </testcase>
+  <testcase name="successfulImportRestoresOriginalSourceSplitAndMetadata(yaml&#x002D;test)" classname="DatasetSessionUiTests" time="0.356">
+    <system-out>
+      <![CDATA[dataset_session_restore_evidence yaml test images 3 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 14]]>
+    </system-out>
+  </testcase>
+  <testcase name="failedImportKeepsLastSuccessfulRecord" classname="DatasetSessionUiTests" time="0.444"/>
+  <testcase name="cancelledQueuePopulationKeepsLastSuccessfulRecord" classname="DatasetSessionUiTests" time="1.905">
+    <system-out>
+      <![CDATA[dataset_session_cancel_evidence partial_count 96 stop_return_ms 3]]>
+    </system-out>
+  </testcase>
+  <testcase name="missingCorruptAndUnavailableSessionsRecoverSafely(missing&#x002D;json)" classname="DatasetSessionUiTests" time="0.229"/>
+  <testcase name="missingCorruptAndUnavailableSessionsRecoverSafely(corrupt&#x002D;json)" classname="DatasetSessionUiTests" time="0.230"/>
+  <testcase name="missingCorruptAndUnavailableSessionsRecoverSafely(unknown&#x002D;schema)" classname="DatasetSessionUiTests" time="0.234"/>
+  <testcase name="missingCorruptAndUnavailableSessionsRecoverSafely(missing&#x002D;source)" classname="DatasetSessionUiTests" time="0.254"/>
+  <testcase name="explicitManualSelectionWinsBeforeDeferredRestore(manual&#x002D;then&#x002D;restore)" classname="DatasetSessionUiTests" time="0.484"/>
+  <testcase name="explicitManualSelectionWinsBeforeDeferredRestore(restore&#x002D;then&#x002D;manual&#x002D;without&#x002D;event&#x002D;loop)" classname="DatasetSessionUiTests" time="0.498"/>
+  <testcase name="openingAndCancellingPickerSuppressesPendingRestore" classname="DatasetSessionUiTests" time="0.326">
+    <system-err>
+      <![CDATA[This plugin does not support propagateSizeHints()]]>
+    </system-err>
+  </testcase>
+  <testcase name="cleanupTestCase" classname="DatasetSessionUiTests" time="0.000"/>
+</testsuite>
