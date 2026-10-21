@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "version": "2.5.0",
+  "old_version": "2.3.1",
+  "success": true,
+  "errors": [],
+  "mode": "preview",
+  "deletions_performed": [],
+  "created_at_utc": "2026-10-21T02:35:29.241843+00:00",
+  "created_at_epoch": 1792550129.2418492,
+  "readonly_audit": {
+    "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-231-readonly-notes.json",
+    "sha256": "8d58ee72738ddc6e5e4fb328e546aae12a8f2397e1c25b0052519647f3d520b5"
+  },
+  "historical_evidence": {
+    "source-freeze.json": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.3.1/source-freeze.json",
+      "sha256": "5a5c00a3081f12afb944a906dcf7f094f405be6844560659db33439b0b129e68"
+    },
+    "source-bundle-qa.json": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.3.1/source-bundle-qa.json",
+      "sha256": "5c2e81c31e4ee6b2f02caca172a1b964b39f46cc62b472d6f3135ac852fe6a74"
+    },
+    "ctest-qa.json": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.3.1/ctest-qa.json",
+      "sha256": "b0e6f35110670ad28c001df6f7a2c9dea13a894c2abae1dc60bced9998640748"
+    },
+    "final-assets.json": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/docs/releases/evidence/2.3.1/final-assets.json",
+      "sha256": "01eb0b1cf17409300e607bc6752be4b316f0919e69f49468db067fe65cec9108"
+    }
+  },
+  "preserved_backups": [
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/.ninja_log",
+      "preserved_copy": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-unique-logs/worktree_cmake_build/.ninja_log",
+      "bytes": 20910,
+      "sha256": "74e8a5176b7305b6d0e9f616880cb9a2cbff39393c8592df62503b428f046a99",
+      "private_or_secret_marker_scan_passed": true
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/CMakeFiles/CMakeOutput.log",
+      "preserved_copy": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-unique-logs/worktree_cmake_build/CMakeFiles/CMakeOutput.log",
+      "bytes": 25055,
+      "sha256": "aac71e05fa9511394164d6a9701dd72ff9649615e6d5ffb2007b4dc44b14bc45",
+      "private_or_secret_marker_scan_passed": true
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/Testing/Temporary/CTestCostData.txt",
+      "preserved_copy": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-unique-logs/worktree_cmake_build/Testing/Temporary/CTestCostData.txt",
+      "bytes": 668,
+      "sha256": "0e80bd30cdaf8caa4ec85812e66dc13d420931bf128a6b1a8ae4e7dc38920cb3",
+      "private_or_secret_marker_scan_passed": true
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/Testing/Temporary/LastTest.log",
+      "preserved_copy": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-unique-logs/worktree_cmake_build/Testing/Temporary/LastTest.log",
+      "bytes": 894,
+      "sha256": "e40ef12e2f2fb83039d0f520ecc3bbcecf33a3ff34a0c1e559b655f59c503fac",
+      "private_or_secret_marker_scan_passed": true
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.1/vision-studio_2.3.1-1_amd64.deb.sha256",
+      "preserved_copy": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-unique-logs/worktree_immutable_release_copy/vision-studio_2.3.1-1_amd64.deb.sha256",
+      "bytes": 98,
+      "sha256": "7bbdb66c385e698db55e011a672873cc89652127c2fbd878f896b029b7e4d1cf",
+      "private_or_secret_marker_scan_passed": true
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.1/final-local-state.json",
+      "preserved_copy": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-unique-logs/worktree_immutable_release_copy/final-local-state.json",
+      "bytes": 348,
+      "sha256": "7893d52a791372b5bc9dd4d3227acba5af6e7aaf4fa05feb9c0d427668a2e667",
+      "private_or_secret_marker_scan_passed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.1/vision-studio_2.3.1-1_amd64.deb.sha256",
+      "preserved_copy": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-unique-logs/primary_immutable_release_copy/vision-studio_2.3.1-1_amd64.deb.sha256",
+      "bytes": 98,
+      "sha256": "7bbdb66c385e698db55e011a672873cc89652127c2fbd878f896b029b7e4d1cf",
+      "private_or_secret_marker_scan_passed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.1/final-local-state.json",
+      "preserved_copy": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-unique-logs/primary_immutable_release_copy/final-local-state.json",
+      "bytes": 348,
+      "sha256": "7893d52a791372b5bc9dd4d3227acba5af6e7aaf4fa05feb9c0d427668a2e667",
+      "private_or_secret_marker_scan_passed": true
+    }
+  ],
+  "new_assets": {
+    "vision-studio_2.5.0-1_amd64.deb": {
+      "bytes": 387201252,
+      "sha256": "9abc153c5699852ec40b16cb7b261f12796a103642601be4dda47f464d07fe03"
+    },
+    "vision-studio-2.5.0-complete-source.tar.xz": {
+      "bytes": 883232864,
+      "sha256": "6cda2f9be5dbda8e06e07868cf0225d30a1fe2d7c8f87a5fd83913da812b990f"
+    },
+    "SHA256SUMS": {
+      "bytes": 207,
+      "sha256": "2066875a7fd67e577f330a3af478ce72230da59c3aa3f02eee9a5879d2052024"
+    }
+  },
+  "old_assets": {
+    "vision-studio_2.3.1-1_amd64.deb": {
+      "bytes": 387141452,
+      "sha256": "1e959057337832f2dac8d950d738426ad426ea124aee7cefc925286792d19758"
+    },
+    "vision-studio-2.3.1-complete-source.tar.xz": {
+      "bytes": 847507304,
+      "sha256": "bcf9e2dcfb27e96db3c411dfa71da3e7dc248ed81ed1adb0c554ee08ba7d29e6"
+    },
+    "SHA256SUMS": {
+      "bytes": 207,
+      "sha256": "f68adff3fd49fbad4bd73c1562a8b28ceaa904721c87a67f037fa56ac2a1e24e"
+    }
+  },
+  "candidates": {
+    "source": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/clean-source",
+      "root_identity": {
+        "device": 66308,
+        "inode": 31347363,
+        "mode": 509
+      },
+      "local_proof": {
+        "success": true,
+        "source_commit": "cfe21880b386f09dc4ef20ac6bc38d0e90dcfd8b",
+        "source_tree": "f60d04239cc526766b66cd712712926e7de243d5",
+        "git_files_verified": 4177,
+        "runtime_info_sha256": "15b239dc233e80b4ddaa8b22f87f07fb71bfe4d90332985a708bce04d6019f1b"
+      },
+      "manifest": {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-source-members.jsonl.gz",
+        "bytes": 204331,
+        "sha256": "92c3d2b7c525e4523a3b16db2ceefe9e6fb3af92578c71c3173c0e0de42465af",
+        "members": 6900,
+        "logical_file_bytes": 124176495
+      }
+    },
+    "build": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release",
+      "root_identity": {
+        "device": 66308,
+        "inode": 31346895,
+        "mode": 509
+      },
+      "local_proof": {
+        "success": true,
+        "application_sha256": "d8db18d7444e431598e2c2a512843334e61ae052047a003f5be54d978b3df667",
+        "native_tests_verified": 14,
+        "static_library_sha256": "898bc93dae76ba251a98015598c5670820785d6e6c0be3c0a4fe891364957979"
+      },
+      "manifest": {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-build-members.jsonl.gz",
+        "bytes": 13634,
+        "sha256": "6d02a883acb26827aff46ddc677374d8b8ff7a29e84847cdac9992bd385f76a6",
+        "members": 419,
+        "logical_file_bytes": 32410571
+      }
+    },
+    "stage": {
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.3.1-1",
+      "root_identity": {
+        "device": 66308,
+        "inode": 31457833,
+        "mode": 509
+      },
+      "local_proof": {
+        "success": true,
+        "deb_sha256": "1e959057337832f2dac8d950d738426ad426ea124aee7cefc925286792d19758",
+        "all_payload_and_control_members_verified": 44665
+      },
+      "manifest": {
+        "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-stage-members.jsonl.gz",
+        "bytes": 1748584,
+        "sha256": "fdc0f36b64c612b66e9a474c383f687c660a656f9587f7ad25e28d3a7842acc5",
+        "members": 44665,
+        "logical_file_bytes": 1690235732
+      }
+    }
+  },
+  "process_guard": {
+    "same_user_active_references": [],
+    "unreadable_same_user_references": []
+  },
+  "reviewed_script_sha256": "783db8e70e047695038bf957d0b74cb7328f8823fd0bb00c09c0e4d816742d22",
+  "protected_paths": [
+    "/home/misaka/.codex/worktrees/ef0b/yolo",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/.git",
+    "/home/misaka/文档/ChatGPT/yolo",
+    "/home/misaka/文档/ChatGPT/yolo/.git",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1 EXCEPT exact clean-source child",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.4.0",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/retained-qa",
+    "/home/misaka/文档/ChatGPT/yolo/output EXCEPT separately verified release/2.3.1",
+    "/home/misaka/Qt",
+    "/opt/VisionStudio",
+    "/opt/VisionStudio/runtime",
+    "/home/misaka/.local/share/vision-studio",
+    "/home/misaka/文档/ChatGPT/yolo/build/qt-imageformats-prefix",
+    "/home/misaka/文档/ChatGPT/yolo/build/release-runtime",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/build/release-runtime",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.4.0",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.4.0-release",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.4.0-1",
+    "/home/misaka/文档/ChatGPT/yolo/output/releases/2.4.0",
+    "/home/misaka/文档/ChatGPT/yolo/output/build/2.4.0-release",
+    "/home/misaka/文档/ChatGPT/yolo/output/deb-stage/2.4.0-1",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.5.0-release",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.5.0-1",
+    "/home/misaka/文档/ChatGPT/yolo/output/releases/2.5.0",
+    "/home/misaka/文档/ChatGPT/yolo/output/build/2.5.0-release",
+    "/home/misaka/文档/ChatGPT/yolo/output/deb-stage/2.5.0-1"
+  ],
+  "protected_version_parent_children": [
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/cleanup-old-220-final-audit.json",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/cleanup-old-220-preview.json",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/cleanup-old-220-stage-members.jsonl.gz",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/local-install",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/native-ui",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/production-inputs-before.json",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/qa-full"
+  ],
+  "retained_versions": [
+    "2.5.0",
+    "2.4.0"
+  ],
+  "remote_verification": {
+    "success": false,
+    "fresh_remote_verification_required": true,
+    "receipts": [],
+    "pending": [
+      "Missing independently generated official verify receipt: /home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/release-verify.json",
+      "Remote receipt is stale; run official verify after this preview: /home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.5.0/previous-2.3.1-verify.json"
+    ]
+  },
+  "ready_for_execute": false,
+  "official_release_directories_excluded": true,
+  "protected_sdk_runtime_and_user_data": true,
+  "scope": "Only exact old clean-source, CMake build and DEB stage; no release roots, user data, Git, SDK, runtime or other QA directories."
+}

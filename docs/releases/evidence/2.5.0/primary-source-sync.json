@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "version": "2.5.0",
+  "success": true,
+  "errors": [],
+  "scope": "Actual clean main fast-forward, without stash/reset/clean",
+  "previous_commit": "dfe0ac4af45b5811a8bbc3cf46527f97279e543e",
+  "current_commit": "f25961a125d23dd2d8568a9b9a3cd144b3a16e86",
+  "branch": "main",
+  "four_untracked_user_files_preserved": true,
+  "preserved_sha256": {
+    "docs/足球模型微调.md": "c578115bbb9bf04c5ab0fa40137db0e924efa878352c36320a70d3529f7abecf",
+    "scripts/evaluate_ball.py": "c7dc5bfe99abd20aac6bb13b0003f745b9a35effa2a67c831c2e711429d93384",
+    "scripts/finetune_ball.py": "893e3f1e433d7224acdbacde755d671e100a8c421a28c03efd7455d16c32cd27",
+    "scripts/run_finetune_ball.sh": "a65c4d32577a945fa29c29a4bc4d4d69c0b33ba9e8c1b4f7594f11936beb17f5"
+  },
+  "tracked_worktree_clean": true,
+  "timestamp_utc": "2026-10-21T02:40:13.038639+00:00"
+}

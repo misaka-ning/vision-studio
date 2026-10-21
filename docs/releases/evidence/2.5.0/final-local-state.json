@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "version": "2.5.0",
+  "success": true,
+  "errors": [],
+  "retained_versions": [
+    "2.5.0",
+    "2.4.0"
+  ],
+  "release_roots": {
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases": [
+      "2.5.0",
+      "2.4.0"
+    ],
+    "/home/misaka/文档/ChatGPT/yolo/output/releases": [
+      "2.5.0",
+      "2.4.0"
+    ]
+  },
+  "old_generated_copies_absent": {
+    "output/v2.3.1/clean-source": true,
+    "output/build/2.3.1-release": true,
+    "output/deb-stage/2.3.1-1": true
+  },
+  "latest_build_and_stages": {
+    "build": [
+      "2.4.0-release",
+      "2.5.0-release"
+    ],
+    "stage": [
+      "2.4.0-1",
+      "2.5.0-1"
+    ]
+  },
+  "private_backups_and_qa_retained": true,
+  "shared_runtime_sdk_protected": true,
+  "timestamp_utc": "2026-10-21T02:44:35.539746+00:00",
+  "primary_source_commit": "f25961a125d23dd2d8568a9b9a3cd144b3a16e86",
+  "installed_host_debian_version_observed": "2.4.0-1"
+}

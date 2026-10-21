@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "version": "2.5.0",
+  "old_version": "2.3.1",
+  "success": true,
+  "errors": [],
+  "mode": "execute",
+  "deletions_performed": [
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/clean-source",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.3.1-1"
+  ],
+  "created_at_utc": "2026-10-21T02:43:19.208539+00:00",
+  "created_at_epoch": 1792550599.208547,
+  "remote_verification": {
+    "success": true,
+    "fresh_remote_verification_required": true,
+    "receipts": [
+      {
+        "version": "2.5.0",
+        "path": "output/releases/2.5.0/cleanup-final-2.5.0-verify.json",
+        "sha256": "f4fdf14e1d4b81643c061eb715d4f45a7ededc0c5433215597a3d6233060197b",
+        "commit": "f25961a125d23dd2d8568a9b9a3cd144b3a16e86",
+        "assets": [
+          {
+            "name": "vision-studio_2.5.0-1_amd64.deb",
+            "bytes": 387201252,
+            "sha256": "9abc153c5699852ec40b16cb7b261f12796a103642601be4dda47f464d07fe03",
+            "asset_id": 661130551,
+            "verification": "GitHub REST sha256 digest"
+          },
+          {
+            "name": "vision-studio-2.5.0-complete-source.tar.xz",
+            "bytes": 883232864,
+            "sha256": "6cda2f9be5dbda8e06e07868cf0225d30a1fe2d7c8f87a5fd83913da812b990f",
+            "asset_id": 661131702,
+            "verification": "GitHub REST sha256 digest"
+          },
+          {
+            "name": "SHA256SUMS",
+            "bytes": 207,
+            "sha256": "2066875a7fd67e577f330a3af478ce72230da59c3aa3f02eee9a5879d2052024",
+            "asset_id": 661135086,
+            "verification": "GitHub REST sha256 digest"
+          }
+        ],
+        "mtime_epoch": 1792550573.9591448
+      },
+      {
+        "version": "2.3.1",
+        "path": "output/releases/2.5.0/cleanup-final-2.3.1-verify.json",
+        "sha256": "7118d0b75be8a0dd446a50e60031a0c611e102d4bb1eca105cd8ece2efead698",
+        "commit": "1029f642152e75bdfd60a5def60168fea53b6e5b",
+        "assets": [
+          {
+            "name": "vision-studio_2.3.1-1_amd64.deb",
+            "bytes": 387141452,
+            "sha256": "1e959057337832f2dac8d950d738426ad426ea124aee7cefc925286792d19758",
+            "asset_id": 659029108,
+            "verification": "GitHub REST sha256 digest"
+          },
+          {
+            "name": "vision-studio-2.3.1-complete-source.tar.xz",
+            "bytes": 847507304,
+            "sha256": "bcf9e2dcfb27e96db3c411dfa71da3e7dc248ed81ed1adb0c554ee08ba7d29e6",
+            "asset_id": 659030721,
+            "verification": "GitHub REST sha256 digest"
+          },
+          {
+            "name": "SHA256SUMS",
+            "bytes": 207,
+            "sha256": "f68adff3fd49fbad4bd73c1562a8b28ceaa904721c87a67f037fa56ac2a1e24e",
+            "asset_id": 659035302,
+            "verification": "GitHub REST sha256 digest"
+          }
+        ],
+        "mtime_epoch": 1792550578.3291452
+      }
+    ],
+    "pending": []
+  },
+  "process_guard": {
+    "same_user_active_references": [],
+    "unreadable_nonexempt_same_user_references": [],
+    "reviewed_host_authentication_identities_observed": true,
+    "narrow_opaque_authentication_process_exceptions": [
+      {
+        "pid": 1757,
+        "comm": "(sd-pam)",
+        "starttime_ticks": 3985,
+        "uid": [
+          1000,
+          1000,
+          1000,
+          1000
+        ],
+        "gid": [
+          1000,
+          1000,
+          1000,
+          1000
+        ],
+        "cmdline_sha256": "971490059d839d27af3ded30a476216b92689d837b0236a700723fb13640e370",
+        "inaccessible_components": [
+          "fd",
+          "cwd",
+          "exe"
+        ],
+        "identity_explanation": "Previously inspected non-dumpable system authentication process; this exact PID, starttime, comm, full UID/GID and command-line SHA256 are pinned. No environment or agent socket is read."
+      },
+      {
+        "pid": 521154,
+        "comm": "ssh-agent",
+        "starttime_ticks": 32536773,
+        "uid": [
+          1000,
+          1000,
+          1000,
+          1000
+        ],
+        "gid": [
+          1000,
+          1000,
+          112,
+          1000
+        ],
+        "cmdline_sha256": "bda5e58c66fe7e615a147888edce38a29deb873439b821f8bc2e5e48875151bb",
+        "inaccessible_components": [
+          "fd",
+          "cwd",
+          "exe"
+        ],
+        "identity_explanation": "Previously inspected non-dumpable system authentication process; this exact PID, starttime, comm, full UID/GID and command-line SHA256 are pinned. No environment or agent socket is read."
+      }
+    ],
+    "exception_boundary": "Only the two exact identity records above; any PID reuse, command/credential/starttime change or other unreadable process fails closed."
+  },
+  "preview": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-v2-preview.json",
+  "preview_sha256": "afbf3b0677ba58ea5ab50ee94c2793e2451c34bb01677bad3bb841936fae4123",
+  "verified_candidates": [
+    {
+      "label": "source",
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.3.1/clean-source",
+      "members_rechecked": 6900,
+      "logical_bytes": 124176495,
+      "manifest_sha256": "92c3d2b7c525e4523a3b16db2ceefe9e6fb3af92578c71c3173c0e0de42465af"
+    },
+    {
+      "label": "build",
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release",
+      "members_rechecked": 419,
+      "logical_bytes": 32410571,
+      "manifest_sha256": "6d02a883acb26827aff46ddc677374d8b8ff7a29e84847cdac9992bd385f76a6"
+    },
+    {
+      "label": "stage",
+      "path": "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.3.1-1",
+      "members_rechecked": 44665,
+      "logical_bytes": 1690235732,
+      "manifest_sha256": "fdc0f36b64c612b66e9a474c383f687c660a656f9587f7ad25e28d3a7842acc5"
+    }
+  ],
+  "preserved_backups": [
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/.ninja_log",
+      "preserved_copy": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-unique-logs/worktree_cmake_build/.ninja_log",
+      "bytes": 20910,
+      "sha256": "74e8a5176b7305b6d0e9f616880cb9a2cbff39393c8592df62503b428f046a99",
+      "private_or_secret_marker_scan_passed": true
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/CMakeFiles/CMakeOutput.log",
+      "preserved_copy": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-unique-logs/worktree_cmake_build/CMakeFiles/CMakeOutput.log",
+      "bytes": 25055,
+      "sha256": "aac71e05fa9511394164d6a9701dd72ff9649615e6d5ffb2007b4dc44b14bc45",
+      "private_or_secret_marker_scan_passed": true
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/Testing/Temporary/CTestCostData.txt",
+      "preserved_copy": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-unique-logs/worktree_cmake_build/Testing/Temporary/CTestCostData.txt",
+      "bytes": 668,
+      "sha256": "0e80bd30cdaf8caa4ec85812e66dc13d420931bf128a6b1a8ae4e7dc38920cb3",
+      "private_or_secret_marker_scan_passed": true
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.3.1-release/Testing/Temporary/LastTest.log",
+      "preserved_copy": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-unique-logs/worktree_cmake_build/Testing/Temporary/LastTest.log",
+      "bytes": 894,
+      "sha256": "e40ef12e2f2fb83039d0f520ecc3bbcecf33a3ff34a0c1e559b655f59c503fac",
+      "private_or_secret_marker_scan_passed": true
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.1/vision-studio_2.3.1-1_amd64.deb.sha256",
+      "preserved_copy": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-unique-logs/worktree_immutable_release_copy/vision-studio_2.3.1-1_amd64.deb.sha256",
+      "bytes": 98,
+      "sha256": "7bbdb66c385e698db55e011a672873cc89652127c2fbd878f896b029b7e4d1cf",
+      "private_or_secret_marker_scan_passed": true
+    },
+    {
+      "source": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.3.1/final-local-state.json",
+      "preserved_copy": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-unique-logs/worktree_immutable_release_copy/final-local-state.json",
+      "bytes": 348,
+      "sha256": "7893d52a791372b5bc9dd4d3227acba5af6e7aaf4fa05feb9c0d427668a2e667",
+      "private_or_secret_marker_scan_passed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.1/vision-studio_2.3.1-1_amd64.deb.sha256",
+      "preserved_copy": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-unique-logs/primary_immutable_release_copy/vision-studio_2.3.1-1_amd64.deb.sha256",
+      "bytes": 98,
+      "sha256": "7bbdb66c385e698db55e011a672873cc89652127c2fbd878f896b029b7e4d1cf",
+      "private_or_secret_marker_scan_passed": true
+    },
+    {
+      "source": "/home/misaka/文档/ChatGPT/yolo/output/releases/2.3.1/final-local-state.json",
+      "preserved_copy": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.5.0/cleanup-old-231-unique-logs/primary_immutable_release_copy/final-local-state.json",
+      "bytes": 348,
+      "sha256": "7893d52a791372b5bc9dd4d3227acba5af6e7aaf4fa05feb9c0d427668a2e667",
+      "private_or_secret_marker_scan_passed": true
+    }
+  ],
+  "remote_new_and_old_verified": true,
+  "protected_sdk_runtime_and_user_data": true,
+  "scope": "Only exact old clean-source, CMake build and DEB stage; no release roots, user data, Git, SDK, runtime or other QA directories."
+}

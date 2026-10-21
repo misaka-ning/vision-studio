@@ -1,0 +1,455 @@
+{
+  "schema_version": 1,
+  "version": "2.5.0",
+  "success": true,
+  "errors": [],
+  "scope": "Supplement completed release receipts in the exact primary 2.5.0 directory; existing core assets not overwritten",
+  "files": [
+    {
+      "file": "SHA256SUMS",
+      "bytes": 207,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "SOURCE-INVENTORY.json",
+      "bytes": 8027,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "SOURCE-SHA256SUMS",
+      "bytes": 2206,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "build-deb.log",
+      "bytes": 676,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "build-source.log",
+      "bytes": 127,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "cleanup-final-2.3.1-verify.json",
+      "bytes": 1006,
+      "action": "new_hardlink",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "cleanup-final-2.5.0-verify.json",
+      "bytes": 1006,
+      "action": "new_hardlink",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "cleanup-previous-2.3.1-verify.json",
+      "bytes": 1006,
+      "action": "new_hardlink",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "conversion-qa.json",
+      "bytes": 14529,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "ctest-qa.json",
+      "bytes": 108357,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "evaluation-artifacts.json",
+      "bytes": 50466,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "evaluation-artifacts.zip",
+      "bytes": 9018500,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "evaluation-qa.json",
+      "bytes": 6192,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "final-assets.json",
+      "bytes": 521,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "final-local-state.json",
+      "bytes": 936,
+      "action": "new_hardlink",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "finalize-qa.log",
+      "bytes": 1494,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "folder-artifacts.json",
+      "bytes": 8779,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "folder-artifacts.zip",
+      "bytes": 1529301,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "folder-package-qa.json",
+      "bytes": 78336,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "folder-package-qa.log",
+      "bytes": 612,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "gpu-qa.json",
+      "bytes": 1548,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "host-install-pending.json",
+      "bytes": 638,
+      "action": "new_hardlink",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "install-qa.json",
+      "bytes": 17927,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "install-qa.log",
+      "bytes": 136,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "inventory.log",
+      "bytes": 62,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "namespace-artifacts.json",
+      "bytes": 11502,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "namespace-artifacts.zip",
+      "bytes": 5666192,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "native-ui-artifacts.zip",
+      "bytes": 1746830,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "packaged-evaluation-qa.json",
+      "bytes": 308202,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "packaged-evaluation-qa.log",
+      "bytes": 400,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "packaged-gpu-qa.json",
+      "bytes": 20907,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "packaged-gpu-qa.log",
+      "bytes": 238,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "packaged-private-precheck.json",
+      "bytes": 1507,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "packaged-private-precheck.log",
+      "bytes": 225,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "previous-2.3.1-verify.json",
+      "bytes": 1006,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "prune-primary-executed.json",
+      "bytes": 3597,
+      "action": "new_hardlink",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "prune-primary-preview.json",
+      "bytes": 3515,
+      "action": "new_hardlink",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "prune-worktree-executed.json",
+      "bytes": 3646,
+      "action": "new_hardlink",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "prune-worktree-preview.json",
+      "bytes": 3557,
+      "action": "new_hardlink",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "publish-plan.json",
+      "bytes": 717,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "publish-result.json",
+      "bytes": 1580,
+      "action": "new_hardlink",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "qa-report.json",
+      "bytes": 119535,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "qa-report.log",
+      "bytes": 147,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "release-latest.json",
+      "bytes": 12404,
+      "action": "new_hardlink",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "release-verify.json",
+      "bytes": 1006,
+      "action": "new_hardlink",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "source-bundle-qa.json",
+      "bytes": 2229259,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "source-bundle-qa.log",
+      "bytes": 447,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "source-freeze.json",
+      "bytes": 1246,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/DOWNLOAD-PROVENANCE.json",
+      "bytes": 6931,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/ffmpeg-5.1.6.tar.xz",
+      "bytes": 10021428,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/netron-9.3.1-source.tar.gz",
+      "bytes": 5176979,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/onnx-1.17.0.tar.gz",
+      "bytes": 12165120,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/opencv-python-86-Dockerfile_x86_64",
+      "bytes": 6363,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/opencv-python-86.tar.gz",
+      "bytes": 1126800,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/opencv-python-headless-4.11.0.86.tar.gz",
+      "bytes": 95177929,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/protobuf-33.0.tar.gz",
+      "bytes": 6872665,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/protobuf-cpp-3.21.12.tar.gz",
+      "bytes": 4842303,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/qtbase-everywhere-src-6.8.3.tar.xz",
+      "bytes": 48426536,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/qtdeclarative-everywhere-src-6.8.3.tar.xz",
+      "bytes": 36503988,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/qtimageformats-everywhere-src-6.8.3.tar.xz",
+      "bytes": 2035140,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/qtpositioning-everywhere-src-6.8.3.tar.xz",
+      "bytes": 663612,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/qtsvg-everywhere-src-6.8.3.tar.xz",
+      "bytes": 2009072,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/qtwayland-everywhere-src-6.8.3.tar.xz",
+      "bytes": 1141132,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/qtwebchannel-everywhere-src-6.8.3.tar.xz",
+      "bytes": 209372,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/qtwebengine-everywhere-src-6.8.3.tar.xz",
+      "bytes": 566553436,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/ultralytics-8.4.173.tar.gz",
+      "bytes": 1267669,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "sources/ultralytics_thop-2.2.2.tar.gz",
+      "bytes": 39543,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "tag-ci-run.json",
+      "bytes": 13204,
+      "action": "new_hardlink",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "ui-queue-qa.json",
+      "bytes": 3418,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "vision-studio-2.5.0-complete-source.tar.xz",
+      "bytes": 883232864,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "vision-studio-2.5.0-sources.tar.xz",
+      "bytes": 89214024,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "vision-studio_2.5.0-1_amd64.deb",
+      "bytes": 387201252,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "vision-studio_2.5.0-1_amd64.deb.manifest.json",
+      "bytes": 5252,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    },
+    {
+      "file": "vision-studio_2.5.0-1_amd64.deb.sha256",
+      "bytes": 98,
+      "action": "existing_identical",
+      "verification": "same_inode_as_previously_verified_or_new_source"
+    }
+  ],
+  "new_files": 13,
+  "timestamp_utc": "2026-10-21T02:45:46.804647+00:00"
+}
