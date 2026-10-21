@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "version": "2.8.0",
+  "public_projection": true,
+  "host_installed": true,
+  "debian_version": "2.8.0-1",
+  "version_stdout": "Vision Studio 2.8.0",
+  "installer_exit_code": 0,
+  "installed_binary_sha256": "46a9503890c302dafa58696252a09849cc839e1041d3f6d26a89a2193f481a86",
+  "matches_final_deb_binary": true,
+  "protected_personal_record_files_unchanged": true,
+  "protected_record_file_count": 3,
+  "raw_install_report_sha256": "4af9990470193f78de0e45ad543360907050a974ab534afccbd770ed8de1e264",
+  "raw_installer_log_sha256": "9e053836387fa35aeeba772fc06dac42cce1110bf3852383950fbb329d026294",
+  "private_record_paths_published": false
+}

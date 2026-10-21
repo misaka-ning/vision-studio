@@ -1,0 +1,11 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.8.0",
+  "original_file_commitment": {
+    "file": "final-assets.json",
+    "bytes": 521,
+    "sha256": "0bdb45bf22cd376b0040e36e250de0090534fe1495bcba295a86986729f4ccee"
+  }
+}

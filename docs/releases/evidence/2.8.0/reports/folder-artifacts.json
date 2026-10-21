@@ -1,0 +1,13 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.8.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "original_file_commitment": {
+    "file": "folder-artifacts.json",
+    "bytes": 8779,
+    "sha256": "6acace732c7103d649c61622f92d37e6b3b07e016ee620b3bc72af11efa5c6a7"
+  }
+}

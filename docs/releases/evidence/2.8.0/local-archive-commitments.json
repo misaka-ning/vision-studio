@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "version": "2.8.0",
+  "archives_are_not_uploaded": true,
+  "archives": [
+    {
+      "file": "dataset-session-artifacts.zip",
+      "bytes": 3944314,
+      "sha256": "d58ad6285ef1e6a7c360ae308099b7579a4175f549d4a99c7da067c5c48b51b2",
+      "member_count": 74,
+      "png_fully_decoded_count": 12,
+      "original_crc_verified": true,
+      "archive_published": false
+    },
+    {
+      "file": "evaluation-artifacts.zip",
+      "bytes": 8754936,
+      "sha256": "6e69014cc6fb2545aff49b1036bc79589583f1de1390bcc73925550d4ab2fdb3",
+      "member_count": 191,
+      "png_fully_decoded_count": 30,
+      "original_crc_verified": true,
+      "archive_published": false
+    },
+    {
+      "file": "folder-artifacts.zip",
+      "bytes": 1486903,
+      "sha256": "dde2f3948b2f9e63e69f72095940a199e1fc73a8216a5c2c1cbebc98bf9972be",
+      "member_count": 34,
+      "png_fully_decoded_count": 5,
+      "original_crc_verified": true,
+      "archive_published": false
+    },
+    {
+      "file": "model-yaml-artifacts.zip",
+      "bytes": 1933420,
+      "sha256": "c9be6222789b0894975c4a732381f869a18117fb248abc212334fb683421b95b",
+      "member_count": 30,
+      "png_fully_decoded_count": 11,
+      "original_crc_verified": true,
+      "archive_published": false
+    },
+    {
+      "file": "namespace-artifacts.zip",
+      "bytes": 5903203,
+      "sha256": "1b286c2df02ad5ca3280cc8fd0ff996195f64055ba0f5c1ce54e3f2265afde4f",
+      "member_count": 50,
+      "png_fully_decoded_count": 13,
+      "original_crc_verified": true,
+      "archive_published": false
+    },
+    {
+      "file": "preview-drop-artifacts.zip",
+      "bytes": 2606840,
+      "sha256": "fc828713c0886041c5dec7a0e0283c33a1e75e0dbebb1143b66621152f4856d5",
+      "member_count": 30,
+      "png_fully_decoded_count": 9,
+      "original_crc_verified": true,
+      "archive_published": false
+    }
+  ]
+}

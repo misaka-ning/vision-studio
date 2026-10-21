@@ -8,9 +8,9 @@
 
 [下载发行版](https://github.com/misaka-ning/vision-studio/releases) · [更新日志](CHANGELOG.md) · [使用指南](docs/使用指南.md) · [报告问题](https://github.com/misaka-ning/vision-studio/issues)
 
-当前工程版本：**2.8.0（待验收）**。YOLO YAML 使用 One Dark Pro 风格的原生只读代码视图，加入行号与当前行提示；仅在模型包含受支持的架构信息时显示入口。在「更多」可控制启动时恢复上次数据集，默认开启；使用指南按实际工作流重新整理，位于「更多」上方。沿用 C++17／Qt 6.8.3、Fluent 深色界面及现有 CPU／NVIDIA GPU 后端，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。
+当前工程版本：**2.8.0**。YOLO YAML 使用 One Dark Pro 风格的原生只读代码视图，加入行号与当前行提示；仅在模型包含受支持的架构信息时显示入口。在「更多」可控制启动时恢复上次数据集，默认开启；使用指南按实际工作流重新整理，位于「更多」上方。沿用 C++17／Qt 6.8.3、Fluent 深色界面及现有 CPU／NVIDIA GPU 后端，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。
 
-本版专项、完整回归及最终包验收尚待执行；进度见[发行说明](docs/releases/2.8.0.md)与[验收状态](docs/releases/evidence/2.8.0/README.md)。已发布标签、资产和原证据保持不变。发行平台为 Ubuntu 22.04 amd64；Windows 已发布补充包仍为 2.1.0。下方截图标明实际来源版本。
+本版已完成9项真实UI专项、完整22套回归（400项Qt、101项Python，零失败／跳过）、最终包CPU／CUDA与独立进程恢复偏好、隔离安装和对应源码验收；实际范围见[发行说明](docs/releases/2.8.0.md)与[验收状态](docs/releases/evidence/2.8.0/README.md)。已发布标签、资产和原证据保持不变。发行平台为 Ubuntu 22.04 amd64；Windows 已发布补充包仍为 2.1.0。下方截图标明实际来源版本。
 
 ![Vision Studio 2.5.0 图像预览：真实 ONNX CPU 检测与 GT 对照](docs/screenshots/workbench-2.5.0.png)
 
@@ -18,11 +18,11 @@
 
 以上为最终 2.5.0 只读 DEB 的实际 Qt 窗口，使用公开 COCO8 四张 Val 图片和随附 YOLOv5n 模型，分别展示 CPU 图像预览与 CUDA「评估与阈值」。截图用于展示界面和管线，不是足球精度或部署性能基准；工作台页脚的设备验证提示是该页实时状态，实际后端以报告为准。来源、原始日志及限制见 [2.5.0 验收证据](docs/releases/evidence/2.5.0/README.md)。
 
-![Vision Studio 2.7.0：真实 PT 模型的 YOLO YAML 架构与深色语法高亮](docs/screenshots/model-yaml-2.7.0.png)
+![Vision Studio 2.8.0：One Dark Pro 风格的 YOLO YAML 等宽代码视图](docs/screenshots/model-yaml-2.8.0.png)
 
 ![Vision Studio 2.7.0：已有数据集时拖入图片的替换／临时加入／取消](docs/screenshots/preview-drop-dialog-2.7.0.png)
 
-以上两张 2.7.0 截图分别来自最终 DEB 的隔离安装和只读解包运行；YAML 来自公开 YOLOv8n 模型，拖入使用公开 COCO8 素材。仅展示实际界面与交互，来源和目检范围见[截图记录](docs/releases/evidence/2.7.0/screenshots.json)。
+YAML 图来自 2.8.0 最终生产 UI 对象的真实 Qt 渲染，使用公开 YOLOv8n；是原生只读代码区截图，来源和限制见[本版截图记录](docs/releases/evidence/2.8.0/screenshots.json)。拖入询问图保留 2.7.0 最终包公开 COCO8 来源，见[原截图记录](docs/releases/evidence/2.7.0/screenshots.json)。
 
 ## 功能
 
@@ -154,7 +154,7 @@ GPU 依赖使用独立的 `requirements-gpu.txt`／`requirements-gpu.lock.txt`�
 
 ## 验证与发行
 
-2.8.0 尚未完成构建、完整回归或最终包验收。公开材料仅在实际执行后更新，记录真实数量、失败与未执行边界；原始主机日志保留本地，仓库公开允许字段的结果投影、原件校验承诺与目检后的原样截图，投影不能作为原始 finalizer 输入。当前状态见[同版验收](docs/releases/evidence/2.8.0/README.md)。物理摄像头与 Windows 2.8.0 未列为已验收项目。
+2.8.0 的一次完整22套回归（400项Qt、101项Python）、真实UI专项、最终包CPU／CUDA、转换、公开评估、独立进程恢复偏好、隔离安装／卸载和对应源码验收均已实际通过。原始主机日志保留本地，公开白名单投影、原件校验承诺和目检截图，投影不能代替原始finalizer输入。实际范围及发布状态见[同版验收](docs/releases/evidence/2.8.0/README.md)。Windows与物理摄像头未列为本轮验收。
 
 普通检测在同一配置下逐图更新结果，停止前未重算的图片与范围外有效缓存保留；修改模型、预处理、阈值、设备、类别名称映射或类别筛选会清除不兼容的临时缓存。评估使用独立配置、标注和预测快照，历史统计不会被新配置改写。源文件内容变化会阻止新任务作为有效评估发布；历史图像叠加仍需核对原图哈希，原图已移动或改变时保留统计并提示，避免错配。范围及筛选组合、超过 50 张、停止后回看、零匹配、类别映射与原始 ID 保留均属于验证范围。
 

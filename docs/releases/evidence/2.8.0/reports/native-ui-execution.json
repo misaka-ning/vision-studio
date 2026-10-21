@@ -1,0 +1,11 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "version": "2.8.0",
+  "original_success": true,
+  "original_file_commitment": {
+    "file": "native-ui-execution.json",
+    "bytes": 1467,
+    "sha256": "2fd5e5ae77f17c6e8e3ffe04914f5f01f034ef37e017ca064d215c5cec20e363"
+  }
+}

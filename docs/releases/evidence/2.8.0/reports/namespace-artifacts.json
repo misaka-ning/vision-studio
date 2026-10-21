@@ -1,0 +1,13 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.8.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "original_file_commitment": {
+    "file": "namespace-artifacts.json",
+    "bytes": 11445,
+    "sha256": "88bf28134434c0ccab149415fdda3dc85d9bf6340bc8b72594f058c4882f8986"
+  }
+}

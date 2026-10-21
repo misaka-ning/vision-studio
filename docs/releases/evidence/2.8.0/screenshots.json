@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "version": "2.8.0",
+  "only_six_manually_reviewed_widget_captures": true,
+  "images": [
+    {
+      "file": "screenshots/pt-yaml-editor.png",
+      "sha256": "08793ea5c9a6b050caa9eed767261e26aff6b04804899ef669f74f596abc5b41",
+      "bytes": 115236,
+      "byte_identical_to_reviewed_original": true,
+      "width": 1320,
+      "height": 621,
+      "full_pixel_decode": true
+    },
+    {
+      "file": "screenshots/pt-yaml-viewer.png",
+      "sha256": "5fd9d6c3befe3839978002f7718e163d3883c313974cd91b1194a23e2d701814",
+      "bytes": 167375,
+      "byte_identical_to_reviewed_original": true,
+      "width": 1320,
+      "height": 788,
+      "full_pixel_decode": true
+    },
+    {
+      "file": "screenshots/onnx-available-modes.png",
+      "sha256": "7d17e3fcb0483c7b63dea03ee7867ae80d8f3f9114b255c02d91389c351cfd98",
+      "bytes": 108103,
+      "byte_identical_to_reviewed_original": true,
+      "width": 1320,
+      "height": 814,
+      "full_pixel_decode": true
+    },
+    {
+      "file": "screenshots/startup-preference-on.png",
+      "sha256": "79df06d9cdf826506630acae50f1a397ec62945cf3b643dd1c590851442f8168",
+      "bytes": 135387,
+      "byte_identical_to_reviewed_original": true,
+      "width": 1580,
+      "height": 1100,
+      "full_pixel_decode": true
+    },
+    {
+      "file": "screenshots/startup-preference-off.png",
+      "sha256": "703da94926228d385bac07c49c11bfecc14efbda4671f015187c20ed36f3bf34",
+      "bytes": 135206,
+      "byte_identical_to_reviewed_original": true,
+      "width": 1580,
+      "height": 1100,
+      "full_pixel_decode": true
+    },
+    {
+      "file": "screenshots/guide-and-sidebar.png",
+      "sha256": "ad9d6eb6391422a6f5af27b45eaa24785ce9b83b53132b5267f1ff49f6a8913b",
+      "bytes": 326278,
+      "byte_identical_to_reviewed_original": true,
+      "width": 1580,
+      "height": 1100,
+      "full_pixel_decode": true
+    }
+  ]
+}

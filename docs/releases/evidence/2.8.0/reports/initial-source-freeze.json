@@ -1,0 +1,12 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.8.0",
+  "git_archive_files_verified": 4868,
+  "original_file_commitment": {
+    "file": "initial-source-freeze.json",
+    "bytes": 881,
+    "sha256": "544081977c8ffbb798bf80832536ba48e1d73cebdb3d391413257a7c3796b78d"
+  }
+}

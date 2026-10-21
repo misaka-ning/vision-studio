@@ -1,0 +1,179 @@
+{
+  "files": [
+    {
+      "file": "cases/default_missing_key/dataset-session-restored.png",
+      "bytes": 498917,
+      "sha256": "de65b083c53d3c5bc9c2bcf9b3a9f2be7a9b6558d7b394d3d49c59b9cfcc12ac"
+    },
+    {
+      "file": "cases/default_missing_key/dataset-session-smoke-report.json",
+      "bytes": 3594,
+      "sha256": "b506739014cfcbf3df9e159bef28edaac5030afd74ed02041be12b925d8e32ad"
+    },
+    {
+      "file": "cases/default_missing_key/preferences-after.ini",
+      "bytes": 550,
+      "sha256": "5a7cc623748a4daf433ab765394bf05018ea2ffe3699b7912eea28d2db2911e6"
+    },
+    {
+      "file": "cases/default_missing_key/preferences-before.ini",
+      "bytes": 551,
+      "sha256": "1acc555c3973a5d6213df0415ecf9aadc8aaccb92db1babeb60dd580cb964517"
+    },
+    {
+      "file": "cases/default_missing_key/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "cases/default_missing_key/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "cases/disabled/dataset-session-failure.png",
+      "bytes": 183428,
+      "sha256": "f5a63aceae62455f1326d1ae269189ca3c18db1cf46c52f0c9ff9eccd284ae8b"
+    },
+    {
+      "file": "cases/disabled/dataset-session-smoke-report.json",
+      "bytes": 1678,
+      "sha256": "b9e82c20dc110c1a23b815e5f9bd872c496bc954470857beb4b0239b359b691b"
+    },
+    {
+      "file": "cases/disabled/preferences-after.ini",
+      "bytes": 580,
+      "sha256": "42154506d903d55e7f743e2682f562d8f29478771b64e3660a79d02ba0e4e916"
+    },
+    {
+      "file": "cases/disabled/preferences-before.ini",
+      "bytes": 293,
+      "sha256": "06fdcdbdaec861be03bc9bcf18d5c9b877f51688aa858704134dda2030255521"
+    },
+    {
+      "file": "cases/disabled/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "cases/disabled/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "cases/enabled/dataset-session-restored.png",
+      "bytes": 498917,
+      "sha256": "de65b083c53d3c5bc9c2bcf9b3a9f2be7a9b6558d7b394d3d49c59b9cfcc12ac"
+    },
+    {
+      "file": "cases/enabled/dataset-session-smoke-report.json",
+      "bytes": 3594,
+      "sha256": "b73e7a9cdbf34bcee5bc648ea679f40d1fd613f10c5c0c53d08a89e40589184e"
+    },
+    {
+      "file": "cases/enabled/preferences-after.ini",
+      "bytes": 579,
+      "sha256": "90fb9f20d5db255d222077e140a9b70bf68b1f2eccb3ce9d6722ef2dac3d7793"
+    },
+    {
+      "file": "cases/enabled/preferences-before.ini",
+      "bytes": 580,
+      "sha256": "199bf0f621f9b94bf8b0de639a218a2349c5e9790bc7b2e950eb58de2d3f1d81"
+    },
+    {
+      "file": "cases/enabled/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "cases/enabled/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "final-state/dataset-session.json",
+      "bytes": 150,
+      "sha256": "6c57e2e587f8aaa103f61bee99c880bec583c76b4810dfbf29daedc2248bf101"
+    },
+    {
+      "file": "final-state/history.json",
+      "bytes": 1985,
+      "sha256": "1f2c09ab47d3a8fe73ad8d5353ca9eda6445f681ca9012a169a165fba4f0cf49"
+    },
+    {
+      "file": "final-state/preferences.ini",
+      "bytes": 550,
+      "sha256": "5a7cc623748a4daf433ab765394bf05018ea2ffe3699b7912eea28d2db2911e6"
+    },
+    {
+      "file": "inputs/dataset-session.json",
+      "bytes": 150,
+      "sha256": "6c57e2e587f8aaa103f61bee99c880bec583c76b4810dfbf29daedc2248bf101"
+    },
+    {
+      "file": "inputs/history.json",
+      "bytes": 1985,
+      "sha256": "1f2c09ab47d3a8fe73ad8d5353ca9eda6445f681ca9012a169a165fba4f0cf49"
+    },
+    {
+      "file": "inputs/preferences.ini",
+      "bytes": 293,
+      "sha256": "06fdcdbdaec861be03bc9bcf18d5c9b877f51688aa858704134dda2030255521"
+    },
+    {
+      "file": "packaged-startup-preference-qa.json",
+      "bytes": 29088,
+      "sha256": "5812724391415fbbbc813bbd5bf2d0f15a1e6e73d0c933946af7b323138bade3"
+    },
+    {
+      "file": "provenance/original-case/dataset-session.json",
+      "bytes": 150,
+      "sha256": "6c57e2e587f8aaa103f61bee99c880bec583c76b4810dfbf29daedc2248bf101"
+    },
+    {
+      "file": "provenance/original-case/evaluation-stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+    },
+    {
+      "file": "provenance/original-case/evaluation-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "provenance/original-case/history.json",
+      "bytes": 1985,
+      "sha256": "1f2c09ab47d3a8fe73ad8d5353ca9eda6445f681ca9012a169a165fba4f0cf49"
+    },
+    {
+      "file": "provenance/original-case/preferences.ini",
+      "bytes": 5735,
+      "sha256": "78fdaaf3fd406065ba6544017c2aa21d2ec21b9baf42b7d9327f90e7f0612007"
+    },
+    {
+      "file": "provenance/original-case/restore-stderr.log",
+      "bytes": 214,
+      "sha256": "daffed30e948eb7a1792a2a7687d484b36a8dc1be575aae50e6519fd17a291dc"
+    },
+    {
+      "file": "provenance/original-case/restore-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "provenance/original-session-qa.json",
+      "bytes": 15804,
+      "sha256": "2255692de110c51418a0a295f9a30af28fa7436466292b5e911f6553d411fd22"
+    },
+    {
+      "file": "provenance/package-matrix-qa.json",
+      "bytes": 308193,
+      "sha256": "0127998be9da2f5bdc5204440c02490c9ee1614ac0b15f401cf4b6f8bbf305db"
+    },
+    {
+      "file": "tools/verify_startup_preference_package.py",
+      "bytes": 23314,
+      "sha256": "e83c5cf0f60f9850209d738ff92188cc18df26f00208d7ce73fe0a54d2ffd324"
+    }
+  ]
+}

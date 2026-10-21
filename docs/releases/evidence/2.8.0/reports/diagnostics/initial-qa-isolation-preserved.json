@@ -1,0 +1,10 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "version": "2.8.0",
+  "original_file_commitment": {
+    "file": "diagnostics/initial-qa-isolation-preserved.json",
+    "bytes": 442,
+    "sha256": "7a1d5c90dea3ff5576377164fec4f5f925f139d7b201fe0fd49f20e8adf9d463"
+  }
+}
