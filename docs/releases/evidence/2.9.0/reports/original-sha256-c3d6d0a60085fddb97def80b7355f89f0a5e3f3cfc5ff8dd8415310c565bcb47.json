@@ -1,0 +1,13 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.9.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "original_file_commitment": {
+    "file": "original-sha256-c3d6d0a60085fddb97def80b7355f89f0a5e3f3cfc5ff8dd8415310c565bcb47",
+    "bytes": 12735,
+    "sha256": "c3d6d0a60085fddb97def80b7355f89f0a5e3f3cfc5ff8dd8415310c565bcb47"
+  }
+}

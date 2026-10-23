@@ -1,0 +1,11 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_success": true,
+  "original_error_count": 0,
+  "original_file_commitment": {
+    "file": "install-qa.json",
+    "bytes": 19487,
+    "sha256": "8eefc03537bf23e9e76dfc9eebd873bfcec644dd6e671b59ecaec306f10aed9e"
+  }
+}

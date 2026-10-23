@@ -1,0 +1,12 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.9.0",
+  "git_archive_files_verified": 4934,
+  "original_file_commitment": {
+    "file": "original-sha256-679885c99c4f259750cb1c2ea135aacbdbac9bd0a927d3871756091612845208",
+    "bytes": 902,
+    "sha256": "679885c99c4f259750cb1c2ea135aacbdbac9bd0a927d3871756091612845208"
+  }
+}

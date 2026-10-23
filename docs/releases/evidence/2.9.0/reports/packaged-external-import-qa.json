@@ -1,0 +1,33 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.9.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "rebuilt_metrics_match_source_snapshot": true,
+      "expected_artifacts_valid": true,
+      "source_snapshot_matches_prior_verified_import": true,
+      "source_four_files_unchanged": true,
+      "all_sample_json_sha_and_manifest_image_hashes": true,
+      "packaged_python_helper_actual_process": true,
+      "frozen_clean_source_helpers_match": true,
+      "source_runtime_arguments_nms_floor_maxdet_preserved": true,
+      "unknown_inference_fields_not_invented": true,
+      "source_raw_copies_match": true,
+      "apply_profile_blocked_at_report_and_request": true,
+      "model_dataset_original_ids_preserved": true,
+      "final_package_application_unchanged": true,
+      "final_deb_elf_helpers_runtime_readonly_binding": true,
+      "qt_reserved_three_files_accepted": true,
+      "source_scope_counts_preserved": true
+    }
+  },
+  "original_file_commitment": {
+    "file": "packaged-external-import-qa.json",
+    "bytes": 13043,
+    "sha256": "c2973e537a64cab363aab382e6b49e04f37f7d3e80a0e2ad9ad9aab37b5afc33"
+  }
+}

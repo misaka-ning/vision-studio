@@ -1,0 +1,27 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.9.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "stale_root_and_absolute_list_relocated": true,
+      "unchanged_public_val_fixture_and_readonly": true,
+      "packaged_application_unchanged": true,
+      "directory_origin_preserved": true,
+      "all_91_threshold_points": true,
+      "final_deb_binding_and_readonly": true,
+      "public_and_fixture_inputs_unchanged": true,
+      "unique_conventional_yaml_selected": true,
+      "selected_png_json_csv_exports": true,
+      "real_onnx_cpu_four_images": true
+    }
+  },
+  "original_file_commitment": {
+    "file": "folder-package-qa.json",
+    "bytes": 79021,
+    "sha256": "ac4bb279ea1a729a6f815dbf95db99ce37760a21f4f65828c42262d7f32db130"
+  }
+}

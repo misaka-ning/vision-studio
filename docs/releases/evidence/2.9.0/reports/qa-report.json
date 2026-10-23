@@ -1,0 +1,11 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_success": true,
+  "original_error_count": 0,
+  "original_file_commitment": {
+    "file": "qa-report.json",
+    "bytes": 121155,
+    "sha256": "225a239e2904cd747385ba38455895ab9cb40fe7e8485073de6d9e9600c42b01"
+  }
+}
