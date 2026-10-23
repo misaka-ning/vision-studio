@@ -31,6 +31,9 @@ constexpr qsizetype requestLimit = 100 * 1024 * 1024;
 
 QString projectDirectory()
 {
+    const QString home = qEnvironmentVariable("VISION_STUDIO_HOME");
+    if (!home.isEmpty())
+        return QDir(home).absolutePath();
 #ifdef VISION_PROJECT_DIR
     return QString::fromUtf8(VISION_PROJECT_DIR);
 #else
