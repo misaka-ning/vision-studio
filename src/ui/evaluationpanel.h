@@ -12,6 +12,7 @@ class QLabel;
 class QLineEdit;
 class QPushButton;
 class QSpinBox;
+class QSplitter;
 class QScrollArea;
 class QTableWidget;
 class QToolButton;
@@ -82,6 +83,7 @@ signals:
     void reportOpenRequested(const QString &path);
     void reanalysisRequested(const QJsonObject &options);
     void sceneReviewRequested(const QString &group);
+    void errorReviewRequested();
     void externalReportImportRequested(const QString &directory, const QJsonObject &options);
 
 protected:
@@ -92,6 +94,7 @@ private:
     void updateMapping();
     void updateMetrics();
     void updateRecommendation();
+    void updateDecisionMinimums();
     void updateAnalysisEligibility();
     void updateScenes();
     void requestDataset();
@@ -118,13 +121,15 @@ private:
     QCheckBox *figurePng_ = nullptr, *figureSvg_ = nullptr, *figurePdf_ = nullptr;
     QComboBox *plotKind_ = nullptr;
     QTabWidget *analysisTabs_ = nullptr;
+    QSplitter *decisionSplit_ = nullptr;
     QLabel *modeTitle_ = nullptr, *datasetHint_ = nullptr, *mappingHint_ = nullptr, *validation_ = nullptr,
            *reportStatus_ = nullptr, *reportIdentity_ = nullptr, *recommendation_ = nullptr,
+           *constraintTitle_ = nullptr, *diagnosticThreshold_ = nullptr, *exportStatus_ = nullptr,
            *counts_ = nullptr, *errorSummary_ = nullptr, *analysisValidation_ = nullptr, *sceneHint_ = nullptr;
     QList<QLabel *> metrics_;
     QPushButton *reload_ = nullptr, *metadataBrowse_ = nullptr, *apply_ = nullptr,
-                *useRecommended_ = nullptr, *openFolder_ = nullptr, *openReport_ = nullptr,
-                *export_ = nullptr, *reanalyze_ = nullptr, *reviewScene_ = nullptr, *importExternal_ = nullptr;
+                *useRecommended_ = nullptr, *reviewErrors_ = nullptr, *openFolder_ = nullptr, *openReport_ = nullptr,
+                *export_ = nullptr, *reanalyze_ = nullptr, *sceneReanalysis_ = nullptr, *reviewScene_ = nullptr, *importExternal_ = nullptr;
     EvaluationCurve *curve_ = nullptr;
     EvaluationPlot *detailPlot_ = nullptr;
     QTableWidget *table_ = nullptr, *details_ = nullptr, *scenes_ = nullptr,

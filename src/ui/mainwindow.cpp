@@ -378,7 +378,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     auto *w = new QVBoxLayout(workspace);
     w->setContentsMargins(24, 12, 24, 0);
     w->setSpacing(12);
-    auto *header = new QHBoxLayout;
+    workspaceHeader_ = new QWidget;
+    workspaceHeader_->setObjectName("workspaceHeader");
+    auto *header = new QHBoxLayout(workspaceHeader_);
+    header->setContentsMargins(0, 0, 0, 0);
     auto *titles = new QVBoxLayout;
     titles->setSpacing(4);
     auto *crumb = text("VISION STUDIO  /  工作空间", "eyebrow");
@@ -396,7 +399,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     exportButton_->setEnabled(false);
     exportButton_->setObjectName("exportResultButton");
     connect(exportButton_, &QPushButton::clicked, this, &MainWindow::exportResult);
-    w->addLayout(header);
+    w->addWidget(workspaceHeader_);
     pages_ = new QStackedWidget;
     pages_->setObjectName("workspacePages");
     pages_->addWidget(buildWorkbench());
@@ -1314,8 +1317,8 @@ QWidget *MainWindow::buildWorkbench()
     evaluationLayout->setSpacing(8);
     auto *taskCard = card("evaluationTaskBar");
     auto *taskLayout = new QVBoxLayout(taskCard);
-    taskLayout->setContentsMargins(14, 10, 14, 10);
-    taskLayout->setSpacing(5);
+    taskLayout->setContentsMargins(10, 6, 10, 6);
+    taskLayout->setSpacing(3);
     auto *taskActions = new QHBoxLayout;
     evaluationTaskSummary_ = text("导入带标注的 YOLO 数据集，开始模型评估", "muted");
     evaluationTaskSummary_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
@@ -2577,6 +2580,9 @@ void MainWindow::chooseCamera()
 }
 void MainWindow::updateSourceUi()
 {
+    const bool analysisWorkspace = pages_ && pages_->currentIndex() == 0 &&
+        workbenchTabs_ && workbenchTabs_->currentIndex() == 1;
+    if (workspaceHeader_) workspaceHeader_->setVisible(!analysisWorkspace);
     cameraIndex_->setVisible(sourceKind_ == vision::SourceKind::Camera);
     const bool streaming = sourceKind_ != vision::SourceKind::Images;
     const bool datasetContext = !datasetManifest_.isEmpty();
@@ -4530,6 +4536,7 @@ void MainWindow::selectRoute(int index)
         "管理启动偏好、GPU 环境与检测结果导出。"};
     pageTitle_->setText(titles[index]);
     pageSubtitle_->setText(descriptions[index]);
+    workspaceHeader_->setVisible(index != 0 || !workbenchTabs_ || workbenchTabs_->currentIndex() != 1);
 }
 void MainWindow::showNotice(const QString &s, bool error)
 {

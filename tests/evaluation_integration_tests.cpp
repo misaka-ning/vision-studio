@@ -588,6 +588,7 @@ private slots:
     void fullWidthTabsChangeOnlyViewAndShareDetectionRange()
     {
         QVERIFY2(loadDataset(), qPrintable(state()));
+        QVERIFY(window_->workspaceHeader_->isVisible());
         auto *tabs = window_->workbenchTabs_; QCOMPARE(tabs->objectName(), QString("workbenchAnalysisTabs"));
         QCOMPARE(tabs->count(), 2); auto *preview = tabs->widget(0); auto *analysis = tabs->widget(1);
         QVERIFY(preview->isAncestorOf(window_->canvas_)); QVERIFY(preview->isAncestorOf(window_->queue_));
@@ -615,6 +616,7 @@ private slots:
         const QString capture = qEnvironmentVariable("VISION_STUDIO_UI_CAPTURE_DIR");
         if (!capture.isEmpty()) { QVERIFY(QDir().mkpath(capture)); window_->saveScreenshot(capture + "/workspace-preview.png"); }
         tabs->setCurrentIndex(1); QTest::qWait(30);
+        QVERIFY(window_->workspaceHeader_->isHidden());
         QVERIFY(window_->evaluation_->isVisible()); QVERIFY(!window_->inputColorMode_->isVisible());
         QVERIFY(window_->evaluation_->width() >= int(tabs->width() * .9)); QVERIFY(start->isVisible());
         QVERIFY(!metrics->isVisible());
@@ -623,11 +625,16 @@ private slots:
         QCOMPARE(window_->inferenceFingerprint(), fingerprint); QCOMPARE(window_->imageResults_.size(), cached);
         range->setCurrentIndex(1); QCOMPARE(window_->detectionRange_->currentIndex(), 1);
         tabs->setCurrentIndex(0); QTest::qWait(20); QVERIFY(window_->canvas_->isVisible());
+        QVERIFY(window_->workspaceHeader_->isVisible());
         QCOMPARE(window_->evaluation_->evaluationMode(), mode); QCOMPARE(window_->inferenceFingerprint(), fingerprint);
         QCOMPARE(window_->detectionRange_->currentIndex(), 1); QCOMPARE(window_->imageResults_.size(), cached);
         window_->detectionRange_->setCurrentIndex(2); QCOMPARE(range->currentIndex(), 2);
         tabs->setCurrentIndex(1); QCOMPARE(window_->evaluation_->evaluationMode(), mode);
+        QVERIFY(window_->workspaceHeader_->isHidden());
         QCOMPARE(window_->detectionRange_->currentIndex(), 2);
+        window_->selectRoute(1); QVERIFY(window_->workspaceHeader_->isVisible());
+        window_->selectRoute(0); QVERIFY(window_->workspaceHeader_->isHidden());
+        QCOMPARE(window_->inferenceFingerprint(), fingerprint); QCOMPARE(window_->imageResults_.size(), cached);
         qInfo().noquote() << "workspace_tabs_evidence" << "tab_width" << tabs->width() << "analysis_width" << window_->evaluation_->width()
                          << "mode_unchanged" << (window_->evaluation_->evaluationMode() == mode) << "cached_results" << cached
                          << "mirrored_range_index" << range->currentIndex();
@@ -790,7 +797,7 @@ private slots:
         const auto sampleFiles = QDir(directory + "/samples").entryList(QDir::Files);
         const double workingConfidence = window_->confidence_->value();
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
-        auto *review = window_->findChild<QPushButton *>("evaluationReviewButton");
+        auto *review = window_->findChild<QPushButton *>("evaluationReviewErrorsButton");
         auto *previous = window_->findChild<QPushButton *>("evaluationReviewPreviousButton");
         auto *next = window_->findChild<QPushButton *>("evaluationReviewNextButton");
         auto *filter = window_->findChild<QComboBox *>("evaluationPreviewFilterCombo");

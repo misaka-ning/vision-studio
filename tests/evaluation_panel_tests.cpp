@@ -19,10 +19,12 @@
 #include <QScrollBar>
 #include <QSignalSpy>
 #include <QSpinBox>
+#include <QSplitter>
 #include <QStandardItemModel>
 #include <QTableWidget>
 #include <QTabWidget>
 #include <QToolButton>
+#include <QToolTip>
 #include <QTemporaryDir>
 #include <QTimer>
 #include <QWheelEvent>
@@ -58,6 +60,22 @@ QJsonObject report()
     return {{"status", "complete"}, {"full_split", true}, {"metrics", metrics}, {"manifest", dataset()},
         {"request", QJsonObject{{"model_path", "/models/yolo.pt"}, {"model_class_id", 32}, {"dataset_class_id", 0}, {"match_iou", .5}, {"analysis_threshold", .25}}},
         {"rows", QJsonArray{operating(.1, .5, 1, .66, .5), operating(.25, .7, .9, .79, .2), operating(.5, .95, .8, .87, 0), operating(.9, 1, .3, .46, 0)}}};
+}
+bool fullyVisibleWithin(const QWidget *widget, const QWidget *window)
+{
+    if (!widget || !widget->isVisibleTo(window) || widget->size().isEmpty()) return false;
+    for (auto *parent = widget->parentWidget(); parent; parent = parent->parentWidget()) {
+        if (!parent->rect().contains(QRect(widget->mapTo(parent, QPoint()), widget->size()))) return false;
+        if (parent == window) return true;
+    }
+    return false;
+}
+bool labelTextFits(const QLabel *label)
+{
+    if (!label || label->contentsRect().width() <= 0) return false;
+    const int textHeight = label->fontMetrics().boundingRect(QRect(0, 0, label->contentsRect().width(), 100000),
+        Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, label->text()).height();
+    return label->contentsRect().height() >= textHeight && label->height() >= label->heightForWidth(label->width());
 }
 template<class T> T *control(EvaluationPanel &panel, const char *name)
 {
@@ -259,7 +277,7 @@ private slots:
     void tableAndCurveSelectActualRows()
     {
         EvaluationPanel panel; panel.resize(850, 900); panel.setReport(report()); panel.show();
-        control<QTabWidget>(panel, "evaluationAnalysisTabs")->setCurrentIndex(1); QTest::qWait(10);
+        control<QTabWidget>(panel, "evaluationAnalysisTabs")->setCurrentIndex(0); QTest::qWait(10);
         auto *table = control<QTableWidget>(panel, "evaluationThresholdTable"); QVERIFY(table); QCOMPARE(table->rowCount(), 4);
         const QRect row = table->visualItemRect(table->item(3, 0));
         QTest::mouseClick(table->viewport(), Qt::LeftButton, Qt::NoModifier, row.center());
@@ -268,6 +286,79 @@ private slots:
         const int x = 48 + qRound((curve->width() - 72) * .5);
         QTest::mouseClick(curve, Qt::LeftButton, Qt::NoModifier, QPoint(x, curve->height() / 2));
         QCOMPARE(panel.analysisThreshold(), .5);
+    }
+    void decisionSidebarSharesCurveTableAndIndependentApply()
+    {
+        EvaluationPanel panel; panel.resize(1100, 720); panel.setReport(report()); panel.show(); QTest::qWait(15);
+        auto *tabs = control<QTabWidget>(panel, "evaluationAnalysisTabs"); QCOMPARE(tabs->currentIndex(), 0);
+        auto *page = control<QWidget>(panel, "evaluationThresholdPage");
+        auto *curve = control<QWidget>(panel, "evaluationThresholdCurve");
+        auto *sidebar = control<QWidget>(panel, "evaluationDecisionSidebar");
+        auto *table = control<QTableWidget>(panel, "evaluationThresholdTable");
+        auto *threshold = control<QDoubleSpinBox>(panel, "evaluationAnalysisThresholdSpin");
+        for (auto *widget : QList<QWidget *>{curve, sidebar, table, threshold, control<QLabel>(panel, "evaluationMetric2"), control<QPushButton>(panel, "evaluationApplyThresholdButton")})
+            QVERIFY(page->isAncestorOf(widget));
+        QVERIFY(sidebar->mapTo(page, QPoint()).x() > curve->mapTo(page, QPoint()).x());
+        QVERIFY(table->mapTo(page, QPoint()).y() > curve->mapTo(page, QPoint()).y());
+        QCOMPARE(curve->property("analysisThreshold").toDouble(), .25);
+        QCOMPARE(curve->property("recommendedThreshold").toDouble(), .5);
+        QSignalSpy applied(&panel, &EvaluationPanel::applyRequested), changes(&panel, &EvaluationPanel::configChanged);
+        control<QPushButton>(panel, "evaluationUseRecommendationButton")->click();
+        QCOMPARE(panel.analysisThreshold(), .5); QCOMPARE(table->currentRow(), 2);
+        QCOMPARE(curve->property("recommendedThreshold").toDouble(), .5); QCOMPARE(applied.count(), 0); QCOMPARE(changes.count(), 0);
+        table->setFocus(); QTest::keyClick(table, Qt::Key_Down);
+        QCOMPARE(panel.analysisThreshold(), .9); QCOMPARE(curve->property("analysisThreshold").toDouble(), .9);
+        QCOMPARE(curve->property("recommendedThreshold").toDouble(), .5); QCOMPARE(applied.count(), 0);
+        control<QPushButton>(panel, "evaluationApplyThresholdButton")->click(); QCOMPARE(applied.count(), 1); QCOMPARE(applied.at(0).at(0).toDouble(), .9);
+        auto *splitter = control<QSplitter>(panel, "evaluationDecisionSplit"); splitter->setSizes({1, 10000}); QTest::qWait(5);
+        const auto beforeHover = curve->grab().toImage();
+        const int hoverX = 48 + qRound((curve->width() - 72) * .25);
+        QTest::mouseMove(curve, QPoint(hoverX, curve->height() / 2));
+        QTRY_VERIFY(curve->property("hoverDetails").toString().contains("阈值 0.250"));
+        QTRY_VERIFY(QToolTip::isVisible()); QVERIFY(QToolTip::text().contains("无目标图片误报率 20.0%"));
+        const auto afterHover = curve->grab().toImage();
+        const int plotTop = curve->width() < 560 ? 54 : 34;
+        const QRect recommendationMarker(48 + qRound((curve->width() - 72) * .5), plotTop + 23, 100, 19);
+        QCOMPARE(afterHover.copy(recommendationMarker), beforeHover.copy(recommendationMarker));
+        QCOMPARE(panel.analysisThreshold(), .9); QCOMPARE(applied.count(), 1); QToolTip::hideText();
+        const auto source = panel.report(); const auto sizes = splitter->sizes();
+        panel.setImageFilter("errors", false); tabs->setCurrentIndex(2); panel.hide(); panel.show(); tabs->setCurrentIndex(0);
+        QCOMPARE(panel.analysisThreshold(), .9); QCOMPARE(panel.imageFilter(), QString("errors")); QCOMPARE(panel.report(), source);
+        QCOMPARE(control<QSplitter>(panel, "evaluationDecisionSplit")->sizes(), sizes); QCOMPARE(changes.count(), 0);
+    }
+    void recommendationScrollsLongThresholdTableAndReviewIsExplicit()
+    {
+        EvaluationPanel panel; panel.resize(1000, 650); auto data = report(); QJsonArray rows;
+        for (int i = 0; i < 91; ++i) rows.append(operating(.05 + .01 * i, .8, .8, i == 70 ? .99 : .5, .1));
+        data.insert("rows", rows); panel.setReport(data); panel.show(); QTest::qWait(15);
+        auto *table = control<QTableWidget>(panel, "evaluationThresholdTable");
+        auto *split = control<QSplitter>(panel, "evaluationDecisionSplit"); split->setSizes({320, 135}); QTest::qWait(5);
+        QSignalSpy applied(&panel, &EvaluationPanel::applyRequested), review(&panel, &EvaluationPanel::errorReviewRequested);
+        control<QPushButton>(panel, "evaluationUseRecommendationButton")->click(); QTest::qWait(5);
+        QCOMPARE(table->rowCount(), 91); QCOMPARE(table->currentRow(), 70); QCOMPARE(panel.analysisThreshold(), .75);
+        QVERIFY(table->verticalScrollBar()->value() > 0);
+        QVERIFY(table->viewport()->rect().contains(table->visualItemRect(table->item(70, 0))));
+        panel.resize(1000, 1000); QTest::qWait(5); panel.resize(1000, 600); QTest::qWait(5);
+        QCOMPARE(panel.analysisThreshold(), .75); QCOMPARE(table->currentRow(), 70);
+        QTRY_VERIFY(table->viewport()->rect().contains(table->visualItemRect(table->item(70, 0))));
+        auto *strategy = control<QComboBox>(panel, "evaluationRecommendationStrategyCombo");
+        for (int mode : {1, 2, 0}) {
+            strategy->setCurrentIndex(mode); QTest::qWait(5);
+            QCOMPARE(panel.analysisThreshold(), .75); QCOMPARE(table->currentRow(), 70);
+            QTRY_VERIFY(table->viewport()->rect().contains(table->visualItemRect(table->item(70, 0))));
+        }
+        split->setSizes({10000, 1}); QTest::qWait(5);
+        QCOMPARE(panel.analysisThreshold(), .75); QCOMPARE(table->currentRow(), 70);
+        QTRY_VERIFY(table->viewport()->rect().contains(table->visualItemRect(table->item(70, 0))));
+        panel.setAnalysisThreshold(.95); QTest::qWait(5); QCOMPARE(table->currentRow(), 90);
+        QVERIFY(table->viewport()->rect().contains(table->visualItemRect(table->item(90, 0))));
+        panel.setAnalysisThreshold(.05); QTest::qWait(5); QCOMPARE(table->currentRow(), 0);
+        QVERIFY(table->viewport()->rect().contains(table->visualItemRect(table->item(0, 0))));
+        panel.setErrorSummary(3, 2, 1, 2, 1, 3);
+        QVERIFY(control<QLabel>(panel, "evaluationErrorSummaryLabel")->text().contains("错图 2"));
+        auto *button = control<QPushButton>(panel, "evaluationReviewErrorsButton"); button->click(); QCOMPARE(review.count(), 1);
+        QCOMPARE(applied.count(), 0); QCOMPARE(panel.analysisThreshold(), .05);
+        panel.setBusy(true); QVERIFY(!button->isEnabled()); button->click(); QCOMPARE(review.count(), 1);
     }
     void unavailableAndPartialMetricsRemainNA()
     {
@@ -331,10 +422,17 @@ private slots:
         const QByteArray bytes = QJsonDocument(report()).toJson(); QCOMPARE(original.write(bytes), bytes.size()); original.close();
         QFile markdown(source + "/REPORT.md"); QVERIFY(markdown.open(QIODevice::WriteOnly)); markdown.write("# Report\n"); markdown.close();
         EvaluationPanel panel; panel.setReport(report(), source); panel.setAnalysisThreshold(.5);
+        const auto originalReport = panel.report();
+        const QString recommendation = control<QLabel>(panel, "evaluationRecommendationHint")->text();
+        auto *feedback = control<QLabel>(panel, "evaluationExportStatusLabel"); QVERIFY(feedback);
+        QVERIFY(control<QWidget>(panel, "evaluationReportPage")->isAncestorOf(feedback));
         QVERIFY(control<QPushButton>(panel, "evaluationOpenReportButton")->isEnabled());
         panel.exportReportTo(destination);
         auto *exportButton = control<QPushButton>(panel, "evaluationExportReportButton");
         QTRY_VERIFY_WITH_TIMEOUT(exportButton->isEnabled(), 10000);
+        QVERIFY(feedback->text().contains("已导出")); QCOMPARE(feedback->toolTip(), feedback->text());
+        QCOMPARE(control<QLabel>(panel, "evaluationRecommendationHint")->text(), recommendation);
+        QCOMPARE(panel.analysisThreshold(), .5); QCOMPARE(panel.report(), originalReport);
         const auto entries = QDir(destination).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
         QCOMPARE(entries.size(), 1);
         QFile copy(destination + "/" + entries.first() + "/report.json"); QVERIFY(copy.open(QIODevice::ReadOnly)); QCOMPARE(copy.readAll(), bytes);
@@ -344,7 +442,12 @@ private slots:
         original.open(QIODevice::ReadOnly); QCOMPARE(original.readAll(), bytes); original.close();
         panel.exportReportTo(source); QTRY_VERIFY_WITH_TIMEOUT(exportButton->isEnabled(), 10000);
         QCOMPARE(QDir(source).entryList(QDir::Dirs | QDir::NoDotAndDotDot).size(), 0);
-        QVERIFY(control<QLabel>(panel, "evaluationRecommendationHint")->text().contains("不能位于原报告内部"));
+        QVERIFY(feedback->text().contains("不能位于原报告内部")); QCOMPARE(feedback->toolTip(), feedback->text());
+        QCOMPARE(control<QLabel>(panel, "evaluationRecommendationHint")->text(), recommendation);
+        QCOMPARE(panel.analysisThreshold(), .5); QCOMPARE(panel.report(), originalReport);
+        panel.setReport(report(), source);
+        QVERIFY(feedback->text().isEmpty()); QVERIFY(feedback->toolTip().isEmpty()); QVERIFY(feedback->isHidden());
+        original.open(QIODevice::ReadOnly); QCOMPARE(original.readAll(), bytes); original.close();
     }
     void settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges()
     {
@@ -486,9 +589,11 @@ private slots:
         data.insert("pr_curve", QJsonObject{{"recall", QJsonArray{0., .5, 1.}}, {"precision_envelope", QJsonArray{1., .9, .2}}});
         panel.setDataset(dataset()); panel.setModel(model()); panel.setReport(data); panel.resize(1100, 900); panel.show();
         QSignalSpy config(&panel, &EvaluationPanel::configChanged), threshold(&panel, &EvaluationPanel::thresholdChanged), apply(&panel, &EvaluationPanel::applyRequested);
-        auto *tabs = control<QTabWidget>(panel, "evaluationAnalysisTabs"); QCOMPARE(tabs->count(), 5);
+        auto *tabs = control<QTabWidget>(panel, "evaluationAnalysisTabs"); QCOMPARE(tabs->count(), 4);
+        QCOMPARE(tabs->tabText(0), QString("阈值调优")); QCOMPARE(tabs->tabText(1), QString("能力诊断"));
+        QCOMPARE(tabs->tabText(2), QString("场景分析")); QCOMPARE(tabs->tabText(3), QString("报告管理"));
         for (int i = 0; i < tabs->count(); ++i) tabs->setCurrentIndex(i);
-        tabs->setCurrentIndex(2); auto *kind = control<QComboBox>(panel, "evaluationDiagnosticPlotCombo");
+        tabs->setCurrentIndex(1); auto *kind = control<QComboBox>(panel, "evaluationDiagnosticPlotCombo");
         for (int i = 0; i < kind->count(); ++i) {
             kind->setCurrentIndex(i); QTest::qWait(1);
             const auto image = control<QWidget>(panel, "evaluationDiagnosticPlot")->grab().toImage(); QVERIFY(!image.isNull());
@@ -541,6 +646,11 @@ private slots:
         table->selectRow(3); QVERIFY(!review->isEnabled()); review->click(); QCOMPARE(requested.count(), 1);
         panel.setAnalysisThreshold(.5); QVERIFY(control<QLabel>(panel, "evaluationSceneHint")->text().contains("0.250"));
         QVERIFY(control<QLabel>(panel, "evaluationSceneHint")->text().contains("0.500"));
+        QSignalSpy reanalysis(&panel, &EvaluationPanel::reanalysisRequested); const auto source = panel.report();
+        control<QPushButton>(panel, "evaluationSceneReanalysisButton")->click();
+        QCOMPARE(control<QTabWidget>(panel, "evaluationAnalysisTabs")->currentIndex(), 3);
+        QCOMPARE(control<QDoubleSpinBox>(panel, "evaluationReanalysisConfidenceSpin")->value(), .5);
+        QCOMPARE(reanalysis.count(), 0); QCOMPARE(panel.report(), source);
         auto legacy = report(); legacy.insert("groups", QJsonObject{{"Small", operating(.25, .7, .9, .79, .2)}});
         panel.setReport(legacy, area.path()); table->selectRow(1); QVERIFY(!review->isEnabled());
         QVERIFY(review->toolTip().contains("重新分析")); QCOMPARE(table->item(1, 6)->text(), QString("70.0%"));
@@ -563,7 +673,7 @@ private slots:
         const QString capture = qEnvironmentVariable("VISION_EVALUATION_PANEL_FIXTURE_DIR");
         if (!capture.isEmpty()) QVERIFY(QDir().mkpath(capture));
         auto *tabs = control<QTabWidget>(*panel, "evaluationAnalysisTabs");
-        for (const QSize size : {QSize(1100, 720), QSize(1440, 900)}) {
+        for (const QSize size : {QSize(1100, 640), QSize(1100, 720), QSize(1260, 820), QSize(1366, 768), QSize(1366, 900), QSize(1600, 1000)}) {
             window.resize(size); window.show(); QTest::qWait(15);
             QCOMPARE(window.size(), size);
             for (int i = 0; i < tabs->count(); ++i) {
@@ -572,27 +682,64 @@ private slots:
                 if (!capture.isEmpty()) QVERIFY(window.grab().save(QString("%1/%2x%3-tab-%4.png").arg(capture).arg(size.width()).arg(size.height()).arg(i)));
                 qInfo() << "layout_geometry" << size << "tab" << i << tabsGeometry << "window" << window.rect();
                 QVERIFY2(window.rect().contains(tabsGeometry), qPrintable(QString("tab %1 outside %2×%3").arg(i).arg(size.width()).arg(size.height())));
-                const auto *apply = control<QPushButton>(*panel, "evaluationApplyThresholdButton");
-                QVERIFY(window.rect().contains(QRect(apply->mapTo(&window, QPoint()), apply->size())));
+                if (i == 0) {
+                    for (const char *debug : {"evaluationThresholdPage", "evaluationDecisionSplit", "evaluationChartDecisionSplit", "evaluationDecisionSidebar", "evaluationThresholdTable", "evaluationApplyThresholdButton"}) {
+                        auto *w = control<QWidget>(*panel, debug); qInfo() << "decision_geometry" << debug << w->geometry() << w->minimumSizeHint() << w->minimumSize() << w->sizeHint();
+                    }
+                    auto *strategy = control<QComboBox>(*panel, "evaluationRecommendationStrategyCombo");
+                    for (int mode = 0; mode < strategy->count(); ++mode) {
+                        strategy->setCurrentIndex(mode); QTest::qWait(1);
+                        auto *constraint = control<QDoubleSpinBox>(*panel, "evaluationRecommendationConstraintSpin");
+                        if (mode) QVERIFY(fullyVisibleWithin(constraint, &window));
+                        for (const char *name : {"evaluationThresholdCurve", "evaluationThresholdTable", "evaluationUseRecommendationButton"})
+                            QVERIFY2(fullyVisibleWithin(control<QWidget>(*panel, name), &window), name);
+                        auto *hint = control<QLabel>(*panel, "evaluationRecommendationHint");
+                        QTRY_VERIFY(labelTextFits(hint)); QVERIFY(fullyVisibleWithin(hint, &window));
+                        QVERIFY(!hint->geometry().intersects(control<QPushButton>(*panel, "evaluationUseRecommendationButton")->geometry()));
+                        auto *strategySplit = control<QSplitter>(*panel, "evaluationDecisionSplit"); const auto strategySizes = strategySplit->sizes();
+                        for (const QList<int> requested : {QList<int>{1, 10000}, QList<int>{10000, 1}}) {
+                            strategySplit->setSizes(requested); QTest::qWait(1); QTRY_VERIFY(labelTextFits(hint));
+                            QVERIFY(fullyVisibleWithin(hint, &window));
+                            QVERIFY(!hint->geometry().intersects(control<QPushButton>(*panel, "evaluationUseRecommendationButton")->geometry()));
+                        }
+                        strategySplit->setSizes(strategySizes); QTest::qWait(1);
+                        auto *apply = control<QPushButton>(*panel, "evaluationApplyThresholdButton");
+                        QVERIFY(fullyVisibleWithin(apply, &window));
+                    }
+                    strategy->setCurrentIndex(0); QTest::qWait(1);
+                    for (const char *name : {"evaluationThresholdCurve", "evaluationThresholdTable", "evaluationDecisionSidebar"})
+                        QVERIFY2(fullyVisibleWithin(control<QWidget>(*panel, name), &window), name);
+                    auto *splitter = control<QSplitter>(*panel, "evaluationDecisionSplit"); const auto originalSizes = splitter->sizes();
+                    for (const QList<int> requested : {QList<int>{1, 10000}, QList<int>{10000, 1}}) {
+                        splitter->setSizes(requested); QTest::qWait(1);
+                        for (const char *name : {"evaluationThresholdCurve", "evaluationThresholdTable", "evaluationUseRecommendationButton", "evaluationApplyThresholdButton"})
+                            QVERIFY2(fullyVisibleWithin(control<QWidget>(*panel, name), &window), name);
+                    }
+                    splitter->setSizes(originalSizes); QTest::qWait(1);
+                    for (const char *name : {"evaluationApplyThresholdButton", "evaluationReviewErrorsButton", "evaluationUseRecommendationButton"}) {
+                        const auto *action = control<QPushButton>(*panel, name); QVERIFY(action->isVisible());
+                        QVERIFY2(fullyVisibleWithin(action, &window), name);
+                    }
+                }
                 auto *pageScroll = qobject_cast<QScrollArea *>(tabs->widget(i)); QVERIFY(pageScroll);
                 const auto pageImage = pageScroll->viewport()->grab().toImage(); QVERIFY(!pageImage.isNull());
                 const auto background = pageImage.pixelColor(1, 1);
                 QVERIFY2(background.red() < 100 && background.green() < 100 && background.blue() < 100, "tab page background must remain dark");
-                if (i == 3) {
+                if (i == 2) {
                     auto *sceneTable = control<QTableWidget>(*panel, "evaluationSceneMetricsTable");
                     const auto tableImage = sceneTable->viewport()->grab().toImage();
                     const auto tableBackground = tableImage.pixelColor(tableImage.width() - 4, tableImage.height() - 4);
                     QVERIFY2(tableBackground.red() < 100 && tableBackground.green() < 100 && tableBackground.blue() < 100, "scene table background must remain dark");
                 }
                 pageScroll->verticalScrollBar()->setValue(pageScroll->verticalScrollBar()->maximum()); QTest::qWait(1);
-                const char *actionNames[]{"evaluationUseRecommendationButton", "evaluationThresholdTable", "evaluationPresenceMatrix", "evaluationReviewSceneButton", "evaluationImportExternalReportButton"};
+                const char *actionNames[]{"evaluationApplyThresholdButton", "evaluationPresenceMatrix", "evaluationReviewSceneButton", "evaluationImportExternalReportButton"};
                 auto *bottomAction = control<QWidget>(*panel, actionNames[i]); QVERIFY(bottomAction);
                 const QRect actionGeometry(bottomAction->mapTo(pageScroll->viewport(), QPoint()), bottomAction->size());
                 QVERIFY2(pageScroll->viewport()->rect().contains(actionGeometry), "page bottom action must be reachable within its scroller");
                 pageScroll->verticalScrollBar()->setValue(0);
             }
         }
-        qInfo() << "diagnostic_layout_evidence" << "synthetic_fixture_only" << "sizes 1100x720 1440x900" << "tabs" << tabs->count();
+        qInfo() << "diagnostic_layout_evidence" << "synthetic_fixture_only" << "sizes 1100x640 1100x720 1260x820 1366x768 1366x900 1600x1000; panel fixtures, not application minimum" << "tabs" << tabs->count();
     }
     void externalSnapshotImportNeedsNoModelAndCannotApplyUnknownProfile()
     {

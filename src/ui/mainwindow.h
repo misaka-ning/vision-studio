@@ -276,6 +276,7 @@ class MainWindow : public QMainWindow
     QThread *workerThread_ = nullptr;
     vision::InferenceWorker *worker_ = nullptr;
     QStackedWidget *pages_ = nullptr;
+    QWidget *workspaceHeader_ = nullptr;
     QList<QPushButton *> navButtons_;
     QLabel *pageTitle_ = nullptr, *pageSubtitle_ = nullptr, *statusLabel_ = nullptr, *modelName_ = nullptr,
            *modelMeta_ = nullptr, *sourceLabel_ = nullptr;
