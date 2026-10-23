@@ -14,9 +14,9 @@
 
 ![Vision Studio 2.5.0 图像预览：真实 ONNX CPU 检测与 GT 对照](docs/screenshots/workbench-2.5.0.png)
 
-![Vision Studio 2.9.0 评估总览：真实 PT 模型、扩展指标与五个分析子页](docs/screenshots/evaluation-2.9.0.png)
+![Vision Studio 2.9.1 阈值调优：真实 PT 模型、侧栏推荐与同页曲线明细](docs/screenshots/evaluation-2.9.1.png)
 
-以上分别为2.5.0图像预览历史截图与2.9.0最终只读DEB的实际评估界面；均使用公开COCO8四张Val图片验证流程，2.9.0评估使用随附YOLOv8n和CPU。截图不是足球精度或部署性能基准；上述截图的来源、检查和限制见[2.9.0验收证据](docs/releases/evidence/2.9.0/README.md)。
+以上分别为2.5.0图像预览历史截图与2.9.1最终只读DEB的实际阈值调优界面；均使用公开COCO8四张Val图片验证流程，新图使用随附YOLOv8n和CPU。截图不是足球精度或部署性能基准；新图来源、检查和限制见[2.9.1验收证据](docs/releases/evidence/2.9.1/README.md)。
 
 ![Vision Studio 2.8.0：One Dark Pro 风格的 YOLO YAML 等宽代码视图](docs/screenshots/model-yaml-2.8.0.png)
 

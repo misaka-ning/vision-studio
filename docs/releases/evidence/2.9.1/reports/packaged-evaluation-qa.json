@@ -1,0 +1,22 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.9.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "pt_cuda": true,
+      "onnx_cuda": true,
+      "pt_torchscript_cpu": true,
+      "pt_cpu_cuda": true,
+      "onnx_cpu": true,
+      "zero_result_id32_cpu": true,
+      "torchscript_cpu": true,
+      "onnx_cpu_cuda": true,
+      "pt_cpu": true
+    }
+  },
+  "original_file_sha256": "471e15c29f8b340204d9720bd6e172d5409551618af292d7eed00f50ce1ad2a0"
+}

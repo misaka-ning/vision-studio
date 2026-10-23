@@ -1,0 +1,20 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.9.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "pt_cuda": true,
+      "grayscale_c1_c3": true,
+      "onnx_cuda_nodes": true,
+      "packaged_onnx_cuda": true,
+      "packaged_pt_cuda": true,
+      "cpu_regression": true,
+      "stereo_recording": true
+    }
+  },
+  "original_file_sha256": "4efc4596f3d0cd75cd725c71b44d350e77c2dc2dee3402847b105709eedf0952"
+}

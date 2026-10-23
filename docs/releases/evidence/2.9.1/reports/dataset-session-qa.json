@@ -1,0 +1,36 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.9.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "failed_atomic_replace_keeps_original": true,
+      "packaged_yaml_separate_process_restore": true,
+      "stopped_completed_prefix_error_review": true,
+      "invalid_save_preserves_valid_record": true,
+      "missing_json_creates_nothing": true,
+      "store_three_splits": true,
+      "startup_restore_preference_cancels_already_deferred_entry": true,
+      "optional_metadata_and_missing_source_record": true,
+      "unique_fp_union_fn_threshold_navigation": true,
+      "six_source_split_metadata_restore_rows": true,
+      "four_invalid_startup_rows_recover": true,
+      "concurrent_readers_see_only_complete_records": true,
+      "guide_immediately_above_more_click_targets_preserved": true,
+      "oversized_record_preserved": true,
+      "failed_import_keeps_previous_success": true,
+      "manual_selection_wins_both_orders": true,
+      "cancelled_queue_keeps_previous_success": true,
+      "packaged_directory_separate_process_restore": true,
+      "startup_restore_preference_defaults_persists_and_keeps_json": true,
+      "seven_malformed_records_preserved": true,
+      "zero_errors_and_current_range_remain_empty": true,
+      "non_file_json_preserved": true,
+      "picker_cancel_suppresses_pending_restore": true
+    }
+  },
+  "original_file_sha256": "b19ab07849f2a577f42c7fec2d1b43eb2a7a3c02d1a9ed81851b04ff87b2d549"
+}
