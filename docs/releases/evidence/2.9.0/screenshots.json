@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "version": "2.9.0",
+  "only_explicitly_manually_reviewed_widget_captures": true,
+  "images": [
+    {
+      "file": "screenshots/evaluation-overview.png",
+      "sha256": "d031974647f87f1cd240ad75f42ab09db69199c64cedc214b6b24f6c13596b3d",
+      "bytes": 165251,
+      "byte_identical_to_reviewed_original": true,
+      "width": 1580,
+      "height": 960,
+      "full_pixel_decode": true
+    },
+    {
+      "file": "screenshots/evaluation-diagnostics.png",
+      "sha256": "d62e777ad32d28ec286b12fdd43c99e3f50c95580a76b3bc5095211316439d8e",
+      "bytes": 149392,
+      "byte_identical_to_reviewed_original": true,
+      "width": 1580,
+      "height": 960,
+      "full_pixel_decode": true
+    },
+    {
+      "file": "screenshots/evaluation-scenes.png",
+      "sha256": "c498a5d1f95b0fa8afd4bc34c5b5e493d7280d02e23387b5d5ab9edf2078cc60",
+      "bytes": 189001,
+      "byte_identical_to_reviewed_original": true,
+      "width": 1580,
+      "height": 960,
+      "full_pixel_decode": true
+    }
+  ]
+}

@@ -10,13 +10,13 @@
 
 当前工程版本：**2.9.0**。完善模型评估：扩展指标、九类诊断图表、完整场景分组和论文输出；使用历史 GT／预测快照独立重新分析；PT 支持批量推理及评估高级参数。沿用 C++17／Qt 6.8.3、Fluent 深色界面及既有 CPU／NVIDIA GPU 后端，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。
 
-本版正在实现和验收，实际执行范围及限制以[发行说明](docs/releases/2.9.0.md)与[验收状态](docs/releases/evidence/2.9.0/README.md)为准，未完成的项目不记为通过。发行平台为 Ubuntu 22.04 amd64；Windows 已发布补充包仍为 2.1.0。下方历史截图标明来源版本。
+本版已完成完整26套回归（424项Qt、155项Python，零失败／跳过）、最终包CPU／CUDA、评估与导入专项、隔离安装及对应源码验收，实际范围及限制以[发行说明](docs/releases/2.9.0.md)与[验收状态](docs/releases/evidence/2.9.0/README.md)为准。发行平台为 Ubuntu 22.04 amd64；Windows 已发布补充包仍为 2.1.0。下方历史截图标明来源版本。
 
 ![Vision Studio 2.5.0 图像预览：真实 ONNX CPU 检测与 GT 对照](docs/screenshots/workbench-2.5.0.png)
 
-![Vision Studio 2.5.0 评估与阈值：真实 ONNX CUDA 评估](docs/screenshots/evaluation-2.5.0.png)
+![Vision Studio 2.9.0 评估总览：真实 PT 模型、扩展指标与五个分析子页](docs/screenshots/evaluation-2.9.0.png)
 
-以上为最终 2.5.0 只读 DEB 的实际 Qt 窗口，使用公开 COCO8 四张 Val 图片和随附 YOLOv5n 模型，分别展示 CPU 图像预览与 CUDA「评估与阈值」。截图用于展示界面和管线，不是足球精度或部署性能基准；工作台页脚的设备验证提示是该页实时状态，实际后端以报告为准。来源、原始日志及限制见 [2.5.0 验收证据](docs/releases/evidence/2.5.0/README.md)。
+以上分别为2.5.0图像预览历史截图与2.9.0最终只读DEB的实际评估界面；均使用公开COCO8四张Val图片验证流程，2.9.0评估使用随附YOLOv8n和CPU。截图不是足球精度或部署性能基准；本版实际来源、检查和限制见[2.9.0验收证据](docs/releases/evidence/2.9.0/README.md)。
 
 ![Vision Studio 2.8.0：One Dark Pro 风格的 YOLO YAML 等宽代码视图](docs/screenshots/model-yaml-2.8.0.png)
 
@@ -51,7 +51,7 @@ YAML 图来自 2.8.0 最终生产 UI 对象的真实 Qt 渲染，使用公开 YO
 
 ## 下载与安装
 
-从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下为 2.9.0 发布后的安装命令；尚未发布时请使用页面已有的正式版本。每版只上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
+从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下为 2.9.0 的安装命令。每版只上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
 
 页面另外显示 GitHub 自动提供的 **Source code (zip)** 和 **Source code (tar.gz)** 两个源码入口，它们由平台生成，不能从 Release 中移除。下载三个手动附件后，先校验，再安装：
 

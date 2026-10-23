@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "version": "2.9.0",
+  "not_a_finalizer_input": true,
+  "originals_modified": false,
+  "qa_rerun": false,
+  "raw_reports_and_verifier_programs_not_published": true,
+  "files": [
+    {
+      "file": "SHA256SUMS",
+      "bytes": 207,
+      "sha256": "a0b54f33f2d39db799b2783cd871713c4e4df340be3663765288790c45e2c16c"
+    },
+    {
+      "file": "final-assets.json",
+      "bytes": 521,
+      "sha256": "725daa4685e3d6c6bd0373b35bb30ada214b0eb655198a8c773f2e864e1fc318"
+    },
+    {
+      "file": "local-archive-commitments.json",
+      "bytes": 1886,
+      "sha256": "ff746d00b2b5c3e4081a175b8b3bfecbac3a616d7c3bfad55e4856c60b13fc5f"
+    },
+    {
+      "file": "original-commitments.json",
+      "bytes": 20116,
+      "sha256": "969f0ed21a9b32c8c9937b0a46035aacd728043064d9dcb1a9e018ba37913038"
+    },
+    {
+      "file": "outcomes.log",
+      "bytes": 37690,
+      "sha256": "ee0e7d240de9d7e05f7ab6f68b06f6cec3813f73e61c137adf8a68aa3a396a9b"
+    },
+    {
+      "file": "reports/conversion-qa.json",
+      "bytes": 348,
+      "sha256": "b6aa588ef8032ae4ddde38444e16debe01b67fbe072f6b859942b536744c6670"
+    },
+    {
+      "file": "reports/ctest-qa.json",
+      "bytes": 6823,
+      "sha256": "b7aea902b386c86488083a87c7adf8e3a77f55eb1032f2e09d4bf6fb2c8c9f6d"
+    },
+    {
+      "file": "reports/dataset-session-qa.json",
+      "bytes": 1640,
+      "sha256": "ccdbb5c0d62c818046b1e602ec6a4c4acbd8e2add031b1cac4eaf4dbcb8242f5"
+    },
+    {
+      "file": "reports/evaluation-features-qa.json",
+      "bytes": 2453,
+      "sha256": "f4012393abdd0d41c0af46660ce080010c9d22519cef211ceb6a643d8df1dd16"
+    },
+    {
+      "file": "reports/evaluation-qa.json",
+      "bytes": 646,
+      "sha256": "f3aabd34d181e2f67d9b67f83a3c6f24a94a8a8d4975cf0246aa111eca2029ff"
+    },
+    {
+      "file": "reports/final-assets.json",
+      "bytes": 288,
+      "sha256": "6837c6e443e3ad450aa415633e95cc743dc6b3ba39ab81ff7f054f55e48756aa"
+    },
+    {
+      "file": "reports/finalize-reports.json",
+      "bytes": 6066,
+      "sha256": "113e8640b7db7daa652b78911f2d38449aa09427249bc0e0ec4d4ede1eca7409"
+    },
+    {
+      "file": "reports/folder-package-qa.json",
+      "bytes": 870,
+      "sha256": "29f5897442b4cd804853e803624a351eca4034a3b5acbf19f51dd857aa111cd8"
+    },
+    {
+      "file": "reports/gpu-qa.json",
+      "bytes": 601,
+      "sha256": "db03d9903d5d74a4f96d44673c7d4224beb7033812064fb6352a6822195daf54"
+    },
+    {
+      "file": "reports/install-qa.json",
+      "bytes": 291,
+      "sha256": "daeb35c3b39c133a8054dd3b7996045da192e3f7ac33925606069235637e7e8b"
+    },
+    {
+      "file": "reports/model-yaml-qa.json",
+      "bytes": 1277,
+      "sha256": "83c000fa3b70232fb76401e4a6106d553c984e5348840848f57c97dcf3bfbae5"
+    },
+    {
+      "file": "reports/original-sha256-2cfefe24fb1343c9aacc7e3ecfb2055034404f29b817725f396bd6749e8d0924.json",
+      "bytes": 410,
+      "sha256": "d387be436642b93f0c80c287a2bda2c57efbdb8577d82a56ced14e3d554c4f0d"
+    },
+    {
+      "file": "reports/original-sha256-4ac281468dbaadd83c4fc20ed3c9dc5219c17da6fe4f340f637b38a7b313712d.json",
+      "bytes": 410,
+      "sha256": "4f1befef3debd52efe2f341ef1648d4ebbb20e380a8787646e7a12c29e4292c6"
+    },
+    {
+      "file": "reports/original-sha256-4af8ced43c569f3eafd4e4bdb11ed3883cc9db062227fd8f4bc2a60429af894b.json",
+      "bytes": 471,
+      "sha256": "50d09776299d71c315b7f75a073f7ae65939708632a668a13e0c41f69237e9dd"
+    },
+    {
+      "file": "reports/original-sha256-64582bb42ce8d1e3460c38d2024749a76b0dc309d2f7cc6f0116afa42db6833e.json",
+      "bytes": 411,
+      "sha256": "9e011236a055237f9cd1a917b3eeaf9da491447f513078ae4415ccf9f933062c"
+    },
+    {
+      "file": "reports/original-sha256-679885c99c4f259750cb1c2ea135aacbdbac9bd0a927d3871756091612845208.json",
+      "bytes": 389,
+      "sha256": "507de84a526c83549742f6d7e4fc662371c0d3ef2bf7c0f4138e4392c3eef733"
+    },
+    {
+      "file": "reports/original-sha256-6a4d3a86bf5cdf77de1b7b884f77cc3d2434b764aefd714d8dd2a940747c2d21.json",
+      "bytes": 410,
+      "sha256": "09a6b9c4cd58f9f19db9da3d2cb6ddecc0595de33166c2e6dcbf303a0aa055d9"
+    },
+    {
+      "file": "reports/original-sha256-c3d6d0a60085fddb97def80b7355f89f0a5e3f3cfc5ff8dd8415310c565bcb47.json",
+      "bytes": 410,
+      "sha256": "79a582df831c8bf23addb4a95534ac5da79ce4a0c5105d044af1783baa345903"
+    },
+    {
+      "file": "reports/original-sha256-d6ce773636912ab7ef7b6ff4fd078769a5b71c6c04445beceb878a977232d2fe.json",
+      "bytes": 352,
+      "sha256": "05209cae7f7cad1f974a0d5a473eadeea6fbcea2dc1b401727e2ed06e220ee2b"
+    },
+    {
+      "file": "reports/original-sha256-dc19325ddc16adba182ab8276e00304477238d9f8fc24247ac7f1c0b5f84ecc0.json",
+      "bytes": 410,
+      "sha256": "d5b86d49ebb8f257e8fd23bc06fd1d9389e4afb848b326047c9f6fa073a5256b"
+    },
+    {
+      "file": "reports/original-sha256-ef9d5e3fb2133440825ec920d42be0162c0592550ba41c1a4ab0e747129d6870.json",
+      "bytes": 409,
+      "sha256": "ac70ddf7fdd19b99a4d683ced272fd82e7dc5456622ac9254fe2de2b1d09ed8b"
+    },
+    {
+      "file": "reports/original-sha256-f8c6067e5653bccabe1b9bcc9a5b5ea27170ddd123641ea53b18ecee198eb5da.json",
+      "bytes": 320,
+      "sha256": "0bbc0e625d1f38c12cc9e232c64810cc4095b843b7332417c1839e0386455bf2"
+    },
+    {
+      "file": "reports/packaged-dataset-session-qa.json",
+      "bytes": 691,
+      "sha256": "359db6ca4c5e263db6ae473238c8038bd8b6b4aea12bba00cdaa0292e62e4c75"
+    },
+    {
+      "file": "reports/packaged-evaluation-features-qa.json",
+      "bytes": 366,
+      "sha256": "33efd5d4027b05bb8638b8fb4c2251706dc4299c33fa7d2c4463ab40f2e5d54c"
+    },
+    {
+      "file": "reports/packaged-evaluation-qa.json",
+      "bytes": 657,
+      "sha256": "9737867483ca043a3c28427c691a5dfec3a60daa9f96acfa58c44117bb1968b5"
+    },
+    {
+      "file": "reports/packaged-external-import-qa.json",
+      "bytes": 1246,
+      "sha256": "8814206426d0f5dca0d05f7e1de08a6e03dec9fcd29a63c3265be0f69299d175"
+    },
+    {
+      "file": "reports/packaged-gpu-qa.json",
+      "bytes": 462,
+      "sha256": "29161a3f9d80fe56506b92146143cc8f50c7888c4a20591f5ed13e24852f8da6"
+    },
+    {
+      "file": "reports/packaged-model-yaml-qa.json",
+      "bytes": 902,
+      "sha256": "0298c0c88e403f3148e14f3b302dd0896bb4eaebf880286a6f6296aafc72c6bc"
+    },
+    {
+      "file": "reports/packaged-preview-drop-qa.json",
+      "bytes": 994,
+      "sha256": "a988d804b494827600e4d2fa42e39d3fea234965dcceb9cdeb835b6a5359360d"
+    },
+    {
+      "file": "reports/packaged-private-precheck.json",
+      "bytes": 359,
+      "sha256": "a87df8afd77f5019f2b6ecee6d2c9ce87c8608e9a5e598ed275ab6ebcf32a23f"
+    },
+    {
+      "file": "reports/packaged-startup-preference-qa.json",
+      "bytes": 880,
+      "sha256": "0af8bd9379757e3f62ea275baa4a8868d15b08f6c0ea4c8104187cff3da55e79"
+    },
+    {
+      "file": "reports/preview-input-qa.json",
+      "bytes": 1214,
+      "sha256": "1128749b4873dd0f8667d490bc655ada0cdc438e9840cd967033e555ee45b1ed"
+    },
+    {
+      "file": "reports/qa-report.json",
+      "bytes": 291,
+      "sha256": "79804b2808251659f9d48df92a40c7ab758e7326a2034c8120affe722af11fe3"
+    },
+    {
+      "file": "reports/source-bundle-qa.json",
+      "bytes": 353,
+      "sha256": "f572b7d4fe51d740ab88aa0e3c6efa9f6f4c4833dd367a4fc5c224e5bc3a7d22"
+    },
+    {
+      "file": "reports/ui-queue-qa.json",
+      "bytes": 751,
+      "sha256": "1c8bf6dd013c97359065bdf102c47e4efd474f1a21faed17b5eb830e928d89cb"
+    },
+    {
+      "file": "screenshots/evaluation-diagnostics.png",
+      "bytes": 149392,
+      "sha256": "d62e777ad32d28ec286b12fdd43c99e3f50c95580a76b3bc5095211316439d8e"
+    },
+    {
+      "file": "screenshots/evaluation-overview.png",
+      "bytes": 165251,
+      "sha256": "d031974647f87f1cd240ad75f42ab09db69199c64cedc214b6b24f6c13596b3d"
+    },
+    {
+      "file": "screenshots/evaluation-scenes.png",
+      "bytes": 189001,
+      "sha256": "c498a5d1f95b0fa8afd4bc34c5b5e493d7280d02e23387b5d5ab9edf2078cc60"
+    },
+    {
+      "file": "screenshots.json",
+      "bytes": 1022,
+      "sha256": "c1fa8643a9e77dc1b061216739806f7db81f609b1e0652983fb107de86ac0835"
+    }
+  ]
+}

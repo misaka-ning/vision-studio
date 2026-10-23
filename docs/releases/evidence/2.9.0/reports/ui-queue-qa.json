@@ -1,0 +1,24 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.9.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "lazy_queue_heartbeat_pixels_stale_cancel": true,
+      "full_workbench_pages_preserve_configuration": true,
+      "invalid_source_inline": true,
+      "popup_dismissal_geometry_busy_lock": true,
+      "unified_directory_and_yaml_picker": true,
+      "popup_workbench_geometry_all_four_layout_rows": true,
+      "complete_long_error_accessible": true
+    }
+  },
+  "original_file_commitment": {
+    "file": "ui-queue-qa.json",
+    "bytes": 3418,
+    "sha256": "0ba6c5902342eb12a4b90baed35b1ddc646bd92fe6d0597e7a383c8756d408a0"
+  }
+}

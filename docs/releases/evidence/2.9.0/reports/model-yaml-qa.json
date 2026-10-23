@@ -1,0 +1,30 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.9.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "strict_schema_and_resource_limits": true,
+      "final_readonly_deb_three_models_and_independent_static_oracle": true,
+      "concurrentExportsOnlyOneWriterCreatesDestination": true,
+      "modernScalesAndLegacyAnchorsArePreserved": true,
+      "yamlBridgeRejectsNonprimitiveCyclesAndLimitsWithoutTouchingCachedGraph": true,
+      "blueprintRowsPreserveAllOriginalTypesAndOrder": true,
+      "maliciousCheckpointCannotExecuteNativePythonToShowYaml": true,
+      "real_models_yaml_available_views_and_hidden_unsupported_modes": true,
+      "sourceChangedDuringParsingCannotCommitReadyOrYaml": true,
+      "samePathReplacementInvalidatesAndRebuildsYamlCache": true,
+      "newFileExportNeverOverwritesSourceExistingOrSymlink": true,
+      "yamlFastSwitchClearsOldDocumentAndRejectsStaleCallbacks": true,
+      "yamlOneDarkEditorHasReadableTokensAndScrollingLineNumbers": true
+    }
+  },
+  "original_file_commitment": {
+    "file": "model-yaml-qa.json",
+    "bytes": 9766,
+    "sha256": "e09853e658bcdf31933c3dc21ba921ef2eeb3ab67eb0431a83fe63fa876e9220"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.9.0",
+  "original_source_fingerprint_canonical_sha256": "86d77661dc63193e070068a76562f6975abc9d01e8fd61d2f46107c3cb908dd5",
+  "original_file_commitment": {
+    "file": "original-sha256-4af8ced43c569f3eafd4e4bdb11ed3883cc9db062227fd8f4bc2a60429af894b",
+    "bytes": 35204,
+    "sha256": "4af8ced43c569f3eafd4e4bdb11ed3883cc9db062227fd8f4bc2a60429af894b"
+  }
+}
