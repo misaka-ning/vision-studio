@@ -36,6 +36,8 @@
 #include <QShortcut>
 #include <QSignalBlocker>
 #include <QSpinBox>
+#include <QSplitter>
+#include <QScrollBar>
 #include <QStandardItemModel>
 #include <QTableWidget>
 #include <QTabWidget>
@@ -43,7 +45,9 @@
 #include <QTextDocument>
 #include <QTextEdit>
 #include <QThreadPool>
+#include <QTimer>
 #include <QToolButton>
+#include <QToolTip>
 #include <QUrl>
 #include <QVBoxLayout>
 #include <QWheelEvent>
@@ -242,6 +246,16 @@ protected:
                          fontMetrics().elidedText(text(), Qt::ElideRight, contentsRect().width()));
     }
 };
+// Prefer the true minimum content height inside a resizable scroll page.
+// QSplitter's default sizeHint keeps its initial requested sizes, which can
+// create unnecessary page scrolling. Ignoring that hint entirely is unsafe:
+// it lets the parent shrink below its children's minimums and clip controls.
+class DecisionSplitter final : public QSplitter
+{
+public:
+    DecisionSplitter() : QSplitter(Qt::Vertical) {}
+    QSize sizeHint() const override { return minimumSizeHint(); }
+};
 class ThresholdSpin final : public QDoubleSpinBox
 {
 public:
@@ -418,11 +432,12 @@ public:
     {
         setObjectName("evaluationThresholdCurve");
         setMouseTracking(true);
-        setMinimumSize(380, 270);
+        setMinimumSize(300, 144);
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     }
-    void setRows(const QJsonArray &rows) { rows_ = rows; hovered_ = -1; update(); }
-    void setThreshold(double threshold) { selected_ = threshold; update(); }
+    void setRows(const QJsonArray &rows) { rows_ = rows; hovered_ = -1; QToolTip::hideText(); update(); }
+    void setThreshold(double threshold) { selected_ = threshold; setProperty("analysisThreshold", threshold); update(); }
+    void setRecommendation(double threshold) { recommended_ = threshold; setProperty("recommendedThreshold", threshold); update(); }
     std::function<void(double)> selected;
 protected:
     QRectF plot() const { const int top = width() < 560 ? 54 : 34; return QRectF(48, top, qMax(1, width() - 72), qMax(1, height() - top - 44)); }
@@ -442,9 +457,21 @@ protected:
     {
         const QRectF area = plot();
         hovered_ = area.contains(event->position()) ? nearest((event->position().x() - area.left()) / area.width()) : -1;
+        if (hovered_ >= 0) {
+            const auto row = rows_.at(hovered_).toObject();
+            const QString text = QString("阈值 %1\nPrecision %2 · Recall %3\nF1 %4\n无目标图片误报率 %5")
+                .arg(row.value("confidence").toDouble(), 0, 'f', 3)
+                .arg(metricText(row, "precision"), metricText(row, "recall"), metricText(row, "F1"), metricText(row, "no_ball_false_positive_rate"));
+            setProperty("hoverDetails", text);
+            // Native tooltips size themselves for the actual font and screen.
+            // Anchor below the plot so its two decision markers stay visible.
+            QToolTip::showText(mapToGlobal(QPoint(10, height() + 6)), text, this);
+        } else {
+            setProperty("hoverDetails", QString()); QToolTip::hideText();
+        }
         update();
     }
-    void leaveEvent(QEvent *) override { hovered_ = -1; update(); }
+    void leaveEvent(QEvent *) override { hovered_ = -1; setProperty("hoverDetails", QString()); QToolTip::hideText(); update(); }
     void mousePressEvent(QMouseEvent *event) override
     {
         if (event->button() != Qt::LeftButton || !plot().contains(event->position())) return;
@@ -502,29 +529,40 @@ protected:
                              "完成评估后显示阈值曲线\n移动查看，点击选择分析阈值");
             return;
         }
+        // Keep both decision points visible while hovering a third point.
+        // These markers refer only to measured rows in the immutable report.
+        auto marker = [&](double confidence, const QColor &color, const QString &title, int offset, Qt::PenStyle style) {
+            const int point = nearest(confidence);
+            if (point < 0 || confidence < 0) return;
+            const auto row = rows_.at(point).toObject();
+            const double x = area.left() + row.value("confidence").toDouble() * area.width();
+            painter.setPen(QPen(color, 1.4, style));
+            painter.drawLine(QPointF(x, area.top()), QPointF(x, area.bottom()));
+            if (numeric(row.value("F1"))) {
+                const double y = area.bottom() - row.value("F1").toDouble() * area.height();
+                painter.setBrush(QColor("#272727")); painter.setPen(QPen(color, 2)); painter.drawEllipse(QPointF(x, y), 4, 4);
+            }
+            const QString text = title + QString::number(row.value("confidence").toDouble(), 'f', 3);
+            const qreal boxWidth = painter.fontMetrics().horizontalAdvance(text) + 12;
+            const qreal left = std::clamp(x + 5, area.left(), qMax(area.left(), area.right() - boxWidth));
+            const QRectF box(left, area.top() + 3 + offset, boxWidth, 19);
+            painter.fillRect(box, QColor("#272727")); painter.setPen(color); painter.drawText(box, Qt::AlignCenter, text);
+        };
+        marker(recommended_, QColor("#A6E3B0"), "推荐 ", 21, Qt::DashLine);
+        marker(selected_, QColor("#60CDFF"), "当前 ", 0, Qt::SolidLine);
         const int index = hovered_ >= 0 ? hovered_ : nearest(selected_);
         if (index < 0) return;
         const auto row = rows_.at(index).toObject();
         const double x = area.left() + row.value("confidence").toDouble() * area.width();
-        painter.setPen(QPen(QColor("#E6E6E6"), 1, Qt::DashLine));
-        painter.drawLine(QPointF(x, area.top()), QPointF(x, area.bottom()));
         if (hovered_ >= 0) {
-            const qreal boxWidth = qMin(205.0, area.width());
-            const qreal left = std::clamp(x + 12, area.left(), area.right() - boxWidth);
-            const QRectF box(left, area.top() + 10, boxWidth, 114);
-            painter.setPen(QColor("#666666")); painter.setBrush(QColor("#303030"));
-            painter.drawRoundedRect(box, 5, 5);
-            painter.setPen(QColor("#F5F5F5"));
-            const QString text = QString("阈值 %1\nP %2    R %3\nF1 %4\n无目标误报率 %5")
-                .arg(row.value("confidence").toDouble(), 0, 'f', 3)
-                .arg(metricText(row, "precision"), metricText(row, "recall"), metricText(row, "F1"), metricText(row, "no_ball_false_positive_rate"));
-            painter.drawText(box.adjusted(10, 8, -8, -8), Qt::AlignLeft | Qt::AlignVCenter, text);
+            painter.setPen(QPen(QColor("#B8B8B8"), 1, Qt::DotLine));
+            painter.drawLine(QPointF(x, area.top()), QPointF(x, area.bottom()));
         }
     }
 private:
     QJsonArray rows_;
     int hovered_ = -1;
-    double selected_ = .25;
+    double selected_ = .25, recommended_ = -1;
 };
 
 // Diagnostic plots consume report data only. They never execute inference or
@@ -809,23 +847,18 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     auto *outer = new QVBoxLayout(this); outer->setContentsMargins(0, 0, 0, 0);
     auto *content = new QWidget; content->setObjectName("evaluationAnalysisContent");
     content->setStyleSheet("#evaluationAnalysisContent { background:#202020; }");
-    auto *layout = new QVBoxLayout(content); layout->setContentsMargins(0, 0, 9, 0); layout->setSpacing(12);
+    auto *layout = new QVBoxLayout(content); layout->setContentsMargins(0, 0, 9, 0); layout->setSpacing(8);
+    auto *identityRow = new QHBoxLayout; identityRow->setSpacing(12);
     reportStatus_ = label("尚无评估报告", "evaluationReportStatus");
-    reportStatus_->setStyleSheet("font-size:16px; font-weight:600; color:#F5F5F5;");
-    layout->addWidget(reportStatus_);
-    reportIdentity_ = label("导入带标注的 YOLO 数据集，检查类别映射后点击开始评估。", "evaluationReportIdentity");
-    reportIdentity_->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    layout->addWidget(reportIdentity_);
-    auto *thresholdHeader = card(); auto *thresholdHeaderLayout = new QHBoxLayout(thresholdHeader);
-    thresholdHeaderLayout->addWidget(label("分析阈值", "sectionTitle"));
-    threshold_ = new ThresholdSpin;
-    threshold_->setObjectName("evaluationAnalysisThresholdSpin");
-    threshold_->setRange(0, 1); threshold_->setDecimals(3); threshold_->setSingleStep(.01); threshold_->setValue(.25);
-    threshold_->setToolTip("选择报告中已计算的工作点；如需新的网格或匹配 IoU，请使用“报告与重分析”。");
-    thresholdHeaderLayout->addWidget(threshold_); thresholdHeaderLayout->addStretch();
-    apply_ = button("采用检测配置", "evaluationApplyThresholdButton"); apply_->setProperty("fluentRole", "primary");
-    apply_->setToolTip("明确采用报告保存的模型推理设置与当前分析阈值，供工作台检测使用。");
-    thresholdHeaderLayout->addWidget(apply_); layout->addWidget(thresholdHeader);
+    reportStatus_->setWordWrap(false);
+    reportStatus_->setStyleSheet("font-size:12px; font-weight:600; color:#F5F5F5;");
+    identityRow->addWidget(reportStatus_);
+    reportIdentity_ = new ElidedLabel("导入带标注的 YOLO 数据集，检查类别映射后点击开始评估。");
+    reportIdentity_->setObjectName("evaluationReportIdentity");
+    reportIdentity_->setTextFormat(Qt::PlainText); reportIdentity_->setWordWrap(false);
+    reportIdentity_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred); reportIdentity_->setMinimumWidth(0);
+    reportIdentity_->setStyleSheet("color:#B8B8B8; font-size:11px;");
+    identityRow->addWidget(reportIdentity_, 1); layout->addLayout(identityRow);
     analysisTabs_ = new QTabWidget; analysisTabs_->setObjectName("evaluationAnalysisTabs");
     analysisTabs_->setDocumentMode(true);
     analysisTabs_->tabBar()->setDrawBase(false);
@@ -839,73 +872,103 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
         pageScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         auto *page = new QWidget; page->setObjectName(name);
         page->setStyleSheet(QString("#%1 { background:#202020; }").arg(name));
-        auto *pageLayout = new QVBoxLayout(page); pageLayout->setContentsMargins(3, 12, 9, 6); pageLayout->setSpacing(12);
+        auto *pageLayout = new QVBoxLayout(page); pageLayout->setContentsMargins(3, 6, 9, 4); pageLayout->setSpacing(6);
         pageScroll->setWidget(page); analysisTabs_->addTab(pageScroll, title); return pageLayout;
     };
-    auto *overviewLayout = makePage("评估总览", "evaluationOverviewPage");
-    auto *thresholdLayout = makePage("阈值明细", "evaluationThresholdPage");
-    auto *diagnosticLayout = makePage("诊断图表", "evaluationDiagnosticsPage");
+    auto *thresholdLayout = makePage("阈值调优", "evaluationThresholdPage");
+    auto *diagnosticLayout = makePage("能力诊断", "evaluationDiagnosticsPage");
     auto *sceneLayout = makePage("场景分析", "evaluationScenesPage");
-    auto *reportLayout = makePage("报告与重分析", "evaluationReportPage");
+    auto *reportLayout = makePage("报告管理", "evaluationReportPage");
     layout->addWidget(analysisTabs_, 1);
-    auto *metricGrid = new QGridLayout; metricGrid->setSpacing(10);
-    const QStringList titles = {"mAP50", "mAP50–95", "Precision", "Recall", "F1", "无目标图片误报率"};
+
+    // The current point, measured curves, recommendation and numeric rows form
+    // one decision workspace. Neither choosing a point nor changing a tab
+    // adopts a deployment profile.
+    auto *currentCard = card(); currentCard->setObjectName("evaluationCurrentPointCard");
+    currentCard->setStyleSheet("#evaluationCurrentPointCard { background:#272727; border:1px solid #353535; border-radius:8px; }");
+    auto *currentLayout = new QHBoxLayout(currentCard); currentLayout->setContentsMargins(12, 6, 12, 6); currentLayout->setSpacing(14);
+    auto *thresholdField = new QHBoxLayout; thresholdField->setSpacing(8);
+    thresholdField->addWidget(label("当前阈值", "muted"));
+    threshold_ = new ThresholdSpin; threshold_->setObjectName("evaluationAnalysisThresholdSpin");
+    threshold_->setRange(0, 1); threshold_->setDecimals(3); threshold_->setSingleStep(.01); threshold_->setValue(.25); threshold_->setFixedWidth(108);
+    threshold_->setToolTip("选择报告中已计算的工作点，不修改检测配置；新的网格或匹配 IoU 可在报告管理中重新分析。");
+    thresholdField->addWidget(threshold_); currentLayout->addLayout(thresholdField);
+    const QStringList titles = {"AP50", "AP50–95", "Precision", "Recall", "F1", "无目标图误报率"};
+    auto *apGrid = new QHBoxLayout; apGrid->setSpacing(10);
     for (int i = 0; i < titles.size(); ++i) {
-        auto *frame = card(); auto *inside = new QVBoxLayout(frame); inside->setContentsMargins(13, 12, 13, 12);
-        inside->addWidget(label(titles[i]));
-        auto *value = label("N/A", qPrintable(QString("evaluationMetric%1").arg(i)));
-        value->setStyleSheet("font-size:24px; font-weight:600; color:#F5F5F5;");
-        inside->addWidget(value); metrics_.append(value); metricGrid->addWidget(frame, i / 3, i % 3);
+        auto *metricLayout = new QVBoxLayout; metricLayout->setSpacing(2);
+        auto *metricTitle = label(titles[i], "muted"); metricTitle->setStyleSheet("color:#B8B8B8; font-size:11px;"); metricLayout->addWidget(metricTitle);
+        auto *value = label("N/A", qPrintable(QString("evaluationMetric%1").arg(i))); value->setWordWrap(false);
+        value->setStyleSheet("font-size:19px; font-weight:600; color:#F5F5F5;");
+        metricLayout->addWidget(value); metrics_.append(value);
+        if (i < 2) { auto *frame = card(); auto *inside = new QVBoxLayout(frame); inside->setContentsMargins(13, 9, 13, 9); inside->addLayout(metricLayout); apGrid->addWidget(frame); }
+        else currentLayout->addLayout(metricLayout, 1);
     }
-    overviewLayout->addLayout(metricGrid);
+    thresholdLayout->addWidget(currentCard);
+    decisionSplit_ = new DecisionSplitter; decisionSplit_->setObjectName("evaluationDecisionSplit");
+    decisionSplit_->setChildrenCollapsible(false); decisionSplit_->setHandleWidth(7);
+    decisionSplit_->setStyleSheet("QSplitter::handle { background:#202020; } QSplitter::handle:hover { background:#454545; }");
+    auto *chartDecision = new QSplitter(Qt::Horizontal); chartDecision->setObjectName("evaluationChartDecisionSplit");
+    chartDecision->setChildrenCollapsible(false); chartDecision->setHandleWidth(8);
+    auto *analysis = card(); auto *analysisLayout = new QVBoxLayout(analysis);
+    analysisLayout->setContentsMargins(8, 6, 8, 6); analysisLayout->setSpacing(0);
+    curve_ = new EvaluationCurve; analysisLayout->addWidget(curve_, 1);
+    curve_->setToolTip("点击曲线选择工作点；实线为当前点，虚线为推荐点。选择只更新分析，不修改检测配置。");
+    chartDecision->addWidget(analysis);
+    auto *recommendCard = card(); recommendCard->setObjectName("evaluationDecisionSidebar");
+    recommendCard->setStyleSheet("#evaluationDecisionSidebar { background:#272727; border:1px solid #353535; border-radius:8px; }");
+    recommendCard->setMinimumWidth(246); recommendCard->setMaximumWidth(360);
+    auto *recommendLayout = new QVBoxLayout(recommendCard); recommendLayout->setContentsMargins(12, 6, 12, 6); recommendLayout->setSpacing(4);
+    strategy_ = new NoWheel<QComboBox>; strategy_->setObjectName("evaluationRecommendationStrategyCombo");
+    strategy_->addItem("均衡 · F1 最大", "f1"); strategy_->addItem("保 Precision · 尽量提高 Recall", "precision"); strategy_->addItem("控误报率 · 尽量提高 Recall", "fpr");
+    strategy_->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+    strategy_->setMinimumContentsLength(10); strategy_->setMinimumWidth(0); strategy_->setAccessibleName("推荐策略"); recommendLayout->addWidget(strategy_);
+    auto *constraintRow = new QHBoxLayout;
+    constraintTitle_ = label("最低 Precision", "muted"); constraintRow->addWidget(constraintTitle_, 1);
+    constraint_ = number("evaluationRecommendationConstraintSpin", 0, 1, .01, .9, 3); constraint_->setFixedWidth(100);
+    constraintRow->addWidget(constraint_); recommendLayout->addLayout(constraintRow);
+    recommendation_ = label({}, "evaluationRecommendationHint"); recommendation_->setStyleSheet("color:#D2D2D2; font-size:12px;"); recommendation_->installEventFilter(this);
+    recommendLayout->addWidget(recommendation_, 1);
+    useRecommended_ = button("定位推荐点", "evaluationUseRecommendationButton");
+    useRecommended_->setToolTip("仅选择推荐阈值并定位曲线和表格；不修改检测工作台。"); recommendLayout->addWidget(useRecommended_);
+    chartDecision->addWidget(recommendCard); chartDecision->setStretchFactor(0, 1); chartDecision->setStretchFactor(1, 0);
+    chartDecision->setSizes({640, 286}); decisionSplit_->addWidget(chartDecision);
+    auto *tableCard = card(); auto *tableLayout = new QVBoxLayout(tableCard); tableLayout->setContentsMargins(10, 6, 10, 6); tableLayout->setSpacing(4);
+    auto *tableHeader = new QHBoxLayout; tableHeader->addWidget(label("阈值明细", "sectionTitle")); tableHeader->addStretch();
+    tableHeader->addWidget(label("与曲线联动 · 可拖动上方分隔条调整高度", "tiny")); tableLayout->addLayout(tableHeader);
+    table_ = new QTableWidget(0, 8); table_->setObjectName("evaluationThresholdTable"); configureReadOnlyTable(table_); table_->installEventFilter(this); table_->viewport()->installEventFilter(this);
+    table_->setHorizontalHeaderLabels({"置信度", "Precision", "Recall", "F1", "无目标误报率", "TP", "FP", "FN"});
+    table_->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    table_->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel); table_->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    table_->verticalHeader()->setDefaultSectionSize(30); table_->setMinimumHeight(88);
+    table_->horizontalHeader()->setFixedHeight(30);
+    table_->horizontalHeader()->setStyleSheet("QHeaderView::section { background:#303030; color:#B8B8B8; padding:4px; border:0; border-bottom:1px solid #454545; font-size:11px; }");
+    tableLayout->addWidget(table_, 1); decisionSplit_->addWidget(tableCard); decisionSplit_->setStretchFactor(0, 1); decisionSplit_->setStretchFactor(1, 1);
+    decisionSplit_->setSizes({230, 210}); thresholdLayout->addWidget(decisionSplit_, 1);
+    auto *decisionFooter = card(); auto *decisionFooterLayout = new QHBoxLayout(decisionFooter); decisionFooterLayout->setContentsMargins(12, 6, 12, 6); decisionFooterLayout->setSpacing(8);
+    auto *decisionSummary = new QVBoxLayout; decisionSummary->setSpacing(2);
+    counts_ = new ElidedLabel("TP / FP / FN 与样本数量将在评估后显示。"); counts_->setObjectName("evaluationCounts"); counts_->setTextFormat(Qt::PlainText);
+    counts_->setWordWrap(false); counts_->setMinimumWidth(0); counts_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    counts_->setStyleSheet("font-size:11px; color:#B8B8B8;"); decisionSummary->addWidget(counts_);
+    errorSummary_ = new ElidedLabel; errorSummary_->setObjectName("evaluationErrorSummaryLabel"); errorSummary_->setTextFormat(Qt::PlainText);
+    errorSummary_->setWordWrap(false); errorSummary_->setMinimumWidth(0); errorSummary_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    errorSummary_->setStyleSheet("color:#F9CC9D; font-size:11px;"); errorSummary_->hide(); decisionSummary->addWidget(errorSummary_);
+    decisionFooterLayout->addLayout(decisionSummary, 1);
+    filter_ = new NoWheel<QComboBox>; filter_->setObjectName("evaluationImageFilterCombo");
+    filter_->addItem("全部图片", "all"); filter_->addItem("包含误检", "fp"); filter_->addItem("包含漏检", "fn"); filter_->addItem("无目标图片误报", "negative_fp"); filter_->addItem("全部错例", "errors");
+    filter_->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon); filter_->setMinimumContentsLength(6); filter_->setMinimumWidth(0); filter_->setMaximumWidth(150);
+    decisionFooterLayout->addWidget(filter_);
+    reviewErrors_ = button("查看错例", "evaluationReviewErrorsButton"); decisionFooterLayout->addWidget(reviewErrors_);
+    apply_ = button("采用到检测", "evaluationApplyThresholdButton"); apply_->setProperty("fluentRole", "primary"); decisionFooterLayout->addWidget(apply_);
+    thresholdLayout->addWidget(decisionFooter);
+
+    diagnosticLayout->addLayout(apGrid);
+    diagnosticLayout->addWidget(label("AP 来自完整集合的低分候选，与当前工作阈值区分；这里只展示报告中实际保存的结果。", "tiny"));
+    diagnosticThreshold_ = label({}, "evaluationDiagnosticThresholdLabel"); diagnosticLayout->addWidget(diagnosticThreshold_);
     details_ = new QTableWidget(3, 4); details_->setObjectName("evaluationExtendedMetricsTable");
     configureReadOnlyTable(details_); details_->setSelectionMode(QAbstractItemView::NoSelection);
     details_->horizontalHeader()->hide(); details_->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    details_->setMinimumHeight(122); details_->setMaximumHeight(140);
-    overviewLayout->addWidget(details_);
-    counts_ = label("TP / FP / FN 与样本数量将在评估后显示。", "evaluationCounts");
-    overviewLayout->addWidget(counts_);
-    errorSummary_ = label({}, "evaluationErrorSummaryLabel");
-    errorSummary_->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    errorSummary_->setStyleSheet("color:#F9CC9D; font-weight:600;");
-    errorSummary_->hide();
-    overviewLayout->addWidget(errorSummary_);
-    auto *analysis = card(); auto *analysisLayout = new QVBoxLayout(analysis);
-    curve_ = new EvaluationCurve;
-    analysisLayout->addWidget(curve_);
-    analysisLayout->addWidget(label("曲线来自保存的预测。点击曲线或表格更新分析，不会自动修改工作台配置。AP 来自低置信度候选，与当前工作阈值区分。", "tiny"));
-    thresholdLayout->addWidget(analysis);
-    auto *recommendCard = card(); auto *recommendLayout = new QVBoxLayout(recommendCard);
-    auto *strategyRow = new QHBoxLayout;
-    strategy_ = new NoWheel<QComboBox>; strategy_->setObjectName("evaluationRecommendationStrategyCombo");
-    strategy_->addItem("均衡 · F1 最大", "f1"); strategy_->addItem("最低 Precision 下的最大 Recall", "precision"); strategy_->addItem("最高误报率下的最大 Recall", "fpr");
-    strategy_->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
-    strategy_->setMinimumContentsLength(12); strategy_->setMinimumWidth(0);
-    strategyRow->addWidget(strategy_, 1);
-    constraint_ = number("evaluationRecommendationConstraintSpin", 0, 1, .01, .9, 3);
-    strategyRow->addWidget(constraint_);
-    useRecommended_ = button("查看推荐工作点", "evaluationUseRecommendationButton");
-    recommendLayout->addLayout(strategyRow);
-    recommendation_ = label({}, "evaluationRecommendationHint"); recommendLayout->addWidget(recommendation_);
-    auto *recommendActions = new QHBoxLayout; recommendActions->addStretch(); recommendActions->addWidget(useRecommended_);
-    recommendLayout->addLayout(recommendActions);
-    overviewLayout->addWidget(recommendCard); overviewLayout->addStretch();
-    auto *tableCard = card(); auto *tableLayout = new QVBoxLayout(tableCard);
-    auto *filterRow = new QHBoxLayout;
-    filterRow->addWidget(label("阈值明细与错例", "sectionTitle"), 1);
-    filter_ = new NoWheel<QComboBox>; filter_->setObjectName("evaluationImageFilterCombo");
-    filter_->addItem("全部图片", "all"); filter_->addItem("包含误检", "fp"); filter_->addItem("包含漏检", "fn"); filter_->addItem("无目标图片误报", "negative_fp");
-    filter_->addItem("全部错例（误检或漏检）", "errors");
-    filterRow->addWidget(filter_); tableLayout->addLayout(filterRow);
-    table_ = new QTableWidget(0, 8); table_->setObjectName("evaluationThresholdTable");
-    configureReadOnlyTable(table_);
-    table_->setHorizontalHeaderLabels({"置信度", "Precision", "Recall", "F1", "无目标误报率", "TP", "FP", "FN"});
-    table_->setSelectionBehavior(QAbstractItemView::SelectRows); table_->setSelectionMode(QAbstractItemView::SingleSelection);
-    table_->setEditTriggers(QAbstractItemView::NoEditTriggers); table_->verticalHeader()->hide();
-    table_->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    table_->horizontalHeader()->setStretchLastSection(true); table_->setMinimumHeight(230);
-    tableLayout->addWidget(table_); thresholdLayout->addWidget(tableCard); thresholdLayout->addStretch();
-
+    details_->setMinimumHeight(122); details_->setMaximumHeight(140); diagnosticLayout->addWidget(details_);
     auto *plotHeader = new QHBoxLayout; plotHeader->addWidget(label("分析保存的预测", "sectionTitle"));
     plotKind_ = new NoWheel<QComboBox>; plotKind_->setObjectName("evaluationDiagnosticPlotCombo");
     plotKind_->addItem("PR 曲线 · IoU 0.50", "pr"); plotKind_->addItem("AP–IoU", "ap");
@@ -934,7 +997,10 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     scenes_->setHorizontalHeaderLabels({"场景", "审核状态", "图片", "AP50", "AP75", "AP50–95", "Precision", "Recall", "F1", "误报率", "TP / FP / FN", "工作阈值"});
     scenes_->setMinimumHeight(280); sceneLayout->addWidget(scenes_, 1);
     reviewScene_ = button("查看此场景错例", "evaluationReviewSceneButton");
-    auto *sceneActions = new QHBoxLayout; sceneActions->addWidget(label("分组可能重叠；未审核不等于无困难。AP 发布条件与本报告的评估范围一致。", "tiny"), 1); sceneActions->addWidget(reviewScene_);
+    auto *sceneActions = new QHBoxLayout; sceneActions->addWidget(label("分组可能重叠；未审核不等于无困难。AP 发布条件与本报告的评估范围一致。", "tiny"), 1);
+    sceneReanalysis_ = button("按当前阈值重新分析…", "evaluationSceneReanalysisButton");
+    sceneReanalysis_->setToolTip("前往报告管理，填入当前分析阈值；确认生成新报告后才更新场景统计。");
+    sceneActions->addWidget(sceneReanalysis_); sceneActions->addWidget(reviewScene_);
     sceneLayout->addLayout(sceneActions);
 
     auto *exportCard = card(); auto *exportLayout = new QVBoxLayout(exportCard);
@@ -976,7 +1042,12 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
     importExternal_ = button("导入脚本评估报告", "evaluationImportExternalReportButton");
     importExternal_->setToolTip("选择 model-evaluation 脚本的报告目录，后台校验 GT／预测快照并生成独立应用报告；不需要重新推理或选用当前模型。");
     footer->addWidget(openFolder_); footer->addWidget(openReport_); footer->addWidget(export_); footer->addWidget(importExternal_); footer->addStretch();
-    reportLayout->addLayout(footer); reportLayout->addStretch();
+    reportLayout->addLayout(footer);
+    exportStatus_ = new ElidedLabel; exportStatus_->setObjectName("evaluationExportStatusLabel");
+    exportStatus_->setTextFormat(Qt::PlainText); exportStatus_->setWordWrap(false);
+    exportStatus_->setMinimumWidth(0); exportStatus_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    exportStatus_->setStyleSheet("color:#B8B8B8; font-size:12px;"); exportStatus_->hide(); reportLayout->addWidget(exportStatus_);
+    reportLayout->addStretch();
     // Only each page scrolls. An additional outer scroller gives the tab stack
     // its size hint and can push its bottom outside a compact window.
     outer->addWidget(content, 1);
@@ -1008,13 +1079,14 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
         curve_->setThreshold(actual); updateMetrics(); emit thresholdChanged(actual);
     });
     curve_->selected = [this](double value) { setAnalysisThreshold(value); };
-    connect(table_, &QTableWidget::cellClicked, this, [this](int row, int) {
-        if (auto *item = table_->item(row, 0)) setAnalysisThreshold(item->data(Qt::UserRole).toDouble());
+    connect(table_, &QTableWidget::currentCellChanged, this, [this](int row, int, int, int) {
+        if (!updating_) if (auto *item = table_->item(row, 0)) setAnalysisThreshold(item->data(Qt::UserRole).toDouble());
     });
     connect(apply_, &QPushButton::clicked, this, [this] {
         if (!busy_ && !report_.isEmpty() && report_.value("allow_apply_profile").toBool(true)) emit applyRequested(analysisThreshold());
     });
     connect(filter_, &QComboBox::currentIndexChanged, this, [this] { emit imageFilterChanged(filter_->currentData().toString()); });
+    connect(reviewErrors_, &QPushButton::clicked, this, [this] { if (!busy_) emit errorReviewRequested(); });
     connect(strategy_, &QComboBox::currentIndexChanged, this, [this] {
         if (strategy_->currentData() == "fpr") constraint_->setValue(.01);
         else if (strategy_->currentData() == "precision") constraint_->setValue(.9);
@@ -1044,6 +1116,12 @@ EvaluationPanel::EvaluationPanel(QWidget *parent) : QWidget(parent)
         const QString directory = QFileDialog::getExistingDirectory(this, "导入脚本评估报告目录");
         if (!directory.isEmpty() && !busy_) emit externalReportImportRequested(directory, analysisOptions());
     });
+    connect(sceneReanalysis_, &QPushButton::clicked, this, [this] {
+        if (busy_ || report_.isEmpty()) return;
+        reanalyzeConfidence_->setValue(analysisThreshold()); analysisTabs_->setCurrentIndex(3);
+        if (auto *scroll = qobject_cast<QScrollArea *>(analysisTabs_->widget(3))) scroll->ensureWidgetVisible(reanalyzeConfidence_, 20, 20);
+        reanalyzeConfidence_->setFocus(Qt::OtherFocusReason);
+    });
     connect(scenes_, &QTableWidget::itemSelectionChanged, this, &EvaluationPanel::updateAnalysisEligibility);
     connect(reviewScene_, &QPushButton::clicked, this, [this] {
         const int row = scenes_->currentRow(); if (!busy_ && row >= 0 && reviewScene_->isEnabled())
@@ -1064,6 +1142,19 @@ EvaluationPanel::~EvaluationPanel()
 }
 bool EvaluationPanel::eventFilter(QObject *watched, QEvent *event)
 {
+    if (watched == recommendation_ && (event->type() == QEvent::Resize || event->type() == QEvent::Show ||
+            event->type() == QEvent::FontChange || event->type() == QEvent::StyleChange)) {
+        QTimer::singleShot(0, this, &EvaluationPanel::updateDecisionMinimums);
+    }
+    if (table_ && (watched == table_ || watched == table_->viewport()) &&
+            (event->type() == QEvent::Resize || event->type() == QEvent::Show)) {
+        // The final viewport height is known after the view handles its resize.
+        // Keep the current point visible after a window or splitter change,
+        // without changing selection, the threshold or the report.
+        QTimer::singleShot(0, table_, [table = table_] {
+            if (auto *item = table->currentItem()) table->scrollToItem(item, QAbstractItemView::EnsureVisible);
+        });
+    }
     if (watched == datasetSettings_ && (event->type() == QEvent::Hide || event->type() == QEvent::Destroy)) {
         if (qApp) qApp->removeEventFilter(this);
         if (datasetSettingsButton_) {
@@ -1277,7 +1368,7 @@ QString EvaluationPanel::validationMessage() const
     if (scoreFloor() > model_.confidence) return "候选分数下限不能高于当前检测置信度，请降低候选下限或调整检测置信度。";
     if (QFileInfo(model_.modelPath).suffix().compare("onnx", Qt::CaseInsensitive) == 0 && cpuThreads() != 0)
         return "ONNX 评估暂不支持指定 CPU 线程数，请将 CPU 线程设为自动。";
-    if (!figurePng_->isChecked() && !figureSvg_->isChecked() && !figurePdf_->isChecked()) return "请在报告与重分析页至少选择一种图表输出格式。";
+    if (!figurePng_->isChecked() && !figureSvg_->isChecked() && !figurePdf_->isChecked()) return "请在报告管理页至少选择一种图表输出格式。";
     return {};
 }
 bool EvaluationPanel::canEvaluate() const { return validationMessage().isEmpty(); }
@@ -1374,8 +1465,8 @@ void EvaluationPanel::updateEligibility()
     apply_->setEnabled(!busy_ && rows && mayApply);
     apply_->setToolTip(mayApply ? QStringLiteral("明确采用报告保存的模型推理设置与当前分析阈值，供工作台检测使用。") :
         QStringLiteral("此导入报告没有完整的应用推理配置，可分析阈值与错例，不能采用到检测工作台。"));
-    threshold_->setEnabled(rows && !busy_); filter_->setEnabled(rows && !busy_);
-    table_->setEnabled(rows && !busy_); curve_->setEnabled(rows && !busy_);
+    threshold_->setEnabled(rows && !busy_); filter_->setEnabled(rows && !busy_); reviewErrors_->setEnabled(rows && !busy_);
+    table_->setEnabled(rows && !busy_); curve_->setEnabled(rows && !busy_); sceneReanalysis_->setEnabled(rows && !busy_);
     const bool files = !directory_.isEmpty() && QFileInfo(directory_).isDir();
     openFolder_->setEnabled(files); export_->setEnabled(files && !busy_ && !exporting_);
     openReport_->setEnabled(files && !markdownPath(directory_).isEmpty());
@@ -1390,6 +1481,7 @@ void EvaluationPanel::clearReport()
 void EvaluationPanel::setReport(const QJsonObject &report, const QString &directory)
 {
     report_ = report; directory_ = directory; operatingOverride_ = {};
+    exportStatus_->clear(); exportStatus_->setToolTip({}); exportStatus_->hide();
     const auto rows = report.value("rows").toArray();
     const auto request = requestOf(report);
     updating_ = true;
@@ -1444,7 +1536,7 @@ void EvaluationPanel::setReport(const QJsonObject &report, const QString &direct
         const QString device = config.value("resolved_device").toString(config.value("device").toString("未记录"));
         reportIdentity_->setText(reportIdentity_->text() + QString("\n%1 · %2 · %3 · NMS IoU %4\nAP 仅针对映射的目标类别；无目标图片指没有此目标类 GT 的图片。").arg(input, color, device).arg(config.value("nms_iou").toDouble(.45), 0, 'f', 2));
         reportIdentity_->setToolTip(reportIdentity_->text());
-        reportIdentity_->setText(QString("%1 · %2 · 模型 ID %3 → 数据集 ID %4\n%5 · %6 · %7 · NMS %8 · 匹配 IoU %9")
+        reportIdentity_->setText(QString("%1 · %2 · 模型 %3 → 数据集 %4 · %5 · %6 · %7 · NMS %8 · 匹配 IoU %9")
             .arg(QFileInfo(modelPath).fileName(), split).arg(request.value("model_class_id").toInt()).arg(request.value("dataset_class_id").toInt())
             .arg(input, color, device).arg(config.value("nms_iou").toDouble(.45), 0, 'f', 2).arg(request.value("match_iou").toDouble(.5), 0, 'f', 2));
     }
@@ -1546,16 +1638,22 @@ void EvaluationPanel::updateMetrics()
         QString("场景工作点 %1 · 已审核 %2 张 / 未审核 %3 张。\n分组表使用报告生成时的阈值；当前分析阈值 %4。需要其他工作点的完整场景报告，请重新分析。")
             .arg(sceneConfidence, 0, 'f', 3).arg(sceneReview.value("reviewed_images").toInt()).arg(sceneReview.value("unreviewed_images").toInt())
             .arg(analysisThreshold(), 0, 'f', 3));
-    if (report_.isEmpty()) { counts_->setText("TP / FP / FN 与样本数量将在评估后显示。"); return; }
-    counts_->setText(QString("分析工作点 %1 · TP %2 / FP %3 / FN %4\n已完成 %5 张 · GT %6 个 · 确认无目标 %7 张，其中误报 %8 张。分母为 0 的指标显示 N/A。")
+    diagnosticThreshold_->setText(report_.isEmpty() ? QStringLiteral("完成评估后显示保存的诊断指标。") :
+        QString("以下工作点指标与矩阵使用当前分析阈值 %1；切换阈值只分析保存的预测。").arg(analysisThreshold(), 0, 'f', 3));
+    if (report_.isEmpty()) { counts_->setText("TP / FP / FN 与样本数量将在评估后显示。"); counts_->setToolTip({}); return; }
+    counts_->setText(QString("阈值 %1 · TP %2 / FP %3 / FN %4 · 已评估 %5 张 · GT %6 · 无目标 %7 张（误报 %8 张）")
         .arg(row.value("confidence").toDouble(analysisThreshold()), 0, 'f', 3)
         .arg(row.value("TP").toInt()).arg(row.value("FP").toInt()).arg(row.value("FN").toInt())
         .arg(row.value("images").toInt()).arg(row.value("gt_boxes").toInt())
         .arg(row.value("no_ball_images").toInt()).arg(row.value("no_ball_false_positive_images").toInt()));
+    counts_->setToolTip(counts_->text() + "\n分母为 0 的指标显示 N/A；分析选择不会改写来源报告。");
     int index = -1; const auto rows = report_.value("rows").toArray();
     for (int i = 0; i < rows.size(); ++i)
         if (std::abs(rows.at(i).toObject().value("confidence").toDouble() - row.value("confidence").toDouble()) < 1e-8) { index = i; break; }
-    if (index >= 0) { QSignalBlocker blocker(table_); table_->selectRow(index); }
+    if (index >= 0) {
+        QSignalBlocker blocker(table_); table_->setCurrentCell(index, 0); table_->selectRow(index);
+        table_->scrollToItem(table_->item(index, 0), QAbstractItemView::EnsureVisible);
+    }
 }
 void EvaluationPanel::updateScenes()
 {
@@ -1615,18 +1713,55 @@ void EvaluationPanel::updateAnalysisEligibility()
     reviewScene_->setToolTip(reviewScene_->isEnabled() ? QStringLiteral("按当前分析阈值查看此场景内的误检或漏检图片。") :
         QStringLiteral("此场景未审核、没有样本或报告未保存场景名单。旧报告可重新分析；未审核场景需提供审核信息后重新评估。"));
 }
+void EvaluationPanel::updateDecisionMinimums()
+{
+    if (!recommendation_ || !decisionSplit_ || decisionSplit_->count() != 2) return;
+    recommendation_->ensurePolished();
+    const int contentWidth = qMax(1, recommendation_->contentsRect().width());
+    const auto margins = recommendation_->contentsMargins();
+    const int textHeight = recommendation_->fontMetrics().boundingRect(QRect(0, 0, contentWidth, 100000),
+        Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, recommendation_->text()).height();
+    // QLabel::heightForWidth also respects its existing explicit minimum.
+    // Measure an unconstrained label with the actual font to avoid feeding that
+    // previous minimum back into the next calculation after every resize.
+    QLabel measurement;
+    measurement.setFont(recommendation_->font()); measurement.setTextFormat(Qt::PlainText);
+    measurement.setWordWrap(true); measurement.setMargin(recommendation_->margin()); measurement.setIndent(recommendation_->indent());
+    measurement.setContentsMargins(margins); measurement.setText(recommendation_->text());
+    const int requiredHeight = qMax(measurement.heightForWidth(recommendation_->width()),
+        textHeight + margins.top() + margins.bottom()) + 2;
+    recommendation_->setMinimumHeight(qMax(1, requiredHeight));
+    auto *sidebar = recommendation_->parentWidget();
+    if (!sidebar || !sidebar->layout()) return;
+    sidebar->layout()->invalidate();
+    sidebar->setMinimumHeight(sidebar->layout()->minimumSize().height());
+    auto *chartDecision = qobject_cast<QSplitter *>(decisionSplit_->widget(0));
+    auto *tableCard = decisionSplit_->widget(1);
+    if (!chartDecision || !tableCard || !tableCard->layout()) return;
+    int chartMinimum = 0;
+    for (int index = 0; index < chartDecision->count(); ++index) {
+        const auto *child = chartDecision->widget(index);
+        chartMinimum = qMax(chartMinimum, qMax(child->minimumHeight(), child->minimumSizeHint().height()));
+    }
+    chartDecision->setMinimumHeight(chartMinimum);
+    tableCard->layout()->invalidate();
+    tableCard->setMinimumHeight(tableCard->layout()->minimumSize().height());
+    decisionSplit_->setMinimumHeight(chartMinimum + tableCard->minimumHeight() + decisionSplit_->handleWidth());
+}
 void EvaluationPanel::updateRecommendation()
 {
     recommended_ = -1;
     constraint_->setVisible(strategy_->currentData() != "f1");
+    constraintTitle_->setVisible(strategy_->currentData() != "f1");
+    constraintTitle_->setText(strategy_->currentData() == "fpr" ? "最高无目标图误报率" : "最低 Precision");
     const auto manifest = report_.value("manifest").toObject();
     const QString split = manifest.value("split").toString(requestOf(report_).value("split").toString());
     QString message;
-    if (report_.isEmpty()) message = "完成完整验证集评估后，可按明确目标选择工作点。";
-    else if (split == "test") message = "Test 扫描仅作描述性分析。请在 Val 上选择阈值，再固定到 Test 验证。";
-    else if (split != "val") message = "训练集扫描仅作拟合分析；请在完整 Val 集上选择阈值，再固定到 Test 验证。";
+    if (report_.isEmpty()) message = "完成完整 Val 评估后，\n可按明确目标选择工作点。";
+    else if (split == "test") message = "Test 扫描只作描述。\n请先在完整 Val 选择阈值，\n再固定到 Test 验证。";
+    else if (split != "val") message = "训练集仅作拟合分析。\n请在完整 Val 选择阈值，\n再固定到 Test 验证。";
     else if (report_.value("status").toString() != "complete" || !report_.value("full_split").toBool() || report_.value("metrics").toObject().value("images").toInt() <= 1)
-        message = "子集或未完成报告不自动推荐部署阈值；请完成整个验证集。";
+        message = "当前报告未完整覆盖 Val。\n不自动推荐部署阈值；\n请完成整个验证集。";
     else {
         const QString strategy = strategy_->currentData().toString();
         QJsonObject winner;
@@ -1645,14 +1780,16 @@ void EvaluationPanel::updateRecommendation()
             const std::array<double, 4> rank{score.toDouble(), precision, third, row.value("confidence").toDouble()};
             if (rank > bestRank) { winner = row; bestRank = rank; }
         }
-        if (winner.isEmpty()) message = "无满足条件的工作点（或所需指标为 N/A）。不会自动放宽限制。";
+        if (winner.isEmpty()) message = "无满足条件的工作点。\n所需指标可能为 N/A；\n不会自动放宽限制。";
         else {
             recommended_ = winner.value("confidence").toDouble();
-            message = QString("建议查看阈值 %1：P %2 · R %3 · F1 %4 · 无目标误报率 %5。\n点击查看后，可检查错例；只有“采用检测配置”才更新检测工作台。")
+            message = QString("推荐阈值 %1\nP %2 · R %3\nF1 %4 · 无目标误报 %5")
                 .arg(recommended_, 0, 'f', 3).arg(metricText(winner, "precision"), metricText(winner, "recall"), metricText(winner, "F1"), metricText(winner, "no_ball_false_positive_rate"));
         }
     }
-    recommendation_->setText(message); useRecommended_->setEnabled(recommended_ >= 0 && !busy_);
+    recommendation_->setText(message); recommendation_->setToolTip(message + "\n定位只选择分析工作点；只有采用到检测才修改工作台配置。"); useRecommended_->setEnabled(recommended_ >= 0 && !busy_);
+    curve_->setRecommendation(recommended_);
+    updateDecisionMinimums();
 }
 void EvaluationPanel::exportReport()
 {
@@ -1668,6 +1805,8 @@ void EvaluationPanel::exportReportTo(const QString &parent)
     const QString destination = QDir(parent).filePath(QFileInfo(source).fileName() + "-export-" + QDateTime::currentDateTimeUtc().toString("yyyyMMdd-HHmmss-zzz"));
     exporting_ = true;
     export_->setEnabled(false);
+    exportStatus_->setText("正在导出原始报告及当前分析选择…"); exportStatus_->setToolTip(source);
+    exportStatus_->setStyleSheet("color:#B8B8B8; font-size:12px;"); exportStatus_->show();
     const QJsonObject selection{{"analysis_threshold", analysisThreshold()}, {"operating_metrics", selectedRow()},
         {"source_report", QFileInfo(source).canonicalFilePath()}, {"note", "原始报告及扫描表保持不变，此文件仅记录导出时的分析选择。"}};
     const QPointer<EvaluationPanel> guard(this);
@@ -1684,11 +1823,15 @@ void EvaluationPanel::exportReportTo(const QString &parent)
             }
         }
         if (!guard) return;
-        QMetaObject::invokeMethod(guard, [guard, error, destination] {
+        QMetaObject::invokeMethod(guard, [guard, error, destination, source] {
             if (!guard) return;
             guard->exporting_ = false;
             guard->updateEligibility();
-            guard->recommendation_->setText(error.isEmpty() ? "原始报告已导出，并附带当前分析选择：" + destination : error);
+            if (guard->directory_ != source) return; // Feedback belongs to its source report.
+            const QString message = error.isEmpty() ? "原始报告已导出，并附带当前分析选择：" + destination : error;
+            guard->exportStatus_->setText(message); guard->exportStatus_->setToolTip(message);
+            guard->exportStatus_->setStyleSheet(error.isEmpty() ? "color:#A6E3B0; font-size:12px;" : "color:#FFB4AB; font-size:12px;");
+            guard->exportStatus_->show();
         }, Qt::QueuedConnection);
     }));
 }
