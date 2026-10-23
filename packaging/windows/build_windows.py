@@ -121,7 +121,7 @@ def main():
     scripts = stage / 'scripts'
     scripts.mkdir()
     for name in ('pt_worker.py', 'netron_server.py', 'model_convert.py',
-                 'evaluation_data.py', 'evaluation_metrics.py', 'evaluation_worker.py',
+                 'evaluation_data.py', 'evaluation_metrics.py', 'evaluation_worker.py', 'evaluation_reporting.py', 'evaluation_snapshot.py', 'evaluation_import.py',
                  'gpu_probe.py', 'gpu_setup.py', 'gpu_windows.py'):
         source = ROOT / 'scripts' / name
         shutil.copy2(source, scripts)  # Every deployed helper is required; fail rather than silently omit one.

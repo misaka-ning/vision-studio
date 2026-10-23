@@ -2634,7 +2634,7 @@ QString MainWindow::inferenceFingerprint(const QString &modelIdentity) const
     QDataStream out(&bytes, QIODevice::WriteOnly);
     out << (modelIdentity.isEmpty() ? modelFileIdentity() : modelIdentity) << int(c.task) << c.inputSize << c.confidence << c.iou
         << int(c.colorMode) << c.swapRB << c.scale << c.meanR << c.meanG << c.meanB
-        << int(c.device) << c.deviceIndex << c.labels << c.classFilter;
+        << int(c.device) << c.deviceIndex << c.labels << c.classFilter << c.maxDetections << c.cpuThreads;
     return QString::fromLatin1(QCryptographicHash::hash(bytes, QCryptographicHash::Sha256).toHex());
 }
 
@@ -3086,6 +3086,17 @@ vision::ModelConfig MainWindow::currentConfig() const
         c.swapRB = true;
         c.scale = 1.0 / 255.0;
         c.meanR = c.meanG = c.meanB = 0;
+    }
+    const auto profile = modelEvaluationProfiles_.value(modelPath_).toMap();
+    const QFileInfo file(modelPath_);
+    const QString modelIdentity = file.isFile() ? file.absoluteFilePath() + "|" + QString::number(file.size()) + "|" +
+        QString::number(file.lastModified().toMSecsSinceEpoch()) : QString();
+    if (profile.value("adopted").toBool() && !modelIdentity.isEmpty() &&
+        profile.value("model_identity").toString() == modelIdentity)
+    {
+        const auto adopted = profile.value("config").toMap();
+        c.maxDetections = qBound(1, adopted.value("max_detections", 300).toInt(), 10000);
+        c.cpuThreads = qBound(0, adopted.value("cpu_threads", 0).toInt(), 256);
     }
     return c;
 }
@@ -3718,7 +3729,7 @@ void MainWindow::displayResult(const vision::InferenceResult &input)
     if (r.stereoView != vision::StereoView::Full)
         canvasTitle_->setText(canvasTitle_->text() + " · " + stereoName(r.stereoView));
     countMetric_->setText(QString::number(r.predictions.size()));
-    latencyMetric_->setText(QString::number(r.inferenceMs, 'f', 1));
+    latencyMetric_->setText(r.hasInferenceTiming ? QString::number(r.inferenceMs, 'f', 1) : QStringLiteral("未记录"));
     QSet<int> cls;
     for (const auto &p : r.predictions)
         cls.insert(p.classId);
@@ -3730,12 +3741,16 @@ void MainWindow::displayResult(const vision::InferenceResult &input)
                                                               .arg(r.sourceFrameSize.height())
                                                               .arg(stereoName(r.stereoView)));
     resultInfo_->setText(QString("%1 · %2 个%3\n总处理 %4 ms")
-                             .arg(taskName(r.task))
+                             .arg(r.hasCompleteInferenceConfig ? taskName(r.task) : QStringLiteral("目标检测 · 历史预测"))
                              .arg(r.predictions.size())
                              .arg(r.task == vision::ModelTask::Classification ? "分类结果" : "目标")
                              .arg(r.totalMs, 0, 'f', 1));
     QString deviceDescription;
-    if (r.device == vision::ComputeDevice::CPU)
+    if (!r.hasInferenceTiming)
+        resultInfo_->setText(QString("目标检测 · %1 个目标\n逐图耗时未记录").arg(r.predictions.size()));
+    if (!r.hasVerifiedDevice)
+        deviceDescription = "来源设备（未验证）· " + (r.sourceRuntimeDevice.isEmpty() ? QStringLiteral("未记录") : r.sourceRuntimeDevice);
+    else if (r.device == vision::ComputeDevice::CPU)
     {
         QString backend = r.backend;
         backend.remove(QRegularExpression("\\s*/\\s*CPU\\b", QRegularExpression::CaseInsensitiveOption));
@@ -4152,6 +4167,27 @@ MainWindow::ResultExport MainWindow::prepareResultExport(const vision::Inference
         {"inference_ms", r.inferenceMs},
         {"total_ms", r.totalMs},
         {"predictions", predictions}};
+    if (!r.hasVerifiedDevice)
+    {
+        for (const auto &key : {"requested_device", "actual_device", "device_index", "device_name"})
+            root.insert(key, QJsonValue::Null);
+        root.insert("source_runtime_device", r.sourceRuntimeDevice);
+        root.insert("device_verified", false);
+    }
+    if (!r.hasInferenceTiming)
+    {
+        root.insert("inference_ms", QJsonValue::Null);
+        root.insert("total_ms", QJsonValue::Null);
+    }
+    if (!r.hasCompleteInferenceConfig)
+    {
+        root.insert("task", "目标检测 · 历史预测");
+        auto recorded = r.evaluationReport == evaluationDirectory_ ? evaluationReport_.value("config").toObject() : QJsonObject{};
+        recorded.insert("metadata_complete", false);
+        recorded.insert("confidence_threshold", double(configValue.confidence));
+        for (const auto &key : {"preprocess", "color_mode", "input_channels"}) recorded.insert(key, QJsonValue::Null);
+        root.insert("config", recorded);
+    }
     if (r.hasGroundTruth) {
         QJsonArray truth, matched, matchedGt, ignored;
         for (const auto &gt : r.groundTruth) truth.append(QJsonObject{{"class_id", gt.classId}, {"label", gt.label},
@@ -4248,6 +4284,12 @@ void MainWindow::recordResult(const vision::InferenceResult &r, bool writeToDisk
              {"width", r.sourceFrameSize.isEmpty() ? r.image.width() : r.sourceFrameSize.width()},
              {"height", r.sourceFrameSize.isEmpty() ? r.image.height() : r.sourceFrameSize.height()}}},
         {"frame", r.frameNumber}};
+    if (!r.hasVerifiedDevice) {
+        for (const auto &key : {"requested_device", "actual_device", "device_index", "device_name"}) o.insert(key, QJsonValue::Null);
+        o.insert("source_runtime_device", r.sourceRuntimeDevice); o.insert("device_verified", false);
+    }
+    if (!r.hasInferenceTiming) o.insert("inference_ms", QJsonValue::Null);
+    if (!r.hasCompleteInferenceConfig) o.insert("task", "目标检测 · 历史预测");
     history_.prepend(o);
     while (history_.size() > 200)
         history_.removeLast();

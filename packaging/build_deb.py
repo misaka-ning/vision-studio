@@ -473,7 +473,8 @@ def stage_payload(arguments: argparse.Namespace) -> tuple[Path, dict[str, str]]:
         shutil.rmtree(app / "models/source")
     (app / "scripts").mkdir()
     for name in ("pt_worker.py", "netron_server.py", "model_convert.py", "evaluation_data.py",
-                 "evaluation_metrics.py", "evaluation_worker.py", "gpu_setup.py", "gpu_probe.py", "setup_gpu.sh"):
+                 "evaluation_metrics.py", "evaluation_worker.py", "evaluation_reporting.py", "evaluation_snapshot.py", "evaluation_import.py",
+                 "gpu_setup.py", "gpu_probe.py", "setup_gpu.sh"):
         shutil.copy2(arguments.source_root / "scripts" / name, app / "scripts" / name)
     for name in ("requirements-gpu.txt", "requirements-gpu.lock.txt"):
         shutil.copy2(arguments.source_root / name, app / name)

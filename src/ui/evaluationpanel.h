@@ -6,6 +6,7 @@
 #include <QWidget>
 
 class QComboBox;
+class QCheckBox;
 class QDoubleSpinBox;
 class QLabel;
 class QLineEdit;
@@ -14,7 +15,9 @@ class QSpinBox;
 class QScrollArea;
 class QTableWidget;
 class QToolButton;
+class QTabWidget;
 class EvaluationCurve;
+class EvaluationPlot;
 
 // The workbench owns model selection and inference. This view only edits an
 // explicit evaluation configuration and displays immutable evaluation reports.
@@ -47,6 +50,12 @@ public:
     double scanStart() const;
     double scanEnd() const;
     double scanStep() const;
+    int batchSize() const;
+    int cpuThreads() const;
+    double scoreFloor() const;
+    int maxDetections() const;
+    QJsonObject analysisOptions() const;
+    QJsonObject exportOptions() const;
     QString datasetSplit() const;
     QString datasetYaml() const;
     QString metadataPath() const;
@@ -71,6 +80,9 @@ signals:
     void applyRequested(double threshold);
     void imageFilterChanged(const QString &filter);
     void reportOpenRequested(const QString &path);
+    void reanalysisRequested(const QJsonObject &options);
+    void sceneReviewRequested(const QString &group);
+    void externalReportImportRequested(const QString &directory, const QJsonObject &options);
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
@@ -80,6 +92,8 @@ private:
     void updateMapping();
     void updateMetrics();
     void updateRecommendation();
+    void updateAnalysisEligibility();
+    void updateScenes();
     void requestDataset();
     void showDatasetSettings();
     void positionDatasetSettings();
@@ -98,15 +112,23 @@ private:
     QDoubleSpinBox *threshold_ = nullptr, *matchIou_ = nullptr, *scanStart_ = nullptr,
                    *scanEnd_ = nullptr, *scanStep_ = nullptr, *constraint_ = nullptr;
     QLineEdit *metadata_ = nullptr;
+    QSpinBox *batch_ = nullptr, *threads_ = nullptr, *maximumDetections_ = nullptr, *figureDpi_ = nullptr;
+    QDoubleSpinBox *scoreFloor_ = nullptr, *reanalyzeIou_ = nullptr, *reanalyzeStart_ = nullptr,
+                   *reanalyzeEnd_ = nullptr, *reanalyzeStep_ = nullptr, *reanalyzeConfidence_ = nullptr;
+    QCheckBox *figurePng_ = nullptr, *figureSvg_ = nullptr, *figurePdf_ = nullptr;
+    QComboBox *plotKind_ = nullptr;
+    QTabWidget *analysisTabs_ = nullptr;
     QLabel *modeTitle_ = nullptr, *datasetHint_ = nullptr, *mappingHint_ = nullptr, *validation_ = nullptr,
            *reportStatus_ = nullptr, *reportIdentity_ = nullptr, *recommendation_ = nullptr,
-           *counts_ = nullptr, *errorSummary_ = nullptr;
+           *counts_ = nullptr, *errorSummary_ = nullptr, *analysisValidation_ = nullptr, *sceneHint_ = nullptr;
     QList<QLabel *> metrics_;
     QPushButton *reload_ = nullptr, *metadataBrowse_ = nullptr, *apply_ = nullptr,
                 *useRecommended_ = nullptr, *openFolder_ = nullptr, *openReport_ = nullptr,
-                *export_ = nullptr;
+                *export_ = nullptr, *reanalyze_ = nullptr, *reviewScene_ = nullptr, *importExternal_ = nullptr;
     EvaluationCurve *curve_ = nullptr;
-    QTableWidget *table_ = nullptr;
+    EvaluationPlot *detailPlot_ = nullptr;
+    QTableWidget *table_ = nullptr, *details_ = nullptr, *scenes_ = nullptr,
+                 *localizationMatrix_ = nullptr, *presenceMatrix_ = nullptr;
     QJsonObject manifest_, report_, operatingOverride_;
     vision::ModelConfig model_;
     QString yaml_, directory_, importError_;

@@ -46,7 +46,8 @@ EvaluationPreview loadEvaluationPreview(const EvaluationPreviewRequest &request,
 // selected threshold. Rows retain queue order; uncompleted rows are never errors.
 EvaluationReviewSummary summarizeEvaluationSamples(const QStringList &files, const QHash<QString, int> &indices,
     const QString &directory, int modelClassId, int datasetClassId, double confidence,
-    double matchIou, const QString &filter, std::function<bool()> cancelled = {});
+    double matchIou, const QString &filter, std::function<bool()> cancelled = {},
+    const QStringList &sceneImages = {});
 
 // An empty vector means cancellation or invalid cache, never "no matches".
 // The all filter returns one true per file without reading cache/image files.

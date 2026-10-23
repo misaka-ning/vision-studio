@@ -50,6 +50,11 @@ struct ModelConfig
     int inputSize = 640;
     float confidence = 0.25f;
     float iou = 0.45f;
+    // Evaluation may override these; ordinary detection keeps its historical defaults.
+    int maxDetections = 300;
+    // Process-local PyTorch worker only. 0 retains its historical automatic default.
+    int cpuThreads = 0;
+    int resolvedCpuThreads = 0;
     bool swapRB = true;
     InputColorMode colorMode = InputColorMode::Color;
     // Resolved from the model when loaded, never from the image's pixel format.
@@ -94,6 +99,12 @@ struct InferenceResult
     int modelClassCount = 0;
     double inferenceMs = 0;
     double totalMs = 0;
+    // Imported predictions may not record per-image timing or a backend
+    // verified by this application. Never display their numeric defaults.
+    bool hasInferenceTiming = true;
+    bool hasVerifiedDevice = true;
+    bool hasCompleteInferenceConfig = true;
+    QString sourceRuntimeDevice;
     qint64 frameNumber = 0;
     StereoView stereoView = StereoView::Full;
     QSize sourceFrameSize;

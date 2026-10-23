@@ -25,6 +25,12 @@ class VisionEngine final
                                    std::function<bool()> cancellationCheck = {});
     void unload();
     InferenceResult infer(const QImage &image, const QString &source = {});
+    // True model batch only. Unsupported backends reject sizes > 1; callers may
+    // explicitly schedule single images and record the reported fallback reason.
+    QVector<InferenceResult> inferBatch(const QVector<QImage> &images,
+                                       const QStringList &sources = {});
+    int maximumBatchSize() const noexcept;
+    QString batchNotice() const;
     bool loaded() const noexcept;
     QString backendName() const;
     void setCancellationCheck(std::function<bool()> check);

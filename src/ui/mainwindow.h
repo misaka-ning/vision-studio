@@ -137,7 +137,10 @@ class MainWindow : public QMainWindow
     void cancelPendingDatasetSessionRestore();
     void clearDatasetContext();
     void startEvaluation();
-    void loadEvaluationReport(const QString &directory);
+    void reanalyzeEvaluation(const QJsonObject &options);
+    void importEvaluationReport(const QString &source, const QJsonObject &options);
+    void showEvaluationSceneErrors(const QString &group);
+    void loadEvaluationReport(const QString &directory, bool record = false);
     void acceptEvaluationReport(const QJsonObject &report, const QString &directory, bool record);
     void reviewEvaluationImage(int row);
     void applyEvaluationFilter(const QString &filter);

@@ -266,6 +266,26 @@ void EvaluationWorker::requestStop() noexcept
     stop_.store(true, std::memory_order_release);
 }
 
+void EvaluationWorker::configureReanalysis(const QString &source, const QJsonObject &options,
+                                          const QString &outputRoot, const QString &projectRoot)
+{
+    if (isRunning()) return;
+    operation_ = Operation::Reanalysis;
+    analysisSource_ = source;
+    analysisOptions_ = options;
+    analysisOutputRoot_ = outputRoot;
+    projectRoot_ = projectRoot;
+    stop_.store(false, std::memory_order_release);
+}
+
+void EvaluationWorker::configureExternalImport(const QString &source, const QJsonObject &options,
+                                              const QString &outputRoot, const QString &projectRoot)
+{
+    if (isRunning()) return;
+    configureReanalysis(source, options, outputRoot, projectRoot);
+    operation_ = Operation::ExternalImport;
+}
+
 QJsonObject EvaluationWorker::modelConfigJson(const ModelConfig &config)
 {
     QJsonArray labels, classes;
@@ -288,7 +308,8 @@ QJsonObject EvaluationWorker::modelConfigJson(const ModelConfig &config)
         {"resolved_device", config.resolvedDevice == ComputeDevice::CUDA ? "cuda" : "cpu"},
         {"device_name", config.deviceName}, {"device_notice", config.deviceNotice},
         {"stereo_view", "full"}, {"exif_auto_transform", false},
-        {"max_detections", 300}, {"max_candidates", 30000},
+        {"max_detections", config.maxDetections}, {"max_candidates", 30000},
+        {"cpu_threads", config.cpuThreads}, {"resolved_cpu_threads", config.resolvedCpuThreads},
         {"nms_class_aware", true}, {"nms_before_threshold_scan", true}};
 }
 
@@ -339,6 +360,30 @@ void EvaluationWorker::run()
     try
     {
         const QString helper = helperPath(projectRoot_);
+        if (operation_ == Operation::Reanalysis || operation_ == Operation::ExternalImport)
+        {
+            directory = analysisOutputRoot_ + "/evaluations/" +
+                QDateTime::currentDateTimeUtc().toString("yyyyMMdd-HHmmss-zzz") + "-analysis-" +
+                QUuid::createUuid().toString(QUuid::WithoutBraces).left(8);
+            if (!QDir().mkpath(directory)) fail(QStringLiteral("无法创建新分析报告目录。"));
+            status = {{"schema_version", 1}, {"status", "analyzing"}, {"completed", 0}};
+            saveJson(directory + "/status.json", status);
+            saveJson(directory + "/analysis-options.json", analysisOptions_);
+            const QString snapshotHelper = QFileInfo(helper).absolutePath() +
+                (operation_ == Operation::ExternalImport ? "/evaluation_import.py" : "/evaluation_snapshot.py");
+            if (!QFileInfo(snapshotHelper).isFile()) fail(QStringLiteral("找不到历史快照分析程序。"));
+            emit progress(0, 0, QStringLiteral("正在校验历史快照并重新分析，不执行模型推理…"));
+            if (!runHelper(snapshotHelper, {"--source", analysisSource_, "--options",
+                directory + "/analysis-options.json", "--output", directory}, directory, stopping, true))
+            {
+                status.insert("status", "cancelled_analysis");
+                saveJson(directory + "/status.json", status);
+                return;
+            }
+            const auto report = readJson(directory + "/report.json");
+            emit reportReady(report, directory);
+            return;
+        }
         if (operation_ == Operation::Dataset)
         {
             QTemporaryDir temp(QDir::tempPath() + "/vision-studio-dataset-XXXXXX");
@@ -374,6 +419,12 @@ void EvaluationWorker::run()
             request.scanEnd > 1 || request.scanStart > request.scanEnd || request.scanStep <= 0 ||
             (request.scanEnd - request.scanStart) / request.scanStep > 10000)
             fail(QStringLiteral("评估阈值无效：分析阈值及扫描范围不能低于采集最低置信度。"));
+        if (request.batchSize < 1 || request.batchSize > 32 || request.figureDpi < 72 || request.figureDpi > 1200 ||
+            request.figureFormats.isEmpty())
+            fail(QStringLiteral("评估 batch 须为 1～32；图表分辨率须为 72～1200 DPI，且至少选择一种格式。"));
+        for (const auto &format : request.figureFormats)
+            if (format != "png" && format != "svg" && format != "pdf")
+                fail(QStringLiteral("评估图表仅支持 PNG／SVG／PDF。"));
 
         QHash<QString, QJsonObject> byImage;
         QStringList manifestImages;
@@ -420,6 +471,8 @@ void EvaluationWorker::run()
             {"score_floor", request.scoreFloor}, {"match_iou", request.matchIou},
             {"scan_start", request.scanStart}, {"scan_end", request.scanEnd},
             {"scan_step", request.scanStep}, {"sample_images", pathsJson(files)},
+            {"requested_batch_size", request.batchSize}, {"figure_formats", pathsJson(request.figureFormats)},
+            {"figure_dpi", request.figureDpi},
             {"full_split", files == manifestImages}, {"config", modelConfigJson(config)}};
         saveJson(directory + "/request.json", parameters);
         QFile predictions(directory + "/predictions.jsonl");
@@ -440,49 +493,74 @@ void EvaluationWorker::run()
                         fail(QStringLiteral("当前模型实际为图像分类模型，不能用于目标检测评估。"));
                     parameters.insert("config", modelConfigJson(config));
                     parameters.insert("model_class_count", config.modelClassCount);
+                    const int batchSize = std::min(request.batchSize, engine.maximumBatchSize());
+                    QJsonArray executedBatches;
+                    parameters.insert("effective_batch_size", std::min(batchSize, int(files.size())));
+                    parameters.insert("batch_notice", request.batchSize > engine.maximumBatchSize() ?
+                        engine.batchNotice() : QString());
                     saveJson(directory + "/request.json", parameters);
                     if (hashFile(config.modelPath) != modelSha)
                         fail(QStringLiteral("模型在加载期间发生变化，请重新开始评估。"));
-                    for (int index = 0; index < files.size() && !stopping(); ++index)
+                    for (int begin = 0; begin < files.size() && !stopping(); begin += batchSize)
                     {
-                        const auto &path = files.at(index);
-                        const auto sample = byImage.value(path);
-                        checkSample(sample, stopping);
-                        QImageReader reader(path);
-                        reader.setAutoTransform(false); // YOLO GT uses encoded, unrotated pixel coordinates.
-                        const auto image = reader.read();
-                        if (image.isNull())
-                            fail(QStringLiteral("无法读取评估图片 %1：%2").arg(path, reader.errorString()));
-                        if (image.width() != sample.value("width").toInt() ||
-                            image.height() != sample.value("height").toInt())
-                            fail(QStringLiteral("评估图片尺寸与数据集快照不一致：%1").arg(path));
+                        QVector<QImage> images;
+                        QStringList sources;
+                        for (int index = begin; index < std::min(begin + batchSize, int(files.size())) && !stopping(); ++index)
+                        {
+                            const auto &path = files.at(index);
+                            const auto sample = byImage.value(path);
+                            checkSample(sample, stopping);
+                            QImageReader reader(path);
+                            reader.setAutoTransform(false); // GT uses unrotated encoded pixel coordinates.
+                            const auto image = reader.read();
+                            if (image.isNull())
+                                fail(QStringLiteral("无法读取评估图片 %1：%2").arg(path, reader.errorString()));
+                            if (image.width() != sample.value("width").toInt() ||
+                                image.height() != sample.value("height").toInt())
+                                fail(QStringLiteral("评估图片尺寸与数据集快照不一致：%1").arg(path));
+                            images.append(image);
+                            sources.append(path);
+                        }
                         if (stopping())
                             break;
-                        const auto result = engine.infer(image, path);
-                        // Preserve the completed prefix. A stop during forward does not admit an
-                        // additional image, and does not publish its uncommitted prediction.
+                        const auto results = engine.inferBatch(images, sources);
+                        config = engine.config(); // Includes actual PT thread count after the first forward.
+                        executedBatches.append(images.size());
+                        parameters.insert("executed_batch_sizes", executedBatches);
+                        // A stop during forward discards the uncommitted batch. No next
+                        // batch is scheduled; already persisted samples remain a prefix.
                         if (stopping())
                             break;
-                        checkSample(sample, stopping);
-                        auto row = predictionJson(result, sample, index);
-                        const auto line = QJsonDocument(row).toJson(QJsonDocument::Compact) + '\n';
-                        if (predictions.write(line) != line.size() || !predictions.flush())
-                            fail(QStringLiteral("预测缓存写入失败：%1").arg(predictions.errorString()));
-                        const QString sampleBase = directory + "/samples/" + QString::number(index);
-                        const auto sampleBytes = QJsonDocument(row).toJson(QJsonDocument::Indented);
-                        QSaveFile sampleFile(sampleBase + ".json");
-                        if (!sampleFile.open(QIODevice::WriteOnly) || sampleFile.write(sampleBytes) != sampleBytes.size() ||
-                            !sampleFile.commit())
-                            fail(QStringLiteral("评估样本缓存写入失败：%1").arg(sampleFile.errorString()));
-                        const auto checksum = QCryptographicHash::hash(sampleBytes, QCryptographicHash::Sha256).toHex() + '\n';
-                        QSaveFile checksumFile(sampleBase + ".sha256");
-                        if (!checksumFile.open(QIODevice::WriteOnly) || checksumFile.write(checksum) != checksum.size() ||
-                            !checksumFile.commit())
-                            fail(QStringLiteral("评估样本校验文件写入失败：%1").arg(checksumFile.errorString()));
-                        ++completed;
-                        status.insert("completed", completed);
-                        saveJson(directory + "/status.json", status);
-                        emit progress(completed, files.size(), QStringLiteral("正在评估数据集…"));
+                        if (results.size() != images.size())
+                            fail(QStringLiteral("评估批量推理返回数量与输入不一致。"));
+                        for (int offset = 0; offset < results.size() && !stopping(); ++offset)
+                        {
+                            const int index = begin + offset;
+                            const auto sample = byImage.value(files.at(index));
+                            const auto &result = results.at(offset);
+                            checkSample(sample, stopping);
+                            auto row = predictionJson(result, sample, index);
+                            row.insert("batch_size", images.size());
+                            row.insert("batch_index", executedBatches.size() - 1);
+                            const auto line = QJsonDocument(row).toJson(QJsonDocument::Compact) + '\n';
+                            if (predictions.write(line) != line.size() || !predictions.flush())
+                                fail(QStringLiteral("预测缓存写入失败：%1").arg(predictions.errorString()));
+                            const QString sampleBase = directory + "/samples/" + QString::number(index);
+                            const auto sampleBytes = QJsonDocument(row).toJson(QJsonDocument::Indented);
+                            QSaveFile sampleFile(sampleBase + ".json");
+                            if (!sampleFile.open(QIODevice::WriteOnly) || sampleFile.write(sampleBytes) != sampleBytes.size() ||
+                                !sampleFile.commit())
+                                fail(QStringLiteral("评估样本缓存写入失败：%1").arg(sampleFile.errorString()));
+                            const auto checksum = QCryptographicHash::hash(sampleBytes, QCryptographicHash::Sha256).toHex() + '\n';
+                            QSaveFile checksumFile(sampleBase + ".sha256");
+                            if (!checksumFile.open(QIODevice::WriteOnly) || checksumFile.write(checksum) != checksum.size() ||
+                                !checksumFile.commit())
+                                fail(QStringLiteral("评估样本校验文件写入失败：%1").arg(checksumFile.errorString()));
+                            ++completed;
+                            status.insert("completed", completed);
+                            saveJson(directory + "/status.json", status);
+                            emit progress(completed, files.size(), QStringLiteral("正在评估数据集…"));
+                        }
                     }
                 }
                 catch (const std::exception &)

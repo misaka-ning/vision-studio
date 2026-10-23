@@ -259,7 +259,7 @@ def primary_tensor(output):
     raise ValueError("模型输出不是支持的 YOLO 原始张量或分类张量。")
 
 
-def raw_predictions(output, image, geometry, labels, layout, confidence, iou, class_filter=()):
+def raw_predictions(output, image, geometry, labels, layout, confidence, iou, class_filter=(), max_detections=300):
     output = primary_tensor(output)
     if output.ndim != 3 or output.shape[0] != 1:
         raise ValueError("检测输出需要 [1,N,5+C] 或 [1,4+C,N]，分割/姿态/端到端输出尚不受支持。")
@@ -306,7 +306,7 @@ def raw_predictions(output, image, geometry, labels, layout, confidence, iou, cl
         kept.extend(indices[nms(boxes[indices], scores[indices], iou)].tolist())
     kept.sort(key=lambda index: float(scores[index]), reverse=True)
     predictions = []
-    for index in kept[:300]:
+    for index in kept[:max_detections]:
         x1, y1, x2, y2 = boxes[index].tolist()
         predictions.append({"class_id": int(class_ids[index]), "confidence": float(scores[index]),
                             "box": [x1, y1, x2 - x1, y2 - y1]})
@@ -366,56 +366,61 @@ class NativeYolo:
         self.color_mode = color_mode
         self.input_channels = module_input_channels(model, color_mode)
 
-    def infer(self, image, size, confidence, iou):
-        geometry = None
-        source = image
+    def infer(self, image, size, confidence, iou, max_detections=300):
+        return self.infer_batch([image], size, confidence, iou, max_detections)[0]
+
+    def infer_batch(self, images, size, confidence, iou, max_detections=300):
+        geometries = [None] * len(images)
+        # Color sources follow the framework's existing BGR loader. A list is
+        # one real batch in LoadPilAndNumpy, not repeated predict() invocations.
+        source = images
         if self.color_mode == "grayscale":
             if self.task == "classify":
-                source = classification_tensor(image, size, self.color_mode, self.input_channels).to(self.device)
+                if len(images) != 1:
+                    raise ValueError("分类后端仅支持 batch=1。")
+                source = classification_tensor(images[0], size, self.color_mode, self.input_channels).to(self.device)
                 output, inference_ms = forward_timed(self.model.model, source, self.device)
-                return classification_predictions(output, self.labels), inference_ms
-            else:
-                source, geometry = letterbox(image, size, self.color_mode, self.input_channels)
-                source = source.to(self.device)
+                return [(classification_predictions(output, self.labels), inference_ms)]
+            prepared = [letterbox(image, size, self.color_mode, self.input_channels) for image in images]
+            source = torch.cat([item[0] for item in prepared], dim=0).to(self.device)
+            geometries = [item[1] for item in prepared]
         synchronize(self.device)
         start = time.perf_counter()
-        # Tensor sources bypass the framework's image loader and preserve C=1.
-        # Its Results coordinates then refer to our padded tensor; invert the
-        # exact resize below instead of treating them as original-image pixels.
         results = self.model.predict(source=source, imgsz=size, conf=confidence, iou=iou,
-                                     classes=self.class_filter or None,
-                                     device=str(self.device), half=False, max_det=300, rect=False, agnostic_nms=False,
-                                     verbose=False, save=False, show=False, stream=False)
-        if len(results) != 1:
-            raise ValueError("模型没有返回单张图像的预测结果。")
-        result = results[0]
+                                     classes=self.class_filter or None, batch=len(images),
+                                     device=str(self.device), half=False, max_det=max_detections, rect=False,
+                                     agnostic_nms=False, verbose=False, save=False, show=False, stream=False)
         synchronize(self.device)
-        predictions = []
-        if self.task == "classify":
-            if result.probs is None:
-                raise ValueError("分类模型没有返回类别概率。")
-            predictions = classification_predictions(result.probs.data.unsqueeze(0), self.labels)
-        else:
-            if result.boxes is None:
-                raise ValueError("目标检测模型没有返回检测框。")
-            boxes = result.boxes.xyxy.detach().cpu().tolist()
-            scores = result.boxes.conf.detach().cpu().tolist()
-            classes = result.boxes.cls.detach().cpu().tolist()
-            for box, score, class_id in zip(boxes, scores, classes):
-                x1, y1, x2, y2 = box
-                if geometry is not None:
-                    left, top, scale_x, scale_y = geometry
-                    x1, x2 = (x1 - left) / scale_x, (x2 - left) / scale_x
-                    y1, y2 = (y1 - top) / scale_y, (y2 - top) / scale_y
-                    x1, x2 = max(0, min(image.shape[1], x1)), max(0, min(image.shape[1], x2))
-                    y1, y2 = max(0, min(image.shape[0], y1)), max(0, min(image.shape[0], y2))
-                    if x2 <= x1 or y2 <= y1:
-                        continue
-                predictions.append({"class_id": int(class_id), "confidence": float(score),
-                                    "box": [x1, y1, x2 - x1, y2 - y1]})
+        if len(results) != len(images):
+            raise ValueError("模型返回的批量图像数量与输入不一致。")
         total_ms = (time.perf_counter() - start) * 1000
-        inference_ms = float(result.speed.get("inference", total_ms))
-        return predictions, inference_ms
+        rows = []
+        for image, geometry, result in zip(images, geometries, results):
+            predictions = []
+            if self.task == "classify":
+                if result.probs is None:
+                    raise ValueError("分类模型没有返回类别概率。")
+                predictions = classification_predictions(result.probs.data.unsqueeze(0), self.labels)
+            else:
+                if result.boxes is None:
+                    raise ValueError("目标检测模型没有返回检测框。")
+                boxes = result.boxes.xyxy.detach().cpu().tolist()
+                scores = result.boxes.conf.detach().cpu().tolist()
+                classes = result.boxes.cls.detach().cpu().tolist()
+                for box, score, class_id in zip(boxes, scores, classes):
+                    x1, y1, x2, y2 = box
+                    if geometry is not None:
+                        left, top, scale_x, scale_y = geometry
+                        x1, x2 = (x1 - left) / scale_x, (x2 - left) / scale_x
+                        y1, y2 = (y1 - top) / scale_y, (y2 - top) / scale_y
+                        x1, x2 = max(0, min(image.shape[1], x1)), max(0, min(image.shape[1], x2))
+                        y1, y2 = max(0, min(image.shape[0], y1)), max(0, min(image.shape[0], y2))
+                        if x2 <= x1 or y2 <= y1:
+                            continue
+                    predictions.append({"class_id": int(class_id), "confidence": float(score),
+                                        "box": [x1, y1, x2 - x1, y2 - y1]})
+            rows.append((predictions, float(result.speed.get("inference", total_ms / len(images)))))
+        return rows
 
 
 class LegacyYolo:
@@ -460,12 +465,19 @@ class LegacyYolo:
         self.color_mode = color_mode
         self.input_channels = module_input_channels(self.model, color_mode)
 
-    def infer(self, image, size, confidence, iou):
-        tensor, geometry = letterbox(image, size, self.color_mode, self.input_channels)
-        tensor = tensor.to(self.device)
+    def infer(self, image, size, confidence, iou, max_detections=300):
+        return self.infer_batch([image], size, confidence, iou, max_detections)[0]
+
+    def infer_batch(self, images, size, confidence, iou, max_detections=300):
+        prepared = [letterbox(image, size, self.color_mode, self.input_channels) for image in images]
+        tensor = torch.cat([item[0] for item in prepared], dim=0).to(self.device)
         output, inference_ms = forward_timed(self.model, tensor, self.device)
-        return raw_predictions(output, image, geometry, self.labels, "v5", confidence, iou,
-                               self.class_filter), inference_ms
+        output = primary_tensor(output)
+        if output.ndim != 3 or output.shape[0] != len(images):
+            raise ValueError("YOLOv5 模型返回的批量维度与输入不一致。")
+        return [(raw_predictions(output[index:index + 1], image, prepared[index][1], self.labels,
+                                 "v5", confidence, iou, self.class_filter, max_detections),
+                 inference_ms / len(images)) for index, image in enumerate(images)]
 
 
 class TorchScriptYolo:
@@ -503,7 +515,7 @@ class TorchScriptYolo:
         self.backend = "PyTorch / TorchScript / " + ("CUDA" if device.type == "cuda" else "CPU")
         self.source_path = path
 
-    def infer(self, image, size, confidence, iou):
+    def infer(self, image, size, confidence, iou, max_detections=300):
         if self.task == "classify":
             tensor = classification_tensor(image, size, self.color_mode, self.input_channels)
             geometry = None
@@ -513,7 +525,7 @@ class TorchScriptYolo:
         output, inference_ms = forward_timed(self.model, tensor, self.device)
         predictions = classification_predictions(output, self.labels) if self.task == "classify" \
             else raw_predictions(output, image, geometry, self.labels, self.layout, confidence, iou,
-                                 self.class_filter)
+                                 self.class_filter, max_detections)
         return predictions, inference_ms
 
 
@@ -545,6 +557,18 @@ def load_model(arguments, device):
                          f"检查点错误：{str(error)[:700]}") from error
 
 
+def decode_image(encoded):
+    if not isinstance(encoded, str):
+        raise ValueError("推理图像必须是 PNG 的 Base64 字符串。")
+    raw = base64.b64decode(encoded, validate=True)
+    image = cv2.imdecode(np.frombuffer(raw, dtype=np.uint8), cv2.IMREAD_COLOR)
+    if image is None or image.size == 0:
+        raise ValueError("无法解码推理图像。")
+    if image.shape[0] * image.shape[1] > 100000000:
+        raise ValueError("原图超过 1 亿像素，请缩小后重新运行。")
+    return image
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", required=True)
@@ -555,6 +579,7 @@ def main():
     parser.add_argument("--color-mode", choices=("color", "grayscale"), default="color")
     parser.add_argument("--device", choices=("cpu", "cuda"), default="cpu")
     parser.add_argument("--device-index", type=int, default=0)
+    parser.add_argument("--cpu-threads", type=int, default=0)
     arguments = parser.parse_args()
     config_directory = os.environ.get("YOLO_CONFIG_DIR")
     if config_directory:
@@ -565,8 +590,16 @@ def main():
         import numpy as np
         import torch
         from torchvision.ops import nms
-        torch.set_num_threads(min(4, os.cpu_count() or 1))
+        if not 0 <= arguments.cpu_threads <= 256:
+            raise ValueError("CPU 线程数应在 0 到 256 之间，0 表示自动。")
+        torch.set_num_threads(arguments.cpu_threads or min(4, os.cpu_count() or 1))
         torch.set_num_interop_threads(1)
+        if arguments.cpu_threads:
+            # select_device() resets CPU threads when the native predictor is
+            # first constructed. Keep that process-local reset consistent with
+            # the explicit evaluation setting, without changing automatic mode.
+            import ultralytics.utils.torch_utils as torch_utils
+            torch_utils.NUM_THREADS = arguments.cpu_threads
     except Exception as error:
         reply({"ok": False, "error": "PyTorch 运行环境不完整；需要 torch、torchvision、ultralytics、numpy 和 OpenCV。",
                "detail": str(error)[:1500]})
@@ -584,6 +617,8 @@ def main():
         if backend.task != "detect" and class_filter:
             raise ValueError("类别筛选仅用于目标检测；分类任务不支持此筛选。")
         backend.class_filter = list(dict.fromkeys(class_filter))
+        # Predictors may choose their own automatic value during first setup.
+        # Only explicit settings are reported as fixed; 0 honestly means auto.
         if backend.task == "detect" and arguments.size % 32:
             raise ValueError(".pt 检测模型输入尺寸必须是 32 的倍数；请调整输入尺寸后重新加载。")
         if device.type == "cuda":
@@ -595,6 +630,8 @@ def main():
             synchronize(device)
         reply({"ok": True, "event": "ready", "protocol": 1, "task": backend.task,
                "layout": backend.layout,
+               "maximum_batch_size": 32 if backend.task == "detect" and isinstance(backend, (NativeYolo, LegacyYolo)) else 1,
+               "cpu_threads": arguments.cpu_threads,
                "input_channels": backend.input_channels,
                "class_count": len(backend.labels),
                "model_path": str(backend.source_path),
@@ -626,7 +663,8 @@ def main():
             if isinstance(request_id, bool) or not isinstance(request_id, (int, float)) \
                     or not math.isfinite(request_id) or int(request_id) != request_id:
                 raise ValueError("推理请求序号无效。")
-            if request.get("command") != "infer":
+            command = request.get("command")
+            if command not in ("infer", "infer_batch"):
                 raise ValueError("未知推理命令。")
             size = int(request["input_size"])
             confidence, iou = float(request["confidence"]), float(request["iou"])
@@ -634,16 +672,31 @@ def main():
                 raise ValueError("检测输入尺寸必须是 32 的倍数，且不超过 4096。")
             if not math.isfinite(confidence) or not math.isfinite(iou) or not 0 <= confidence <= 1 or not 0 <= iou <= 1:
                 raise ValueError("置信度与 NMS 阈值应在 0 到 1 之间。")
+            max_detections = request.get("max_detections", 300)
+            if isinstance(max_detections, bool) or not isinstance(max_detections, int) or not 1 <= max_detections <= 10000:
+                raise ValueError("最大检测数量应在 1 到 10000 之间。")
             start = time.perf_counter()
-            encoded = base64.b64decode(request["image"], validate=True)
-            image = cv2.imdecode(np.frombuffer(encoded, dtype=np.uint8), cv2.IMREAD_COLOR)
-            if image is None or image.size == 0:
-                raise ValueError("无法解码推理图像。")
-            if image.shape[0] * image.shape[1] > 100000000:
-                raise ValueError("原图超过 1 亿像素，请缩小后重新运行。")
-            predictions, inference_ms = backend.infer(image, size, confidence, iou)
+            if command == "infer_batch":
+                encoded_images = request.get("images")
+                if not isinstance(encoded_images, list) or not 1 <= len(encoded_images) <= 32:
+                    raise ValueError("批量图片数量应在 1 到 32 之间。")
+                if backend.task != "detect" or not isinstance(backend, (NativeYolo, LegacyYolo)):
+                    raise ValueError("当前 TorchScript 或分类后端只支持 batch=1。")
+                images = [decode_image(value) for value in encoded_images]
+                rows = backend.infer_batch(images, size, confidence, iou, max_detections)
+                if len(rows) != len(images):
+                    raise ValueError("批量结果数量与输入不一致。")
+                reply({"ok": True, "id": request_id, "batch_size": len(images),
+                       "results": [{"index": index, "task": backend.task, "predictions": predictions,
+                                    "inference_ms": inference_ms, "cpu_threads": torch.get_num_threads()}
+                                   for index, (predictions, inference_ms) in enumerate(rows)],
+                       "total_ms": (time.perf_counter() - start) * 1000})
+                continue
+            image = decode_image(request["image"])
+            predictions, inference_ms = backend.infer(image, size, confidence, iou, max_detections)
             reply({"ok": True, "id": request_id, "task": backend.task,
                    "predictions": predictions, "inference_ms": inference_ms,
+                   "cpu_threads": torch.get_num_threads(),
                    "total_ms": (time.perf_counter() - start) * 1000})
         except Exception as error:
             traceback.print_exc(file=sys.stderr)

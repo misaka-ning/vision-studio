@@ -8,6 +8,7 @@
 
 #include <QApplication>
 #include <QCheckBox>
+#include <QCryptographicHash>
 #include <QComboBox>
 #include <QDateTime>
 #include <QDir>
@@ -984,6 +985,85 @@ private slots:
         QVERIFY(zero.value("predictions").toArray().isEmpty()); QCOMPARE(zero.value("ground_truth").toArray().size(), 1);
         evidence("selected-result-export");
     }
+    void failedExternalImportRestoresExistingErrorReviewAndPendingPreview()
+    {
+        // Execute the genuine small ONNX fixture first. The import must fail
+        // without replacing its report or stranding an in-flight image read.
+        QVERIFY2(loadDataset(), qPrintable(state())); QVERIFY2(runEvaluation(0, 0), qPrintable(state()));
+        window_->evaluation_->setAnalysisThreshold(.7); window_->showEvaluationErrors();
+        QVERIFY2(errorReviewReady({1, 2}, 4), qPrintable(state()));
+        QVERIFY2(reviewedImageReady(1), qPrintable(state()));
+        const auto originalReport = window_->evaluationReport_;
+        const auto originalHistory = window_->history_;
+        const QString originalDirectory = window_->evaluationDirectory_;
+        const QByteArray originalBytes = readBytes(originalDirectory + "/report.json");
+        const double detectionConfidence = window_->confidence_->value();
+        QSignalSpy inferenceStarts(window_.get(), &MainWindow::startRequested);
+
+        // Selecting another known error starts asynchronous loadEvaluationPreview
+        // and clears the canvas synchronously. Enter busy before its queued
+        // completion can run, reproducing the cancellation boundary deterministically.
+        window_->queue_->setCurrentRow(2);
+        QVERIFY(window_->evaluationReviewAvailable_); QVERIFY(!window_->evaluationReviewPending_);
+        QVERIFY(window_->lastResult_.image.isNull()); QVERIFY(window_->canvas_->result().image.isNull());
+        const QString invalid = area_->path() + "/incomplete-external-report"; QVERIFY(QDir().mkdir(invalid));
+        window_->importEvaluationReport(invalid, window_->evaluation_->analysisOptions());
+        QVERIFY(window_->busy_); QVERIFY(window_->evaluationWorker_);
+        QSignalSpy failure(window_->evaluationWorker_, &vision::EvaluationWorker::failed);
+        QCOMPARE(window_->evaluationDirectory_, originalDirectory); QCOMPARE(window_->evaluationReport_, originalReport);
+        QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; }, 60000), qPrintable(state()));
+        QCOMPARE(failure.count(), 1);
+        QVERIFY2(errorReviewReady({1, 2}, 4), qPrintable(state()));
+        QVERIFY2(reviewedImageReady(2), qPrintable(state()));
+        QCOMPARE(window_->evaluationDirectory_, originalDirectory); QCOMPARE(window_->evaluationReport_, originalReport);
+        QCOMPARE(readBytes(originalDirectory + "/report.json"), originalBytes); QCOMPARE(window_->history_, originalHistory);
+        QCOMPARE(window_->evaluation_->analysisThreshold(), .7); QCOMPARE(window_->confidence_->value(), detectionConfidence);
+        QCOMPARE(window_->evaluationReviewFilter_, QString("errors")); QCOMPARE(window_->evaluation_->imageFilter(), QString("errors"));
+        QCOMPARE(window_->evaluationPreviewFilter_->currentData().toString(), QString("errors"));
+        QCOMPARE(window_->queue_->currentRow(), 2); QCOMPARE(window_->lastResult_.source, images_[2]);
+        QCOMPARE(window_->lastResult_.predictions.size(), 1); QCOMPARE(window_->lastResult_.groundTruth.size(), 0);
+        QCOMPARE(inferenceStarts.count(), 0); QVERIFY(window_->exportButton_->isEnabled());
+        qInfo() << "external_import_failure_recovery" << "pending_preview_reproduced" << true
+                << "threshold" << window_->evaluation_->analysisThreshold() << "selected_row" << window_->queue_->currentRow()
+                << "original_report_unchanged" << (readBytes(originalDirectory + "/report.json") == originalBytes);
+        evidence("external-import-failure-restores-review");
+    }
+    void externalReportAssociationPreservesPreviouslyAdoptedProfile()
+    {
+        QVERIFY2(loadDataset(), qPrintable(state())); QVERIFY2(runEvaluation(0, 0), qPrintable(state()));
+        const auto originalReport = window_->evaluationReport_;
+        const auto parameters = originalReport.value("request").toObject();
+        const QString originalIdentity = parameters.value("model_identity").toString(); QVERIFY(!originalIdentity.isEmpty());
+        auto adoptedConfig = originalReport.value("config").toObject();
+        adoptedConfig.insert("max_detections", 2); adoptedConfig.insert("cpu_threads", 1);
+        auto adopted = window_->modelEvaluationProfiles_.value(model_).toMap();
+        adopted.insert("adopted", true); adopted.insert("adopted_threshold", .7);
+        adopted.insert("model_identity", originalIdentity); adopted.insert("model_sha256", parameters.value("model_sha256").toString());
+        adopted.insert("adopted_report_directory", window_->evaluationDirectory_); adopted.insert("config", adoptedConfig.toVariantMap());
+        window_->modelEvaluationProfiles_.insert(model_, adopted);
+        QCOMPARE(window_->currentConfig().maxDetections, 2); QCOMPARE(window_->currentConfig().cpuThreads, 1);
+
+        // This is an association-boundary fixture, not an external parser test:
+        // a report from the same SHA intentionally lacks the filesystem identity
+        // and must not erase the user's already adopted, separately stored profile.
+        auto external = originalReport; auto externalRequest = parameters;
+        externalRequest.remove("model_identity"); externalRequest.insert("allow_apply_profile", false);
+        external.insert("allow_apply_profile", false); external.insert("request", externalRequest);
+        window_->acceptEvaluationReport(external, window_->evaluationDirectory_, true);
+        const auto preserved = window_->modelEvaluationProfiles_.value(model_).toMap();
+        QCOMPARE(preserved.value("model_identity").toString(), originalIdentity);
+        QCOMPARE(preserved.value("model_sha256"), adopted.value("model_sha256"));
+        QCOMPARE(preserved.value("config"), adopted.value("config"));
+        QCOMPARE(preserved.value("adopted_report_directory"), adopted.value("adopted_report_directory"));
+        QVERIFY(preserved.value("adopted").toBool());
+        QCOMPARE(window_->currentConfig().maxDetections, 2); QCOMPARE(window_->currentConfig().cpuThreads, 1);
+        auto *apply = window_->evaluation_->findChild<QPushButton *>("evaluationApplyThresholdButton"); QVERIFY(apply && !apply->isEnabled());
+        const double confidence = window_->confidence_->value(); window_->applyEvaluationProfile(.5);
+        QCOMPARE(window_->confidence_->value(), confidence); QCOMPARE(window_->currentConfig().maxDetections, 2);
+        QCOMPARE(window_->currentConfig().cpuThreads, 1);
+        qInfo() << "external_association_boundary_fixture_only" << "same_model_sha" << true
+                << "existing_adoption_preserved" << true << "unknown_external_profile_rejected" << true;
+    }
     void historyReopenDoesNotSelectAnotherGlobalModel()
     {
         QVERIFY2(loadDataset(), qPrintable(state())); QVERIFY2(runEvaluation(0, 0), qPrintable(state()));
@@ -1073,6 +1153,178 @@ private slots:
         QVERIFY(!window_->lastResult_.hasEvaluationMatches);
         QVERIFY(window_->lastResult_.matchedPredictions.isEmpty()); QVERIFY(window_->lastResult_.matchedGroundTruth.isEmpty());
         QVERIFY(window_->evaluation_->validationMessage().contains("超出"));
+    }
+    void importedReviewDoesNotInventTimingDeviceOrPreprocessing()
+    {
+        QVERIFY(loadDataset(2)); configureEvaluation(); QVERIFY(runEvaluation(0, 0));
+        const QString directory = window_->evaluationDirectory_;
+        auto row = vision::EvaluationWorker::readSample(directory, 0);
+        for (const auto &key : {"device", "device_index", "device_name", "inference_ms", "total_ms"}) row.remove(key);
+        row.insert("backend", "Ultralytics / imported snapshot");
+        row.insert("source_runtime_device", "cuda:7");
+        const QByteArray bytes = QJsonDocument(row).toJson();
+        writeFile(directory + "/samples/0.json", bytes);
+        writeFile(directory + "/samples/0.sha256", QCryptographicHash::hash(bytes, QCryptographicHash::Sha256).toHex() + '\n');
+        auto report = window_->evaluationReport_;
+        report.insert("allow_apply_profile", false);
+        report.insert("config", QJsonObject{{"model_path", model_}, {"task", "external_detection"},
+            {"input_size", 64}, {"nms_iou", .7}, {"model_class_count", 1}});
+        window_->acceptEvaluationReport(report, directory, false);
+        window_->queue_->setCurrentRow(0);
+        QVERIFY2(reviewedImageReady(0), qPrintable(state()));
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->lastResult_.hasCompleteInferenceConfig, 10000);
+        const auto result = window_->lastResult_;
+        QVERIFY(!result.hasInferenceTiming); QVERIFY(!result.hasVerifiedDevice); QVERIFY(!result.hasCompleteInferenceConfig);
+        QCOMPARE(result.sourceRuntimeDevice, QString("cuda:7"));
+        QCOMPARE(window_->latencyMetric_->text(), QString("未记录"));
+        QVERIFY(window_->resultInfo_->text().contains("来源设备（未验证）"));
+        QVERIFY(!window_->resultInfo_->text().contains("总处理 0.0 ms"));
+        auto config = window_->evaluationRunConfig_; config.confidence = .5;
+        const auto prepared = window_->prepareResultExport(result, area_->path() + "/unknown-metadata-export", config);
+        const auto exported = QJsonDocument::fromJson(prepared.json).object();
+        QVERIFY(exported.value("actual_device").isNull()); QVERIFY(exported.value("requested_device").isNull());
+        QVERIFY(exported.value("inference_ms").isNull()); QVERIFY(exported.value("total_ms").isNull());
+        QCOMPARE(exported.value("source_runtime_device").toString(), QString("cuda:7"));
+        const auto metadata = exported.value("config").toObject();
+        QVERIFY(!metadata.value("metadata_complete").toBool(true));
+        QVERIFY(metadata.value("preprocess").isNull()); QVERIFY(metadata.value("color_mode").isNull());
+        QVERIFY(metadata.value("input_channels").isNull());
+        QCOMPARE(metadata.value("nms_iou").toDouble(), .7);
+    }
+
+    void realPtBatchTaskSchedulingAndAdoption_data()
+    {
+        QTest::addColumn<bool>("cancel");
+        QTest::newRow("batch-three-tail-one") << false;
+        QTest::newRow("stop-completed-prefix") << true;
+    }
+    void realPtBatchTaskSchedulingAndAdoption()
+    {
+        QFETCH(bool, cancel);
+        const QString publicRoot = qEnvironmentVariable("VISION_PUBLIC_COCO8_ROOT",
+            "/tmp/vision-studio-evaluation-public-230/coco8");
+        const QDir sourceImages(publicRoot + "/images/val");
+        const auto originals = sourceImages.entryList({"*.jpg"}, QDir::Files, QDir::Name);
+        QVERIFY2(originals.size() >= 4, "Four public COCO8 Val images are required; this acceptance must not silently skip.");
+        const QString directory = area_->path() + "/public-repeated-scheduling-only";
+        QVERIFY(QDir().mkpath(directory + "/images/val"));
+        QVERIFY(QDir().mkpath(directory + "/labels/val"));
+        images_.clear();
+        for (int index = 0; index < 61; ++index) {
+            const QString stem = QString::number(index).rightJustified(4, '0');
+            const QString original = originals[index % originals.size()];
+            const QString image = directory + "/images/val/" + stem + ".jpg";
+            QVERIFY(QFile::copy(sourceImages.filePath(original), image));
+            QVERIFY(QFile::copy(publicRoot + "/labels/val/" + QFileInfo(original).completeBaseName() + ".txt",
+                directory + "/labels/val/" + stem + ".txt"));
+            images_.append(image);
+        }
+        QString yaml = "path: " + directory + "\nval: images/val\nnames:\n";
+        const auto names = vision::cocoLabels();
+        for (int id = 0; id < names.size(); ++id) yaml += QString("  %1: %2\n").arg(id).arg(names[id]);
+        yaml_ = directory + "/data.yaml"; writeFile(yaml_, yaml.toUtf8());
+        window_->labels_.clear();
+        const QString pt = QStringLiteral(VISION_PROJECT_DIR) + "/models/yolov8n.pt";
+        window_->models_.append(pt); window_->setModel(pt); window_->inputSize_->setValue(320);
+        window_->modelViewer_->stop();
+        QVERIFY2(waitUntil([this] { return !window_->modelInspectionPending_ && window_->modelClassCount_ == 80; }), qPrintable(state()));
+        window_->loadDataset(yaml_, "val");
+        QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_ && !window_->queuePopulating_ && window_->queue_->count() == 61; }), qPrintable(state()));
+        QCOMPARE(window_->files_, images_);
+        configureEvaluation();
+        auto *controls = window_->evaluation_->controlsWidget();
+        controls->findChild<QSpinBox *>("evaluationBatchSizeSpin")->setValue(3);
+        controls->findChild<QSpinBox *>("evaluationCpuThreadsSpin")->setValue(1);
+        controls->findChild<QSpinBox *>("evaluationMaxDetectionsSpin")->setValue(2);
+        controls->findChild<QDoubleSpinBox *>("evaluationScoreFloorSpin")->setValue(.05);
+        window_->evaluation_->findChild<QCheckBox *>("evaluationFigurePngCheck")->setChecked(false);
+        window_->evaluation_->findChild<QCheckBox *>("evaluationFigureSvgCheck")->setChecked(true);
+        window_->evaluation_->findChild<QCheckBox *>("evaluationFigurePdfCheck")->setChecked(false);
+        window_->evaluation_->findChild<QSpinBox *>("evaluationFigureDpiSpin")->setValue(72);
+        window_->detectionRange_->setCurrentIndex(0); window_->queue_->setCurrentRow(50);
+        window_->workbenchTabs_->setCurrentIndex(1);
+        auto *start = window_->findChild<QPushButton *>("evaluationStartButton");
+        auto *stop = window_->findChild<QPushButton *>("evaluationStopButton"); QVERIFY(start && stop);
+        QVERIFY2(start->isEnabled(), qPrintable(window_->evaluation_->validationMessage()));
+        QTest::mouseClick(start, Qt::LeftButton); QVERIFY(window_->evaluationWorker_);
+        bool clicked = false; int heartbeats = 0; qint64 stopMs = -1;
+        QTimer heartbeat; connect(&heartbeat, &QTimer::timeout, this, [&] { ++heartbeats; }); heartbeat.start(10);
+        connect(window_->evaluationWorker_, &vision::EvaluationWorker::progress, this,
+            [&](int completed, int, const QString &) {
+                if (cancel && !clicked && completed >= 4 && window_->busy_) {
+                    clicked = true; QElapsedTimer timer; timer.start();
+                    QTest::mouseClick(stop, Qt::LeftButton); stopMs = timer.elapsed();
+                }
+            });
+        QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->evaluationWorker_; }, 120000), qPrintable(state()));
+        heartbeat.stop(); QVERIFY(heartbeats > 1);
+        const auto report = window_->evaluationReport_;
+        QVERIFY2(!report.isEmpty(), qPrintable(state()));
+        QCOMPARE(report.value("status").toString(), cancel ? QString("cancelled") : QString("complete"));
+        const auto request = report.value("request").toObject();
+        QCOMPARE(request.value("requested_batch_size").toInt(), 3);
+        QCOMPARE(request.value("effective_batch_size").toInt(), 3);
+        QVERIFY(request.value("batch_notice").toString().isEmpty());
+        QVERIFY(std::abs(request.value("score_floor").toDouble() - .05) < 1e-7);
+        const auto config = report.value("config").toObject();
+        QCOMPARE(config.value("max_detections").toInt(), 2);
+        QCOMPARE(config.value("cpu_threads").toInt(), 1);
+        QCOMPARE(config.value("resolved_cpu_threads").toInt(), 1);
+        QCOMPARE(config.value("model_class_count").toInt(), 80);
+        const int done = report.value("completed_images").toInt();
+        if (cancel) { QVERIFY(clicked); QVERIFY(done >= 4 && done < 61); QVERIFY(stopMs >= 0 && stopMs < 500); }
+        else QCOMPARE(done, 61); // 20 full batches and the final single-image tail.
+        const auto executed = request.value("executed_batch_sizes").toArray();
+        QVERIFY(!executed.isEmpty());
+        if (!cancel) { QCOMPARE(executed.size(), 21); QCOMPARE(executed.last().toInt(), 1); }
+        for (int index = 0; index < executed.size() - (cancel ? 0 : 1); ++index)
+            QCOMPARE(executed[index].toInt(), 3);
+        const auto persisted = readBytes(window_->evaluationDirectory_ + "/predictions.jsonl");
+        const auto rows = persisted.trimmed().split('\n'); QCOMPARE(rows.size(), done);
+        for (int index = 0; index < done; ++index) {
+            const auto row = QJsonDocument::fromJson(rows[index]).object();
+            QCOMPARE(row.value("index").toInt(), index);
+            QCOMPARE(row.value("image").toString(), images_[index]);
+            QCOMPARE(row.value("batch_index").toInt(), index / 3);
+            QCOMPARE(row.value("batch_size").toInt(), index == 60 ? 1 : 3);
+            QVERIFY(row.value("predictions").toArray().size() <= 2);
+            QString error;
+            const auto sample = vision::EvaluationWorker::readSample(window_->evaluationDirectory_, index, &error);
+            QVERIFY2(error.isEmpty(), qPrintable(error)); QCOMPARE(sample, row);
+        }
+        QTest::qWait(150); QCOMPARE(readBytes(window_->evaluationDirectory_ + "/predictions.jsonl"), persisted);
+        window_->queue_->setCurrentRow(done - 1);
+        QVERIFY2(reviewedImageReady(done - 1), qPrintable(state()));
+        if (cancel) {
+            window_->queue_->setCurrentRow(done);
+            QTRY_COMPARE_WITH_TIMEOUT(window_->canvas_->result().source, images_[done], 10000);
+            QTRY_VERIFY_WITH_TIMEOUT(window_->canvas_->result().predictions.isEmpty(), 10000);
+            QVERIFY(!window_->exportButton_->isEnabled());
+            window_->queue_->setCurrentRow(done - 1);
+            QVERIFY2(reviewedImageReady(done - 1), qPrintable(state()));
+        } else {
+            const QString before = window_->inferenceFingerprint();
+            auto *adopt = window_->evaluation_->findChild<QPushButton *>("evaluationApplyThresholdButton"); QVERIFY(adopt);
+            adopt->click();
+            QCOMPARE(window_->currentConfig().maxDetections, 2); QCOMPARE(window_->currentConfig().cpuThreads, 1);
+            QVERIFY(window_->inferenceFingerprint() != before);
+            QCOMPARE(window_->evaluationReport_, report);
+            window_->evaluation_->setMode(false); window_->detectionRange_->setCurrentIndex(2); window_->queue_->setCurrentRow(60);
+            QVERIFY(window_->runButton_->isEnabled()); QTest::mouseClick(window_->runButton_, Qt::LeftButton);
+            QVERIFY2(waitUntil([this] { return !window_->busy_ && !window_->resultIoPending_; }), qPrintable(state()));
+            QCOMPARE(window_->lastConfig_.maxDetections, 2); QCOMPARE(window_->lastConfig_.cpuThreads, 1);
+            QCOMPARE(window_->lastResult_.source, images_[60]); QVERIFY(window_->lastResult_.predictions.size() <= 2);
+        }
+        qInfo() << "real_pt_batch_scheduling_only_repeated_public_coco8" << "images" << 61 << "batch" << 3
+                << "completed_prefix" << done << "stop_button_ms" << stopMs << "heartbeats" << heartbeats;
+        const QString scenario = cancel ? "real-pt-batch-stop-prefix" : "real-pt-batch-tail-adopt";
+        evidence(scenario);
+        const QString destination = qEnvironmentVariable("VISION_EVALUATION_INTEGRATION_EVIDENCE");
+        if (!destination.isEmpty()) {
+            const QString prefix = destination + "/" + scenario;
+            for (const auto &file : {"request.json", "predictions.jsonl"})
+                QVERIFY(QFile::copy(window_->evaluationDirectory_ + "/" + file, prefix + "/" + file));
+        }
     }
     void stoppingPreservesCompletedPrefixAndReview()
     {

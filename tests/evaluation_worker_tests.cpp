@@ -311,6 +311,77 @@ class EvaluationWorkerTests final : public QObject
         QVERIFY(!report.value("full_split").toBool());
     }
 
+    void onnxRequestedBatchUsesExplicitSingleImageFallback()
+    {
+        auto value = request(dataset(3));
+        value.batchSize = 4;
+        value.figureFormats = {"svg"};
+        const auto report = evaluate(value);
+        const auto parameters = report.value("request").toObject();
+        QCOMPARE(parameters.value("requested_batch_size").toInt(), 4);
+        QCOMPARE(parameters.value("effective_batch_size").toInt(), 1);
+        QVERIFY(!parameters.value("batch_notice").toString().isEmpty());
+        QCOMPARE(report.value("completed_images").toInt(), 3);
+    }
+
+    void reanalysisRunsOfflineOnWorkerAndKeepsOriginalReport()
+    {
+        auto value = request(dataset(3));
+        value.figureFormats = {"svg"};
+        QString source;
+        const auto original = evaluate(value, &source);
+        QFile oldReport(source + "/report.json");
+        QVERIFY(oldReport.open(QIODevice::ReadOnly));
+        const auto originalBytes = oldReport.readAll(); oldReport.close();
+        const auto temporaryModel = model_ + ".offline";
+        QVERIFY(QFile::rename(model_, temporaryModel));
+        const auto image = value.files.first();
+        QVERIFY(QFile::rename(image, image + ".offline"));
+        vision::EvaluationWorker worker;
+        QSignalSpy ready(&worker, &vision::EvaluationWorker::reportReady);
+        QSignalSpy failed(&worker, &vision::EvaluationWorker::failed);
+        worker.configureReanalysis(source, {{"confidence", .9}, {"match_iou", .75},
+            {"scan_start", .1}, {"scan_end", .9}, {"scan_step", .2},
+            {"figure_formats", QJsonArray{"svg"}}, {"figure_dpi", 100}}, value.outputRoot, project_);
+        worker.start();
+        const bool finished = worker.wait(60000);
+        if (!finished) { worker.requestStop(); worker.wait(); }
+        QCoreApplication::processEvents();
+        // Restore shared fixtures before any assertion can return from this test.
+        const bool restoredModel = QFile::rename(temporaryModel, model_);
+        const bool restoredImage = QFile::rename(image + ".offline", image);
+        QVERIFY(restoredModel); QVERIFY(restoredImage); QVERIFY(finished);
+        QVERIFY2(failed.isEmpty(), failed.isEmpty() ? "" : qPrintable(failed.first().first().toString()));
+        QCOMPARE(ready.size(), 1);
+        const auto report = ready.first().first().toJsonObject();
+        const QString directory = ready.first().at(1).toString();
+        QVERIFY(directory != source);
+        QCOMPARE(report.value("analysis_source").toString(), QString("verified_snapshot"));
+        QCOMPARE(report.value("confidence").toDouble(), .9);
+        QCOMPARE(report.value("metrics").toObject().value("TP").toInt(), 0);
+        QCOMPARE(report.value("metrics").toObject().value("FN").toInt(), 2);
+        QCOMPARE(report.value("prediction_sha256"), original.value("prediction_sha256"));
+        QVERIFY(oldReport.open(QIODevice::ReadOnly));
+        QCOMPARE(oldReport.readAll(), originalBytes);
+        QCOMPARE(vision::EvaluationWorker::readSample(directory, 0), vision::EvaluationWorker::readSample(source, 0));
+    }
+
+    void sceneErrorsKeepOnlyGroupCompletedIndices()
+    {
+        auto value = request(dataset(3));
+        value.figureFormats = {"svg"};
+        QString directory;
+        evaluate(value, &directory);
+        QHash<QString, int> indices;
+        for (int i = 0; i < value.files.size(); ++i) indices.insert(value.files[i], i);
+        const auto summary = vision::summarizeEvaluationSamples(value.files, indices, directory,
+            0, 0, .9, .5, "scene:Small", {}, {value.files[1]});
+        QVERIFY2(summary.valid, qPrintable(summary.error));
+        QCOMPARE(summary.evaluatedRows, QVector<int>{1});
+        QCOMPARE(summary.errorRows, QVector<int>{1});
+        QCOMPARE(summary.visible, QVector<bool>({false, true, false}));
+    }
+
     void stopBeforeLoadProducesEmptyCancelledReport()
     {
         auto value = request(dataset(3));

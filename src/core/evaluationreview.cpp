@@ -176,6 +176,14 @@ EvaluationPreview loadEvaluationPreview(const EvaluationPreviewRequest &request,
         result.deviceNotice = request.config.deviceNotice;
         result.inferenceMs = sample.value("inference_ms").toDouble();
         result.totalMs = sample.value("total_ms").toDouble();
+        if (sample.contains("source_runtime_device"))
+        {
+            result.hasInferenceTiming = false;
+            result.hasVerifiedDevice = false;
+            result.hasCompleteInferenceConfig = false;
+            result.sourceRuntimeDevice = sample.value("source_runtime_device").toString();
+            result.deviceNotice = QStringLiteral("外部历史预测；来源设备未经本应用验证，逐图耗时和输入预处理未记录，预览显示原图。");
+        }
         result.evaluationReport = request.directory;
         if (completed)
             matchEvaluation(result, request.matchIou);
@@ -197,14 +205,18 @@ EvaluationPreview loadEvaluationPreview(const EvaluationPreviewRequest &request,
 
 EvaluationReviewSummary summarizeEvaluationSamples(const QStringList &files, const QHash<QString, int> &indices,
     const QString &directory, int modelClassId, int datasetClassId, double confidence,
-    double matchIou, const QString &filter, std::function<bool()> cancelled)
+    double matchIou, const QString &filter, std::function<bool()> cancelled, const QStringList &sceneImages)
 {
     EvaluationReviewSummary summary;
     try
     {
         checkCancelled(cancelled);
         validateParameters(modelClassId, datasetClassId, confidence, matchIou);
-        if (filter != "all" && filter != "errors" && filter != "fp" && filter != "fn" && filter != "negative_fp")
+        const bool sceneFilter = filter.startsWith("scene:");
+        const QSet<QString> sceneSet(sceneImages.cbegin(), sceneImages.cend());
+        if (sceneFilter && !QStringList{"All", "Small", "Occluded", "Blurred", "No Ball", "No difficulty"}.contains(filter.mid(6)))
+            fail(QStringLiteral("不支持的场景筛选条件。"));
+        if (!sceneFilter && filter != "all" && filter != "errors" && filter != "fp" && filter != "fn" && filter != "negative_fp")
             fail(QStringLiteral("不支持的评估图片筛选条件。"));
         summary.visible = QVector<bool>(files.size(), filter == "all");
         QSet<QString> seen;
@@ -213,6 +225,7 @@ EvaluationReviewSummary summarizeEvaluationSamples(const QStringList &files, con
             checkCancelled(cancelled);
             if (!indices.contains(files[row]) || seen.contains(files[row]))
                 continue;
+            if (sceneFilter && !sceneSet.contains(files[row])) continue;
             seen.insert(files[row]);
             QString readError;
             const auto sample = EvaluationWorker::readSample(directory, indices.value(files[row]), &readError);
@@ -229,7 +242,7 @@ EvaluationReviewSummary summarizeEvaluationSamples(const QStringList &files, con
             if (fn) summary.falseNegativeRows.append(row);
             if (negativeFp) summary.negativeFalsePositiveRows.append(row);
             if (filter != "all")
-                summary.visible[row] = filter == "errors" ? fp || fn : filter == "fp" ? fp : filter == "fn" ? fn : negativeFp;
+                summary.visible[row] = (filter == "errors" || sceneFilter) ? fp || fn : filter == "fp" ? fp : filter == "fn" ? fn : negativeFp;
         }
         checkCancelled(cancelled);
         summary.valid = true;
