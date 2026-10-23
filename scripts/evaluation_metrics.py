@@ -14,6 +14,8 @@ import math
 import numpy as np
 
 IOUS = np.linspace(.5, .95, 10)
+SCENES = ("Small", "Occluded", "Blurred", "No Ball")
+GROUPS = ("All", *SCENES, "No difficulty")
 
 
 def ratio(numerator, denominator):
@@ -78,7 +80,7 @@ def match(iou, thresholds=IOUS):
     return correct
 
 
-def prepare_records(samples, predictions, model_class_id, dataset_class_id):
+def prepare_records(samples, predictions, model_class_id, dataset_class_id, scene_reviewed=False):
     result = []
     for sample, row in zip(samples, predictions):
         selected_gt = [(i, gt) for i, gt in enumerate(sample["gt"]) if gt["class_id"] == dataset_class_id]
@@ -86,16 +88,22 @@ def prepare_records(samples, predictions, model_class_id, dataset_class_id):
         gt = [p["box"] for _, p in selected_gt]
         boxes = [p["box"] for _, p in selected_pred]
         iou = box_iou(gt, boxes)
+        reviewed = bool(scene_reviewed) and sample.get("scene_reviewed", True) is True
+        flags = {name: sample.get("flags", {}).get(name) if reviewed else None for name in SCENES[:-1]}
+        # Target absence follows the selected GT class, including multi-class
+        # datasets. Difficulty flags require explicit scene review provenance.
+        flags["No Ball"] = int(not gt)
         result.append({"image": sample["image"], "gt": gt, "boxes": boxes,
                        "gt_indices": [i for i, _ in selected_gt],
                        "prediction_indices": [i for i, _ in selected_pred],
                        "scores": np.asarray([p["confidence"] for _, p in selected_pred], dtype=float),
-                       "flags": sample.get("flags", {}), "iou": iou, "correct": match(iou)})
+                       "flags": flags, "scene_reviewed": reviewed, "iou": iou, "correct": match(iou)})
     return result
 
 
 def operating(records, confidence, iou_threshold, details=False):
     tp = fp = fn = negative_images = negative_fp_images = negative_fp_boxes = positive_images = positive_missed = 0
+    presence_tp = presence_fp = presence_fn = presence_tn = 0
     per_image = []
     for row in records:
         kept = np.flatnonzero(row["scores"] >= confidence)
@@ -109,16 +117,25 @@ def operating(records, confidence, iou_threshold, details=False):
         if targets:
             positive_images += 1
             positive_missed += hits == 0
+            presence_tp += count > 0
+            presence_fn += count == 0
         else:
             negative_images += 1
             negative_fp_images += count > 0
             negative_fp_boxes += count
+            presence_fp += count > 0
+            presence_tn += count == 0
         if details:
             kept_original = [row["prediction_indices"][int(i)] for i in kept]
             matched_original = [kept_original[i] for i in sorted(matched_pred)]
             fp_original = [value for i, value in enumerate(kept_original) if i not in matched_pred]
             per_image.append({"image": row["image"], "TP": hits, "FP": count - hits, "FN": targets - hits,
-                              "negative": not bool(targets), "kept_prediction_indices": kept_original,
+                              "negative": not bool(targets), "gt_boxes": targets, "predicted_boxes": count,
+                              "precision": ratio(hits, count) if count else (0. if targets else None),
+                              "recall": ratio(hits, targets), "F1": ratio(2 * hits, targets + count),
+                              "scene_reviewed": bool(row.get("scene_reviewed")), **row.get("flags", {}),
+                              "max_candidate_confidence": float(max(row["scores"])) if len(row["scores"]) else None,
+                              "kept_prediction_indices": kept_original,
                               "matched_indices": matched_original, "fp_indices": fp_original,
                               "matched_gt_indices": [row["gt_indices"][i] for i in sorted(matched_gt)],
                               "missed_gt_indices": [index for i, index in enumerate(row["gt_indices"]) if i not in matched_gt]})
@@ -133,7 +150,8 @@ def operating(records, confidence, iou_threshold, details=False):
               "no_ball_fp_boxes_per_image": ratio(negative_fp_boxes, negative_images),
               "fp_boxes_per_image": ratio(fp, len(records)), "positive_images": positive_images,
               "positive_images_with_no_matched_ball": positive_missed,
-              "positive_image_miss_rate": ratio(positive_missed, positive_images)}
+              "positive_image_miss_rate": ratio(positive_missed, positive_images),
+              "presence_confusion": {"TP": presence_tp, "FP": presence_fp, "FN": presence_fn, "TN": presence_tn}}
     return (result, per_image) if details else result
 
 
@@ -151,6 +169,48 @@ def average_precision(records):
               "ap_per_iou": ap.tolist(), "ultralytics_max_f1_precision": float(values[2][0]),
               "ultralytics_max_f1_recall": float(values[3][0])}
     return result, {"recall": values[10].tolist(), "precision_envelope": values[11][0].tolist()}
+
+
+def masked_ap(ap):
+    """Keep the AP schema while withholding a headline for incomplete scopes."""
+    return {key: [None] * 10 if key == "ap_per_iou" else None for key in ap}
+
+
+def summarize_groups(records, confidence, iou_threshold, publish_ap, all_metrics=None):
+    """Reviewed scene subsets may overlap; unknown review is never a clean scene.
+
+    A completed collection is necessary for public subgroup AP, and groups
+    smaller than two images retain AP only as explicitly descriptive data.
+    """
+    reviewed = [r for r in records if r.get("scene_reviewed")]
+    subsets = {"All": records,
+               **{name: [r for r in reviewed if r["flags"].get(name)] for name in SCENES[:-1]},
+               "No Ball": [r for r in records if not r["gt"]],
+               "No difficulty": [r for r in reviewed if not any(r["flags"].get(name) for name in SCENES)]}
+    result = {}
+    for name in GROUPS:
+        available = name in ("All", "No Ball") or bool(reviewed)
+        subset = subsets[name]
+        review_status = ("not_applicable" if name == "All" else "derived_from_gt" if name == "No Ball"
+                         else "reviewed" if available else "unreviewed")
+        if name == "All" and all_metrics is not None:
+            metric = dict(all_metrics)
+            descriptive = None
+        else:
+            ap, _ = average_precision(subset)
+            public = publish_ap and len(subset) > 1 and available
+            metric = {**(ap if public else masked_ap(ap)), **operating(subset, confidence, iou_threshold)}
+            descriptive = ap if available and not public else None
+        public = bool(publish_ap and len(subset) > 1 and available and metric.get("mAP50") is not None)
+        if not available:
+            metric = {key: (value if key in ("confidence", "match_iou") else
+                            {k: None for k in value} if isinstance(value, dict) else
+                            [None] * len(value) if isinstance(value, list) else None)
+                      for key, value in metric.items()}
+        result[name] = {**metric, "available": available, "review_status": review_status,
+                        "ap_published": public, "partial_metrics": descriptive,
+                        "sample_images": [row["image"] for row in subset] if available else []}
+    return result
 
 
 def recommend(rows, minimum_precision=None, minimum_recall=None, maximum_fpr=None):

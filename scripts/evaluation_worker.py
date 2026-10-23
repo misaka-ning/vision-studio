@@ -10,7 +10,6 @@ validates snapshots and computes the same metrics for all backends.
 from __future__ import annotations
 
 import argparse
-import csv
 from datetime import datetime, timezone
 import json
 import math
@@ -21,6 +20,7 @@ import tempfile
 
 from evaluation_data import (assert_unchanged, digest, prepare_dataset, read_json,
                              validate_manifest)
+from evaluation_reporting import figure_options, save_report_artifacts, write_csv
 
 ALGORITHM_VERSION = "vision-eval-1/highest-iou-stable-ties"
 
@@ -86,6 +86,7 @@ def validate_request(request, manifest):
     for key in ("minimum_precision", "minimum_recall", "maximum_fpr"):
         if request.get(key) is not None:
             request[key] = finite_number(request[key], key)
+    request["figure_formats"], request["figure_dpi"] = figure_options(request)
     if not request.get("model_path") or not request.get("model_sha256"):
         raise ValueError("评估请求缺少固定模型路径或 SHA256。")
     all_images = [s["image"] for s in manifest["samples"]]
@@ -142,28 +143,27 @@ def load_predictions(path, manifest, request):
     return samples, rows
 
 
-def analyze(request, manifest, predictions_path):
-    from evaluation_metrics import average_precision, operating, prepare_records, recommend
+def analyze(request, manifest, predictions_path, *, verify_sources=True):
+    from evaluation_metrics import average_precision, masked_ap, operating, prepare_records, recommend, summarize_groups
     import ultralytics
 
     validate_manifest(manifest)
     request, grid = validate_request(request, manifest)
-    assert_unchanged(manifest, request["model_path"], request["model_sha256"])
+    if verify_sources:
+        assert_unchanged(manifest, request["model_path"], request["model_sha256"])
     prediction_sha256 = digest(predictions_path)
     samples, predictions = load_predictions(predictions_path, manifest, request)
-    records = prepare_records(samples, predictions, request["model_class_id"], request["dataset_class_id"])
+    records = prepare_records(samples, predictions, request["model_class_id"], request["dataset_class_id"],
+                              scene_reviewed=bool(manifest.get("metadata_path")))
     ap, pr_curve = average_precision(records)
     metrics, per_image = operating(records, request["confidence"], request["match_iou"], details=True)
     complete_split = request["status"] == "complete" and request["full_split"] and len(samples) == len(manifest["samples"])
     publish_ap = complete_split and len(samples) > 1
-    public_ap = ap if publish_ap else {key: ([None] * 10 if key == "ap_per_iou" else None) for key in ap}
+    public_ap = ap if publish_ap else masked_ap(ap)
     metrics = {**public_ap, **metrics}
     rows = [{**public_ap, **operating(records, confidence, request["match_iou"])} for confidence in grid]
-    groups = {}
-    for name in ("Small", "Occluded", "Blurred"):
-        grouped = [r for r in records if r["flags"].get(name)]
-        if grouped:
-            groups[name] = operating(grouped, request["confidence"], request["match_iou"])
+    groups = summarize_groups(records, request["confidence"], request["match_iou"], publish_ap, all_metrics=metrics)
+    reviewed_images = sum(bool(row.get("scene_reviewed")) for row in records)
     best = recommend(rows, request.get("minimum_precision"), request.get("minimum_recall"), request.get("maximum_fpr"))
     can_recommend = request["status"] == "complete" and manifest["split"] == "val" and complete_split and len(samples) > 1
     if len(samples) <= 1:
@@ -182,6 +182,8 @@ def analyze(request, manifest, predictions_path):
         warnings.append("仅完整 Val 集评估提供部署阈值推荐；Test、Train、子集和中断结果只作描述。")
     if manifest.get("skipped"):
         warnings.append("审核排除或待审核图片未纳入指标；完整集合指清单中实际选入的有效样本。")
+    if reviewed_images < len(records):
+        warnings.append("未审核的 Small／Occluded／Blurred 不作为已知场景；未知样本不能归入 No difficulty。")
     report = {"schema_version": 1, "algorithm_version": ALGORITHM_VERSION,
               "ultralytics_version": ultralytics.__version__, "status": request["status"],
               "full_split": complete_split, "scope": scope,
@@ -193,6 +195,8 @@ def analyze(request, manifest, predictions_path):
               "sample_images": [s["image"] for s in samples], "planned_images": len(request["sample_images"]),
               "completed_images": len(samples), "metrics": metrics, "partial_metrics": ap if not publish_ap else None,
               "rows": rows, "per_image": per_image, "groups": groups, "pr_curve": pr_curve,
+              "scene_review": {"reviewed_images": reviewed_images, "unreviewed_images": len(records) - reviewed_images,
+                               "source": "metadata" if manifest.get("metadata_path") else "unreviewed"},
               "recommendation": best if can_recommend else None, "descriptive_best_f1": best,
               "warnings": warnings,
               "definitions": {"precision": "TP / (TP + FP); no predictions with GT => 0; empty/empty => null",
@@ -201,78 +205,19 @@ def analyze(request, manifest, predictions_path):
                               "no_ball_false_positive_rate": "negative images with >=1 target prediction / all confirmed target-negative images",
                               "matching": "IoU desc, ties prediction index then GT index; unique prediction (index order), then unique GT",
                               "AP": "Ultralytics ap_per_class, IoU 0.50:0.05:0.95; selected target only"}}
-    assert_unchanged(manifest, request["model_path"], request["model_sha256"])
+    if verify_sources:
+        assert_unchanged(manifest, request["model_path"], request["model_sha256"])
     if digest(predictions_path) != prediction_sha256:
         raise RuntimeError("指标计算期间预测缓存发生变化，拒绝发布报告。")
     return report
 
 
-def write_csv(path, rows):
-    rows = list(rows)
-    keys = list(rows[0]) if rows else ["image", "TP", "FP", "FN", "negative"]
-    with Path(path).open("w", encoding="utf-8-sig", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=keys)
-        writer.writeheader()
-        for row in rows:
-            writer.writerow({key: (json.dumps(v, ensure_ascii=False) if isinstance(v, (list, dict)) else v)
-                             for key, v in row.items()})
-
-
-def export_report(path, report):
-    output = Path(path).parent
-    output.mkdir(parents=True, exist_ok=True)
-    os.environ.setdefault("MPLCONFIGDIR", str(output / ".matplotlib"))
-    import matplotlib
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    write_csv(output / "thresholds.csv", report["rows"])
-    write_csv(output / "per-image.csv", report["per_image"])
-    write_csv(output / "errors.csv", [r for r in report["per_image"] if r["FP"] or r["FN"]])
-    x = [r["confidence"] for r in report["rows"]]
-    with plt.rc_context({"font.family": "DejaVu Sans", "svg.fonttype": "none", "pdf.fonttype": 42,
-                         "figure.facecolor": "#171b22", "axes.facecolor": "#20262e", "text.color": "#eef4fc",
-                         "axes.labelcolor": "#d4e1ef", "xtick.color": "#b4c5d7", "ytick.color": "#b4c5d7",
-                         "axes.edgecolor": "#526170", "grid.color": "#526170", "legend.facecolor": "#20262e"}):
-        for filename, keys, ylabel in (
-            ("threshold-performance", ("precision", "recall", "F1"), "Target detection score"),
-            ("negative-false-positive-rate", ("no_ball_false_positive_rate",), "Target-negative image false-positive rate"),
-        ):
-            fig, ax = plt.subplots(figsize=(9.6, 5.4), constrained_layout=True)
-            try:
-                for key, color in zip(keys, ("#56cfff", "#79dfa5", "#c99aff")):
-                    y = [float("nan") if r[key] is None else r[key] for r in report["rows"]]
-                    ax.plot(x, y, color=color, linewidth=2, label=key)
-                ax.axvline(report["confidence"], color="#eff5fc", alpha=.45, linestyle="--", linewidth=1)
-                ax.set(xlabel="Confidence threshold (fixed NMS candidates)", ylabel=ylabel, ylim=(0, 1.02))
-                ax.grid(alpha=.3)
-                ax.legend()
-                for extension in ("png", "svg"):
-                    fig.savefig(output / f"{filename}.{extension}", dpi=180)
-            finally:
-                plt.close(fig)
-    metric = report["metrics"]
-    def display(value):
-        return "N/A" if value is None else f"{value:.5f}" if isinstance(value, float) else str(value)
-    text = ["# Vision Studio 模型评估报告", "",
-            f"- 状态：{report['status']}；范围：{report['scope']}；完成 {report['completed_images']}/{report['planned_images']} 张。",
-            f"- 数据集：`{report['manifest']['data_yaml']}`；集合：{report['manifest']['split']}。",
-            f"- 模型原始 ID {report['request']['model_class_id']} → 数据集 ID {report['request']['dataset_class_id']}。",
-            f"- 当前置信度：{report['confidence']}；GT 匹配 IoU：{report['request']['match_iou']}；候选下限：{report['request']['score_floor']}。",
-            f"- 算法：{ALGORITHM_VERSION}；Ultralytics {report['ultralytics_version']}。", "",
-            "| 指标 | 数值 |", "| --- | --- |"]
-    for key in ("mAP50", "mAP50_95", "precision", "recall", "F1", "TP", "FP", "FN", "no_ball_images", "no_ball_false_positive_rate"):
-        text.append(f"| {key} | {display(metric[key])} |")
-    text.extend(["", *["- " + w for w in report["warnings"]], "",
-                 "阈值表：`thresholds.csv`；逐图结果：`per-image.csv`；错例：`errors.csv`。",
-                 "模型、数据和推理配置及哈希保存在同目录报告 JSON；历史报告使用当时的快照。", ""])
-    (output / "REPORT.md").write_text("\n".join(text), encoding="utf-8")
-    report["artifacts"] = {name: name for name in ("thresholds.csv", "per-image.csv", "errors.csv", "REPORT.md",
-                          "threshold-performance.png", "threshold-performance.svg",
-                          "negative-false-positive-rate.png", "negative-false-positive-rate.svg")}
+def export_report(path, report, *, verify_sources=True):
+    report["artifacts"] = save_report_artifacts(Path(path).parent, report, csv_writer=write_csv)
     # Plot generation can take seconds: validate again at the final publication
     # boundary, rather than trusting the earlier calculation-time check.
-    assert_unchanged(report["manifest"], report["request"]["model_path"], report["model_sha256"])
+    if verify_sources:
+        assert_unchanged(report["manifest"], report["request"]["model_path"], report["model_sha256"])
     if digest(report["predictions_path"]) != report["prediction_sha256"]:
         raise RuntimeError("报告导出期间预测缓存发生变化，拒绝发布报告。")
     for source, expected in report.get("worker_input_hashes", {}).items():

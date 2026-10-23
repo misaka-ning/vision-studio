@@ -118,6 +118,7 @@ bool PtBackend::loaded() const noexcept
 void PtBackend::reset() noexcept
 {
     m_loaded = false;
+    m_maximumBatchSize = 1;
     if (m_process && m_process->state() != QProcess::NotRunning)
     {
         m_process->write("{\"command\":\"quit\"}\n");
@@ -274,7 +275,8 @@ void PtBackend::loadOnDevice(const ModelConfig &config, bool cuda)
              QJsonDocument(QJsonArray::fromStringList(config.labels)).toJson(QJsonDocument::Compact)),
          "--color-mode", config.colorMode == InputColorMode::Grayscale ? "grayscale" : "color",
          "--device", cuda ? "cuda" : "cpu", "--device-index", QString::number(config.deviceIndex),
-         "--class-filter", QString::fromUtf8(QJsonDocument(classFilter).toJson(QJsonDocument::Compact))});
+         "--class-filter", QString::fromUtf8(QJsonDocument(classFilter).toJson(QJsonDocument::Compact)),
+         "--cpu-threads", QString::number(config.cpuThreads)});
     m_process = std::move(process);
     if (m_cancellationCheck && m_cancellationCheck())
         processFailure(QStringLiteral("PyTorch 推理已取消。"));
@@ -342,6 +344,20 @@ void PtBackend::loadOnDevice(const ModelConfig &config, bool cuda)
                      versions.value("cuda").toString() != "12.8" ||
                      versions.value("torch").toString() != "2.9.1+cu128"))
             fail(QStringLiteral("PyTorch CUDA 设备元数据无效，已拒绝继续推理。"));
+        const auto maximumBatch = ready.value("maximum_batch_size");
+        if (!maximumBatch.isUndefined() &&
+            (!finiteNumber(maximumBatch) || (maximumBatch.toDouble() != 1 && maximumBatch.toDouble() != 32)))
+            fail(QStringLiteral("PyTorch 批量能力元数据无效。"));
+        m_maximumBatchSize = maximumBatch.isUndefined() ? 1 : maximumBatch.toInt();
+        if (detectedTask != "detect" && m_maximumBatchSize != 1)
+            fail(QStringLiteral("分类模型不能声明目标检测批量能力。"));
+        const auto cpuThreads = ready.value("cpu_threads");
+        if ((!cpuThreads.isUndefined() &&
+             (!finiteNumber(cpuThreads) || std::floor(cpuThreads.toDouble()) != cpuThreads.toDouble() ||
+              cpuThreads.toDouble() < 0 || cpuThreads.toDouble() > 256)) ||
+            (config.cpuThreads > 0 && cpuThreads.toInt() != config.cpuThreads))
+            fail(QStringLiteral("PyTorch CPU 线程设置与请求不一致。"));
+        m_config.resolvedCpuThreads = cpuThreads.toInt();
         m_config.resolvedDevice = cuda ? ComputeDevice::CUDA : ComputeDevice::CPU;
         m_config.deviceName = cuda ? ready.value("device_name").toString().left(256) : QStringLiteral("CPU");
         m_config.deviceNotice.clear();
@@ -367,18 +383,14 @@ void PtBackend::loadOnDevice(const ModelConfig &config, bool cuda)
     }
 }
 
-InferenceResult PtBackend::infer(const QImage &image, const QString &source)
+QString PtBackend::encodeImage(const QImage &image)
 {
-    if (!loaded())
-        fail(QStringLiteral("PyTorch 模型未加载，或推理进程已经退出。请重新运行。"));
     if (image.isNull())
         fail(QStringLiteral("输入图像为空或无法解码。"));
     if (qint64(image.width()) * image.height() > 100000000)
         fail(QStringLiteral("原图超过 1 亿像素，请缩小后重新运行。"));
     if (m_cancellationCheck && m_cancellationCheck())
         processFailure(QStringLiteral("PyTorch 推理已取消。"));
-    QElapsedTimer timer;
-    timer.start();
     QByteArray encoded;
     QBuffer buffer(&encoded);
     buffer.open(QIODevice::WriteOnly);
@@ -394,18 +406,101 @@ InferenceResult PtBackend::infer(const QImage &image, const QString &source)
         fail(QStringLiteral("无法编码图像并发送给 PyTorch。"));
     if (m_cancellationCheck && m_cancellationCheck())
         processFailure(QStringLiteral("PyTorch 推理已取消。"));
+    return QString::fromLatin1(encoded.toBase64());
+}
+
+InferenceResult PtBackend::infer(const QImage &image, const QString &source)
+{
+    if (!loaded())
+        fail(QStringLiteral("PyTorch 模型未加载，或推理进程已经退出。请重新运行。"));
+    QElapsedTimer timer;
+    timer.start();
+    const QString encoded = encodeImage(image);
     const qint64 id = ++m_sequence;
     send({{"command", "infer"},
           {"id", double(id)},
-          {"image", QString::fromLatin1(encoded.toBase64())},
+          {"image", encoded},
           {"input_size", m_config.inputSize},
           {"confidence", m_config.confidence},
-          {"iou", m_config.iou}});
+          {"iou", m_config.iou},
+          {"max_detections", m_config.maxDetections}});
     const QJsonObject response = receive(operationTimeout("VISION_STUDIO_PT_INFER_TIMEOUT_MS", 120000));
     if (!finiteNumber(response.value("id")) || response.value("id").toDouble() != double(id))
         processFailure(QStringLiteral("PyTorch 推理响应序号不匹配。"));
     if (!response.value("ok").isBool() || !response.value("ok").toBool())
         fail(errorMessage(response));
+    auto result = decodeResult(response, image, source);
+    result.totalMs = timer.nsecsElapsed() / 1e6;
+    return result;
+}
+
+QVector<InferenceResult> PtBackend::inferBatch(const QVector<QImage> &images, const QStringList &sources)
+{
+    if (!loaded())
+        fail(QStringLiteral("PyTorch 模型未加载，或推理进程已经退出。请重新运行。"));
+    if (images.isEmpty() || images.size() > m_maximumBatchSize ||
+        (!sources.isEmpty() && sources.size() != images.size()))
+        fail(QStringLiteral("批量图片数量、来源或当前模型批量能力不匹配。"));
+    if (images.size() == 1)
+    {
+        const auto result = infer(images.first(), sources.isEmpty() ? QString() : sources.first());
+        if (m_cancellationCheck && m_cancellationCheck())
+            processFailure(QStringLiteral("PyTorch 批量推理已取消。"));
+        return {result};
+    }
+    QElapsedTimer timer;
+    timer.start();
+    QJsonArray encoded;
+    for (const auto &image : images)
+        encoded.append(encodeImage(image));
+    const qint64 id = ++m_sequence;
+    send({{"command", "infer_batch"}, {"id", double(id)}, {"images", encoded},
+          {"input_size", m_config.inputSize}, {"confidence", m_config.confidence},
+          {"iou", m_config.iou}, {"max_detections", m_config.maxDetections}});
+    const QJsonObject response = receive(operationTimeout("VISION_STUDIO_PT_INFER_TIMEOUT_MS", 120000));
+    if (!finiteNumber(response.value("id")) || response.value("id").toDouble() != double(id))
+        processFailure(QStringLiteral("PyTorch 批量响应序号不匹配。"));
+    if (!response.value("ok").isBool() || !response.value("ok").toBool())
+        processFailure(errorMessage(response));
+    if (!finiteNumber(response.value("batch_size")) ||
+        response.value("batch_size").toDouble() != images.size() ||
+        !response.value("results").isArray() || response.value("results").toArray().size() != images.size())
+        processFailure(QStringLiteral("PyTorch 批量响应数量与请求不匹配。"));
+    const auto rows = response.value("results").toArray();
+    QVector<InferenceResult> results;
+    results.reserve(images.size());
+    for (qsizetype index = 0; index < images.size(); ++index)
+    {
+        if (m_cancellationCheck && m_cancellationCheck())
+            processFailure(QStringLiteral("PyTorch 批量推理已取消。"));
+        if (!rows[index].isObject())
+            processFailure(QStringLiteral("PyTorch 批量响应项目格式无效。"));
+        const auto row = rows[index].toObject();
+        if (!finiteNumber(row.value("index")) || row.value("index").toDouble() != index)
+            processFailure(QStringLiteral("PyTorch 批量响应图片顺序不匹配。"));
+        auto result = decodeResult(row, images[index], sources.isEmpty() ? QString() : sources[index]);
+        // Worker timings are per-image shares of the completed batch; no claim
+        // that each image was submitted to the model independently.
+        result.totalMs = timer.nsecsElapsed() / 1e6 / images.size();
+        results.append(std::move(result));
+    }
+    if (m_cancellationCheck && m_cancellationCheck())
+        processFailure(QStringLiteral("PyTorch 批量推理已取消。"));
+    return results;
+}
+
+InferenceResult PtBackend::decodeResult(const QJsonObject &response, const QImage &image,
+                                       const QString &source)
+{
+    const auto cpuThreads = response.value("cpu_threads");
+    if (!cpuThreads.isUndefined())
+    {
+        if (!finiteNumber(cpuThreads) || std::floor(cpuThreads.toDouble()) != cpuThreads.toDouble() ||
+            cpuThreads.toDouble() < 1 || cpuThreads.toDouble() > 256 ||
+            (m_config.cpuThreads > 0 && cpuThreads.toInt() != m_config.cpuThreads))
+            processFailure(QStringLiteral("PyTorch 实际 CPU 线程数与请求不一致。"));
+        m_config.resolvedCpuThreads = cpuThreads.toInt();
+    }
     if (response.value("task").toString() !=
         (m_config.task == ModelTask::Classification ? "classify" : "detect"))
         processFailure(QStringLiteral("PyTorch 响应任务与已加载模型不匹配。"));
@@ -413,7 +508,7 @@ InferenceResult PtBackend::infer(const QImage &image, const QString &source)
         !response.value("predictions").isArray())
         processFailure(QStringLiteral("PyTorch 推理响应缺少有效的耗时或预测列表。"));
     const QJsonArray predictions = response.value("predictions").toArray();
-    if (predictions.size() > (m_config.task == ModelTask::Classification ? 5 : 300))
+    if (predictions.size() > (m_config.task == ModelTask::Classification ? 5 : m_config.maxDetections))
         processFailure(QStringLiteral("PyTorch 返回了过多预测结果。"));
     InferenceResult result;
     result.image = inputPreviewImage(image, m_config.colorMode);
@@ -467,7 +562,6 @@ InferenceResult PtBackend::infer(const QImage &image, const QString &source)
         result.predictions.append(
             {classId, m_config.labels.at(classId), float(confidenceValue.toDouble()), box});
     }
-    result.totalMs = timer.nsecsElapsed() / 1e6;
     return result;
 }
 

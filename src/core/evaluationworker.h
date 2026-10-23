@@ -22,6 +22,9 @@ struct EvaluationRequest
     double scanStart = .05;
     double scanEnd = .95;
     double scanStep = .01;
+    int batchSize = 1;
+    QStringList figureFormats = {"png", "svg", "pdf"};
+    int figureDpi = 300;
     QString outputRoot;
     QString projectRoot;
 };
@@ -34,6 +37,10 @@ class EvaluationWorker final : public QThread
     void configureDataset(const QString &yaml, const QString &split, const QString &metadata,
                           const QString &projectRoot);
     void configureEvaluation(const EvaluationRequest &request);
+    void configureReanalysis(const QString &source, const QJsonObject &options,
+                             const QString &outputRoot, const QString &projectRoot);
+    void configureExternalImport(const QString &source, const QJsonObject &options,
+                                 const QString &outputRoot, const QString &projectRoot);
     void requestStop() noexcept;
 
     static QJsonObject modelConfigJson(const ModelConfig &config);
@@ -49,10 +56,12 @@ class EvaluationWorker final : public QThread
     void run() override;
 
   private:
-    enum class Operation { Dataset, Evaluation };
+    enum class Operation { Dataset, Evaluation, Reanalysis, ExternalImport };
     Operation operation_ = Operation::Dataset;
     QString yaml_, split_, metadata_, projectRoot_;
     EvaluationRequest request_;
+    QString analysisSource_, analysisOutputRoot_;
+    QJsonObject analysisOptions_;
     std::atomic_bool stop_{false};
 };
 } // namespace vision

@@ -90,6 +90,9 @@ vision::ModelConfig configOf(const QJsonObject &o)
     c.deviceIndex = o.value("device_index").toInt();
     c.deviceName = o.value("device_name").toString();
     c.deviceNotice = o.value("device_notice").toString();
+    c.maxDetections = o.value("max_detections").toInt(300);
+    c.cpuThreads = o.value("cpu_threads").toInt();
+    c.resolvedCpuThreads = o.value("resolved_cpu_threads").toInt();
     for (const auto &v : o.value("labels").toArray()) c.labels.append(v.toString());
     for (const auto &v : o.value("class_filter").toArray()) c.classFilter.append(v.toInt());
     return c;
@@ -146,6 +149,9 @@ void MainWindow::connectEvaluation()
     });
     connect(evaluation_, &EvaluationPanel::imageFilterChanged, this, &MainWindow::applyEvaluationFilter);
     connect(evaluation_, &EvaluationPanel::applyRequested, this, &MainWindow::applyEvaluationProfile);
+    connect(evaluation_, &EvaluationPanel::reanalysisRequested, this, &MainWindow::reanalyzeEvaluation);
+    connect(evaluation_, &EvaluationPanel::sceneReviewRequested, this, &MainWindow::showEvaluationSceneErrors);
+    connect(evaluation_, &EvaluationPanel::externalReportImportRequested, this, &MainWindow::importEvaluationReport);
     connect(historyTable_, &QTableWidget::cellDoubleClicked, this, [this](int row, int) {
         if (busy_ || row < 0 || row >= history_.size()) return;
         auto entry = history_[row].toObject();
@@ -170,6 +176,11 @@ QString MainWindow::evaluationFingerprint() const
     config.insert("model_class_id", evaluation_ ? evaluation_->modelClassId() : 0);
     config.insert("dataset_class_id", evaluation_ ? evaluation_->datasetClassId() : 0);
     config.insert("dataset_fingerprint", datasetManifest_.value("fingerprint"));
+    if (evaluation_) {
+        config.insert("max_detections", evaluation_->maxDetections());
+        config.insert("score_floor", evaluation_->scoreFloor());
+        config.insert("cpu_threads", evaluation_->cpuThreads());
+    }
     return QString::fromLatin1(QCryptographicHash::hash(QJsonDocument(config).toJson(QJsonDocument::Compact), QCryptographicHash::Sha256).toHex());
 }
 
@@ -371,6 +382,12 @@ void MainWindow::startEvaluation()
     request.modelClassId = evaluation_->modelClassId(); request.datasetClassId = evaluation_->datasetClassId();
     request.confidence = confidence_->value(); request.matchIou = evaluation_->matchIou();
     request.scanStart = evaluation_->scanStart(); request.scanEnd = evaluation_->scanEnd(); request.scanStep = evaluation_->scanStep();
+    request.scoreFloor = evaluation_->scoreFloor(); request.batchSize = evaluation_->batchSize();
+    request.config.maxDetections = evaluation_->maxDetections(); request.config.cpuThreads = evaluation_->cpuThreads();
+    const auto outputOptions = evaluation_->analysisOptions();
+    request.figureFormats.clear();
+    for (const auto &format : outputOptions.value("figure_formats").toArray()) request.figureFormats.append(format.toString());
+    request.figureDpi = outputOptions.value("figure_dpi").toInt(300);
     request.outputRoot = dataRoot_; request.projectRoot = projectRoot_;
     evaluationRunConfig_ = request.config;
     evaluationRunFingerprint_ = evaluationFingerprint();
@@ -399,6 +416,73 @@ void MainWindow::startEvaluation()
         if (evaluationReviewActive_ && !evaluationReviewPending_ && !evaluationReviewAvailable_)
             applyEvaluationFilter(evaluationReviewFilter_);
         refreshHistory();
+        if (closing_) QTimer::singleShot(0, this, &QWidget::close);
+    });
+    worker->start();
+}
+
+void MainWindow::reanalyzeEvaluation(const QJsonObject &options)
+{
+    if (busy_ || evaluationWorker_ || evaluationReport_.isEmpty() || evaluationDirectory_.isEmpty()) return;
+    if (evaluationPreviewCancellation_) evaluationPreviewCancellation_->store(true);
+    if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
+    ++evaluationPreviewGeneration_; ++evaluationFilterGeneration_;
+    auto *worker = new vision::EvaluationWorker(this);
+    evaluationWorker_ = worker;
+    worker->configureReanalysis(evaluationDirectory_, options, dataRoot_, projectRoot_);
+    setBusy(true);
+    connect(worker, &vision::EvaluationWorker::progress, this, [this](int, int, const QString &stage) {
+        progress_->setRange(0, 0); showNotice(stage);
+    });
+    connect(worker, &vision::EvaluationWorker::failed, this, [this](const QString &message) { showNotice(message, true); });
+    connect(worker, &vision::EvaluationWorker::reportReady, this, [this](const QJsonObject &report, const QString &directory) {
+        acceptEvaluationReport(report, directory, true);
+    });
+    connect(worker, &QThread::finished, this, [this, worker] {
+        evaluationWorker_ = nullptr; worker->deleteLater(); setBusy(false); refreshHistory();
+        if (evaluationReviewActive_) applyEvaluationFilter(evaluationReviewFilter_);
+        if (closing_) QTimer::singleShot(0, this, &QWidget::close);
+    });
+    worker->start();
+}
+
+void MainWindow::showEvaluationSceneErrors(const QString &group)
+{
+    if (busy_ || evaluationReport_.isEmpty()) return;
+    const auto details = evaluationReport_.value("groups").toObject().value(group).toObject();
+    if (!details.value("available").toBool() || !details.value("sample_images").isArray()) {
+        showNotice("该报告没有可用的已审核场景名单，请生成新版评估或重新分析。", true); return;
+    }
+    const QString filter = "scene:" + group;
+    if (evaluationPreviewFilter_->findData(filter) < 0)
+        evaluationPreviewFilter_->addItem("场景错例 · " + group, filter);
+    evaluationReviewSelectFirst_ = true;
+    applyEvaluationFilter(filter);
+    workbenchTabs_->setCurrentIndex(0);
+}
+
+void MainWindow::importEvaluationReport(const QString &source, const QJsonObject &options)
+{
+    if (busy_ || evaluationWorker_ || source.isEmpty()) return;
+    if (evaluationPreviewCancellation_) evaluationPreviewCancellation_->store(true);
+    if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
+    ++evaluationPreviewGeneration_; ++evaluationFilterGeneration_;
+    auto *worker = new vision::EvaluationWorker(this);
+    evaluationWorker_ = worker;
+    const auto imported = std::make_shared<QString>();
+    worker->configureExternalImport(source, options, dataRoot_, projectRoot_);
+    setBusy(true);
+    connect(worker, &vision::EvaluationWorker::progress, this, [this](int, int, const QString &) {
+        progress_->setRange(0, 0); showNotice("正在校验并导入脚本评估快照，不执行模型推理…");
+    });
+    connect(worker, &vision::EvaluationWorker::failed, this, [this](const QString &error) { showNotice(error, true); });
+    connect(worker, &vision::EvaluationWorker::reportReady, this, [imported](const QJsonObject &, const QString &path) {
+        *imported = path;
+    });
+    connect(worker, &QThread::finished, this, [this, worker, imported] {
+        evaluationWorker_ = nullptr; worker->deleteLater(); setBusy(false);
+        if (!closing_ && !imported->isEmpty()) loadEvaluationReport(*imported, true);
+        else if (!closing_ && evaluationReviewActive_) applyEvaluationFilter(evaluationReviewFilter_);
         if (closing_) QTimer::singleShot(0, this, &QWidget::close);
     });
     worker->start();
@@ -441,7 +525,8 @@ void MainWindow::acceptEvaluationReport(const QJsonObject &report, const QString
         auto association = modelEvaluationProfiles_.value(request.value("model_path").toString()).toMap();
         if (association.value("model_sha256").toString() != request.value("model_sha256").toString()) association.clear();
         association.insert("report_directory", directory);
-        association.insert("model_identity", request.value("model_identity").toString());
+        if (report.value("allow_apply_profile").toBool(true) && !request.value("model_identity").toString().isEmpty())
+            association.insert("model_identity", request.value("model_identity").toString());
         association.insert("model_sha256", request.value("model_sha256").toString());
         association.insert("split", datasetManifest_.value("split").toString());
         association.insert("full_split", report.value("full_split").toBool());
@@ -456,7 +541,7 @@ void MainWindow::acceptEvaluationReport(const QJsonObject &report, const QString
     if (!busy_) applyEvaluationFilter("all");
 }
 
-void MainWindow::loadEvaluationReport(const QString &directory)
+void MainWindow::loadEvaluationReport(const QString &directory, bool record)
 {
     if (busy_ || directory.isEmpty()) return;
     cancelPendingDatasetSessionRestore();
@@ -473,9 +558,9 @@ void MainWindow::loadEvaluationReport(const QString &directory)
     files_.clear(); queue_->clear(); sourceKind_ = vision::SourceKind::Images;
     evaluation_->setDataset(manifest); showGroundTruth_->show();
     setBusy(true); selectRoute(0);
-    populateDatasetQueue(manifest, [this, report, directory] {
+    populateDatasetQueue(manifest, [this, report, directory, record] {
         setBusy(false);
-        acceptEvaluationReport(report, directory, false);
+        acceptEvaluationReport(report, directory, record);
         evaluationRunFingerprint_.clear(); // Historical snapshot remains explicit.
         queue_->setCurrentRow(files_.isEmpty() ? -1 : 0);
         updateSourceUi();
@@ -614,10 +699,16 @@ void MainWindow::navigateEvaluationReview(int step)
 void MainWindow::applyEvaluationFilter(const QString &filter)
 {
     if (busy_ || evaluationReport_.isEmpty()) return;
-    if (!QStringList{"all", "errors", "fp", "fn", "negative_fp"}.contains(filter)) return;
+    const bool sceneFilter = filter.startsWith("scene:");
+    QStringList sceneImages;
+    if (sceneFilter) {
+        const auto group = evaluationReport_.value("groups").toObject().value(filter.mid(6)).toObject();
+        if (!group.value("available").toBool() || !group.value("sample_images").isArray()) return;
+        for (const auto &value : group.value("sample_images").toArray()) sceneImages.append(value.toString());
+    } else if (!QStringList{"all", "errors", "fp", "fn", "negative_fp"}.contains(filter)) return;
     evaluationReviewFilter_ = filter;
     evaluationReviewActive_ = true;
-    evaluation_->setImageFilter(filter, false);
+    evaluation_->setImageFilter(sceneFilter ? "errors" : filter, false);
     {
         QSignalBlocker blocker(evaluationPreviewFilter_);
         evaluationPreviewFilter_->setCurrentIndex(evaluationPreviewFilter_->findData(filter));
@@ -638,10 +729,10 @@ void MainWindow::applyEvaluationFilter(const QString &filter)
     const auto files = files_; const auto indices = evaluationSampleIndices_; const auto directory = evaluationDirectory_;
     const auto threshold = evaluation_->analysisThreshold();
     const auto result = std::make_shared<vision::EvaluationReviewSummary>();
-    auto *thread = QThread::create([result, files, indices, directory, threshold, parameters, filter, cancelled] {
+    auto *thread = QThread::create([result, files, indices, directory, threshold, parameters, filter, cancelled, sceneImages] {
         *result = vision::summarizeEvaluationSamples(files, indices, directory,
             parameters.value("model_class_id").toInt(), parameters.value("dataset_class_id").toInt(), threshold,
-            parameters.value("match_iou").toDouble(.5), filter, [cancelled] { return cancelled->load(); });
+            parameters.value("match_iou").toDouble(.5), filter, [cancelled] { return cancelled->load(); }, sceneImages);
     });
     connect(thread, &QThread::finished, this, [this, result, generation, cancelled, files, directory, selectFirst] {
         if (cancelled->load() || generation != evaluationFilterGeneration_ || busy_ || !evaluationReviewActive_ ||
@@ -692,6 +783,9 @@ void MainWindow::applyEvaluationFilter(const QString &filter)
 void MainWindow::applyEvaluationProfile(double threshold)
 {
     if (busy_ || evaluationReport_.isEmpty()) return;
+    if (!evaluationReport_.value("allow_apply_profile").toBool(true)) {
+        showNotice("导入报告缺少完整的原始后端配置，仅供分析，不能自动采用检测配置。", true); return;
+    }
     const auto request = evaluationReport_.value("request").toObject();
     const QString path = request.value("model_path").toString();
     if (QFileInfo(path).absoluteFilePath() != QFileInfo(modelPath_).absoluteFilePath() ||
@@ -715,8 +809,8 @@ void MainWindow::applyEvaluationProfile(double threshold)
     evaluationReviewActive_ = true; // The immutable evaluation view remains available after adopting parameters.
     selectQueueImage(queue_->currentRow());
     persist(); refreshModelLibrary();
-    showNotice(QString("已采用检测配置 · 置信度 %1 · 原始类别 ID %2 · 尺寸/颜色/NMS/设备与报告一致")
-        .arg(threshold, 0, 'f', 3).arg(request.value("model_class_id").toInt()));
+    showNotice(QString("已采用检测配置 · 置信度 %1 · 原始类别 ID %2 · 每图最多 %3 框 · 尺寸/颜色/NMS/设备与报告一致")
+        .arg(threshold, 0, 'f', 3).arg(request.value("model_class_id").toInt()).arg(c.maxDetections));
 }
 
 void MainWindow::runEvaluationSmoke(const QString &directory, const QString &requestPath)
@@ -774,6 +868,17 @@ void MainWindow::runEvaluationSmoke(const QString &directory, const QString &req
             controls->findChild<QDoubleSpinBox *>("evaluationScanStartSpin")->setValue(request.value("scan_start").toDouble(.05));
             controls->findChild<QDoubleSpinBox *>("evaluationScanEndSpin")->setValue(request.value("scan_end").toDouble(.95));
             controls->findChild<QDoubleSpinBox *>("evaluationScanStepSpin")->setValue(request.value("scan_step").toDouble(.01));
+            controls->findChild<QSpinBox *>("evaluationBatchSizeSpin")->setValue(request.value("batch_size").toInt(1));
+            controls->findChild<QSpinBox *>("evaluationCpuThreadsSpin")->setValue(request.value("cpu_threads").toInt());
+            controls->findChild<QSpinBox *>("evaluationMaxDetectionsSpin")->setValue(request.value("max_detections").toInt(300));
+            controls->findChild<QDoubleSpinBox *>("evaluationScoreFloorSpin")->setValue(request.value("score_floor").toDouble(.001));
+            if (request.value("figure_formats").isArray()) {
+                const auto formats = request.value("figure_formats").toArray();
+                evaluation_->findChild<QCheckBox *>("evaluationFigurePngCheck")->setChecked(formats.contains("png"));
+                evaluation_->findChild<QCheckBox *>("evaluationFigureSvgCheck")->setChecked(formats.contains("svg"));
+                evaluation_->findChild<QCheckBox *>("evaluationFigurePdfCheck")->setChecked(formats.contains("pdf"));
+            }
+            evaluation_->findChild<QSpinBox *>("evaluationFigureDpiSpin")->setValue(request.value("figure_dpi").toInt(300));
             evaluation_->setMode(true); detectionRange_->setCurrentIndex(0); queue_->setCurrentRow(0);
             if (!evaluation_->canEvaluate() || !runButton_->isEnabled()) {
                 finish(false, "Cannot start evaluation: " + evaluation_->validationMessage()); return;
@@ -787,6 +892,14 @@ void MainWindow::runEvaluationSmoke(const QString &directory, const QString &req
                 finish(false, "Incomplete evaluation: " + statusLabel_->text()); return;
             }
             saveScreenshot(output + "/evaluation-analysis.png");
+            if (auto *tabs = evaluation_->findChild<QTabWidget *>("evaluationAnalysisTabs")) {
+                const QStringList names{"overview", "thresholds", "diagnostics", "scenes", "report"};
+                for (int page = 1; page < tabs->count(); ++page) {
+                    tabs->setCurrentIndex(page);
+                    saveScreenshot(output + "/evaluation-" + names.value(page, QString::number(page)) + ".png");
+                }
+                tabs->setCurrentIndex(0);
+            }
             workbenchTabs_->setCurrentIndex(0); queue_->setCurrentRow(0); reviewEvaluationImage(0); *stage = 2;
         } else if (*stage == 2 && !lastResult_.image.isNull() && exportButton_->isEnabled()) {
             QString error;

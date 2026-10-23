@@ -2,6 +2,7 @@
 #include "ui/evaluationpanel.h"
 #include <QApplication>
 #include <QComboBox>
+#include <QCheckBox>
 #include <QDoubleSpinBox>
 #include <QElapsedTimer>
 #include <QFile>
@@ -20,6 +21,7 @@
 #include <QSpinBox>
 #include <QStandardItemModel>
 #include <QTableWidget>
+#include <QTabWidget>
 #include <QToolButton>
 #include <QTemporaryDir>
 #include <QTimer>
@@ -257,6 +259,7 @@ private slots:
     void tableAndCurveSelectActualRows()
     {
         EvaluationPanel panel; panel.resize(850, 900); panel.setReport(report()); panel.show();
+        control<QTabWidget>(panel, "evaluationAnalysisTabs")->setCurrentIndex(1); QTest::qWait(10);
         auto *table = control<QTableWidget>(panel, "evaluationThresholdTable"); QVERIFY(table); QCOMPARE(table->rowCount(), 4);
         const QRect row = table->visualItemRect(table->item(3, 0));
         QTest::mouseClick(table->viewport(), Qt::LeftButton, Qt::NoModifier, row.center());
@@ -437,6 +440,191 @@ private slots:
         QTest::keyClick(settings, Qt::Key_Escape); QTRY_VERIFY(settings->isHidden()); panel->setModel(model());
         QVERIFY(status->text().contains("可评估")); QVERIFY(items->item(1)->isEnabled());
         panelOwner.reset();
+    }
+    void advancedInferenceOptionsValidateAndLock()
+    {
+        EvaluationPanel panel; panel.setDataset(dataset()); panel.setModel(model());
+        QCOMPARE(panel.batchSize(), 1); QCOMPARE(panel.cpuThreads(), 0); QCOMPARE(panel.maxDetections(), 300); QCOMPARE(panel.scoreFloor(), .001);
+        control<QSpinBox>(panel, "evaluationBatchSizeSpin")->setValue(8);
+        control<QSpinBox>(panel, "evaluationCpuThreadsSpin")->setValue(4);
+        control<QSpinBox>(panel, "evaluationMaxDetectionsSpin")->setValue(600);
+        QCOMPARE(panel.batchSize(), 8); QCOMPARE(panel.cpuThreads(), 4); QCOMPARE(panel.maxDetections(), 600); QVERIFY(panel.canEvaluate());
+        auto onnx = model(); onnx.modelPath = "/models/yolo.onnx"; panel.setModel(onnx);
+        QVERIFY(!panel.canEvaluate()); QVERIFY(panel.validationMessage().contains("ONNX"));
+        control<QSpinBox>(panel, "evaluationCpuThreadsSpin")->setValue(0); QVERIFY(panel.canEvaluate());
+        control<QDoubleSpinBox>(panel, "evaluationScoreFloorSpin")->setValue(.1);
+        QVERIFY(!panel.canEvaluate()); QVERIFY(panel.validationMessage().contains("扫描起点"));
+        control<QDoubleSpinBox>(panel, "evaluationScoreFloorSpin")->setValue(.001); QVERIFY(panel.canEvaluate());
+        panel.setBusy(true);
+        for (const char *name : {"evaluationBatchSizeSpin", "evaluationCpuThreadsSpin", "evaluationMaxDetectionsSpin", "evaluationScoreFloorSpin"})
+            QVERIFY2(!control<QWidget>(panel, name)->isEnabled(), name);
+    }
+    void diagnosticMetricsAndMatricesRetainCachedFields()
+    {
+        EvaluationPanel panel; auto data = report(); auto row = operating(.25, .7, .9, .79, .2);
+        row.insert("no_ball_fpr_wilson95", QJsonArray{.02, .62}); row.insert("fp_boxes_per_image", .333);
+        row.insert("no_ball_fp_boxes_per_image", 1.5); row.insert("positive_image_miss_rate", .25);
+        row.insert("no_ball_false_positive_boxes", 3);
+        row.insert("presence_confusion", QJsonObject{{"TP", 2}, {"FP", 1}, {"FN", 0}, {"TN", 4}});
+        auto metrics = row; metrics.insert("mAP50", .85); metrics.insert("mAP75", .75); metrics.insert("mAP50_95", .65);
+        data.insert("metrics", metrics); data.insert("rows", QJsonArray{row}); panel.setReport(data);
+        auto *details = control<QTableWidget>(panel, "evaluationExtendedMetricsTable"); QVERIFY(details);
+        QCOMPARE(details->item(0, 1)->text(), QString("75.0%")); QCOMPARE(details->item(0, 3)->text(), QString("0.333"));
+        QCOMPARE(details->item(2, 1)->text(), QString("2.0% ～ 62.0%")); QCOMPARE(details->item(2, 3)->text(), QString("3"));
+        auto *presence = control<QTableWidget>(panel, "evaluationPresenceMatrix");
+        auto *localization = control<QTableWidget>(panel, "evaluationLocalizationMatrix");
+        QCOMPARE(presence->item(1, 1)->text(), QString("TN  4")); QCOMPARE(localization->item(1, 1)->text(), QString("TN  不定义"));
+        panel.setOperatingMetrics(operating(.25, .7, .9, .79, .2));
+        QCOMPARE(details->item(0, 3)->text(), QString("0.333")); QCOMPARE(presence->item(1, 1)->text(), QString("TN  4"));
+        data.insert("full_split", false); panel.setReport(data); QCOMPARE(details->item(0, 1)->text(), QString("N/A"));
+        panel.setReport(report()); QCOMPARE(details->item(0, 3)->text(), QString("N/A")); QCOMPARE(presence->item(1, 1)->text(), QString("TN  N/A"));
+    }
+    void reportTabsAndPlotsDoNotChangeAnalysisOrRunConfiguration()
+    {
+        EvaluationPanel panel; auto data = report(); auto metrics = data.value("metrics").toObject();
+        metrics.insert("ap_per_iou", QJsonArray{.9, .88, .85, .83, .8, .75, .7, .6, .5, .4}); data.insert("metrics", metrics);
+        data.insert("pr_curve", QJsonObject{{"recall", QJsonArray{0., .5, 1.}}, {"precision_envelope", QJsonArray{1., .9, .2}}});
+        panel.setDataset(dataset()); panel.setModel(model()); panel.setReport(data); panel.resize(1100, 900); panel.show();
+        QSignalSpy config(&panel, &EvaluationPanel::configChanged), threshold(&panel, &EvaluationPanel::thresholdChanged), apply(&panel, &EvaluationPanel::applyRequested);
+        auto *tabs = control<QTabWidget>(panel, "evaluationAnalysisTabs"); QCOMPARE(tabs->count(), 5);
+        for (int i = 0; i < tabs->count(); ++i) tabs->setCurrentIndex(i);
+        tabs->setCurrentIndex(2); auto *kind = control<QComboBox>(panel, "evaluationDiagnosticPlotCombo");
+        for (int i = 0; i < kind->count(); ++i) {
+            kind->setCurrentIndex(i); QTest::qWait(1);
+            const auto image = control<QWidget>(panel, "evaluationDiagnosticPlot")->grab().toImage(); QVERIFY(!image.isNull());
+        }
+        QCOMPARE(panel.analysisThreshold(), .25); QCOMPARE(config.count(), 0); QCOMPARE(threshold.count(), 0); QCOMPARE(apply.count(), 0);
+    }
+    void reanalysisOptionsAreIndependentAndSourceReportStaysImmutable()
+    {
+        QTemporaryDir area; QVERIFY(area.isValid()); QFile original(area.path() + "/report.json"); QVERIFY(original.open(QIODevice::WriteOnly));
+        const QByteArray bytes = QJsonDocument(report()).toJson(); original.write(bytes); original.close();
+        EvaluationPanel panel; panel.setReport(report(), area.path());
+        QSignalSpy config(&panel, &EvaluationPanel::configChanged), requested(&panel, &EvaluationPanel::reanalysisRequested), apply(&panel, &EvaluationPanel::applyRequested);
+        auto *run = control<QPushButton>(panel, "evaluationReanalyzeButton"); QVERIFY(run->isEnabled());
+        control<QDoubleSpinBox>(panel, "evaluationReanalysisIouSpin")->setValue(.65);
+        control<QDoubleSpinBox>(panel, "evaluationReanalysisConfidenceSpin")->setValue(.4);
+        control<QDoubleSpinBox>(panel, "evaluationReanalysisStartSpin")->setValue(.1);
+        control<QDoubleSpinBox>(panel, "evaluationReanalysisEndSpin")->setValue(.8);
+        control<QDoubleSpinBox>(panel, "evaluationReanalysisStepSpin")->setValue(.02);
+        control<QCheckBox>(panel, "evaluationFigurePdfCheck")->setChecked(true); control<QSpinBox>(panel, "evaluationFigureDpiSpin")->setValue(600);
+        run->click(); QCOMPARE(requested.count(), 1); const auto options = requested.takeFirst().at(0).toJsonObject();
+        QCOMPARE(options.value("match_iou").toDouble(), .65); QCOMPARE(options.value("confidence").toDouble(), .4);
+        QCOMPARE(options.value("scan_start").toDouble(), .1); QCOMPARE(options.value("scan_step").toDouble(), .02);
+        QCOMPARE(options.value("figure_dpi").toInt(), 600); QCOMPARE(options.value("figure_formats").toArray(), (QJsonArray{"png", "svg", "pdf"}));
+        QCOMPARE(panel.matchIou(), .5); QCOMPARE(panel.scanStart(), .05); QCOMPARE(panel.analysisThreshold(), .25);
+        QCOMPARE(config.count(), 0); QCOMPARE(apply.count(), 0); QCOMPARE(panel.report(), report());
+        control<QDoubleSpinBox>(panel, "evaluationReanalysisStartSpin")->setValue(.9); QVERIFY(!run->isEnabled());
+        QVERIFY(control<QLabel>(panel, "evaluationReanalysisValidationLabel")->text().contains("起点"));
+        control<QDoubleSpinBox>(panel, "evaluationReanalysisStartSpin")->setValue(.1); QVERIFY(run->isEnabled());
+        control<QDoubleSpinBox>(panel, "evaluationReanalysisConfidenceSpin")->setValue(0); QVERIFY(!run->isEnabled());
+        QVERIFY(control<QLabel>(panel, "evaluationReanalysisValidationLabel")->text().contains("采集下限"));
+        control<QDoubleSpinBox>(panel, "evaluationReanalysisConfidenceSpin")->setValue(.4); QVERIFY(run->isEnabled());
+        for (const char *name : {"evaluationFigurePngCheck", "evaluationFigureSvgCheck", "evaluationFigurePdfCheck"}) control<QCheckBox>(panel, name)->setChecked(false);
+        QVERIFY(!run->isEnabled()); QVERIFY(control<QLabel>(panel, "evaluationReanalysisValidationLabel")->text().contains("格式"));
+        control<QCheckBox>(panel, "evaluationFigurePdfCheck")->setChecked(true); panel.setBusy(true); QVERIFY(!run->isEnabled());
+        QVERIFY(!control<QDoubleSpinBox>(panel, "evaluationReanalysisIouSpin")->isEnabled());
+        QVERIFY(original.open(QIODevice::ReadOnly)); QCOMPARE(original.readAll(), bytes);
+    }
+    void sceneTableDistinguishesUnknownAndKnownAndRequestsOriginalGroup()
+    {
+        QTemporaryDir area; QVERIFY(area.isValid()); EvaluationPanel panel; auto data = report();
+        auto all = data.value("metrics").toObject(); all.insert("available", true); all.insert("review_status", "not_applicable");
+        all.insert("sample_images", QJsonArray{"/dataset/positive.png", "/dataset/negative.png", "/dataset/second.png"});
+        auto small = all; small.insert("review_status", "reviewed"); small.insert("images", 2); small.insert("mAP75", .55);
+        data.insert("groups", QJsonObject{{"All", all}, {"Small", small}, {"Blurred", QJsonObject{{"available", false}, {"review_status", "unreviewed"}}}});
+        data.insert("scene_review", QJsonObject{{"reviewed_images", 2}, {"unreviewed_images", 1}}); panel.setReport(data, area.path());
+        auto *table = control<QTableWidget>(panel, "evaluationSceneMetricsTable"); QCOMPARE(table->rowCount(), 6);
+        QCOMPARE(table->item(1, 4)->text(), QString("55.0%")); QCOMPARE(table->item(3, 1)->text(), QString("未审核")); QCOMPARE(table->item(3, 2)->text(), QString("N/A"));
+        auto *review = control<QPushButton>(panel, "evaluationReviewSceneButton"); QSignalSpy requested(&panel, &EvaluationPanel::sceneReviewRequested);
+        table->selectRow(1); QVERIFY(review->isEnabled()); review->click(); QCOMPARE(requested.count(), 1); QCOMPARE(requested.at(0).at(0).toString(), QString("Small"));
+        table->selectRow(3); QVERIFY(!review->isEnabled()); review->click(); QCOMPARE(requested.count(), 1);
+        panel.setAnalysisThreshold(.5); QVERIFY(control<QLabel>(panel, "evaluationSceneHint")->text().contains("0.250"));
+        QVERIFY(control<QLabel>(panel, "evaluationSceneHint")->text().contains("0.500"));
+        auto legacy = report(); legacy.insert("groups", QJsonObject{{"Small", operating(.25, .7, .9, .79, .2)}});
+        panel.setReport(legacy, area.path()); table->selectRow(1); QVERIFY(!review->isEnabled());
+        QVERIFY(review->toolTip().contains("重新分析")); QCOMPARE(table->item(1, 6)->text(), QString("70.0%"));
+    }
+    void responsiveDiagnosticLayouts()
+    {
+        QTemporaryDir area; QVERIFY(area.isValid());
+        QWidget window; window.setObjectName("workspace"); auto *layout = new QVBoxLayout(&window);
+        auto *fixture = new QLabel("界面布局测试 · 合成指标（非模型实测）"); fixture->setStyleSheet("color:#E8C688; font-size:11px;"); layout->addWidget(fixture);
+        auto *panel = new EvaluationPanel; layout->addWidget(panel->controlsWidget()); layout->addWidget(panel, 1);
+        panel->setDataset(dataset()); panel->setModel(model()); auto data = report();
+        auto metrics = data.value("metrics").toObject(); metrics.insert("mAP75", .75);
+        metrics.insert("ap_per_iou", QJsonArray{.9, .88, .85, .83, .8, .75, .7, .6, .5, .4}); data.insert("metrics", metrics);
+        data.insert("pr_curve", QJsonObject{{"recall", QJsonArray{0., .5, 1.}}, {"precision_envelope", QJsonArray{1., .9, .2}}});
+        auto group = metrics; group.insert("available", true); group.insert("review_status", "reviewed");
+        group.insert("sample_images", QJsonArray{"/dataset/positive.png", "/dataset/negative.png", "/dataset/second.png"});
+        data.insert("groups", QJsonObject{{"All", group}, {"Small", group}, {"Occluded", group}, {"Blurred", group}, {"No Ball", group}, {"No difficulty", group}});
+        data.insert("scene_review", QJsonObject{{"reviewed_images", 3}, {"unreviewed_images", 0}}); panel->setReport(data, area.path());
+        QFile theme(QStringLiteral(VISION_PROJECT_DIR) + "/assets/fluent-dark.qss"); QVERIFY(theme.open(QIODevice::ReadOnly)); window.setStyleSheet(QString::fromUtf8(theme.readAll()));
+        const QString capture = qEnvironmentVariable("VISION_EVALUATION_PANEL_FIXTURE_DIR");
+        if (!capture.isEmpty()) QVERIFY(QDir().mkpath(capture));
+        auto *tabs = control<QTabWidget>(*panel, "evaluationAnalysisTabs");
+        for (const QSize size : {QSize(1100, 720), QSize(1440, 900)}) {
+            window.resize(size); window.show(); QTest::qWait(15);
+            QCOMPARE(window.size(), size);
+            for (int i = 0; i < tabs->count(); ++i) {
+                tabs->setCurrentIndex(i); QTest::qWait(5);
+                const QRect tabsGeometry(tabs->mapTo(&window, QPoint()), tabs->size());
+                if (!capture.isEmpty()) QVERIFY(window.grab().save(QString("%1/%2x%3-tab-%4.png").arg(capture).arg(size.width()).arg(size.height()).arg(i)));
+                qInfo() << "layout_geometry" << size << "tab" << i << tabsGeometry << "window" << window.rect();
+                QVERIFY2(window.rect().contains(tabsGeometry), qPrintable(QString("tab %1 outside %2×%3").arg(i).arg(size.width()).arg(size.height())));
+                const auto *apply = control<QPushButton>(*panel, "evaluationApplyThresholdButton");
+                QVERIFY(window.rect().contains(QRect(apply->mapTo(&window, QPoint()), apply->size())));
+                auto *pageScroll = qobject_cast<QScrollArea *>(tabs->widget(i)); QVERIFY(pageScroll);
+                const auto pageImage = pageScroll->viewport()->grab().toImage(); QVERIFY(!pageImage.isNull());
+                const auto background = pageImage.pixelColor(1, 1);
+                QVERIFY2(background.red() < 100 && background.green() < 100 && background.blue() < 100, "tab page background must remain dark");
+                if (i == 3) {
+                    auto *sceneTable = control<QTableWidget>(*panel, "evaluationSceneMetricsTable");
+                    const auto tableImage = sceneTable->viewport()->grab().toImage();
+                    const auto tableBackground = tableImage.pixelColor(tableImage.width() - 4, tableImage.height() - 4);
+                    QVERIFY2(tableBackground.red() < 100 && tableBackground.green() < 100 && tableBackground.blue() < 100, "scene table background must remain dark");
+                }
+                pageScroll->verticalScrollBar()->setValue(pageScroll->verticalScrollBar()->maximum()); QTest::qWait(1);
+                const char *actionNames[]{"evaluationUseRecommendationButton", "evaluationThresholdTable", "evaluationPresenceMatrix", "evaluationReviewSceneButton", "evaluationImportExternalReportButton"};
+                auto *bottomAction = control<QWidget>(*panel, actionNames[i]); QVERIFY(bottomAction);
+                const QRect actionGeometry(bottomAction->mapTo(pageScroll->viewport(), QPoint()), bottomAction->size());
+                QVERIFY2(pageScroll->viewport()->rect().contains(actionGeometry), "page bottom action must be reachable within its scroller");
+                pageScroll->verticalScrollBar()->setValue(0);
+            }
+        }
+        qInfo() << "diagnostic_layout_evidence" << "synthetic_fixture_only" << "sizes 1100x720 1440x900" << "tabs" << tabs->count();
+    }
+    void externalSnapshotImportNeedsNoModelAndCannotApplyUnknownProfile()
+    {
+        QTemporaryDir area; QVERIFY(area.isValid()); EvaluationPanel panel;
+        auto *import = control<QPushButton>(panel, "evaluationImportExternalReportButton"); QVERIFY(import); QVERIFY(import->isEnabled());
+        QVERIFY(!control<QPushButton>(panel, "evaluationReanalyzeButton")->isEnabled());
+        QSignalSpy requested(&panel, &EvaluationPanel::externalReportImportRequested);
+        auto choose = [&](bool cancel) {
+            bool seen = false; QElapsedTimer elapsed; elapsed.start(); QTimer timer;
+            connect(&timer, &QTimer::timeout, this, [&] {
+                auto *dialog = qobject_cast<QFileDialog *>(QApplication::activeModalWidget()); if (!dialog) return;
+                if (dialog->windowTitle() != "导入脚本评估报告目录" || elapsed.elapsed() > 5000) { dialog->reject(); return; }
+                seen = true;
+                if (cancel) dialog->reject(); else { dialog->setDirectory(area.path()); QMetaObject::invokeMethod(dialog, "accept", Qt::QueuedConnection); }
+            });
+            timer.start(10); import->click(); timer.stop(); return seen;
+        };
+        QVERIFY(choose(false)); QCOMPARE(requested.count(), 1); const auto event = requested.takeFirst();
+        QCOMPARE(event[0].toString(), area.path()); QCOMPARE(event[1].toJsonObject(), panel.analysisOptions());
+        QVERIFY(choose(true)); QCOMPARE(requested.count(), 0);
+        panel.setBusy(true); QVERIFY(!import->isEnabled()); import->click(); QCOMPARE(requested.count(), 0); panel.setBusy(false); QVERIFY(import->isEnabled());
+        auto external = report(); external.insert("allow_apply_profile", false); panel.setReport(external, area.path());
+        QVERIFY(control<QLabel>(panel, "evaluationReportIdentity")->text().contains("颜色未记录"));
+        auto *apply = control<QPushButton>(panel, "evaluationApplyThresholdButton"); QVERIFY(!apply->isEnabled()); QVERIFY(apply->toolTip().contains("配置"));
+        QSignalSpy applied(&panel, &EvaluationPanel::applyRequested); apply->click(); QCOMPARE(applied.count(), 0);
+        QVERIFY(QMetaObject::invokeMethod(apply, "clicked", Qt::DirectConnection)); QCOMPARE(applied.count(), 0);
+        panel.setReport(report(), area.path()); QVERIFY(apply->isEnabled()); apply->click(); QCOMPARE(applied.count(), 1);
+        auto native = report(); auto nativeRequest = native.value("request").toObject();
+        nativeRequest.insert("config", QJsonObject{{"color_mode", "color"}}); native.insert("request", nativeRequest); panel.setReport(native, area.path());
+        QVERIFY(control<QLabel>(panel, "evaluationReportIdentity")->text().contains("彩色"));
+        nativeRequest.insert("config", QJsonObject{{"color_mode", "grayscale"}}); native.insert("request", nativeRequest); panel.setReport(native, area.path());
+        QVERIFY(control<QLabel>(panel, "evaluationReportIdentity")->text().contains("灰度"));
     }
     void captureFluentLayout()
     {

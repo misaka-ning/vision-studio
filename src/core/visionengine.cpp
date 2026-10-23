@@ -414,7 +414,7 @@ QVector<Prediction> decodeDetection(const cv::Mat &output, const ModelConfig &co
     if (candidates.size() > maxCandidates)
         candidates.resize(maxCandidates);
     QVector<Prediction> kept;
-    kept.reserve(std::min(300, int(candidates.size())));
+    kept.reserve(std::min(config.maxDetections, int(candidates.size())));
     for (const Prediction &candidate : candidates)
     {
         bool suppressed = false;
@@ -429,7 +429,7 @@ QVector<Prediction> decodeDetection(const cv::Mat &output, const ModelConfig &co
         }
         if (!suppressed)
             kept.append(candidate);
-        if (kept.size() >= 300)
+        if (kept.size() >= config.maxDetections)
             break;
     }
     return kept;
@@ -498,10 +498,15 @@ void VisionEngine::load(const ModelConfig &requestedConfig)
     if (config.deviceIndex < 0 || config.deviceIndex > 255)
         fail(QStringLiteral("CUDA 设备编号应在 0 到 255 之间。"));
     config.resolvedDevice = ComputeDevice::CPU;
+    config.resolvedCpuThreads = 0;
     config.deviceName = QStringLiteral("CPU");
     config.deviceNotice.clear();
     if (config.inputSize < 16 || config.inputSize > 4096)
         fail(QStringLiteral("输入尺寸应在 16 到 4096 像素之间。"));
+    if (config.maxDetections < 1 || config.maxDetections > 10000)
+        fail(QStringLiteral("最大检测数量应在 1 到 10000 之间。"));
+    if (config.cpuThreads < 0 || config.cpuThreads > 256)
+        fail(QStringLiteral("CPU 线程数应在 0 到 256 之间，0 表示自动。"));
     if (!std::isfinite(config.confidence) || config.confidence < 0 || config.confidence > 1 ||
         !std::isfinite(config.iou) || config.iou < 0 || config.iou > 1)
         fail(QStringLiteral("置信度和 NMS 阈值必须在 0 到 1 之间。"));
@@ -525,6 +530,10 @@ void VisionEngine::load(const ModelConfig &requestedConfig)
     }
     if (suffix != "onnx")
         fail(QStringLiteral("请选择 .onnx、.pt 或 .torchscript 模型文件。"));
+    // OpenCV exposes a process-global thread switch. Changing it here would
+    // interfere with model inspection and image workers sharing this process.
+    if (config.cpuThreads != 0)
+        fail(QStringLiteral("ONNX 后端暂不支持独立 CPU 线程设置，请将 CPU 线程设为自动（0）。"));
     QFile modelFile(config.modelPath);
     if (!modelFile.open(QIODevice::ReadOnly))
         fail(QStringLiteral("无法读取模型：%1").arg(modelFile.errorString()));
@@ -648,6 +657,43 @@ ModelConfig VisionEngine::inspectModel(const ModelConfig &requested, std::functi
     return engine.config();
 }
 
+int VisionEngine::maximumBatchSize() const noexcept
+{
+    return m_pt ? m_pt->maximumBatchSize() : 1;
+}
+
+QString VisionEngine::batchNotice() const
+{
+    if (maximumBatchSize() > 1)
+        return {};
+    return m_pt ? QStringLiteral("当前 TorchScript 或分类后端仅支持 batch=1，按单张执行。")
+                : QStringLiteral("当前 ONNX 后端使用 batch=1，按单张执行。节省内存且不更改静态模型输入。");
+}
+
+QVector<InferenceResult> VisionEngine::inferBatch(const QVector<QImage> &images,
+                                                const QStringList &sources)
+{
+    if (!loaded())
+        fail(QStringLiteral("请先加载 ONNX 或 PyTorch 模型。"));
+    if (images.isEmpty() || images.size() > maximumBatchSize())
+        fail(QStringLiteral("当前后端支持的真实批量大小为 1～%1，不能执行所请求的 %2 张图片。")
+                 .arg(maximumBatchSize()).arg(images.size()));
+    if (!sources.isEmpty() && sources.size() != images.size())
+        fail(QStringLiteral("批量图片与来源数量不一致。"));
+    if (m_cancellationCheck && m_cancellationCheck())
+        fail(QStringLiteral("模型推理已取消。"));
+    if (m_pt)
+    {
+        const auto results = m_pt->inferBatch(images, sources);
+        m_config = m_pt->config();
+        return results;
+    }
+    const auto result = infer(images.first(), sources.isEmpty() ? QString() : sources.first());
+    if (m_cancellationCheck && m_cancellationCheck())
+        fail(QStringLiteral("模型推理已取消。"));
+    return {result};
+}
+
 InferenceResult VisionEngine::infer(const QImage &image, const QString &source)
 {
     if (!loaded())
@@ -655,7 +701,11 @@ InferenceResult VisionEngine::infer(const QImage &image, const QString &source)
     if (image.isNull())
         fail(QStringLiteral("输入图像为空或无法解码。"));
     if (m_pt)
-        return m_pt->infer(image, source);
+    {
+        const auto result = m_pt->infer(image, source);
+        m_config = m_pt->config();
+        return result;
+    }
     QElapsedTimer totalTimer;
     totalTimer.start();
     try

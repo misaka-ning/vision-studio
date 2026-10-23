@@ -128,7 +128,8 @@ def bind_package(deb, app):
     """Bind all changed evaluation code plus inference/helpers to the final DEB."""
     fields, version = verify_gpu_deb.metadata(deb)
     paths = {"build/bin/vision-studio", "scripts/evaluation_worker.py", "scripts/evaluation_data.py",
-             "scripts/evaluation_metrics.py", "scripts/pt_worker.py", "scripts/model_convert.py",
+             "scripts/evaluation_metrics.py", "scripts/evaluation_reporting.py", "scripts/evaluation_snapshot.py", "scripts/evaluation_import.py",
+             "scripts/pt_worker.py", "scripts/model_convert.py",
              "run-installed.sh", "models/yolov5n.onnx", "models/yolov8n.pt"}
     matched = {}
     process = subprocess.Popen(["dpkg-deb", "--fsys-tarfile", str(deb)], stdout=subprocess.PIPE,

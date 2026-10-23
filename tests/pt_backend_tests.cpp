@@ -174,6 +174,103 @@ class PtBackendTests final : public QObject
         }
     }
 
+    void batchCapabilitiesAndAdvancedSettingsAreExplicit()
+    {
+        auto value = config();
+        value.cpuThreads = 1;
+        value.maxDetections = 1;
+        vision::VisionEngine engine;
+        engine.load(value);
+        QCOMPARE(engine.maximumBatchSize(), 32);
+        QCOMPARE(engine.config().resolvedCpuThreads, 1);
+        QVERIFY(engine.batchNotice().isEmpty());
+        const QImage original(imagePath);
+        QImage blank(192, 320, QImage::Format_RGB888);
+        blank.fill(Qt::black);
+        const auto results = engine.inferBatch({original, blank}, {"first", "second"});
+        QCOMPARE(results.size(), 2);
+        QCOMPARE(results[0].source, QString("first"));
+        QCOMPARE(results[1].source, QString("second"));
+        QCOMPARE(results[0].originalImage, original);
+        QCOMPARE(results[1].originalImage, blank);
+        QCOMPARE(results[0].predictions.size(), 1);
+        QCOMPARE(results[1].predictions.size(), 0);
+        const auto single = engine.inferBatch({original}, {"tail"});
+        QCOMPARE(single.size(), 1);
+        QCOMPARE(single[0].source, QString("tail"));
+        QVERIFY_EXCEPTION_THROWN(engine.inferBatch({}, {}), std::runtime_error);
+        QVERIFY_EXCEPTION_THROWN(engine.inferBatch({original, blank}, {"missing"}), std::runtime_error);
+        engine.load(config(channelFixture(3, true)));
+        QCOMPARE(engine.maximumBatchSize(), 1);
+        QVERIFY(!engine.batchNotice().isEmpty());
+        QVERIFY_EXCEPTION_THROWN(engine.inferBatch({original, blank}, {}), std::runtime_error);
+    }
+
+    void malformedBatchResponsesCannotLeakPartialOrPendingResults_data()
+    {
+        QTest::addColumn<QString>("mutation");
+        QTest::newRow("count") << QString("reply['results']=reply['results'][:1]");
+        QTest::newRow("batch-size") << QString("reply['batch_size']=1");
+        QTest::newRow("reorder") << QString("reply['results'][1]['index']=0");
+        QTest::newRow("sequence") << QString("reply['id']+=1");
+        QTest::newRow("task") << QString("reply['results'][1]['task']='classify'");
+        QTest::newRow("predictions") << QString("reply['results'][1]['predictions']=[{'class_id':2,'confidence':.8,'box':[0,0,10,10]}]");
+        QTest::newRow("error") << QString("reply={'ok':False,'id':request['id'],'error':'batch failed'}");
+    }
+
+    void malformedBatchResponsesCannotLeakPartialOrPendingResults()
+    {
+        QFETCH(QString, mutation);
+        const auto body = QByteArray(
+            "import sys,os,json\n"
+            "path=os.path.realpath(sys.argv[sys.argv.index('--model')+1])\n"
+            "print(json.dumps({'ok':True,'event':'ready','protocol':1,'task':'detect','layout':'v8',"
+            "'labels':['probe'],'model_path':path,'input_channels':3,'maximum_batch_size':32}),flush=True)\n"
+            "for line in sys.stdin:\n"
+            " request=json.loads(line)\n"
+            " if request.get('command')=='quit': break\n"
+            " reply={'ok':True,'id':request['id'],'batch_size':2,'results':["
+            "{'index':i,'task':'detect','predictions':[],'inference_ms':1.} for i in range(2)]}\n"
+            " ") + mutation.toUtf8() + "\n print(json.dumps(reply),flush=True)\n";
+        qputenv("VISION_STUDIO_PT_WORKER", helper("batch-protocol", body).toUtf8());
+        vision::VisionEngine engine;
+        engine.load(config());
+        const QImage image(imagePath);
+        QVERIFY_EXCEPTION_THROWN(engine.inferBatch({image, image}, {"one", "two"}), std::runtime_error);
+        QVERIFY(!engine.loaded());
+        qunsetenv("VISION_STUDIO_PT_WORKER");
+    }
+
+    void cancellingPendingBatchStopsWorkerWithoutReturningHalfBatch()
+    {
+        const auto body = QByteArray(
+            "import sys,os,json,time\n"
+            "path=os.path.realpath(sys.argv[sys.argv.index('--model')+1])\n"
+            "print(json.dumps({'ok':True,'event':'ready','protocol':1,'task':'detect','layout':'v8',"
+            "'labels':['probe'],'model_path':path,'input_channels':3,'maximum_batch_size':32}),flush=True)\n"
+            "for line in sys.stdin: time.sleep(30)\n");
+        qputenv("VISION_STUDIO_PT_WORKER", helper("batch-cancel", body).toUtf8());
+        vision::VisionEngine engine;
+        engine.load(config());
+        std::atomic<bool> cancel{false};
+        engine.setCancellationCheck([&] { return cancel.load(); });
+        QElapsedTimer timer;
+        timer.start();
+        std::thread cancellation([&] {
+            std::this_thread::sleep_for(std::chrono::milliseconds(150));
+            cancel.store(true);
+        });
+        const QImage image(imagePath);
+        bool failed = false;
+        try { engine.inferBatch({image, image}, {}); }
+        catch (const std::exception &) { failed = true; }
+        cancellation.join();
+        QVERIFY(failed);
+        QVERIFY(timer.elapsed() < 2000);
+        QVERIFY(!engine.loaded());
+        qunsetenv("VISION_STUDIO_PT_WORKER");
+    }
+
     void realPtClassFilterMatchesOriginalIds_data()
     {
         QTest::addColumn<QString>("filename");
