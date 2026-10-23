@@ -118,7 +118,8 @@ class ConversionInferenceTests final : public QObject
         QVERIFY(QFile::copy(project_ + "/models/yolov5n.onnx", home + "/models/yolov5n.onnx"));
         QVERIFY(QFile::copy(project_ + "/scripts/pt_worker.py", home + "/scripts/pt_worker.py"));
         QVERIFY(QFile::copy(project_ + "/scripts/netron_server.py", home + "/scripts/netron_server.py"));
-        for (const QString &helper : {QString("evaluation_worker.py"), QString("evaluation_data.py"), QString("evaluation_metrics.py")})
+        for (const QString &helper : {QString("evaluation_worker.py"), QString("evaluation_data.py"), QString("evaluation_metrics.py"),
+                                      QString("evaluation_reporting.py")})
             QVERIFY(QFile::copy(project_ + "/scripts/" + helper, home + "/scripts/" + helper));
         QVERIFY(QFile::link(project_ + "/vendor", home + "/vendor"));
         QFile probe(home + "/scripts/gpu_probe.py");
