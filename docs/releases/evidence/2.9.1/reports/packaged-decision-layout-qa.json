@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "version": "2.9.1",
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_success": true,
+  "original_error_count": 0,
+  "final_deb_sha256": "549bf05f07db57c5f710d742b68530276f767b94561d3d22b8fb9c66500eed5c",
+  "final_elf_sha256": "138142879b5ab68a61f67439b26cadce7e1936141c5fb564e43de19c8d1141df",
+  "original_report_sha256": "090c069128300684111ce42aa7e1af7b1cb7f183da4c0e34cfc23aabbe0cea21",
+  "cases": [
+    {
+      "case": "pt_cpu",
+      "actual_backend": "cpu",
+      "checks_reopened": 25,
+      "geometry_groups_reopened": 6,
+      "boolean_checks": {
+        "configuration_unchanged_before_recommendation": true,
+        "current_and_recommended_markers_are_distinct": true,
+        "decision_controls_share_threshold_page": true,
+        "explicit_apply_allowed_for_verified_native_report": true,
+        "four_pages_and_order": true,
+        "only_explicit_apply_updates_detection_profile": true,
+        "original_report_preserved_and_initial_export_threshold_restored": true,
+        "real_full_val_recommendation_available": true,
+        "real_return_button_visible": true,
+        "real_review_button_enabled": true,
+        "recommendation_click_syncs_curve_table_and_visible_row": true,
+        "recommendation_does_not_adopt_or_reinfer": true,
+        "required_widgets_exist": true,
+        "return_preserves_threshold_page_strategy_and_splitter": true,
+        "review_button_opens_real_error_queue": true,
+        "review_does_not_adopt_reinfer_or_rewrite_report": true,
+        "splitter_has_two_noncollapsed_sections": true,
+        "splitter_resizes_chart_and_table": true,
+        "table_selection_syncs_current_point_and_visible_row": true,
+        "visible_at_1260x820": true,
+        "visible_at_1260x820_fpr": true,
+        "visible_at_1260x820_precision": true,
+        "visible_at_1366x900": true,
+        "visible_at_1366x900_fpr": true,
+        "visible_at_1366x900_precision": true
+      },
+      "automatic_geometry_checks": {
+        "ancestor_clipping_checked": true,
+        "initial_rows_fully_visible": true,
+        "label_contents_and_height_for_width_checked": true,
+        "six_groups_have_stable_observations": true
+      },
+      "original_case_report_sha256": "4adb46b500949a38256e3668dc347067adc4c4f033c0d1b8f826b16ccec19b39"
+    },
+    {
+      "case": "pt_cuda",
+      "actual_backend": "cuda",
+      "checks_reopened": 25,
+      "geometry_groups_reopened": 6,
+      "boolean_checks": {
+        "configuration_unchanged_before_recommendation": true,
+        "current_and_recommended_markers_are_distinct": true,
+        "decision_controls_share_threshold_page": true,
+        "explicit_apply_allowed_for_verified_native_report": true,
+        "four_pages_and_order": true,
+        "only_explicit_apply_updates_detection_profile": true,
+        "original_report_preserved_and_initial_export_threshold_restored": true,
+        "real_full_val_recommendation_available": true,
+        "real_return_button_visible": true,
+        "real_review_button_enabled": true,
+        "recommendation_click_syncs_curve_table_and_visible_row": true,
+        "recommendation_does_not_adopt_or_reinfer": true,
+        "required_widgets_exist": true,
+        "return_preserves_threshold_page_strategy_and_splitter": true,
+        "review_button_opens_real_error_queue": true,
+        "review_does_not_adopt_reinfer_or_rewrite_report": true,
+        "splitter_has_two_noncollapsed_sections": true,
+        "splitter_resizes_chart_and_table": true,
+        "table_selection_syncs_current_point_and_visible_row": true,
+        "visible_at_1260x820": true,
+        "visible_at_1260x820_fpr": true,
+        "visible_at_1260x820_precision": true,
+        "visible_at_1366x900": true,
+        "visible_at_1366x900_fpr": true,
+        "visible_at_1366x900_precision": true
+      },
+      "automatic_geometry_checks": {
+        "ancestor_clipping_checked": true,
+        "initial_rows_fully_visible": true,
+        "label_contents_and_height_for_width_checked": true,
+        "six_groups_have_stable_observations": true
+      },
+      "original_case_report_sha256": "e76252b1a5a44a9ce005868eb606ceb3c8ee1e5ff1f70646168eb37abf0d6fbb"
+    }
+  ],
+  "native_methods_reopened": [
+    "decisionSidebarSharesCurveTableAndIndependentApply",
+    "recommendationScrollsLongThresholdTableAndReviewIsExplicit",
+    "reportTabsAndPlotsDoNotChangeAnalysisOrRunConfiguration",
+    "responsiveDiagnosticLayouts"
+  ],
+  "automatic_layout_gate_has_no_manual_screenshot_approval_input": true,
+  "no_accuracy_performance_or_private_metrics_published": true
+}

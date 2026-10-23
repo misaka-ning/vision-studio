@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "version": "2.9.1",
+  "archives_are_not_uploaded": true,
+  "archives": [
+    {
+      "file": "dataset-session-artifacts.zip",
+      "bytes": 6509817,
+      "sha256": "a93f4f4c5cd477d81d51af00a2d6b867450ce5efbb5ef29a9920fda6aa865a7f",
+      "archive_published": false
+    },
+    {
+      "file": "evaluation-artifacts.zip",
+      "bytes": 16294008,
+      "sha256": "56021fda402c4ae2a315fb3f2f5f1e8a63110ac859a3ac3b8cb87a42e5d6ad68",
+      "archive_published": false
+    },
+    {
+      "file": "folder-artifacts.zip",
+      "bytes": 2770893,
+      "sha256": "f7e65f0cad8481a7fdc14225f2f123b8d3c4313c098f485b275efe3dcd41975a",
+      "archive_published": false
+    },
+    {
+      "file": "model-yaml-artifacts.zip",
+      "bytes": 1931110,
+      "sha256": "84364bf2552ee89635d08ba6f0fb97dd18b7721090eb3ebb8a3ab1e57401c04c",
+      "archive_published": false
+    },
+    {
+      "file": "namespace-artifacts.zip",
+      "bytes": 5901903,
+      "sha256": "c7b8000168c993788ed2a291e88d1d4cada1aaa18e2fdd1d6531ad66c4da3fd3",
+      "archive_published": false
+    },
+    {
+      "file": "preview-drop-artifacts.zip",
+      "bytes": 3144791,
+      "sha256": "4798ccb1ccc3abc6a681b73aa5cadb534471ec5578ef7ef423ca2ab69697ea02",
+      "archive_published": false
+    }
+  ]
+}
