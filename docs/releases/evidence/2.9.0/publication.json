@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "version": "2.9.0",
+  "repository": "misaka-ning/vision-studio",
+  "release_url": "https://github.com/misaka-ning/vision-studio/releases/tag/v2.9.0",
+  "tag": "v2.9.0",
+  "commit": "8197ddaed89ca86e6aadeadb718d6e9277949d94",
+  "public_projection": true,
+  "not_an_application_qa_report": true,
+  "recorded_at_utc": "2026-10-23T03:24:27.479625+00:00",
+  "remote_verification_success": true,
+  "latest_snapshot_tag_matches": true,
+  "draft": false,
+  "prerelease": false,
+  "manual_asset_count": 3,
+  "assets": [
+    {
+      "name": "vision-studio_2.9.0-1_amd64.deb",
+      "bytes": 387327820,
+      "sha256": "6fbb9f3f7fecbceda4bd765ad434bd649d802bdfb230873c01179235c4e6e5f6"
+    },
+    {
+      "name": "vision-studio-2.9.0-complete-source.tar.xz",
+      "bytes": 917063444,
+      "sha256": "efa9bc12095e7662a381c3d092c07c08c52828faf8bdf3df3815e78e88b93032"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 207,
+      "sha256": "a0b54f33f2d39db799b2783cd871713c4e4df340be3663765288790c45e2c16c"
+    }
+  ],
+  "publication_receipt_sha256": "9998fd05896ef5663aed1b86abd7ede41ffbd1398709c8c3b977bb90b6a2f43f",
+  "fresh_verification_receipt_sha256": "89b21eae59c8493a753470bae2806d569e32417b327f46d987c5bb1ece5dd951",
+  "latest_receipt_sha256": "af16d41c12e0fb05c95416d399373de8795724f857d0cd87fe6ad389a20621e7",
+  "host_install": {
+    "success": true,
+    "debian_version": "2.9.0-1",
+    "application_version": "2.9.0",
+    "installed_binary_sha256": "c06afad894676789e626bc01c0c6a567246aafe4652a671c4c4ea637f8077ecc",
+    "protected_user_state_unchanged": true,
+    "local_receipt_sha256": "cdc4fa1863a8062ccc4b37884f3a9cff5db5e5fb9406a6833709ab6d17c1811f"
+  },
+  "primary_sync": {
+    "success": true,
+    "fast_forward": true,
+    "copied_release_file_count": 68,
+    "protected_user_files_unchanged": true,
+    "local_receipt_sha256": "580274eeba522d1025bf26a5f3564b4fa3e0250f0fd9cb002860ad6ef18fd672"
+  },
+  "local_retention": {
+    "success": true,
+    "retained_versions": [
+      "2.9.0",
+      "2.8.0"
+    ],
+    "old_version": "2.7.1",
+    "removed_old_generated_copy_count": 3,
+    "removed_unpublished_candidate_root_count": 16,
+    "removed_release_copy_count": 2,
+    "manual_exact_session_identity_exception_count": 2,
+    "full_protected_process_fd_visibility_claimed": false,
+    "process_identity_information_published": false,
+    "local_execution_receipt_sha256": [
+      "c495d96f2cd3b524f573f13a2e7cb3213414981bf4a0d8be09631c25bc716f80",
+      "9bab08ff4fdab130b99ffd7748a93abb5646eb3a88b9a80f412cb93851b5ef6f",
+      "e12ac9bb722aa8de7c9bf09d96ce4e18565569b80cc76bf8390bd0ff9d546712",
+      "715571aed876a161a23c00d1054a182ce18408e40728fcf9d4acad4687f6cc16"
+    ],
+    "protection_checks": {
+      "protected_user_files_unchanged": true,
+      "shared_sdk_runtime_plugins_and_gpu_metadata_unchanged": true,
+      "exact_metadata_and_original_diagnostic_logs_preserved": true,
+      "all_manifest_commitments_preserved": true,
+      "immutable_historical_qa_originals_preserved": true,
+      "both_retained_release_core_assets_unchanged": true
+    },
+    "local_post_cleanup_summary_sha256": "bf29558eeb5fc32b6b0dcfce62e6737382bfc69c2d52d875fadfe6803cc80fbc"
+  }
+}
