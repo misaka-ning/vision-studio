@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "version": "2.9.1",
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "created_at_utc": "2026-10-23T05:30:57.023883+00:00",
+  "published": true,
+  "url": "https://github.com/misaka-ning/vision-studio/releases/tag/v2.9.1",
+  "tag": "v2.9.1",
+  "tag_commit": "7f14bb46ef43170297c3bd98d27ae2f08b99d9ea",
+  "annotated_tag_verified": true,
+  "draft": false,
+  "prerelease": false,
+  "latest_verified": true,
+  "github_published_at": "2026-10-23T05:15:01Z",
+  "manual_asset_count": 3,
+  "assets": {
+    "vision-studio_2.9.1-1_amd64.deb": {
+      "bytes": 387290644,
+      "sha256": "549bf05f07db57c5f710d742b68530276f767b94561d3d22b8fb9c66500eed5c"
+    },
+    "vision-studio-2.9.1-complete-source.tar.xz": {
+      "bytes": 917340456,
+      "sha256": "e4fddce4442de2fd4e1a7eccd5679ce062b2147a4f885e44c17e5c0e97a56346"
+    },
+    "SHA256SUMS": {
+      "bytes": 207,
+      "sha256": "aa08b683e3be193edac85b65931596142c8decae959eb0dec049611938e553c4"
+    }
+  },
+  "source_primary_sync_verified": true,
+  "retained_versions": [
+    "2.9.1",
+    "2.9.0"
+  ],
+  "both_local_release_roots_verified": true,
+  "old_generated_roots_removed": 4,
+  "old_release_directories_removed": 2,
+  "protected_user_files_unchanged": true,
+  "shared_environment_unchanged": true,
+  "old_qa_originals_and_metadata_backups_retained": true,
+  "complete_process_descriptor_visibility_claimed": false,
+  "fresh_exact_limited_visibility_reviews_used": true,
+  "private_process_identities_published": false,
+  "physical_freed_byte_count_claimed": false,
+  "host_installation": {
+    "completed": false,
+    "installer_started": false,
+    "observed_installed_debian_version": "2.9.0-1",
+    "deferred_for_running_application": true
+  },
+  "whole_original_sha256_commitments": {
+    "publish-result.json": "50ad63d2eae8b5d9cdfde9f30d95534953bf82771a39e01787502301e49ed2fc",
+    "verify-published-final.json": "966a93c68014dc05b7bb5a83d047bde5d63ef2c97f781308edccec3d07ba209f",
+    "latest-published-final.json": "a540dcb8e87f52c0baa4c634c7f0b0e705fd957e91aacbc034ab4a25f0599c16",
+    "tag-and-main-ci.json": "605dde4e0bf7e3221c47a1c1b8e9aced55db2e21f574ef1c224287c7f019b5b8",
+    "primary-sync.json": "769b088f6edb619efa4b1529b0fc8fd38ec473b72dc7e8aa32ca6e2cfd8c7de0",
+    "formal-execution.json": "550f4275038723c068643377c695d1f477913eff796de7eed4f40701d84ee5d2",
+    "development-execution.json": "2cee2466113a411b1670468b55dcbe636040f5b1bfff7cdc0e031b2634177dad",
+    "official-prune-preservation.json": "41729b2392169233352ff7475ff2813b4843e34db2ff2e2cda1ecfc7703ba9c0",
+    "post-cleanup-final-state.json": "881dcd5008b83c7cdee3a9698c01e640eba12f3abb2ba1c93e03fca6c67012d0",
+    "release-qa-preservation.json": "31433fd9555db3ad1504a3d49c2587607fe141ae1edbc601703773fc6eae6f9f",
+    "host-observation.json": "e6648ea02f3fd533e1ba46bee49a4908e45cf53f888fe6050531b6496c948c3e"
+  }
+}
