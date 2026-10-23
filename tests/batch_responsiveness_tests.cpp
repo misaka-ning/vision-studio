@@ -137,7 +137,8 @@ class BatchResponsivenessTests final : public QObject
         const QString project = QStringLiteral(VISION_PROJECT_DIR);
         for (const QString &path : {QStringLiteral("models/yolov5n.onnx"), QStringLiteral("assets/bus.jpg"),
                                     QStringLiteral("scripts/netron_server.py"), QStringLiteral("scripts/evaluation_worker.py"),
-                                    QStringLiteral("scripts/evaluation_data.py"), QStringLiteral("scripts/evaluation_metrics.py")})
+                                    QStringLiteral("scripts/evaluation_data.py"), QStringLiteral("scripts/evaluation_metrics.py"),
+                                    QStringLiteral("scripts/evaluation_reporting.py")})
             QVERIFY(QFile::copy(project + "/" + path, fixture_->path() + "/" + path));
         qputenv("VISION_STUDIO_HOME", fixture_->path().toUtf8());
         qputenv("VISION_STUDIO_DATA_DIR", (fixture_->path() + QStringLiteral("/output")).toUtf8());
@@ -226,6 +227,7 @@ class BatchResponsivenessTests final : public QObject
         QVERIFY(window_->busy_); QVERIFY(!clear->isEnabled());
         QTRY_VERIFY_WITH_TIMEOUT(!window_->busy_ && !window_->evaluationWorker_ && !window_->queuePopulating_, 30000);
         disconnect(partialProbe);
+        QVERIFY2(images->count() == count, qPrintable(window_->statusLabel_->toolTip() + " | " + window_->lastError_));
         QCOMPARE(images->count(), count); QCOMPARE(window_->files_, files);
         QVERIFY(probeScheduled); QVERIFY(sawPartialPopulation); QVERIFY(controlsLocked);
         QCOMPARE(window_->datasetManifest_.value("samples").toArray().size(), count);
