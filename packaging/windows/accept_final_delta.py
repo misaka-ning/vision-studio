@@ -3,7 +3,7 @@
 """Bind an unaffected full functional run to a final, narrowly changed installer.
 
 Every payload file must be identical apart from the explicitly rechecked GPU
-probe and the build provenance marker. The final installed payload is rehashed,
+probe, migration helper and build provenance marker. The installed payload is rehashed,
 CUDA probes/inference are rerun, then uninstall/data retention is rechecked.
 """
 import argparse
