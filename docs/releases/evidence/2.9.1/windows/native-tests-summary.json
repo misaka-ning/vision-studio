@@ -1,0 +1,193 @@
+{
+  "success": true,
+  "method": "Latest affected-suite retest replaces the earlier failed suite; original rounds retained in raw logs.",
+  "results": [
+    {
+      "name": "vision-batch-responsiveness-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 30.703,
+      "log_directory": "build-windows-2.9.1/native-tests-final-1/vision-batch-responsiveness-tests"
+    },
+    {
+      "name": "vision-conversion-inference-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 157.656,
+      "log_directory": "build-windows-2.9.1/native-tests-final-3/vision-conversion-inference-tests"
+    },
+    {
+      "name": "vision-conversion-ui-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 4.078,
+      "log_directory": "build-windows-2.9.1/native-tests-final-1/vision-conversion-ui-tests"
+    },
+    {
+      "name": "vision-core-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 2.031,
+      "log_directory": "build-windows-2.9.1/native-tests-final-1/vision-core-tests"
+    },
+    {
+      "name": "vision-cpu-runtime-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 0.453,
+      "log_directory": "build-windows-2.9.1/native-tests-final-2/vision-cpu-runtime-tests"
+    },
+    {
+      "name": "vision-dataset-session-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 0.813,
+      "log_directory": "build-windows-2.9.1/native-tests-final-1/vision-dataset-session-tests"
+    },
+    {
+      "name": "vision-dataset-session-ui-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 40.36,
+      "log_directory": "build-windows-2.9.1/native-tests-final-1/vision-dataset-session-ui-tests"
+    },
+    {
+      "name": "vision-evaluation-import-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 33.656,
+      "log_directory": "build-windows-2.9.1/native-tests-final-1/vision-evaluation-import-tests"
+    },
+    {
+      "name": "vision-evaluation-integration-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 196.735,
+      "log_directory": "build-windows-2.9.1/native-tests-final-2/vision-evaluation-integration-tests"
+    },
+    {
+      "name": "vision-evaluation-panel-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 4.875,
+      "log_directory": "build-windows-2.9.1/native-tests-final-3/vision-evaluation-panel-tests"
+    },
+    {
+      "name": "vision-evaluation-python-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 39.531,
+      "log_directory": "build-windows-2.9.1/native-tests-final-2/vision-evaluation-python-tests"
+    },
+    {
+      "name": "vision-evaluation-reporting-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 20.265,
+      "log_directory": "build-windows-2.9.1/native-tests-final-1/vision-evaluation-reporting-tests"
+    },
+    {
+      "name": "vision-evaluation-snapshot-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 12.172,
+      "log_directory": "build-windows-2.9.1/native-tests-final-1/vision-evaluation-snapshot-tests"
+    },
+    {
+      "name": "vision-evaluation-worker-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 172.406,
+      "log_directory": "build-windows-2.9.1/native-tests-final-1/vision-evaluation-worker-tests"
+    },
+    {
+      "name": "vision-gpu-runtime-tests",
+      "status": "not-applicable",
+      "reason": "POSIX-specific installer suite; Windows uses actual GPU preparation and CUDA acceptance instead."
+    },
+    {
+      "name": "vision-gpu-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 316.188,
+      "log_directory": "build-windows-2.9.1/native-tests-final-2/vision-gpu-tests"
+    },
+    {
+      "name": "vision-inference-delivery-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 2.157,
+      "log_directory": "build-windows-2.9.1/native-tests-final-1/vision-inference-delivery-tests"
+    },
+    {
+      "name": "vision-input-drop-ui-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 46.656,
+      "log_directory": "build-windows-2.9.1/native-tests-final-2/vision-input-drop-ui-tests"
+    },
+    {
+      "name": "vision-model-conversion-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 233.11,
+      "log_directory": "build-windows-2.9.1/native-tests-final-2/vision-model-conversion-tests"
+    },
+    {
+      "name": "vision-model-yaml-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 0.141,
+      "log_directory": "build-windows-2.9.1/native-tests-final-1/vision-model-yaml-tests"
+    },
+    {
+      "name": "vision-modelviewer-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 47.453,
+      "log_directory": "build-windows-2.9.1/native-tests-final-2/vision-modelviewer-tests"
+    },
+    {
+      "name": "vision-netron-server-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 5.156,
+      "log_directory": "build-windows-2.9.1/native-tests-final-1/vision-netron-server-tests"
+    },
+    {
+      "name": "vision-pt-batch-python-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 36.593,
+      "log_directory": "build-windows-2.9.1/native-tests-final-1/vision-pt-batch-python-tests"
+    },
+    {
+      "name": "vision-pt-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 302.11,
+      "log_directory": "build-windows-2.9.1/native-tests-final-1/vision-pt-tests"
+    },
+    {
+      "name": "vision-recording-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 18.391,
+      "log_directory": "build-windows-2.9.1/native-tests-final-2/vision-recording-tests"
+    },
+    {
+      "name": "vision-scope-filter-ui-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 64.109,
+      "log_directory": "build-windows-2.9.1/native-tests-final-1/vision-scope-filter-ui-tests"
+    },
+    {
+      "name": "vision-ui-tests",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 70.265,
+      "log_directory": "build-windows-2.9.1/native-tests-final-1/vision-ui-tests"
+    }
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "schema_version": 2,
+  "success": true,
+  "profile": "online",
+  "version": "2.9.1",
+  "sha256": "8ba9eb197d5fcf9ac06f152cc8883d54e8c2d33a9da319516d22110987cb7e30",
+  "checks": [
+    {
+      "name": "default-userprofile-directory",
+      "passed": true,
+      "path": "E:\\vision-studio\\build-windows-2.9.1\\installer-online-final-2\\isolated-user-profile\\VisionStudio",
+      "isolated_userprofile": true
+    },
+    {
+      "name": "install-custom-directory",
+      "passed": true
+    },
+    {
+      "name": "all-payload-paths-and-sizes",
+      "passed": true,
+      "files": 2675,
+      "sha256_files": 2675
+    },
+    {
+      "name": "no-source-docs-examples",
+      "passed": true
+    },
+    {
+      "name": "online-no-runtime-onnx",
+      "passed": true,
+      "seconds": 2.5,
+      "report": "online-no-runtime-onnx\\smoke-report.json"
+    },
+    {
+      "name": "online-runtime-preparation",
+      "passed": true,
+      "seconds": 50.25,
+      "report": "online-runtime-preparation\\cpu-runtime-setup-report.json"
+    },
+    {
+      "name": "online-runtime-offline-reuse",
+      "passed": true,
+      "seconds": 1.563,
+      "report": "online-runtime-offline-reuse\\cpu-runtime-setup-report.json"
+    },
+    {
+      "name": "installed-onnx-cpu",
+      "passed": true,
+      "seconds": 2.39,
+      "report": "installed-onnx-cpu\\smoke-report.json"
+    },
+    {
+      "name": "installed-pt-cpu",
+      "passed": true,
+      "seconds": 7.703,
+      "report": "installed-pt-cpu\\smoke-report.json"
+    },
+    {
+      "name": "installed-model-views",
+      "passed": true,
+      "seconds": 4.875,
+      "report": "installed-model-views\\model-display-report.json"
+    },
+    {
+      "name": "installed-pt-model-views",
+      "passed": true,
+      "seconds": 5.203,
+      "report": "installed-pt-model-views\\model-display-report.json"
+    },
+    {
+      "name": "installed-conversion-onnx",
+      "passed": true,
+      "seconds": 9.969,
+      "report": "installed-conversion-onnx\\conversion-smoke-report.json"
+    },
+    {
+      "name": "installed-conversion-torchscript",
+      "passed": true,
+      "seconds": 29.844,
+      "report": "installed-conversion-torchscript\\conversion-smoke-report.json"
+    },
+    {
+      "name": "installed-evaluation",
+      "passed": true,
+      "seconds": 20.578,
+      "report": "installed-evaluation\\evaluation-smoke-report.json"
+    },
+    {
+      "name": "installed-dataset-session",
+      "passed": true,
+      "seconds": 2.437,
+      "report": "installed-dataset-session\\dataset-session-smoke-report.json"
+    },
+    {
+      "name": "installed-preview-drop",
+      "passed": true,
+      "seconds": 14.234,
+      "report": "installed-preview-drop\\preview-drop-smoke-report.json"
+    },
+    {
+      "name": "installed-onnx-cuda",
+      "passed": true,
+      "seconds": 3.625,
+      "report": "installed-onnx-cuda\\smoke-report.json"
+    },
+    {
+      "name": "installed-pt-cuda",
+      "passed": true,
+      "seconds": 7.75,
+      "report": "installed-pt-cuda\\smoke-report.json"
+    },
+    {
+      "name": "installed-recording",
+      "passed": true,
+      "dependency_root": "E:\\vision-studio\\build-windows-2.9.1\\installer-online-final-2\\安装路径 Space\\VisionStudio\\bin",
+      "extra_test_only_dependency": "Qt6Test.dll in the isolated QA tool folder; never packaged"
+    },
+    {
+      "name": "isolated-developer-paths",
+      "passed": true,
+      "observed_modules": 207
+    },
+    {
+      "name": "upgrade-reinstall",
+      "passed": true
+    },
+    {
+      "name": "upgrade-preserves-user-files",
+      "passed": true
+    },
+    {
+      "name": "uninstall",
+      "passed": true
+    },
+    {
+      "name": "uninstall-preserves-user-files",
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Current Windows 11 host with SDK/Python paths isolated and DLL paths audited; no clean VM or Windows 10 test.",
+    "External download proxies were blocked for CPU acceptance; the physical host network remained connected.",
+    "Desktop icon task disabled; isolated Start Menu group used; existing app registration and Start Menu links restored.",
+    "No physical webcam tested; real synthetic-video and recording tests use installed DLLs.",
+    "Functional checks before the last GPU probe script correction are combined with final installer payload equality and affected CUDA/uninstall retests; see final_delta and the unchanged original report."
+  ],
+  "verification_method": "Aggregate: complete functional acceptance plus exact file comparison and final installed affected-function retest",
+  "earlier_full_installer_sha256": "2fdeaa811f1d159d130db23c96a9f68cce4baf0e1c036245d1c86e0d3441ffeb",
+  "earlier_full_report": "E:\\vision-studio\\build-windows-2.9.1\\installer-online-final-2\\installer-qa.json",
+  "final_delta": {
+    "changed_payload_files": [
+      "scripts/cleanup_install.ps1",
+      "scripts/gpu_probe.py",
+      "windows-install.json"
+    ],
+    "identical_payload_files": 2672,
+    "installed_bytes": 379682685,
+    "checks": [
+      {
+        "name": "all-payload-paths-and-sizes",
+        "passed": true,
+        "files": 2675,
+        "sha256_files": 2675
+      },
+      {
+        "name": "no-source-docs-examples",
+        "passed": true
+      },
+      {
+        "name": "final-onnx-cuda",
+        "passed": true,
+        "seconds": 3.172,
+        "report": "final-onnx-cuda\\smoke-report.json"
+      },
+      {
+        "name": "final-pt-cuda",
+        "passed": true,
+        "seconds": 7.203,
+        "report": "final-pt-cuda\\smoke-report.json"
+      },
+      {
+        "name": "final-uninstall-preserves-user-files",
+        "passed": true
+      }
+    ],
+    "gpu_runtime": "E:\\vision-studio\\build-windows-2.9.1\\gpu-preparation-final-retry\\runtime",
+    "final_installer_sha256": "8ba9eb197d5fcf9ac06f152cc8883d54e8c2d33a9da319516d22110987cb7e30"
+  }
+}
