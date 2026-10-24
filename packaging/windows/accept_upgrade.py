@@ -13,7 +13,8 @@ def main():
     for name in ('qa-root','legacy','offline','online','gpu-runtime'):
         p.add_argument('--'+name,type=Path,required=True)
     a=p.parse_args()
-    job=Acceptance(SimpleNamespace(qa_root=a.qa_root,gpu_runtime=a.gpu_runtime,installer=a.offline))
+    job=Acceptance(SimpleNamespace(qa_root=a.qa_root,gpu_runtime=a.gpu_runtime,installer=a.offline,
+                                   fixtures=Path(__file__).resolve().parents[2]))
     protected={}
     def unchanged():
         if any(not path.is_file() or sha(path)!=value for path,value in protected.items()):
