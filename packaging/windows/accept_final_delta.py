@@ -38,6 +38,7 @@ def main():
     try:
         with Registration():
             job.setup('install-final-delta',job.install); job.payload()
+            installed_bytes=sum(path.stat().st_size for path in job.install.rglob('*') if path.is_file())
             job.smoke('--smoke','final-onnx-cuda',('--device','cuda'))
             job.smoke('--smoke-pt','final-pt-cuda',('--device','cuda'))
             sentinel=job.install/'private-final-user-model.pt'; sentinel.write_bytes(b'private retained model')
@@ -50,6 +51,7 @@ def main():
             earlier_full_installer_sha256=previous['sha256'],
             earlier_full_report=str(a.previous_report),
             final_delta={'changed_payload_files':sorted(changed),'identical_payload_files':len(before)-len(changed),
+                         'installed_bytes':installed_bytes,
                          'checks':job.checks,'gpu_runtime':str(a.gpu_runtime),'final_installer_sha256':sha(a.installer)})
         report['limitations'].append('Functional checks before the last GPU probe script correction are combined with final installer payload equality and affected CUDA/uninstall retests; see final_delta and the unchanged original report.')
         dump(job.root/'installer-qa.json',report)
