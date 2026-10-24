@@ -36,9 +36,10 @@ $keepRuntime = $false
 if (-not $RuntimeOnly -and (Test-Path -LiteralPath $inventory -PathType Leaf) -and $descriptor.inventory_sha256) {
     $keepRuntime = (FileSha256 $inventory) -eq $descriptor.inventory_sha256
 }
-$removed = @(); $preserved = @()
+$removed = [Collections.Generic.List[string]]::new()
+$preserved = [Collections.Generic.List[string]]::new()
 # Validate the entire old manifest before deleting anything.
-$safe = @()
+$safe = [Collections.Generic.List[object]]::new()
 foreach ($entry in $old) {
     $name = [string]$entry.path
     if ([string]::IsNullOrWhiteSpace($name) -or $name.Contains('\') -or [IO.Path]::IsPathRooted($name) -or
@@ -47,7 +48,7 @@ foreach ($entry in $old) {
     }
     $target = [IO.Path]::GetFullPath((Join-Path $root $name))
     if (-not $target.StartsWith($root+'\', [StringComparison]::OrdinalIgnoreCase)) { throw 'Previous payload path escaped installation.' }
-    $safe += @{entry=$entry;target=$target}
+    $safe.Add(@{entry=$entry;target=$target})
 }
 foreach ($item in $safe) {
     $entry = $item.entry; $target = $item.target
@@ -60,12 +61,15 @@ foreach ($item in $safe) {
     }
     if ($linked -or (Get-Item -LiteralPath $target).Length -ne $entry.bytes -or
         (FileSha256 $target) -ne $entry.sha256) {
-        $preserved += $entry.path; continue
+        $preserved.Add([string]$entry.path); continue
     }
     Remove-Item -LiteralPath $target -Force
-    $removed += $entry.path
+    $removed.Add([string]$entry.path)
     $folder = Split-Path -Parent $target
-    while ($folder.Length -gt $root.Length -and -not @(Get-ChildItem -LiteralPath $folder -Force).Count) {
+    while ($folder.Length -gt $root.Length) {
+        $entries = [IO.Directory]::EnumerateFileSystemEntries($folder).GetEnumerator()
+        try { $empty = -not $entries.MoveNext() } finally { $entries.Dispose() }
+        if (-not $empty) { break }
         Remove-Item -LiteralPath $folder -Force
         $folder = Split-Path -Parent $folder
     }

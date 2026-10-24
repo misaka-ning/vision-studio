@@ -53,10 +53,12 @@ Name: "chinesesimplified"; MessagesFile: "ChineseSimplified.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: checkedonce
 
 [Files]
-Source: "{#StageDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+; Migration metadata is extracted before installation. Keep it at the front
+; of the solid stream so upgrading does not decompress the CPU payload twice.
 Source: "{#StageDir}\WINDOWS-FILES.json"; DestName: "incoming-files.json"; Flags: dontcopy
 Source: "{#StageDir}\cpu-runtime.json"; DestName: "incoming-runtime.json"; Flags: dontcopy
 Source: "cleanup_install.ps1"; Flags: dontcopy
+Source: "{#StageDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\Vision Studio"; Filename: "{app}\bin\vision-studio.exe"; WorkingDir: "{app}"

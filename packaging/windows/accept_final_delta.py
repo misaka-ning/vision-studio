@@ -26,7 +26,7 @@ def main():
     after={r['path']:r for r in json.loads(a.final_manifest.read_text())}
     if before.keys()!=after.keys(): raise RuntimeError('The final payload member set changed')
     changed={path for path in before if before[path]!=after[path]}
-    if changed!={'scripts/gpu_probe.py','windows-install.json'}:
+    if changed!={'scripts/gpu_probe.py','scripts/cleanup_install.ps1','windows-install.json'}:
         raise RuntimeError('Unexpected payload difference: '+str(changed))
     job=Acceptance(SimpleNamespace(qa_root=a.qa_root,gpu_runtime=a.gpu_runtime,installer=a.installer,
                                    fixtures=a.fixtures,runtime_archive=a.runtime_archive))
