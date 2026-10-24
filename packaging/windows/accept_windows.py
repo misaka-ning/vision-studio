@@ -106,13 +106,13 @@ class Acceptance:
                  '/NOICONS','/MERGETASKS=!desktopicon', '/GROUP=Vision Studio QA '+self.root.name,
                  '/LANG=chinesesimplified', '/LOG='+str(self.root/(name+'-setup.log'))]
         if target is not None: command.append('/DIR='+str(target))
-        self.run(command,name,env=env)
+        self.run(command,name,env=env,timeout=1800)
 
     def uninstall(self, name, target=None):
         target=target or self.install
         files=sorted(target.glob('unins*.exe'))
         if len(files)!=1: raise RuntimeError('Expected exactly one current uninstaller')
-        self.run([files[0],'/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART','/LOG='+str(self.root/(name+'-setup.log'))],name)
+        self.run([files[0],'/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART','/LOG='+str(self.root/(name+'-setup.log'))],name,timeout=1800)
 
     def smoke(self, option, name, extra=(), report=None):
         destination=self.root/name
