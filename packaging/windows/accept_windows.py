@@ -30,6 +30,9 @@ class Registration:
 
     def __enter__(self):
         import winreg as r
+        start=Path(os.environ['APPDATA'])/'Microsoft/Windows/Start Menu/Programs/Vision Studio'
+        self.shortcuts={p:(p.read_bytes() if p.is_file() else None) for p in
+            (start/'Vision Studio.lnk',start/'卸载 Vision Studio.lnk',start/'Uninstall Vision Studio.lnk')}
         self.saved = None
         try:
             with r.OpenKey(r.HKEY_CURRENT_USER, self.path, 0, r.KEY_READ | r.KEY_WOW64_64KEY) as key:
@@ -47,6 +50,11 @@ class Registration:
         if self.saved is not None:
             with r.CreateKeyEx(r.HKEY_CURRENT_USER, self.path, 0, r.KEY_WRITE | r.KEY_WOW64_64KEY) as key:
                 for name, value, kind in self.saved: r.SetValueEx(key, name, 0, kind, value)
+        for path,value in self.shortcuts.items():
+            if value is None:
+                if path.is_file(): path.unlink()
+            else:
+                path.parent.mkdir(parents=True,exist_ok=True); path.write_bytes(value)
 
 
 class Acceptance:
@@ -95,7 +103,8 @@ class Acceptance:
 
     def setup(self, name, target=None, installer=None, env=None):
         command=[installer or self.a.installer,'/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART','/SP-',
-                 '/NOICONS','/MERGETASKS=!desktopicon', '/LANG=chinesesimplified', '/LOG='+str(self.root/(name+'-setup.log'))]
+                 '/NOICONS','/MERGETASKS=!desktopicon', '/GROUP=Vision Studio QA '+self.root.name,
+                 '/LANG=chinesesimplified', '/LOG='+str(self.root/(name+'-setup.log'))]
         if target is not None: command.append('/DIR='+str(target))
         self.run(command,name,env=env)
 
@@ -215,7 +224,7 @@ class Acceptance:
             'sha256':sha(self.a.installer),'checks':self.checks,
             'limitations':['Current Windows 11 host with SDK/Python paths isolated and DLL paths audited; no clean VM or Windows 10 test.',
                 'External download proxies were blocked for CPU acceptance; the physical host network remained connected.',
-                'Shortcut creation disabled to preserve existing desktop and Start Menu entries.',
+                'Desktop icon task disabled; isolated Start Menu group used; existing app registration and Start Menu links restored.',
                 'No physical webcam tested; real synthetic-video and recording tests use installed DLLs.']}
 
 

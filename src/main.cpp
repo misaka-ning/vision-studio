@@ -188,7 +188,9 @@ int main(int argc, char **argv)
                             ? vision::InputColorMode::Grayscale : vision::InputColorMode::Color;
                         vision::VisionEngine engine;
                         engine.load(config);
-                        const QString image = qEnvironmentVariable("VISION_STUDIO_HOME") + "/assets/bus.jpg";
+                        const QString fixtures = parser.value("smoke-input-root").isEmpty()
+                            ? qEnvironmentVariable("VISION_STUDIO_HOME") : parser.value("smoke-input-root");
+                        const QString image = fixtures + "/assets/bus.jpg";
                         const auto result = engine.infer(QImage(image), image);
                         report.insert("backend", engine.backendName());
                         report.insert("input_channels", engine.config().inputChannels);
