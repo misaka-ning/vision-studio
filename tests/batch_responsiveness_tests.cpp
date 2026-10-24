@@ -228,10 +228,10 @@ class BatchResponsivenessTests final : public QObject
         QTRY_VERIFY_WITH_TIMEOUT(!window_->busy_ && !window_->evaluationWorker_ && !window_->queuePopulating_, 30000);
         disconnect(partialProbe);
         QVERIFY2(images->count() == count, qPrintable(window_->statusLabel_->toolTip() + " | " + window_->lastError_));
-        QCOMPARE(images->count(), count); QCOMPARE(window_->files_, files);
+        QCOMPARE(images->count(), count); for (int i = 0; i < files.size(); ++i) QCOMPARE(QDir::fromNativeSeparators(window_->files_[i]), QDir::fromNativeSeparators(files[i]));
         QVERIFY(probeScheduled); QVERIFY(sawPartialPopulation); QVERIFY(controlsLocked);
         QCOMPARE(window_->datasetManifest_.value("samples").toArray().size(), count);
-        for (int row : {0, 1000, 1999}) QCOMPARE(images->item(row)->data(Qt::UserRole).toString(), files[row]);
+        for (int row : {0, 1000, 1999}) QCOMPARE(QDir::fromNativeSeparators(images->item(row)->data(Qt::UserRole).toString()), QDir::fromNativeSeparators(files[row]));
         images->setCurrentRow(0); images->scrollToItem(images->item(0));
         QTRY_COMPARE_WITH_TIMEOUT(view->result().source, files[0], 10000);
         QTRY_VERIFY_WITH_TIMEOUT(!view->result().image.isNull(), 10000);

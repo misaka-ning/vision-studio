@@ -2,6 +2,8 @@
 #include "core/gpuruntime.h"
 #include "core/visionengine.h"
 #include "ui/modelconversionpage.h"
+#include "ui/runtimesetup.h"
+#include "core/cpuruntime.h"
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDir>
@@ -12,6 +14,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QLineEdit>
+#include <QLabel>
+#include <memory>
 #include <QComboBox>
 #include <QPushButton>
 #include <QTimer>
@@ -34,8 +38,10 @@ int main(int argc, char **argv)
         if (!qEnvironmentVariableIsSet("VISION_STUDIO_HOME"))
             _wputenv_s(L"VISION_STUDIO_HOME", reinterpret_cast<const wchar_t *>(package.absolutePath().utf16()));
         qputenv("VISION_STUDIO_SYSTEM_INSTALL", "1");
-        if (!qEnvironmentVariableIsSet("VISION_STUDIO_PYTHON"))
-            _wputenv_s(L"VISION_STUDIO_PYTHON", reinterpret_cast<const wchar_t *>(package.filePath("runtime/python.exe").utf16()));
+        if (qEnvironmentVariable("VISION_STUDIO_PYTHON").isEmpty()) {
+            qunsetenv("PYTHONHOME");
+            qunsetenv("PYTHONPATH");
+        }
         qputenv("PYTHONNOUSERSITE", "1");
         qputenv("PYTHONDONTWRITEBYTECODE", "1");
         qputenv("PYTHONUTF8", "1");
@@ -55,6 +61,8 @@ int main(int argc, char **argv)
     parser.addVersionOption();
     parser.addOption({"screenshot", "保存工作台截图并退出", "path"});
     parser.addOption({"smoke", "执行真实示例 ONNX 推理、导出和 UI 自检后退出", "directory"});
+    parser.addOption({"smoke-input-root", "外部验收模型及图片目录", "path"});
+    parser.addOption({"smoke-cpu-runtime", "准备 CPU 运行环境并保存实际验收结果", "directory"});
     parser.addOption({"smoke-pt", "执行真实 .pt 推理、导出和 UI 自检后退出", "directory"});
     parser.addOption({"smoke-model", "执行真实模型解析、四种视图与缓存自检后退出", "directory"});
     parser.addOption({"smoke-conversion", "执行模型转换界面、导出与实际推理自检后退出", "directory"});
@@ -69,6 +77,8 @@ int main(int argc, char **argv)
     parser.addOption({"device", "推理设备：auto、cpu 或 cuda", "mode"});
     parser.addOption({"gpu-index", "NVIDIA GPU 索引（默认 0）", "index", "0"});
     parser.process(app);
+    if (parser.isSet("smoke-input-root"))
+        qputenv("VISION_STUDIO_SMOKE_INPUT_ROOT", QFileInfo(parser.value("smoke-input-root")).absoluteFilePath().toUtf8());
     const QString device = parser.value("device").toLower();
     bool validIndex = false;
     const int gpuIndex = parser.value("gpu-index").toInt(&validIndex);
@@ -85,7 +95,38 @@ int main(int argc, char **argv)
                                                  : vision::ComputeDevice::Auto,
                                 gpuIndex);
     window.show();
-    if (parser.isSet("screenshot"))
+    if (parser.isSet("smoke-cpu-runtime"))
+    {
+        const QString directory = QFileInfo(parser.value("smoke-cpu-runtime")).absoluteFilePath();
+        QDir().mkpath(directory);
+        auto done = std::make_shared<bool>(false);
+        const auto finish = [directory, done](bool success, const QString &error = QString()) {
+            if (*done) return;
+            *done = true;
+            QFile report(directory + "/cpu-runtime-setup-report.json");
+            if (!report.open(QIODevice::WriteOnly)) { QCoreApplication::exit(2); return; }
+            report.write(QJsonDocument(QJsonObject{{"success",success}, {"error",error},
+                {"python",vision::cpuPython()}, {"runtime",vision::cpuRuntimeDescriptor()},
+                {"version",QCoreApplication::applicationVersion()}}).toJson());
+            report.close(); QCoreApplication::exit(success ? 0 : 1);
+        };
+        QTimer::singleShot(0, &window, [&window, finish] {
+            if (ui::ensureCpuRuntime(&window, [finish] { finish(true); })) { finish(!vision::cpuPython().isEmpty()); return; }
+            if (auto *button = window.findChild<QPushButton *>("prepareCpuRuntimeButton")) button->click();
+        });
+        auto *watch = new QTimer(&window); watch->setInterval(200);
+        QObject::connect(watch, &QTimer::timeout, &window, [&window, finish] {
+            if (auto *button = window.findChild<QPushButton *>("prepareCpuRuntimeButton");
+                button && button->isEnabled() && button->text() == QStringLiteral("重试")) {
+                QString error;
+                for (auto *label : button->parentWidget()->findChildren<QLabel *>()) error += label->text() + "\n";
+                finish(false, error);
+            }
+        });
+        watch->start();
+        QTimer::singleShot(600000, &window, [finish] { finish(false, "CPU preparation timed out"); });
+    }
+    else if (parser.isSet("screenshot"))
         QTimer::singleShot(300, &window,
                            [&]
                            {

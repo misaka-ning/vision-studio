@@ -1,3 +1,4 @@
+#include "core/cpuruntime.h"
 #include "modelviewer.h"
 
 #include <QApplication>
@@ -308,6 +309,9 @@ QString helperPath()
 
 QString interpreterPath(const QString &script)
 {
+#ifdef Q_OS_WIN
+    return vision::cpuPython(script);
+#else
     const QString overridePath = qEnvironmentVariable("VISION_STUDIO_PYTHON");
     if (!overridePath.isEmpty())
         return QFileInfo(overridePath).isAbsolute() ? overridePath
@@ -321,6 +325,7 @@ QString interpreterPath(const QString &script)
         if (!path.isEmpty() && QFileInfo(path).isFile() && QFileInfo(path).isExecutable())
             return QDir::cleanPath(QFileInfo(path).absoluteFilePath());
     return {};
+#endif
 }
 
 bool sameOrigin(const QUrl &url, const QUrl &origin)

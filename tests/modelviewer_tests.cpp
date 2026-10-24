@@ -832,6 +832,7 @@ class ModelViewerTests : public QObject
         QCOMPARE(button->isVisible(), layers > 0);
         QVERIFY(editor->isReadOnly());
         QString error; const QString output = m_temporary->path() + "/" + QString::fromLatin1(QTest::currentDataTag()) + ".yaml";
+        bool clipboardUnavailable = false;
         if (layers > 0)
         {
             QTest::mouseClick(button, Qt::LeftButton);
@@ -849,8 +850,14 @@ class ModelViewerTests : public QObject
             search->setText("Detect"); QTest::keyClick(search, Qt::Key_Return);
             QCOMPARE(editor->textCursor().selectedText(), QString("Detect"));
             QVERIFY(!editor->extraSelections().isEmpty());
+#ifdef Q_OS_WIN
+            const QString controlText = "Vision Studio clipboard capability probe";
+            QApplication::clipboard()->setText(controlText);
+            QApplication::processEvents();
+            clipboardUnavailable = QApplication::clipboard()->text() != controlText;
+#endif
             QTest::mouseClick(copy, Qt::LeftButton);
-            QCOMPARE(QApplication::clipboard()->text(), cached);
+            if (!clipboardUnavailable) QCOMPARE(QApplication::clipboard()->text(), cached);
             QVERIFY2(viewer.saveYaml(output, &error), qPrintable(error));
             QFile file(output); QVERIFY(file.open(QIODevice::ReadOnly)); QCOMPARE(file.readAll(), cached.toUtf8()); file.close();
             QVERIFY(!viewer.saveYaml(output, &error)); QVERIFY(!error.isEmpty());
@@ -877,6 +884,8 @@ class ModelViewerTests : public QObject
         QVERIFY(source.open(QIODevice::ReadOnly)); QCOMPARE(source.readAll(), original);
         qInfo() << "model_yaml_real_view_evidence" << QTest::currentDataTag() << "layers" << layers
                 << "cached_process" << pid << "page_reloads" << pageLoads.count();
+        if (clipboardUnavailable)
+            QSKIP("System clipboard control write failed on this Windows runner; YAML rendering, export, protection and cache checks completed");
     }
 
     void yamlBridgeRejectsNonprimitiveCyclesAndLimitsWithoutTouchingCachedGraph()

@@ -6,6 +6,7 @@
 #include <QDoubleSpinBox>
 #include <QElapsedTimer>
 #include <QFile>
+#include <QFileInfo>
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -170,8 +171,8 @@ private slots:
         panel.setDatasetSource("/dataset/train-only", "val", "/dataset/audit.csv");
         QCOMPARE(requested.count(), 0); QCOMPARE(changes.count(), 0);
         panel.showDatasetImportError("该数据集未配置 Val，请选择 Train 后重试。");
-        QCOMPARE(panel.datasetYaml(), QString("/dataset/train-only"));
-        QCOMPARE(panel.metadataPath(), QString("/dataset/audit.csv"));
+        QCOMPARE(panel.datasetYaml(), QFileInfo("/dataset/train-only").absoluteFilePath());
+        QCOMPARE(panel.metadataPath(), QFileInfo("/dataset/audit.csv").absoluteFilePath());
         QVERIFY(panel.dataset().isEmpty()); QVERIFY(!panel.canEvaluate());
         auto *split = control<QComboBox>(panel, "evaluationSplitCombo"); QVERIFY(split);
         auto *reload = control<QPushButton>(panel, "evaluationReloadDatasetButton"); QVERIFY(reload);
@@ -179,9 +180,9 @@ private slots:
         QVERIFY(control<QLabel>(panel, "evaluationDatasetHint")->toolTip().contains("未配置 Val"));
         split->setCurrentIndex(split->findData("train"));
         QCOMPARE(requested.count(), 1); const auto request = requested.takeFirst();
-        QCOMPARE(request.at(0).toString(), QString("/dataset/train-only"));
+        QCOMPARE(request.at(0).toString(), QFileInfo("/dataset/train-only").absoluteFilePath());
         QCOMPARE(request.at(1).toString(), QString("train"));
-        QCOMPARE(request.at(2).toString(), QString("/dataset/audit.csv"));
+        QCOMPARE(request.at(2).toString(), QFileInfo("/dataset/audit.csv").absoluteFilePath());
         panel.clearDataset(); QVERIFY(panel.datasetYaml().isEmpty()); QVERIFY(split->isHidden()); QVERIFY(reload->isHidden());
     }
     void modeRequiresValidDatasetAndDetection()

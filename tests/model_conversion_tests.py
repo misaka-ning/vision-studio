@@ -12,6 +12,7 @@ import json
 import os
 from pathlib import Path
 import selectors
+from pipe_support import wait_readable
 import shlex
 import shutil
 import signal
@@ -89,14 +90,22 @@ class ConversionSafetyTests(unittest.TestCase):
         self.assertEqual(self.output.read_bytes(), b"user data")
         self.assertEqual(self.output.stat().st_mtime_ns, before.st_mtime_ns)
         self.output.unlink()
-        self.output.symlink_to(self.directory / "missing-user-target")
+        try:
+            self.output.symlink_to(self.directory / "missing-user-target")
+        except OSError as error:
+            if getattr(error, 'winerror', None) == 1314: self.skipTest('Windows account cannot create symbolic links')
+            raise
         with self.assertRaises(convert.ConversionError):
             convert.validate_paths(self.arguments())
         self.assertTrue(self.output.is_symlink())
 
     def test_symlink_output_parent_and_mismatched_format_fail(self):
         linked = self.directory / "linked"
-        linked.symlink_to(self.directory, target_is_directory=True)
+        try:
+            linked.symlink_to(self.directory, target_is_directory=True)
+        except OSError as error:
+            if getattr(error, 'winerror', None) == 1314: self.skipTest('Windows account cannot create symbolic links')
+            raise
         with self.assertRaises(convert.ConversionError):
             convert.validate_paths(self.arguments(output=str(linked / "converted.onnx")))
         with self.assertRaises(convert.ConversionError):
@@ -135,7 +144,11 @@ class ConversionSafetyTests(unittest.TestCase):
         foreign.mkdir()
         (foreign / "user-note").write_text("preserve")
         linked = self.directory / (convert.JOB_PREFIX + "linked")
-        linked.symlink_to(foreign, target_is_directory=True)
+        try:
+            linked.symlink_to(foreign, target_is_directory=True)
+        except OSError as error:
+            if getattr(error, 'winerror', None) == 1314: self.skipTest('Windows account cannot create symbolic links')
+            raise
         for job in (foreign, linked, self.directory):
             with self.subTest(path=job.name), self.assertRaises(convert.ConversionError):
                 convert.JobDirectory(self.output, str(job))
@@ -302,6 +315,16 @@ class ActualConversionTests(unittest.TestCase):
         if probe.returncode:
             cls.temporary.cleanup()
             raise unittest.SkipTest("Prepared conversion runtime with torch/onnx/cv2 is required: " + probe.stderr[-400:])
+        supplied_probe = os.environ.get("VISION_STUDIO_OPENCV_PROBE")
+        if supplied_probe:
+            cls.target_probe = Path(supplied_probe)
+            if not cls.target_probe.is_file(): raise AssertionError('Configured application OpenCV probe is missing')
+            cls.fixtures = cls.directory / "fixtures"
+            cls.fixtures.mkdir()
+            created = subprocess.run([PYTHON, "-c", FIXTURE_SCRIPT, str(PROJECT), str(cls.fixtures)],
+                env=cls.environment, capture_output=True, text=True, timeout=90)
+            if created.returncode: raise RuntimeError(created.stderr[-4000:])
+            return
         compiler, pkg_config = shutil.which("c++"), shutil.which("pkg-config")
         if not compiler or not pkg_config:
             cls.temporary.cleanup()
@@ -468,6 +491,7 @@ class ActualConversionTests(unittest.TestCase):
                 self.assertFalse(any(path.name.startswith(convert.JOB_PREFIX) for path in self.area.iterdir()))
                 self.assertEqual(digest(source), before)
 
+    @unittest.skipIf(os.name == "nt", "POSIX SIGTERM cleanup; Windows cancellation is exercised through the native conversion UI")
     def test_cancel_status_precedes_torch_import_and_cleans_exact_job(self):
         source = self.fixtures / "modern-c3.pt"
         output = self.area / "cancelled.onnx"
@@ -476,9 +500,7 @@ class ActualConversionTests(unittest.TestCase):
                                     "--output", str(output), "--work-dir", str(work), "--image-size", "64"],
                                    env=self.environment, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         try:
-            with selectors.DefaultSelector() as selector:
-                selector.register(process.stdout, selectors.EVENT_READ)
-                self.assertTrue(selector.select(8), "Missing early job event")
+            self.assertTrue(wait_readable(process, 8), "Missing early job event")
             first = json.loads(process.stdout.readline())
             self.assertEqual(first["job_temp"], str(work))
             process.send_signal(signal.SIGTERM)

@@ -34,6 +34,8 @@ class DatasetFixture(unittest.TestCase):
         self.environment_patch = patch.dict(os.environ, {"YOLO_CONFIG_DIR": str(self.root / "ultralytics"),
                                                         "MPLCONFIGDIR": str(self.root / "matplotlib")})
         self.environment_patch.start()
+        (self.root / "ultralytics").mkdir()
+        (self.root / "matplotlib").mkdir()
         self.images = self.root / "images" / "val"
         self.labels = self.root / "labels" / "val"
         self.images.mkdir(parents=True)
@@ -48,21 +50,21 @@ class DatasetFixture(unittest.TestCase):
         self.manifest = self.prepare()
         self.prediction_file = self.root / "predictions.jsonl"
         self.predictions = [
-            {"image": str(self.a), "width": 100, "height": 100, "predictions": [
+            {"image": self.a.as_posix(), "width": 100, "height": 100, "predictions": [
                 {"class_id": 0, "confidence": .95, "box": [25., 25., 75., 75.]},
                 {"class_id": 32, "confidence": .9, "box": [25., 25., 75., 75.]},
                 {"class_id": 32, "confidence": .6, "box": [25., 25., 75., 75.]}]},
-            {"image": str(self.b), "width": 100, "height": 100, "predictions": [
+            {"image": self.b.as_posix(), "width": 100, "height": 100, "predictions": [
                 {"class_id": 32, "confidence": .8, "box": [0., 0., 10., 10.]},
                 {"class_id": 32, "confidence": .3, "box": [25., 25., 75., 75.]}]},
-            {"image": str(self.c), "width": 100, "height": 100, "predictions": [
+            {"image": self.c.as_posix(), "width": 100, "height": 100, "predictions": [
                 {"class_id": 32, "confidence": .4, "box": [25., 25., 75., 75.]}]},
         ]
         self.write_predictions()
-        self.request = {"model_path": str(self.model), "model_sha256": digest(self.model),
+        self.request = {"model_path": self.model.as_posix(), "model_sha256": digest(self.model),
                         "model_class_id": 32, "model_class_count": 80, "dataset_class_id": 0,
                         "confidence": .5, "match_iou": .5, "score_floor": .001,
-                        "sample_images": [str(self.a), str(self.b), str(self.c)],
+                        "sample_images": [self.a.as_posix(), self.b.as_posix(), self.c.as_posix()],
                         "status": "complete", "full_split": True}
 
     def tearDown(self):
@@ -79,13 +81,13 @@ class DatasetFixture(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         Image.new("RGB", (100, 100), "#203040").save(path)
         if label is not None:
-            target = Path(str(path).replace("/images/", "/labels/")).with_suffix(".txt")
+            target = Path(path.as_posix().replace("/images/", "/labels/")).with_suffix(".txt")
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(label, encoding="utf-8")
         return path.resolve()
 
     def prepare(self, **updates):
-        return prepare_dataset({"dataset_yaml": str(self.data), "split": "val", **updates})
+        return prepare_dataset({"dataset_yaml": self.data.as_posix(), "split": "val", **updates})
 
     def write_predictions(self, rows=None):
         rows = self.predictions if rows is None else rows
@@ -96,6 +98,12 @@ class DatasetFixture(unittest.TestCase):
 
 
 class DatasetTests(DatasetFixture):
+    def test_manifest_paths_match_qt_forward_slash_paths(self):
+        self.assertEqual(self.manifest["dataset_source"], self.data.as_posix())
+        self.assertEqual([s["image"] for s in self.manifest["samples"]],
+                         [self.a.as_posix(), self.b.as_posix(), self.c.as_posix()])
+        self.assertEqual(self.manifest["samples"][0]["label"], (self.labels/"a.txt").as_posix())
+
     def test_standard_dataset_pixel_boxes_and_negative_counts(self):
         self.assertEqual(self.manifest["names"], ["football", "robot"])
         self.assertEqual(self.manifest["samples"][0]["gt"], [{"class_id": 0, "box": [25., 25., 75., 75.]}])
@@ -107,12 +115,12 @@ class DatasetTests(DatasetFixture):
     def test_dataset_root_matches_explicit_yaml_without_writing_dataset(self):
         before = {str(path.relative_to(self.root)): digest(path)
                   for path in self.root.rglob("*") if path.is_file()}
-        manifest = self.prepare(dataset_yaml=str(self.root))
-        self.assertEqual(manifest, {**self.manifest, "dataset_source": str(self.root),
+        manifest = self.prepare(dataset_yaml=self.root.as_posix())
+        self.assertEqual(manifest, {**self.manifest, "dataset_source": self.root.as_posix(),
                                    "fingerprint": manifest["fingerprint"]})
-        self.assertEqual(manifest["dataset_source"], str(self.root))
-        self.assertEqual(manifest["data_yaml"], str(self.data))
-        self.assertEqual(manifest["dataset_yaml"], str(self.data))
+        self.assertEqual(manifest["dataset_source"], self.root.as_posix())
+        self.assertEqual(manifest["data_yaml"], self.data.as_posix())
+        self.assertEqual(manifest["dataset_yaml"], self.data.as_posix())
         after = {str(path.relative_to(self.root)): digest(path)
                  for path in self.root.rglob("*") if path.is_file()}
         self.assertEqual(before, after)
@@ -127,8 +135,8 @@ class DatasetTests(DatasetFixture):
                 config = self.root / name
                 config.write_text(text, encoding="utf-8")
                 try:
-                    manifest = self.prepare(dataset_yaml=str(self.root))
-                    self.assertEqual(manifest["data_yaml"], str(config.resolve()))
+                    manifest = self.prepare(dataset_yaml=self.root.as_posix())
+                    self.assertEqual(manifest["data_yaml"], config.resolve().as_posix())
                     self.assertEqual(len(manifest["samples"]), 3)
                     self.assertNotIn(str(training), manifest["source_hashes"])
                     validate_manifest(manifest)
@@ -139,15 +147,15 @@ class DatasetTests(DatasetFixture):
         other = self.root / "data.YML"
         other.write_text(self.data.read_text(encoding="utf-8"), encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "多个标准数据集配置.*选择 YAML"):
-            self.prepare(dataset_yaml=str(self.root))
+            self.prepare(dataset_yaml=self.root.as_posix())
         # An explicit selection remains usable when the folder is ambiguous.
-        self.assertEqual(self.prepare()["data_yaml"], str(self.data))
+        self.assertEqual(self.prepare()["data_yaml"], self.data.as_posix())
 
     def test_dataset_root_accepts_unique_nonconventional_yaml(self):
         other = self.root / "football-validation.YML"
         self.data.rename(other)
-        manifest = self.prepare(dataset_yaml=str(self.root))
-        self.assertEqual(manifest["data_yaml"], str(other))
+        manifest = self.prepare(dataset_yaml=self.root.as_posix())
+        self.assertEqual(manifest["data_yaml"], other.as_posix())
         self.assertEqual(len(manifest["samples"]), 3)
 
     def test_dataset_root_rejects_multiple_nonconventional_yaml(self):
@@ -156,15 +164,15 @@ class DatasetTests(DatasetFixture):
         second = self.root / "other.yml"
         second.write_text(first.read_text(encoding="utf-8"), encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "多个 YAML 配置.*选择 YAML"):
-            self.prepare(dataset_yaml=str(self.root))
-        self.assertEqual(self.prepare(dataset_yaml=str(first))["data_yaml"], str(first))
+            self.prepare(dataset_yaml=self.root.as_posix())
+        self.assertEqual(self.prepare(dataset_yaml=first.as_posix())["data_yaml"], first.as_posix())
 
     def test_dataset_root_does_not_search_nested_directories_or_infer_classes(self):
         nested = self.root / "nested"
         nested.mkdir()
         self.data.rename(nested / "dataset.yaml")
         with self.assertRaisesRegex(ValueError, "本层没有 YAML.*names"):
-            self.prepare(dataset_yaml=str(self.root))
+            self.prepare(dataset_yaml=self.root.as_posix())
 
     def test_dataset_root_with_unicode_and_spaces_keeps_yaml_relative_paths(self):
         nested = self.root / "足球 数据集"
@@ -173,27 +181,27 @@ class DatasetTests(DatasetFixture):
         image = self.add_image("一张 球场", "0 0.5 0.5 0.5 0.5\n", nested / "images" / "val")
         config = nested / "data.yml"
         config.write_text("path: .\nval: images/val\nnames: [足球]\n", encoding="utf-8")
-        manifest = self.prepare(dataset_yaml=str(nested))
-        self.assertEqual(manifest["data_yaml"], str(config))
-        self.assertEqual(manifest["root"], str(nested))
+        manifest = self.prepare(dataset_yaml=nested.as_posix())
+        self.assertEqual(manifest["data_yaml"], config.as_posix())
+        self.assertEqual(manifest["root"], nested.as_posix())
         self.assertEqual(manifest["names"], ["足球"])
-        self.assertEqual([sample["image"] for sample in manifest["samples"]], [str(image)])
+        self.assertEqual([sample["image"] for sample in manifest["samples"]], [image.as_posix()])
 
     def test_dataset_root_requires_explicit_available_split(self):
         self.write_yaml(val=None, train="images/val")
         with self.assertRaisesRegex(ValueError, "未提供有效的 val"):
-            self.prepare(dataset_yaml=str(self.root))
-        manifest = self.prepare(dataset_yaml=str(self.root), split="train")
+            self.prepare(dataset_yaml=self.root.as_posix())
+        manifest = self.prepare(dataset_yaml=self.root.as_posix(), split="train")
         self.assertEqual(manifest["split"], "train")
         self.assertEqual(len(manifest["samples"]), 3)
 
     def test_dataset_root_never_infers_metadata_or_falls_back_from_invalid_config(self):
         (self.root / "metadata.csv").write_text("not a reviewed dataset metadata file\n", encoding="utf-8")
-        self.assertIsNone(self.prepare(dataset_yaml=str(self.root))["metadata_path"])
+        self.assertIsNone(self.prepare(dataset_yaml=self.root.as_posix())["metadata_path"])
         (self.root / "training.example.yaml").write_text(self.data.read_text(encoding="utf-8"), encoding="utf-8")
         self.data.write_text("epochs: 100\n", encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "names"):
-            self.prepare(dataset_yaml=str(self.root))
+            self.prepare(dataset_yaml=self.root.as_posix())
 
     def relocated_fixture(self, entries=None, absolute_split=False):
         previous_root = self.root / "old-missing-root"
@@ -202,7 +210,7 @@ class DatasetTests(DatasetFixture):
         if entries is None:
             entries = [previous_root / "images" / "val" / path.name for path in (self.a, self.b, self.c)]
         listing.write_text("".join(str(entry) + "\n" for entry in entries), encoding="utf-8")
-        self.write_yaml(path=str(previous_root),
+        self.write_yaml(path=previous_root.as_posix(),
                         val=str(previous_root / "lists" / "val.txt") if absolute_split else "lists/val.txt")
         return previous_root, listing
 
@@ -210,17 +218,17 @@ class DatasetTests(DatasetFixture):
         previous_root, listing = self.relocated_fixture(absolute_split=True)
         before = {str(path.relative_to(self.root)): digest(path)
                   for path in self.root.rglob("*") if path.is_file()}
-        manifest = self.prepare(dataset_yaml=str(self.root))
+        manifest = self.prepare(dataset_yaml=self.root.as_posix())
         self.assertTrue(manifest["root_relocated"])
-        self.assertEqual(manifest["configured_root"], str(previous_root))
-        self.assertEqual(manifest["root"], str(self.root))
-        self.assertEqual(manifest["dataset_source"], str(self.root))
-        self.assertEqual(manifest["data_yaml"], str(self.data))
+        self.assertEqual(manifest["configured_root"], previous_root.as_posix())
+        self.assertEqual(manifest["root"], self.root.as_posix())
+        self.assertEqual(manifest["dataset_source"], self.root.as_posix())
+        self.assertEqual(manifest["data_yaml"], self.data.as_posix())
         self.assertIn("只读重定位", manifest["relocation_notice"])
         self.assertEqual([sample["image"] for sample in manifest["samples"]],
-                         [str(self.a), str(self.b), str(self.c)])
-        self.assertEqual(set(manifest["source_hashes"]), {str(self.data), str(listing)})
-        self.assertEqual(manifest["source_hashes"][str(listing)], digest(listing))
+                         [self.a.as_posix(), self.b.as_posix(), self.c.as_posix()])
+        self.assertEqual(set(manifest["source_hashes"]), {self.data.as_posix(), listing.as_posix()})
+        self.assertEqual(manifest["source_hashes"][listing.as_posix()], digest(listing))
         validate_manifest(manifest)
         evaluation_data.assert_unchanged(manifest)
         self.assertEqual(before, {str(path.relative_to(self.root)): digest(path)
@@ -230,12 +238,12 @@ class DatasetTests(DatasetFixture):
         previous_root, _ = self.relocated_fixture()
         previous_root.mkdir()
         with self.assertRaisesRegex(ValueError, "集合路径不存在"):
-            self.prepare(dataset_yaml=str(self.root))
+            self.prepare(dataset_yaml=self.root.as_posix())
         # Even when a usable local dataset exists, a valid configured root wins.
         self.add_image("original", "", previous_root / "images" / "val")
-        self.write_yaml(path=str(previous_root), val="images/val")
-        manifest = self.prepare(dataset_yaml=str(self.root))
-        self.assertEqual(manifest["root"], str(previous_root))
+        self.write_yaml(path=previous_root.as_posix(), val="images/val")
+        manifest = self.prepare(dataset_yaml=self.root.as_posix())
+        self.assertEqual(manifest["root"], previous_root.as_posix())
         self.assertEqual(len(manifest["samples"]), 1)
         self.assertNotIn("root_relocated", manifest)
 
@@ -244,17 +252,17 @@ class DatasetTests(DatasetFixture):
         self.relocated_fixture([previous_root / "images" / "val" / self.a.name,
                                 self.root / "unrelated-missing" / self.b.name])
         with self.assertRaisesRegex(ValueError, "图片名单含缺失文件"):
-            self.prepare(dataset_yaml=str(self.root))
+            self.prepare(dataset_yaml=self.root.as_posix())
 
     def test_directory_relocation_rejects_missing_target_image_and_label(self):
         previous_root, _ = self.relocated_fixture()
         self.relocated_fixture([previous_root / "images" / "val" / "missing.png"])
         with self.assertRaisesRegex(ValueError, "图片名单含缺失文件"):
-            self.prepare(dataset_yaml=str(self.root))
+            self.prepare(dataset_yaml=self.root.as_posix())
         self.relocated_fixture()
         (self.labels / "a.txt").unlink()
         with self.assertRaisesRegex(ValueError, "重定位.*缺失标签"):
-            self.prepare(dataset_yaml=str(self.root))
+            self.prepare(dataset_yaml=self.root.as_posix())
 
     def test_direct_yaml_never_relocates_missing_root_or_guesses_relative_root(self):
         self.relocated_fixture()
@@ -262,16 +270,16 @@ class DatasetTests(DatasetFixture):
             self.prepare()
         self.write_yaml(path="old-missing-root", val="images/val")
         with self.assertRaisesRegex(ValueError, "集合路径不存在"):
-            self.prepare(dataset_yaml=str(self.root))
+            self.prepare(dataset_yaml=self.root.as_posix())
 
     def test_relocated_manifest_still_checks_real_inputs_and_source_lists(self):
         _, listing = self.relocated_fixture()
-        manifest = self.prepare(dataset_yaml=str(self.root))
+        manifest = self.prepare(dataset_yaml=self.root.as_posix())
         listing.write_text(listing.read_text(encoding="utf-8") + "\n", encoding="utf-8")
         with self.assertRaisesRegex(RuntimeError, "配置／名单"):
             evaluation_data.assert_unchanged(manifest)
         self.relocated_fixture()
-        manifest = self.prepare(dataset_yaml=str(self.root))
+        manifest = self.prepare(dataset_yaml=self.root.as_posix())
         (self.labels / "a.txt").write_text("", encoding="utf-8")
         with self.assertRaisesRegex(RuntimeError, "原图或标注"):
             evaluation_data.assert_unchanged(manifest)
@@ -286,7 +294,7 @@ class DatasetTests(DatasetFixture):
     def test_yaml_names_mapping_and_root_relative_to_yaml(self):
         self.write_yaml(names={0: "football", 1: "robot"}, nc=2)
         manifest = self.prepare()
-        self.assertEqual(manifest["root"], str(self.root))
+        self.assertEqual(manifest["root"], self.root.as_posix())
         self.assertEqual(manifest["names"], ["football", "robot"])
 
     def test_manifest_survives_qt_equivalent_integral_float_serialization(self):
@@ -307,14 +315,14 @@ class DatasetTests(DatasetFixture):
         listing.write_text("images/val/c.png\nimages/val/a.png\n", encoding="utf-8")
         self.write_yaml(val="selected.txt")
         manifest = self.prepare()
-        self.assertEqual([r["image"] for r in manifest["samples"]], [str(self.c), str(self.a)])
-        self.assertEqual(manifest["source_hashes"][str(listing)], digest(listing))
+        self.assertEqual([r["image"] for r in manifest["samples"]], [self.c.as_posix(), self.a.as_posix()])
+        self.assertEqual(manifest["source_hashes"][listing.as_posix()], digest(listing))
 
     def test_list_of_splits_and_duplicate_rejected(self):
         other = self.add_image("other", "", self.root / "images" / "other")
         self.write_yaml(val=["images/val", "images/other"])
         self.assertEqual(len(self.prepare()["samples"]), 4)
-        self.write_yaml(val=["images/val", str(other), "images/val"])
+        self.write_yaml(val=["images/val", other.as_posix(), "images/val"])
         with self.assertRaisesRegex(ValueError, "重复"):
             self.prepare()
 
@@ -433,7 +441,7 @@ class MetricsTests(DatasetFixture):
 
     def test_subset_single_and_cancelled_never_present_full_map(self):
         self.write_predictions(self.predictions[:1])
-        report = self.analyze(sample_images=[str(self.a)], full_split=False)
+        report = self.analyze(sample_images=[self.a.as_posix()], full_split=False)
         self.assertEqual(report["scope"], "single_image")
         self.assertIsNone(report["metrics"]["mAP50"])
         self.assertIsNotNone(report["partial_metrics"]["mAP50"])
@@ -555,7 +563,7 @@ class CacheIntegrityTests(DatasetFixture):
             self.analyze()
 
     def test_selection_cannot_duplicate_or_add_unknown_images(self):
-        for images in ([str(self.a), str(self.a)], ["/unknown.png"]):
+        for images in ([self.a.as_posix(), self.a.as_posix()], ["/unknown.png"]):
             with self.subTest(images=images), self.assertRaisesRegex(ValueError, "范围"):
                 self.analyze(sample_images=images)
 
@@ -580,7 +588,7 @@ class ExportTests(DatasetFixture):
 
     def test_actual_cli_preparation_analysis_and_decodable_exports(self):
         prepare_request = self.root / "prepare-request.json"
-        prepare_request.write_text(json.dumps({"dataset_yaml": str(self.data), "split": "val"}), encoding="utf-8")
+        prepare_request.write_text(json.dumps({"dataset_yaml": self.data.as_posix(), "split": "val"}), encoding="utf-8")
         manifest_path = self.root / "manifest.json"
         request_path = self.root / "request.json"
         request_path.write_text(json.dumps(self.request), encoding="utf-8")

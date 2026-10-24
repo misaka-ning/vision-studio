@@ -636,6 +636,10 @@ class UiTests final : public QObject
             run->setFocus();
         QTest::qWait(20);
         QCOMPARE(spin->hasFocus(), focused);
+        // Native Windows focus/layout changes may scroll again after the first
+        // ensureWidgetVisible; position the actual wheel target after settling.
+        scroll->ensureWidgetVisible(spin, 0, 0);
+        QApplication::processEvents();
         const auto value = [spin]
         {
             if (auto *integer = qobject_cast<QSpinBox *>(spin))
@@ -2348,9 +2352,17 @@ class UiTests final : public QObject
     void explicitCudaSmokeFailureDoesNotClaimCpuInference()
     {
         const QDir executableDirectory(QCoreApplication::applicationDirPath());
-        QString executable = executableDirectory.filePath("bin/vision-studio");
+        QString executable = executableDirectory.filePath("bin/vision-studio"
+#ifdef Q_OS_WIN
+            ".exe"
+#endif
+        );
         if (!QFileInfo(executable).isExecutable())
-            executable = executableDirectory.filePath("vision-studio");
+            executable = executableDirectory.filePath("vision-studio"
+#ifdef Q_OS_WIN
+                ".exe"
+#endif
+            );
         QVERIFY2(QFileInfo(executable).isExecutable(),
                  "The application must be built for the CLI integration test.");
         const QString smokeDirectory = fixture_->path() + "/cuda-failure-smoke";
@@ -2358,7 +2370,13 @@ class UiTests final : public QObject
         QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
         environment.insert("VISION_STUDIO_DATA_DIR", childDataDirectory);
         environment.insert("VISION_STUDIO_GPU_RUNTIME_DIR", fixture_->path() + "/missing-gpu-runtime");
-        environment.insert("QT_QPA_PLATFORM", "offscreen");
+        environment.insert("QT_QPA_PLATFORM",
+#ifdef Q_OS_WIN
+            "windows"
+#else
+            "offscreen"
+#endif
+        );
         QProcess smoke;
         smoke.setProcessEnvironment(environment);
         smoke.start(executable, {"--device", "cuda", "--gpu-index", "2", "--smoke", smokeDirectory});
@@ -2523,6 +2541,9 @@ print(json.dumps({'event':'ready','runtime_dir':str(root),'message':'测试环�
                 realPython = QDir::homePath() + "/VisionStudio/runtime/bin/python";
         }
         QVERIFY(QFileInfo(realPython).isExecutable());
+#ifdef Q_OS_WIN
+        qputenv("VISION_STUDIO_PYTHON", realPython.toUtf8());
+#else
         const QString launcher = scripts + "/ui-python";
         const QByteArray wrapper =
             "#!/usr/bin/python3.10\nimport os,sys\nfrom pathlib import Path\n"
@@ -2539,6 +2560,7 @@ print(json.dumps({'event':'ready','runtime_dir':str(root),'message':'测试环�
                                                     QFileDevice::ExeOwner | QFileDevice::ReadGroup |
                                                     QFileDevice::ExeGroup));
         qputenv("VISION_STUDIO_PYTHON", launcher.toUtf8());
+#endif
     }
 
     void showNewWindow()

@@ -83,7 +83,7 @@ class ConversionInferenceTests final : public QObject
         environment.insert("CUDA_VISIBLE_DEVICES", "");
         create.setProcessEnvironment(environment);
         create.start(runtime_, {"-c",
-            "import runpy,sys; ns=runpy.run_path(sys.argv[1]); "
+            "import runpy,sys; from pathlib import Path; sys.path.insert(0,str(Path(sys.argv[1]).parent)); ns=runpy.run_path(sys.argv[1]); "
             "sys.argv=[sys.argv[1],sys.argv[2],sys.argv[3]]; "
             "exec(ns['FIXTURE_SCRIPT'],{'__name__':'__main__'})",
             project_ + "/tests/model_conversion_tests.py", project_, fixtures_->path()});

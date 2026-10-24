@@ -7,6 +7,9 @@
 #ifndef OutputDir
   #error OutputDir is required
 #endif
+#ifndef InstallProfile
+  #define InstallProfile "offline"
+#endif
 
 [Setup]
 AppId={{02E34A30-7577-45F3-A6CD-420EAA1D7021}
@@ -25,12 +28,15 @@ DisableDirPage=no
 DisableProgramGroupPage=yes
 LicenseFile={#StageDir}\LICENSE
 OutputDir={#OutputDir}
-OutputBaseFilename=vision-studio-{#AppVersion}-windows-x64-setup
+OutputBaseFilename=vision-studio-{#AppVersion}-windows-x64-{#InstallProfile}-setup
 Compression=lzma2/normal
 SolidCompression=yes
 LZMANumBlockThreads=4
 WizardStyle=modern
 UninstallDisplayIcon={app}\bin\vision-studio.exe
+; The hash-checked migration removes obsolete owned files. A new log leaves
+; modified legacy models/documents outside the new installer's ownership.
+UninstallLogMode=new
 CloseApplications=yes
 RestartApplications=no
 SetupLogging=yes
@@ -48,6 +54,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "{#StageDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#StageDir}\WINDOWS-FILES.json"; DestName: "incoming-files.json"; Flags: dontcopy
+Source: "{#StageDir}\cpu-runtime.json"; DestName: "incoming-runtime.json"; Flags: dontcopy
+Source: "cleanup_install.ps1"; Flags: dontcopy
 
 [Icons]
 Name: "{group}\Vision Studio"; Filename: "{app}\bin\vision-studio.exe"; WorkingDir: "{app}"
@@ -65,6 +74,8 @@ function PrepareToInstall(var NeedsRestart: Boolean): String;
 var
   Target: String;
   Existing: TFindRec;
+  ExitCode: Integer;
+  Arguments: String;
 begin
   Result := '';
   Target := RemoveBackslashUnlessRoot(ExpandFileName(WizardDirValue));
@@ -91,6 +102,19 @@ begin
         FindClose(Existing);
       end;
     end;
+  end;
+  if FileExists(Target + '\windows-install.json') and FileExists(Target + '\WINDOWS-FILES.json') then
+  begin
+    ExtractTemporaryFile('cleanup_install.ps1');
+    ExtractTemporaryFile('incoming-files.json');
+    ExtractTemporaryFile('incoming-runtime.json');
+    Arguments := '-NoProfile -NonInteractive -ExecutionPolicy Bypass -File "' +
+      ExpandConstant('{tmp}\cleanup_install.ps1') + '" -InstallRoot "' + Target +
+      '" -IncomingManifest "' + ExpandConstant('{tmp}\incoming-files.json') +
+      '" -RuntimeDescriptor "' + ExpandConstant('{tmp}\incoming-runtime.json') + '"';
+    if not Exec(ExpandConstant('{sys}\WindowsPowerShell\v1.0\powershell.exe'), Arguments,
+      '', SW_HIDE, ewWaitUntilTerminated, ExitCode) or (ExitCode <> 0) then
+      Result := 'Unable to safely check the previous installation. No new files were installed. See setup log.';
   end;
 end;
 

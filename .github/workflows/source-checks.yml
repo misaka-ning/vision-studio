@@ -32,6 +32,8 @@ jobs:
         run: python3 -m unittest discover -s tests -p release_metadata_tests.py -v
       - name: Test Windows supplement publication safety
         run: python3 -m unittest discover -s tests -p windows_release_tests.py -v
+      - name: Test Windows payload selection
+        run: python3 -m unittest discover -s tests -p windows_packaging_tests.py -v
       - name: Test GPU environment protection and cancellation without hardware
         run: python3 -m unittest discover -s tests -p gpu_runtime_tests.py -v
       - name: Validate version tags

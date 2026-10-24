@@ -1,3 +1,4 @@
+#include "cpuruntime.h"
 #include "evaluationworker.h"
 #include "visionengine.h"
 
@@ -108,6 +109,11 @@ QString helperPath(const QString &projectRoot)
 
 QString interpreterPath(const QString &helper)
 {
+#ifdef Q_OS_WIN
+    const auto python = vision::cpuPython(helper);
+    if (python.isEmpty()) fail(QStringLiteral("未找到评估 Python 运行环境，请准备 CPU 运行环境或检查 VISION_STUDIO_PYTHON。"));
+    return python;
+#else
     const auto override = qEnvironmentVariable("VISION_STUDIO_PYTHON");
     if (!override.isEmpty())
     {
@@ -131,6 +137,7 @@ QString interpreterPath(const QString &helper)
         if (QFileInfo(path).isFile() && QFileInfo(path).isExecutable())
             return absolute(path);
     fail(QStringLiteral("找不到评估 Python 环境，请使用完整安装包或指定 VISION_STUDIO_PYTHON。"));
+#endif
 }
 
 // All waits and disk writes occur exclusively on EvaluationWorker::run().

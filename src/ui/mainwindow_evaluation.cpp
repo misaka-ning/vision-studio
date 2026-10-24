@@ -1,3 +1,5 @@
+#include "runtimesetup.h"
+#include "core/cpuruntime.h"
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "mainwindow.h"
 #include "evaluationpanel.h"
@@ -265,7 +267,7 @@ void MainWindow::cancelPendingDatasetSessionRestore()
 
 void MainWindow::restoreDatasetSession()
 {
-    if (datasetSessionRestoreRequested_) return;
+    if (datasetSessionRestoreRequested_ || vision::cpuRuntimeDownloadNeeded()) return;
     datasetSessionRestoreRequested_ = true;
     if (!settings_->value("restoreDatasetOnStartup", true).toBool()) return;
     const quint64 generation = datasetSessionRestoreGeneration_;
@@ -291,6 +293,7 @@ void MainWindow::beginDatasetImport(const QString &yaml, const QString &split, c
 {
     if (busy_ || evaluationWorker_ || gpuSetupProcess_ || (modelConversion_ && modelConversion_->isBusy())) return;
     if (closing_) return;
+    if (!ui::ensureCpuRuntime(this, [this, yaml, split, metadata] { beginDatasetImport(yaml, split, metadata); })) return;
     const quint64 generation = ++datasetImportGeneration_;
     const QString source = QDir::cleanPath(QFileInfo(yaml).absoluteFilePath());
     auto *worker = new vision::EvaluationWorker(this);
@@ -412,6 +415,7 @@ void MainWindow::populateDatasetQueue(const QJsonObject &manifest, const std::fu
 
 void MainWindow::startEvaluation()
 {
+    if (!ui::ensureCpuRuntime(this, [this] { startEvaluation(); })) return;
     if (busy_ || evaluationWorker_ || resultIoPending_ || !evaluation_->canEvaluate()) return;
     if (modelInspectionPending_ || inspectedModelIdentity_ != modelFileIdentity()) {
         inspectSelectedModel(); showNotice("请等待当前模型类别信息加载完成后开始评估"); return;
@@ -465,6 +469,7 @@ void MainWindow::startEvaluation()
 
 void MainWindow::reanalyzeEvaluation(const QJsonObject &options)
 {
+    if (!ui::ensureCpuRuntime(this, [this, options] { reanalyzeEvaluation(options); })) return;
     if (busy_ || evaluationWorker_ || evaluationReport_.isEmpty() || evaluationDirectory_.isEmpty()) return;
     if (evaluationPreviewCancellation_) evaluationPreviewCancellation_->store(true);
     if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
@@ -505,6 +510,7 @@ void MainWindow::showEvaluationSceneErrors(const QString &group)
 
 void MainWindow::importEvaluationReport(const QString &source, const QJsonObject &options)
 {
+    if (!ui::ensureCpuRuntime(this, [this, source, options] { importEvaluationReport(source, options); })) return;
     if (busy_ || evaluationWorker_ || source.isEmpty()) return;
     if (evaluationPreviewCancellation_) evaluationPreviewCancellation_->store(true);
     if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);

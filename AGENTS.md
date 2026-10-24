@@ -20,6 +20,8 @@
 
 维护者于 2026-10-18 要求将已验收的 Windows 安装包发布到现有 Release。Linux 的三个核心附件继续冻结；同版 Windows 补充发行另增安装 EXE、Windows 应用源码 ZIP、`SHA256SUMS-windows-x64` 三个附件，使用 `scripts/github_release.py append-windows`，不得覆盖原 `SHA256SUMS`。Windows 源码用独立的带说明追溯标签 `windows/X.Y.Z-1` 记录，不移动原 `vX.Y.Z`；QA 仍入库，不上传零散附件。具体规则见版本管理的 Windows 补充发行章节。
 
+维护者于 2026-10-24 明确要求 2.9.1 Windows 同时发布离线与在线两个安装包，并在 README 说明，两个包均不安装示例、源码和历史证据。该双包交付改为五个 Windows 附件：`windows-x64-offline-setup.exe`、`windows-x64-online-setup.exe`、`windows-x64-cpu-runtime.zip`、`windows-sources.zip`（均带应用版本前缀）和 `SHA256SUMS-windows-x64`；使用补充发布工具 schema 2 的逐包验收门禁。源码 ZIP 包含 Windows 特有的 FFmpeg 对应源码，安装器内只保留通知及源码获取说明。旧 2.1.0 三附件交付保持冻结。
+
 预发布必须标记 GitHub `prerelease=true`、`latest=false`，保留当前正式版的 Latest。默认 `prune` 只识别正式版本，beta 不挤掉正式版备份，也不自动删除；若按最新两版要求保留 beta 与当前正式版，其他旧副本须逐版精确核验后单独清理。
 
 此授权针对本仓库的版本发布；不涉及其他仓库、显卡驱动安装、历史重写或账号权限变更。需要身份验证时请维护者完成登录，不索取密码或访问令牌。
