@@ -52,7 +52,13 @@ def main():
             if (runtime/'python.exe').exists() or (runtime/'CPU-FILES.json').exists():
                 raise RuntimeError('Uninstall left the retained managed CPU environment')
             job.check('online-uninstall-cleans-retained-managed-runtime')
+            # An uninstalled directory containing preserved user files has no
+            # ownership marker and must be rejected. Use a new dedicated folder.
+            job.install=job.root/'online-to-offline Space/VisionStudio'
+            runtime=job.install/'runtime'
             job.setup('online-fresh-before-switch',job.install,a.online)
+            fresh=job.install/'private-new-profile-model.pt'; fresh.write_bytes(b'private profile model')
+            protected[fresh]=sha(fresh)
             if (runtime/'python.exe').exists(): raise RuntimeError('Fresh online installer includes Python')
             job.setup('switch-online-to-offline',job.install,a.offline)
             unchanged()
