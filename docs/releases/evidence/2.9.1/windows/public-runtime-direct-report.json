@@ -1,0 +1,17 @@
+{
+    "error": "CPU preparation timed out",
+    "python": "",
+    "runtime": {
+        "bytes": 275278287,
+        "file": "vision-studio-2.9.1-windows-x64-cpu-runtime.zip",
+        "inventory_sha256": "5df60b991f46b39e165b228c091bb16f0070ff18f745d4f70954a73247cdaabe",
+        "platform": "windows-x64",
+        "schema_version": 1,
+        "sha256": "9a7752dd70db38fda847dcb5cfdaee133860325e249ce8040eabf251185408f1",
+        "uncompressed_bytes": 910750855,
+        "url": "http://127.0.0.1:51573/vision-studio-2.9.1-windows-x64-cpu-runtime.zip",
+        "version": "2.9.1"
+    },
+    "success": false,
+    "version": "2.9.1"
+}

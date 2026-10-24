@@ -1,0 +1,13 @@
+{
+  "success": true,
+  "dry_run": false,
+  "root": "E:\\vision-studio\\output",
+  "kept": [
+    "E:\\vision-studio\\output\\windows-2.9.1",
+    "E:\\vision-studio\\output\\windows-2.1.0"
+  ],
+  "obsolete_candidates": [],
+  "deleted": [],
+  "reason": "Exactly two local Windows releases; no obsolete version directory to delete.",
+  "preserved": "Git metadata, shared Qt/OpenCV SDKs, original Python/GPU environments, user installation/data and current build/evidence materials."
+}

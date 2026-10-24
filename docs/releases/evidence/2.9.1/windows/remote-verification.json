@@ -1,0 +1,89 @@
+{
+  "success": true,
+  "operation": "verify-windows",
+  "tag": "v2.9.1",
+  "source_tag": "windows/2.9.1-1",
+  "source_commit": "92154a1799c2c8cddb2a46617ffe16e6f3ae0ddc",
+  "url": "https://github.com/misaka-ning/vision-studio/releases/tag/v2.9.1",
+  "protected_assets": [
+    {
+      "name": "SHA256SUMS",
+      "bytes": 207,
+      "digest": "sha256:aa08b683e3be193edac85b65931596142c8decae959eb0dec049611938e553c4"
+    },
+    {
+      "name": "vision-studio-2.9.1-complete-source.tar.xz",
+      "bytes": 917340456,
+      "digest": "sha256:e4fddce4442de2fd4e1a7eccd5679ce062b2147a4f885e44c17e5c0e97a56346"
+    },
+    {
+      "name": "vision-studio_2.9.1-1_amd64.deb",
+      "bytes": 387290644,
+      "digest": "sha256:549bf05f07db57c5f710d742b68530276f767b94561d3d22b8fb9c66500eed5c"
+    }
+  ],
+  "assets": [
+    {
+      "name": "vision-studio-2.9.1-windows-x64-offline-setup.exe",
+      "bytes": 292959557,
+      "sha256": "7b86569f81bec6b1c0655da50aa3491c7818a6fe83e2bfb78a2afd3eaade45ab"
+    },
+    {
+      "name": "vision-studio-2.9.1-windows-x64-online-setup.exe",
+      "bytes": 114598006,
+      "sha256": "8ba9eb197d5fcf9ac06f152cc8883d54e8c2d33a9da319516d22110987cb7e30"
+    },
+    {
+      "name": "vision-studio-2.9.1-windows-x64-cpu-runtime.zip",
+      "bytes": 275278287,
+      "sha256": "9a7752dd70db38fda847dcb5cfdaee133860325e249ce8040eabf251185408f1"
+    },
+    {
+      "name": "vision-studio-2.9.1-windows-sources.zip",
+      "bytes": 173561791,
+      "sha256": "57d3886cac7536c1feb59ba3cd190e26ad8835f28781453dbe1e348f8b9ce8d3"
+    },
+    {
+      "name": "SHA256SUMS-windows-x64",
+      "bytes": 455,
+      "sha256": "2e092f344358e87d829e11b6608f62157157b61e30c5c1ac0acc9cbfdfdadad4"
+    }
+  ],
+  "verified_assets": [
+    {
+      "name": "vision-studio-2.9.1-windows-x64-offline-setup.exe",
+      "bytes": 292959557,
+      "sha256": "7b86569f81bec6b1c0655da50aa3491c7818a6fe83e2bfb78a2afd3eaade45ab",
+      "asset_id": 671505824,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "vision-studio-2.9.1-windows-x64-online-setup.exe",
+      "bytes": 114598006,
+      "sha256": "8ba9eb197d5fcf9ac06f152cc8883d54e8c2d33a9da319516d22110987cb7e30",
+      "asset_id": 671513695,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "vision-studio-2.9.1-windows-x64-cpu-runtime.zip",
+      "bytes": 275278287,
+      "sha256": "9a7752dd70db38fda847dcb5cfdaee133860325e249ce8040eabf251185408f1",
+      "asset_id": 671517013,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "vision-studio-2.9.1-windows-sources.zip",
+      "bytes": 173561791,
+      "sha256": "57d3886cac7536c1feb59ba3cd190e26ad8835f28781453dbe1e348f8b9ce8d3",
+      "asset_id": 671524600,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "SHA256SUMS-windows-x64",
+      "bytes": 455,
+      "sha256": "2e092f344358e87d829e11b6608f62157157b61e30c5c1ac0acc9cbfdfdadad4",
+      "asset_id": 671530697,
+      "verification": "GitHub REST sha256 digest"
+    }
+  ]
+}
