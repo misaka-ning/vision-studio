@@ -49,7 +49,9 @@ class NativeSafetyTests(unittest.TestCase):
     def powershell(self, script, **parameters):
         command = ['powershell.exe', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass',
                    '-File', str(ROOT/script)]
-        for key,value in parameters.items(): command += ['-'+key,str(value)]
+        for key,value in parameters.items():
+            command.append('-'+key)
+            if value is not True: command.append(str(value))
         return subprocess.run(command, capture_output=True, timeout=60, creationflags=subprocess.CREATE_NO_WINDOW)
 
     def extraction(self, members, expected_error):
@@ -107,6 +109,22 @@ class NativeSafetyTests(unittest.TestCase):
         self.assertNotEqual(result.returncode,0)
         self.assertTrue((install/'docs/old.txt').exists())
         self.assertEqual((install/'sources/changed.txt').read_bytes(),b'user modification')
+
+    def test_online_uninstall_cleans_retained_runtime_but_preserves_user_file(self):
+        install=self.root/'installed'; runtime=install/'runtime'; runtime.mkdir(parents=True)
+        (install/'windows-install.json').write_text('{"version":"2.9.1"}')
+        managed=runtime/'module.py'; managed.write_bytes(b'managed runtime')
+        personal=runtime/'user-model.pt'; personal.write_bytes(b'personal model')
+        inventory=runtime/'CPU-FILES.json'
+        inventory.write_text(json.dumps({'schema_version':1,'files':[
+            {'path':'module.py','bytes':managed.stat().st_size,'sha256':hashlib.sha256(managed.read_bytes()).hexdigest()}]}))
+        descriptor=self.root/'descriptor.json'
+        descriptor.write_text(json.dumps({'inventory_sha256':hashlib.sha256(inventory.read_bytes()).hexdigest()}))
+        result=self.powershell('packaging/windows/cleanup_install.ps1',InstallRoot=install,
+                               RuntimeDescriptor=descriptor,RuntimeOnly=True)
+        self.assertEqual(result.returncode,0,result.stderr.decode(errors='replace'))
+        self.assertFalse(managed.exists()); self.assertFalse(inventory.exists())
+        self.assertEqual(personal.read_bytes(),b'personal model')
 
 
 if __name__ == '__main__': unittest.main()

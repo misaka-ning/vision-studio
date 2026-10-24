@@ -172,7 +172,7 @@ private slots:
         QCOMPARE(requested.count(), 0); QCOMPARE(changes.count(), 0);
         panel.showDatasetImportError("该数据集未配置 Val，请选择 Train 后重试。");
         QCOMPARE(panel.datasetYaml(), QFileInfo("/dataset/train-only").absoluteFilePath());
-        QCOMPARE(panel.metadataPath(), QFileInfo("/dataset/audit.csv").absoluteFilePath());
+        QCOMPARE(panel.metadataPath(), QString("/dataset/audit.csv"));
         QVERIFY(panel.dataset().isEmpty()); QVERIFY(!panel.canEvaluate());
         auto *split = control<QComboBox>(panel, "evaluationSplitCombo"); QVERIFY(split);
         auto *reload = control<QPushButton>(panel, "evaluationReloadDatasetButton"); QVERIFY(reload);
@@ -182,7 +182,7 @@ private slots:
         QCOMPARE(requested.count(), 1); const auto request = requested.takeFirst();
         QCOMPARE(request.at(0).toString(), QFileInfo("/dataset/train-only").absoluteFilePath());
         QCOMPARE(request.at(1).toString(), QString("train"));
-        QCOMPARE(request.at(2).toString(), QFileInfo("/dataset/audit.csv").absoluteFilePath());
+        QCOMPARE(request.at(2).toString(), QString("/dataset/audit.csv"));
         panel.clearDataset(); QVERIFY(panel.datasetYaml().isEmpty()); QVERIFY(split->isHidden()); QVERIFY(reload->isHidden());
     }
     void modeRequiresValidDatasetAndDetection()

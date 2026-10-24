@@ -226,6 +226,7 @@ def main():
         shutil.copytree(cpu, stage/'runtime', copy_function=stage_link)
     scripts = stage/'scripts'; scripts.mkdir()
     for name in RUNTIME_SCRIPTS: shutil.copy2(ROOT/'scripts'/name, scripts)
+    shutil.copy2(Path(__file__).with_name('cleanup_install.ps1'), scripts/'cleanup_install.ps1')
     # Runtime Python modules and architecture YAMLs are required for legacy PT.
     vendor = stage/'vendor/yolov5'
     vendor.mkdir(parents=True)

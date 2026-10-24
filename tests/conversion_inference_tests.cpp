@@ -236,7 +236,7 @@ class ConversionInferenceTests final : public QObject
                   qPrintable(page->findChild<QLabel *>("conversionSummary")->text() + '\n' + unexpected_));
         const auto metadata = page->completedMetadata();
         QVERIFY(!metadata.isEmpty());
-        const QString output = metadata.value("output").toString();
+        const QString output = QFileInfo(metadata.value("output").toString()).absoluteFilePath();
         QVERIFY(QFileInfo(output).isFile());
         QTest::mouseClick(page->findChild<QPushButton *>("conversionAddModelButton"), Qt::LeftButton);
         QCOMPARE(window_->findChild<QSpinBox *>("inputSize")->value(), imageSize);

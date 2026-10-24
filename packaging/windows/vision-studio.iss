@@ -36,7 +36,7 @@ WizardStyle=modern
 UninstallDisplayIcon={app}\bin\vision-studio.exe
 ; The hash-checked migration removes obsolete owned files. A new log leaves
 ; modified legacy models/documents outside the new installer's ownership.
-UninstallLogMode=new
+UninstallLogMode=overwrite
 CloseApplications=yes
 RestartApplications=no
 SetupLogging=yes
@@ -65,6 +65,11 @@ Name: "{group}\{cm:UninstallProgram,Vision Studio}"; Filename: "{uninstallexe}"
 
 [Run]
 Filename: "{app}\bin\vision-studio.exe"; Description: "{cm:LaunchProgram,Vision Studio}"; Flags: nowait postinstall skipifsilent
+
+#if InstallProfile == "online"
+[UninstallRun]
+Filename: "{sys}\WindowsPowerShell\v1.0\powershell.exe"; Parameters: "-NoProfile -NonInteractive -ExecutionPolicy Bypass -File ""{app}\scripts\cleanup_install.ps1"" -InstallRoot ""{app}"" -RuntimeDescriptor ""{app}\cpu-runtime.json"" -RuntimeOnly"; Flags: runhidden skipifdoesntexist
+#endif
 
 ; Only installer-owned files are removed. User models, settings, recordings and
 ; the optional GPU environment are stored outside {app} and remain untouched.
