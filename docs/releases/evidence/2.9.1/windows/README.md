@@ -36,3 +36,11 @@
 - 安装 QA 关闭桌面快捷方式任务，开始菜单使用隔离组，并恢复原应用注册和入口；没有冒充实际覆盖用户入口的交互验收。首次试验对默认开始菜单的影响已恢复，用户原安装、模型、数据和桌面快捷方式未删除。
 
 原 Linux 远端基线在 [release-before-windows.json](release-before-windows.json)。QA 不单独上传 Release；普通用户只需下载一个 EXE，不需要源码 ZIP 或测试资源。
+
+## 发布后核验与公网下载限制
+
+五个 Windows 附件已上传，逐文件大小及 GitHub REST SHA256 均核验成功，见 [发布结果](publication.json)和[独立远端核验](remote-verification.json)。原 Linux 三个资产的 ID、大小与 digest 及原标签均未变化；[Latest 仍为正式版 v2.9.1](latest-after-windows.json)。本地[保留检查](retention-check.json)只有 2.9.1、2.1.0 两个 Windows 发行目录，无过期发行目录可删，未触及共享 SDK、原 Python/GPU 环境或用户资料。
+
+[正式 GitHub 地址补测](public-runtime-download.json)没有完成：原系统路由在约 90.5 秒发生传输超时；不改系统代理的直连重试也未在 600 秒冒烟测试窗口内下完 262.5 MiB CPU ZIP，未进入解压和依赖自检。600 秒是此 CLI 验收的总时限，普通交互准备没有该总时限，但仍受网络可用性影响。失败过程没有发布不完整环境或修改已有环境；不得把此次公网完整准备记为通过。
+
+发布前通过的是固定大小/SHA256 的受控镜像下载、真实解压与自检、取消重试、并发和离线复用，方法保持上文所述。访问 GitHub 不稳定时推荐全功能离线 EXE；在线包需要网络能够完整下载其运行组件。本次补测工具保留在 [tools/public_runtime_download.py](tools/public_runtime_download.py)。
