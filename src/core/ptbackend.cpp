@@ -1,3 +1,4 @@
+#include "cpuruntime.h"
 #include "ptbackend.h"
 #include "gpuruntime.h"
 
@@ -62,6 +63,11 @@ QString helperPath()
 
 QString interpreterPath(const QString &script)
 {
+#ifdef Q_OS_WIN
+    const auto python = vision::cpuPython(script);
+    if (python.isEmpty()) fail(QStringLiteral("未找到可执行的 Python / PyTorch 运行环境，请准备 CPU 运行环境或检查 VISION_STUDIO_PYTHON。"));
+    return python;
+#else
     const QString overridePath = qEnvironmentVariable("VISION_STUDIO_PYTHON");
     if (!overridePath.isEmpty())
     {
@@ -80,6 +86,7 @@ QString interpreterPath(const QString &script)
             return QDir::cleanPath(QFileInfo(path).absoluteFilePath());
     fail(QStringLiteral("找不到 PyTorch 运行环境。请安装 VisionStudio/runtime，或用 "
                         "VISION_STUDIO_PYTHON 指定已安装 torch、torchvision、ultralytics 的 Python。"));
+#endif
 }
 
 bool finiteNumber(const QJsonValue &value)

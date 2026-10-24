@@ -1,46 +1,65 @@
-# Windows 安装包
+# Windows 双安装包
 
-Windows 包以应用 2.1.0 为功能基线，生成独立的 `vision-studio-2.1.0-windows-x64-setup.exe`，不覆盖已公开的 Linux DEB、源码包、校验清单或标签。目标为 Windows 10 / 11 x64；本机验收以报告中的实际系统为准。
+2.9.1 使用 Qt 6.8.3、MSVC x64、OpenCV 4.12.0 构建，提供同一应用的离线和在线安装器。实际系统、检查和限制以[同版证据](../../docs/releases/evidence/2.9.1/windows/README.md)为准。
 
 ## 安装与分发
 
-把一个安装 EXE 发给接收者即可安装；CPU 推理、PT、Netron 与模型转换不要求接收者另装 Qt、Python、OpenCV 或开发工具。默认位置为 `%USERPROFILE%\VisionStudio`，通常是 `C:\Users\用户名\VisionStudio`。安装向导保留目录选择页，创建开始菜单入口及可选桌面快捷方式，以当前用户权限运行。
+| 文件后缀（前缀 `vision-studio-X.Y.Z-`） | 用途 |
+| --- | --- |
+| `windows-x64-offline-setup.exe` | 完整 CPU 环境，一个 EXE 即可分发，导入自己的模型与输入后离线使用 |
+| `windows-x64-online-setup.exe` | 先安装 Qt/OpenCV 与运行脚本；需要 Python 的功能首次使用时准备共用环境 |
+| `windows-x64-cpu-runtime.zip` | 在线包按固定 URL、大小、SHA256 下载的同一 CPU 组件 |
+| `windows-sources.zip` | 独立应用源码、重建材料、原始通知与 Windows FFmpeg 对应源码 |
+| `SHA256SUMS-windows-x64` | 上述四个文件的校验值 |
 
-个人配置、历史、结果、录像、转换文件与可选 GPU 环境默认放在 `%LOCALAPPDATA%\vision-studio`。卸载仅删除安装器记录的程序文件，保留个人数据。`VISION_STUDIO_DATA_DIR` 仍可指定其他数据位置。安装目录必须是专用目录；安装器拒绝将程序直接混入驱动器根目录、用户根目录或已有其他文件的目录。
+普通用户选择一个 EXE 即可。两个安装器均不安装源码归档、历史文档、QA、示例模型或测试图片，保留界面资源、使用指南、运行脚本和许可证。在线包的 ONNX 本地推理不需要 Python；PT、转换、Netron 视图、数据集导入／评估和 GPU 准备共用按需下载环境，启动时不自动下载。
 
-GPU 和 Linux 发行版一样按需准备。首次点击「更多 → 准备 GPU 支持」需联网下载 Windows CUDA 12.8 / PyTorch 2.9.1 / ONNX Runtime 1.23.2 的固定 wheel，按 `requirements-gpu-windows.lock.txt` 核验 SHA256。程序不安装显卡驱动，CPU 环境不受影响。下载与真实 CUDA 自检通过后才发布用户 GPU 环境；此前的已知环境保留为明确的恢复副本。Windows Job Object 在准备进程退出时结束 pip 子进程，避免取消后继续安装。
+默认 `%USERPROFILE%\VisionStudio`，通常为 `C:\Users\用户名\VisionStudio`，可自选专用目录，无需管理员。固定 AppId 保持旧版升级兼容；拒绝盘根、用户根、Users 根及含未知文件的现有目录。
 
-安装器没有商业代码签名。Windows 应用源码快照随包安装到 `sources/`，交付目录另附相同 ZIP，分发一个 EXE 即携带本次 Windows 应用源码。Qt 6.8.3、WebEngine、Netron 等已有第三方对应源码沿用 2.1.0 Release 的原始完整源码归档，地址与原始 SHA256 记录在 `upstream-source-reference.json`。原始许可随安装包保存。`SHA256SUMS` 记录最终交付文件，验收日志保存于 `docs/releases/evidence/2.1.0/windows/`。
+个人配置、记录、结果、录像、评估报告和运行环境默认放在 `%LOCALAPPDATA%\vision-studio`，`VISION_STUDIO_DATA_DIR` 可覆盖。CPU 缓存为 `runtimes/cpu/<运行包SHA256>`；下载有进度、取消、重试和跨进程锁。系统 PowerShell/.NET 解压检查路径、重复成员、链接、大小和每文件哈希，实际依赖自检通过后才写入完成标记并发布环境。取消会结束解压与其 Python 子进程。
+
+在线包减少首次下载量，补齐全部功能后的占用接近离线包。兼容的内置环境或已有缓存可复用。显式 `VISION_STUDIO_PYTHON` 继续优先，无效配置会报错，不静默使用系统 Python。
+
+升级仅按旧清单的路径、大小、SHA256 清理过期且未修改的文件；未知或修改过的文件保留。新卸载记录只跟踪新交付文件，个人数据与按需下载环境保留。
+
+NVIDIA 环境继续独立按需准备，使用 Windows CUDA 12.8 / Torch 2.9.1 / ONNX Runtime 1.23.2 哈希锁，不安装或修改驱动。在线包先准备 CPU 环境。源码获取说明在安装目录 `SOURCE-DOWNLOAD.txt`，安装器不会下载源码；原始许可保留。安装器没有商业代码签名。
 
 ## 重建
 
-先用 MSVC x64 构建应用，Qt 6.8.3 SDK 必须包含 WebEngineWidgets、WebChannel、Svg 和配套模块；OpenCV Windows 库的 ABI 须兼容所用 MSVC。Qt 与 OpenCV C++ DLL 使用动态链接。
+使用 Qt 6.8.3 MSVC SDK（WebEngineWidgets、WebChannel、Svg 及配套模块）、兼容的动态 OpenCV、Inno Setup 7.1 和可搬移 CPython 3.11 x64。原始构建输入见 `BUILD-INPUTS.json`，CPU 精确依赖见 `requirements-cpu.lock.txt`，GPU 版本与 wheel 哈希另有锁。
 
-准备可搬移的 CPython 3.11 Windows x64 环境；本次使用 Python Build Standalone 20261013 的 CPython 3.11.17，官方归档的 SHA256 保存在构建输入清单中。按照交付包的 `requirements-windows.lock.txt` 使用 `--no-deps` 安装，PyTorch CPU wheel 使用官方 CPU 源。使用 headless Python OpenCV，避免将其他 Qt 运行时带入应用。
-
-在仓库根目录执行以下命令，将路径替换为实际的构建输入。`--stage` 必须是新目录，脚本不会自动删除已有暂存目录。
+运行组件仅移除明确的头文件、已知测试目录、缓存、调试符号和带构建机路径的 Scripts 启动器。不得删掉实际参与推理、转换、评估和 GPU 准备的 Python 模块、模型架构 YAML、pip 或依赖元数据。
 
 ```powershell
+cmake -S . -B build-windows -G Ninja -DCMAKE_BUILD_TYPE=Release `
+  -DBUILD_TESTING=ON -DCMAKE_PREFIX_PATH=D:/Qt/6.8.3/msvc2022_64 `
+  -DOpenCV_DIR=D:/Opencv-C++/opencv/build/x64/vc16/lib `
+  -DVISION_RESOURCE_FALLBACK=.
+cmake --build build-windows --parallel 4
 python packaging/windows/build_windows.py `
-  --binary build-windows/bin/vision-studio.exe `
-  --runtime build-windows/python `
+  --binary build-windows/bin/vision-studio.exe --runtime build-windows/python `
   --qt-prefix D:/Qt/6.8.3/msvc2022_64 `
   --opencv-bin D:/Opencv-C++/opencv/build/x64/vc16/bin `
   --msvc-redist "C:/path/to/VC/Redist/MSVC/version/x64/Microsoft.VC145.CRT" `
   --iscc build-windows/tools/InnoSetup7/ISCC.exe `
-  --ffmpeg-source-dir build-windows/downloads/ffmpeg-sources `
-  --stage output/windows-2.1.0/stage `
-  --output output/windows-2.1.0
+  --ffmpeg-source-dir third-party/ffmpeg `
+  --profile offline --stage output/windows-2.9.1/stage-offline `
+  --output output/windows-2.9.1
 ```
 
-`build_windows.py` 部署 Qt / WebEngine 与 OpenCV、应用本地 VC runtime、可搬移 Python、模型、资产、脚本、文档和原始许可，生成文件 SHA256 清单，再调用 Inno Setup。安装后 `bin/vision-studio.exe` 从相邻安装标记定位自身运行环境，不依赖构建机器路径和系统 PATH。
+再以 `--profile online` 和新目录 `--stage .../stage-online` 执行相同命令。两种配置复用 `components/cpu` 和 CPU ZIP，锁不一致时拒绝复用。暂存目录必须为新目录，不自动删除已有目录。`--stage-only` 仅准备文件；`--skip-source` 可用于先验收 EXE，再独立冻结源码。
 
-Windows C++ OpenCV 4.12.0 的视频插件标识 FFmpeg 4.4.6，Python OpenCV 4.11.0.86 的视频插件标识 FFmpeg 4.4.5；两份原始源码一并放在安装目录的 `sources/ffmpeg/`。构建前按 `windows-native-sources.json` 的官方 URL 下载到 `--ffmpeg-source-dir`，脚本核验已冻结的 SHA256，并保存 Windows SDK 自带的完整 OpenCV 第三方通知。应用源码 ZIP 无需 `.git` 即可重新构建。
+独立源码 ZIP 包含应用、依赖锁、重建材料、通知、`WINDOWS-SOURCE-SNAPSHOT.json` 及 `third-party/ffmpeg/` 两份原归档。FFmpeg 4.4.5 / 4.4.6 按 `windows-native-sources.json` 校验；共享上游对应源码使用同版原完整源码包，精确引用见 `upstream-source-reference.json`。源码 ZIP 不自包含当前 Windows QA，避免 QA 绑定其哈希导致递归；这些报告从独立源码标签取得。无 `.git` 时仍可依据快照重建。
 
-使用支持长路径的 Inno Setup 7.1 或更新兼容版本，以保留 WebEngine 原始许可目录。简体中文消息来自官方 `jrsoftware/issrc` 仓库的 `Files/Languages/ChineseSimplified.isl`，保留原维护者说明。编译器本身不进入安装包。可选 GPU 的固定 wheel 来源与哈希保存在 `gpu-wheel-sources.json`，更新时通过 `lock_gpu.py` 从官方索引重新解析并人工核对版本。
+## 验收与发布
 
-## 验收
+分别验收两个最终安装器：默认与自选目录、中文和空格路径、清单哈希、真实 ONNX/PT、四种模型视图、转换后推理、数据集评估／阈值／报告／恢复、临时图片拖入、录像、升级和卸载保留个人数据。CUDA 在实际 NVIDIA 硬件验收。在线包另测未准备环境的 ONNX、真实下载／解压／自检及缓存离线复用。
 
-对最终安装包至少核验：安装到中文和含空格的目录、默认目录展开、开始菜单／桌面入口、隔离开发环境后的 ONNX／PT 推理、模型三种视图、ONNX／TorchScript 导出后实际推理、录像解码、升级与卸载保留用户数据、文件清单与安装包 SHA256。GPU 单独在 NVIDIA 硬件上实测，不用 CPU 结果代替。
+```powershell
+python -m unittest discover -s tests -p windows_packaging_tests.py -v
+python -m unittest discover -s tests -p windows_release_tests.py -v
+python scripts/github_release.py append-windows --version 2.9.1 `
+  --release-dir output/windows-2.9.1 --notes-file output/windows-2.9.1/release-notes.md --dry-run
+```
 
-Windows 补充包通过 `scripts/github_release.py append-windows` 上传到同版 Release，另附 Windows 应用源码 ZIP 与 `SHA256SUMS-windows-x64`。Linux 原来的三个附件与 `vX.Y.Z` 标签不变，Windows 实际源码通过 `windows/X.Y.Z-1` 追溯。补充发布前后都检查原附件 ID、大小、SHA256 与原标签，已存在的同名 Windows 文件只核验、绝不覆盖；QA 继续随仓库保存。完整规则见 [版本管理](../../docs/版本管理.md)。
+`windows-package-qa.json` schema 2 绑定两个 EXE、CPU ZIP 与源码 ZIP；逐包报告是 `installer-offline-qa.json`、`installer-online-qa.json`，组件报告为 `cpu-runtime-qa.json`。实际门禁通过后才正式 `append-windows`，再 `verify-windows`，同名文件绝不覆盖。证据随仓库提交，通过 `windows/X.Y.Z-1` 追溯；原 Linux 资产、校验清单及版本标签保持冻结。规则见[版本管理](../../docs/版本管理.md)。

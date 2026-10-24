@@ -7,6 +7,13 @@
 #include <QJsonObject>
 #include <QJsonParseError>
 #include <QSaveFile>
+#include <QTemporaryFile>
+#include <QThread>
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#include <fcntl.h>
+#include <io.h>
+#endif
 
 namespace vision
 {
@@ -34,7 +41,20 @@ DatasetSessionLoadResult DatasetSessionStore::load(const QString &filePath)
         r.error = QStringLiteral("数据集路径记录不是普通文件。"); return r;
     }
     QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly)) {
+#ifdef Q_OS_WIN
+    // Readers must permit the writer's atomic replacement. The ordinary CRT
+    // file-sharing mode denies deletion while a concurrent reader is open.
+    const HANDLE handle = CreateFileW(reinterpret_cast<LPCWSTR>(filePath.utf16()), GENERIC_READ,
+        FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+    const int descriptor = handle == INVALID_HANDLE_VALUE ? -1 :
+        _open_osfhandle(reinterpret_cast<intptr_t>(handle), _O_RDONLY | _O_BINARY);
+    if (descriptor < 0 && handle != INVALID_HANDLE_VALUE) CloseHandle(handle);
+    const bool opened = descriptor >= 0 && file.open(descriptor, QIODevice::ReadOnly, QFileDevice::AutoCloseHandle);
+    if (!opened && descriptor >= 0) _close(descriptor);
+#else
+    const bool opened = file.open(QIODevice::ReadOnly);
+#endif
+    if (!opened) {
         r.error = QStringLiteral("无法读取数据集路径记录：%1").arg(file.errorString()); return r;
     }
     // Bound the read too, in case an external non-atomic editor grows the file.
@@ -81,6 +101,27 @@ bool DatasetSessionStore::save(const QString &filePath, const DatasetSession &se
     if (data.size() > MaximumFileBytes) return fail(QStringLiteral("数据集路径记录超过 64 KiB，未保存。"));
     if (filePath.isEmpty() || !QDir().mkpath(QFileInfo(filePath).absolutePath()))
         return fail(QStringLiteral("无法创建数据集路径记录目录。"));
+#ifdef Q_OS_WIN
+    QString stagedPath;
+    {
+        QTemporaryFile staged(QFileInfo(filePath).absolutePath() + "/.vision-dataset-session-XXXXXX");
+        if (!staged.open() || staged.write(data) != data.size() || !staged.flush())
+            return fail(QStringLiteral("无法写入数据集路径记录临时文件。"));
+        stagedPath = staged.fileName(); staged.setAutoRemove(false);
+    }
+    bool replaced = false;
+    for (int attempt = 0; attempt < 20; ++attempt) {
+        replaced = MoveFileExW(reinterpret_cast<LPCWSTR>(stagedPath.utf16()),
+            reinterpret_cast<LPCWSTR>(filePath.utf16()), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH);
+        if (replaced) break;
+        const auto error = GetLastError();
+        if (error != ERROR_SHARING_VIOLATION && error != ERROR_ACCESS_DENIED) break;
+        QThread::msleep(2);
+    }
+    QFile::remove(stagedPath);
+    if (!replaced) return fail(QStringLiteral("数据集路径记录原子提交失败，原记录保留；请检查文件权限或占用。"));
+    return true;
+#else
     QSaveFile file(filePath);
     // Never truncate the old record when a same-directory replacement fails.
     file.setDirectWriteFallback(false);
@@ -96,5 +137,6 @@ bool DatasetSessionStore::save(const QString &filePath, const DatasetSession &se
     }
     if (!file.commit()) return fail(QStringLiteral("数据集路径记录原子提交失败：%1").arg(file.errorString()));
     return true;
+#endif
 }
 }

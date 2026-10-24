@@ -55,7 +55,7 @@ class SceneMetricsTests(DatasetFixture):
             for field in ("images", "TP", "recall", "mAP50"):
                 self.assertIsNone(group[field])
             self.assertEqual(group["sample_images"], [])
-        self.assertEqual(report["groups"]["No Ball"]["sample_images"], [str(self.c)])
+        self.assertEqual(report["groups"]["No Ball"]["sample_images"], [self.c.as_posix()])
         self.assertEqual(report["groups"]["All"]["sample_images"], self.request["sample_images"])
         self.assertTrue(all(row["Small"] is None and row["Occluded"] is None and not row["scene_reviewed"]
                             for row in report["per_image"]))
@@ -69,7 +69,7 @@ class SceneMetricsTests(DatasetFixture):
         self.assertGreater(groups["Small"]["mAP50"], 0)
         self.assertTrue(groups["Small"]["ap_published"])
         self.assertEqual((groups["Small"]["TP"], groups["Small"]["FP"], groups["Small"]["FN"]), (1, 2, 1))
-        self.assertEqual(groups["Small"]["sample_images"], [str(self.a), str(self.b)])
+        self.assertEqual(groups["Small"]["sample_images"], [self.a.as_posix(), self.b.as_posix()])
         self.assertEqual(groups["Occluded"]["images"], 1)
         self.assertIsNone(groups["Occluded"]["mAP50"])
         self.assertFalse(groups["Occluded"]["ap_published"])
@@ -81,19 +81,19 @@ class SceneMetricsTests(DatasetFixture):
     def test_cancelled_and_subset_do_not_publish_group_ap(self):
         self.review_metadata()
         self.write_predictions(self.predictions[:2])
-        for changes in ({"status": "cancelled"}, {"sample_images": [str(self.a), str(self.b)], "full_split": False}):
+        for changes in ({"status": "cancelled"}, {"sample_images": [self.a.as_posix(), self.b.as_posix()], "full_split": False}):
             report = self.analyze(**changes)
             for group in report["groups"].values():
                 self.assertFalse(group["ap_published"])
                 self.assertIsNone(group["mAP50"])
             self.assertGreater(report["groups"]["Small"]["partial_metrics"]["mAP50"], 0)
-            self.assertEqual(report["groups"]["All"]["sample_images"], [str(self.a), str(self.b)])
+            self.assertEqual(report["groups"]["All"]["sample_images"], [self.a.as_posix(), self.b.as_posix()])
 
     def test_no_difficulty_requires_review_and_excludes_target_negatives(self):
         records = prepare_records(self.manifest["samples"], self.predictions, 32, 0, scene_reviewed=True)
         groups = summarize_groups(records, .5, .5, True)
-        self.assertEqual(groups["No difficulty"]["sample_images"], [str(self.a), str(self.b)])
-        self.assertEqual(groups["No Ball"]["sample_images"], [str(self.c)])
+        self.assertEqual(groups["No difficulty"]["sample_images"], [self.a.as_posix(), self.b.as_posix()])
+        self.assertEqual(groups["No Ball"]["sample_images"], [self.c.as_posix()])
         self.assertTrue(groups["No difficulty"]["ap_published"])
 
     def test_target_negative_group_follows_mapping_not_metadata_flag(self):

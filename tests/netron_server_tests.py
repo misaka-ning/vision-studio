@@ -24,6 +24,7 @@ import unittest
 import urllib.error
 import urllib.parse
 import urllib.request
+from pipe_support import wait_readable
 
 PROJECT = Path(__file__).resolve().parent.parent
 HELPER = PROJECT / "scripts" / "netron_server.py"
@@ -47,10 +48,8 @@ class UnsafePickleProbe:
 
 
 def read_message(process, timeout=8.0):
-    with selectors.DefaultSelector() as selector:
-        selector.register(process.stdout, selectors.EVENT_READ)
-        if not selector.select(timeout):
-            raise AssertionError("Netron helper did not emit a protocol message")
+    if not wait_readable(process, timeout):
+        raise AssertionError("Netron helper did not emit a protocol message")
     line = process.stdout.readline()
     if not line:
         raise AssertionError("Netron helper exited without a protocol message")
@@ -194,7 +193,11 @@ class NetronServerTests(unittest.TestCase):
         external.write_bytes(b"external ONNX tensor bytes")
         secret = self.directory / "outside-secret.bin"
         secret.write_bytes(b"must not be served")
-        (path.parent / "outside-link.bin").symlink_to(secret)
+        try:
+            (path.parent / "outside-link.bin").symlink_to(secret)
+        except OSError as error:
+            if getattr(error, 'winerror', None) == 1314: self.skipTest('Windows account cannot create symbolic links')
+            raise
         with spawn(path) as process:
             ready = self.assert_ready(process, path)
             _, _, data = fetch(ready["url"] + "data/" + urllib.parse.quote(external.name))
@@ -231,7 +234,7 @@ class NetronServerTests(unittest.TestCase):
                     process.stdin.close()
                 else:
                     process.send_signal(signal.SIGTERM)
-                self.assertEqual(process.wait(timeout=3), 0)
+                self.assertEqual(process.wait(timeout=3), 1 if os.name == "nt" and method == "signal" else 0)
                 self.assertEqual(process.stdout.read(), b"")
                 self.assert_closed(ready["url"])
 

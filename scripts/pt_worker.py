@@ -485,7 +485,8 @@ class TorchScriptYolo:
         self.class_filter = []
         self.device = device
         extra = {"config.txt": ""}
-        self.model = torch.jit.load(str(path), map_location="cpu", _extra_files=extra).to(device).float().eval()
+        with path.open("rb") as stream:
+            self.model = torch.jit.load(stream, map_location="cpu", _extra_files=extra).to(device).float().eval()
         metadata = {}
         if extra["config.txt"]:
             metadata = json.loads(extra["config.txt"])

@@ -12,6 +12,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from filesystem_support import symlink_or_skip
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -217,7 +218,7 @@ class ExternalImportTests(unittest.TestCase):
                     (self.source / filename).write_bytes(data)
         link = self.source / "metrics.json"
         outside = self.root / "outside.json"; outside.write_bytes(link.read_bytes())
-        link.unlink(); link.symlink_to(outside)
+        link.unlink(); symlink_or_skip(self, link, outside)
         with self.assertRaisesRegex(ValueError, "普通文件"):
             importer.import_report(self.source, self.destination, self.options)
 
@@ -262,7 +263,7 @@ class ExternalImportTests(unittest.TestCase):
         (self.destination / "status.json").write_bytes(encoded({"status": "analyzing", "completed": 0}))
         (self.destination / "analysis-options.json").write_bytes(encoded(self.options))
         outside = self.root / "preserve.log"; outside.write_text("preserve")
-        (self.destination / "helper.log").symlink_to(outside)
+        symlink_or_skip(self, self.destination / "helper.log", outside)
         with self.assertRaisesRegex(ValueError, "helper.log"):
             importer.import_report(self.source, self.destination, self.options)
         self.assertEqual(outside.read_text(), "preserve")

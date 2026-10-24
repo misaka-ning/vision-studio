@@ -233,17 +233,21 @@ bool saveModelYaml(const QString &destination, const QString &sourceModel, const
         return fail(QStringLiteral("目标已存在或与源模型相同；请使用新文件名，原文件不会被覆盖。"));
     if (target.suffix().compare("yaml", Qt::CaseInsensitive) && target.suffix().compare("yml", Qt::CaseInsensitive))
         return fail(QStringLiteral("架构文件请使用 .yaml 或 .yml 扩展名。"));
-    QTemporaryFile temporary(target.dir().absoluteFilePath(".vision-studio-model-yaml-XXXXXX"));
-    if (!temporary.open()) return fail(QStringLiteral("无法在目标目录建立安全临时文件。"));
-    temporary.close();
-    QSaveFile staged(temporary.fileName());
-    staged.setDirectWriteFallback(false);
     const auto bytes = document.text.toUtf8();
-    if (!staged.open(QIODevice::WriteOnly) || staged.write(bytes) != bytes.size() || !staged.commit())
-        return fail(QStringLiteral("架构 YAML 原子保存失败，目标文件未替换。"));
+    QString stagedPath;
+    {
+        // QTemporaryFile may retain its native handle across close(). Destroy
+        // it before publishing the hard link, including on Windows.
+        QTemporaryFile temporary(target.dir().absoluteFilePath(".vision-studio-model-yaml-XXXXXX"));
+        if (!temporary.open() || temporary.write(bytes) != bytes.size() || !temporary.flush())
+            return fail(QStringLiteral("无法在目标目录写入安全临时文件。"));
+        stagedPath = temporary.fileName();
+        temporary.setAutoRemove(false);
+    }
     std::error_code code;
-    std::filesystem::create_hard_link(std::filesystem::u8path(temporary.fileName().toUtf8().toStdString()),
+    std::filesystem::create_hard_link(std::filesystem::u8path(stagedPath.toUtf8().toStdString()),
                                      std::filesystem::u8path(target.absoluteFilePath().toUtf8().toStdString()), code);
+    QFile::remove(stagedPath);
     if (code) return fail(QStringLiteral("无法原子创建新文件（目标可能已存在，或目录不支持安全另存）。原文件未覆盖。"));
     return true;
 }

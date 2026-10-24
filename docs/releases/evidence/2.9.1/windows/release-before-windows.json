@@ -1,0 +1,27 @@
+{
+  "assets": [
+    {
+      "id": 668049615,
+      "name": "SHA256SUMS",
+      "size": 207,
+      "digest": "sha256:aa08b683e3be193edac85b65931596142c8decae959eb0dec049611938e553c4"
+    },
+    {
+      "id": 668046234,
+      "name": "vision-studio-2.9.1-complete-source.tar.xz",
+      "size": 917340456,
+      "digest": "sha256:e4fddce4442de2fd4e1a7eccd5679ce062b2147a4f885e44c17e5c0e97a56346"
+    },
+    {
+      "id": 668045095,
+      "name": "vision-studio_2.9.1-1_amd64.deb",
+      "size": 387290644,
+      "digest": "sha256:549bf05f07db57c5f710d742b68530276f767b94561d3d22b8fb9c66500eed5c"
+    }
+  ],
+  "release_id": 421472424,
+  "tag_name": "v2.9.1",
+  "body": "# Vision Studio 2.9.1\n\n推荐工作点、曲线和阈值明细现在同页显示，减少评估时来回切页。继续使用 C++17／Qt 6.8.3 与 Fluent 深色界面，评估算法、报告格式及运行依赖保持兼容。\n\n- 默认「阈值调优」：上方显示当前阈值与 Precision／Recall／F1／无目标图误报率；左侧曲线，右侧推荐策略与约束，下方阈值表，可拖动分隔线调整空间。\n- 当前点与推荐点分别标记。定位推荐点、点曲线、选表格行均与当前指标联动，选中行自动滚入可见区域；查看错例再返回可保留分析状态。只有明确点击「采用到检测」才更新检测配置。\n- 「能力诊断」集中 AP 与诊断图；「场景分析」明确保存的统计阈值；「报告管理」集中导入、导出和离线重分析。导出反馈独立显示，不覆盖推荐说明。\n- 收紧评估页重复标题与任务信息，检查两种窗口尺寸及全部推荐策略的文字、表格当前行和关键按钮。\n\n完整生产回归实际通过 **26 套、426 项 Qt（含初始化／清理）与 155 项 Python**，零失败／跳过；最终只读 DEB 完成 ONNX／PT CPU 与 CUDA、TorchScript、零匹配、批处理、离线重分析、历史报告导入和安装／卸载验收。侧栏专项在真实公开 COCO8 上 CPU／CUDA 各通过 25 项，逐项重开原始日志和布局观测。详见[同版验收记录与限制](https://github.com/misaka-ning/vision-studio/blob/v2.9.1/docs/releases/evidence/2.9.1/README.md)。这些流程验收不代表足球模型精度或设备性能基准。\n\n本版交付 Ubuntu 22.04 amd64，Debian `2.9.1-1`，安装到 `/opt/VisionStudio`。三个手动附件为 DEB、完整对应源码包、`SHA256SUMS`；GitHub 自动源码入口另行显示。未做 Windows 2.9.1 或物理摄像头验收，Windows 已发布补充版仍为 2.1.0。冻结的历史标签和资产保持不变。\n",
+  "captured_at": "2026-10-24T04:01:05.1420323Z",
+  "tag_commit": "7f14bb46ef43170297c3bd98d27ae2f08b99d9ea"
+}

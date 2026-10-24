@@ -10,7 +10,7 @@
 
 当前工程版本：**2.9.1**。评估采用侧栏决策布局：推荐策略、曲线、当前指标与阈值表同页联动，默认阈值调优，另设能力诊断、场景分析、报告管理。沿用 C++17／Qt 6.8.3、Fluent 深色界面及 CPU／NVIDIA GPU 后端，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。
 
-本版实际验收范围及限制以[发行说明](docs/releases/2.9.1.md)与[验收状态](docs/releases/evidence/2.9.1/README.md)为准，未执行的检查不计为通过。发行平台为 Ubuntu 22.04 amd64；Windows 已发布补充包仍为 2.1.0。下方历史截图标明来源版本。
+本版实际验收范围及限制以[Linux 发行说明](docs/releases/2.9.1.md)、[Linux 验收状态](docs/releases/evidence/2.9.1/README.md)和 [Windows 双安装包说明](docs/releases/2.9.1-windows.md)为准，未执行的检查不计为通过。发行平台为 Ubuntu 22.04 amd64、Windows x64；公开下载状态以 Release 页面为准。下方历史截图标明来源版本。
 
 ![Vision Studio 2.5.0 图像预览：真实 ONNX CPU 检测与 GT 对照](docs/screenshots/workbench-2.5.0.png)
 
@@ -51,7 +51,26 @@ YAML 图来自 2.8.0 最终生产 UI 对象的真实 Qt 渲染，使用公开 YO
 
 ## 下载与安装
 
-从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下为 2.9.1 的安装命令。每版只上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
+### Windows：按使用方式选择一个 EXE
+
+从 [2.9.1 Release](https://github.com/misaka-ning/vision-studio/releases/tag/v2.9.1) 选择以下任一安装包：
+
+| 安装包 | 适合场景 | 首次使用 |
+| --- | --- | --- |
+| `vision-studio-2.9.1-windows-x64-offline-setup.exe` | 离线电脑、直接分发给其他用户 | 已含完整 CPU 运行环境，导入自己的模型与数据即可使用 |
+| `vision-studio-2.9.1-windows-x64-online-setup.exe` | 希望先下载较小安装包，或主要使用 ONNX 推理 | ONNX 本地推理直接可用；PT、转换、Netron 视图及数据集评估首次使用时下载共用环境 |
+
+两个包功能基线相同，都不安装源码、历史文档、示例模型或测试图片，界面所需图标、使用指南和许可证仍然保留。首次启动先导入模型，再拖入自己的图片／视频或选择数据集。在线包不会在启动时自动下载；首次准备显示体积、进度、取消和重试，也可在「更多」中准备 CPU 运行环境。下载按安装包内固定 SHA256 校验，成功后可离线使用。
+
+**在线包减少首次下载体积，补齐全部功能后的运行环境占用接近离线包。** 两者均不内置 NVIDIA CUDA 环境；需要 GPU 时再明确点击准备，不安装显卡驱动。
+
+默认安装到 `C:\Users\<用户名>\VisionStudio`，可自选专用目录，无需管理员权限或额外安装 Qt、Python、OpenCV。配置、记录、录像、评估报告、转换结果及按需下载环境保存在 `%LOCALAPPDATA%\vision-studio`，也可通过 `VISION_STUDIO_DATA_DIR` 指定。升级、切换包类型和卸载保留个人数据；兼容的已准备环境可以复用。
+
+一般用户只需下载一个 EXE。`vision-studio-2.9.1-windows-x64-cpu-runtime.zip` 是在线包下载的运行组件；`vision-studio-2.9.1-windows-sources.zip` 是单独提供的应用源码、Windows FFmpeg 对应源码与重建材料，安装器不会下载它。共享上游对应源码使用同页原 `complete-source.tar.xz`，不要求普通用户下载。Windows 校验值见独立的 `SHA256SUMS-windows-x64`，与 Linux 清单区分。构建与验收见 [Windows 打包文档](packaging/windows/README.md)。
+
+### Ubuntu 22.04 amd64
+
+从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下为 2.9.1 的安装命令。Linux 每版上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
 
 页面另外显示 GitHub 自动提供的 **Source code (zip)** 和 **Source code (tar.gz)** 两个源码入口，它们由平台生成，不能从 Release 中移除。下载三个手动附件后，先校验，再安装：
 
@@ -105,7 +124,7 @@ PT 支持兼容的 Ultralytics YOLOv8 / YOLO11 完整检查点、随附 YOLOv5 v
 
 ### Windows 本地开发
 
-Windows 2.1.0 已在对应环境使用 Qt 6.8.3 MSVC 2022 64 位 SDK、MSVC x64 和 OpenCV 4.12.0 Windows 动态库完成构建及真实 ONNX CPU 示例验证；以下是源码构建方法，不代表本轮已验收 Windows 2.9.1。Qt 需安装 WebEngine、WebChannel、Svg 及其配套模块。请在 Visual Studio x64 开发者终端中执行，按实际安装位置调整路径：
+Windows 构建使用 Qt 6.8.3 MSVC 2022 64 位 SDK、MSVC x64 和 OpenCV 4.12.0 Windows 动态库；实际验收范围见 [Windows 证据](docs/releases/evidence/2.9.1/windows/README.md)。Qt 需安装 WebEngine、WebChannel、Svg 及其配套模块。请在 Visual Studio x64 开发者终端中执行，按实际安装位置调整路径：
 
 ```powershell
 cmake -S . -B build-windows -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DCMAKE_PREFIX_PATH=D:/Qt/6.8.3/msvc2022_64 -DOpenCV_DIR=D:/Opencv-C++/opencv/build/x64/vc16/lib
@@ -115,9 +134,9 @@ D:/Qt/6.8.3/msvc2022_64/bin/windeployqt.exe --release build-windows/bin/vision-s
 ./build-windows/bin/vision-studio.exe --device cpu
 ```
 
-开发构建可直接双击 `build-windows/bin/vision-studio.exe`，但该目录仍依赖项目资源。需要分发时使用 [Windows 完整打包流程](packaging/windows/README.md)，生成包含 Qt、OpenCV、独立 Python、PT／Netron／转换依赖、模型与文档的单文件安装器。默认安装到 `%USERPROFILE%\VisionStudio`，可自选目录，无需接收者配置开发环境。用户数据独立保存在 `%LOCALAPPDATA%\vision-studio`，卸载保留个人文件。
+开发构建需要配置自己的资源和 Python 环境。需要分发时使用 [Windows 打包流程](packaging/windows/README.md)，以同一套二进制及 CPU 组件生成离线和在线两个安装器，运行组件与源码交付分别归档。默认安装到 `%USERPROFILE%\VisionStudio`，可自选目录，无需接收者配置开发环境。用户数据独立保存在 `%LOCALAPPDATA%\vision-studio`，卸载保留个人文件。
 
-Windows 使用独立的 CUDA wheel 哈希锁和 GPU 准备流程，首次准备需要网络及兼容的 NVIDIA 显卡驱动；不复用 Linux runtime，不安装或修改驱动。CPU、模型显示与转换可在安装后离线使用。Windows 验收材料单独保存在 `docs/releases/evidence/2.1.0/windows/`，不替代或修改现有 Linux 发行证据。
+Windows 使用独立的 CUDA wheel 哈希锁和 GPU 准备流程，首次准备需要网络及兼容的 NVIDIA 显卡驱动，不安装或修改驱动。在线包先准备共用 CPU 环境；离线包随安装提供该环境。Windows 验收材料单独保存在 `docs/releases/evidence/2.9.1/windows/`，不替代或修改现有 Linux 发行证据；2.1.0 旧包和历史证据继续保留。
 
 ### Linux
 

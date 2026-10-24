@@ -1,0 +1,28 @@
+{
+  "old_installer_bytes": 411996451,
+  "profiles": {
+    "offline": {
+      "file": "vision-studio-2.9.1-windows-x64-offline-setup.exe",
+      "sha256": "7b86569f81bec6b1c0655da50aa3491c7818a6fe83e2bfb78a2afd3eaade45ab",
+      "bytes": 292959557,
+      "installed_bytes": 1301510982
+    },
+    "online": {
+      "file": "vision-studio-2.9.1-windows-x64-online-setup.exe",
+      "sha256": "8ba9eb197d5fcf9ac06f152cc8883d54e8c2d33a9da319516d22110987cb7e30",
+      "bytes": 114598006,
+      "installed_bytes": 379682685
+    }
+  },
+  "cpu_runtime": {
+    "file": "vision-studio-2.9.1-windows-x64-cpu-runtime.zip",
+    "bytes": 275278287,
+    "sha256": "9a7752dd70db38fda847dcb5cfdaee133860325e249ce8040eabf251185408f1",
+    "uncompressed_bytes": 910750855
+  },
+  "source_snapshot": {
+    "file": "vision-studio-2.9.1-windows-sources.zip",
+    "bytes": 173561791,
+    "sha256": "57d3886cac7536c1feb59ba3cd190e26ad8835f28781453dbe1e348f8b9ce8d3"
+  }
+}

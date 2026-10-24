@@ -41,11 +41,13 @@ QString gpuScriptPath(const QString &name)
     if (name.contains('/') || name.contains('\\') || name.contains(QStringLiteral("..")))
         return {};
     const QString app = QCoreApplication::applicationDirPath();
-    const QStringList candidates = {QDir(app).filePath("../scripts/" + name),
+    const QString home = qEnvironmentVariable("VISION_STUDIO_HOME");
+    const QStringList candidates = {home.isEmpty() ? QString() : QDir(home).filePath("scripts/" + name),
+                                    QDir(app).filePath("../scripts/" + name),
                                     QDir(app).filePath("../../scripts/" + name),
                                     QDir(QStringLiteral(VISION_PROJECT_DIR)).filePath("scripts/" + name)};
     for (const QString &path : candidates)
-        if (QFileInfo(path).isFile())
+        if (!path.isEmpty() && QFileInfo(path).isFile())
             return QFileInfo(path).absoluteFilePath();
     return {};
 }

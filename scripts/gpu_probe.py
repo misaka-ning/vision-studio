@@ -136,7 +136,9 @@ try:
     if not session.get_providers() or session.get_providers()[0]!='CUDAExecutionProvider':
         raise RuntimeError('ONNX Runtime CUDA provider 无法加载')
     session.disable_fallback()
-    np.testing.assert_array_equal(session.run(None,{'x':np.ones((2,2),dtype=np.float32)})[0],np.full((2,2),2,dtype=np.float32))
+    actual=session.run(None,{'x':np.ones((2,2),dtype=np.float32)})[0]
+    if not np.array_equal(actual,np.full((2,2),2,dtype=np.float32)):
+        raise RuntimeError('ONNX CUDA MatMul result differs from the expected matrix')
     result.update(ok=True,prepared=True,cuda_available=True)
 except Exception as error:
     result['reason']=str(error)

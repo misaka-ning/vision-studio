@@ -73,7 +73,8 @@ def main():
                 "backbone.block.bn.bias": torch.ones(4),
                 "head.fc.weight": torch.zeros(2, 4)}, args.output / "weights-only.pt")
     module = torch.nn.Linear(4, 3).eval()
-    torch.jit.trace(module, torch.zeros(1, 4)).save(str(args.output / "linear-script.pt"))
+    with (args.output / "linear-script.pt").open("wb") as stream:
+        torch.jit.save(torch.jit.trace(module, torch.zeros(1, 4)), stream)
     (args.output / "scoped-if.onnx").write_bytes(if_model())
 
 

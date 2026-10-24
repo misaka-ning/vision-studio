@@ -1,3 +1,6 @@
+#include "runtimesetup.h"
+#include "core/cpuruntime.h"
+#include "core/cpuruntime.h"
 #include "modelconversionpage.h"
 #include "icons.h"
 
@@ -106,6 +109,9 @@ QString helperPath()
 }
 QString pythonPath(const QString &script)
 {
+#ifdef Q_OS_WIN
+    return vision::cpuPython(script);
+#else
     const QString override = qEnvironmentVariable("VISION_STUDIO_PYTHON");
     if (!override.isEmpty())
         return QFileInfo(override).isAbsolute() ? override : QStandardPaths::findExecutable(override);
@@ -118,6 +124,7 @@ QString pythonPath(const QString &script)
         if (QFileInfo(path).isFile() && QFileInfo(path).isExecutable())
             return QFileInfo(path).absoluteFilePath();
     return {};
+#endif
 }
 bool supportedSource(const QString &path)
 {
@@ -322,6 +329,7 @@ void ModelConversionPage::appendLog(const QString &message) { log_->appendPlainT
 void ModelConversionPage::start()
 {
     if (isBusy()) return;
+    if (!ui::ensureCpuRuntime(this, [this] { start(); })) return;
     const QString name = filename_->text().trimmed();
     const QString selectedFormat = format_->currentData().toString();
     const QString extension = selectedFormat == "onnx" ? ".onnx" : ".torchscript";

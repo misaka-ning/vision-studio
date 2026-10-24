@@ -1,3 +1,5 @@
+#include "runtimesetup.h"
+#include "core/cpuruntime.h"
 #include "mainwindow.h"
 #include "core/gpuruntime.h"
 #include "core/inferenceworker.h"
@@ -91,6 +93,13 @@ bool classifyPreviewDrop(const QStringList &input, QStringList *paths, PreviewDr
     const QStringList videos{"mp4", "avi", "mkv", "mov", "webm", "m4v"};
     QSet<QString> imageFormats;
     for (const auto &format : QImageReader::supportedImageFormats()) imageFormats.insert(QString::fromLatin1(format).toLower());
+    // Drag-move events must not stat thousands of files on the GUI thread.
+    // Actual files, readability and canonical identities are checked atomically
+    // by importDroppedImages before any queue change.
+    if (input.size() > 96 && std::all_of(input.begin(), input.end(), [&imageFormats](const QString &path) {
+            return imageFormats.contains(QFileInfo(path).suffix().toLower()); })) {
+        *paths = input; *kind = PreviewDropKind::Images; return true;
+    }
     QSet<QString> seen;
     int category = -1;
     for (const QString &path : input) {
@@ -1539,6 +1548,13 @@ void MainWindow::displayModelStructure()
     structureModelMeta_->setWordWrap(true);
     structureHint_->setVisible(!path.isEmpty() &&
                                QFileInfo(path).suffix().compare("onnx", Qt::CaseInsensitive) != 0);
+    if (!path.isEmpty() && vision::cpuRuntimeDownloadNeeded()) {
+        modelViewer_->stop();
+        structureModelMeta_->setText("首次查看模型结构需要准备运行环境，可打开模型显示页或在更多页点击“准备 CPU 运行环境”。");
+        if (!initializing_ && pages_->currentIndex() == 2)
+            ui::ensureCpuRuntime(this, [this] { displayModelStructure(); });
+        return;
+    }
     if (modelViewer_->modelPath() != path || !modelViewer_->matchesModelFile(path) ||
         modelViewer_->state() == ModelViewer::State::Empty)
         modelViewer_->openModel(path);
@@ -1677,7 +1693,20 @@ QWidget *MainWindow::buildMore()
                            "border-radius:4px; color:#D2D2D2; padding:8px; font-size:12px; }");
     gpuLog_->hide();
     gpuLayout->addWidget(gpuLog_);
-    connect(gpuCheckButton_, &QPushButton::clicked, this, &MainWindow::checkGpuEnvironment);
+    connect(gpuCheckButton_, &QPushButton::clicked, this, [this] {
+        if (ui::ensureCpuRuntime(this, [this] { checkGpuEnvironment(); })) checkGpuEnvironment();
+    });
+#ifdef Q_OS_WIN
+    auto *cpuPrepare = button("准备 CPU 运行环境", "plus");
+    cpuPrepare->setObjectName("cpuPrepareButton");
+    cpuPrepare->setVisible(vision::cpuRuntimeDownloadNeeded());
+    gpuLayout->insertWidget(0, cpuPrepare);
+    connect(cpuPrepare, &QPushButton::clicked, this, [this] {
+        const auto ready = [this] { inspectSelectedModel(); displayModelStructure(); checkGpuEnvironment(); restoreDatasetSession();
+            showNotice("CPU 运行环境已就绪，可离线使用 PT、转换、模型视图及评估。"); };
+        if (ui::ensureCpuRuntime(this, ready)) ready();
+    });
+#endif
     connect(gpuPrepareButton_, &QPushButton::clicked, this, &MainWindow::prepareGpuEnvironment);
     connect(gpuCancelButton_, &QPushButton::clicked, this, &MainWindow::cancelGpuPreparation);
     layout->addWidget(environment);
@@ -2431,31 +2460,43 @@ bool MainWindow::handlePreviewDrop(const QStringList &input)
 
 void MainWindow::importDroppedImages(const QStringList &paths, bool append)
 {
-    QStringList additions;
-    QSet<QString> seen;
-    if (append) for (const auto &path : files_) {
-        const auto canonical = QFileInfo(path).canonicalFilePath();
-        seen.insert(canonical.isEmpty() ? QFileInfo(path).absoluteFilePath() : canonical);
-    }
-    for (const auto &path : paths) if (!seen.contains(path)) { additions.append(path); seen.insert(path); }
-    if (additions.isEmpty()) { showNotice("拖入的图片已在队列中；相同本地路径只保留一次。"); return; }
+    const QStringList existing = append ? files_ : QStringList{};
+    const auto checkedPaths = std::make_shared<QStringList>();
     droppedImageImportActive_ = true; droppedImageAppend_ = append; droppedImageQueueChanged_ = false;
     droppedImageOriginalCount_ = files_.size(); droppedImageOriginalRow_ = queue_->currentRow();
     const auto cancelled = droppedImageImportCancellation_ = std::make_shared<std::atomic_bool>(false);
     const quint64 generation = ++droppedImageImportGeneration_;
     const auto error = std::make_shared<QString>();
     setBusy(true); progress_->setRange(0, 0); showNotice("正在后台检查拖入的图片…");
-    auto *thread = QThread::create([additions, cancelled, error] {
-        for (const auto &path : additions) {
+    auto *thread = QThread::create([paths, existing, checkedPaths, cancelled, error] {
+        QSet<QString> seen;
+        for (const auto &path : existing) {
             if (cancelled->load()) return;
+            const QFileInfo info(path);
+            const auto canonical = info.canonicalFilePath();
+            seen.insert(canonical.isEmpty() ? info.absoluteFilePath() : canonical);
+        }
+        for (const auto &input : paths) {
+            if (cancelled->load()) return;
+            const QFileInfo info(input);
+            if (!info.isFile() || !info.isReadable()) { *error = "无法读取图片，本次拖入未导入任何文件：" + input; return; }
+            const auto canonical = info.canonicalFilePath();
+            const QString path = canonical.isEmpty() ? info.absoluteFilePath() : canonical;
+            if (seen.contains(path)) continue;
             QImageReader reader(path);
             if (!reader.canRead()) { *error = "无法读取图片，本次拖入未导入任何文件：" + path; return; }
+            seen.insert(path); checkedPaths->append(path);
         }
     });
-    connect(thread, &QThread::finished, this, [this, additions, cancelled, generation, error] {
+    connect(thread, &QThread::finished, this, [this, checkedPaths, cancelled, generation, error] {
         if (cancelled->load() || generation != droppedImageImportGeneration_ || !droppedImageImportActive_ || closing_) return;
         if (!error->isEmpty()) {
             droppedImageImportActive_ = false; setBusy(false); selectQueueImage(queue_->currentRow()); showNotice(*error, true); return;
+        }
+        const QStringList additions = *checkedPaths;
+        if (additions.isEmpty()) {
+            droppedImageImportActive_ = false; setBusy(false);
+            showNotice("拖入的图片已在队列中；相同本地路径只保留一次。"); return;
         }
         if (!droppedImageAppend_) {
             clearDatasetContext(); clearImageResults(); files_.clear(); queue_->clear();
@@ -2802,6 +2843,7 @@ void MainWindow::startWorkbenchTask()
 void MainWindow::inspectSelectedModel()
 {
     if (initializing_ || busy_) return;
+    if (isPtModel(modelPath_) && vision::cpuRuntimeDownloadNeeded()) return;
     if (modelInspectionCancellation_) modelInspectionCancellation_->store(true);
     const quint64 generation = ++modelInspectionGeneration_;
     modelInspectionCancellation_ = std::make_shared<std::atomic_bool>(false);
@@ -2980,6 +3022,8 @@ void MainWindow::setModel(const QString &path, bool force)
             inspectSelectedModel();
         return;
     }
+    if (!initializing_ && isPtModel(f.absoluteFilePath()) &&
+        !ui::ensureCpuRuntime(this, [this, path, force] { setModel(path, force); })) return;
     const bool convertedBgr =
         isPtModel(f.absoluteFilePath()) && inputColorMode_->currentData().toString() == "bgr";
     modelPath_ = f.absoluteFilePath();
@@ -3111,6 +3155,7 @@ void MainWindow::startInference()
     if (busy_ || gpuSetupProcess_ || (modelConversion_ && modelConversion_->isBusy()))
         return;
     if (evaluation_ && evaluation_->evaluationMode()) { startEvaluation(); return; }
+    if (isPtModel(modelPath_) && !ui::ensureCpuRuntime(this, [this] { startInference(); })) return;
     evaluationReviewActive_ = false;
     resetEvaluationReviewNavigation();
     if (resultIoPending_)
@@ -3416,6 +3461,9 @@ void MainWindow::updateDeviceUi()
 
 QString MainWindow::gpuLauncherPython() const
 {
+#ifdef Q_OS_WIN
+    return vision::cpuPython();
+#else
     const QString override = qEnvironmentVariable("VISION_STUDIO_PYTHON");
     const QStringList candidates{override, projectRoot_ + "/runtime/bin/python", "/usr/bin/python3.10",
                                  QStandardPaths::findExecutable("python3")};
@@ -3423,6 +3471,7 @@ QString MainWindow::gpuLauncherPython() const
         if (!candidate.isEmpty() && QFileInfo(candidate).isExecutable())
             return candidate;
     return {};
+#endif
 }
 
 void MainWindow::appendGpuLog(const QString &message)
@@ -3579,6 +3628,7 @@ void MainWindow::readGpuSetupOutput()
 
 void MainWindow::prepareGpuEnvironment()
 {
+    if (!ui::ensureCpuRuntime(this, [this] { prepareGpuEnvironment(); })) return;
     if (busy_ || gpuSetupProcess_ || gpuProbeProcess_)
         return;
     const QString python = gpuLauncherPython(), script = vision::gpuScriptPath("gpu_setup.py");
@@ -3906,7 +3956,8 @@ void MainWindow::runDemo()
 {
     if (busy_)
         return;
-    const QString model = projectRoot_ + "/models/yolov5n.onnx", image = projectRoot_ + "/assets/bus.jpg";
+    const QString fixtures = qEnvironmentVariable("VISION_STUDIO_SMOKE_INPUT_ROOT", projectRoot_);
+    const QString model = fixtures + "/models/yolov5n.onnx", image = fixtures + "/assets/bus.jpg";
     if (!QFileInfo::exists(model) || !QFileInfo::exists(image))
     {
         showNotice("示例资源尚未准备好。请导入自己的 ONNX 模型与图片。", true);
@@ -3945,7 +3996,8 @@ void MainWindow::runPtDemo()
 {
     if (busy_)
         return;
-    const QString model = projectRoot_ + "/models/yolov8n.pt", image = projectRoot_ + "/assets/bus.jpg";
+    const QString fixtures = qEnvironmentVariable("VISION_STUDIO_SMOKE_INPUT_ROOT", projectRoot_);
+    const QString model = fixtures + "/models/yolov8n.pt", image = fixtures + "/assets/bus.jpg";
     if (!QFileInfo::exists(model) || !QFileInfo::exists(image))
     {
         showNotice("PT 示例资源不存在，请导入自己的 .pt 模型。", true);

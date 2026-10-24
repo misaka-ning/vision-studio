@@ -12,7 +12,7 @@ import csv
 import hashlib
 import json
 import math
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 import re
 
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".tif", ".tiff"}
@@ -41,6 +41,11 @@ def canonical_digest(value):
         return item
     return hashlib.sha256(json.dumps(normalize(value), ensure_ascii=False, sort_keys=True,
                                      separators=(",", ":"), allow_nan=False).encode("utf-8")).hexdigest()
+
+
+def absolute_dataset_path(value):
+    value = str(value)
+    return Path(value).is_absolute() or PurePosixPath(value).is_absolute() or PureWindowsPath(value).is_absolute()
 
 
 def resolve_path(value, base):
@@ -107,7 +112,7 @@ def class_names(config):
 
 def dataset_entry_path(value, base, relocation=None):
     path = resolve_path(value, base)
-    if relocation is not None and Path(str(value)).is_absolute() and not path.exists():
+    if relocation is not None and absolute_dataset_path(value) and not path.exists():
         previous_root, selected_root = relocation
         try:
             relative = path.relative_to(previous_root)
@@ -128,7 +133,7 @@ def list_images(entry, root, source_hashes, relocation=None):
             images.extend(sorted((p.resolve() for p in path.rglob("*")
                                   if p.is_file() and p.suffix.lower() in IMAGE_SUFFIXES), key=str))
         elif path.is_file() and path.suffix.lower() == ".txt":
-            source_hashes[str(path)] = digest(path)
+            source_hashes[path.as_posix()] = digest(path)
             for line in path.read_text(encoding="utf-8-sig").splitlines():
                 if line.strip():
                     images.append(dataset_entry_path(line.strip(), path.parent, relocation))
@@ -141,7 +146,7 @@ def list_images(entry, root, source_hashes, relocation=None):
     for path in images:
         if not path.is_file() or path.suffix.lower() not in IMAGE_SUFFIXES:
             raise ValueError(f"图片名单含缺失文件或非图片：{path}")
-        if any(c in str(path) for c in ("\n", "\r", "*")):
+        if any(c in path.as_posix() for c in ("\n", "\r", "*")):
             raise ValueError("图片路径不能包含换行或通配符 *。")
     if not images:
         raise ValueError("选择的数据集集合没有图片。")
@@ -207,7 +212,7 @@ def prepare_dataset(request):
         raise ValueError("请选择本地 YOLO 数据集 YAML。")
     dataset_source = resolve_path(request["dataset_yaml"], Path.cwd())
     data = resolve_dataset_yaml(dataset_source)
-    source_hashes = {str(data): digest(data)}
+    source_hashes = {data.as_posix(): digest(data)}
     with data.open(encoding="utf-8-sig") as stream:
         config = yaml.safe_load(stream)
     if not isinstance(config, dict):
@@ -217,7 +222,7 @@ def prepare_dataset(request):
     root = resolve_path(root_value, data.parent)
     relocation = None
     if (dataset_source.is_dir() and dataset_source == data.parent
-            and Path(str(root_value)).is_absolute() and not root.exists()):
+            and absolute_dataset_path(root_value) and not root.exists()):
         # Selecting a directory explicitly identifies the new dataset root.
         # Only a missing absolute configured root is eligible; direct YAML
         # inputs and missing paths outside that root remain strict failures.
@@ -230,7 +235,7 @@ def prepare_dataset(request):
     metadata_value = request.get("metadata_path") or request.get("metadata")
     metadata_path = resolve_path(metadata_value, data.parent) if metadata_value else None
     if metadata_path:
-        source_hashes[str(metadata_path)] = digest(metadata_path)
+        source_hashes[metadata_path.as_posix()] = digest(metadata_path)
     metadata = read_metadata(metadata_path) if metadata_path else None
     if metadata is not None and len(names) != 1:
         raise ValueError("足球审核 metadata 适配只支持单类数据集；普通多类 YOLO 数据集无需提供 metadata。")
@@ -254,7 +259,7 @@ def prepare_dataset(request):
             elif row["annotation_status"] not in ("reviewed_annotation", "negative_confirmed"):
                 reason = "not_confirmed_usable"
             if reason:
-                skipped.append({"image": str(image), "reason": reason})
+                skipped.append({"image": image.as_posix(), "reason": reason})
                 continue
             if row["split"] != split:
                 raise ValueError(f"metadata.split 与选择集合不一致：{image.name}")
@@ -265,7 +270,7 @@ def prepare_dataset(request):
         if not label.is_file():
             if relocation is not None:
                 raise ValueError("数据集只读重定位后仍存在缺失标签，请修复所选文件夹中的 images／labels 配对后重新导入。")
-            skipped.append({"image": str(image), "label": str(label), "reason": "missing_label"})
+            skipped.append({"image": image.as_posix(), "label": label.as_posix(), "reason": "missing_label"})
             missing += 1
             continue
         image_sha256, label_sha256 = digest(image), digest(label)
@@ -289,13 +294,13 @@ def prepare_dataset(request):
                 raise ValueError(f"审核状态与标注框数量不一致：{image.name}")
         else:
             flags["No Ball"] = int(not boxes)
-        samples.append({"image": str(image), "label": str(label), "width": width, "height": height,
+        samples.append({"image": image.as_posix(), "label": label.as_posix(), "width": width, "height": height,
                         "gt": boxes, "flags": flags, "image_sha256": image_sha256,
                         "label_sha256": label_sha256})
-    manifest = {"schema_version": 1, "data_yaml": str(data), "dataset_yaml": str(data),
-                "dataset_source": str(dataset_source),
-                "root": str(root), "split": split, "names": names,
-                "metadata_path": str(metadata_path) if metadata_path else None,
+    manifest = {"schema_version": 1, "data_yaml": data.as_posix(), "dataset_yaml": data.as_posix(),
+                "dataset_source": dataset_source.as_posix(),
+                "root": root.as_posix(), "split": split, "names": names,
+                "metadata_path": metadata_path.as_posix() if metadata_path else None,
                 "samples": samples, "skipped": skipped, "source_hashes": source_hashes,
                 "available_images": len(images), "selected_images": len(samples),
                 "requires_attention": bool(missing), "validation": {
@@ -303,7 +308,7 @@ def prepare_dataset(request):
                     "negative_images": sum(not s["gt"] for s in samples),
                     "missing_labels": missing, "excluded": len(skipped) - missing}}
     if relocation is not None:
-        manifest.update({"root_relocated": True, "configured_root": str(relocation[0]),
+        manifest.update({"root_relocated": True, "configured_root": relocation[0].as_posix(),
                          "relocation_notice": "原配置中的绝对根目录已失效，按所选文件夹只读重定位；"
                                               "配置、图片名单与标注均未修改。"})
     manifest["fingerprint"] = canonical_digest(manifest)

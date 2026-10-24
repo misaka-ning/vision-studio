@@ -1,0 +1,79 @@
+{
+  "success": true,
+  "version": "2.9.1",
+  "checks": [
+    {
+      "name": "resumed-final-installed-payload-hashes",
+      "passed": true,
+      "files": 21044
+    },
+    {
+      "name": "legacy-upgrade-cleans-unmodified-only",
+      "passed": true,
+      "old_files": 40298,
+      "protected_files": 4,
+      "method": "Actual old EXE installation and final EXE migration; waited for inner setup after old controller timed out, then rehashed all final payloads and original protected baselines"
+    },
+    {
+      "name": "retained-runtime-without-download",
+      "passed": true,
+      "seconds": 2.297,
+      "report": "retained-runtime-without-download\\cpu-runtime-setup-report.json"
+    },
+    {
+      "name": "offline-to-online-reuses-compatible-runtime",
+      "passed": true
+    },
+    {
+      "name": "online-uninstall-cleans-retained-managed-runtime",
+      "passed": true
+    },
+    {
+      "name": "nonempty-unmanaged-directory-rejected",
+      "passed": true,
+      "evidence": "upgrade-final-resumed/online-fresh-before-switch-setup.log"
+    },
+    {
+      "name": "offline-after-online-switch",
+      "passed": true,
+      "seconds": 1.688,
+      "report": "offline-after-online-switch\\cpu-runtime-setup-report.json"
+    },
+    {
+      "name": "online-to-offline-adds-compatible-runtime",
+      "passed": true
+    },
+    {
+      "name": "upgrade-uninstall-preserves-modified-legacy-and-user-files",
+      "passed": true
+    }
+  ],
+  "cpu_sha256": "9a7752dd70db38fda847dcb5cfdaee133860325e249ce8040eabf251185408f1",
+  "installers": {
+    "legacy": {
+      "file": "vision-studio-2.1.0-windows-x64-setup.exe",
+      "sha256": "8bb8eb7da78235f29312aa43aa5b58c2451fae883c9761a8631ac3da2ed68858"
+    },
+    "offline": {
+      "file": "vision-studio-2.9.1-windows-x64-offline-setup.exe",
+      "sha256": "7b86569f81bec6b1c0655da50aa3491c7818a6fe83e2bfb78a2afd3eaade45ab"
+    },
+    "online": {
+      "file": "vision-studio-2.9.1-windows-x64-online-setup.exe",
+      "sha256": "8ba9eb197d5fcf9ac06f152cc8883d54e8c2d33a9da319516d22110987cb7e30"
+    }
+  },
+  "protected_files": {
+    "E:\\vision-studio\\build-windows-2.9.1\\upgrade-final-optimized\\安装路径 Space\\VisionStudio\\sources\\ffmpeg\\ffmpeg-4.4.5.tar.xz": "ebd2419402bbd668121ebdf40c692f6a3ca070b96ed026dcce4924c93e8db220",
+    "E:\\vision-studio\\build-windows-2.9.1\\upgrade-final-optimized\\安装路径 Space\\VisionStudio\\models\\yolov5n.onnx": "678cdb0a3c2a278a02d14b0d1ddf3e9179dfc5f011ffd0a9aa4c1845c1ee2127",
+    "E:\\vision-studio\\build-windows-2.9.1\\upgrade-final-optimized\\安装路径 Space\\VisionStudio\\private-user-model.pt": "3e77db5d8054c711daf9c052976ce3e7ecd219e2a6c13b7c2be1199c47d7bdb2",
+    "E:\\vision-studio\\build-windows-2.9.1\\upgrade-final-optimized\\personal\\private-history.json": "3e77db5d8054c711daf9c052976ce3e7ecd219e2a6c13b7c2be1199c47d7bdb2",
+    "E:\\vision-studio\\build-windows-2.9.1\\upgrade-final-optimized\\安装路径 Space\\VisionStudio\\runtime\\private-user-file.txt": "46d61cbd70818c3cd97d08a90990795d3354f322a02dedb08436cc1bebc1e35b",
+    "E:\\vision-studio\\build-windows-2.9.1\\upgrade-final-complete\\安装路径 Space\\VisionStudio\\private-new-profile-model.pt": "045e1739ffd7574fdae671fd582a3be4e464fd387404c2f659ed04bd3a3d3ea2"
+  },
+  "provenance": [
+    "Actual 2.1.0 setup succeeded in upgrade-final-optimized. Actual final EXE migration continued after old QA controller timeout, then all 21044 final payloads and original protected baselines were independently rechecked.",
+    "upgrade-final-resumed verified offline-to-online reuse and managed CPU uninstall; fresh reinstall into an unmarked user directory was correctly rejected.",
+    "Online-to-offline was then checked in this new dedicated folder, with an additional private model preserved during upgrade and uninstall. Original failed reports remain unchanged."
+  ]
+}

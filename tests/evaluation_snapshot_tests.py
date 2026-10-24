@@ -7,6 +7,7 @@ from pathlib import Path
 import shutil
 import sys
 import unittest
+from filesystem_support import symlink_or_skip
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -35,7 +36,7 @@ class SnapshotTests(DatasetFixture):
         for i, row in enumerate(self.rows):
             path = self.source / "samples" / f"{i}.json"
             atomic_json(path, row)
-            (path.with_suffix(".sha256")).write_text(digest(path) + "\n")
+            (path.with_suffix(".sha256")).write_text(digest(path) + "\n", newline="\n")
         self.destination = self.root / "new-report"
         self.options = {"confidence": .7, "match_iou": .75, "scan_start": .1,
                         "scan_end": .9, "scan_step": .1, "figure_formats": ["svg"], "figure_dpi": 300}
@@ -141,7 +142,7 @@ class SnapshotTests(DatasetFixture):
         self.assertEqual(artifact.read_text(), "keep this user file")
         artifact.unlink()
         target = self.root / "missing-outside-file"
-        artifact.symlink_to(target)
+        symlink_or_skip(self, artifact, target)
         with self.assertRaisesRegex(ValueError, "拒绝覆盖"):
             self.run_analysis()
         self.assertTrue(artifact.is_symlink())
@@ -166,14 +167,14 @@ class SnapshotTests(DatasetFixture):
     def test_source_symlink_file_or_sample_directory_is_rejected(self):
         original_cache = self.root / "external-predictions.jsonl"
         shutil.move(self.cache, original_cache)
-        self.cache.symlink_to(original_cache)
+        symlink_or_skip(self, self.cache, original_cache)
         with self.assertRaisesRegex(ValueError, "符号链接"):
             self.run_analysis()
         self.cache.unlink()
         shutil.move(original_cache, self.cache)
         original_samples = self.root / "external-samples"
         shutil.move(self.source / "samples", original_samples)
-        (self.source / "samples").symlink_to(original_samples, target_is_directory=True)
+        symlink_or_skip(self, self.source / "samples", original_samples, target_is_directory=True)
         with self.assertRaisesRegex(ValueError, "符号链接"):
             self.run_analysis()
 

@@ -1,0 +1,92 @@
+{
+  "success": true,
+  "sha256": "9a7752dd70db38fda847dcb5cfdaee133860325e249ce8040eabf251185408f1",
+  "version": "2.9.1",
+  "checks": [
+    {
+      "name": "dependency-self-test",
+      "passed": true,
+      "evidence": "component-final-qa/result.json; PowerShell extraction imported CPU dependencies before ready marker"
+    },
+    {
+      "name": "cancel-and-retry",
+      "passed": true,
+      "evidence": "CpuRuntimeTests cancellationReleasesPreparationLock and checksumFailureCanRetryWithoutExecutingArchive; actual successful preparation logged separately"
+    },
+    {
+      "name": "checksum-rejection",
+      "passed": true,
+      "evidence": "CpuRuntimeTests checksumFailureCanRetryWithoutExecutingArchive"
+    },
+    {
+      "name": "concurrent-preparation",
+      "passed": true,
+      "evidence": "component-final-qa/result.json: two real processes, exactly one download, then source stopped for offline reuse"
+    },
+    {
+      "name": "archive-path-protection",
+      "passed": true,
+      "evidence": "windows-packaging-optimized.log: Windows PowerShell traversal, duplicate, ADS and bad inventory rejection"
+    },
+    {
+      "name": "upgrade-cleanup-protection",
+      "passed": true,
+      "evidence": "windows-packaging-optimized.log and upgrade-qa.json: complete preflight and modified-file retention"
+    },
+    {
+      "name": "profile-switching",
+      "passed": true,
+      "evidence": "upgrade-qa.json: both final EXEs, compatible runtime retained, clean managed uninstall"
+    },
+    {
+      "name": "gpu-preparation-from-trimmed-cpu",
+      "passed": true,
+      "evidence": "gpu-preparation-final-retry.log and both final_delta CUDA retests"
+    }
+  ],
+  "component_preparation": {
+    "success": true,
+    "exit_code": 0,
+    "concurrent_exit_code": 0,
+    "single_download": true,
+    "offline_reuse": {
+      "error": "",
+      "python": "E:/vision-studio/build-windows-2.9.1/component-final-qa/personal/runtimes/cpu/9a7752dd70db38fda847dcb5cfdaee133860325e249ce8040eabf251185408f1/python.exe",
+      "runtime": {
+        "bytes": 275278287,
+        "file": "vision-studio-2.9.1-windows-x64-cpu-runtime.zip",
+        "inventory_sha256": "5df60b991f46b39e165b228c091bb16f0070ff18f745d4f70954a73247cdaabe",
+        "platform": "windows-x64",
+        "schema_version": 1,
+        "sha256": "9a7752dd70db38fda847dcb5cfdaee133860325e249ce8040eabf251185408f1",
+        "uncompressed_bytes": 910750855,
+        "url": "http://127.0.0.1:58844/vision-studio-2.9.1-windows-x64-cpu-runtime.zip",
+        "version": "2.9.1"
+      },
+      "success": true,
+      "version": "2.9.1"
+    },
+    "seconds": 58.78,
+    "requests": [
+      "/vision-studio-2.9.1-windows-x64-cpu-runtime.zip"
+    ],
+    "report": {
+      "error": "",
+      "python": "E:/vision-studio/build-windows-2.9.1/component-final-qa/personal/runtimes/cpu/9a7752dd70db38fda847dcb5cfdaee133860325e249ce8040eabf251185408f1/python.exe",
+      "runtime": {
+        "bytes": 275278287,
+        "file": "vision-studio-2.9.1-windows-x64-cpu-runtime.zip",
+        "inventory_sha256": "5df60b991f46b39e165b228c091bb16f0070ff18f745d4f70954a73247cdaabe",
+        "platform": "windows-x64",
+        "schema_version": 1,
+        "sha256": "9a7752dd70db38fda847dcb5cfdaee133860325e249ce8040eabf251185408f1",
+        "uncompressed_bytes": 910750855,
+        "url": "http://127.0.0.1:58844/vision-studio-2.9.1-windows-x64-cpu-runtime.zip",
+        "version": "2.9.1"
+      },
+      "success": true,
+      "version": "2.9.1"
+    }
+  },
+  "gpu_preparation": "Pinned local wheels; real torch CUDA and ONNX CUDA MatMul passed; driver unchanged"
+}

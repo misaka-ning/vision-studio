@@ -94,6 +94,8 @@ def validate_request(request, manifest):
     expected = request.get("sample_images", all_images)
     if not isinstance(expected, list) or not expected or any(not isinstance(x, str) for x in expected):
         raise ValueError("本次评估必须固定非空图片范围。")
+    if os.name == "nt":
+        expected = [Path(x).as_posix() if x not in known_images and Path(x).as_posix() in known_images else x for x in expected]
     if len(set(expected)) != len(expected) or any(x not in known_images for x in expected):
         raise ValueError("本次评估范围包含重复图片或不属于数据集清单的图片。")
     request["sample_images"] = expected
@@ -112,6 +114,9 @@ def load_predictions(path, manifest, request):
             def no_constant(value):
                 raise ValueError(f"预测缓存包含非有限数：{value}")
             row = json.loads(line, parse_constant=no_constant)
+            if os.name == "nt" and isinstance(row, dict) and isinstance(row.get("image"), str):
+                path = Path(row["image"]).as_posix()
+                if row["image"] not in selected and path in selected: row["image"] = path
             if not isinstance(row, dict) or len(rows) >= len(expected) or row.get("image") != expected[len(rows)]:
                 raise ValueError(f"预测缓存图片顺序与本次固定范围不一致：第 {number} 行。")
             sample = selected[row["image"]]

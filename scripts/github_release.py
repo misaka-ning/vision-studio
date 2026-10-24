@@ -447,6 +447,93 @@ def verify(args: argparse.Namespace, github: GitHub) -> dict:
             "verified_assets": github.verify_assets(release, assets)}
 
 
+def windows_dual_bundle(args, root, evidence, baseline, qa):
+    """Both profiles, the pinned runtime, and external corresponding sources."""
+    prefix = f"vision-studio-{args.version}-windows-"
+    source = prefix + "sources.zip"
+    runtime = prefix + "x64-cpu-runtime.zip"
+    installers = {profile: prefix + f"x64-{profile}-setup.exe" for profile in ("offline", "online")}
+    names = [*installers.values(), runtime, source]
+    entries = read_manifest(root, "SHA256SUMS-windows-x64")
+    if set(entries) != set(names):
+        raise ReleaseError("Dual Windows manifest must list both installers, CPU runtime and source ZIP")
+    assets = [make_asset(root, name) for name in [*names, "SHA256SUMS-windows-x64"]]
+    if any(asset.size >= 2 * 1024**3 for asset in assets):
+        raise ReleaseError("Every GitHub asset must be smaller than 2 GiB")
+    if qa.get("success") is not True or qa.get("version") != args.version or qa.get("package_revision") != "windows.1":
+        raise ReleaseError("Dual Windows package QA is incomplete")
+    for field, name in (("source_snapshot", source), ("cpu_runtime", runtime)):
+        if qa.get(field, {}).get("sha256") != entries[name]:
+            raise ReleaseError(f"Windows QA must bind the final {field}")
+    required = {"install-custom-directory", "all-payload-paths-and-sizes", "installed-onnx-cpu",
+        "installed-pt-cpu", "installed-model-views", "installed-conversion-onnx", "installed-conversion-torchscript",
+        "installed-onnx-cuda", "installed-pt-cuda", "installed-evaluation", "installed-dataset-session",
+        "installed-preview-drop", "upgrade-reinstall", "upgrade-preserves-user-files", "uninstall",
+        "uninstall-preserves-user-files", "no-source-docs-examples"}
+    for profile, name in installers.items():
+        report = json.loads((evidence/f"installer-{profile}-qa.json").read_text(encoding="utf-8-sig"))
+        if (qa.get("profiles", {}).get(profile, {}).get("sha256") != entries[name]
+                or report.get("sha256") != entries[name] or report.get("success") is not True):
+            raise ReleaseError(f"Windows QA must bind the final {profile} installer")
+        passed = {row["name"] for row in report.get("checks", []) if row.get("passed") is True}
+        extra = {"online-no-runtime-onnx", "online-runtime-preparation", "online-runtime-offline-reuse"} if profile == "online" else {"offline-cpu-without-network"}
+        if not (required | extra).issubset(passed):
+            raise ReleaseError(f"Windows {profile} installation acceptance is incomplete")
+    runtime_qa = json.loads((evidence/"cpu-runtime-qa.json").read_text(encoding="utf-8"))
+    runtime_checks = {"dependency-self-test", "cancel-and-retry", "checksum-rejection", "concurrent-preparation",
+                      "archive-path-protection", "upgrade-cleanup-protection", "profile-switching"}
+    if (runtime_qa.get("success") is not True or runtime_qa.get("sha256") != entries[runtime]
+            or not runtime_checks.issubset({r["name"] for r in runtime_qa.get("checks", []) if r.get("passed") is True})):
+        raise ReleaseError("Windows CPU runtime acceptance is incomplete")
+    result = subprocess.run(["git", "archive", "--format=tar", f"windows/{args.version}-1"],
+                            cwd=args.project_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    if result.returncode: raise ReleaseError("Windows source provenance tag is missing")
+    with zipfile.ZipFile(root/source) as archive, tarfile.open(fileobj=io.BytesIO(result.stdout)) as tree:
+        folder = prefix + "sources/"
+        snapshot = json.loads(archive.read(folder+"WINDOWS-SOURCE-SNAPSHOT.json"))
+        delivered = set()
+        for record in snapshot["files"]:
+            path = record["path"]
+            if path in delivered or ".." in PurePosixPath(path).parts or path.startswith("/") or "\\" in path:
+                raise ReleaseError("Unsafe or duplicate source snapshot path")
+            delivered.add(path); data = archive.read(folder+path)
+            if hashlib.sha256(data).hexdigest() != record["sha256"]:
+                raise ReleaseError(f"Corrupt source snapshot: {path}")
+            member = tree.extractfile(path)
+            if member is None or member.read().replace(b"\r\n",b"\n") != data.replace(b"\r\n",b"\n"):
+                raise ReleaseError(f"Windows source tag differs from delivered source: {path}")
+        expected = {m.name for m in tree.getmembers() if m.isfile()
+                    and not m.name.startswith(f"docs/releases/evidence/{args.version}/windows/")}
+        if delivered != expected: raise ReleaseError("Windows source ZIP does not cover the committed application source")
+        native = json.loads(archive.read(folder+"packaging/windows/windows-native-sources.json"))
+        companions = {"third-party/ffmpeg/"+r["archive"]:r["sha256"] for r in native["ffmpeg"]}
+        records = snapshot.get("third_party_files", [])
+        if {r["path"]:r["sha256"] for r in records} != companions or len(records) != len(companions):
+            raise ReleaseError("Windows corresponding FFmpeg sources are incomplete")
+        for path, checksum in companions.items():
+            if hashlib.sha256(archive.read(folder+path)).hexdigest() != checksum:
+                raise ReleaseError("Corrupt Windows corresponding source")
+        expected_names = {folder+p for p in delivered | set(companions)} | {folder+"WINDOWS-SOURCE-SNAPSHOT.json"}
+        if set(archive.namelist()) != expected_names or len(archive.namelist()) != len(expected_names):
+            raise ReleaseError("Unexpected Windows source snapshot members")
+    with zipfile.ZipFile(root/runtime) as archive:
+        cpu = json.loads(archive.read("CPU-FILES.json"))
+        if cpu.get("schema_version") != 1 or not cpu.get("files"):
+            raise ReleaseError("CPU runtime inventory is missing")
+        seen = set()
+        for row in cpu["files"]:
+            path = row["path"]
+            if path in seen or ".." in PurePosixPath(path).parts or path.startswith("/") or "\\" in path or ":" in path:
+                raise ReleaseError("Unsafe CPU runtime member")
+            seen.add(path)
+            data = archive.read(path)
+            if len(data) != row["bytes"] or hashlib.sha256(data).hexdigest() != row["sha256"]:
+                raise ReleaseError("CPU runtime member checksum mismatch")
+        if set(archive.namelist()) != seen | {"CPU-FILES.json"} or len(archive.namelist()) != len(seen)+1:
+            raise ReleaseError("Unexpected CPU runtime members")
+    return assets, baseline
+
+
 def windows_bundle(args: argparse.Namespace) -> tuple[list[Asset], dict]:
     """Audit the immutable Windows supplement without changing Linux delivery."""
     version_key(args.version)
@@ -454,6 +541,8 @@ def windows_bundle(args: argparse.Namespace) -> tuple[list[Asset], dict]:
     evidence = args.project_dir / "docs/releases/evidence" / args.version / "windows"
     baseline = json.loads((evidence / "release-before-windows.json").read_text(encoding="utf-8-sig"))
     qa = json.loads((evidence / "windows-package-qa.json").read_text(encoding="utf-8"))
+    if qa.get("schema_version") == 2:
+        return windows_dual_bundle(args, root, evidence, baseline, qa)
     install_qa = json.loads((evidence / "installer-qa.json").read_text(encoding="utf-8"))
     installer = f"vision-studio-{args.version}-windows-x64-setup.exe"
     source = f"vision-studio-{args.version}-windows-sources.zip"
@@ -566,7 +655,7 @@ def windows_release(args: argparse.Namespace, github: GitHub) -> dict:
     latest = github.release(tag)
     if not latest or (latest.get("body") or "") != body:
         raise ReleaseError("Release notes changed during upload; supplementary assets remain verified")
-    # Append only after all three supplementary files have verified successfully.
+    # Append only after every supplementary file has verified successfully.
     if body != expected_body:
         with tempfile.TemporaryDirectory(prefix="vision-windows-notes-") as temporary:
             path = Path(temporary) / "notes.md"

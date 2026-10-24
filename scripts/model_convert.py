@@ -321,7 +321,8 @@ def exact_checkpoint_loader(source):
 def load_model(source, torch):
     if is_torchscript(source):
         extra = {"config.txt": ""}
-        model = torch.jit.load(str(source), map_location="cpu", _extra_files=extra).float().eval()
+        with source.open("rb") as stream:
+            model = torch.jit.load(stream, map_location="cpu", _extra_files=extra).float().eval()
         try:
             metadata = json.loads(extra["config.txt"]) if extra["config.txt"] else {}
         except (ValueError, UnicodeDecodeError) as error:
@@ -830,9 +831,11 @@ def export_onnx(traced, example, path, metadata, output_shape, opset, torch, onn
 
 
 def export_torchscript(traced, example, path, metadata, output_shape, torch):
-    torch.jit.save(traced, str(path), _extra_files={"config.txt": json.dumps(metadata, ensure_ascii=False)})
+    with path.open("wb") as stream:
+        torch.jit.save(traced, stream, _extra_files={"config.txt": json.dumps(metadata, ensure_ascii=False)})
     extra = {"config.txt": ""}
-    verified = torch.jit.load(str(path), map_location="cpu", _extra_files=extra).eval()
+    with path.open("rb") as stream:
+        verified = torch.jit.load(stream, map_location="cpu", _extra_files=extra).eval()
     require(json.loads(extra["config.txt"]) == metadata, "verification_failed", "TorchScript 元数据保存核验失败。")
     with torch.inference_mode():
         actual = verified(example)

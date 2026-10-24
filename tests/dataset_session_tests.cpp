@@ -206,6 +206,9 @@ private slots:
         second.sourcePath = area.path() + "/second/data.yaml";
         QString error;
         QVERIFY2(vision::DatasetSessionStore::save(path, first, &error), qPrintable(error));
+#ifdef Q_OS_WIN
+        QVERIFY2(QFileInfo(path).isWritable(), "Session records must not acquire the Windows read-only attribute");
+#endif
         std::atomic_bool stop{false}, started{false}, invalid{false};
         std::atomic_int reads{0};
         std::unique_ptr<QThread> reader(QThread::create([&] {
