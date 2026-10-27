@@ -1,0 +1,29 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.10.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "unknown_inference_fields_not_invented": true,
+      "all_sample_json_sha_and_manifest_image_hashes": true,
+      "source_runtime_arguments_nms_floor_maxdet_preserved": true,
+      "source_snapshot_matches_prior_verified_import": true,
+      "final_deb_elf_helpers_runtime_readonly_binding": true,
+      "model_dataset_original_ids_preserved": true,
+      "frozen_clean_source_helpers_match": true,
+      "final_package_application_unchanged": true,
+      "packaged_python_helper_actual_process": true,
+      "expected_artifacts_valid": true,
+      "apply_profile_blocked_at_report_and_request": true,
+      "qt_reserved_three_files_accepted": true,
+      "source_four_files_unchanged": true,
+      "source_scope_counts_preserved": true,
+      "rebuilt_metrics_match_source_snapshot": true,
+      "source_raw_copies_match": true
+    }
+  },
+  "original_file_sha256": "7c46eb35051efb62e123c8884d59d6ad6ec4015a85424a3de8e1f56ac30a0ec8"
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "version": "2.10.0",
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "production_source_and_final_deb_changed_for_harness_corrections": false,
+  "observations": [
+    {
+      "stage": "initial_full_regression_driver",
+      "status": "stopped_before_any_test_execution",
+      "reason": "reserved_log_name_collision",
+      "original_log_sha256": "b9489002cdb58146e178685964b61bd9b6609b48aede183f4bb0c1b438b6f325",
+      "actual_complete_native_runs": 1
+    },
+    {
+      "stage": "first_model_library_drop_package_audit",
+      "status": "failed_audit_preserved",
+      "reason": "Qt terminal JSON was written to stderr; the first parser read stdout only",
+      "failed_report_sha256": "305f0e46b7918d0c1847d095d32fd455af70d5e8612534e0fec4c4c7fd8bef13",
+      "original_app_exit_code": 0,
+      "original_app_checks_true": 21,
+      "correction_record_sha256": "c63fce5ac9bca18cb71b1478042f774e22b936703266d61542afa09326bfa12c",
+      "same_final_deb_rerun_passed": true,
+      "current_passed_report_sha256": "bbfa392fd07b064f731723c81944d22efd0aee4426e4a038a0e2d279fed72c89"
+    }
+  ]
+}

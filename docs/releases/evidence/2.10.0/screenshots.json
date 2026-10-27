@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "version": "2.10.0",
+  "root_reviewed_actual_final_package_public_coco8_only": true,
+  "images": [
+    {
+      "file": "screenshots/decision-1366x900.png",
+      "sha256": "06eae0ff6b4ea7a343edeb51498eae4ed6b70826d2ee0c8da037dcf5f6e1923b",
+      "bytes": 188293,
+      "width": 1366,
+      "height": 900,
+      "case": "pt_cpu"
+    },
+    {
+      "file": "screenshots/decision-1260x820_precision.png",
+      "sha256": "a4444c02aabab160d37209fb2fb2268e98f9c358a8ab9f0d796dfdad93222425",
+      "bytes": 184510,
+      "width": 1260,
+      "height": 820,
+      "case": "pt_cpu"
+    },
+    {
+      "file": "screenshots/decision-distinct-markers.png",
+      "sha256": "52bad72362dad8a9a43db18aaa22c6bb22251aa92edf003e13e7df04a58faab1",
+      "bytes": 186074,
+      "width": 1366,
+      "height": 900,
+      "case": "pt_cpu"
+    }
+  ]
+}

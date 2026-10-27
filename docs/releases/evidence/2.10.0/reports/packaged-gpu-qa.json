@@ -1,0 +1,15 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "version": "2.10.0",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "packaged_onnx_cuda": true,
+      "cpu_regression": true,
+      "packaged_pt_cuda": true
+    }
+  },
+  "original_file_sha256": "55f476ce767c42d3b3d36110727c1c0e5fcf5e7122f48db017aad0fac46cf455"
+}
