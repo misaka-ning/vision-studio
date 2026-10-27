@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "version": "2.10.0",
+  "success": true,
+  "old_version_removed": "2.9.1",
+  "retained_versions": [
+    "2.10.0",
+    "2.9.2"
+  ],
+  "actual_formal_roots_removed": 3,
+  "actual_release_roots_removed": 2,
+  "actual_release_roots_with_exact_latest_two": 2,
+  "full_old_build_backup_preserved": true,
+  "old_original_and_preserved_metadata_pairs_compared": 86,
+  "protected_user_source_files_unchanged": 8,
+  "other_old_output_entries_retained": 97,
+  "historical_qa_windows_shared_runtime_and_user_data_not_deletion_targets": true,
+  "same_uid_process_guard_only": true,
+  "complete_system_descriptor_visibility_claimed": false,
+  "created_at_epoch": 1793100206.1861255,
+  "formal_execution_receipt_sha256": "3a231e66b815ed67cafc254c2a7559b5e858804985a3ee80ef99e4e0a7522f59",
+  "worktree_official_prune_receipt_sha256": "cfaa5e5aaa798ff0131f0f19c2f1af7ffa04671b60f43a50ca93765eb2e108bc",
+  "primary_official_prune_receipt_sha256": "d2ea1e1d12cc9de632938427310f98090c51baaa657a6f3a4be10b705b715ad0"
+}

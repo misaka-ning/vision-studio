@@ -1,0 +1,14 @@
+{
+  "version": "2.10.0",
+  "success": true,
+  "main_commit": "72802d410dc7f76dc8a242f514b172e86a3ff8b7",
+  "created_at_epoch": 1793099661.4307644,
+  "protected_user_files_unchanged": true,
+  "protected_user_source_file_count": 8,
+  "actual_current_full_release_files_compared": 64,
+  "mode": "new-version-link-and-verify",
+  "schema_version": 1,
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_receipt_sha256": "f8013157b0ca4d65f687fc3749c7cf5e032c04a682fc786d308e66ef1701e692"
+}

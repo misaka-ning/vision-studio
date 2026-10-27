@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "version": "2.10.0",
+  "host_install_verified": false,
+  "status": "waiting_for_operating_system_authentication",
+  "observed_installed_debian_version": "2.9.2-1",
+  "requested_debian_version": "2.10.0-1",
+  "observed_at_epoch": 1793100206.2059312,
+  "isolated_installation_acceptance_recorded_separately": true
+}
