@@ -1,0 +1,51 @@
+{
+  "success": true,
+  "dry_run": false,
+  "repository": "misaka-ning/vision-studio",
+  "tag": "v2.10.0",
+  "commit": "72802d410dc7f76dc8a242f514b172e86a3ff8b7",
+  "prerelease": false,
+  "latest": true,
+  "assets": [
+    {
+      "name": "vision-studio_2.10.0-1_amd64.deb",
+      "bytes": 387203392,
+      "sha256": "5161f54ddbb40ee177426627149582c357285d525ac9854c5fe5223a8a07759c"
+    },
+    {
+      "name": "vision-studio-2.10.0-complete-source.tar.xz",
+      "bytes": 928302504,
+      "sha256": "b345fd81a3173fd4650f3d492db9f6eb2fc68d6e2907104a9c8096437c931a73"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 209,
+      "sha256": "26f6c489553a5446359d8a69bca274a895c3ffdfc0a9697b65f2985d60376052"
+    }
+  ],
+  "url": "https://github.com/misaka-ning/vision-studio/releases/tag/v2.10.0",
+  "verified_assets": [
+    {
+      "name": "vision-studio_2.10.0-1_amd64.deb",
+      "bytes": 387203392,
+      "sha256": "5161f54ddbb40ee177426627149582c357285d525ac9854c5fe5223a8a07759c",
+      "asset_id": 681347571,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "vision-studio-2.10.0-complete-source.tar.xz",
+      "bytes": 928302504,
+      "sha256": "b345fd81a3173fd4650f3d492db9f6eb2fc68d6e2907104a9c8096437c931a73",
+      "asset_id": 681349937,
+      "verification": "GitHub REST sha256 digest"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 209,
+      "sha256": "26f6c489553a5446359d8a69bca274a895c3ffdfc0a9697b65f2985d60376052",
+      "asset_id": 681353933,
+      "verification": "GitHub REST sha256 digest"
+    }
+  ],
+  "published": true
+}

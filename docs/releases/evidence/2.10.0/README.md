@@ -37,3 +37,15 @@ Ubuntu 22.04 amd64；系统安装位置 `/opt/VisionStudio`。Windows 已发布�
 验收工具首次启动的日志重名保护在测试开始前中止；原件保留，之后单轮完整回归通过。模型库专项首轮因验收器只读 stdout 而漏读 Qt 写入 stderr 的结果，旧失败报告保留；只修正 Git 外日志解析后，在新隔离目录对同一最终 DEB 实际重跑通过，未修改产品或放宽断言。见[工具观察记录](qa-harness-observations.json)。
 
 [开发定向检查](dev-model-library-drop.json)、[开发 smoke](dev-drop-smoke.json)与[48项发布工具检查](release-tools-tests.json)单独保存，不重复计入正式完整回归。
+
+## 发布与保留
+
+2.10.0 已正式发布为 [v2.10.0](https://github.com/misaka-ning/vision-studio/releases/tag/v2.10.0)，发行提交为 `72802d410dc7f76dc8a242f514b172e86a3ff8b7`。官方 Latest 端点确认它为最新正式版；[发布凭证](publication.json)、[二次远端核验](remote-verification.json)和 [Latest 快照](latest.json)记录三个附件的大小与 GitHub REST SHA256，与冻结文件一致。历史标签与附件未覆盖或移动。
+
+在发行提交同步主要检出与当前工作树，并逐字节核对两处完整发行目录的 64 个文件，八个用户源码文件保持，见[源码及发行副本核验](source-sync.json)。这些是发行时刻的记录，本次后续维护只补充凭据，不改变安装包或冻结生产源码。
+
+远端复核后完成五处精确旧副本清理：2.9.1 的独立构建、源码导出、DEB 暂存，以及两处 2.9.1 发行目录；两处发行根均只保留 2.10.0 与 2.9.2。完整旧构建备份及 86 对原始 QA／元数据保全，其他 97 个旧输出条目、历史 QA、Windows 资料、共享环境和用户文件保持，见[实际清理记录](retention.json)。进程检查限于同 UID 的可见范围，明确保留受限身份复核与已证明退出的进程记录，不宣称全系统描述符可见。
+
+宿主升级仍等待 Ubuntu 管理员认证，观测到的已安装版本为 `2.9.2-1`，不计为已安装 2.10.0，见[宿主待安装状态](host-install-pending.json)。隔离安装验收与真实宿主升级分别记录。
+
+[原始交付凭据承诺](original-receipts.json)只公开整文件 SHA256；原件继续保存在本地。包内文档与完整对应源码仍为原冻结字节，不将事后记录混入已发布归档。
