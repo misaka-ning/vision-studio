@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "version": "2.9.2",
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "repository": "misaka-ning/vision-studio",
+  "tag": "v2.9.2",
+  "url": "https://github.com/misaka-ning/vision-studio/releases/tag/v2.9.2",
+  "draft": false,
+  "prerelease": false,
+  "published_at": "2026-10-27T04:10:03Z",
+  "actual_latest_endpoint_snapshot": true,
+  "manual_asset_count": 3,
+  "assets": [
+    {
+      "name": "vision-studio_2.9.2-1_amd64.deb",
+      "bytes": 387158552,
+      "sha256": "6d116edf1a6c46fb47973989558f08fd4fdccf109f87cd608fa48b29ef609667"
+    },
+    {
+      "name": "vision-studio-2.9.2-complete-source.tar.xz",
+      "bytes": 927878728,
+      "sha256": "6a396d83917e75143c5b10cfc5f0211a5ceed35e30f9bb09d5c46377de23f0b1"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 207,
+      "sha256": "c020609b37781578a882bfcc966c1d357f90836b4d10b4d3da1707f0721ba8c5"
+    }
+  ],
+  "original_file_sha256": "7c52d4405dc834cce7bc7d0f11304568bf2a8e640ae34ea6dbc2f411c0ebc537"
+}
