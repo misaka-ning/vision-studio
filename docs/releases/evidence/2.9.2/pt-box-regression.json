@@ -1,0 +1,48 @@
+{
+  "version": "2.9.2",
+  "scope": "Actual resident-worker regression with private dataset; not final DEB or GUI evaluation acceptance",
+  "backends": {
+    "cpu": {
+      "passed": true,
+      "single_images_completed": 1223,
+      "single_zero_match_images": 159,
+      "single_predictions_validated": 1963,
+      "order_validated": true,
+      "explicit_zero_match_valid": true,
+      "worker_exit_code": 0,
+      "source_hashes_unchanged": true,
+      "source_files_protected": 2451,
+      "ordered_manifest_verified": true,
+      "worker_sha256": "e246524b28a98e3ad2db328dc5b687c7b2cc62748957b63b7d7644e89ac95162",
+      "half_deprecation_warning_count": 0,
+      "batch_sizes": [
+        4,
+        4,
+        3
+      ],
+      "batch_single_parity": true
+    },
+    "cuda": {
+      "passed": true,
+      "single_images_completed": 1223,
+      "single_zero_match_images": 159,
+      "single_predictions_validated": 1963,
+      "order_validated": true,
+      "explicit_zero_match_valid": true,
+      "worker_exit_code": 0,
+      "source_hashes_unchanged": true,
+      "source_files_protected": 2451,
+      "ordered_manifest_verified": true,
+      "worker_sha256": "e246524b28a98e3ad2db328dc5b687c7b2cc62748957b63b7d7644e89ac95162",
+      "half_deprecation_warning_count": 0,
+      "batch_sizes": [
+        4,
+        4,
+        3
+      ],
+      "batch_single_parity": true
+    }
+  },
+  "original_report_sha256": "8af37068bb919c8e6761a7e24be81d4354790f352d1b41391b1874a88e53cf0e",
+  "privacy": "Source paths, private model identities, per-image predictions and original logs remain local outside Git. This is a result projection."
+}

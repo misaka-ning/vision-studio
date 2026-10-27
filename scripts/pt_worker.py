@@ -327,6 +327,17 @@ def classification_predictions(output, labels):
             for index, score in zip(indices, scores)]
 
 
+def fp32_predict_options():
+    """Select the supported FP32 setting without deprecated aliases.
+
+    Current Ultralytics uses quantize=None for FP32; older supported runtimes
+    require half=False. Inspect configuration capabilities rather than a version
+    string so both paths explicitly override inherited checkpoint precision.
+    """
+    from ultralytics.cfg import DEFAULT_CFG_DICT
+    return {"quantize": None} if "quantize" in DEFAULT_CFG_DICT else {"half": False}
+
+
 class NativeYolo:
     def __init__(self, path, model, checkpoint, color_mode, device):
         self.class_filter = []
@@ -388,7 +399,7 @@ class NativeYolo:
         start = time.perf_counter()
         results = self.model.predict(source=source, imgsz=size, conf=confidence, iou=iou,
                                      classes=self.class_filter or None, batch=len(images),
-                                     device=str(self.device), half=False, max_det=max_detections, rect=False,
+                                     device=str(self.device), **fp32_predict_options(), max_det=max_detections, rect=False,
                                      agnostic_nms=False, verbose=False, save=False, show=False, stream=False)
         synchronize(self.device)
         if len(results) != len(images):
@@ -409,14 +420,20 @@ class NativeYolo:
                 classes = result.boxes.cls.detach().cpu().tolist()
                 for box, score, class_id in zip(boxes, scores, classes):
                     x1, y1, x2, y2 = box
+                    if not all(math.isfinite(value) for value in box):
+                        raise ValueError("模型检测框包含非有限坐标。")
                     if geometry is not None:
                         left, top, scale_x, scale_y = geometry
                         x1, x2 = (x1 - left) / scale_x, (x2 - left) / scale_x
                         y1, y2 = (y1 - top) / scale_y, (y2 - top) / scale_y
-                        x1, x2 = max(0, min(image.shape[1], x1)), max(0, min(image.shape[1], x2))
-                        y1, y2 = max(0, min(image.shape[0], y1)), max(0, min(image.shape[0], y2))
-                        if x2 <= x1 or y2 <= y1:
-                            continue
+                    # Native color predictions are already scaled by the
+                    # framework, but clipping to the source bounds can collapse
+                    # low-confidence boxes onto an image edge. Apply the same
+                    # positive-area rule as gray/legacy/TorchScript inference.
+                    x1, x2 = max(0, min(image.shape[1], x1)), max(0, min(image.shape[1], x2))
+                    y1, y2 = max(0, min(image.shape[0], y1)), max(0, min(image.shape[0], y2))
+                    if x2 <= x1 or y2 <= y1:
+                        continue
                     predictions.append({"class_id": int(class_id), "confidence": float(score),
                                         "box": [x1, y1, x2 - x1, y2 - y1]})
             rows.append((predictions, float(result.speed.get("inference", total_ms / len(images)))))
