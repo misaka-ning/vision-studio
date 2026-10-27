@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "version": "2.10.0",
+  "not_a_finalizer_input": true,
+  "final_aggregate_original_sha256": "6cbc295cb7c9dd53e8eba55f41b7118fa05c5338a02ef20c479d65d6b5c80c2c",
+  "final_native_original_sha256": "5e47656b5ebb528c023e652b1e335e00575f13308c4c8bd319365bc9779a1b1d",
+  "decision_original_sha256": "0aa0e94f61b3e16603f182dc867db50cd5c8bd9610777052e8ce8cfecbdceb60",
+  "decision_gate_original_sha256": "d7bf1bc4df82fe18002667c1d1076b7a0de3265225b6435f112e23e04a43d56c",
+  "read_only_gate_program_sha256": "ac1a90958cb3edf8057cfe9f077d34a997bf6d5af8e0214babbe78f44b6981c9"
+}
