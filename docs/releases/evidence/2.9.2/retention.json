@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "version": "2.9.2",
+  "success": true,
+  "created_at_epoch": 1793074869.4624443,
+  "retained_stable_versions": [
+    "2.9.2",
+    "2.9.1"
+  ],
+  "removed_old_version": "2.9.0",
+  "removed_exact_directories": 5,
+  "formal_directories_removed": [
+    "output/build/2.9.0-release",
+    "output/v2.9.0/clean-source",
+    "output/deb-stage/2.9.0-1"
+  ],
+  "release_directories_removed_from": [
+    "current-worktree",
+    "primary-checkout"
+  ],
+  "original_old_qa_unchanged": true,
+  "exact_build_backup_retained": true,
+  "release_metadata_backups_verified": 86,
+  "protected_user_source_files_unchanged": true,
+  "shared_environment_unchanged": true,
+  "current_frozen_production_input_count": 288,
+  "current_frozen_production_inputs_unchanged": true,
+  "primary_production_files_match_excluding_local_generated_runtime_info": 287,
+  "primary_local_runtime_info_preserved": true,
+  "both_current_release_trees_match": true,
+  "installed_version": "2.9.2-1",
+  "installed_elf_and_worker_match_final_package": true,
+  "immutable_release_commit": "8cca6dfa002ea228858009242d61d0b75c66c895",
+  "same_uid_limited_process_visibility_acknowledged": true,
+  "original_execution_receipts_sha256": {
+    "formal-executed.json": "7abba3a0a2a51ee482a88a07290d95602804e5ca3888cfb913743fe705491f73",
+    "worktree-prune-executed.json": "b56c768cbb644689c966fbad4282fd57b3ff6a15c4b13a2af095f18ff3995b2b",
+    "primary-prune-executed.json": "2e16a039e3f312eb82ebaee6fe133311ea959944689e423fb5e64f412d314a7b",
+    "official-prune-handoff.json": "189809f58f00478228f92130f825f9c9cdbfbe0d4cc02c158487d7c45cbfaf48"
+  },
+  "public_projection": true,
+  "not_a_finalizer_input": true
+}
