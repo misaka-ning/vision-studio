@@ -63,6 +63,7 @@ class MainWindow : public QMainWindow
     void runEvaluationSmoke(const QString &outputDir, const QString &requestPath);
     void runDatasetSessionSmoke(const QString &outputDir);
     void runPreviewDropSmoke(const QString &outputDir, const QString &requestPath);
+    void runModelLibraryDropSmoke(const QString &directory);
     void showModelStructure(const QString &model = {});
     void setComputeDevice(vision::ComputeDevice device, int index = 0);
     void restoreDatasetSession();
@@ -103,6 +104,9 @@ class MainWindow : public QMainWindow
     void cancelDroppedImageImport();
     void chooseCamera();
     void importModel();
+    bool importModelFiles(const QStringList &paths);
+    bool validateModelImport(const QStringList &input, QStringList *paths, QString *error) const;
+    void showModelImportHint(const QString &message, bool error = false);
     void importLabels();
     void setModel(const QString &path, bool force = false);
     bool rememberConvertedModel(const QString &path, const QJsonObject &metadata);
@@ -294,6 +298,8 @@ class MainWindow : public QMainWindow
     QPushButton *recordButton_ = nullptr, *recordingPlayButton_ = nullptr, *exportRecordingButton_ = nullptr;
     QLabel *recordingStatus_ = nullptr, *recordingsCount_ = nullptr, *recordingDetails_ = nullptr;
     QListWidget *queue_ = nullptr, *modelList_ = nullptr;
+    QLabel *modelLibraryDropHint_ = nullptr;
+    bool modelLibraryExternalDragActive_ = false;
     QTableWidget *predictionTable_ = nullptr, *historyTable_ = nullptr;
     QTableWidget *recordingsTable_ = nullptr;
     QComboBox *taskBox_ = nullptr, *inputColorMode_ = nullptr, *stereoView_ = nullptr;

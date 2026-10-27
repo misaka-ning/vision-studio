@@ -15,6 +15,8 @@
 #include <QDesktopServices>
 #include <QDoubleSpinBox>
 #include <QDragEnterEvent>
+#include <QDragLeaveEvent>
+#include <QDragMoveEvent>
 #include <QDropEvent>
 #include <QElapsedTimer>
 #include <QFile>
@@ -123,6 +125,22 @@ bool dropFile(ImageCanvas *canvas, const QString &file)
     QDropEvent drop(point, Qt::CopyAction, &mime, Qt::LeftButton, Qt::NoModifier);
     QApplication::sendEvent(canvas, &drop);
     return drop.isAccepted();
+}
+
+bool dropModelUrls(QWidget *target, const QList<QUrl> &urls, Qt::DropActions actions = Qt::CopyAction)
+{
+    QMimeData mime;
+    mime.setUrls(urls);
+    const QPoint point = target->rect().center();
+    QDragEnterEvent enter(point, actions, &mime, Qt::LeftButton, Qt::NoModifier);
+    QApplication::sendEvent(target, &enter);
+    if (!enter.isAccepted()) return false;
+    QDragMoveEvent move(point, actions, &mime, Qt::LeftButton, Qt::NoModifier);
+    QApplication::sendEvent(target, &move);
+    if (!move.isAccepted()) return false;
+    QDropEvent drop(point, actions, &mime, Qt::LeftButton, Qt::NoModifier);
+    QApplication::sendEvent(target, &drop);
+    return drop.isAccepted() && drop.dropAction() == Qt::CopyAction;
 }
 
 QCheckBox *autoExportControl(QWidget *parent)
@@ -716,6 +734,221 @@ class UiTests final : public QObject
         QCOMPARE(capture.calls, 2);
         QCOMPARE(QDir(capture.url.toLocalFile()).absolutePath(), QDir(expected).absolutePath());
         QVERIFY(!QFileInfo::exists(fixture_->path() + QStringLiteral("/output/history.json")));
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+    }
+
+    void modelLibraryExternalDropsAppendAtomicallyAndSelectOnce()
+    {
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型库")), Qt::LeftButton);
+        auto *page = window_->findChild<QWidget *>(QStringLiteral("modelLibraryPage"));
+        auto *models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
+        auto *hint = window_->findChild<QLabel *>(QStringLiteral("modelLibraryDropHint"));
+        auto *viewer = window_->findChild<ModelViewer *>(QStringLiteral("modelStructureViewer"));
+        auto *active = window_->findChild<QLabel *>(QStringLiteral("activeModelName"));
+        auto *conversion = window_->findChild<QLabel *>(QStringLiteral("conversionSourcePath"));
+        QVERIFY(page && models && hint && viewer && active && conversion);
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->modelInspectionPending_, 30000);
+        QTRY_COMPARE_WITH_TIMEOUT(viewer->state(), ModelViewer::State::Ready, 30000);
+        const QString original = fixture_->path() + QStringLiteral("/models/yolov5n.onnx");
+        const QString pt = fixture_->path() + QStringLiteral("/dropped.pt");
+        const QString script = fixture_->path() + QStringLiteral("/dropped.torchscript");
+        const QString onnx = fixture_->path() + QStringLiteral("/最后一个模型.onnx");
+        QVERIFY(QFile::copy(fixture_->path() + QStringLiteral("/models/yolov8n.pt"), pt));
+        QVERIFY(QFile::copy(original, onnx));
+        // A real TorchScript file verifies the supported third format without
+        // preloading this intermediate model during the three-file import.
+        QProcess generate;
+        generate.start(qEnvironmentVariable("VISION_STUDIO_PYTHON"),
+            {"-c", "import sys,json,torch; m=torch.jit.trace(torch.nn.Sequential(torch.nn.Conv2d(3,1,1),torch.nn.AdaptiveAvgPool2d(1),torch.nn.Flatten()).eval(),torch.zeros(1,3,32,32)); "
+                   "torch.jit.save(m,sys.argv[1],_extra_files={'config.txt':json.dumps({'task':'classify','names':['probe'],'input_channels':3})})", script});
+        QVERIFY(generate.waitForFinished(60000));
+        QVERIFY2(generate.exitCode() == 0, generate.readAllStandardError().constData());
+        QStringList expected = modelOrder(models);
+        expected << QFileInfo(pt).canonicalFilePath() << QFileInfo(script).canonicalFilePath()
+                 << QFileInfo(onnx).canonicalFilePath();
+        const QByteArray ptHash = modelFileHash(pt), scriptHash = modelFileHash(script), onnxHash = modelFileHash(onnx);
+        const auto inspection = window_->modelInspectionGeneration_;
+        QSignalSpy loaded(viewer, &ModelViewer::modelLoaded);
+        QSignalSpy starts(window_.get(), &MainWindow::startRequested);
+        QVERIFY(dropModelUrls(models->viewport(), {QUrl::fromLocalFile(pt), QUrl::fromLocalFile(script),
+            QUrl::fromLocalFile(onnx), QUrl::fromLocalFile(pt)}));
+        QCOMPARE(modelOrder(models), expected);
+        QCOMPARE(window_->modelInspectionGeneration_, inspection + 1);
+        QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), onnx);
+        QCOMPARE(viewer->modelPath(), onnx);
+        QCOMPARE(active->text(), QFileInfo(onnx).fileName());
+        QCOMPARE(conversion->text(), onnx);
+        QVERIFY(hint->text().contains(QStringLiteral("3")));
+        const QString importedHint = hint->text();
+        QDragLeaveEvent afterImport; QApplication::sendEvent(models->viewport(), &afterImport);
+        QCOMPARE(hint->text(), importedHint);
+        QCOMPARE(starts.size(), 0);
+        QTRY_COMPARE_WITH_TIMEOUT(viewer->state(), ModelViewer::State::Ready, 30000);
+        QCOMPARE(loaded.size(), 1);
+        QCOMPARE(loaded.first().first().toString(), onnx);
+        // A second drop onto a page child reuses an existing canonical key and
+        // must preserve user metadata rather than creating another row.
+#ifdef Q_OS_UNIX
+        const QString alias = fixture_->path() + QStringLiteral("/same-model.onnx");
+        QVERIFY(QFile::link(original, alias));
+#else
+        const QString alias = fixture_->path() + QStringLiteral("/models/../models/yolov5n.onnx");
+#endif
+        QVERIFY(editModelText(openModelMenu(models, original), QStringLiteral("modelRenameAction"), QStringLiteral("我的基准模型")));
+        QVERIFY(editModelText(openModelMenu(models, original), QStringLiteral("modelNoteAction"), QStringLiteral("保留这份备注")));
+        QVERIFY(dropModelUrls(hint, {QUrl::fromLocalFile(alias)}));
+        QCOMPARE(modelOrder(models), expected);
+        QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), original);
+        QCOMPARE(active->text(), QStringLiteral("我的基准模型"));
+        QCOMPARE(modelItem(models, original)->data(Qt::UserRole + 2).toString(), QStringLiteral("保留这份备注"));
+        const auto beforeReorder = window_->modelInspectionGeneration_;
+        expected.append(expected.takeFirst());
+        QVERIFY(models->model()->moveRows(QModelIndex(), 0, 1, QModelIndex(), models->count()));
+        QCOMPARE(modelOrder(models), expected);
+        QCOMPARE(window_->modelInspectionGeneration_, beforeReorder);
+        QCOMPARE(viewer->modelPath(), original);
+        QSettings settings(fixture_->path() + QStringLiteral("/output/preferences.ini"), QSettings::IniFormat);
+        settings.sync();
+        QCOMPARE(settings.value("models").toStringList(), expected);
+        QCOMPARE(settings.value("activeModel").toString(), original);
+        QCOMPARE(modelFileHash(pt), ptHash);
+        QCOMPARE(modelFileHash(script), scriptHash);
+        QCOMPARE(modelFileHash(onnx), onnxHash);
+        window_->close(); window_.reset(); showNewWindow();
+        models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
+        QCOMPARE(modelOrder(models), expected);
+        QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), original);
+        QCOMPARE(modelItem(models, original)->data(Qt::UserRole + 1).toString(), QStringLiteral("我的基准模型"));
+        QCOMPARE(modelItem(models, original)->data(Qt::UserRole + 2).toString(), QStringLiteral("保留这份备注"));
+        QVERIFY(QFileInfo(pt).isFile() && QFileInfo(script).isFile() && QFileInfo(onnx).isFile());
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+    }
+
+    void modelLibraryDropsRejectInvalidBatchesWithoutMutations()
+    {
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型库")), Qt::LeftButton);
+        auto *page = window_->findChild<QWidget *>(QStringLiteral("modelLibraryPage"));
+        auto *models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
+        auto *hint = window_->findChild<QLabel *>(QStringLiteral("modelLibraryDropHint"));
+        auto *viewer = window_->findChild<ModelViewer *>(QStringLiteral("modelStructureViewer"));
+        QVERIFY(page && models && hint && viewer);
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->modelInspectionPending_, 30000);
+        const QString candidate = fixture_->path() + QStringLiteral("/not-partially-added.onnx");
+        QVERIFY(QFile::copy(fixture_->path() + QStringLiteral("/models/yolov5n.onnx"), candidate));
+        const QString bad = fixture_->path() + QStringLiteral("/not-model.txt");
+        const QString empty = fixture_->path() + QStringLiteral("/empty.onnx");
+        for (const QString &path : {bad, empty}) {
+            QFile file(path); QVERIFY(file.open(QIODevice::WriteOnly));
+            if (path == bad) QCOMPARE(file.write("not a model"), qint64(11));
+        }
+        const auto original = modelOrder(models);
+        const QString selected = models->currentItem()->data(Qt::UserRole).toString();
+        const auto inspection = window_->modelInspectionGeneration_;
+        const QUrl valid = QUrl::fromLocalFile(candidate);
+        const QList<QUrl> invalid = {QUrl::fromLocalFile(bad), QUrl::fromLocalFile(empty),
+            QUrl::fromLocalFile(fixture_->path()), QUrl::fromLocalFile(fixture_->path() + "/missing.pt"),
+            QUrl("https://example.invalid/model.onnx"), QUrl("file://remote-host/model.onnx"),
+            QUrl(valid.toString() + "?download=true"), QUrl(valid.toString() + "#weights")};
+        QSignalSpy starts(window_.get(), &MainWindow::startRequested);
+        for (const auto &url : invalid) {
+            QVERIFY(!dropModelUrls(page, {valid, url}));
+            QVERIFY(!dropModelUrls(models->viewport(), {valid, url}));
+            QCOMPARE(modelOrder(models), original);
+            QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
+            QCOMPARE(viewer->modelPath(), selected);
+            QCOMPARE(window_->modelInspectionGeneration_, inspection);
+            QVERIFY(!hint->text().isEmpty());
+        }
+        QVERIFY(!dropModelUrls(page, {valid}, Qt::LinkAction));
+        QVERIFY(!dropModelUrls(models->viewport(), {valid}, Qt::MoveAction));
+        QCOMPARE(modelOrder(models), original);
+        // Revalidate the eventual drop, even if the file disappeared after an
+        // accepted native drag-enter event. Never retain a half-imported row.
+        QMimeData mime; mime.setUrls({valid});
+        const QPoint point = page->rect().center();
+        QDragEnterEvent enter(point, Qt::CopyAction, &mime, Qt::LeftButton, Qt::NoModifier);
+        QApplication::sendEvent(page, &enter); QVERIFY(enter.isAccepted());
+        QVERIFY(QFile::remove(candidate));
+        QDropEvent drop(point, Qt::CopyAction, &mime, Qt::LeftButton, Qt::NoModifier);
+        QApplication::sendEvent(page, &drop); QVERIFY(!drop.isAccepted());
+        const QString invalidHint = hint->text();
+        QDragLeaveEvent afterInvalid; QApplication::sendEvent(page, &afterInvalid);
+        QCOMPARE(hint->text(), invalidHint);
+        QCOMPARE(modelOrder(models), original);
+        QCOMPARE(window_->modelInspectionGeneration_, inspection);
+        QSettings settings(fixture_->path() + "/output/preferences.ini", QSettings::IniFormat);
+        settings.sync();
+        QCOMPARE(settings.value("models").toStringList(), original);
+        QCOMPARE(settings.value("activeModel").toString(), selected);
+        QCOMPARE(starts.size(), 0);
+        QVERIFY(!QFileInfo::exists(fixture_->path() + "/output/history.json"));
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+    }
+
+    void busyModelLibraryDropsCannotReplaceCurrentTask()
+    {
+        QSignalSpy starts(window_.get(), &MainWindow::startRequested);
+        window_->runPtDemo();
+        QVERIFY(window_->busy_);
+        QCOMPARE(starts.size(), 1);
+        const auto job = qvariant_cast<vision::JobRequest>(starts.first().first());
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型库")), Qt::LeftButton);
+        auto *page = window_->findChild<QWidget *>(QStringLiteral("modelLibraryPage"));
+        auto *models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
+        auto *hint = window_->findChild<QLabel *>(QStringLiteral("modelLibraryDropHint"));
+        QVERIFY(page && models && hint);
+        const QString candidate = fixture_->path() + "/busy-rejected.onnx";
+        QVERIFY(QFile::copy(fixture_->path() + "/models/yolov5n.onnx", candidate));
+        const auto before = modelOrder(models);
+        const auto selected = models->currentItem()->data(Qt::UserRole).toString();
+        QVERIFY(!dropModelUrls(page, {QUrl::fromLocalFile(candidate)}));
+        QVERIFY(!dropModelUrls(models->viewport(), {QUrl::fromLocalFile(candidate)}));
+        QCOMPARE(modelOrder(models), before);
+        QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
+        QCOMPARE(window_->modelPath_, job.config.modelPath);
+        QCOMPARE(starts.size(), 1);
+        QVERIFY(hint->text().contains(QStringLiteral("当前任务")));
+        window_->stopInference();
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->busy_, 10000);
+        QVERIFY(models->dragEnabled() && models->acceptDrops());
+        QVERIFY(dropModelUrls(page, {QUrl::fromLocalFile(candidate)}));
+        QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), candidate);
+        QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
+    }
+
+    void modelLibraryDialogCancelKeepsLibraryAndSelection()
+    {
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型库")), Qt::LeftButton);
+        auto *models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
+        auto *page = window_->findChild<QWidget *>(QStringLiteral("modelLibraryPage"));
+        auto *hint = window_->findChild<QLabel *>(QStringLiteral("modelLibraryDropHint"));
+        QVERIFY(models && page && hint);
+        const QString defaultHint = hint->text();
+        const auto original = modelOrder(models);
+        const auto selected = models->currentItem()->data(Qt::UserRole).toString();
+        const auto generation = window_->modelInspectionGeneration_;
+        bool dialogCancelled = false;
+        QTimer cancel;
+        connect(&cancel, &QTimer::timeout, this, [&] {
+            auto *dialog = qobject_cast<QFileDialog *>(QApplication::activeModalWidget());
+            if (!dialog) return;
+            QCOMPARE(dialog->fileMode(), QFileDialog::ExistingFiles);
+            dialogCancelled = true; dialog->reject(); cancel.stop();
+        });
+        cancel.start(20);
+        QTest::mouseClick(findButton(window_.get(), QStringLiteral("导入 ONNX / PT 模型")), Qt::LeftButton);
+        cancel.stop(); QVERIFY(dialogCancelled);
+        QCOMPARE(modelOrder(models), original);
+        QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
+        QCOMPARE(window_->modelInspectionGeneration_, generation);
+        QMimeData mime; mime.setUrls({QUrl::fromLocalFile(selected)});
+        QDragEnterEvent enter(page->rect().center(), Qt::CopyAction, &mime, Qt::LeftButton, Qt::NoModifier);
+        QApplication::sendEvent(page, &enter); QVERIFY(enter.isAccepted());
+        QVERIFY(hint->text().contains(QStringLiteral("松开")));
+        QDragLeaveEvent leave; QApplication::sendEvent(page, &leave);
+        QCOMPARE(hint->text(), defaultHint);
+        QCOMPARE(modelOrder(models), original);
+        QCOMPARE(window_->modelInspectionGeneration_, generation);
         QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
     }
 

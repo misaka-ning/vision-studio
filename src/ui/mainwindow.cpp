@@ -85,6 +85,7 @@
 
 namespace
 {
+const QString modelLibraryDropPrompt = QStringLiteral("将 ONNX / PT / TorchScript 文件拖到此处，或点击导入；支持多选，原文件保留。");
 enum class PreviewDropKind { Images, Dataset, Video };
 bool classifyPreviewDrop(const QStringList &input, QStringList *paths, PreviewDropKind *kind, QString *error)
 {
@@ -1376,6 +1377,7 @@ QWidget *MainWindow::buildWorkbench()
 QWidget *MainWindow::buildModels()
 {
     auto *page = new QWidget;
+    page->setObjectName("modelLibraryPage");
     auto *l = new QVBoxLayout(page);
     l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(16);
@@ -1393,6 +1395,10 @@ QWidget *MainWindow::buildModels()
     fl->setSpacing(12);
     fl->addWidget(text("集中管理你的模型", "modelName"));
     fl->addWidget(text("点击模型即全局选用：检测工作台与模型显示同步，模型结构会在后台预加载。", "muted"));
+    modelLibraryDropHint_ = text(modelLibraryDropPrompt, "muted");
+    modelLibraryDropHint_->setObjectName("modelLibraryDropHint");
+    modelLibraryDropHint_->setWordWrap(true);
+    fl->addWidget(modelLibraryDropHint_);
     modelList_ = new ModelLibraryList;
     modelList_->setObjectName("globalModelList");
     modelList_->setIconSize(QSize(34, 34));
@@ -1404,7 +1410,7 @@ QWidget *MainWindow::buildModels()
     modelList_->setDragDropOverwriteMode(false);
     modelList_->setSelectionMode(QAbstractItemView::SingleSelection);
     modelList_->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    modelList_->setToolTip("点击全局选用；拖动调整顺序；右键打开位置、添加备注、重命名或从列表移除。");
+    modelList_->setToolTip("拖入本地模型文件以添加；库内拖动调整顺序；点击全局选用，右键管理模型。");
     modelList_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(modelList_, &QListWidget::customContextMenuRequested, this,
             &MainWindow::showModelContextMenu);
@@ -1475,6 +1481,8 @@ QWidget *MainWindow::buildModels()
     info->setWordWrap(true);
     nl->addWidget(info);
     l->addWidget(notes);
+    page->setAcceptDrops(true);
+    for (auto *child : page->findChildren<QWidget *>()) child->setAcceptDrops(true);
     return page;
 }
 QWidget *MainWindow::buildModelDisplay()
@@ -2385,6 +2393,45 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         return QMainWindow::eventFilter(watched, event);
     auto *widget = qobject_cast<QWidget *>(watched);
     if (!widget || widget->window() != this) return QMainWindow::eventFilter(watched, event);
+    bool inModelLibrary = false;
+    for (auto *parent = widget; parent; parent = parent->parentWidget())
+        if (parent->objectName() == "modelLibraryPage") { inModelLibrary = true; break; }
+    if (inModelLibrary) {
+        if (event->type() == QEvent::DragLeave) {
+            if (modelLibraryExternalDragActive_) showModelImportHint(modelLibraryDropPrompt);
+            return QMainWindow::eventFilter(watched, event);
+        }
+        auto *drop = static_cast<QDropEvent *>(event);
+        // InternalMove carries Qt's item-model MIME data and must remain owned
+        // by QListWidget; external file URLs use a separate import path.
+        if (drop->source() == modelList_ || !drop->mimeData()->hasUrls())
+            return QMainWindow::eventFilter(watched, event);
+        drop->ignore();
+        auto reject = [this](const QString &message) { showModelImportHint(message, true); };
+        if (previewDropLocked()) { reject("请先结束当前任务，再导入模型；当前模型与任务保持不变。"); return true; }
+        if (!(drop->possibleActions() & Qt::CopyAction)) {
+            reject("模型库仅引用本地文件，不支持移动或链接操作；请直接拖入文件。"); return true;
+        }
+        QStringList input;
+        for (const auto &url : drop->mimeData()->urls()) {
+            if (!url.isLocalFile() || (!url.host().isEmpty() && url.host() != "localhost") ||
+                !url.query().isEmpty() || !url.fragment().isEmpty()) {
+                reject("只支持本地模型文件，不能混入网络地址；本次未导入任何模型。"); return true;
+            }
+            input.append(url.toLocalFile());
+        }
+        QStringList paths; QString error;
+        if (!validateModelImport(input, &paths, &error)) { reject(error); return true; }
+        if (event->type() == QEvent::Drop) {
+            if (modelLibraryExternalDragActive_) showModelImportHint(modelLibraryDropPrompt);
+            if (!importModelFiles(paths)) return true;
+        } else {
+            showModelImportHint(QString("松开以导入 %1 个模型；同一路径自动去重，原文件保留。").arg(paths.size()));
+            modelLibraryExternalDragActive_ = true;
+        }
+        drop->setDropAction(Qt::CopyAction); drop->accept();
+        return true;
+    }
     bool inPreview = false;
     for (auto *parent = widget; parent; parent = parent->parentWidget())
         if (parent->objectName() == "imagePreviewPage") { inPreview = true; break; }
@@ -2929,12 +2976,78 @@ void MainWindow::addFiles(const QStringList &input)
 }
 void MainWindow::importModel()
 {
-    const QString p =
-        QFileDialog::getOpenFileName(this, "导入视觉模型", projectRoot_ + "/models",
+    if (previewDropLocked()) { showModelImportHint("请先结束当前任务，再导入模型。", true); return; }
+    const QStringList paths =
+        QFileDialog::getOpenFileNames(this, "导入视觉模型", projectRoot_ + "/models",
                                      "视觉模型 (*.onnx *.pt *.torchscript);;ONNX 模型 (*.onnx);;"
                                      "PyTorch / TorchScript 模型 (*.pt *.torchscript)");
-    if (!p.isEmpty())
-        setModel(p);
+    if (!paths.isEmpty()) importModelFiles(paths);
+}
+void MainWindow::showModelImportHint(const QString &message, bool error)
+{
+    modelLibraryExternalDragActive_ = false;
+    if (modelLibraryDropHint_) {
+        modelLibraryDropHint_->setText(message);
+        modelLibraryDropHint_->setStyleSheet(error ? "color:#FFB4BB;" : "color:#B8B8B8;");
+    }
+    showNotice(message, error);
+}
+bool MainWindow::validateModelImport(const QStringList &input, QStringList *paths, QString *error) const
+{
+    paths->clear();
+    if (input.isEmpty()) { *error = "请拖入 ONNX / PT / TorchScript 本地模型文件。"; return false; }
+    // Keep an existing library key (including its display name, notes and
+    // profiles) when another spelling or symlink names the same real file.
+    QHash<QString, QString> existing;
+    for (const auto &path : models_) {
+        const QString canonical = QFileInfo(path).canonicalFilePath();
+        if (!canonical.isEmpty() && !existing.contains(canonical)) existing.insert(canonical, path);
+    }
+    QSet<QString> seen;
+    for (const auto &path : input) {
+        const QFileInfo file(path);
+        const QString suffix = file.suffix().toLower();
+        if (!file.isFile() || !file.isReadable() || file.size() <= 0 ||
+            (suffix != "onnx" && suffix != "pt" && suffix != "torchscript")) {
+            *error = "仅支持可读取且非空的 .onnx / .pt / .torchscript 文件，不能混入文件夹或其他文件；本次未导入任何模型。";
+            return false;
+        }
+        const QString canonical = file.canonicalFilePath();
+        if (canonical.isEmpty()) { *error = "无法确定模型文件的本地路径；本次未导入任何模型。"; return false; }
+        const QString actualSuffix = QFileInfo(canonical).suffix().toLower();
+        if (actualSuffix != "onnx" && actualSuffix != "pt" && actualSuffix != "torchscript") {
+            *error = "模型文件实际路径的格式不受支持；本次未导入任何模型。"; return false;
+        }
+        if (!seen.contains(canonical)) {
+            seen.insert(canonical);
+            paths->append(existing.value(canonical, canonical));
+        }
+    }
+    return true;
+}
+bool MainWindow::importModelFiles(const QStringList &input)
+{
+    if (previewDropLocked()) { showModelImportHint("请先结束当前任务，再导入模型；当前模型与任务保持不变。", true); return false; }
+    QStringList paths; QString error;
+    if (!validateModelImport(input, &paths, &error)) { showModelImportHint(error, true); return false; }
+    const QString selected = paths.last();
+    // Online-runtime preparation may be cancelled. Do not mutate the library
+    // until it is available; the callback rechecks busy state and every file.
+    if (isPtModel(selected) && !ui::ensureCpuRuntime(this, [this, paths] { importModelFiles(paths); })) return false;
+    QStringList next = models_;
+    int added = 0;
+    for (const auto &path : paths)
+        if (!next.contains(path)) { next.append(path); ++added; }
+    // Only the final model is globally selected and preloaded. Selecting it
+    // before committing the batch also leaves cancellation/failure unchanged.
+    setModel(selected);
+    if (modelPath_ != QFileInfo(selected).absoluteFilePath()) return false;
+    models_ = next;
+    refreshModelLibrary();
+    persist();
+    showModelImportHint(added ? QString("已添加 %1 个模型；按输入顺序追加，已选用 %2，原文件保留。").arg(added).arg(modelDisplayName(modelPath_))
+                             : QString("模型已在库中，未重复添加；已选用 %1。").arg(modelDisplayName(modelPath_)));
+    return true;
 }
 bool MainWindow::rememberConvertedModel(const QString &path, const QJsonObject &metadata)
 {

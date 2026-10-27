@@ -69,6 +69,7 @@ int main(int argc, char **argv)
     parser.addOption({"smoke-evaluation", "执行数据集评估、阈值分析、结果导出和界面自检后退出", "directory"});
     parser.addOption({"smoke-dataset-session", "恢复上次数据集并检查跨进程载入，不执行推理", "directory"});
     parser.addOption({"smoke-preview-drop", "执行预览拖入、临时图片和原集合评估自检后退出", "directory"});
+    parser.addOption({"smoke-model-library-drop", "执行真实模型库拖入、全局选择与 CPU 推理自检后退出", "directory"});
     parser.addOption({"preview-drop-request", "预览拖入自检 JSON 请求文件", "path"});
     parser.addOption({"evaluation-request", "评估自检 JSON 请求文件（需配合 --smoke-evaluation）", "path"});
     parser.addOption({"conversion-source", "转换自检的本地 PT 模型", "path"});
@@ -133,6 +134,8 @@ int main(int argc, char **argv)
                                window.saveScreenshot(parser.value("screenshot"));
                                app.quit();
                            });
+    else if (parser.isSet("smoke-model-library-drop"))
+        QTimer::singleShot(200, &window, [&] { window.runModelLibraryDropSmoke(parser.value("smoke-model-library-drop")); });
     else if (parser.isSet("smoke-preview-drop"))
         QTimer::singleShot(200, &window, [&] {
             window.runPreviewDropSmoke(parser.value("smoke-preview-drop"), parser.value("preview-drop-request"));

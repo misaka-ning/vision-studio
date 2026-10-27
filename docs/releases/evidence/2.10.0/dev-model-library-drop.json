@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "version": "2.10.0",
+  "success": true,
+  "scope": "Development Qt event integration checks only; not formal package/full regression/release acceptance",
+  "qt_checks_passed_including_setup_cleanup": 10,
+  "failed": 0,
+  "skipped": 0,
+  "blacklisted": 0,
+  "elapsed_ms": 11210,
+  "test_cases": [
+    "modelLibraryExternalDropsAppendAtomicallyAndSelectOnce",
+    "modelLibraryDropsRejectInvalidBatchesWithoutMutations",
+    "busyModelLibraryDropsCannotReplaceCurrentTask",
+    "modelLibraryDialogCancelKeepsLibraryAndSelection",
+    "modelLibraryInternalMovesPreserveGlobalSelectionAndPersistAfterRestart",
+    "modelContextMenuTargetsPointerWithoutChangingGlobalSelection",
+    "modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart",
+    "globalModelSelectionPreloadsAndCachesStructure"
+  ],
+  "real_fixtures": [
+    "public YOLOv5n ONNX",
+    "public YOLOv8n PT",
+    "locally generated valid TorchScript classifier"
+  ],
+  "production_inputs": {
+    "src/ui/mainwindow.cpp": "824cc04142e6a71e0f823d996d016a3493fc0f1b54d5e0d2c6d12c3eaaad8a11",
+    "src/ui/mainwindow.h": "8b3fa406bf119c3d94c09aaabbb840b122c53d20e895aee6ae89bd19285e86a0",
+    "tests/ui_tests.cpp": "df326695755fc2a8b910eaf82887468c2997248faa1be4b6654445c7b874f988"
+  },
+  "raw_logs": {
+    "build.log": "32ae148f207aaaa7ab59eb7b7793f1c1daf531a3616e2e4d0b3445eddb19b5e2",
+    "configure.log": "37a7b6f2ed60fd2f5db3e0c29388ab1216bbb40fdd534c858bef7162823fc368",
+    "initial-build.log": "3a40ba69a681277479c92249c8db8c290d8bbd8d8f72db8b9e0fae71b10a4086",
+    "targeted-tests.log": "419af9345466e394fce726fc82da75f28e8c319918e00a5dea98ecff1bc00180"
+  },
+  "formal_build_or_release_performed": false
+}

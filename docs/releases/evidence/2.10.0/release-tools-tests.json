@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "version": "2.10.0",
+  "scope": "Actual release-tool unit tests with local mocks; not a GitHub publication result",
+  "success": true,
+  "tests": 48,
+  "original_log_sha256": "74d6ebe06731581adeb7fe7b615123738ad84319d27129cb2f3280a5da7efa8d"
+}
