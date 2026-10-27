@@ -1,0 +1,21 @@
+{
+  "version": "2.9.2",
+  "success": true,
+  "before_debian_version": "2.9.0-1",
+  "before_running_count": 0,
+  "deb_sha256": "6d116edf1a6c46fb47973989558f08fd4fdccf109f87cd608fa48b29ef609667",
+  "installer_exit_code": 0,
+  "installed_debian_version": "2.9.2-1",
+  "version_command_exit_code": 0,
+  "version_stdout": "Vision Studio 2.9.2",
+  "installed_binary_sha256": "55196d2b3bdd5b0e356a32df043456afeac36339df34dfad121bd1f20aa4f6c0",
+  "expected_staged_binary_sha256": "55196d2b3bdd5b0e356a32df043456afeac36339df34dfad121bd1f20aa4f6c0",
+  "installed_worker_sha256": "e246524b28a98e3ad2db328dc5b687c7b2cc62748957b63b7d7644e89ac95162",
+  "expected_staged_worker_sha256": "e246524b28a98e3ad2db328dc5b687c7b2cc62748957b63b7d7644e89ac95162",
+  "protected_user_files_unchanged": true,
+  "schema_version": 1,
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_report_sha256": "d62e2af1bca2b905de89acaeccb85c5d712dcfbf7df692fa488aef3816acfe12",
+  "protected_user_file_count": 3
+}
