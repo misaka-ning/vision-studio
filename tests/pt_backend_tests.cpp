@@ -215,6 +215,15 @@ class PtBackendTests final : public QObject
         QTest::newRow("sequence") << QString("reply['id']+=1");
         QTest::newRow("task") << QString("reply['results'][1]['task']='classify'");
         QTest::newRow("predictions") << QString("reply['results'][1]['predictions']=[{'class_id':2,'confidence':.8,'box':[0,0,10,10]}]");
+        // A well-behaved worker filters clipped zero-area candidates before
+        // serializing them. Keep the protocol boundary strict if a malformed
+        // helper still emits a degenerate or non-numeric box in a later row.
+        QTest::newRow("zero-width") << QString("reply['results'][1]['predictions']=[{'class_id':0,'confidence':.8,'box':[10,10,0,20]}]");
+        QTest::newRow("zero-height") << QString("reply['results'][1]['predictions']=[{'class_id':0,'confidence':.0012,'box':[54.43,376,50.08,0]}]");
+        QTest::newRow("negative-width") << QString("reply['results'][1]['predictions']=[{'class_id':0,'confidence':.8,'box':[10,10,-1,20]}]");
+        QTest::newRow("negative-height") << QString("reply['results'][1]['predictions']=[{'class_id':0,'confidence':.8,'box':[10,10,20,-1]}]");
+        QTest::newRow("null-coordinate") << QString("reply['results'][1]['predictions']=[{'class_id':0,'confidence':.8,'box':[None,10,20,20]}]");
+        QTest::newRow("nonfinite-coordinate") << QString("reply['results'][1]['predictions']=[{'class_id':0,'confidence':.8,'box':[float('nan'),10,20,20]}]");
         QTest::newRow("error") << QString("reply={'ok':False,'id':request['id'],'error':'batch failed'}");
     }
 

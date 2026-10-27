@@ -16,6 +16,7 @@ import tempfile
 import time
 import types
 import unittest
+from unittest import mock
 
 import cv2
 import numpy as np
@@ -80,6 +81,60 @@ class BatchTensorTests(unittest.TestCase):
         self.assertIs(calls[0]["source"], images)
         self.assertEqual(len(calls), 1)
         self.assertEqual([r[0] for r in result], [[], []])
+
+    def test_native_color_batch_discards_edge_collapsed_boxes_and_keeps_valid_predictions(self):
+        # The second image is entirely zero-area candidates. It must remain a
+        # successful empty result in its original batch position, not abort the
+        # task or duplicate the first image's remaining valid prediction.
+        image = np.zeros((376, 672, 3), np.uint8)
+        candidates = [
+            [54.43, 376., 104.52, 376.],  # actual failure shape: bottom edge
+            [672., 20., 672., 60.],       # right edge, zero width
+            [-50., 10., -10., 40.],      # wholly outside, collapses after clip
+            [30., 20., 10., 40.],        # inverted box
+            [-5., 10., 25., 40.],        # partially visible: retain clipped box
+        ]
+        class Predictor:
+            def predict(self, **options):
+                rows = []
+                for boxes in (candidates, candidates[:-1]):
+                    rows.append(types.SimpleNamespace(boxes=types.SimpleNamespace(
+                        xyxy=torch.tensor(boxes), conf=torch.full((len(boxes),), .0012),
+                        cls=torch.full((len(boxes),), 32.)), speed={"inference": 2.}))
+                return rows
+        backend = namespace["NativeYolo"].__new__(namespace["NativeYolo"])
+        backend.model, backend.device = Predictor(), torch.device("cpu")
+        backend.task, backend.labels, backend.class_filter = "detect", [str(i) for i in range(80)], [32]
+        backend.color_mode, backend.input_channels = "color", 3
+        results = backend.infer_batch([image, image], 640, .001, .5)
+        self.assertEqual([len(row[0]) for row in results], [1, 0])
+        self.assertEqual(results[0][0][0]["class_id"], 32)
+        self.assertEqual(results[0][0][0]["box"], [0., 10., 25., 30.])
+        self.assertAlmostEqual(results[0][0][0]["confidence"], .0012)
+        self.assertEqual([row[1] for row in results], [2., 2.])
+
+    def test_native_nonfinite_coordinates_still_fail_in_color_and_gray(self):
+        for mode in ("color", "grayscale"):
+            for invalid in (float("nan"), float("inf"), float("-inf")):
+                with self.subTest(mode=mode, invalid=invalid):
+                    class Predictor:
+                        def predict(self, **options):
+                            return [types.SimpleNamespace(boxes=types.SimpleNamespace(
+                                xyxy=torch.tensor([[invalid, 1., 20., 20.]]),
+                                conf=torch.tensor([.8]), cls=torch.tensor([0.])), speed={})]
+                    backend = namespace["NativeYolo"].__new__(namespace["NativeYolo"])
+                    backend.model, backend.device = Predictor(), torch.device("cpu")
+                    backend.task, backend.labels, backend.class_filter = "detect", ["object"], []
+                    backend.color_mode, backend.input_channels = mode, 3
+                    with self.assertRaisesRegex(ValueError, "非有限坐标"):
+                        backend.infer(np.zeros((64, 64, 3), np.uint8), 64, .1, .45)
+
+    def test_fp32_option_uses_runtime_capability_and_clears_inherited_precision(self):
+        import ultralytics.cfg as cfg
+        with mock.patch.object(cfg, "DEFAULT_CFG_DICT", {"quantize": 16}):
+            self.assertEqual(namespace["fp32_predict_options"](), {"quantize": None})
+        with mock.patch.object(cfg, "DEFAULT_CFG_DICT", {"half": True}):
+            self.assertEqual(namespace["fp32_predict_options"](), {"half": False})
 
     def test_legacy_batch_uses_one_forward_and_preserves_original_class_id(self):
         class Detector(torch.nn.Module):
