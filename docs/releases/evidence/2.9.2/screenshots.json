@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "version": "2.9.2",
+  "root_reviewed_actual_final_package_public_coco8_only": true,
+  "images": [
+    {
+      "file": "screenshots/evaluation-threshold-tuning.png",
+      "sha256": "da73892bc98196f24c9a534110036f7074d3e9dccd68ac0780bfde74083aabd0",
+      "bytes": 188427,
+      "width": 1366,
+      "height": 900,
+      "case": "pt_cpu"
+    },
+    {
+      "file": "screenshots/minimum-window-precision.png",
+      "sha256": "63ab9692d971e3390ff9f857718ba2f1363eed6d5de97826b90005ccf762651a",
+      "bytes": 184620,
+      "width": 1260,
+      "height": 820,
+      "case": "pt_cpu"
+    },
+    {
+      "file": "screenshots/independent-threshold-markers.png",
+      "sha256": "178595f6d2b78bd5320fcc874475f485288a9fc7986ba6470e5e8f8428704f3c",
+      "bytes": 186181,
+      "width": 1366,
+      "height": 900,
+      "case": "pt_cpu"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.9.2",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "packaged_application_unchanged": true,
+      "yaml_two_process_restore": true,
+      "public_inputs_unchanged": true,
+      "restore_has_no_inference_history_or_report_writes": true,
+      "final_deb_binding_and_readonly": true,
+      "directory_two_process_restore": true
+    }
+  },
+  "original_file_sha256": "8ee30d93f3ad733db9b785ed2db423dea6340974af9aa5e0ed40d2a1c35e132e"
+}

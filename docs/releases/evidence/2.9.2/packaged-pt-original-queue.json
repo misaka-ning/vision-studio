@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "version": "2.9.2",
+  "success": true,
+  "scope": "Actual final-DEB Qt evaluation of the original failing private queue",
+  "final_deb_sha256": "6d116edf1a6c46fb47973989558f08fd4fdccf109f87cd608fa48b29ef609667",
+  "worker_sha256": "e246524b28a98e3ad2db328dc5b687c7b2cc62748957b63b7d7644e89ac95162",
+  "packaged_binary_sha256": "55196d2b3bdd5b0e356a32df043456afeac36339df34dfad121bd1f20aa4f6c0",
+  "completed_images": 1223,
+  "queue_order_matches": true,
+  "original_sources_unchanged": true,
+  "protected_source_files": 2450,
+  "actual_device": "cuda",
+  "half_deprecation_warning_count": 0,
+  "app_exit_code": 0,
+  "elapsed_seconds": 48.563,
+  "original_smoke_report_sha256": "4bcce73221030d9479cb7b6ddd6d6c06d294d484389e269d92bfc15cfa8860b6",
+  "privacy": "All private paths, screenshots, per-image outputs and metrics remain in local Git-excluded originals; this report is a safe workflow projection.",
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "initial_harness_attempt": {
+    "success": false,
+    "reason": "Wrong GPU environment variable in local QA harness; no product modification",
+    "original_report_sha256": "4a08c68141901277e882b0adc9184b481686b2682dfccf7936644b2d7facc3e5"
+  },
+  "retry_original_summary_sha256": "68bcdc4237930a7f023f0e76533e629ad59749de0580d0455d51dea9b64b556a"
+}
