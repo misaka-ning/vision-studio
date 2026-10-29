@@ -1,0 +1,11 @@
+test_application_layer_does_not_depend_on_widgets_or_pages (__main__.ArchitectureTests.test_application_layer_does_not_depend_on_widgets_or_pages) ... ok
+test_core_does_not_depend_on_ui_widgets_or_webengine (__main__.ArchitectureTests.test_core_does_not_depend_on_ui_widgets_or_webengine) ... ok
+test_cpp_implementations_are_not_textually_included (__main__.ArchitectureTests.test_cpp_implementations_are_not_textually_included) ... ok
+test_existing_cli_name_inventory_is_preserved_across_source_moves (__main__.ArchitectureTests.test_existing_cli_name_inventory_is_preserved_across_source_moves) ... ok
+test_production_does_not_import_test_only_dependencies (__main__.ArchitectureTests.test_production_does_not_import_test_only_dependencies) ... ok
+test_window_does_not_own_execution_resources_or_test_friends (__main__.ArchitectureTests.test_window_does_not_own_execution_resources_or_test_friends) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.063s
+
+OK
