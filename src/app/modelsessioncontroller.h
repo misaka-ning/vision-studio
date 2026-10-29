@@ -51,6 +51,11 @@ class ModelSessionController final : public QObject
     bool rememberConverted(const QString &path, const QJsonObject &metadata, QString *error = nullptr);
     QJsonObject convertedProfile(const QString &path) const;
     void setEvaluationProfile(const QString &path, const QVariantMap &profile);
+    // Stored records remain opaque until convertedProfile validates their file
+    // identity and schema; this also preserves old, invalidated associations.
+    void setConvertedProfileRecord(const QString &path, const QVariantMap &profile);
+    void addKnownModel(const QString &path);
+    void acceptInferenceClassCount(int count);
     void inspect(const ModelConfig &config);
     void cancelInspection();
     // An actual loaded backend may identify a file replaced on disk afterwards.
@@ -76,7 +81,7 @@ class ModelSessionController final : public QObject
   private:
     bool editable(QString *error) const;
     bool contains(const QString &path, QString *error) const;
-    void resetMetadata();
+    void resetMetadata(bool advanceGeneration = false);
     void notifyShutdownIfReady();
     ModelSessionSnapshot state_;
     Inspector inspector_;

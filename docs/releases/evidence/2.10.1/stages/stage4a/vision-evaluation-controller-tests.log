@@ -1,0 +1,45 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 39
+    Start 39: vision-evaluation-controller-tests
+
+39: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a/vision-evaluation-controller-tests
+39: Environment variables: 
+39:  QT_QPA_PLATFORM=offscreen
+39: Test timeout computed to be: 120
+39: ********* Start testing of EvaluationControllerTests *********
+39: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+39: PASS   : EvaluationControllerTests::initTestCase()
+39: PASS   : EvaluationControllerTests::reportLoadAndThresholdUseImmutableSnapshot()
+39: PASS   : EvaluationControllerTests::errorsPreserveQueueOrderAndExcludeUnknownSamples()
+39: PASS   : EvaluationControllerTests::allFilterKeepsTemporarySelectionAndZeroMatchIsValid()
+39: PASS   : EvaluationControllerTests::sceneFilterAndRapidThresholdChangesDiscardOldCallbacks()
+39: PASS   : EvaluationControllerTests::previewKeepsRawClassAndUncompletedGroundTruth()
+39: PASS   : EvaluationControllerTests::corruptCacheIsUnavailableRatherThanZeroErrors()
+39: PASS   : EvaluationControllerTests::contextReplacementRejectsObsoletePreviewAndFilter()
+39: PASS   : EvaluationControllerTests::adoptionRequiresExplicitMatchingModelAndHash()
+39: PASS   : EvaluationControllerTests::historyAndAssociationKeepExistingSchema()
+39: PASS   : EvaluationControllerTests::fingerprintIgnoresAnalysisOnlyValues()
+39: PASS   : EvaluationControllerTests::workerFailureAndShutdownDoNotWaitOnGuiThread()
+39: PASS   : EvaluationControllerTests::shutdownDrainsAllReviewThreads()
+39: PASS   : EvaluationControllerTests::cleanupTestCase()
+39: Totals: 14 passed, 0 failed, 0 skipped, 0 blacklisted, 566ms
+39: ********* Finished testing of EvaluationControllerTests *********
+1/1 Test #39: vision-evaluation-controller-tests ...   Passed    0.62 sec
+
+The following tests passed:
+	vision-evaluation-controller-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.62 sec

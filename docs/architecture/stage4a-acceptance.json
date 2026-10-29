@@ -1,0 +1,88 @@
+{
+  "stage": "4a",
+  "scope": "Domain authorities for global model, input/import/restore, editable configuration and evaluation/report/review. Production window wiring remains for subsequent stage.",
+  "source_tree": "70ab1a8c210da19dcf8baac5684bd906aab91c3c",
+  "build_success": true,
+  "regression_success": true,
+  "suites": [
+    "vision-model-session-controller-tests",
+    "vision-input-session-controller-tests",
+    "vision-workbench-configuration-tests",
+    "vision-evaluation-controller-tests",
+    "vision-scope-filter-ui-tests",
+    "vision-dataset-session-ui-tests",
+    "vision-evaluation-integration-tests"
+  ],
+  "raw_evidence": "../releases/evidence/2.10.1/stages/stage4a",
+  "not_final_release_acceptance": true,
+  "files": {
+    "detection-regression-qa.json": {
+      "size": 24529,
+      "sha256": "29dacc35e33a67f253247750968e375eb09a5f11db60c0f1408d75469bc4ae62"
+    },
+    "stage4a-build.log": {
+      "size": 18708,
+      "sha256": "2de33233588919b7beb7bea42f259684f579a09d7efab4a489527bcef7cf48f7"
+    },
+    "stage4a-configure.log": {
+      "size": 1347,
+      "sha256": "bb094da3e96cae5d212e9368e26ac952a9c69a1546b855f904d917563b63e70a"
+    },
+    "vision-dataset-session-ui-tests.log": {
+      "size": 5345,
+      "sha256": "b00d451f4d4f174301e447b3fc9b5a8df7207407c0aac487a943df7facf06048"
+    },
+    "vision-dataset-session-ui-tests.xml": {
+      "size": 1495,
+      "sha256": "33e17983bbd64d60ec8dd37d3a630906083034a8c91fc13d63a6af42758dfc1f"
+    },
+    "vision-evaluation-controller-tests.log": {
+      "size": 2874,
+      "sha256": "ac45c2f1a56f3afbacffce5e3b3932e33a4293ccde7f1e66168e90ded1e6a141"
+    },
+    "vision-evaluation-controller-tests.xml": {
+      "size": 1501,
+      "sha256": "636b33399c919db1fddd8aa26601eefe2cc15879f3f65426aae62f8866852523"
+    },
+    "vision-evaluation-integration-tests.log": {
+      "size": 45077,
+      "sha256": "38c149fb35f1fe2efae633f9278fb0a01fc2a4fffc976e284663aee84279dd3d"
+    },
+    "vision-evaluation-integration-tests.xml": {
+      "size": 1505,
+      "sha256": "1a92f845b11979d2bc8b0fa5d440476e9c9ff6d9c67d84cbcbe4fbf4ecacf927"
+    },
+    "vision-input-session-controller-tests.log": {
+      "size": 3007,
+      "sha256": "2cddff8e68630db7fa27f5183f4b6157616c02196922cb6f8c4bdf5f7282db9f"
+    },
+    "vision-input-session-controller-tests.xml": {
+      "size": 1507,
+      "sha256": "5d3f041ab6b6e64f50df902e7306dfa454d6580c19d6178bcc5bcacc57b40332"
+    },
+    "vision-model-session-controller-tests.log": {
+      "size": 2703,
+      "sha256": "e7f7c45e966d34a3fc7e4ba41f9eee8cb186f11b71543af9e9c79972d5389a81"
+    },
+    "vision-model-session-controller-tests.xml": {
+      "size": 1508,
+      "sha256": "614802d21449e161343f6c213455a0729a1ba996530ba3d3201fb98c1dc7ffe5"
+    },
+    "vision-scope-filter-ui-tests.log": {
+      "size": 16032,
+      "sha256": "a01468125d6d57796294ff6ab25954729c4f5b5d5a88910002d2367f26b1c27c"
+    },
+    "vision-scope-filter-ui-tests.xml": {
+      "size": 1489,
+      "sha256": "3e10354bd4952df6ab5103fcb7db2336f633797db72a073cec5e9f8cc60aab50"
+    },
+    "vision-workbench-configuration-tests.log": {
+      "size": 2409,
+      "sha256": "cd38c3847f4df353bae0715fe1c54f230b53608028250b7716a6553589b5c22f"
+    },
+    "vision-workbench-configuration-tests.xml": {
+      "size": 1395,
+      "sha256": "b9a482b44480accd95ac44844e3005d5d5a8449e641e34a1c9f7f918e1bdef67"
+    }
+  }
+}
