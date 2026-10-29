@@ -1,5 +1,6 @@
 #pragma once
 #include "core/visiontypes.h"
+#include "route.h"
 #include <QElapsedTimer>
 #include <QHash>
 #include <QJsonArray>
@@ -170,6 +171,7 @@ class MainWindow : public QMainWindow
     void showNotice(const QString &text, bool error = false);
     void persist();
     void selectRoute(int index);
+    void selectRoute(ui::Route route) { selectRoute(ui::routeIndex(route)); }
     void updateSourceUi();
     void updateRangeUi();
     void updateClassFilterUi();
