@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "ctest",
+    "--test-dir",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-window-qa/build",
+    "--verbose",
+    "--no-tests=error",
+    "--tests-regex",
+    "^vision-(window-shutdown|runtime-setup-shutdown)-tests$",
+    "--output-junit",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-window-qa/native.xml"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 10.715356652159244,
+  "log_sha256": "865371a3fd2b7cebe789603f911d30ef1a0c00d4960bacb6492f4a3292208025"
+}

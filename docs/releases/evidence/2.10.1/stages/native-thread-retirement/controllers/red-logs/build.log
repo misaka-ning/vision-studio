@@ -1,0 +1,10 @@
+[1/10] Automatic MOC for target vision-controller-development
+[2/10] Building CXX object CMakeFiles/vision-controller-development.dir/vision-controller-development_autogen/mocs_compilation.cpp.o
+[3/10] Building CXX object CMakeFiles/vision-controller-development.dir/baseline/src/app/modelsessioncontroller.cpp.o
+[4/10] Building CXX object CMakeFiles/vision-controller-development.dir/baseline/src/app/inputsessioncontroller.cpp.o
+[5/10] Building CXX object CMakeFiles/vision-controller-development.dir/baseline/src/app/evaluationcontroller.cpp.o
+[6/10] Linking CXX static library libvision-controller-development.a
+[7/10] Automatic MOC for target vision-model-session-controller-tests
+[8/10] Building CXX object CMakeFiles/vision-model-session-controller-tests.dir/vision-model-session-controller-tests_autogen/mocs_compilation.cpp.o
+[9/10] Building CXX object CMakeFiles/vision-model-session-controller-tests.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/model_session_controller_tests.cpp.o
+[10/10] Linking CXX executable vision-model-session-controller-tests

@@ -1,4 +1,5 @@
 #include "modelsessioncontroller.h"
+#include "asyncthreadretirement.h"
 #include "core/cpuruntime.h"
 #include "core/visionengine.h"
 
@@ -394,7 +395,7 @@ void ModelSessionController::inspect(const ModelConfig &requested)
     });
     worker->setObjectName("modelClassInspection");
     inspections_.insert(worker, cancelled);
-    connect(worker, &QThread::finished, this, [this, worker, generation, identity, cancelled, output]
+    AsyncThreadRetirement::watch(worker, this, [this, worker, generation, identity, cancelled, output]
     {
         inspections_.remove(worker);
         if (shuttingDown_) { notifyShutdownIfReady(); return; }
@@ -421,7 +422,6 @@ void ModelSessionController::inspect(const ModelConfig &requested)
         }
         emit metadataChanged();
     });
-    connect(worker, &QThread::finished, worker, &QObject::deleteLater);
     worker->start();
     emit metadataChanged();
 }

@@ -1,0 +1,87 @@
+{
+  "scope": "Development red regression: baseline controllers plus new Shadow TLS test",
+  "controller_source_root": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline",
+  "test_source_root": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal",
+  "test_source_sha256_before": "da3f777ceba6a7538b8e0ec09d0191e8c5556fc416f426e6b2dfc1d1a1e04114",
+  "core_sha256_before": "3fe069664e86732b1fb8990b4dfd6f04fdddd3ba21a2cf8746e5f439533330a9",
+  "commands": [
+    {
+      "name": "configure",
+      "argv": [
+        "cmake",
+        "-S",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa",
+        "-B",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/build-red",
+        "-G",
+        "Ninja",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_PREFIX_PATH=/home/misaka/Qt/6.8.3/gcc_64",
+        "-DQA_CONTROLLER_SOURCE_ROOT=/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline",
+        "-DQA_TEST_SOURCE_ROOT=/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal"
+      ],
+      "cwd": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa",
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/red-logs/configure.log",
+      "returncode": 0,
+      "elapsed_seconds": 0.364,
+      "log_sha256": "9b73d8e424a02a2311af9ade5e95f2c0f9e4b688c02f149a28092a96fbeda853"
+    },
+    {
+      "name": "build",
+      "argv": [
+        "cmake",
+        "--build",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/build-red",
+        "--target",
+        "vision-model-session-controller-tests",
+        "--parallel",
+        "2"
+      ],
+      "cwd": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa",
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/red-logs/build.log",
+      "returncode": 0,
+      "elapsed_seconds": 8.583,
+      "log_sha256": "3ba4e01554eb71eaede69d739d3f24b273123a57a9a65c5ebcdd113e3ff12e0e"
+    },
+    {
+      "name": "model-tls-regression",
+      "argv": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/build-red/vision-model-session-controller-tests",
+        "shutdownWaitsForTlsCleanupWithoutBlockingGui",
+        "-v1"
+      ],
+      "cwd": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa",
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/red-logs/model-tls-regression.log",
+      "returncode": 1,
+      "elapsed_seconds": 1.266,
+      "log_sha256": "de1e9718f5f355e78db5c1af53afb5576ca14047abb4faa02411bbd34781c9e5"
+    }
+  ],
+  "isolated_environment": {
+    "XDG_CONFIG_DIRS": "/etc/xdg/xdg-ubuntu:/etc/xdg",
+    "XDG_MENU_PREFIX": "gnome-",
+    "XDG_SESSION_DESKTOP": "ubuntu",
+    "XDG_SESSION_TYPE": "x11",
+    "XDG_CURRENT_DESKTOP": "ubuntu:GNOME",
+    "XDG_SESSION_CLASS": "user",
+    "XDG_RUNTIME_DIR": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/red-xdg/runtime",
+    "XDG_DATA_DIRS": "/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop",
+    "XDG_CONFIG_HOME": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/red-xdg/config",
+    "XDG_DATA_HOME": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/red-xdg/data",
+    "XDG_CACHE_HOME": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/red-xdg/cache",
+    "VISION_STUDIO_DATA_DIR": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/red-xdg/vision-data",
+    "QT_QPA_PLATFORM": "offscreen",
+    "VISION_STUDIO_PYTHON": "/opt/VisionStudio/runtime/bin/python",
+    "VISION_STUDIO_EVALUATION_PYTHON": "/opt/VisionStudio/runtime/bin/python",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "binary_sha256": "5fc59e531f57ee93388462baac5d427afd08bcc63f092dea333d48237a4fa98a",
+  "test_source_sha256_after": "da3f777ceba6a7538b8e0ec09d0191e8c5556fc416f426e6b2dfc1d1a1e04114",
+  "test_source_unchanged": true,
+  "core_sha256_after": "3fe069664e86732b1fb8990b4dfd6f04fdddd3ba21a2cf8746e5f439533330a9",
+  "core_unchanged": true,
+  "observed_red": true
+}

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "app/inputsessioncontroller.h"
+#include "app/asyncthreadretirement.h"
 #include "core/datasetsessionstore.h"
 
 #include <QDir>
@@ -33,6 +34,19 @@ bool writeFile(const QString &path, const QByteArray &data)
     QFile file(path);
     return file.open(QIODevice::WriteOnly) && file.write(data) == data.size();
 }
+struct InputThreadExit
+{
+    std::atomic_bool cleanupDone{false};
+    bool attached = false, finishedObserved = false, cleanupDoneAtFinished = true, readyAtFinished = true;
+    int workersAtFinished = -1;
+};
+class SlowInputDeferredCleanup final : public QObject
+{
+    std::shared_ptr<InputThreadExit> state_;
+  public:
+    explicit SlowInputDeferredCleanup(std::shared_ptr<InputThreadExit> state) : state_(std::move(state)) {}
+    ~SlowInputDeferredCleanup() override { QThread::msleep(1200); state_->cleanupDone.store(true); }
+};
 }
 
 class InputSessionControllerTests final : public QObject
@@ -412,6 +426,60 @@ class InputSessionControllerTests final : public QObject
         QTest::newRow("images-checking-state") << false << false;
         QTest::newRow("dataset-checking-state") << true << false;
         QTest::newRow("replacement-cancelling-state") << false << true;
+    }
+
+    void shutdownWaitsForDeferredCleanupWithoutBlockingGui_data()
+    {
+        QTest::addColumn<bool>("dataset");
+        QTest::newRow("image-validation") << false;
+        QTest::newRow("dataset-worker") << true;
+    }
+
+    void shutdownWaitsForDeferredCleanupWithoutBlockingGui()
+    {
+        QFETCH(bool, dataset);
+        auto input = controller();
+        const auto exit = std::make_shared<InputThreadExit>();
+        const auto attach = [&] {
+            const auto watched = vision::app::AsyncThreadRetirement::watchedThreads(input.get());
+            if (exit->attached || watched.size() != 1 || watched.front()->isFinished()) return;
+            auto *thread = watched.front();
+            auto *cleanup = new SlowInputDeferredCleanup(exit);
+            cleanup->moveToThread(thread);
+            // A worker-affinity deferred delete is intentional. The QThread
+            // object's own deletion must wait asynchronously for this cleanup.
+            connect(thread, &QThread::finished, cleanup, &QObject::deleteLater, Qt::DirectConnection);
+            connect(thread, &QThread::finished, this, [&, exit] {
+                exit->finishedObserved = true;
+                exit->cleanupDoneAtFinished = exit->cleanupDone.load();
+                exit->workersAtFinished = input->activeWorkerCount();
+                exit->readyAtFinished = input->isShutdownReady();
+            }, Qt::QueuedConnection);
+            exit->attached = true;
+        };
+        // Image validation exposes its progress before start; the dataset
+        // helper has real input/preparation work before its thread returns.
+        if (!dataset) connect(input.get(), &InputSessionController::progress, input.get(), [&](int, int, const QString &) { attach(); });
+        QTimer heartbeat; heartbeat.setInterval(1);
+        QElapsedTimer gap; gap.start(); qint64 maximumGap = 0; int ticks = 0;
+        connect(&heartbeat, &QTimer::timeout, this, [&] { maximumGap = qMax(maximumGap, gap.restart()); ++ticks; });
+        heartbeat.start();
+        const bool started = dataset ? input->loadDataset(dataset_) : input->requestImages({images_.first()});
+        if (dataset) attach();
+        QSignalSpy ready(input.get(), &InputSessionController::shutdownReady);
+        QElapsedTimer shutdownCall; shutdownCall.start(); input->requestShutdown();
+        QVERIFY(shutdownCall.elapsed() < 100);
+        QTRY_COMPARE_WITH_TIMEOUT(ready.count(), 1, 5000);
+        QTest::qWait(5); heartbeat.stop();
+        QVERIFY(started); QVERIFY(exit->attached); QVERIFY(exit->finishedObserved);
+        QVERIFY(!exit->cleanupDoneAtFinished); QCOMPARE(exit->workersAtFinished, 1); QVERIFY(!exit->readyAtFinished);
+        QVERIFY(exit->cleanupDone.load()); QVERIFY(input->isShutdownReady());
+        QCOMPARE(input->activeWorkerCount(), 0);
+        QVERIFY(vision::app::AsyncThreadRetirement::watchedThreads(input.get()).isEmpty());
+        QVERIFY(ticks > 5);
+        QVERIFY2(maximumGap < 300, qPrintable(QString("GUI heartbeat blocked for %1 ms").arg(maximumGap)));
+        qInfo() << "input_thread_exit_evidence" << "dataset" << dataset << "deferred_cleanup_ms" << 1200
+                << "heartbeat_ticks" << ticks << "maximum_gap_ms" << maximumGap;
     }
 
     void shutdownDuringStartupNotificationDoesNotLaunchWorker()

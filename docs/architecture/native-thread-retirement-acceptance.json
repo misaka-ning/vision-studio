@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "application_version": "2.10.1",
+  "stage": "5-close-correctness-supplement",
+  "base_commit": "677083cd6bae3f9d3477fa333f15d11bc66311b0",
+  "scope": "Eight actual development native suites after controlled native-thread tail red regressions. Not final release package acceptance.",
+  "actual_suite_count": 8,
+  "qt_passed": 118,
+  "failed": 0,
+  "skipped": 0,
+  "suites": [
+    {
+      "raw": "controllers/green-final-logs/vision-model-session-controller-tests.log",
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "raw": "controllers/green-final-logs/vision-input-session-controller-tests.log",
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "raw": "controllers/green-final-logs/vision-evaluation-controller-tests.log",
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "raw": "execution/app-services-full.log",
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "raw": "execution/detection-full.log",
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "raw": "execution/recording-full.log",
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "raw": "window/native.log",
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "raw": "window/native.log",
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "helper_sha256": "d4294e7ea705a91978ce48c4d29f79fdd54b20737ad8cdeae8177aa209f91430",
+  "tested_sources_match_applied_root": true,
+  "first_candidate_full_regression": {
+    "suites": 44,
+    "qt_passed": 1223,
+    "python_passed": 163,
+    "failed": 0,
+    "skipped": 0,
+    "accepted_for_final_release": false,
+    "reason": "Previously untested Qt native cleanup boundary reproduced separately; new production build/regression required."
+  },
+  "controlled_red_regressions": [
+    "model inspection prematurely left resource table during native TLS cleanup",
+    "recording published ready during held native TLS cleanup"
+  ],
+  "limitations": [
+    "Native std::thread resource-exhaustion fallback compiled but not forced experimentally.",
+    "Linux local fake extraction child is not native Windows acceptance.",
+    "No GPU or physical camera claim for these eight development suites.",
+    "The 1200ms tail is controlled test input, not observed model performance."
+  ],
+  "raw_evidence": "../releases/evidence/2.10.1/stages/native-thread-retirement",
+  "originals": {
+    "qt-boundary/findings.md": {
+      "bytes": 3986,
+      "sha256": "4a62e98d98ded0ff152270a2bfe7e1ef230216f561647da3dc5b32618c74e47f"
+    },
+    "qt-boundary/main.cpp": {
+      "bytes": 3487,
+      "sha256": "7c6dc4a03c019850c6d7b07d7e8d07707037cf4fd49da13f08e6a173321ec52e"
+    },
+    "qt-boundary/CMakeLists.txt": {
+      "bytes": 257,
+      "sha256": "2e101abb4f23ece66d63a61b6f467371999423d1403f6ca070063aebfbb8e1b3"
+    },
+    "qt-boundary/execution.json": {
+      "bytes": 3431,
+      "sha256": "1ef4a079bd7e6941fefaf0d120051f14486c779ee7456fef792af6f9d2f205c8"
+    },
+    "qt-boundary/raw-manifest.json": {
+      "bytes": 1697,
+      "sha256": "5cb913ea76a7f878afc9b20d2970a71fa344ecb304526c8e07c023bb05f20d09"
+    },
+    "qt-boundary/qt-source-provenance.json": {
+      "bytes": 1030,
+      "sha256": "b745331274b49ef7c7acd10e2b7693a8dd10df98f4f15fdd6da83f14603bc155"
+    },
+    "qt-boundary/configure.log": {
+      "bytes": 733,
+      "sha256": "83fe54ed975e040cad012d6c8b0ab9b4d3af66fb898265b4a80d44b23115cc84"
+    },
+    "qt-boundary/build.log": {
+      "bytes": 123,
+      "sha256": "d6881cf0bbb34dd6883760b8675c1b63c38542c29f47bf4e79d43eb5846ae760"
+    },
+    "qt-boundary/plain-tls.stdout.log": {
+      "bytes": 543,
+      "sha256": "5f73209e79f59f7a8c1eacf298f8bb5d34fc32d479c234f181bbd82a5076e510"
+    },
+    "qt-boundary/plain-tls.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "qt-boundary/plain-deferred-delete.stdout.log": {
+      "bytes": 555,
+      "sha256": "f812d3727fec9d8ece21447c1a3f88e8090916e86a76cee0962ad28f46001873"
+    },
+    "qt-boundary/plain-deferred-delete.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "qt-boundary/create-tls.stdout.log": {
+      "bytes": 545,
+      "sha256": "b5db9c0bacb67fbc865ad738a3154a791811aaf9e60c702398325773f435f1d3"
+    },
+    "qt-boundary/create-tls.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "controllers/controllers-retirement-report.json": {
+      "bytes": 5366,
+      "sha256": "775137ac800ebde4431c3535b407debcde9c5a21c0c20dad769df629e156acbc"
+    },
+    "controllers/green-final-results.json": {
+      "bytes": 5078,
+      "sha256": "ade82c93205550304e1d1fbf8b56be61c86fe639eccb5f815af1fdb36063600b"
+    },
+    "controllers/red-results.json": {
+      "bytes": 4640,
+      "sha256": "9f2fa41a81fcb3852db8683be01d68868d268fdeef54de6bd9cc18a9d42bad9f"
+    },
+    "controllers/baseline-manifest.json": {
+      "bytes": 1436,
+      "sha256": "b852c585d35f23c5a59c66e2f2d249561d03c36d86a27f6c528a2ca7c128ce84"
+    },
+    "controllers/baseline-results.json": {
+      "bytes": 6631,
+      "sha256": "a245066a3a2e1354468491059e55bf86dd32fc7b9bdf0080c7c9f6e80886643b"
+    },
+    "controllers/controllers-migration-inputs.json": {
+      "bytes": 1820,
+      "sha256": "597c59c990cfb02cee77caa66292e44abc902c05f54c3e7708d6e601ca227812"
+    },
+    "controllers/build-green-helper-final.log": {
+      "bytes": 1379,
+      "sha256": "7db189a62eb01015c09a1310a78ad7ea48b25df73eb8b30c6e63554de43da901"
+    },
+    "execution/proposal-qa.json": {
+      "bytes": 7827,
+      "sha256": "50fcbeefd8e6d21aef126ac7e98decd30272c940d745fc06b4a508ab429e7f56"
+    },
+    "execution/recording-before-execution.json": {
+      "bytes": 442,
+      "sha256": "ddac8500115cb968b2d747a8fa59dc7eb8da72ee2b70e9b72b397638401548cd"
+    },
+    "execution/inputs-before-build.json": {
+      "bytes": 3982,
+      "sha256": "b3b9851739dc2692d4c2af2e66db9fd9f8240017a0e925b953d4f9ae54750492"
+    },
+    "execution/green-executions.json": {
+      "bytes": 987,
+      "sha256": "b3b99d2e643250c110b1e35208e8b0fffc7413ca97a208511adf9f7474bd902f"
+    },
+    "execution/configure.log": {
+      "bytes": 1049,
+      "sha256": "ff52ad72ac16a8e69c722cbeed6a7b68d3881d7c9340d1f1b980c5ce58d5b12d"
+    },
+    "execution/build.log": {
+      "bytes": 4396,
+      "sha256": "af59cf55d1adde967118bca37e1504955c99d25860901f489fcc4fe53c2bc16a"
+    },
+    "execution/recording-before.log": {
+      "bytes": 724,
+      "sha256": "7cf7134853f3072bc8399cc84621c5d9eeb002af58cb3e68daccb8e0e890dff7"
+    },
+    "execution/app-services-full.log": {
+      "bytes": 1678,
+      "sha256": "c175b8ed93d663bfea8f9a3c65a81a5c75eaeb137d72e436e364a3d197c6b610"
+    },
+    "execution/detection-full.log": {
+      "bytes": 1352,
+      "sha256": "f5ab420478e070b988909879a4f72cc91f4e0c5203eb11e24e7f256de10c419e"
+    },
+    "execution/recording-full.log": {
+      "bytes": 1430,
+      "sha256": "5baa0bfd79166450388715caf081733c69a96b69d6dabc3c70cd0f8ea7a8f3c0"
+    },
+    "window/configure.log": {
+      "bytes": 1388,
+      "sha256": "d751fa017f1172239747e4952ece85e82493a3fde9f5e9de10c5d7f38e44dc46"
+    },
+    "window/build.log": {
+      "bytes": 6139,
+      "sha256": "04afc1690a94374cbd515f69c00bd001e770f0071d1fcfaeb6cc4a2eee265928"
+    },
+    "window/configure-command.json": {
+      "bytes": 559,
+      "sha256": "3c531098319e460da71d6e0578a957a2e048b59f7b540ab1957e1aea12985c4c"
+    },
+    "window/build-command.json": {
+      "bytes": 323,
+      "sha256": "859959f2d91f8c4b79dcd63128e112f8b02dbce08d1aa41e81d47c33690d757c"
+    },
+    "window/native.log": {
+      "bytes": 7082,
+      "sha256": "865371a3fd2b7cebe789603f911d30ef1a0c00d4960bacb6492f4a3292208025"
+    },
+    "window/native.xml": {
+      "bytes": 2777,
+      "sha256": "80ea9594a73ceb5f619b38a2060099780c492344fbce35f7abdc0d4347005a4b"
+    },
+    "window/native-command.json": {
+      "bytes": 537,
+      "sha256": "18ebf17ed26935f4d387c40f1b7989bbc6555356140cd3ef5130f0e6c52756f2"
+    },
+    "window/source-before.json": {
+      "bytes": 16748,
+      "sha256": "2aeaa2ea27592cdafbc73d2f41a7045745ca17447c583f0e64ad3fd8ea0ebf05"
+    },
+    "window/source-after.json": {
+      "bytes": 16748,
+      "sha256": "2aeaa2ea27592cdafbc73d2f41a7045745ca17447c583f0e64ad3fd8ea0ebf05"
+    },
+    "runtime-standalone/execution.json": {
+      "bytes": 1723,
+      "sha256": "e315cf97892097ca287a9583109ab678b36c40243f8bb2dafd1e7d8233009eab"
+    },
+    "runtime-standalone/CMakeLists.txt": {
+      "bytes": 820,
+      "sha256": "faad73d552e9242f217c6e8b63a6213b4c56ea6808470f5d0e999024e619fd7d"
+    },
+    "runtime-standalone/runtime-qa.log": {
+      "bytes": 4343,
+      "sha256": "8afb41df0fd5f14771e75c6fc121ad95d89809a0d6fe885639f92b7b39d44bc4"
+    },
+    "runtime-standalone/runtime-qa.xml": {
+      "bytes": 3134,
+      "sha256": "0256e9614327cccec7c859678cab106548df32d36b7fce2d705064de4b21393a"
+    },
+    "runtime-standalone/runtime-qa-host.log": {
+      "bytes": 4718,
+      "sha256": "748bf251435c8f6e2b66b75340591ad5c109ca33951a86016b791ecc881f02fe"
+    },
+    "runtime-standalone/runtime-qa-host.xml": {
+      "bytes": 3521,
+      "sha256": "d430a865bf80f171babeea18e8b5f502aba069c328a4cd1306c69e00a2c18dae"
+    },
+    "first-candidate/relocation-receipt.json": {
+      "bytes": 42140,
+      "sha256": "dcd5dc543b4d75ffb0d8a10c11cf8f6eeb2bf8559226c7704e6b2fbfd2deba6d"
+    },
+    "controllers/green-final-logs/repeat-evaluation-deferred.log": {
+      "bytes": 965,
+      "sha256": "a9387b6c54364cff05634d3aab77d348536bf1ee73865f19d3a1f18a8f3608fa"
+    },
+    "controllers/green-final-logs/repeat-input-deferred.log": {
+      "bytes": 1317,
+      "sha256": "92c71756e6692e1a53bb349e0cbee0493bcd787d5f5cf23ac35654342611df64"
+    },
+    "controllers/green-final-logs/repeat-model-tls.log": {
+      "bytes": 949,
+      "sha256": "c442f130d8957ef314b4a56099314260ceb0d634a4c6536ccc6dd1449f3b9561"
+    },
+    "controllers/green-final-logs/vision-evaluation-controller-tests.log": {
+      "bytes": 4076,
+      "sha256": "a6e1fcc6ddca5220479a85b8ff50ffb98f8a57585393fc271f2a6a33346bce47"
+    },
+    "controllers/green-final-logs/vision-input-session-controller-tests.log": {
+      "bytes": 4789,
+      "sha256": "087c2e8d82189dc71d2ff2797428273444573bbc75efd990a9cfcf6c3f732a57"
+    },
+    "controllers/green-final-logs/vision-model-session-controller-tests.log": {
+      "bytes": 2999,
+      "sha256": "659c660db6a12fbdd75ed8a41dfff9d743ee6f9f3cde4cc21c5cad5866662433"
+    },
+    "controllers/red-logs/build.log": {
+      "bytes": 1108,
+      "sha256": "3ba4e01554eb71eaede69d739d3f24b273123a57a9a65c5ebcdd113e3ff12e0e"
+    },
+    "controllers/red-logs/configure.log": {
+      "bytes": 1150,
+      "sha256": "9b73d8e424a02a2311af9ade5e95f2c0f9e4b688c02f149a28092a96fbeda853"
+    },
+    "controllers/red-logs/model-tls-regression.log": {
+      "bytes": 1031,
+      "sha256": "de1e9718f5f355e78db5c1af53afb5576ca14047abb4faa02411bbd34781c9e5"
+    }
+  }
+}

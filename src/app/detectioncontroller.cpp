@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "detectioncontroller.h"
+#include "asyncthreadretirement.h"
 #include "core/inferenceworker.h"
 #include <QThread>
 
@@ -18,7 +19,8 @@ DetectionController::DetectionController(QObject *parent)
     worker_->setImageResultBackpressureEnabled(true);
     worker_->moveToThread(thread_);
     connect(thread_, &QThread::finished, worker_, &QObject::deleteLater);
-    connect(thread_, &QThread::finished, this, [this] {
+    AsyncThreadRetirement::watch(thread_, this, [this] {
+        thread_ = nullptr;
         threadFinished_ = true;
         if (state_.running) beginFinish(true);
         else if (shuttingDown_) results_->requestShutdown();
@@ -60,11 +62,8 @@ DetectionController::DetectionController(QObject *parent)
 DetectionController::~DetectionController()
 {
     if (!shuttingDown_) requestShutdown();
-    if (!thread_->isFinished()) {
-        // Safety for early owner destruction: the running QThread outlives its
-        // owner and reaps itself; normal UI destruction follows shutdownReady.
-        connect(thread_, &QThread::finished, thread_, &QObject::deleteLater);
-    } else delete thread_;
+    // The retirement ticket owns the native join and QThread object even when
+    // this owner is destroyed early; no GUI-thread implicit destructor wait.
 }
 
 void DetectionController::prepare()
@@ -114,13 +113,13 @@ bool DetectionController::acceptImageResult(const InferenceResult &result, quint
     return true;
 }
 void DetectionController::prepareRecording(const QString &directory) { if (!shuttingDown_) worker_->prepareRecording(directory); }
-void DetectionController::requestStop() { state_.stopping = true; if (!shuttingDown_ && !threadFinished_) worker_->requestStop(); }
+void DetectionController::requestStop() { state_.stopping = true; if (!shuttingDown_ && !threadFinished_ && worker_) worker_->requestStop(); }
 void DetectionController::acknowledgeImageResult(quint64 ticket)
 {
-    if (tickets_.remove(ticket) && !shuttingDown_ && !threadFinished_) worker_->acknowledgeImageResult(ticket);
+    if (tickets_.remove(ticket) && !shuttingDown_ && !threadFinished_ && worker_) worker_->acknowledgeImageResult(ticket);
 }
-void DetectionController::requestStartRecording() { if (!shuttingDown_) worker_->requestStartRecording(); }
-void DetectionController::requestStopRecording() { if (!shuttingDown_ && !threadFinished_) worker_->requestStopRecording(); }
+void DetectionController::requestStartRecording() { if (!shuttingDown_ && worker_) worker_->requestStartRecording(); }
+void DetectionController::requestStopRecording() { if (!shuttingDown_ && !threadFinished_ && worker_) worker_->requestStopRecording(); }
 void DetectionController::requestShutdown()
 {
     if (shuttingDown_) return;

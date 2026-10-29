@@ -1,0 +1,73 @@
+[1/73] Automatic MOC for target vision-core
+[2/73] Building CXX object CMakeFiles/vision-core.dir/vision-core_autogen/mocs_compilation.cpp.o
+[3/73] Building CXX object CMakeFiles/vision-core.dir/src/core/evaluationmatch.cpp.o
+[4/73] Building CXX object CMakeFiles/vision-core.dir/src/core/evaluationworker.cpp.o
+[5/73] Building CXX object CMakeFiles/vision-core.dir/src/core/evaluationreview.cpp.o
+[6/73] Building CXX object CMakeFiles/vision-core.dir/src/core/visionengine.cpp.o
+[7/73] Building CXX object CMakeFiles/vision-core.dir/src/core/inferenceworker.cpp.o
+[8/73] Building CXX object CMakeFiles/vision-core.dir/src/core/ptbackend.cpp.o
+[9/73] Building CXX object CMakeFiles/vision-core.dir/src/core/videorecorder.cpp.o
+[10/73] Building CXX object CMakeFiles/vision-core.dir/src/core/gpuruntime.cpp.o
+[11/73] Building CXX object CMakeFiles/vision-core.dir/src/core/onnxcudabackend.cpp.o
+[12/73] Building CXX object CMakeFiles/vision-core.dir/src/core/datasetsessionstore.cpp.o
+[13/73] Building CXX object CMakeFiles/vision-core.dir/src/core/cpuruntime.cpp.o
+[14/73] Building CXX object CMakeFiles/vision-core.dir/src/core/previewdrop.cpp.o
+[15/73] Linking CXX static library libvision-core.a
+[16/73] Automatic MOC for target vision-app
+[17/73] Building CXX object CMakeFiles/vision-app.dir/src/app/annotationrenderer.cpp.o
+[18/73] Building CXX object CMakeFiles/vision-app.dir/vision-app_autogen/mocs_compilation.cpp.o
+[19/73] Building CXX object CMakeFiles/vision-app.dir/src/app/preferencesrepository.cpp.o
+[20/73] Building CXX object CMakeFiles/vision-app.dir/src/app/resultwriter.cpp.o
+[21/73] Building CXX object CMakeFiles/vision-app.dir/src/app/historyrepository.cpp.o
+[22/73] Building CXX object CMakeFiles/vision-app.dir/src/app/gpuenvironmentservice.cpp.o
+[23/73] Building CXX object CMakeFiles/vision-app.dir/src/app/detectioncontroller.cpp.o
+[24/73] Building CXX object CMakeFiles/vision-app.dir/src/app/modelsessioncontroller.cpp.o
+[25/73] Building CXX object CMakeFiles/vision-app.dir/src/app/inputsessioncontroller.cpp.o
+[26/73] Building CXX object CMakeFiles/vision-app.dir/src/app/imageresultstore.cpp.o
+[27/73] Building CXX object CMakeFiles/vision-app.dir/src/app/evaluationcontroller.cpp.o
+[28/73] Building CXX object CMakeFiles/vision-app.dir/src/app/workbenchconfiguration.cpp.o
+[29/73] Building CXX object CMakeFiles/vision-app.dir/src/app/operationcoordinator.cpp.o
+[30/73] Building CXX object CMakeFiles/vision-app.dir/src/app/recordingcontroller.cpp.o
+[31/73] Building CXX object CMakeFiles/vision-app.dir/src/app/resultdeliveryservice.cpp.o
+[32/73] Linking CXX static library libvision-app.a
+[33/73] Automatic MOC for target vision-ui
+[34/73] Automatic RCC for resources.qrc
+[35/73] Building CXX object CMakeFiles/vision-ui.dir/vision-ui_autogen/mocs_compilation.cpp.o
+[36/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/mainwindow_evaluation.cpp.o
+[37/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/mainwindow.cpp.o
+[38/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/lazyimagequeue.cpp.o
+[39/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/asyncimagepreview.cpp.o
+[40/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/evaluationpanel.cpp.o
+[41/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/imagecanvas.cpp.o
+[42/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/modelconversionpage.cpp.o
+[43/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/modelviewer.cpp.o
+[44/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/icons.cpp.o
+[45/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/modelyaml.cpp.o
+[46/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/runtimesetup.cpp.o
+[47/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/mainwindow_drop_smoke.cpp.o
+[48/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/mainwindow_modellibrary_drop_smoke.cpp.o
+[49/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/mainwindow_configuration.cpp.o
+[50/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/mainwindow_input.cpp.o
+[51/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/pages/workspacedropfilter.cpp.o
+[52/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/mainwindow_lifecycle.cpp.o
+[53/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/pages/modelslibrarypage.cpp.o
+[54/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/pages/workbenchpage.cpp.o
+[55/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/pages/modeldisplaypage.cpp.o
+[56/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/pages/historypage.cpp.o
+[57/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/pages/recordingspage.cpp.o
+[58/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/pages/morepage.cpp.o
+[59/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/pages/guidepage.cpp.o
+[60/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/smoke/previewdropsmoke.cpp.o
+[61/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/smoke/modellibrarydropsmoke.cpp.o
+[62/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/smoke/datasetsessionsmoke.cpp.o
+[63/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/smoke/evaluationsmoke.cpp.o
+[64/73] Building CXX object CMakeFiles/vision-ui.dir/vision-ui_autogen/EWIEGA46WW/qrc_resources.cpp.o
+[65/73] Building CXX object CMakeFiles/vision-ui.dir/src/ui/smoke/inferencesmoke.cpp.o
+[66/73] Automatic MOC for target vision-runtime-setup-shutdown-tests
+[67/73] Automatic MOC for target vision-window-shutdown-tests
+[68/73] Building CXX object CMakeFiles/vision-runtime-setup-shutdown-tests.dir/vision-runtime-setup-shutdown-tests_autogen/mocs_compilation.cpp.o
+[69/73] Building CXX object CMakeFiles/vision-runtime-setup-shutdown-tests.dir/tests/runtime_setup_shutdown_tests.cpp.o
+[70/73] Linking CXX executable vision-runtime-setup-shutdown-tests
+[71/73] Building CXX object CMakeFiles/vision-window-shutdown-tests.dir/vision-window-shutdown-tests_autogen/mocs_compilation.cpp.o
+[72/73] Building CXX object CMakeFiles/vision-window-shutdown-tests.dir/tests/window_shutdown_tests.cpp.o
+[73/73] Linking CXX executable vision-window-shutdown-tests

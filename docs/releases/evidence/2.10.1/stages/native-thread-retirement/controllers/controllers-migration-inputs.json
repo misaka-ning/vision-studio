@@ -1,0 +1,43 @@
+{
+  "scope": "Six Shadow controller/test files only, not root source or index",
+  "lifecycle_paths": {
+    "model_session": [
+      "model inspection"
+    ],
+    "input_session": [
+      "dataset EvaluationWorker",
+      "image validation QThread::create"
+    ],
+    "evaluation": [
+      "main EvaluationWorker",
+      "review filter QThread::create",
+      "review preview QThread::create"
+    ]
+  },
+  "files": {
+    "src/app/modelsessioncontroller.cpp": {
+      "before_sha256": "636475f426f89910e7d3c3064ac4d5885e0490162fc20c497a57f3d287b763cc",
+      "after_sha256": "1feb50ca3033245e1f88958b96e5c14fb0c0fbbe0b3487a279ada14b980144de"
+    },
+    "src/app/inputsessioncontroller.cpp": {
+      "before_sha256": "7615c95870b4dbf6f73418f13b6961ef8e1c854414a4d80941ab9c0651f6d334",
+      "after_sha256": "ea9ace153e0faaca5b7115f67678b68160788fa85f151b4397fe81cb11eebf65"
+    },
+    "src/app/evaluationcontroller.cpp": {
+      "before_sha256": "2f7e97cf30768ae0d8f74894a848af10d96fdf584d845b6417086837036550cb",
+      "after_sha256": "cf0747200c3366857b1b9edf86fdb636d050d6153be3fbba7882c7dc7597d3ca"
+    },
+    "tests/model_session_controller_tests.cpp": {
+      "before_sha256": "05d906bf01587e9d3f6901f8ca6877d8b7ebb28a54b07578a8fd028af44bf66a",
+      "after_sha256": "da3f777ceba6a7538b8e0ec09d0191e8c5556fc416f426e6b2dfc1d1a1e04114"
+    },
+    "tests/input_session_controller_tests.cpp": {
+      "before_sha256": "a71eb722fabeecd457462bf9755f6af3f445c5d5bf91c5aef64c7946531e2098",
+      "after_sha256": "82b0c854514e270fb572236316a7296cb06ca0d2109ae768c3ca453828e8e2f9"
+    },
+    "tests/evaluation_controller_tests.cpp": {
+      "before_sha256": "b56ad33f217229e03e681db29c4e2ea8c5c4ff106334107e12652b770d250ecc",
+      "after_sha256": "704ff1ead9b1273681bc630e936eed0b40a07ee807bb78adf62320567a4214bd"
+    }
+  }
+}

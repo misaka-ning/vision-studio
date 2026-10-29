@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "cmake",
+    "-S",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal",
+    "-B",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-window-qa/build",
+    "-G",
+    "Ninja",
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DBUILD_TESTING=ON",
+    "-DCMAKE_PREFIX_PATH=/home/misaka/Qt/6.8.3/gcc_64",
+    "-DVISION_RESOURCE_FALLBACK=/opt/VisionStudio",
+    "-DVISION_STUDIO_TEST_PYTHON=/opt/VisionStudio/runtime/bin/python"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 1.0412965810392052
+}

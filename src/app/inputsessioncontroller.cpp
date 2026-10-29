@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "inputsessioncontroller.h"
+#include "asyncthreadretirement.h"
 #include "core/evaluationworker.h"
 
 #include <QElapsedTimer>
@@ -131,7 +132,7 @@ bool InputSessionController::beginDataset(const QString &source, const QString &
             if (!shuttingDown_ && generation == state_.importGeneration && !cancelled->load())
                 failOperation(message);
         });
-    connect(worker, &QThread::finished, this, [this, worker, generation, cancelled] {
+    AsyncThreadRetirement::watch(worker, this, [this, worker, generation, cancelled] {
         workers_.remove(worker);
         if (datasetWorker_ == worker) datasetWorker_ = nullptr;
         if (!shuttingDown_ && generation == state_.importGeneration && !cancelled->load() &&
@@ -139,7 +140,6 @@ bool InputSessionController::beginDataset(const QString &source, const QString &
             failOperation(QStringLiteral("数据集检查结束，但未返回有效清单。"));
         notifyShutdownIfReady();
     });
-    connect(worker, &QThread::finished, worker, &QObject::deleteLater);
     worker->start();
     return true;
 }
@@ -186,7 +186,7 @@ bool InputSessionController::requestImages(const QStringList &paths, bool append
         }
     });
     workers_.insert(thread, cancelled);
-    connect(thread, &QThread::finished, this, [this, thread, generation, cancelled, result, append] {
+    AsyncThreadRetirement::watch(thread, this, [this, thread, generation, cancelled, result, append] {
         workers_.remove(thread);
         if (!shuttingDown_ && generation == state_.importGeneration && !cancelled->load())
         {
@@ -203,7 +203,6 @@ bool InputSessionController::requestImages(const QStringList &paths, bool append
         }
         notifyShutdownIfReady();
     });
-    connect(thread, &QThread::finished, thread, &QObject::deleteLater);
     emit progress(0, paths.size(), QStringLiteral("正在后台检查图片…"));
     thread->start();
     return true;

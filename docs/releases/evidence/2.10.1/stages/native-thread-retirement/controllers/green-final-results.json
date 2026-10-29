@@ -1,0 +1,132 @@
+{
+  "scope": "Shadow controller standalone real regressions; read-only final core archive; not final application/package acceptance",
+  "helper_sha256_before": "d4294e7ea705a91978ce48c4d29f79fdd54b20737ad8cdeae8177aa209f91430",
+  "helper_sha256_after": "d4294e7ea705a91978ce48c4d29f79fdd54b20737ad8cdeae8177aa209f91430",
+  "helper_unchanged_during_runs": true,
+  "core_sha256": "3fe069664e86732b1fb8990b4dfd6f04fdddd3ba21a2cf8746e5f439533330a9",
+  "runs": [
+    {
+      "name": "vision-model-session-controller-tests",
+      "command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/build-green/vision-model-session-controller-tests",
+        "-v1"
+      ],
+      "exit_code": 0,
+      "totals": [
+        [
+          "15",
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/green-final-logs/vision-model-session-controller-tests.log",
+      "log_sha256": "659c660db6a12fbdd75ed8a41dfff9d743ee6f9f3cde4cc21c5cad5866662433",
+      "started_at_utc": "2026-10-29T12:32:44.702878+00:00",
+      "finished_at_utc": "2026-10-29T12:32:46.522062+00:00"
+    },
+    {
+      "name": "vision-input-session-controller-tests",
+      "command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/build-green/vision-input-session-controller-tests",
+        "-v1"
+      ],
+      "exit_code": 0,
+      "totals": [
+        [
+          "19",
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/green-final-logs/vision-input-session-controller-tests.log",
+      "log_sha256": "087c2e8d82189dc71d2ff2797428273444573bbc75efd990a9cfcf6c3f732a57",
+      "started_at_utc": "2026-10-29T12:32:46.522227+00:00",
+      "finished_at_utc": "2026-10-29T12:32:50.847166+00:00"
+    },
+    {
+      "name": "vision-evaluation-controller-tests",
+      "command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/build-green/vision-evaluation-controller-tests",
+        "-v1"
+      ],
+      "exit_code": 0,
+      "totals": [
+        [
+          "18",
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/green-final-logs/vision-evaluation-controller-tests.log",
+      "log_sha256": "a6e1fcc6ddca5220479a85b8ff50ffb98f8a57585393fc271f2a6a33346bce47",
+      "started_at_utc": "2026-10-29T12:32:50.847335+00:00",
+      "finished_at_utc": "2026-10-29T12:32:52.816925+00:00"
+    },
+    {
+      "name": "repeat-model-tls",
+      "command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/build-green/vision-model-session-controller-tests",
+        "shutdownWaitsForTlsCleanupWithoutBlockingGui",
+        "-v1"
+      ],
+      "exit_code": 0,
+      "totals": [
+        [
+          "3",
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/green-final-logs/repeat-model-tls.log",
+      "log_sha256": "c442f130d8957ef314b4a56099314260ceb0d634a4c6536ccc6dd1449f3b9561",
+      "started_at_utc": "2026-10-29T12:32:52.816965+00:00",
+      "finished_at_utc": "2026-10-29T12:32:54.133515+00:00"
+    },
+    {
+      "name": "repeat-input-deferred",
+      "command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/build-green/vision-input-session-controller-tests",
+        "shutdownWaitsForDeferredCleanupWithoutBlockingGui",
+        "-v1"
+      ],
+      "exit_code": 0,
+      "totals": [
+        [
+          "4",
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/green-final-logs/repeat-input-deferred.log",
+      "log_sha256": "92c71756e6692e1a53bb349e0cbee0493bcd787d5f5cf23ac35654342611df64",
+      "started_at_utc": "2026-10-29T12:32:54.133554+00:00",
+      "finished_at_utc": "2026-10-29T12:32:56.703097+00:00"
+    },
+    {
+      "name": "repeat-evaluation-deferred",
+      "command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/build-green/vision-evaluation-controller-tests",
+        "shutdownWaitsForWorkerDeferredCleanupWithoutBlockingGui",
+        "-v1"
+      ],
+      "exit_code": 0,
+      "totals": [
+        [
+          "3",
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/green-final-logs/repeat-evaluation-deferred.log",
+      "log_sha256": "a9387b6c54364cff05634d3aab77d348536bf1ee73865f19d3a1f18a8f3608fa",
+      "started_at_utc": "2026-10-29T12:32:56.703154+00:00",
+      "finished_at_utc": "2026-10-29T12:32:58.069096+00:00"
+    }
+  ]
+}

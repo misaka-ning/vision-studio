@@ -1,0 +1,34 @@
+[1/34] Automatic MOC for target retirement-app
+[2/34] Automatic MOC for target retirement-recording-before
+[3/34] Building CXX object CMakeFiles/retirement-app.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/annotationrenderer.cpp.o
+[4/34] Building CXX object CMakeFiles/retirement-app.dir/retirement-app_autogen/mocs_compilation.cpp.o
+[5/34] Building CXX object CMakeFiles/retirement-app.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/detectioncontroller.cpp.o
+[6/34] Building CXX object CMakeFiles/retirement-app.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/gpuenvironmentservice.cpp.o
+[7/34] Building CXX object CMakeFiles/retirement-app.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/evaluationcontroller.cpp.o
+[8/34] Building CXX object CMakeFiles/retirement-app.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/historyrepository.cpp.o
+[9/34] Building CXX object CMakeFiles/retirement-app.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/imageresultstore.cpp.o
+[10/34] Building CXX object CMakeFiles/retirement-app.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/inputsessioncontroller.cpp.o
+[11/34] Building CXX object CMakeFiles/retirement-app.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/modelsessioncontroller.cpp.o
+[12/34] Building CXX object CMakeFiles/retirement-app.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/operationcoordinator.cpp.o
+[13/34] Building CXX object CMakeFiles/retirement-app.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/preferencesrepository.cpp.o
+[14/34] Building CXX object CMakeFiles/retirement-app.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/resultdeliveryservice.cpp.o
+[15/34] Building CXX object CMakeFiles/retirement-app.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/recordingcontroller.cpp.o
+[16/34] Building CXX object CMakeFiles/retirement-app.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/workbenchconfiguration.cpp.o
+[17/34] Building CXX object CMakeFiles/retirement-app.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/resultwriter.cpp.o
+[18/34] Linking CXX static library libretirement-app.a
+[19/34] Building CXX object CMakeFiles/retirement-recording-before.dir/retirement-recording-before_autogen/mocs_compilation.cpp.o
+[20/34] Building CXX object CMakeFiles/retirement-recording-before.dir/baseline/recordingcontroller.cpp.o
+[21/34] Building CXX object CMakeFiles/retirement-recording-before.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/recording_controller_tests.cpp.o
+[22/34] Automatic MOC for target retirement-app-services
+[23/34] Building CXX object CMakeFiles/retirement-app-services.dir/retirement-app-services_autogen/mocs_compilation.cpp.o
+[24/34] Linking CXX executable retirement-recording-before
+[25/34] Automatic MOC for target retirement-detection
+[26/34] Building CXX object CMakeFiles/retirement-detection.dir/retirement-detection_autogen/mocs_compilation.cpp.o
+[27/34] Building CXX object CMakeFiles/retirement-detection.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/detection_controller_tests.cpp.o
+[28/34] Building CXX object CMakeFiles/retirement-app-services.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/app_services_tests.cpp.o
+[29/34] Linking CXX executable retirement-detection
+[30/34] Linking CXX executable retirement-app-services
+[31/34] Automatic MOC for target retirement-recording
+[32/34] Building CXX object CMakeFiles/retirement-recording.dir/retirement-recording_autogen/mocs_compilation.cpp.o
+[33/34] Building CXX object CMakeFiles/retirement-recording.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/recording_controller_tests.cpp.o
+[34/34] Linking CXX executable retirement-recording

@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "version": "2.10.1",
+  "scope": "Shadow-only proposal, independent controller regression, not release acceptance",
+  "generated_at_utc": "2026-10-29T12:35:36.527660+00:00",
+  "modified_root_tracked_source": false,
+  "modified_final_candidate_build": false,
+  "watch_paths": {
+    "modelsessioncontroller": 1,
+    "inputsessioncontroller": 2,
+    "evaluationcontroller": 3
+  },
+  "raw_red_receipt_sha256": "9f2fa41a81fcb3852db8683be01d68868d268fdeef54de6bd9cc18a9d42bad9f",
+  "actual_green_suite_totals": [
+    {
+      "name": "vision-model-session-controller-tests",
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0
+    },
+    {
+      "name": "vision-input-session-controller-tests",
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0
+    },
+    {
+      "name": "vision-evaluation-controller-tests",
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0
+    }
+  ],
+  "actual_full_suite_passed_sum": 52,
+  "repeat_process_count": 3,
+  "slow_exit_observations": [
+    {
+      "run": "vision-model-session-controller-tests",
+      "heartbeat_ticks": 120,
+      "maximum_gap_ms": 10
+    },
+    {
+      "run": "vision-input-session-controller-tests",
+      "heartbeat_ticks": 120,
+      "maximum_gap_ms": 10
+    },
+    {
+      "run": "vision-input-session-controller-tests",
+      "heartbeat_ticks": 125,
+      "maximum_gap_ms": 10
+    },
+    {
+      "run": "vision-evaluation-controller-tests",
+      "heartbeat_ticks": 125,
+      "maximum_gap_ms": 10
+    },
+    {
+      "run": "repeat-model-tls",
+      "heartbeat_ticks": 125,
+      "maximum_gap_ms": 10
+    },
+    {
+      "run": "repeat-input-deferred",
+      "heartbeat_ticks": 120,
+      "maximum_gap_ms": 10
+    },
+    {
+      "run": "repeat-input-deferred",
+      "heartbeat_ticks": 125,
+      "maximum_gap_ms": 10
+    },
+    {
+      "run": "repeat-evaluation-deferred",
+      "heartbeat_ticks": 125,
+      "maximum_gap_ms": 10
+    }
+  ],
+  "slow_exit_delay_ms": 1200,
+  "helper_sha256": "d4294e7ea705a91978ce48c4d29f79fdd54b20737ad8cdeae8177aa209f91430",
+  "core_archive_sha256": "3fe069664e86732b1fb8990b4dfd6f04fdddd3ba21a2cf8746e5f439533330a9",
+  "provisional_green_v1_note": "green-v1 helper hash records source present during run, but initial controller objects predated helper callback ordering change; use green-final results after real recompilation, not green-v1, for current ordering.",
+  "limits": [
+    "Existing final core.a linked read-only, no independent core recompilation in these controller targets.",
+    "No new CTest target, runtime dependency, inference/evaluation algorithm or data format introduced.",
+    "Tests cover original controller contracts and actual thread-exit boundary, not final DEB, complete application, Windows, CUDA or physical camera acceptance."
+  ],
+  "originals": {
+    "baseline-manifest.json": {
+      "bytes": 1436,
+      "sha256": "b852c585d35f23c5a59c66e2f2d249561d03c36d86a27f6c528a2ca7c128ce84"
+    },
+    "baseline-results.json": {
+      "bytes": 6631,
+      "sha256": "a245066a3a2e1354468491059e55bf86dd32fc7b9bdf0080c7c9f6e80886643b"
+    },
+    "build-green-helper-final.log": {
+      "bytes": 1379,
+      "sha256": "7db189a62eb01015c09a1310a78ad7ea48b25df73eb8b30c6e63554de43da901"
+    },
+    "controllers-migration-inputs.json": {
+      "bytes": 1820,
+      "sha256": "597c59c990cfb02cee77caa66292e44abc902c05f54c3e7708d6e601ca227812"
+    },
+    "controllers-retirement.patch": {
+      "bytes": 17800,
+      "sha256": "014021c43835746794f1f9a382b778ee1ab6fb9560b4c94a0801d0a41f837fb4"
+    },
+    "green-final-logs/repeat-evaluation-deferred.log": {
+      "bytes": 965,
+      "sha256": "a9387b6c54364cff05634d3aab77d348536bf1ee73865f19d3a1f18a8f3608fa"
+    },
+    "green-final-logs/repeat-input-deferred.log": {
+      "bytes": 1317,
+      "sha256": "92c71756e6692e1a53bb349e0cbee0493bcd787d5f5cf23ac35654342611df64"
+    },
+    "green-final-logs/repeat-model-tls.log": {
+      "bytes": 949,
+      "sha256": "c442f130d8957ef314b4a56099314260ceb0d634a4c6536ccc6dd1449f3b9561"
+    },
+    "green-final-logs/vision-evaluation-controller-tests.log": {
+      "bytes": 4076,
+      "sha256": "a6e1fcc6ddca5220479a85b8ff50ffb98f8a57585393fc271f2a6a33346bce47"
+    },
+    "green-final-logs/vision-input-session-controller-tests.log": {
+      "bytes": 4789,
+      "sha256": "087c2e8d82189dc71d2ff2797428273444573bbc75efd990a9cfcf6c3f732a57"
+    },
+    "green-final-logs/vision-model-session-controller-tests.log": {
+      "bytes": 2999,
+      "sha256": "659c660db6a12fbdd75ed8a41dfff9d743ee6f9f3cde4cc21c5cad5866662433"
+    },
+    "green-final-results.json": {
+      "bytes": 5078,
+      "sha256": "ade82c93205550304e1d1fbf8b56be61c86fe639eccb5f815af1fdb36063600b"
+    },
+    "red-logs/build.log": {
+      "bytes": 1108,
+      "sha256": "3ba4e01554eb71eaede69d739d3f24b273123a57a9a65c5ebcdd113e3ff12e0e"
+    },
+    "red-logs/configure.log": {
+      "bytes": 1150,
+      "sha256": "9b73d8e424a02a2311af9ade5e95f2c0f9e4b688c02f149a28092a96fbeda853"
+    },
+    "red-logs/model-tls-regression.log": {
+      "bytes": 1031,
+      "sha256": "de1e9718f5f355e78db5c1af53afb5576ca14047abb4faa02411bbd34781c9e5"
+    },
+    "red-results.json": {
+      "bytes": 4640,
+      "sha256": "9f2fa41a81fcb3852db8683be01d68868d268fdeef54de6bd9cc18a9d42bad9f"
+    }
+  }
+}

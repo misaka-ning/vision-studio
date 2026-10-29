@@ -1,0 +1,44 @@
+********* Start testing of InputSessionControllerTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+INFO   : InputSessionControllerTests::initTestCase() entering
+PASS   : InputSessionControllerTests::initTestCase()
+INFO   : InputSessionControllerTests::orderedImagesAreAsynchronousBatchedAndDeduplicated() entering
+PASS   : InputSessionControllerTests::orderedImagesAreAsynchronousBatchedAndDeduplicated()
+INFO   : InputSessionControllerTests::allTailCurrentAndUnselectedRanges() entering
+PASS   : InputSessionControllerTests::allTailCurrentAndUnselectedRanges()
+INFO   : InputSessionControllerTests::invalidMixedBatchKeepsOldQueueAndSelection() entering
+PASS   : InputSessionControllerTests::invalidMixedBatchKeepsOldQueueAndSelection()
+INFO   : InputSessionControllerTests::datasetPersistsOnlyAfterLastExactProjectionAcknowledgement() entering
+PASS   : InputSessionControllerTests::datasetPersistsOnlyAfterLastExactProjectionAcknowledgement()
+INFO   : InputSessionControllerTests::datasetTemporaryImagesAreExcludedFromEvaluationAndCancelRollsBack() entering
+PASS   : InputSessionControllerTests::datasetTemporaryImagesAreExcludedFromEvaluationAndCancelRollsBack()
+INFO   : InputSessionControllerTests::datasetFailurePreservesLastValidSession() entering
+PASS   : InputSessionControllerTests::datasetFailurePreservesLastValidSession()
+INFO   : InputSessionControllerTests::datasetProjectionCancellationKeepsOriginalRecord() entering
+PASS   : InputSessionControllerTests::datasetProjectionCancellationKeepsOriginalRecord()
+INFO   : InputSessionControllerTests::datasetValidationCancellationPreservesPreviousInput() entering
+PASS   : InputSessionControllerTests::datasetValidationCancellationPreservesPreviousInput()
+INFO   : InputSessionControllerTests::historicalManifestProjectionDoesNotOverwriteStartupSource() entering
+PASS   : InputSessionControllerTests::historicalManifestProjectionDoesNotOverwriteStartupSource()
+INFO   : InputSessionControllerTests::deferredRestoreNeverOverridesManualInputOrDisabledPreference() entering
+PASS   : InputSessionControllerTests::deferredRestoreNeverOverridesManualInputOrDisabledPreference()
+INFO   : InputSessionControllerTests::inFlightRestoreCanBeSupersededAndNormalRestoreIsPersistent() entering
+PASS   : InputSessionControllerTests::inFlightRestoreCanBeSupersededAndNormalRestoreIsPersistent()
+INFO   : InputSessionControllerTests::clearVideoCameraAndShutdownDoNotEraseRememberedDataset() entering
+PASS   : InputSessionControllerTests::clearVideoCameraAndShutdownDoNotEraseRememberedDataset()
+INFO   : InputSessionControllerTests::shutdownWaitsForDeferredCleanupWithoutBlockingGui() entering
+QINFO  : InputSessionControllerTests::shutdownWaitsForDeferredCleanupWithoutBlockingGui(image-validation) input_thread_exit_evidence dataset false deferred_cleanup_ms 1200 heartbeat_ticks 120 maximum_gap_ms 10
+PASS   : InputSessionControllerTests::shutdownWaitsForDeferredCleanupWithoutBlockingGui(image-validation)
+QINFO  : InputSessionControllerTests::shutdownWaitsForDeferredCleanupWithoutBlockingGui(dataset-worker) input_thread_exit_evidence dataset true deferred_cleanup_ms 1200 heartbeat_ticks 125 maximum_gap_ms 10
+PASS   : InputSessionControllerTests::shutdownWaitsForDeferredCleanupWithoutBlockingGui(dataset-worker)
+INFO   : InputSessionControllerTests::shutdownDuringStartupNotificationDoesNotLaunchWorker() entering
+QINFO  : InputSessionControllerTests::shutdownDuringStartupNotificationDoesNotLaunchWorker(images-checking-state) startup-close accepted false workers-at-close 0 workers-after-return 0 ready-at-close true ready-after-return true
+PASS   : InputSessionControllerTests::shutdownDuringStartupNotificationDoesNotLaunchWorker(images-checking-state)
+QINFO  : InputSessionControllerTests::shutdownDuringStartupNotificationDoesNotLaunchWorker(dataset-checking-state) startup-close accepted false workers-at-close 0 workers-after-return 0 ready-at-close true ready-after-return true
+PASS   : InputSessionControllerTests::shutdownDuringStartupNotificationDoesNotLaunchWorker(dataset-checking-state)
+QINFO  : InputSessionControllerTests::shutdownDuringStartupNotificationDoesNotLaunchWorker(replacement-cancelling-state) startup-close accepted false workers-at-close 1 workers-after-return 1 ready-at-close false ready-after-return false
+PASS   : InputSessionControllerTests::shutdownDuringStartupNotificationDoesNotLaunchWorker(replacement-cancelling-state)
+INFO   : InputSessionControllerTests::cleanupTestCase() entering
+PASS   : InputSessionControllerTests::cleanupTestCase()
+Totals: 19 passed, 0 failed, 0 skipped, 0 blacklisted, 4233ms
+********* Finished testing of InputSessionControllerTests *********

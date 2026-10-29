@@ -3,12 +3,16 @@
 #include "app/preferencesrepository.h"
 #include "app/resultwriter.h"
 #include "app/workbenchconfiguration.h"
+#include "app/asyncthreadretirement.h"
+#include "thread_retirement_fixtures.h"
 
 #include <QFile>
 #include <QJsonDocument>
 #include <QSettings>
 #include <QSignalSpy>
 #include <QTemporaryDir>
+#include <QThread>
+#include <QTimer>
 #include <QtTest>
 
 using namespace vision::app;
@@ -35,6 +39,86 @@ class AppServicesTests final : public QObject
 {
     Q_OBJECT
   private slots:
+    void retirementWaitsForFullThreadTailWithoutBlockingMainLoop_data()
+    {
+        QTest::addColumn<bool>("threadLocal");
+        QTest::newRow("native-thread-local-destructor") << true;
+        QTest::newRow("finished-deferred-delete-destructor") << false;
+    }
+    void retirementWaitsForFullThreadTailWithoutBlockingMainLoop()
+    {
+        QFETCH(bool, threadLocal);
+        const int originalCount = AsyncThreadRetirement::activeCount();
+        const auto state = std::make_shared<vision::test::ThreadTailState>();
+        vision::test::ThreadTailRelease release{state};
+        QObject owner;
+        auto *thread = new QThread;
+        QPointer<QThread> guardedThread(thread);
+        auto *worker = threadLocal ? new QObject : new vision::test::DeferredDeleteTail(state);
+        worker->moveToThread(thread);
+        connect(thread, &QThread::finished, worker, &QObject::deleteLater);
+        connect(thread, &QThread::started, worker, [state, threadLocal] {
+            if (threadLocal) vision::test::establishThreadLocalTail(state);
+            QThread::currentThread()->quit();
+        });
+        int joined = 0, beats = 0;
+        bool callbackSawCompletedTail = false;
+        AsyncThreadRetirement::watch(thread, &owner, [&] {
+            ++joined; callbackSawCompletedTail = state->completed.load();
+        });
+        QTimer heartbeat; heartbeat.setInterval(0);
+        connect(&heartbeat, &QTimer::timeout, this, [&] { ++beats; }); heartbeat.start();
+        thread->start();
+        QTRY_VERIFY_WITH_TIMEOUT(state->entered.load(), 3000);
+        QCOMPARE(joined, 0); QVERIFY(guardedThread); QVERIFY(thread->isFinished());
+        QCOMPARE(AsyncThreadRetirement::activeCount(), originalCount + 1);
+        const int before = beats; QTest::qWait(30);
+        QVERIFY(beats > before); QCOMPARE(joined, 0);
+        state->resume();
+        QTRY_COMPARE_WITH_TIMEOUT(joined, 1, 3000);
+        QVERIFY(callbackSawCompletedTail); QVERIFY(guardedThread.isNull());
+        QCOMPARE(AsyncThreadRetirement::activeCount(), originalCount);
+    }
+    void retirementSurvivesOwnerDestructionAndSuppressesItsCallback()
+    {
+        const int originalCount = AsyncThreadRetirement::activeCount();
+        const auto state = std::make_shared<vision::test::ThreadTailState>();
+        vision::test::ThreadTailRelease release{state};
+        auto *owner = new QObject;
+        auto *thread = QThread::create([state] { vision::test::establishThreadLocalTail(state); });
+        QPointer<QThread> guardedThread(thread);
+        int callbacks = 0, beats = 0;
+        AsyncThreadRetirement::watch(thread, owner, [&] { ++callbacks; });
+        QTimer heartbeat; heartbeat.setInterval(0);
+        connect(&heartbeat, &QTimer::timeout, this, [&] { ++beats; }); heartbeat.start();
+        thread->start();
+        QTRY_VERIFY_WITH_TIMEOUT(state->entered.load(), 3000);
+        QElapsedTimer elapsed; elapsed.start(); delete owner;
+        QVERIFY(elapsed.elapsed() < 100); QVERIFY(guardedThread); QCOMPARE(callbacks, 0);
+        const int before = beats; QTest::qWait(30); QVERIFY(beats > before);
+        QCOMPARE(AsyncThreadRetirement::activeCount(), originalCount + 1);
+        state->resume();
+        QTRY_VERIFY_WITH_TIMEOUT(guardedThread.isNull(), 3000);
+        QCOMPARE(callbacks, 0); QCOMPARE(AsyncThreadRetirement::activeCount(), originalCount);
+    }
+    void retirementClearsOwnerStateBeforeDestroyedObserversReenter()
+    {
+        const int originalCount = AsyncThreadRetirement::activeCount();
+        QObject owner;
+        auto *thread = QThread::create([] {});
+        QPointer<QThread> guardedThread(thread);
+        bool ownerStillReferencesThread = true;
+        int destroyed = 0;
+        AsyncThreadRetirement::watch(thread, &owner, [&] { ownerStillReferencesThread = false; });
+        connect(thread, &QObject::destroyed, &owner, [&] {
+            ++destroyed;
+            QVERIFY(!ownerStillReferencesThread);
+            QCOMPARE(AsyncThreadRetirement::activeCount(), originalCount + 1);
+        }, Qt::DirectConnection);
+        thread->start();
+        QTRY_COMPARE_WITH_TIMEOUT(destroyed, 1, 3000);
+        QVERIFY(guardedThread.isNull()); QCOMPARE(AsyncThreadRetirement::activeCount(), originalCount);
+    }
     void preferencesPreserveLegacyEncoding()
     {
         QTemporaryDir directory;

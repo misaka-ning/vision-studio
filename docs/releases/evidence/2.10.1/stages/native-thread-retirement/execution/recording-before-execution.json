@@ -1,0 +1,10 @@
+{
+  "command": [
+    "output/v2.10.1/thread-retirement-proof/build/retirement-recording-before",
+    "shutdownReadinessWaitsForNativeThreadLocalCleanup"
+  ],
+  "exit_code": 1,
+  "binary_sha256": "85190ba96d6a4dd6f7fdc22d6ed83178190913b4180bead82bb66cafe5e97d4d",
+  "expected_failure": true,
+  "meaning": "Original A RecordingController publishes readiness while native TLS is deliberately still blocked; test guard releases TLS on failure"
+}

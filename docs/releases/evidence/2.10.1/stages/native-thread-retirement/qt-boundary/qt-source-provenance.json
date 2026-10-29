@@ -1,0 +1,19 @@
+{
+  "source_archive": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.10.0/sources/qtbase-everywhere-src-6.8.3.tar.xz",
+  "archive_expected_sha256_from_frozen_inventory": "56001b905601bb9023d399f3ba780d7fa940f3e4861e496a7c490331f49e0b80",
+  "archive_hash_recomputed_in_this_diagnosis": false,
+  "sources": {
+    "src/corelib/thread/qthread.cpp": {
+      "archive_member": "qtbase-everywhere-src-6.8.3/src/corelib/thread/qthread.cpp",
+      "selected_source_sha256": "82195a348400e8341b19cb85a97882fac453191fcc57d3c4aa28c05bf269dbe3"
+    },
+    "src/corelib/thread/qthread_p.h": {
+      "archive_member": "qtbase-everywhere-src-6.8.3/src/corelib/thread/qthread_p.h",
+      "selected_source_sha256": "b914f7e03428f8828566288f1eaa1f9edd6ef3408f133a679bfd8122e3a8562c"
+    },
+    "src/corelib/thread/qthread_unix.cpp": {
+      "archive_member": "qtbase-everywhere-src-6.8.3/src/corelib/thread/qthread_unix.cpp",
+      "selected_source_sha256": "ae1821f3189dca63d9b719119b096aae5094223f46090265a74f2a6903e3fbf7"
+    }
+  }
+}

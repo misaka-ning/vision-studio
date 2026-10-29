@@ -1,0 +1,45 @@
+********* Start testing of RuntimeSetupShutdownTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+INFO   : RuntimeSetupShutdownTests::initTestCase() entering
+PASS   : RuntimeSetupShutdownTests::initTestCase()
+INFO   : RuntimeSetupShutdownTests::idleShutdownIsQueuedIdempotentAndClosesAdmission() entering
+PASS   : RuntimeSetupShutdownTests::idleShutdownIsQueuedIdempotentAndClosesAdmission()
+INFO   : RuntimeSetupShutdownTests::promptShutdownDoesNotDownloadOrRetry() entering
+QWARN  : RuntimeSetupShutdownTests::promptShutdownDoesNotDownloadOrRetry() This plugin does not support propagateSizeHints()
+PASS   : RuntimeSetupShutdownTests::promptShutdownDoesNotDownloadOrRetry()
+INFO   : RuntimeSetupShutdownTests::shutdownSuppressesAlreadyQueuedSuccessfulRetry() entering
+QWARN  : RuntimeSetupShutdownTests::shutdownSuppressesAlreadyQueuedSuccessfulRetry() This plugin does not support propagateSizeHints()
+PASS   : RuntimeSetupShutdownTests::shutdownSuppressesAlreadyQueuedSuccessfulRetry()
+INFO   : RuntimeSetupShutdownTests::cancellationSuppressesAlreadyQueuedRetryAndStillAllowsNewPreparation() entering
+QWARN  : RuntimeSetupShutdownTests::cancellationSuppressesAlreadyQueuedRetryAndStillAllowsNewPreparation() This plugin does not support propagateSizeHints()
+QWARN  : RuntimeSetupShutdownTests::cancellationSuppressesAlreadyQueuedRetryAndStillAllowsNewPreparation() This plugin does not support propagateSizeHints()
+PASS   : RuntimeSetupShutdownTests::cancellationSuppressesAlreadyQueuedRetryAndStillAllowsNewPreparation()
+INFO   : RuntimeSetupShutdownTests::downloadingShutdownReleasesOwnLock() entering
+QWARN  : RuntimeSetupShutdownTests::downloadingShutdownReleasesOwnLock() This plugin does not support propagateSizeHints()
+PASS   : RuntimeSetupShutdownTests::downloadingShutdownReleasesOwnLock()
+INFO   : RuntimeSetupShutdownTests::waitingShutdownKeepsAnotherPreparationsLock() entering
+QWARN  : RuntimeSetupShutdownTests::waitingShutdownKeepsAnotherPreparationsLock() This plugin does not support propagateSizeHints()
+PASS   : RuntimeSetupShutdownTests::waitingShutdownKeepsAnotherPreparationsLock()
+INFO   : RuntimeSetupShutdownTests::extractingShutdownReapsChildBeforeReadyAndCleansOnlyOwnStage() entering
+QWARN  : RuntimeSetupShutdownTests::extractingShutdownReapsChildBeforeReadyAndCleansOnlyOwnStage() This plugin does not support propagateSizeHints()
+QWARN  : RuntimeSetupShutdownTests::extractingShutdownReapsChildBeforeReadyAndCleansOnlyOwnStage() This plugin does not support propagateSizeHints()
+PASS   : RuntimeSetupShutdownTests::extractingShutdownReapsChildBeforeReadyAndCleansOnlyOwnStage()
+INFO   : RuntimeSetupShutdownTests::directDialogDeletionStillDrainsResources() entering
+QWARN  : RuntimeSetupShutdownTests::directDialogDeletionStillDrainsResources() This plugin does not support propagateSizeHints()
+QWARN  : RuntimeSetupShutdownTests::directDialogDeletionStillDrainsResources() This plugin does not support propagateSizeHints()
+PASS   : RuntimeSetupShutdownTests::directDialogDeletionStillDrainsResources()
+INFO   : RuntimeSetupShutdownTests::failedExtractorCanRetryAfterCleanupThenPublish() entering
+QWARN  : RuntimeSetupShutdownTests::failedExtractorCanRetryAfterCleanupThenPublish() This plugin does not support propagateSizeHints()
+QWARN  : RuntimeSetupShutdownTests::failedExtractorCanRetryAfterCleanupThenPublish() This plugin does not support propagateSizeHints()
+QWARN  : RuntimeSetupShutdownTests::failedExtractorCanRetryAfterCleanupThenPublish() This plugin does not support propagateSizeHints()
+QWARN  : RuntimeSetupShutdownTests::failedExtractorCanRetryAfterCleanupThenPublish() This plugin does not support propagateSizeHints()
+PASS   : RuntimeSetupShutdownTests::failedExtractorCanRetryAfterCleanupThenPublish()
+INFO   : RuntimeSetupShutdownTests::failedToStartExtractorStillCleansAndCanShutdown() entering
+QWARN  : RuntimeSetupShutdownTests::failedToStartExtractorStillCleansAndCanShutdown() This plugin does not support propagateSizeHints()
+QWARN  : RuntimeSetupShutdownTests::failedToStartExtractorStillCleansAndCanShutdown() This plugin does not support propagateSizeHints()
+QWARN  : RuntimeSetupShutdownTests::failedToStartExtractorStillCleansAndCanShutdown() This plugin does not support propagateSizeHints()
+PASS   : RuntimeSetupShutdownTests::failedToStartExtractorStillCleansAndCanShutdown()
+INFO   : RuntimeSetupShutdownTests::cleanupTestCase() entering
+PASS   : RuntimeSetupShutdownTests::cleanupTestCase()
+Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 415ms
+********* Finished testing of RuntimeSetupShutdownTests *********

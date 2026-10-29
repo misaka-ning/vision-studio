@@ -1,0 +1,135 @@
+{
+  "scope": "Development QA only: immutable original three controller suites; not release validation",
+  "source_root": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline",
+  "fixture_root": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal",
+  "core_archive": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-release/libvision-core.a",
+  "core_sha256_before": "3fe069664e86732b1fb8990b4dfd6f04fdddd3ba21a2cf8746e5f439533330a9",
+  "commands": [
+    {
+      "name": "configure",
+      "argv": [
+        "cmake",
+        "-S",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa",
+        "-B",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/build-baseline",
+        "-G",
+        "Ninja",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_PREFIX_PATH=/home/misaka/Qt/6.8.3/gcc_64",
+        "-DQA_CONTROLLER_SOURCE_ROOT=/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline"
+      ],
+      "cwd": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa",
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline-logs/configure.log",
+      "returncode": 0,
+      "elapsed_seconds": 0.365,
+      "log_sha256": "c2a1775a2a798a0fa0b77ca9696a3eebb54f889fa021650a6af95b7f2a8c16f3"
+    },
+    {
+      "name": "build",
+      "argv": [
+        "cmake",
+        "--build",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/build-baseline",
+        "--parallel",
+        "2"
+      ],
+      "cwd": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa",
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline-logs/build.log",
+      "returncode": 0,
+      "elapsed_seconds": 12.535,
+      "log_sha256": "8195dac482fcd8a5414d739dbd63577c62a3e1e10ed446a47b692fd88c79b282"
+    },
+    {
+      "name": "vision-model-session-controller-tests",
+      "argv": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/build-baseline/vision-model-session-controller-tests",
+        "-v1"
+      ],
+      "cwd": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa",
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline-logs/vision-model-session-controller-tests.log",
+      "returncode": 0,
+      "elapsed_seconds": 0.565,
+      "log_sha256": "a0010ee6f27423fcc8ecea41b6cf45349e0e27268a4311f10f42e1ba5f3d22c5"
+    },
+    {
+      "name": "vision-input-session-controller-tests",
+      "argv": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/build-baseline/vision-input-session-controller-tests",
+        "-v1"
+      ],
+      "cwd": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa",
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline-logs/vision-input-session-controller-tests.log",
+      "returncode": 0,
+      "elapsed_seconds": 1.767,
+      "log_sha256": "47f1e7acf414850b6e3570d0aff6c64d44c4d39c207caa7887fc7dc4a7c2b852"
+    },
+    {
+      "name": "vision-evaluation-controller-tests",
+      "argv": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/build-baseline/vision-evaluation-controller-tests",
+        "-v1"
+      ],
+      "cwd": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa",
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline-logs/vision-evaluation-controller-tests.log",
+      "returncode": 0,
+      "elapsed_seconds": 0.665,
+      "log_sha256": "543c70ecc02b656e4dfbec544bf4db3ac8f977bdf5364574ab4b2409acefde05"
+    }
+  ],
+  "suites": [
+    {
+      "name": "vision-model-session-controller-tests",
+      "binary_sha256": "60584b0296037ff854cb78e4a2ad1a3cc5c0303a0ef6ccb8102d4a7f05080381",
+      "returncode": 0,
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline-logs/vision-model-session-controller-tests.log",
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0
+    },
+    {
+      "name": "vision-input-session-controller-tests",
+      "binary_sha256": "08e7355fcfaa898481b3922ae8c316a8fd71368239085c2ce253ecc1d082e945",
+      "returncode": 0,
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline-logs/vision-input-session-controller-tests.log",
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0
+    },
+    {
+      "name": "vision-evaluation-controller-tests",
+      "binary_sha256": "1de949733eb04a214ca4b21b4aec37c02990056ca22bbab6809b85bd06ddd831",
+      "returncode": 0,
+      "log": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline-logs/vision-evaluation-controller-tests.log",
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "blacklisted": 0
+    }
+  ],
+  "isolated_environment": {
+    "XDG_CONFIG_HOME": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline-xdg/config",
+    "XDG_DATA_HOME": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline-xdg/data",
+    "XDG_CACHE_HOME": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline-xdg/cache",
+    "XDG_RUNTIME_DIR": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline-xdg/runtime",
+    "VISION_STUDIO_DATA_DIR": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-controller-qa/baseline-xdg/vision-data",
+    "QT_QPA_PLATFORM": "offscreen",
+    "VISION_STUDIO_PYTHON": "/opt/VisionStudio/runtime/bin/python",
+    "VISION_STUDIO_EVALUATION_PYTHON": "/opt/VisionStudio/runtime/bin/python",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "core_sha256_after": "3fe069664e86732b1fb8990b4dfd6f04fdddd3ba21a2cf8746e5f439533330a9",
+  "core_unchanged": true,
+  "success": true,
+  "aggregate_qt_totals": {
+    "passed": 48,
+    "failed": 0,
+    "skipped": 0,
+    "blacklisted": 0
+  }
+}

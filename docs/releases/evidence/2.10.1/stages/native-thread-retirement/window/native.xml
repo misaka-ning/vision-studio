@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="2"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="10"
+	timestamp="2026-10-29T20:34:28"
+	>
+	<testcase name="vision-runtime-setup-shutdown-tests" classname="vision-runtime-setup-shutdown-tests" time="0.826743" status="run">
+		<system-out>********* Start testing of RuntimeSetupShutdownTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : RuntimeSetupShutdownTests::initTestCase()
+PASS   : RuntimeSetupShutdownTests::idleShutdownIsQueuedIdempotentAndClosesAdmission()
+QWARN  : RuntimeSetupShutdownTests::promptShutdownDoesNotDownloadOrRetry() This plugin does not support propagateSizeHints()
+PASS   : RuntimeSetupShutdownTests::promptShutdownDoesNotDownloadOrRetry()
+QWARN  : RuntimeSetupShutdownTests::shutdownSuppressesAlreadyQueuedSuccessfulRetry() This plugin does not support propagateSizeHints()
+PASS   : RuntimeSetupShutdownTests::shutdownSuppressesAlreadyQueuedSuccessfulRetry()
+QWARN  : RuntimeSetupShutdownTests::cancellationSuppressesAlreadyQueuedRetryAndStillAllowsNewPreparation() This plugin does not support propagateSizeHints()
+QWARN  : RuntimeSetupShutdownTests::cancellationSuppressesAlreadyQueuedRetryAndStillA...
+The rest of the test output was removed since it exceeds the threshold of 1024 bytes.
+</system-out>
+	</testcase>
+	<testcase name="vision-window-shutdown-tests" classname="vision-window-shutdown-tests" time="9.88126" status="run">
+		<system-out>********* Start testing of WindowShutdownTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : WindowShutdownTests::initTestCase()
+PASS   : WindowShutdownTests::orphanNativeThreadTailRemainsInApplicationCloseBarrier()
+PASS   : WindowShutdownTests::runningRealOnnxTaskClosesWithoutBlockingGui()
+PASS   : WindowShutdownTests::morePagePreparationIntentsAreRejectedAfterCloseStarts()
+PASS   : WindowShutdownTests::highResolutionAcceptedAutomaticSaveDrainsBeforeDestruction()
+PASS   : WindowShutdownTests::importAndQueueProjectionCanCloseImmediately(background-file-validation)
+PASS   : WindowShutdownTests::importAndQueueProjectionCanCloseImmediately(partially-projected-large-queue)
+PASS   : WindowShutdownTests::modelViewerLoadingCloseReapsHelperBeforeDestroyingWindow()
+PASS   : WindowShutdownTests::conversionOutputSurvivesCloseWhileHelperCleanupFinishes()
+PASS   : WindowShutdownTests::sameA...
+The rest of the test output was removed since it exceeds the threshold of 1024 bytes.
+</system-out>
+	</testcase>
+</testsuite>

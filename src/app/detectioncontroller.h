@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QSet>
 #include <QHash>
+#include <QPointer>
 
 class QThread;
 namespace vision { class InferenceWorker; }
@@ -64,7 +65,7 @@ class DetectionController final : public QObject
     void shutdownReady();
   private:
     QThread *thread_;
-    vision::InferenceWorker *worker_;
+    QPointer<vision::InferenceWorker> worker_;
     DetectionTaskSnapshot state_;
     QSet<quint64> tickets_;
     ResultDeliveryService *results_;

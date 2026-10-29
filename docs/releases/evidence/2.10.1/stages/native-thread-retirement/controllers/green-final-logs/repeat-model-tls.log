@@ -1,0 +1,11 @@
+********* Start testing of ModelSessionControllerTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+INFO   : ModelSessionControllerTests::initTestCase() entering
+PASS   : ModelSessionControllerTests::initTestCase()
+INFO   : ModelSessionControllerTests::shutdownWaitsForTlsCleanupWithoutBlockingGui() entering
+QINFO  : ModelSessionControllerTests::shutdownWaitsForTlsCleanupWithoutBlockingGui() model_inspection_thread_exit_evidence tls_delay_ms 1200 heartbeat_ticks 125 maximum_gap_ms 10
+PASS   : ModelSessionControllerTests::shutdownWaitsForTlsCleanupWithoutBlockingGui()
+INFO   : ModelSessionControllerTests::cleanupTestCase() entering
+PASS   : ModelSessionControllerTests::cleanupTestCase()
+Totals: 3 passed, 0 failed, 0 skipped, 0 blacklisted, 1266ms
+********* Finished testing of ModelSessionControllerTests *********

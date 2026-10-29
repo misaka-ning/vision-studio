@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "recordingcontroller.h"
+#include "asyncthreadretirement.h"
 #include <QDateTime>
 #include <QDir>
 #include <QFile>
@@ -148,7 +149,9 @@ RecordingController::RecordingController(const QString &dataRoot, QObject *paren
     thread_ = new QThread(this); thread_->setObjectName("recordingLibraryWorker");
     worker_ = new RecordingWorker; worker_->moveToThread(thread_);
     connect(thread_, &QThread::finished, worker_, &QObject::deleteLater);
-    connect(thread_, &QThread::finished, this, [this] { threadFinished_ = true; maybeFinishShutdown(); });
+    AsyncThreadRetirement::watch(thread_, this, [this] {
+        thread_ = nullptr; threadFinished_ = true; maybeFinishShutdown();
+    });
     connect(worker_, &RecordingWorker::scanned, this, [this](quint64 generation, const QVector<RecordingEntry> &entries) {
         if (shuttingDown_ || generation != scanGeneration_) return;
         recordings_ = entries; QString selected;
@@ -191,9 +194,8 @@ RecordingController::RecordingController(const QString &dataRoot, QObject *paren
 RecordingController::~RecordingController()
 {
     captureClock_->stop(); playbackClock_->stop();
-    if (!thread_->isFinished()) {
-        thread_->disconnect(this); thread_->setParent(nullptr);
-        connect(thread_, &QThread::finished, thread_, &QObject::deleteLater);
+    if (!threadFinished_) {
+        thread_->disconnect(this);
         if (worker_)
             QMetaObject::invokeMethod(worker_, [worker = worker_] { if (worker) worker->release(); QThread::currentThread()->quit(); }, Qt::QueuedConnection);
     }
