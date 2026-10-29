@@ -1,4 +1,6 @@
 #include "runtimesetup.h"
+#include "app/historyrepository.h"
+#include "app/gpuenvironmentservice.h"
 #include "core/cpuruntime.h"
 #include "mainwindow.h"
 #include "core/gpuruntime.h"
@@ -363,7 +365,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
             ? QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/vision-studio"
             : projectRoot_ + "/output");
     QDir().mkpath(dataRoot_);
-    settings_ = new QSettings(dataRoot_ + "/preferences.ini", QSettings::IniFormat, this);
+    settings_ = new vision::app::PreferencesRepository(dataRoot_ + "/preferences.ini", this);
     exportDir_ = settings_->value("exportDirectory", dataRoot_ + "/results").toString();
     models_ = settings_->value("models").toStringList();
     const bool hasSavedModelLibrary = settings_->contains("models");
@@ -371,9 +373,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     modelNotes_ = settings_->value("modelNotes").toMap();
     convertedModelProfiles_ = settings_->value("convertedModelProfiles").toMap();
     modelEvaluationProfiles_ = settings_->value("evaluationProfiles").toMap();
-    QFile h(dataRoot_ + "/history.json");
-    if (h.open(QIODevice::ReadOnly))
-        history_ = QJsonDocument::fromJson(h.readAll()).array();
+    history_ = vision::app::HistoryRepository(dataRoot_ + "/history.json").load();
     setWindowTitle("Vision Studio — 本地视觉推理工作台");
     resize(1580, 960);
     setMinimumSize(1260, 820);
@@ -463,8 +463,64 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     body->addWidget(workspace, 1);
     setCentralWidget(base);
     qApp->installEventFilter(this);
-    resultIoPool_ = new QThreadPool(this);
-    resultIoPool_->setMaxThreadCount(1);
+    resultWriter_ = new vision::app::ResultWriter(this);
+    connect(resultWriter_, &vision::app::ResultWriter::pendingChanged, this, [this](int count) {
+        resultIoPending_ = count;
+        if (!busy_ && !count) {
+            updateStartEligibility();
+            if (closing_) QTimer::singleShot(0, this, &QWidget::close);
+        }
+    });
+    connect(resultWriter_, &vision::app::ResultWriter::completed, this,
+        [this](const vision::app::ResultWriteOutcome &outcome) {
+        if (outcome.generation == imageResultGeneration_) {
+            auto cached = imageResults_.find(outcome.source);
+            if (cached != imageResults_.end()) {
+                if (outcome.snapshotSaved) {
+                    cached->snapshotPath = outcome.snapshotPath;
+                    cached->result.image = {}; cached->result.originalImage = {};
+                } else if (!imageResultCacheWarning_) {
+                    imageResultCacheWarning_ = true;
+                    showNotice("无法写入临时结果缓存，本轮结果保存在内存中。请检查临时目录空间或权限。", true);
+                }
+            }
+            if (!outcome.historySaved) showNotice("运行记录保存失败：" + outcome.historyError, true);
+            if (outcome.automaticExport && !outcome.exportSaved) {
+                failed_ = true; lastError_ = "自动导出失败：" + outcome.exportError;
+                detection_->requestStop(); showNotice(lastError_, true);
+            }
+        }
+        detection_->acknowledgeImageResult(outcome.ticket);
+    });
+    gpuService_ = new vision::app::GpuEnvironmentService(projectRoot_, this);
+    connect(gpuService_, &vision::app::GpuEnvironmentService::environmentChanged, this,
+        [this](const QJsonObject &environment) {
+        const int selected = gpuDeviceIndex_->currentData().toInt();
+        const QSignalBlocker blocker(gpuDeviceIndex_);
+        gpuDeviceIndex_->clear();
+        for (const auto &value : environment.value("devices").toArray()) {
+            const auto device = value.toObject();
+            const int index = device.value("index").toInt();
+            gpuDeviceIndex_->addItem(QString("GPU %1 · %2").arg(index).arg(device.value("name").toString()), index);
+        }
+        if (gpuDeviceIndex_->findData(selected) < 0)
+            gpuDeviceIndex_->addItem(QString("GPU %1 · 当前未检测到").arg(selected), selected);
+        gpuDeviceIndex_->setCurrentIndex(gpuDeviceIndex_->findData(selected));
+        updateDeviceUi();
+    });
+    connect(gpuService_, &vision::app::GpuEnvironmentService::statusChanged,
+        gpuEnvironmentStatus_, &QLabel::setText);
+    connect(gpuService_, &vision::app::GpuEnvironmentService::logReset, gpuLog_, &QPlainTextEdit::clear);
+    connect(gpuService_, &vision::app::GpuEnvironmentService::logAppended, this, &MainWindow::appendGpuLog);
+    connect(gpuService_, &vision::app::GpuEnvironmentService::progressChanged, this,
+        [this](int minimum, int maximum, int value, bool visible) {
+        gpuSetupProgress_->setRange(minimum, maximum); gpuSetupProgress_->setValue(value);
+        gpuSetupProgress_->setVisible(visible);
+    });
+    connect(gpuService_, &vision::app::GpuEnvironmentService::stateChanged, this, &MainWindow::updateDeviceUi);
+    connect(gpuService_, &vision::app::GpuEnvironmentService::preparationFinished, this, [this] {
+        if (closing_) QTimer::singleShot(0, this, &QWidget::close);
+    });
     connectWorker();
     connectEvaluation();
     const int savedTask = settings_->value("task", 0).toInt(),
@@ -604,20 +660,7 @@ MainWindow::~MainWindow()
     if (evaluationFilterCancellation_) evaluationFilterCancellation_->store(true);
     if (modelInspectionCancellation_)
         modelInspectionCancellation_->store(true);
-    for (QProcess *process : {gpuProbeProcess_, gpuSetupProcess_})
-        if (process)
-        {
-            process->disconnect(this);
-            if (process->state() != QProcess::NotRunning)
-            {
-                process->terminate();
-                if (!process->waitForFinished(300))
-                {
-                    process->kill();
-                    process->waitForFinished(300);
-                }
-            }
-        }
+    gpuService_->requestShutdown();
     if (modelViewer_)
         modelViewer_->stop();
     stopRecordingPlayback();
@@ -625,10 +668,8 @@ MainWindow::~MainWindow()
         evaluationWorker_->requestStop();
         evaluationWorker_->wait();
     }
-    worker_->requestStop();
-    workerThread_->quit();
-    workerThread_->wait();
-    resultIoPool_->waitForDone();
+    detection_->requestShutdown();
+    resultWriter_->requestShutdown();
 }
 
 void MainWindow::setupStyle()
@@ -1845,79 +1886,17 @@ void MainWindow::cacheImageResult(const vision::InferenceResult &result)
 void MainWindow::saveImageResultInBackground(const vision::InferenceResult &result, quint64 ticket)
 {
     if (!imageResultDirectory_)
-        imageResultDirectory_ = std::make_shared<QTemporaryDir>(
-            QDir::tempPath() + "/vision-studio-image-results-XXXXXX");
-    const auto directory = imageResultDirectory_;
-    const QString snapshot = directory->isValid()
-                                 ? directory->filePath(QUuid::createUuid().toString(QUuid::Id128) + ".png")
-                                 : QString();
-    const quint64 generation = imageResultGeneration_;
-    const bool automatic = autoExport_->isChecked();
-    const auto exported = automatic ? prepareResultExport(result, exportDir_, lastConfig_) : ResultExport{};
-    const QString historyPath = dataRoot_ + "/history.json";
-    const QByteArray history = QJsonDocument(history_).toJson();
-    ++resultIoPending_;
-    resultIoPool_->start(QRunnable::create(
-        [this, result, ticket, generation, directory, snapshot, automatic, exported, historyPath, history]
-        {
-            bool snapshotSaved = false;
-            if (!snapshot.isEmpty())
-            {
-                QSaveFile file(snapshot);
-                if (file.open(QIODevice::WriteOnly))
-                {
-                    QImageWriter writer(&file, "PNG");
-                    writer.setCompression(11);
-                    const auto &original = result.originalImage.isNull() ? result.image : result.originalImage;
-                    snapshotSaved = writer.write(original) && file.commit();
-                }
-            }
-            QString exportError, historyError;
-            const bool exportSaved = !automatic || writePreparedResult(exported, &exportError);
-            const bool historySaved = atomicWrite(historyPath, history, &historyError);
-            // Captured directory keeps the snapshot tree alive across clear/new jobs.
-            // Destructor waits for this pool before destroying any captured state.
-            QMetaObject::invokeMethod(this,
-                [this, result, ticket, generation, directory, snapshot, snapshotSaved,
-                 automatic, exportSaved, exportError, historySaved, historyError]
-                {
-                    --resultIoPending_;
-                    if (generation == imageResultGeneration_)
-                    {
-                        auto cached = imageResults_.find(result.source);
-                        if (cached != imageResults_.end())
-                        {
-                            if (snapshotSaved)
-                            {
-                                cached->snapshotPath = snapshot;
-                                cached->result.image = {};
-                                cached->result.originalImage = {};
-                            }
-                            else if (!imageResultCacheWarning_)
-                            {
-                                imageResultCacheWarning_ = true;
-                                showNotice("无法写入临时结果缓存，本轮结果保存在内存中。请检查临时目录空间或权限。", true);
-                            }
-                        }
-                        if (!historySaved)
-                            showNotice("运行记录保存失败：" + historyError, true);
-                        if (automatic && !exportSaved)
-                        {
-                            failed_ = true;
-                            lastError_ = "自动导出失败：" + exportError;
-                            worker_->requestStop();
-                            showNotice(lastError_, true);
-                        }
-                    }
-                    worker_->acknowledgeImageResult(ticket);
-                    if (!busy_ && !resultIoPending_)
-                    {
-                        updateStartEligibility();
-                        if (closing_)
-                            QTimer::singleShot(0, this, &QWidget::close);
-                    }
-                }, Qt::QueuedConnection);
-        }));
+        imageResultDirectory_ = std::make_shared<QTemporaryDir>(QDir::tempPath() + "/vision-studio-image-results-XXXXXX");
+    vision::app::ResultWriteRequest request;
+    request.result = result; request.ticket = ticket; request.generation = imageResultGeneration_;
+    request.directory = imageResultDirectory_;
+    if (request.directory->isValid())
+        request.snapshotPath = request.directory->filePath(QUuid::createUuid().toString(QUuid::Id128) + ".png");
+    request.automaticExport = autoExport_->isChecked();
+    if (request.automaticExport) request.exported = prepareResultExport(result, exportDir_, lastConfig_);
+    request.historyPath = dataRoot_ + "/history.json";
+    request.history = vision::app::HistoryRepository::serialize(history_);
+    if (!resultWriter_->enqueue(std::move(request))) detection_->acknowledgeImageResult(ticket);
 }
 
 void MainWindow::selectQueueImage(int row)
@@ -2034,12 +2013,12 @@ void MainWindow::toggleRecording()
     {
         recordingRequested_ = false;
         recordingStopping_ = recordingActive_;
-        worker_->requestStopRecording();
+        detection_->requestStopRecording();
     }
     else
     {
         recordingRequested_ = true;
-        worker_->requestStartRecording();
+        detection_->requestStartRecording();
     }
     updateRecordingUi();
 }
@@ -2278,17 +2257,13 @@ QWidget *MainWindow::buildGuide()
 
 void MainWindow::connectWorker()
 {
-    workerThread_ = new QThread(this);
-    worker_ = new vision::InferenceWorker;
-    worker_->setImageResultBackpressureEnabled(true);
-    worker_->moveToThread(workerThread_);
-    connect(workerThread_, &QThread::finished, worker_, &QObject::deleteLater);
-    connect(this, &MainWindow::startRequested, worker_, &vision::InferenceWorker::run, Qt::QueuedConnection);
-    connect(worker_, &vision::InferenceWorker::resultReady, this,
+    detection_ = new vision::app::DetectionController(this);
+    connect(this, &MainWindow::startRequested, detection_, &vision::app::DetectionController::run, Qt::QueuedConnection);
+    connect(detection_, &vision::app::DetectionController::resultReady, this,
             [this](const vision::InferenceResult &result) { onResult(result); });
-    connect(worker_, &vision::InferenceWorker::imageResultReady, this,
+    connect(detection_, &vision::app::DetectionController::imageResultReady, this,
             [this](const vision::InferenceResult &result, quint64 ticket) { onResult(result, ticket); });
-    connect(worker_, &vision::InferenceWorker::modelReady, this,
+    connect(detection_, &vision::app::DetectionController::modelReady, this,
             [this](const QString &backend, const vision::ModelConfig &config)
             {
                 lastConfig_ = config;
@@ -2312,13 +2287,13 @@ void MainWindow::connectWorker()
                 updateTaskUi();
                 updateDeviceUi();
             });
-    connect(worker_, &vision::InferenceWorker::status, this,
+    connect(detection_, &vision::app::DetectionController::status, this,
             [this](const QString &message)
             {
                 if (!failed_ && !inferenceStopping_)
                     showNotice(message);
             });
-    connect(worker_, &vision::InferenceWorker::progress, this,
+    connect(detection_, &vision::app::DetectionController::progress, this,
             [this](int done, int total)
             {
                 if (sourceKind_ == vision::SourceKind::Images) {
@@ -2336,7 +2311,7 @@ void MainWindow::connectWorker()
                 else
                     progress_->setRange(0, 0);
             });
-    connect(worker_, &vision::InferenceWorker::failed, this,
+    connect(detection_, &vision::app::DetectionController::failed, this,
             [this](const QString &s)
             {
                 failed_ = true;
@@ -2346,8 +2321,8 @@ void MainWindow::connectWorker()
                 if (smokeDir_.isEmpty() && !closing_)
                     QMessageBox::warning(this, "推理未完成", s);
             });
-    connect(worker_, &vision::InferenceWorker::finished, this, &MainWindow::onFinished);
-    connect(worker_, &vision::InferenceWorker::recordingStarted, this,
+    connect(detection_, &vision::app::DetectionController::finished, this, &MainWindow::onFinished);
+    connect(detection_, &vision::app::DetectionController::recordingStarted, this,
             [this](const QString &)
             {
                 recordingActive_ = true;
@@ -2356,11 +2331,11 @@ void MainWindow::connectWorker()
                 if (!recordingRequested_)
                 {
                     recordingStopping_ = true;
-                    worker_->requestStopRecording();
+                    detection_->requestStopRecording();
                 }
                 updateRecordingUi();
             });
-    connect(worker_, &vision::InferenceWorker::recordingFinished, this,
+    connect(detection_, &vision::app::DetectionController::recordingFinished, this,
             [this](const QString &path, qint64 frames, double)
             {
                 recordingRequested_ = recordingActive_ = recordingStopping_ = false;
@@ -2369,7 +2344,7 @@ void MainWindow::connectWorker()
                 updateRecordingUi();
                 showNotice(QString("录制已保存 · %1 帧 · %2").arg(frames).arg(QFileInfo(path).fileName()));
             });
-    connect(worker_, &vision::InferenceWorker::recordingFailed, this,
+    connect(detection_, &vision::app::DetectionController::recordingFailed, this,
             [this](const QString &error)
             {
                 recordingRequested_ = recordingActive_ = recordingStopping_ = false;
@@ -2377,12 +2352,11 @@ void MainWindow::connectWorker()
                 updateRecordingUi();
                 showNotice("录制未保存：" + error, true);
             });
-    workerThread_->start();
 }
 
 bool MainWindow::previewDropLocked() const
 {
-    return busy_ || queuePopulating_ || droppedImageImportActive_ || evaluationWorker_ || gpuSetupProcess_ ||
+    return busy_ || queuePopulating_ || droppedImageImportActive_ || evaluationWorker_ || gpuService_->isPreparing() ||
         resultIoPending_ || closing_ || (modelConversion_ && modelConversion_->isBusy()) || QApplication::activeModalWidget();
 }
 
@@ -2848,7 +2822,7 @@ void MainWindow::updateStartEligibility()
     if (sourceKind_ == vision::SourceKind::Images) selectedImageRange(&rangeError);
     QString evaluationRangeError;
     const auto evaluationFiles = selectedEvaluationRange(&evaluationRangeError);
-    const bool ready = !busy_ && !queuePopulating_ && !gpuSetupProcess_ && !resultIoPending_ &&
+    const bool ready = !busy_ && !queuePopulating_ && !gpuService_->isPreparing() && !resultIoPending_ &&
         !modelPath_.isEmpty() && rangeError.isEmpty() && (!modelConversion_ || !modelConversion_->isBusy());
     const bool canEvaluate = evaluation_ && sourceKind_ == vision::SourceKind::Images &&
         !datasetManifest_.isEmpty() && evaluationRangeError.isEmpty() && !evaluationFiles.isEmpty() &&
@@ -3265,7 +3239,7 @@ vision::ModelConfig MainWindow::currentConfig() const
 }
 void MainWindow::startInference()
 {
-    if (busy_ || gpuSetupProcess_ || (modelConversion_ && modelConversion_->isBusy()))
+    if (busy_ || gpuService_->isPreparing() || (modelConversion_ && modelConversion_->isBusy()))
         return;
     if (evaluation_ && evaluation_->evaluationMode()) { startEvaluation(); return; }
     if (isPtModel(modelPath_) && !ui::ensureCpuRuntime(this, [this] { startInference(); })) return;
@@ -3349,8 +3323,8 @@ void MainWindow::startInference()
     classMetric_->setText("—");
     setBusy(true);
     persist();
-    worker_->prepareRecording(dataRoot_ + "/recordings");
-    worker_->prepare();
+    detection_->prepareRecording(dataRoot_ + "/recordings");
+    detection_->prepare();
     emit startRequested(req);
 }
 void MainWindow::stopInference()
@@ -3381,7 +3355,7 @@ void MainWindow::stopInference()
     inferenceStopping_ = true;
     recordingRequested_ = false;
     recordingStopping_ = recordingActive_;
-    worker_->requestStop();
+    detection_->requestStop();
     updateRecordingUi();
     stopButton_->setEnabled(false);
     updateStartEligibility();
@@ -3484,7 +3458,7 @@ void MainWindow::updateTaskUi()
 void MainWindow::setComputeDevice(vision::ComputeDevice device, int index)
 {
     index = qBound(0, index, 63);
-    if (busy_ || gpuSetupProcess_)
+    if (busy_ || gpuService_->isPreparing())
         return;
     {
         const QSignalBlocker choiceBlocker(computeDevice_), indexBlocker(gpuDeviceIndex_);
@@ -3505,8 +3479,8 @@ void MainWindow::updateDeviceUi()
 {
     if (!computeDevice_)
         return;
-    const bool installing = gpuSetupProcess_ != nullptr;
-    const bool checking = gpuProbeProcess_ != nullptr;
+    const bool installing = gpuService_->isPreparing();
+    const bool checking = gpuService_->isChecking();
     const auto requested = computeMode(computeDevice_->currentData().toString());
     computeDevice_->setEnabled(!busy_ && !installing);
     gpuDeviceIndex_->setEnabled(!busy_ && !installing && requested != vision::ComputeDevice::CPU);
@@ -3514,9 +3488,9 @@ void MainWindow::updateDeviceUi()
                            (requested == vision::ComputeDevice::Auto && gpuDeviceIndex_->count() > 1);
     gpuDeviceLabel_->setVisible(showIndex);
     gpuDeviceIndex_->setVisible(showIndex);
-    const bool ready = gpuEnvironment_.value("ok").toBool() && gpuEnvironment_.value("prepared").toBool() &&
-                       gpuEnvironment_.value("cuda_available").toBool();
-    const QString reason = gpuEnvironment_.value("reason").toString();
+    const bool ready = gpuService_->environment().value("ok").toBool() && gpuService_->environment().value("prepared").toBool() &&
+                       gpuService_->environment().value("cuda_available").toBool();
+    const QString reason = gpuService_->environment().value("reason").toString();
     QString hint;
     if (requested == vision::ComputeDevice::CPU)
         hint = QStringLiteral("使用 CPU · 无需 GPU 环境");
@@ -3566,26 +3540,13 @@ void MainWindow::updateDeviceUi()
         gpuCheckButton_->setEnabled(!busy_ && !installing && !checking);
         gpuPrepareButton_->setEnabled(!busy_ && !installing && !checking);
         gpuCancelButton_->setVisible(installing);
-        gpuCancelButton_->setEnabled(installing && !gpuSetupCancelling_);
+        gpuCancelButton_->setEnabled(installing && !gpuService_->isCancelling());
     }
     if (runButton_)
         updateStartEligibility();
 }
 
-QString MainWindow::gpuLauncherPython() const
-{
-#ifdef Q_OS_WIN
-    return vision::cpuPython();
-#else
-    const QString override = qEnvironmentVariable("VISION_STUDIO_PYTHON");
-    const QStringList candidates{override, projectRoot_ + "/runtime/bin/python", "/usr/bin/python3.10",
-                                 QStandardPaths::findExecutable("python3")};
-    for (const QString &candidate : candidates)
-        if (!candidate.isEmpty() && QFileInfo(candidate).isExecutable())
-            return candidate;
-    return {};
-#endif
-}
+
 
 void MainWindow::appendGpuLog(const QString &message)
 {
@@ -3597,234 +3558,20 @@ void MainWindow::appendGpuLog(const QString &message)
 
 void MainWindow::checkGpuEnvironment()
 {
-    if (busy_ || gpuSetupProcess_ || gpuProbeProcess_)
-        return;
-    const QString python = gpuLauncherPython();
-    const QString script = vision::gpuScriptPath("gpu_probe.py");
-    if (python.isEmpty() || !QFileInfo(script).isFile())
-    {
-        gpuProbeKnown_ = true;
-        gpuEnvironment_ = {{"ok", false}, {"reason", "未找到 GPU 检查工具或 Python；CPU 仍可使用。"}};
-        gpuEnvironmentStatus_->setText(gpuEnvironment_.value("reason").toString());
-        updateDeviceUi();
-        return;
-    }
-    auto *process = new QProcess(this);
-    process->setObjectName("gpuProbeProcess");
-    gpuProbeProcess_ = process;
-    gpuProbeOutput_.clear();
-    gpuProbeErrors_.clear();
-    gpuEnvironmentStatus_->setText("正在检查显卡与本地 GPU 推理环境…");
-    updateDeviceUi();
-    connect(process, &QProcess::readyReadStandardOutput, this,
-            [this, process]
-            {
-                if (gpuProbeProcess_ == process)
-                {
-                    gpuProbeOutput_ += process->readAllStandardOutput();
-                    if (gpuProbeOutput_.size() > 512 * 1024)
-                        process->kill();
-                }
-            });
-    connect(process, &QProcess::readyReadStandardError, this,
-            [this, process]
-            {
-                if (gpuProbeProcess_ == process)
-                    gpuProbeErrors_ = (gpuProbeErrors_ + process->readAllStandardError()).right(16000);
-            });
-    const auto finish = [this, process](bool success)
-    {
-        if (gpuProbeProcess_ != process)
-            return;
-        gpuProbeOutput_ += process->readAllStandardOutput();
-        const QJsonObject response = QJsonDocument::fromJson(gpuProbeOutput_).object();
-        gpuProbeProcess_ = nullptr;
-        gpuProbeKnown_ = true;
-        gpuEnvironment_ =
-            success && response.contains("cuda_available")
-                ? response
-                : QJsonObject{{"ok", false},
-                              {"reason", QString("GPU 环境检查未完成：%1")
-                                             .arg(gpuProbeErrors_.isEmpty()
-                                                      ? process->errorString()
-                                                      : QString::fromUtf8(gpuProbeErrors_).left(500))}};
-        const bool ready = gpuEnvironment_.value("ok").toBool() &&
-                           gpuEnvironment_.value("prepared").toBool() &&
-                           gpuEnvironment_.value("cuda_available").toBool();
-        const int selected = gpuDeviceIndex_->currentData().toInt();
-        {
-            const QSignalBlocker blocker(gpuDeviceIndex_);
-            gpuDeviceIndex_->clear();
-            QStringList hardware;
-            for (const QJsonValue &value : gpuEnvironment_.value("devices").toArray())
-            {
-                const QJsonObject device = value.toObject();
-                const int index = device.value("index").toInt();
-                const QString name = device.value("name").toString().left(120);
-                gpuDeviceIndex_->addItem(QString("GPU %1 · %2").arg(index).arg(name), index);
-                hardware << QString("GPU %1 · %2 · %3 GB")
-                                .arg(index)
-                                .arg(name)
-                                .arg(device.value("total_memory_mb").toDouble() / 1024, 0, 'f', 1);
-            }
-            if (gpuDeviceIndex_->findData(selected) < 0)
-                gpuDeviceIndex_->addItem(QString("GPU %1 · 当前未检测到").arg(selected), selected);
-            gpuDeviceIndex_->setCurrentIndex(gpuDeviceIndex_->findData(selected));
-            const QString reason = gpuEnvironment_.value("reason").toString();
-            gpuEnvironmentStatus_->setText(
-                (ready ? QString("GPU 推理环境已就绪") : QString("GPU 推理环境尚未就绪")) +
-                (hardware.isEmpty() ? QString("\n未检测到 NVIDIA 显卡") : "\n" + hardware.join("\n")) +
-                (reason.isEmpty() ? QString() : "\n" + reason));
-        }
-        gpuEnvironmentStatus_->setToolTip(vision::gpuRuntimeDirectory());
-        process->deleteLater();
-        updateDeviceUi();
-    };
-    connect(process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this,
-            [finish](int code, QProcess::ExitStatus status)
-            { finish(code == 0 && status == QProcess::NormalExit); });
-    connect(process, &QProcess::errorOccurred, this,
-            [finish](QProcess::ProcessError error)
-            {
-                if (error == QProcess::FailedToStart)
-                    finish(false);
-            });
-    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
-    environment.insert("PYTHONDONTWRITEBYTECODE", "1");
-    process->setProcessEnvironment(environment);
-    process->start(python, {script, "--runtime-dir", vision::gpuRuntimeDirectory()});
-    QTimer::singleShot(45000, process,
-                       [this, process]
-                       {
-                           if (gpuProbeProcess_ == process && process->state() != QProcess::NotRunning)
-                           {
-                               gpuProbeErrors_ = "检查超时，请重试；CPU 仍可使用。";
-                               process->kill();
-                           }
-                       });
+    if (!busy_) gpuService_->checkEnvironment();
 }
 
-void MainWindow::readGpuSetupOutput()
-{
-    if (!gpuSetupProcess_)
-        return;
-    gpuSetupOutput_ += gpuSetupProcess_->readAllStandardOutput();
-    while (gpuSetupOutput_.contains('\n'))
-    {
-        const int newline = gpuSetupOutput_.indexOf('\n');
-        const QByteArray line = gpuSetupOutput_.left(newline).trimmed();
-        gpuSetupOutput_.remove(0, newline + 1);
-        const QJsonObject event = QJsonDocument::fromJson(line).object();
-        if (event.isEmpty())
-            appendGpuLog(QString::fromUtf8(line));
-        else
-        {
-            const QString message = event.value("message").toString();
-            appendGpuLog(message.isEmpty() ? event.value("event").toString() : message);
-            if (!message.isEmpty())
-                gpuEnvironmentStatus_->setText(message.left(600));
-            const QJsonValue percent =
-                event.value("percent").isDouble() ? event.value("percent") : event.value("progress");
-            if (percent.isDouble())
-            {
-                gpuSetupProgress_->setRange(0, 100);
-                gpuSetupProgress_->setValue(qBound(0, percent.toInt(), 100));
-            }
-        }
-    }
-    if (gpuSetupOutput_.size() > 256 * 1024)
-    {
-        appendGpuLog(QString::fromUtf8(gpuSetupOutput_.left(16000)));
-        gpuSetupOutput_.clear();
-    }
-}
+
 
 void MainWindow::prepareGpuEnvironment()
 {
     if (!ui::ensureCpuRuntime(this, [this] { prepareGpuEnvironment(); })) return;
-    if (busy_ || gpuSetupProcess_ || gpuProbeProcess_)
-        return;
-    const QString python = gpuLauncherPython(), script = vision::gpuScriptPath("gpu_setup.py");
-    if (python.isEmpty() || !QFileInfo(script).isFile())
-    {
-        gpuEnvironmentStatus_->setText("未找到 GPU 准备工具或 Python。CPU 仍可使用。");
-        return;
-    }
-    auto *process = new QProcess(this);
-    process->setObjectName("gpuSetupProcess");
-    gpuSetupProcess_ = process;
-    gpuSetupCancelling_ = false;
-    gpuSetupOutput_.clear();
-    gpuLog_->clear();
-    appendGpuLog("GPU 依赖将安装到：" + vision::gpuRuntimeDirectory());
-    gpuEnvironmentStatus_->setText(
-        "正在准备 GPU 支持。首次下载约 4 GB，耗时取决于网络；CPU 环境和显卡驱动保持原样。");
-    gpuSetupProgress_->setRange(0, 0);
-    gpuSetupProgress_->show();
-    updateDeviceUi();
-    connect(process, &QProcess::readyReadStandardOutput, this, &MainWindow::readGpuSetupOutput);
-    connect(process, &QProcess::readyReadStandardError, this,
-            [this, process]
-            {
-                if (gpuSetupProcess_ == process)
-                    appendGpuLog(QString::fromUtf8(process->readAllStandardError()));
-            });
-    const auto finish = [this, process](bool success)
-    {
-        if (gpuSetupProcess_ != process)
-            return;
-        readGpuSetupOutput();
-        if (!gpuSetupOutput_.trimmed().isEmpty())
-            appendGpuLog(QString::fromUtf8(gpuSetupOutput_));
-        const bool cancelled = gpuSetupCancelling_;
-        gpuSetupProcess_ = nullptr;
-        gpuSetupCancelling_ = false;
-        gpuSetupProgress_->hide();
-        const QString message = cancelled ? QStringLiteral("GPU 准备已取消，CPU 仍可使用。")
-                                : success
-                                    ? QStringLiteral("GPU 准备完成，正在重新检查环境…")
-                                    : QStringLiteral("GPU 准备未完成。请查看日志后重试；CPU 仍可使用。");
-        gpuEnvironmentStatus_->setText(message);
-        appendGpuLog(message);
-        process->deleteLater();
-        updateDeviceUi();
-        if (success && !cancelled)
-            QTimer::singleShot(0, this, &MainWindow::checkGpuEnvironment);
-        if (closing_)
-            QTimer::singleShot(0, this, &QWidget::close);
-    };
-    connect(process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this,
-            [finish](int code, QProcess::ExitStatus status)
-            { finish(code == 0 && status == QProcess::NormalExit); });
-    connect(process, &QProcess::errorOccurred, this,
-            [finish](QProcess::ProcessError error)
-            {
-                if (error == QProcess::FailedToStart)
-                    finish(false);
-            });
-    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
-    environment.insert("PYTHONUNBUFFERED", "1");
-    environment.insert("PYTHONDONTWRITEBYTECODE", "1");
-    process->setProcessEnvironment(environment);
-    process->start(python, {"-u", script, "--runtime-dir", vision::gpuRuntimeDirectory()});
+    if (!busy_) gpuService_->prepareEnvironment();
 }
 
 void MainWindow::cancelGpuPreparation()
 {
-    if (!gpuSetupProcess_ || gpuSetupCancelling_)
-        return;
-    gpuSetupCancelling_ = true;
-    gpuEnvironmentStatus_->setText("正在取消本窗口启动的 GPU 准备任务…");
-    appendGpuLog("正在取消 GPU 准备任务。");
-    const QPointer<QProcess> process(gpuSetupProcess_);
-    process->terminate();
-    updateDeviceUi();
-    QTimer::singleShot(5000, this,
-                       [process]
-                       {
-                           if (process && process->state() != QProcess::NotRunning)
-                               process->kill();
-                       });
+    gpuService_->cancelPreparation();
 }
 
 void MainWindow::updateModelMeta(const QString &state)
@@ -3843,7 +3590,7 @@ void MainWindow::onResult(const vision::InferenceResult &input, quint64 ticket)
     attachGroundTruth(r);
     if (ticket && (!busy_ || inferenceStopping_))
     {
-        worker_->acknowledgeImageResult(ticket);
+        detection_->acknowledgeImageResult(ticket);
         return;
     }
     if (r.modelClassCount > 0) {
@@ -4254,159 +4001,17 @@ void MainWindow::saveScreenshot(const QString &p)
         qWarning().noquote() << "Cannot save screenshot" << p;
 }
 
-MainWindow::ResultExport MainWindow::prepareResultExport(const vision::InferenceResult &r,
-                                                          const QString &dir,
-                                                          const vision::ModelConfig &configValue)
+MainWindow::ResultExport MainWindow::prepareResultExport(const vision::InferenceResult &result,
+    const QString &directory, const vision::ModelConfig &config)
 {
-    if (r.image.isNull() || r.demonstration)
-        return {};
-    const QString stamp = QDateTime::currentDateTime().toString("yyyyMMdd-HHmmss-zzz");
-    const QString base = dir + "/" + cleanName(r.source) + "-" + stamp +
-                         (r.frameNumber > 0 ? QString("-f%1").arg(r.frameNumber) : "");
-    // Capture metadata only; annotation rendering and encoding run in the writer.
-    QJsonArray predictions;
-    QByteArray csv = r.hasGroundTruth ? "class_id,label,confidence,x,y,width,height,match_status\n" : "class_id,label,confidence,x,y,width,height\n";
-    int predictionIndex = 0;
-    for (const auto &p : r.predictions)
-    {
-        QJsonObject pred{{"class_id", p.classId},   {"label", p.label}, {"confidence", double(p.confidence)},
-                         {"x", p.box.x()},          {"y", p.box.y()},   {"width", p.box.width()},
-                         {"height", p.box.height()}};
-        const QString matchStatus = !r.hasEvaluationMatches ? "unavailable" : r.ignoredPredictions.contains(predictionIndex) ? "ignored" :
-            r.matchedPredictions.contains(predictionIndex) ? "TP" : "FP";
-        if (r.hasGroundTruth) pred.insert("match_status", matchStatus);
-        predictions.append(pred);
-        QString label = p.label;
-        label.replace('"', "\"\"");
-        if (!label.isEmpty() && QString("=+-@\t\r").contains(label.front()))
-            label.prepend('\'');
-        csv += QString("%1,\"%2\",%3,%4,%5,%6,%7\n")
-                   .arg(p.classId)
-                   .arg(label)
-                   .arg(p.confidence, 0, 'f', 6)
-                   .arg(p.box.x(), 0, 'f', 2)
-                   .arg(p.box.y(), 0, 'f', 2)
-                   .arg(p.box.width(), 0, 'f', 2)
-                   .arg(p.box.height(), 0, 'f', 2)
-                   .toUtf8();
-        if (r.hasGroundTruth) { csv.chop(1); csv += ',' + matchStatus.toUtf8() + '\n'; }
-        ++predictionIndex;
-    }
-    const QJsonObject preprocess{
-        {"mode", isPtModel(configValue.modelPath) ? "model_native" : "configured"},
-        {"color_mode", configValue.colorMode == vision::InputColorMode::Grayscale
-                           ? "grayscale"
-                           : (configValue.swapRB ? "rgb" : "bgr")},
-        {"swap_rb", configValue.swapRB},
-        {"scale", configValue.scale},
-        {"mean_rgb", QJsonArray{configValue.meanR, configValue.meanG, configValue.meanB}}};
-    QJsonArray filterIds;
-    for (int id : configValue.classFilter) filterIds.append(id);
-    const QJsonObject config{{"class_filter", filterIds},
-                             {"model_class_count", configValue.modelClassCount},
-                             {"input_size", configValue.inputSize},
-                             {"input_channels", configValue.inputChannels},
-                             {"color_mode", configValue.colorMode == vision::InputColorMode::Grayscale
-                                                ? "grayscale"
-                                                : (configValue.swapRB ? "rgb" : "bgr")},
-                             {"confidence_threshold", double(configValue.confidence)},
-                             {"nms_iou", double(configValue.iou)},
-                             {"preprocess", preprocess}};
-    QJsonObject root{
-        {"application", "Vision Studio"},
-        {"version", QCoreApplication::applicationVersion()},
-        {"timestamp", QDateTime::currentDateTime().toString(Qt::ISODateWithMs)},
-        {"source", r.source},
-        {"model", r.modelName},
-        {"backend", r.backend},
-        {"requested_device", vision::computeDeviceKey(r.requestedDevice)},
-        {"actual_device", vision::computeDeviceKey(r.device)},
-        {"device_index", r.deviceIndex},
-        {"device_name", r.deviceName},
-        {"device_notice", r.deviceNotice},
-        {"model_file", configValue.modelPath},
-        {"config", config},
-        {"task", taskName(r.task)},
-        {"width", r.image.width()},
-        {"height", r.image.height()},
-        {"stereo_view", stereoCode(r.stereoView)},
-        {"source_frame_size",
-         QJsonObject{
-             {"width", r.sourceFrameSize.isEmpty() ? r.image.width() : r.sourceFrameSize.width()},
-             {"height", r.sourceFrameSize.isEmpty() ? r.image.height() : r.sourceFrameSize.height()}}},
-        {"frame", r.frameNumber},
-        {"inference_ms", r.inferenceMs},
-        {"total_ms", r.totalMs},
-        {"predictions", predictions}};
-    if (!r.hasVerifiedDevice)
-    {
-        for (const auto &key : {"requested_device", "actual_device", "device_index", "device_name"})
-            root.insert(key, QJsonValue::Null);
-        root.insert("source_runtime_device", r.sourceRuntimeDevice);
-        root.insert("device_verified", false);
-    }
-    if (!r.hasInferenceTiming)
-    {
-        root.insert("inference_ms", QJsonValue::Null);
-        root.insert("total_ms", QJsonValue::Null);
-    }
-    if (!r.hasCompleteInferenceConfig)
-    {
-        root.insert("task", "目标检测 · 历史预测");
-        auto recorded = r.evaluationReport == evaluationDirectory_ ? evaluationReport_.value("config").toObject() : QJsonObject{};
-        recorded.insert("metadata_complete", false);
-        recorded.insert("confidence_threshold", double(configValue.confidence));
-        for (const auto &key : {"preprocess", "color_mode", "input_channels"}) recorded.insert(key, QJsonValue::Null);
-        root.insert("config", recorded);
-    }
-    if (r.hasGroundTruth) {
-        QJsonArray truth, matched, matchedGt, ignored;
-        for (const auto &gt : r.groundTruth) truth.append(QJsonObject{{"class_id", gt.classId}, {"label", gt.label},
-            {"x", gt.box.x()}, {"y", gt.box.y()}, {"width", gt.box.width()}, {"height", gt.box.height()}});
-        for (int id : r.matchedPredictions) matched.append(id);
-        for (int id : r.matchedGroundTruth) matchedGt.append(id);
-        for (int id : r.ignoredPredictions) ignored.append(id);
-        root.insert("ground_truth", truth);
-        root.insert("evaluation", QJsonObject{{"has_ground_truth", true}, {"matching_available", r.hasEvaluationMatches},
-            {"matched_predictions", matched}, {"matched_ground_truth", matchedGt}, {"ignored_predictions", ignored},
-            {"report_directory", r.evaluationReport}, {"matching_iou", r.matchingIou},
-            {"analysis_confidence", double(configValue.confidence)}});
-    }
-    return ResultExport{base, r, QJsonDocument(root).toJson(), csv};
+    const auto historical = result.evaluationReport == evaluationDirectory_
+        ? evaluationReport_.value("config").toObject() : QJsonObject{};
+    return vision::app::ResultWriter::prepare(result, directory, config, historical);
 }
 
 bool MainWindow::writePreparedResult(const ResultExport &result, QString *error)
 {
-    if (result.result.image.isNull() || result.base.isEmpty())
-    {
-        if (error)
-            *error = "没有可导出的真实结果。";
-        return false;
-    }
-    if (!QDir().mkpath(QFileInfo(result.base).absolutePath()))
-    {
-        if (error)
-            *error = "无法创建目录。";
-        return false;
-    }
-    QSaveFile png(result.base + ".png");
-    if (!png.open(QIODevice::WriteOnly))
-    {
-        if (error)
-            *error = png.errorString();
-        return false;
-    }
-    QImageWriter writer(&png, "PNG");
-    writer.setCompression(11);
-    const QImage image = ImageCanvas::annotatedResultImage(result.result);
-    if (!writer.write(image) || !png.commit())
-    {
-        if (error)
-            *error = writer.errorString().isEmpty() ? png.errorString() : writer.errorString();
-        return false;
-    }
-    return atomicWrite(result.base + ".json", result.json, error) &&
-           atomicWrite(result.base + ".csv", result.csv, error);
+    return vision::app::ResultWriter::writePrepared(result, error);
 }
 
 bool MainWindow::writeResult(const vision::InferenceResult &result, const QString &directory, QString *error)
@@ -4432,47 +4037,17 @@ void MainWindow::exportResult()
     else
         showNotice("导出失败：" + error, true);
 }
-void MainWindow::recordResult(const vision::InferenceResult &r, bool writeToDisk)
+void MainWindow::recordResult(const vision::InferenceResult &result, bool writeToDisk)
 {
-    QJsonObject o{
-        {"time", QDateTime::currentDateTime().toString(Qt::ISODateWithMs)},
-        {"source", r.source},
-        {"model", r.modelName},
-        {"backend", r.backend},
-        {"requested_device", vision::computeDeviceKey(r.requestedDevice)},
-        {"actual_device", vision::computeDeviceKey(r.device)},
-        {"device_index", r.deviceIndex},
-        {"device_name", r.deviceName},
-        {"device_notice", r.deviceNotice},
-        {"objects", r.predictions.size()},
-        {"inference_ms", r.inferenceMs},
-        {"task", taskName(r.task)},
-        {"width", r.image.width()},
-        {"height", r.image.height()},
-        {"stereo_view", stereoCode(r.stereoView)},
-        {"source_frame_size",
-         QJsonObject{
-             {"width", r.sourceFrameSize.isEmpty() ? r.image.width() : r.sourceFrameSize.width()},
-             {"height", r.sourceFrameSize.isEmpty() ? r.image.height() : r.sourceFrameSize.height()}}},
-        {"frame", r.frameNumber}};
-    if (!r.hasVerifiedDevice) {
-        for (const auto &key : {"requested_device", "actual_device", "device_index", "device_name"}) o.insert(key, QJsonValue::Null);
-        o.insert("source_runtime_device", r.sourceRuntimeDevice); o.insert("device_verified", false);
-    }
-    if (!r.hasInferenceTiming) o.insert("inference_ms", QJsonValue::Null);
-    if (!r.hasCompleteInferenceConfig) o.insert("task", "目标检测 · 历史预测");
-    history_.prepend(o);
-    while (history_.size() > 200)
-        history_.removeLast();
-    if (writeToDisk)
-    {
+    vision::app::HistoryRepository::prepend(history_, result);
+    if (writeToDisk) {
         QString error;
-        if (!atomicWrite(dataRoot_ + "/history.json", QJsonDocument(history_).toJson(), &error))
+        if (!vision::app::HistoryRepository(dataRoot_ + "/history.json").save(history_, &error))
             showNotice("运行记录保存失败：" + error, true);
     }
-    if (!busy_ || (pages_ && pages_->currentIndex() == ui::routeIndex(ui::Route::History)))
-        refreshHistory();
+    if (!busy_ || (pages_ && pages_->currentIndex() == ui::routeIndex(ui::Route::History))) refreshHistory();
 }
+
 void MainWindow::refreshHistory()
 {
     if (!historyTable_)
@@ -4760,7 +4335,7 @@ void MainWindow::closeEvent(QCloseEvent *e)
         e->ignore();
         return;
     }
-    if (gpuSetupProcess_)
+    if (gpuService_->isPreparing())
     {
         closing_ = true;
         cancelGpuPreparation();
