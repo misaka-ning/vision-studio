@@ -10,10 +10,15 @@ struct WorkbenchDraft
     // are derived only by compose, retaining the existing backend contract.
     double confidence = .25, iou = .45;
     ModelConfig parameters;
-    QString classFilterText, labelsPath;
+    QString classFilterText, labelsPath, exportDirectory;
     int cameraIndex = 0;
     StereoView stereoView = StereoView::Full;
     bool automaticExport = false;
+};
+struct ClassFilterStatus
+{
+    QVector<int> ids;
+    QString error, hint;
 };
 class WorkbenchConfiguration final : public QObject
 {
@@ -24,7 +29,11 @@ class WorkbenchConfiguration final : public QObject
     void replaceDraft(const WorkbenchDraft &draft) { draft_ = draft; emit changed(); }
     void setLabels(const QStringList &labels, const QString &path)
     { draft_.parameters.labels = labels; draft_.labelsPath = path; emit changed(); }
+    void setExportDirectory(const QString &directory)
+    { draft_.exportDirectory = directory; emit changed(); }
     ModelConfig compose(const ModelSessionSnapshot &model, bool convertedProfileAvailable) const;
+    ClassFilterStatus classFilterStatus(const ModelSessionSnapshot &model, const QString &identity) const;
+    static QString configurationFingerprint(ModelConfig config, const QString &modelIdentity);
   signals:
     void changed();
   private:

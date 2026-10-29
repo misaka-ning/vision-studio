@@ -24,7 +24,35 @@ QString taskName(vision::ModelTask t)
 }
 } // namespace
 
-HistoryRepository::HistoryRepository(QString filePath) : filePath_(std::move(filePath)) {}
+HistoryRepository::HistoryRepository(QString filePath) : filePath_(std::move(filePath))
+{
+    reload();
+}
+
+void HistoryRepository::reload(QString *error)
+{
+    entries_ = load(error);
+}
+
+void HistoryRepository::appendResult(const InferenceResult &result)
+{
+    prepend(entries_, result);
+}
+
+void HistoryRepository::appendEvaluation(const QJsonObject &entry)
+{
+    entries_.prepend(entry);
+    while (entries_.size() > 200) entries_.removeLast();
+}
+
+QByteArray HistoryRepository::serialize() const { return serialize(entries_); }
+
+bool HistoryRepository::save(QString *error) const { return save(entries_, error); }
+
+bool HistoryRepository::exportTo(const QString &destination, QString *error) const
+{
+    return ResultWriter::writeAtomically(destination, serialize(), error);
+}
 
 QJsonArray HistoryRepository::load(QString *error) const
 {

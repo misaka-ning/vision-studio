@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #pragma once
 #include "core/visiontypes.h"
+#include "resultdeliveryservice.h"
 #include <QObject>
 #include <QSet>
+#include <QHash>
 
 class QThread;
 namespace vision { class InferenceWorker; }
@@ -15,6 +17,9 @@ struct DetectionTaskSnapshot
     bool running = false, stopping = false, failed = false;
     int completed = 0, total = 0;
     QString error;
+    QString modelIdentity, configurationFingerprint;
+    QHash<QString, QString> sourceIdentities;
+    int rangeFirst = 0, rangeLast = 0;
 };
 
 // Owns execution and ticket acknowledgement. All commands except the worker's
@@ -27,6 +32,14 @@ class DetectionController final : public QObject
     ~DetectionController() override;
     const DetectionTaskSnapshot &snapshot() const { return state_; }
     void prepare();
+    void prepareTask(const JobRequest &request, int first, int last,
+                     const QString &modelIdentity, const QString &fingerprint,
+                     const QHash<QString, QString> &sourceIdentities);
+    void setConfigurationFingerprint(const QString &fingerprint);
+    ResultDeliveryService *results() const { return results_; }
+    bool beginResultDelivery(const ResultDeliveryOptions &options);
+    bool acceptImageResult(const InferenceResult &result, quint64 ticket);
+    void reportFailure(const QString &error);
     void prepareRecording(const QString &directory);
     void requestStop();
     void acknowledgeImageResult(quint64 ticket);
@@ -54,6 +67,13 @@ class DetectionController final : public QObject
     vision::InferenceWorker *worker_;
     DetectionTaskSnapshot state_;
     QSet<quint64> tickets_;
+    ResultDeliveryService *results_;
     bool shuttingDown_ = false, threadFinished_ = false;
+    bool shutdownReadyEmitted_ = false;
+    InferenceResult lastStreamResult_;
+    bool finishing_ = false, finishCancelled_ = false;
+    void beginFinish(bool cancelled);
+    void completeFinish();
+    void checkShutdownReady();
 };
 }

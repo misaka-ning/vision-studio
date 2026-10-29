@@ -2,6 +2,7 @@
 #include "app/historyrepository.h"
 #include "app/preferencesrepository.h"
 #include "app/resultwriter.h"
+#include "app/workbenchconfiguration.h"
 
 #include <QFile>
 #include <QJsonDocument>
@@ -59,6 +60,73 @@ class AppServicesTests final : public QObject
         QCOMPARE(legacy.value("classFilter").toString(), QString("0,2,32"));
         QCOMPARE(legacy.value("confidence").toDouble(), .55);
         QCOMPARE(preferences.snapshot().value("modelNotes").toMap(), notes);
+    }
+
+    void typedWorkspaceSavePreservesAllExistingKeysAndUnknownPreferences()
+    {
+        QTemporaryDir directory;
+        const QString path = directory.filePath("preferences.ini");
+        PreferencesRepository preferences(path);
+        preferences.setValue("restoreDatasetOnStartup", false);
+        ModelSessionSnapshot model;
+        model.models = {"models/a.onnx", "models/足球.pt"};
+        model.activeModel = model.models.last();
+        model.displayNames = {{model.activeModel, "足球模型"}};
+        model.notes = {{model.activeModel, "第一行\n第二行"}};
+        model.convertedProfiles = {{"output.onnx", QVariantMap{{"schema", 1}, {"source", "model.pt"}}}};
+        model.evaluationProfiles = {{model.activeModel, QVariantMap{{"adopted", true}, {"model_identity", "frozen"}}}};
+        WorkbenchDraft draft;
+        draft.exportDirectory = "output/结果";
+        draft.parameters.labels = {"football"};
+        draft.labelsPath = "labels.txt";
+        draft.parameters.task = vision::ModelTask::YoloV5;
+        draft.parameters.inputSize = 960;
+        draft.confidence = .7; draft.iou = .61;
+        draft.parameters.scale = .5;
+        draft.parameters.meanR = 1; draft.parameters.meanG = 2; draft.parameters.meanB = 3;
+        draft.parameters.colorMode = vision::InputColorMode::Grayscale;
+        draft.parameters.swapRB = false;
+        draft.stereoView = vision::StereoView::Right;
+        draft.cameraIndex = 4;
+        draft.parameters.device = vision::ComputeDevice::CUDA;
+        draft.parameters.deviceIndex = 2;
+        draft.automaticExport = true;
+        draft.classFilterText = "32，0";
+        preferences.saveWorkspace(model, draft);
+        QCOMPARE(preferences.status(), QSettings::NoError);
+        const QVariantMap expected{
+            {"models", model.models}, {"modelDisplayNames", model.displayNames}, {"modelNotes", model.notes},
+            {"convertedModelProfiles", model.convertedProfiles}, {"evaluationProfiles", model.evaluationProfiles},
+            {"activeModel", model.activeModel}, {"exportDirectory", draft.exportDirectory},
+            {"labels", draft.parameters.labels}, {"labelsPath", draft.labelsPath}, {"task", 0}, {"inputSize", 960},
+            {"confidence", .7}, {"iou", .61}, {"scale", .5}, {"meanR", 1.0}, {"meanG", 2.0}, {"meanB", 3.0},
+            {"colorMode", "grayscale"}, {"stereoView", "right"}, {"cameraIndex", 4}, {"computeDevice", "cuda"},
+            {"deviceIndex", 2}, {"swapRB", false}, {"autoExport", true}, {"classFilter", "32，0"},
+            {"restoreDatasetOnStartup", false}};
+        QCOMPARE(preferences.snapshot(), expected);
+        QSettings legacy(path, QSettings::IniFormat);
+        for (auto value = expected.cbegin(); value != expected.cend(); ++value)
+            QCOMPARE(legacy.value(value.key()), value.value());
+    }
+
+    void typedWorkspaceSaveRetainsPartialConstructionParameterGuard()
+    {
+        QTemporaryDir directory;
+        PreferencesRepository preferences(directory.filePath("preferences.ini"));
+        preferences.setValue("confidence", .73);
+        preferences.setValue("task", 1);
+        preferences.setValue("classFilter", "32");
+        ModelSessionSnapshot model;
+        model.models = {"model.onnx"};
+        WorkbenchDraft draft;
+        draft.exportDirectory = "output/results";
+        preferences.saveWorkspace(model, draft, false);
+        QCOMPARE(preferences.value("models").toStringList(), model.models);
+        QCOMPARE(preferences.value("exportDirectory").toString(), draft.exportDirectory);
+        QCOMPARE(preferences.value("confidence").toDouble(), .73);
+        QCOMPARE(preferences.value("task").toInt(), 1);
+        QCOMPARE(preferences.value("classFilter").toString(), QStringLiteral("32"));
+        QVERIFY(!preferences.contains("inputSize"));
     }
 
     void exportContractAndCsvEscaping()
@@ -156,6 +224,56 @@ class AppServicesTests final : public QObject
         QVERIFY(entry.value("actual_device").isNull());
         QVERIFY(entry.value("inference_ms").isNull());
         QCOMPARE(entry.value("task").toString(), QString("目标检测 · 历史预测"));
+    }
+
+    void historyRepositoryIsTheOnlyMutableAuthority()
+    {
+        QTemporaryDir directory;
+        const QString path = directory.filePath("history.json");
+        const QJsonArray legacy{QJsonObject{{"source", "legacy"}, {"unknown_kept", 17}}};
+        QVERIFY(ResultWriter::writeAtomically(path, QJsonDocument(legacy).toJson()));
+        HistoryRepository repository(path);
+        QCOMPARE(repository.snapshot(), legacy);
+        auto detached = repository.snapshot(); detached.removeFirst();
+        QCOMPARE(repository.snapshot(), legacy);
+        repository.appendResult(sample("new-result"));
+        const QJsonObject evaluation{{"kind", "evaluation"}, {"source", "data.yaml"},
+            {"model", "实验模型"}, {"report_directory", "reports/example"},
+            {"metrics", QJsonObject{{"precision", .9}}}, {"preserved_field", "unchanged"}};
+        repository.appendEvaluation(evaluation);
+        QCOMPARE(repository.snapshot().first().toObject(), evaluation);
+        QCOMPARE(repository.snapshot()[1].toObject().value("source").toString(), QString("new-result"));
+        QCOMPARE(repository.snapshot().last().toObject(), legacy.first().toObject());
+        QCOMPARE(repository.serialize(), QJsonDocument(repository.snapshot()).toJson());
+        QCOMPARE(read(path), QJsonDocument(legacy).toJson());
+        QVERIFY(repository.save());
+        QCOMPARE(read(path), repository.serialize());
+        const QString exported = directory.filePath("export.json");
+        QVERIFY(repository.exportTo(exported));
+        QCOMPARE(read(exported), repository.serialize()); QCOMPARE(repository.filePath(), path);
+        HistoryRepository reopened(path); QCOMPARE(reopened.snapshot(), repository.snapshot());
+    }
+
+    void mixedHistoryCapacityAndSaveFailureKeepAcceptedEntries()
+    {
+        QTemporaryDir directory;
+        HistoryRepository repository(directory.filePath("missing/history.json"));
+        for (int i = 0; i < 205; ++i)
+        {
+            if (i % 2) repository.appendResult(sample(QString::number(i)));
+            else repository.appendEvaluation({{"kind", "evaluation"}, {"source", QString::number(i)}});
+        }
+        const auto accepted = repository.snapshot();
+        QCOMPARE(accepted.size(), 200);
+        QCOMPARE(accepted.first().toObject().value("source").toString(), QString("204"));
+        QCOMPARE(accepted.last().toObject().value("source").toString(), QString("5"));
+        QString error;
+        QVERIFY(!repository.save(&error)); QVERIFY(!error.isEmpty());
+        QCOMPARE(repository.snapshot(), accepted);
+        QVERIFY(QDir().mkpath(directory.filePath("missing")));
+        QVERIFY2(repository.save(&error), qPrintable(error));
+        QCOMPARE(read(repository.filePath()), QJsonDocument(accepted).toJson());
+        repository.reload(); QCOMPARE(repository.snapshot(), accepted);
     }
 
     void serialWritesDrainBeforeShutdown()

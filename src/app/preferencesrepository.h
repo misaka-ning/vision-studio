@@ -7,8 +7,10 @@
 
 namespace vision::app
 {
+struct ModelSessionSnapshot;
+struct WorkbenchDraft;
 // Preserves the existing INI file, keys, QVariant encoding and default semantics.
-// It intentionally does not interpret or duplicate domain configuration state.
+// Typed workspace mapping writes snapshots without owning domain configuration state.
 class PreferencesRepository final : public QObject
 {
     Q_OBJECT
@@ -23,6 +25,8 @@ class PreferencesRepository final : public QObject
     QString fileName() const;
     QVariantMap snapshot() const;
     void apply(const QVariantMap &values);
+    void saveWorkspace(const ModelSessionSnapshot &model, const WorkbenchDraft &draft,
+                       bool includeParameters = true);
 
   private:
     QSettings settings_;

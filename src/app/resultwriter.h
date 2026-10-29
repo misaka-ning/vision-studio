@@ -26,6 +26,7 @@ struct ResultWriteRequest
     std::shared_ptr<QTemporaryDir> directory;
     QString snapshotPath;
     bool automaticExport = false;
+    bool streamFinalization = false;
     PreparedResultExport exported;
     QString historyPath;
     QByteArray history;
@@ -40,6 +41,7 @@ struct ResultWriteOutcome
     QString snapshotPath;
     bool snapshotSaved = false;
     bool automaticExport = false;
+    bool streamFinalization = false;
     bool exportSaved = true;
     bool historySaved = true;
     QString snapshotError, exportError, historyError;
