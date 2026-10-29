@@ -132,6 +132,8 @@ bool EvaluationController::start(const EvaluationRequest &request, const QString
     state_.rangeFirst = request.files.isEmpty() ? 0 : contextFiles_.indexOf(request.files.first()) + 1;
     state_.rangeLast = request.files.isEmpty() ? 0 : contextFiles_.indexOf(request.files.last()) + 1;
     resetReview(); state_.review.active = false;
+    // reviewChanged is synchronous and may close the owner before registration.
+    if (!mayStart(error)) return false;
     auto *worker = new EvaluationWorker;
     worker->configureEvaluation(request);
     startWorker(worker, EvaluationOperation::Evaluation);
@@ -148,6 +150,7 @@ bool EvaluationController::reanalyze(const QJsonObject &options, const QString &
         return false;
     }
     suspendReview();
+    if (!mayStart(error)) return false;
     auto *worker = new EvaluationWorker;
     worker->configureReanalysis(state_.directory, options, outputRoot, projectRoot);
     startWorker(worker, EvaluationOperation::Reanalysis);
@@ -160,6 +163,7 @@ bool EvaluationController::importExternal(const QString &source, const QJsonObje
     if (!mayStart(error)) return false;
     if (source.isEmpty()) { if (error) *error = QStringLiteral("请选择待导入的评估报告。"); return false; }
     suspendReview();
+    if (!mayStart(error)) return false;
     auto *worker = new EvaluationWorker;
     worker->configureExternalImport(source, options, outputRoot, projectRoot);
     startWorker(worker, EvaluationOperation::ExternalImport);

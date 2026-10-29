@@ -4,11 +4,13 @@
 #include <QDateTime>
 #include <QDir>
 #include <QElapsedTimer>
+#include <QEventLoop>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QSignalSpy>
 #include <QTemporaryDir>
+#include <QTimer>
 #include <QtTest>
 #include <stdexcept>
 
@@ -317,6 +319,63 @@ class EvaluationControllerTests final : public QObject
         QCOMPARE(controller.activeReviewThreadCount(), 2);
         drain(controller);
         QCOMPARE(controller.activeReviewThreadCount(), 0);
+    }
+
+    void shutdownDuringStartupNotificationDoesNotLaunchWorker_data()
+    {
+        QTest::addColumn<QString>("operation");
+        QTest::newRow("evaluation") << QString("evaluation");
+        QTest::newRow("reanalysis") << QString("reanalysis");
+        QTest::newRow("external-import") << QString("external-import");
+    }
+
+    void shutdownDuringStartupNotificationDoesNotLaunchWorker()
+    {
+        QFETCH(QString, operation);
+        Fixture fixture;
+        EvaluationController controller;
+        fixture.initialize(controller);
+        QSignalSpy ready(&controller, &EvaluationController::shutdownReady);
+        QSignalSpy busy(&controller, &EvaluationController::busyChanged);
+        bool closed = false, readyWhenClosed = false;
+        connect(&controller, &EvaluationController::reviewChanged, &controller, [&] {
+            if (closed) return;
+            closed = true;
+            controller.requestShutdown();
+            readyWhenClosed = controller.isShutdownReady();
+        }, Qt::DirectConnection);
+        vision::EvaluationRequest request;
+        request.config.task = vision::ModelTask::Classification;
+        request.projectRoot = QString(VISION_PROJECT_DIR);
+        const auto output = fixture.directory.filePath("new-results");
+        QString error;
+        const bool accepted = operation == "evaluation" ? controller.start(request, "closing-task", &error)
+            : operation == "reanalysis" ? controller.reanalyze({}, output, request.projectRoot, &error)
+            : controller.importExternal(fixture.directory.path(), {}, output, request.projectRoot, &error);
+        const bool busyAfterReturn = controller.isBusy();
+        const bool readyAfterReturn = controller.isShutdownReady();
+        int launches = 0;
+        for (const auto &event : busy) if (event.first().toBool()) ++launches;
+        qInfo() << "startup-close" << operation << "accepted" << accepted << "launches" << launches
+                << "ready-at-close" << readyWhenClosed << "ready-after-return" << readyAfterReturn;
+
+        // Explicitly stop and drain a worker accidentally launched by the old
+        // implementation before asserting, keeping the red test self-contained.
+        controller.requestStop();
+        QEventLoop loop;
+        QTimer::singleShot(1, &loop, &QEventLoop::quit);
+        loop.exec();
+        QTRY_VERIFY_WITH_TIMEOUT(!controller.isBusy(), 5000);
+        QTRY_COMPARE_WITH_TIMEOUT(ready.count(), 1, 5000);
+        QVERIFY(controller.isShutdownReady());
+        QVERIFY(closed);
+        QVERIFY2(!accepted, "The startup command continued after its review notification closed the controller.");
+        QVERIFY2(!busyAfterReturn && launches == 0, "A new evaluation worker was launched after shutdown.");
+        QVERIFY2(!readyWhenClosed || readyAfterReturn, "Readiness became false again after shutdown had been ready.");
+        QVERIFY(!controller.start(request, "after-close", &error));
+        QVERIFY(!controller.reanalyze({}, output, request.projectRoot, &error));
+        QVERIFY(!controller.importExternal(fixture.directory.path(), {}, output, request.projectRoot, &error));
+        QVERIFY(!QFileInfo::exists(output));
     }
 };
 QTEST_GUILESS_MAIN(EvaluationControllerTests)

@@ -1,0 +1,51 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 15
+    Start 15: vision-model-yaml-tests
+
+15: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-model-yaml-tests
+15: Test timeout computed to be: 60
+15: ********* Start testing of ModelYamlTests *********
+15: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+15: PASS   : ModelYamlTests::initTestCase()
+15: PASS   : ModelYamlTests::blueprintRowsPreserveAllOriginalTypesAndOrder()
+15: PASS   : ModelYamlTests::modernScalesAndLegacyAnchorsArePreserved()
+15: PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(missing)
+15: PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(array-not-dictionary)
+15: PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(boolean-class-count)
+15: PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(unknown-global-field)
+15: PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(invalid-scale)
+15: PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(incomplete-anchor-pair)
+15: PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(self-reference)
+15: PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(bad-negative)
+15: PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(fractional-repeat)
+15: PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(expression-module)
+15: PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(non-list-args)
+15: PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(oversized-string)
+15: PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(excessive-depth)
+15: PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(excessive-layer-count)
+15: PASS   : ModelYamlTests::malformedOrExcessiveArchitecturesAreRejected(excessive-document-bytes)
+15: PASS   : ModelYamlTests::newFileExportNeverOverwritesSourceExistingOrSymlink()
+15: QINFO  : ModelYamlTests::concurrentExportsOnlyOneWriterCreatesDestination() model_yaml_atomic_export_writers 8 created 1
+15: PASS   : ModelYamlTests::concurrentExportsOnlyOneWriterCreatesDestination()
+15: PASS   : ModelYamlTests::cleanupTestCase()
+15: Totals: 21 passed, 0 failed, 0 skipped, 0 blacklisted, 5ms
+15: ********* Finished testing of ModelYamlTests *********
+1/1 Test #15: vision-model-yaml-tests ..........   Passed    0.01 sec
+
+The following tests passed:
+	vision-model-yaml-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.01 sec

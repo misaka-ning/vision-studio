@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="9"
+	timestamp="2026-10-29T19:48:18"
+	>
+	<testcase name="vision-evaluation-import-tests" classname="vision-evaluation-import-tests" time="9.24364" status="run">
+		<system-out>test_actual_runtime_values_are_not_replaced_by_requested_values (__main__.ExternalImportTests) ... ok
+test_all_zero_predictions_are_kept_and_model_names_list_is_supported (__main__.ExternalImportTests) ... ok
+test_destination_copy_mutation_during_export_never_publishes (__main__.ExternalImportTests) ... ok
+test_duplicate_json_keys_nonfinite_and_links_are_rejected (__main__.ExternalImportTests) ... ok
+test_full_import_without_any_original_file_has_original_id_and_verified_review_cache (__main__.ExternalImportTests) ... ok
+test_import_then_snapshot_reanalysis_keeps_apply_block_and_provenance (__main__.ExternalImportTests) ... ok
+test_limit_subset_stays_subset_and_does_not_publish_full_ap (__main__.ExternalImportTests) ... ok
+test_low_candidates_require_explicit_higher_analysis_and_scan (__main__.ExternalImportTests) ... ok
+test_qt_helper_log_link_is_rejected (__main__.ExternalImportTests) ... ok
+test_reserved_qt_output_and_cli_have_same_contract (__main__.ExternalImportTests) ... ok
+test_source_mutation_during_...
+The rest of the test output was removed since it exceeds the threshold of 1024 bytes.
+</system-out>
+	</testcase>
+</testsuite>

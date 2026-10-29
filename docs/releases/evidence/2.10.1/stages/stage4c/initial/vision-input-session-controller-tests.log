@@ -1,0 +1,51 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 31
+    Start 31: vision-input-session-controller-tests
+
+31: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-input-session-controller-tests
+31: Environment variables: 
+31:  QT_QPA_PLATFORM=offscreen
+31: Test timeout computed to be: 120
+31: ********* Start testing of InputSessionControllerTests *********
+31: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+31: PASS   : InputSessionControllerTests::initTestCase()
+31: PASS   : InputSessionControllerTests::orderedImagesAreAsynchronousBatchedAndDeduplicated()
+31: PASS   : InputSessionControllerTests::allTailCurrentAndUnselectedRanges()
+31: PASS   : InputSessionControllerTests::invalidMixedBatchKeepsOldQueueAndSelection()
+31: PASS   : InputSessionControllerTests::datasetPersistsOnlyAfterLastExactProjectionAcknowledgement()
+31: PASS   : InputSessionControllerTests::datasetTemporaryImagesAreExcludedFromEvaluationAndCancelRollsBack()
+31: PASS   : InputSessionControllerTests::datasetFailurePreservesLastValidSession()
+31: PASS   : InputSessionControllerTests::datasetProjectionCancellationKeepsOriginalRecord()
+31: PASS   : InputSessionControllerTests::datasetValidationCancellationPreservesPreviousInput()
+31: PASS   : InputSessionControllerTests::historicalManifestProjectionDoesNotOverwriteStartupSource()
+31: PASS   : InputSessionControllerTests::deferredRestoreNeverOverridesManualInputOrDisabledPreference()
+31: PASS   : InputSessionControllerTests::inFlightRestoreCanBeSupersededAndNormalRestoreIsPersistent()
+31: PASS   : InputSessionControllerTests::clearVideoCameraAndShutdownDoNotEraseRememberedDataset()
+31: QINFO  : InputSessionControllerTests::shutdownDuringStartupNotificationDoesNotLaunchWorker(images-checking-state) startup-close accepted false workers-at-close 0 workers-after-return 0 ready-at-close true ready-after-return true
+31: PASS   : InputSessionControllerTests::shutdownDuringStartupNotificationDoesNotLaunchWorker(images-checking-state)
+31: QINFO  : InputSessionControllerTests::shutdownDuringStartupNotificationDoesNotLaunchWorker(dataset-checking-state) startup-close accepted false workers-at-close 0 workers-after-return 0 ready-at-close true ready-after-return true
+31: PASS   : InputSessionControllerTests::shutdownDuringStartupNotificationDoesNotLaunchWorker(dataset-checking-state)
+31: QINFO  : InputSessionControllerTests::shutdownDuringStartupNotificationDoesNotLaunchWorker(replacement-cancelling-state) startup-close accepted false workers-at-close 1 workers-after-return 1 ready-at-close false ready-after-return false
+31: PASS   : InputSessionControllerTests::shutdownDuringStartupNotificationDoesNotLaunchWorker(replacement-cancelling-state)
+31: PASS   : InputSessionControllerTests::cleanupTestCase()
+31: Totals: 17 passed, 0 failed, 0 skipped, 0 blacklisted, 1687ms
+31: ********* Finished testing of InputSessionControllerTests *********
+1/1 Test #31: vision-input-session-controller-tests ...   Passed    1.75 sec
+
+The following tests passed:
+	vision-input-session-controller-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   1.76 sec

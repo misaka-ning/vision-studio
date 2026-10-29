@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="25"
+	timestamp="2026-10-29T19:47:53"
+	>
+	<testcase name="vision-pt-batch-python-tests" classname="vision-pt-batch-python-tests" time="25.5314" status="run">
+		<system-out>test_fp32_option_uses_runtime_capability_and_clears_inherited_precision (__main__.BatchTensorTests) ... ok
+test_legacy_batch_uses_one_forward_and_preserves_original_class_id (__main__.BatchTensorTests) ... ok
+test_native_color_batch_discards_edge_collapsed_boxes_and_keeps_valid_predictions (__main__.BatchTensorTests) ... ok
+test_native_color_batch_preserves_image_list_order_and_zero_result (__main__.BatchTensorTests) ... ok
+test_native_gray_batch_is_one_predict_call_and_restores_each_geometry (__main__.BatchTensorTests) ... ok
+test_native_nonfinite_coordinates_still_fail_in_color_and_gray (__main__.BatchTensorTests) ... ok
+test_raw_decoder_honors_max_detections (__main__.BatchTensorTests) ... ok
+test_invalid_batch_and_maxdet_return_bound_error_then_allow_next_request (__main__.ResidentProtocolTests) ... ok
+test_real_modern_and_legacy_batch_color_gray_and_single_parity (__main__.ResidentProtocolTests) ... ok
+test_real_one_channel_native_model_accepts_gray_batch (__main__.ResidentProtocolTests) ... ok
+
+--------...
+The rest of the test output was removed since it exceeds the threshold of 1024 bytes.
+</system-out>
+	</testcase>
+</testsuite>

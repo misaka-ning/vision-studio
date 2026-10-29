@@ -38,6 +38,15 @@ ModelDisplayPage::ModelDisplayPage(QWidget *parent) : QWidget(parent)
     note->setWordWrap(true); layout->addWidget(note);
 }
 
+ModelDisplayPage::~ModelDisplayPage()
+{
+    // QWidget deletes the earlier-created header before the viewer. Its
+    // destructor calls stop() and can still emit stateChanged, while this
+    // QObject has not reached the base destructor's automatic disconnect yet.
+    // Disconnect page callbacks while all of their label targets are alive.
+    disconnect(controls_.viewer, nullptr, this, nullptr);
+}
+
 void ModelDisplayPage::setSelectedModelHeader(const QString &path, const QString &displayName, bool needsRuntime)
 {
     controls_.modelName->setText(path.isEmpty() ? "在模型库中选择模型" : displayName);

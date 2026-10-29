@@ -376,6 +376,9 @@ void ModelSessionController::inspect(const ModelConfig &requested)
     const auto generation = state_.inspectionGeneration;
     const auto identity = fileIdentity(state_.activeModel);
     state_.inspectedIdentity.clear(); state_.inspectionError.clear(); state_.classCount = 0;
+    // A suggestion describes this inspection, not a previous file at the same
+    // path. Detection ONNX keeps the user's explicit YOLO output format.
+    state_.hasSuggestedTask = false;
     if (identity.isEmpty()) { emit metadataChanged(); return; }
     state_.inspectionPending = true;
     ModelConfig config = requested;

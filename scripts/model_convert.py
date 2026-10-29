@@ -888,8 +888,14 @@ def convert(arguments, emit):
                  job_identity={"device": value.st_dev, "inode": value.st_ino, "uid": value.st_uid})
             with isolate_environment(job):
                 result, published_identity = run_conversion(arguments, source, output, job, original, emit)
-        emit("result", "模型转换完成。", **result)
+        # The verified artifact and exact job cleanup are now committed. Once
+        # success delivery starts, a late cancellation must never unlink a file
+        # whose result event may already have reached the UI. Cancellation just
+        # before/during this notification can still end the helper, but retains
+        # this completed output; failures before this boundary still roll back
+        # only our own exact inode below.
         published_identity = None
+        emit("result", "模型转换完成。", **result)
         return result
     except BaseException:
         # Remove only our exact committed inode, never an existing/replaced file.

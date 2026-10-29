@@ -178,6 +178,58 @@ class ModelSessionControllerTests final : public QObject
         controller.requestShutdown(); QTRY_COMPARE(shutdown.count(), 1);
     }
 
+    void replacementDetectionDoesNotRetainClassificationSuggestion_data()
+    {
+        QTest::addColumn<int>("requestedTask");
+        QTest::newRow("explicit-yolov5") << int(vision::ModelTask::YoloV5);
+        QTest::newRow("explicit-yolov8") << int(vision::ModelTask::YoloV8);
+    }
+
+    void replacementDetectionDoesNotRetainClassificationSuggestion()
+    {
+        QFETCH(int, requestedTask);
+        QTemporaryDir directory;
+        const auto path = model(directory, "same-path.onnx");
+        QVERIFY(!path.isEmpty());
+        const auto calls = std::make_shared<std::atomic_int>(0);
+        const auto inspectedTask = std::make_shared<std::atomic_int>(-1);
+        ModelSessionController controller([calls, inspectedTask](const vision::ModelConfig &requested, std::function<bool()>) {
+            inspectedTask->store(int(requested.task));
+            auto result = inspected(requested, 2);
+            if (calls->fetch_add(1) == 0) result.task = vision::ModelTask::Classification;
+            return result;
+        });
+        QVERIFY(controller.select(path));
+        controller.inspect({});
+        QTRY_VERIFY_WITH_TIMEOUT(!controller.snapshot().inspectionPending, 3000);
+        QVERIFY(controller.snapshot().inspectionError.isEmpty());
+        QVERIFY(controller.snapshot().hasSuggestedTask);
+        QCOMPARE(controller.snapshot().suggestedTask, vision::ModelTask::Classification);
+        const auto classifiedIdentity = controller.snapshot().inspectedIdentity;
+
+        // The file is replaced in place, so selecting the same library entry
+        // does not reset its metadata. A task edit requests fresh inspection.
+        QFile file(path); QVERIFY(file.open(QIODevice::Append));
+        QCOMPARE(file.write(" replacement detection model"), 28LL); file.close();
+        const auto replacementIdentity = ModelSessionController::fileIdentity(path);
+        QVERIFY(replacementIdentity != classifiedIdentity);
+        QVERIFY(controller.select(path));
+        vision::ModelConfig requested;
+        requested.task = static_cast<vision::ModelTask>(requestedTask);
+        controller.inspect(requested);
+        QTRY_VERIFY_WITH_TIMEOUT(!controller.snapshot().inspectionPending, 3000);
+        QVERIFY(controller.snapshot().inspectionError.isEmpty());
+        QCOMPARE(calls->load(), 2);
+        QCOMPARE(controller.snapshot().inspectedIdentity, replacementIdentity);
+        QCOMPARE(controller.snapshot().classCount, 2);
+        // Detection ONNX inspection must not force a task format: retain the
+        // caller's explicit YOLO choice, without a stale classification hint.
+        QVERIFY(!controller.snapshot().hasSuggestedTask);
+        QCOMPARE(inspectedTask->load(), requestedTask);
+        QSignalSpy shutdown(&controller, &ModelSessionController::shutdownReady);
+        controller.requestShutdown(); QTRY_COMPARE(shutdown.count(), 1);
+    }
+
     void shutdownCancelsAllOutstandingInspectionsWithoutWaiting()
     {
         QTemporaryDir directory;

@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #pragma once
 #include <QListWidget>
+#include <QPointer>
 #include <QWidget>
 
 class QLabel;
 class QPushButton;
+namespace vision::app { class ModelSessionController; class OperationCoordinator; }
 
 struct ModelLibraryRow
 {
@@ -28,6 +30,8 @@ class ModelsLibraryPage final : public QWidget
     void setBusy(bool busy);
     void setRows(const QVector<ModelLibraryRow> &rows, const QString &selectedPath);
     void setDropHint(const QString &message, bool error = false);
+    void setApplicationContext(const vision::app::ModelSessionController *models,
+                               const vision::app::OperationCoordinator *operations);
 
   signals:
     void importRequested();
@@ -37,9 +41,19 @@ class ModelsLibraryPage final : public QWidget
     void detectRequested();
     void structureRequested();
     void removeRequested(const QString &path);
+    void renameRequested(const QString &path, const QString &name);
+    void noteRequested(const QString &path, const QString &note);
+    void noticeRequested(const QString &message, bool error = false);
     void evaluationRequested();
 
   private:
+    bool canMutate(const QString &path) const;
+    void showContextMenu(const QPoint &position);
+    void openModelLocation(const QString &path);
+    void editModelNote(const QString &path);
+    void renameModel(const QString &path);
     Controls controls_;
+    QPointer<const vision::app::ModelSessionController> models_;
+    QPointer<const vision::app::OperationCoordinator> operations_;
     bool busy_ = false, reordering_ = false;
 };

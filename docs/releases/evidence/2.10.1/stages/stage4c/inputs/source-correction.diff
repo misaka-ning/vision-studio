@@ -1,0 +1,158 @@
+diff --git a/src/ui/pages/modeldisplaypage.cpp b/src/ui/pages/modeldisplaypage.cpp
+index eae94de..463febb 100644
+--- a/src/ui/pages/modeldisplaypage.cpp
++++ b/src/ui/pages/modeldisplaypage.cpp
+@@ -38,6 +38,15 @@ ModelDisplayPage::ModelDisplayPage(QWidget *parent) : QWidget(parent)
+     note->setWordWrap(true); layout->addWidget(note);
+ }
+ 
++ModelDisplayPage::~ModelDisplayPage()
++{
++    // QWidget deletes the earlier-created header before the viewer. Its
++    // destructor calls stop() and can still emit stateChanged, while this
++    // QObject has not reached the base destructor's automatic disconnect yet.
++    // Disconnect page callbacks while all of their label targets are alive.
++    disconnect(controls_.viewer, nullptr, this, nullptr);
++}
++
+ void ModelDisplayPage::setSelectedModelHeader(const QString &path, const QString &displayName, bool needsRuntime)
+ {
+     controls_.modelName->setText(path.isEmpty() ? "在模型库中选择模型" : displayName);
+diff --git a/src/ui/pages/modeldisplaypage.h b/src/ui/pages/modeldisplaypage.h
+index 7f5ca24..7848a2b 100644
+--- a/src/ui/pages/modeldisplaypage.h
++++ b/src/ui/pages/modeldisplaypage.h
+@@ -9,6 +9,7 @@ class ModelDisplayPage final : public QWidget
+   public:
+     struct Controls { QLabel *modelName = nullptr, *metadata = nullptr, *hint = nullptr, *status = nullptr; ModelViewer *viewer = nullptr; };
+     explicit ModelDisplayPage(QWidget *parent = nullptr);
++    ~ModelDisplayPage() override;
+     const Controls &controls() const { return controls_; }
+     void setSelectedModelHeader(const QString &path, const QString &displayName, bool needsRuntime = false);
+   signals:
+diff --git a/tests/conversion_inference_tests.cpp b/tests/conversion_inference_tests.cpp
+index d8c453b..d20ee70 100644
+--- a/tests/conversion_inference_tests.cpp
++++ b/tests/conversion_inference_tests.cpp
+@@ -3,6 +3,7 @@
+ #include "ui/evaluationpanel.h"
+ #include "ui/mainwindow.h"
+ #include "ui/modelconversionpage.h"
++#include "ui_shutdown_helpers.h"
+ 
+ #include <QApplication>
+ #include <QComboBox>
+@@ -162,7 +163,7 @@ class ConversionInferenceTests final : public QObject
+     }
+     void cleanup()
+     {
+-        window_.reset();
++        QVERIFY2(closeWindow(), "MainWindow must complete asynchronous shutdown before destruction.");
+         guard_.reset();
+         area_.reset();
+     }
+@@ -387,14 +388,12 @@ class ConversionInferenceTests final : public QObject
+     }
+     void verifyPersistenceAndManualLabels(const QString &output, const QJsonObject &metadata)
+     {
+-        window_->close();
+-        window_.reset();
++        QVERIFY(closeWindow());
+         showWindow();
+         QCOMPARE(window_->findChild<QSpinBox *>("inputSize")->value(), 64);
+         QCOMPARE(window_->findChild<QComboBox *>("inputColorMode")->currentData().toString(), QString("grayscale"));
+         QVERIFY(namedButton(window_.get(), QString("类别标签 · 转换模型 %1 类").arg(names(metadata).size())));
+-        window_->close();
+-        window_.reset();
++        QVERIFY(closeWindow());
+         QSettings settings(area_->path() + "/output/preferences.ini", QSettings::IniFormat);
+         const QStringList manual = {"自定义 球", "自定义 其他"};
+         settings.setValue("labels", manual);
+@@ -409,8 +408,7 @@ class ConversionInferenceTests final : public QObject
+         auto *run = namedButton(window_.get(), "开始检测");
+         QTRY_VERIFY_WITH_TIMEOUT(run->isVisible() && run->isEnabled(), 30000);
+         QVERIFY2(unexpected_.isEmpty(), qPrintable(unexpected_));
+-        window_->close();
+-        window_.reset();
++        QVERIFY(closeWindow());
+         settings.setValue("labels", QStringList{});
+         settings.setValue("labelsPath", QString());
+         settings.sync();
+@@ -422,8 +420,7 @@ class ConversionInferenceTests final : public QObject
+         // Same bytes with a different mtime must not receive the old class preset.
+         // Actual model metadata still resolves two classes; never assume COCO 80.
+         QTRY_VERIFY_WITH_TIMEOUT(namedButton(window_.get(), "类别标签 · 数字 2 类"), 15000);
+-        window_->close();
+-        window_.reset();
++        QVERIFY(closeWindow());
+         QVERIFY(file.open(QIODevice::Append));
+         QCOMPARE(file.write("changed"), qint64(7));
+         file.close();
+@@ -444,6 +441,15 @@ class ConversionInferenceTests final : public QObject
+         window_->show();
+         QTest::qWait(20);
+     }
++    bool closeWindow()
++    {
++        if (!vision::test::shutdownWindow(window_.get())) return false;
++        // The helper keeps processing GUI events until every resource owner
++        // reports ready. Do not let destruction perform or hide the waiting.
++        if (window_ && !window_->isShutdownReady()) return false;
++        window_.reset();
++        return true;
++    }
+     QString project_, runtime_, configuredGpuRuntime_, unexpected_, datasetImage_, datasetError_;
+     QImage image_;
+     QHash<QByteArray, QByteArray> previous_;
+diff --git a/tests/ui_tests.cpp b/tests/ui_tests.cpp
+index a6e3e09..d870560 100644
+--- a/tests/ui_tests.cpp
++++ b/tests/ui_tests.cpp
+@@ -2673,7 +2673,8 @@ class UiTests final : public QObject
+         QVERIFY(listed);
+         recordings->setCurrentCell(0, 0);
+         recordings->selectRow(0);
+-        QVERIFY(play->isEnabled());
++        // List publication precedes the selected recording's background open.
++        QTRY_VERIFY_WITH_TIMEOUT(play->isEnabled(), 5000);
+         QTest::mouseClick(play, Qt::LeftButton);
+         QTRY_VERIFY_WITH_TIMEOUT(!recordingCanvas->result().image.isNull(), 5000);
+         const QImage preview = recordingCanvas->result().image;
+diff --git a/tests/workspace_pages_tests.cpp b/tests/workspace_pages_tests.cpp
+index 4d62f28..ae6e0d4 100644
+--- a/tests/workspace_pages_tests.cpp
++++ b/tests/workspace_pages_tests.cpp
+@@ -304,6 +304,33 @@ class WorkspacePagesTests final : public QObject
+         QTRY_COMPARE_WITH_TIMEOUT(shutdown.size(), 1, 1000);
+     }
+ 
++    void modelDisplayDestructionDisconnectsViewerBeforeHeaderChildren()
++    {
++        // An invalid path reaches Error without creating a helper. The viewer
++        // destructor still calls stop(), which changes Error to Empty after
++        // the earlier-created header widgets have already been deleted.
++        // Exercise that actual destruction order, not a prior stop() that
++        // would leave Empty and hide a stale page callback.
++        for (int iteration = 0; iteration < 32; ++iteration) {
++            QObject observer;
++            auto *page = new ModelDisplayPage;
++            const QPointer<QLabel> status(page->controls().status);
++            const QPointer<ModelViewer> viewer(page->controls().viewer);
++            bool headerDestroyed = false;
++            int finalStateAfterHeader = 0;
++            connect(status.data(), &QObject::destroyed, &observer, [&] { headerDestroyed = true; });
++            connect(viewer.data(), &ModelViewer::stateChanged, &observer, [&](ModelViewer::State state) {
++                if (headerDestroyed && state == ModelViewer::State::Empty) ++finalStateAfterHeader;
++            });
++            viewer->openModel("/path/that/does/not/exist.pt");
++            QCOMPARE(viewer->state(), ModelViewer::State::Error);
++            QVERIFY(viewer->findChildren<QProcess *>().isEmpty());
++            delete page;
++            QVERIFY(headerDestroyed); QVERIFY(status.isNull()); QVERIFY(viewer.isNull());
++            QCOMPARE(finalStateAfterHeader, 1);
++        }
++    }
++
+     void recordingPageRendersValuesWithoutTouchingFiles()
+     {
+         RecordingsPage page("/no/real/recordings"); page.resize(1100, 800); page.show();

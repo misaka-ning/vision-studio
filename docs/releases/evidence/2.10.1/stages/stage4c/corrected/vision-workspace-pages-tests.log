@@ -1,0 +1,109 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 39
+    Start 39: vision-workspace-pages-tests
+
+39: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-workspace-pages-tests
+39: Environment variables: 
+39:  QT_QPA_PLATFORM=offscreen
+39:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+39: Test timeout computed to be: 120
+39: ********* Start testing of WorkspacePagesTests *********
+39: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+39: PASS   : WorkspacePagesTests::initTestCase()
+39: QWARN  : WorkspacePagesTests::modelLibraryOwnsItsPresentationAndEmitsActions() This plugin does not support propagateSizeHints()
+39: PASS   : WorkspacePagesTests::modelLibraryOwnsItsPresentationAndEmitsActions()
+39: QWARN  : WorkspacePagesTests::modelLibraryBusyAndContextClickDoNotChangeGlobalSelection() This plugin does not support propagateSizeHints()
+39: PASS   : WorkspacePagesTests::modelLibraryBusyAndContextClickDoNotChangeGlobalSelection()
+39: QWARN  : WorkspacePagesTests::modelContextMenuTargetsPointerWithoutChangingGlobalSelection() This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelContextMenuTargetsPointerWithoutChangingGlobalSelection() This plugin does not support raise()
+39: QWARN  : WorkspacePagesTests::modelContextMenuTargetsPointerWithoutChangingGlobalSelection() This plugin does not support grabbing the keyboard
+39: PASS   : WorkspacePagesTests::modelContextMenuTargetsPointerWithoutChangingGlobalSelection()
+39: QWARN  : WorkspacePagesTests::modelEditorsUseAuthorityDefaultsAndOnlyEmitValues(rename) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorsUseAuthorityDefaultsAndOnlyEmitValues(rename) This plugin does not support raise()
+39: QWARN  : WorkspacePagesTests::modelEditorsUseAuthorityDefaultsAndOnlyEmitValues(rename) This plugin does not support grabbing the keyboard
+39: QWARN  : WorkspacePagesTests::modelEditorsUseAuthorityDefaultsAndOnlyEmitValues(rename) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorsUseAuthorityDefaultsAndOnlyEmitValues(rename) This plugin does not support propagateSizeHints()
+39: PASS   : WorkspacePagesTests::modelEditorsUseAuthorityDefaultsAndOnlyEmitValues(rename)
+39: QWARN  : WorkspacePagesTests::modelEditorsUseAuthorityDefaultsAndOnlyEmitValues(note) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorsUseAuthorityDefaultsAndOnlyEmitValues(note) This plugin does not support raise()
+39: QWARN  : WorkspacePagesTests::modelEditorsUseAuthorityDefaultsAndOnlyEmitValues(note) This plugin does not support grabbing the keyboard
+39: QWARN  : WorkspacePagesTests::modelEditorsUseAuthorityDefaultsAndOnlyEmitValues(note) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorsUseAuthorityDefaultsAndOnlyEmitValues(note) This plugin does not support propagateSizeHints()
+39: PASS   : WorkspacePagesTests::modelEditorsUseAuthorityDefaultsAndOnlyEmitValues(note)
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(rename-target-removed) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(rename-target-removed) This plugin does not support raise()
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(rename-target-removed) This plugin does not support grabbing the keyboard
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(rename-target-removed) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(rename-target-removed) This plugin does not support propagateSizeHints()
+39: PASS   : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(rename-target-removed)
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(rename-operation-busy) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(rename-operation-busy) This plugin does not support raise()
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(rename-operation-busy) This plugin does not support grabbing the keyboard
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(rename-operation-busy) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(rename-operation-busy) This plugin does not support propagateSizeHints()
+39: PASS   : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(rename-operation-busy)
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(note-target-removed) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(note-target-removed) This plugin does not support raise()
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(note-target-removed) This plugin does not support grabbing the keyboard
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(note-target-removed) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(note-target-removed) This plugin does not support propagateSizeHints()
+39: PASS   : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(note-target-removed)
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(note-operation-busy) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(note-operation-busy) This plugin does not support raise()
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(note-operation-busy) This plugin does not support grabbing the keyboard
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(note-operation-busy) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(note-operation-busy) This plugin does not support propagateSizeHints()
+39: PASS   : WorkspacePagesTests::modelEditorsRecheckAuthorityAfterNestedDialog(note-operation-busy)
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(rename-escape) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(rename-escape) This plugin does not support raise()
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(rename-escape) This plugin does not support grabbing the keyboard
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(rename-escape) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(rename-escape) This plugin does not support propagateSizeHints()
+39: PASS   : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(rename-escape)
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(rename-cancel) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(rename-cancel) This plugin does not support raise()
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(rename-cancel) This plugin does not support grabbing the keyboard
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(rename-cancel) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(rename-cancel) This plugin does not support propagateSizeHints()
+39: PASS   : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(rename-cancel)
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(note-escape) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(note-escape) This plugin does not support raise()
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(note-escape) This plugin does not support grabbing the keyboard
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(note-escape) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(note-escape) This plugin does not support propagateSizeHints()
+39: PASS   : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(note-escape)
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(note-cancel) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(note-cancel) This plugin does not support raise()
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(note-cancel) This plugin does not support grabbing the keyboard
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(note-cancel) This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(note-cancel) This plugin does not support propagateSizeHints()
+39: PASS   : WorkspacePagesTests::modelEditorEscapeAndCancelDiscardEdits(note-cancel)
+39: QWARN  : WorkspacePagesTests::modelDisplayHeaderDoesNotOwnModelSelectionOrStartParsing() This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelDisplayHeaderDoesNotOwnModelSelectionOrStartParsing() This plugin does not support propagateSizeHints()
+39: QWARN  : WorkspacePagesTests::modelDisplayHeaderDoesNotOwnModelSelectionOrStartParsing() This plugin does not support propagateSizeHints()
+39: PASS   : WorkspacePagesTests::modelDisplayHeaderDoesNotOwnModelSelectionOrStartParsing()
+39: PASS   : WorkspacePagesTests::modelDisplayDestructionDisconnectsViewerBeforeHeaderChildren()
+39: QWARN  : WorkspacePagesTests::recordingPageRendersValuesWithoutTouchingFiles() This plugin does not support propagateSizeHints()
+39: PASS   : WorkspacePagesTests::recordingPageRendersValuesWithoutTouchingFiles()
+39: PASS   : WorkspacePagesTests::cleanupTestCase()
+39: Totals: 18 passed, 0 failed, 0 skipped, 0 blacklisted, 155ms
+39: ********* Finished testing of WorkspacePagesTests *********
+1/1 Test #39: vision-workspace-pages-tests .....   Passed    0.26 sec
+
+The following tests passed:
+	vision-workspace-pages-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.26 sec

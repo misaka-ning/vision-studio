@@ -1,0 +1,185 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 20
+    Start 20: vision-evaluation-panel-tests
+
+20: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-evaluation-panel-tests
+20: Environment variables: 
+20:  QT_QPA_PLATFORM=offscreen
+20: Test timeout computed to be: 120
+20: ********* Start testing of EvaluationPanelTests *********
+20: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+20: PASS   : EvaluationPanelTests::initTestCase()
+20: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support raise()
+20: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support grabbing the keyboard
+20: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support raise()
+20: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support grabbing the keyboard
+20: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support raise()
+20: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support grabbing the keyboard
+20: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support raise()
+20: QWARN  : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml() This plugin does not support grabbing the keyboard
+20: PASS   : EvaluationPanelTests::sameDatasetPickerAcceptsDirectoryAndYaml()
+20: QWARN  : EvaluationPanelTests::cancellingOrBusyDoesNotRequestDataset() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::cancellingOrBusyDoesNotRequestDataset() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::cancellingOrBusyDoesNotRequestDataset() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::cancellingOrBusyDoesNotRequestDataset() This plugin does not support propagateSizeHints()
+20: PASS   : EvaluationPanelTests::cancellingOrBusyDoesNotRequestDataset()
+20: QWARN  : EvaluationPanelTests::unifiedPickerRejectsInvalidSourceInline() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::unifiedPickerRejectsInvalidSourceInline() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::unifiedPickerRejectsInvalidSourceInline() This plugin does not support raise()
+20: QWARN  : EvaluationPanelTests::unifiedPickerRejectsInvalidSourceInline() This plugin does not support grabbing the keyboard
+20: QWARN  : EvaluationPanelTests::unifiedPickerRejectsInvalidSourceInline() This plugin does not support raise()
+20: QWARN  : EvaluationPanelTests::unifiedPickerRejectsInvalidSourceInline() This plugin does not support grabbing the keyboard
+20: PASS   : EvaluationPanelTests::unifiedPickerRejectsInvalidSourceInline()
+20: PASS   : EvaluationPanelTests::failedFirstImportKeepsSourceAndAllowsExplicitSplitRetry()
+20: PASS   : EvaluationPanelTests::modeRequiresValidDatasetAndDetection()
+20: PASS   : EvaluationPanelTests::missingLabelsAndNegativeSamples()
+20: PASS   : EvaluationPanelTests::mappingPreservesOriginalIdsAndValidatesNewModel()
+20: PASS   : EvaluationPanelTests::refreshDoesNotEmitRecursiveConfigurationSignals()
+20: PASS   : EvaluationPanelTests::sameManifestRestoresFailedDatasetSelectionWithoutRecursiveSignals()
+20: PASS   : EvaluationPanelTests::busyLocksConfigurationAndMapping()
+20: PASS   : EvaluationPanelTests::spinBoxesIgnoreWheel()
+20: PASS   : EvaluationPanelTests::operatingPointSelectionNeverAutoApplies()
+20: PASS   : EvaluationPanelTests::arrowsSelectAdjacentComputedThresholds()
+20: QWARN  : EvaluationPanelTests::tableAndCurveSelectActualRows() This plugin does not support propagateSizeHints()
+20: PASS   : EvaluationPanelTests::tableAndCurveSelectActualRows()
+20: QWARN  : EvaluationPanelTests::decisionSidebarSharesCurveTableAndIndependentApply() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::decisionSidebarSharesCurveTableAndIndependentApply() This plugin does not support raise()
+20: PASS   : EvaluationPanelTests::decisionSidebarSharesCurveTableAndIndependentApply()
+20: QWARN  : EvaluationPanelTests::recommendationScrollsLongThresholdTableAndReviewIsExplicit() This plugin does not support propagateSizeHints()
+20: PASS   : EvaluationPanelTests::recommendationScrollsLongThresholdTableAndReviewIsExplicit()
+20: PASS   : EvaluationPanelTests::unavailableAndPartialMetricsRemainNA()
+20: PASS   : EvaluationPanelTests::constrainedRecommendationAndTestPolicy()
+20: PASS   : EvaluationPanelTests::recommendationPlateauUsesHighestConfidence()
+20: PASS   : EvaluationPanelTests::scanValidationAndImageFilter()
+20: PASS   : EvaluationPanelTests::exportedCopyKeepsOriginalAndAddsAnalysisSnapshot()
+20: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support raise()
+20: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support grabbing the keyboard
+20: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support raise()
+20: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support raise()
+20: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support grabbing the keyboard
+20: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support raise()
+20: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support raise()
+20: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support grabbing the keyboard
+20: QWARN  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() This plugin does not support raise()
+20: QINFO  : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges() dataset_popup_evidence toolbar QRect(11,11 948x40) popup QSize(620, 423) outside_click_closed true configuration_unchanged true
+20: PASS   : EvaluationPanelTests::settingsPopupKeepsToolbarGeometryAndDismissesWithoutConfigurationChanges()
+20: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support raise()
+20: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support grabbing the keyboard
+20: QWARN  : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar() This plugin does not support raise()
+20: PASS   : EvaluationPanelTests::longImportErrorsAreReadableInPopupWithoutGrowingToolbar()
+20: QWARN  : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode() This plugin does not support raise()
+20: QWARN  : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode() This plugin does not support grabbing the keyboard
+20: QWARN  : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode() This plugin does not support raise()
+20: PASS   : EvaluationPanelTests::collapsedStatusExplainsEligibilityAndOpensDetailsWithoutChangingMode()
+20: PASS   : EvaluationPanelTests::advancedInferenceOptionsValidateAndLock()
+20: PASS   : EvaluationPanelTests::diagnosticMetricsAndMatricesRetainCachedFields()
+20: QWARN  : EvaluationPanelTests::reportTabsAndPlotsDoNotChangeAnalysisOrRunConfiguration() This plugin does not support propagateSizeHints()
+20: PASS   : EvaluationPanelTests::reportTabsAndPlotsDoNotChangeAnalysisOrRunConfiguration()
+20: PASS   : EvaluationPanelTests::reanalysisOptionsAreIndependentAndSourceReportStaysImmutable()
+20: PASS   : EvaluationPanelTests::sceneTableDistinguishesUnknownAndKnownAndRequestsOriginalGroup()
+20: QWARN  : EvaluationPanelTests::responsiveDiagnosticLayouts() This plugin does not support propagateSizeHints()
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1100, 640) tab 0 QRect(11,105 1069x524) window QRect(0,0 1100x640)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationThresholdPage QRect(0,0 1069x488) QSize(584, 420) QSize(0, 0) QSize(584, 420)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationDecisionSplit QRect(3,72 1057x356) QSize(572, 288) QSize(0, 288) QSize(572, 288)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationChartDecisionSplit QRect(0,0 1057x182) QSize(572, 158) QSize(0, 158) QSize(478, 163)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationDecisionSidebar QRect(771,0 286x182) QSize(160, 146) QSize(246, 144) QSize(160, 163)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationThresholdTable QRect(11,30 1035x130) QSize(55, 55) QSize(0, 88) QSize(256, 192)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationApplyThresholdButton QRect(953,8 91x33) QSize(91, 33) QSize(0, 32) QSize(91, 33)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1100, 640) tab 1 QRect(11,105 1069x524) window QRect(0,0 1100x640)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1100, 640) tab 2 QRect(11,105 1069x524) window QRect(0,0 1100x640)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1100, 640) tab 3 QRect(11,105 1069x524) window QRect(0,0 1100x640)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1100, 720) tab 0 QRect(11,105 1069x604) window QRect(0,0 1100x720)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationThresholdPage QRect(0,0 1069x568) QSize(584, 420) QSize(0, 0) QSize(584, 420)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationDecisionSplit QRect(3,72 1057x436) QSize(572, 288) QSize(0, 288) QSize(572, 288)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationChartDecisionSplit QRect(0,0 1057x229) QSize(572, 158) QSize(0, 158) QSize(478, 163)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationDecisionSidebar QRect(771,0 286x229) QSize(160, 146) QSize(246, 144) QSize(160, 163)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationThresholdTable QRect(11,30 1035x163) QSize(55, 55) QSize(0, 88) QSize(256, 192)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationApplyThresholdButton QRect(953,8 91x33) QSize(91, 33) QSize(0, 32) QSize(91, 33)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1100, 720) tab 1 QRect(11,105 1069x604) window QRect(0,0 1100x720)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1100, 720) tab 2 QRect(11,105 1069x604) window QRect(0,0 1100x720)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1100, 720) tab 3 QRect(11,105 1069x604) window QRect(0,0 1100x720)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1260, 820) tab 0 QRect(11,105 1229x704) window QRect(0,0 1260x820)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationThresholdPage QRect(0,0 1229x668) QSize(584, 420) QSize(0, 0) QSize(584, 420)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationDecisionSplit QRect(3,72 1217x536) QSize(572, 288) QSize(0, 288) QSize(572, 288)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationChartDecisionSplit QRect(0,0 1217x282) QSize(572, 158) QSize(0, 158) QSize(478, 163)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationDecisionSidebar QRect(931,0 286x282) QSize(160, 146) QSize(246, 144) QSize(160, 163)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationThresholdTable QRect(11,30 1195x210) QSize(55, 55) QSize(0, 88) QSize(256, 192)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationApplyThresholdButton QRect(1113,8 91x33) QSize(91, 33) QSize(0, 32) QSize(91, 33)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1260, 820) tab 1 QRect(11,105 1229x704) window QRect(0,0 1260x820)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1260, 820) tab 2 QRect(11,105 1229x704) window QRect(0,0 1260x820)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1260, 820) tab 3 QRect(11,105 1229x704) window QRect(0,0 1260x820)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1366, 768) tab 0 QRect(11,105 1335x652) window QRect(0,0 1366x768)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationThresholdPage QRect(0,0 1335x616) QSize(584, 420) QSize(0, 0) QSize(584, 420)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationDecisionSplit QRect(3,72 1323x484) QSize(572, 288) QSize(0, 288) QSize(572, 288)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationChartDecisionSplit QRect(0,0 1323x254) QSize(572, 158) QSize(0, 158) QSize(478, 163)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationDecisionSidebar QRect(1037,0 286x254) QSize(160, 146) QSize(246, 144) QSize(160, 163)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationThresholdTable QRect(11,30 1301x186) QSize(55, 55) QSize(0, 88) QSize(256, 192)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationApplyThresholdButton QRect(1219,8 91x33) QSize(91, 33) QSize(0, 32) QSize(91, 33)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1366, 768) tab 1 QRect(11,105 1335x652) window QRect(0,0 1366x768)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1366, 768) tab 2 QRect(11,105 1335x652) window QRect(0,0 1366x768)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1366, 768) tab 3 QRect(11,105 1335x652) window QRect(0,0 1366x768)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1366, 900) tab 0 QRect(11,105 1335x784) window QRect(0,0 1366x900)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationThresholdPage QRect(0,0 1335x748) QSize(584, 420) QSize(0, 0) QSize(584, 420)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationDecisionSplit QRect(3,72 1323x616) QSize(572, 288) QSize(0, 288) QSize(572, 288)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationChartDecisionSplit QRect(0,0 1323x324) QSize(572, 158) QSize(0, 158) QSize(478, 163)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationDecisionSidebar QRect(1037,0 286x324) QSize(160, 146) QSize(246, 144) QSize(160, 163)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationThresholdTable QRect(11,30 1301x248) QSize(55, 55) QSize(0, 88) QSize(256, 192)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationApplyThresholdButton QRect(1219,8 91x33) QSize(91, 33) QSize(0, 32) QSize(91, 33)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1366, 900) tab 1 QRect(11,105 1335x784) window QRect(0,0 1366x900)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1366, 900) tab 2 QRect(11,105 1335x784) window QRect(0,0 1366x900)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1366, 900) tab 3 QRect(11,105 1335x784) window QRect(0,0 1366x900)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1600, 1000) tab 0 QRect(11,105 1569x884) window QRect(0,0 1600x1000)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationThresholdPage QRect(0,0 1569x848) QSize(584, 420) QSize(0, 0) QSize(584, 420)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationDecisionSplit QRect(3,72 1557x716) QSize(572, 288) QSize(0, 288) QSize(572, 288)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationChartDecisionSplit QRect(0,0 1557x377) QSize(572, 158) QSize(0, 158) QSize(478, 163)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationDecisionSidebar QRect(1271,0 286x377) QSize(160, 146) QSize(246, 144) QSize(160, 163)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationThresholdTable QRect(11,30 1535x295) QSize(55, 55) QSize(0, 88) QSize(256, 192)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() decision_geometry evaluationApplyThresholdButton QRect(1453,8 91x33) QSize(91, 33) QSize(0, 32) QSize(91, 33)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1600, 1000) tab 1 QRect(11,105 1569x884) window QRect(0,0 1600x1000)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1600, 1000) tab 2 QRect(11,105 1569x884) window QRect(0,0 1600x1000)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() layout_geometry QSize(1600, 1000) tab 3 QRect(11,105 1569x884) window QRect(0,0 1600x1000)
+20: QINFO  : EvaluationPanelTests::responsiveDiagnosticLayouts() diagnostic_layout_evidence synthetic_fixture_only sizes 1100x640 1100x720 1260x820 1366x768 1366x900 1600x1000; panel fixtures, not application minimum tabs 4
+20: PASS   : EvaluationPanelTests::responsiveDiagnosticLayouts()
+20: QWARN  : EvaluationPanelTests::externalSnapshotImportNeedsNoModelAndCannotApplyUnknownProfile() This plugin does not support propagateSizeHints()
+20: QWARN  : EvaluationPanelTests::externalSnapshotImportNeedsNoModelAndCannotApplyUnknownProfile() This plugin does not support propagateSizeHints()
+20: PASS   : EvaluationPanelTests::externalSnapshotImportNeedsNoModelAndCannotApplyUnknownProfile()
+20: PASS   : EvaluationPanelTests::captureFluentLayout()
+20: PASS   : EvaluationPanelTests::cleanupTestCase()
+20: Totals: 34 passed, 0 failed, 0 skipped, 0 blacklisted, 1921ms
+20: ********* Finished testing of EvaluationPanelTests *********
+1/1 Test #20: vision-evaluation-panel-tests ....   Passed    1.93 sec
+
+The following tests passed:
+	vision-evaluation-panel-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   1.93 sec

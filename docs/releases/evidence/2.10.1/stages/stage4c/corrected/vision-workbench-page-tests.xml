@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="0"
+	timestamp="2026-10-29T19:57:20"
+	>
+	<testcase name="vision-workbench-page-tests" classname="vision-workbench-page-tests" time="0.345379" status="run">
+		<system-out>********* Start testing of WorkbenchPageTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : WorkbenchPageTests::initTestCase()
+PASS   : WorkbenchPageTests::widgetIdentityAndSubpagesRemainStable()
+PASS   : WorkbenchPageTests::rangeChangesRemainSynchronizedWithoutDuplicateIntents()
+PASS   : WorkbenchPageTests::spinWheelCannotChangeInferenceParameters()
+PASS   : WorkbenchPageTests::actionsAreIntentsAndNeverCreateFiles()
+PASS   : WorkbenchPageTests::classAndQueueSignalsCarryUserValues()
+PASS   : WorkbenchPageTests::reviewControlsAndNavigationRemainLocal()
+PASS   : WorkbenchPageTests::canvasVisibilityAndTableSelectionStayWithinPage()
+PASS   : WorkbenchPageTests::cleanupTestCase()
+Totals: 9 passed, 0 failed, 0 skipped, 0 blacklisted, 241ms
+********* Finished testing of WorkbenchPageTests *********
+</system-out>
+	</testcase>
+</testsuite>

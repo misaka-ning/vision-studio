@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="5"
+	timestamp="2026-10-29T19:47:45"
+	>
+	<testcase name="vision-evaluation-reporting-tests" classname="vision-evaluation-reporting-tests" time="5.76442" status="run">
+		<system-out>Creating new Ultralytics Settings v0.0.8 file ✅ 
+View Ultralytics Settings with 'yolo settings' or at '/tmp/vision-evaluation-tests-v8dg7o8u/ultralytics/Ultralytics/settings.json'
+Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/usage/settings.
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 5.384s
+
+OK
+</system-out>
+	</testcase>
+</testsuite>

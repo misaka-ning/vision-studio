@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="4"
+	timestamp="2026-10-29T19:43:12"
+	>
+	<testcase name="vision-netron-server-tests" classname="vision-netron-server-tests" time="4.93404" status="run">
+		<system-out>test_concurrent_sessions_have_different_ephemeral_ports (__main__.NetronServerTests.test_concurrent_sessions_have_different_ephemeral_ports) ... ok
+test_eof_and_sigterm_close_session (__main__.NetronServerTests.test_eof_and_sigterm_close_session) ... ok
+test_external_data_stays_within_model_directory (__main__.NetronServerTests.test_external_data_stays_within_model_directory) ... /home/misaka/miniconda3/lib/python3.14/tempfile.py:484: ResourceWarning: Implicitly cleaning up &lt;HTTPError 404: 'Not Found'&gt;
+  _warnings.warn(self.warn_message, ResourceWarning)
+ok
+test_invalid_command_releases_port (__main__.NetronServerTests.test_invalid_command_releases_port) ... ok
+test_invalid_path_directory_and_arguments_emit_errors (__main__.NetronServerTests.test_invalid_path_directory_and_arguments_emit_errors) ... ok
+test_missing_module_and_wrong_version_are_clear_errors (__main__.NetronServerTests.test_missing_module_and_wrong_version_are_clear_errors) ... ok
+test_pickle_payload_is_never_deserialized_or_framework_imported ...
+The rest of the test output was removed since it exceeds the threshold of 1024 bytes.
+</system-out>
+	</testcase>
+</testsuite>

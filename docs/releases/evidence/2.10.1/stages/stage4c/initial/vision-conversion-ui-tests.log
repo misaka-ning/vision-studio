@@ -1,0 +1,45 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 10
+    Start 10: vision-conversion-ui-tests
+
+10: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-conversion-ui-tests
+10: Environment variables: 
+10:  QT_QPA_PLATFORM=offscreen
+10: Test timeout computed to be: 60
+10: ********* Start testing of ConversionUiTests *********
+10: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+10: PASS   : ConversionUiTests::initTestCase()
+10: QWARN  : ConversionUiTests::formatAndUnsupportedSource() This plugin does not support propagateSizeHints()
+10: PASS   : ConversionUiTests::formatAndUnsupportedSource()
+10: QWARN  : ConversionUiTests::successKeepsJobSourceAndUsesLatestSelectionNextTime() This plugin does not support propagateSizeHints()
+10: PASS   : ConversionUiTests::successKeepsJobSourceAndUsesLatestSelectionNextTime()
+10: QWARN  : ConversionUiTests::existingOutputIsNeverOverwritten() This plugin does not support propagateSizeHints()
+10: PASS   : ConversionUiTests::existingOutputIsNeverOverwritten()
+10: QWARN  : ConversionUiTests::cancelIsResponsiveAndKeepsUnrelatedDirectories() This plugin does not support propagateSizeHints()
+10: PASS   : ConversionUiTests::cancelIsResponsiveAndKeepsUnrelatedDirectories()
+10: QWARN  : ConversionUiTests::completedArtifactCanStillCancelStuckWorker() This plugin does not support propagateSizeHints()
+10: PASS   : ConversionUiTests::completedArtifactCanStillCancelStuckWorker()
+10: QWARN  : ConversionUiTests::workerCannotRedirectCleanupToAnotherDirectory() This plugin does not support propagateSizeHints()
+10: PASS   : ConversionUiTests::workerCannotRedirectCleanupToAnotherDirectory()
+10: PASS   : ConversionUiTests::cleanupTestCase()
+10: Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 678ms
+10: ********* Finished testing of ConversionUiTests *********
+1/1 Test #10: vision-conversion-ui-tests .......   Passed    0.70 sec
+
+The following tests passed:
+	vision-conversion-ui-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.70 sec

@@ -304,6 +304,36 @@ print(json.dumps({'metadata':metadata,'shape':list(output.shape),'finite':bool(n
 '''
 
 
+COMMIT_BOUNDARY_SCRIPT = r'''
+import importlib.util,os,signal,sys
+from pathlib import Path
+spec=importlib.util.spec_from_file_location('actual_conversion',sys.argv[1])
+helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
+phase=sys.argv[2]
+original_emit=helper.Protocol.emit
+def controlled_emit(protocol,kind,message,**fields):
+    original_emit(protocol,kind,message,**fields)
+    if ((phase=='after-result' and kind=='result') or
+        (phase=='before-commit' and kind=='progress' and fields.get('percent')==95)):
+        os.kill(os.getpid(),signal.SIGTERM)
+helper.Protocol.emit=controlled_emit
+if phase in ('cleanup-failure','cleanup-replaced-output'):
+    original_exit=helper.JobDirectory.__exit__
+    def controlled_exit(job,exc_type,exc_value,tb):
+        original_exit(job,exc_type,exc_value,tb)
+        if exc_type is None:
+            output=Path(sys.argv[sys.argv.index('--output')+1])
+            if phase=='cleanup-replaced-output':
+                # Keep the owned inode allocated, so this replacement cannot
+                # accidentally reuse it on a fast local filesystem.
+                output.rename(output.with_name('preserved-owned-artifact'))
+                output.write_bytes(b'concurrently replaced user file')
+            raise helper.ConversionError('controlled_cleanup_failure','Controlled failure before final result notification')
+    helper.JobDirectory.__exit__=controlled_exit
+sys.exit(helper.main(sys.argv[3:]))
+'''
+
+
 class ActualConversionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -474,6 +504,66 @@ class ActualConversionTests(unittest.TestCase):
             with self.subTest(filename=filename, channels=channels):
                 _, result, _ = self.run_conversion(self.fixtures / filename, channels=channels, opset=17)
                 self.assertEqual(result["opset"], 17)
+
+    def run_commit_boundary(self, phase):
+        # This executes the real producer, model load/trace/export/verification,
+        # atomic publication and SIGTERM handler. Only the notification/cleanup
+        # scheduling boundary is controlled; no fake conversion result is used.
+        source = self.fixtures / "modern-c3.pt"
+        source_sha = digest(source)
+        output = self.area / (phase + ".torchscript")
+        work = Path(tempfile.mkdtemp(prefix=convert.JOB_PREFIX, dir=self.area))
+        completed = subprocess.run([PYTHON, "-u", "-c", COMMIT_BOUNDARY_SCRIPT, str(HELPER), phase,
+            "--source", str(source), "--format", "torchscript", "--output", str(output),
+            "--image-size", "64", "--work-dir", str(work)], env=self.environment,
+            capture_output=True, text=True, timeout=90)
+        rows = [json.loads(line) for line in completed.stdout.splitlines()]
+        self.assertTrue(rows, completed.stderr[-3000:])
+        self.assertEqual(digest(source), source_sha)
+        self.assertFalse(work.exists(), completed.stderr[-3000:])
+        self.assertEqual({str(path.relative_to(self.area / "persistent-user")): digest(path)
+            for path in (self.area / "persistent-user").rglob("*") if path.is_file()}, self.user_snapshot)
+        print("CONVERSION_BOUNDARY_EVIDENCE " + json.dumps({"phase": phase,
+            "returncode": completed.returncode, "events": rows,
+            "output_exists": output.is_file(), "output_sha256": digest(output) if output.is_file() else None,
+            "source_sha256": source_sha, "source_unchanged": True, "job_removed": True},
+            ensure_ascii=False), flush=True)
+        return output, completed, rows
+
+    def test_cancel_after_success_notification_preserves_actual_completed_artifact(self):
+        output, completed, rows = self.run_commit_boundary("after-result")
+        self.assertEqual(completed.returncode, 130, completed.stderr[-3000:])
+        results = [row for row in rows if row["type"] == "result"]
+        self.assertEqual(len(results), 1)
+        self.assertEqual(rows[-1]["code"], "cancelled")
+        self.assertTrue(output.is_file(), "A success event already delivered to the UI must not be rolled back by SIGTERM")
+        self.assertEqual(digest(output), results[0]["sha256"])
+        verified = subprocess.run([PYTHON, "-c", VERIFY_SCRIPT, str(output), "3", "64", "torchscript",
+            str(self.fixtures / "modern-c3.pt"), str(PROJECT), str(self.target_probe)],
+            env=isolated_environment(self.area / "verify-completed-output"), capture_output=True, text=True, timeout=40)
+        self.assertEqual(verified.returncode, 0, verified.stderr[-3000:])
+        self.assertTrue(json.loads(verified.stdout)["finite"])
+
+    def test_cancel_immediately_before_commit_leaves_no_output(self):
+        output, completed, rows = self.run_commit_boundary("before-commit")
+        self.assertEqual(completed.returncode, 130, completed.stderr[-3000:])
+        self.assertEqual(rows[-1]["code"], "cancelled")
+        self.assertFalse(any(row["type"] == "result" for row in rows))
+        self.assertFalse(output.exists())
+
+    def test_failure_before_result_notification_still_rolls_back_own_inode(self):
+        output, completed, rows = self.run_commit_boundary("cleanup-failure")
+        self.assertEqual(completed.returncode, 1, completed.stderr[-3000:])
+        self.assertEqual(rows[-1]["code"], "controlled_cleanup_failure")
+        self.assertFalse(any(row["type"] == "result" for row in rows))
+        self.assertFalse(output.exists())
+
+    def test_failure_before_notification_preserves_replaced_user_output(self):
+        output, completed, rows = self.run_commit_boundary("cleanup-replaced-output")
+        self.assertEqual(completed.returncode, 1, completed.stderr[-3000:])
+        self.assertEqual(rows[-1]["code"], "controlled_cleanup_failure")
+        self.assertFalse(any(row["type"] == "result" for row in rows))
+        self.assertEqual(output.read_bytes(), b"concurrently replaced user file")
 
     def test_bad_metadata_and_bare_weights_leave_no_artifact_or_job(self):
         for filename in ("bad-metadata.pt", "bare-weights.pt"):

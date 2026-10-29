@@ -1,0 +1,41 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 43
+    Start 43: vision-workspace-drop-filter-tests
+
+43: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-workspace-drop-filter-tests
+43: Environment variables: 
+43:  QT_QPA_PLATFORM=offscreen
+43:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+43: Test timeout computed to be: 120
+43: ********* Start testing of WorkspaceDropFilterTests *********
+43: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+43: PASS   : WorkspaceDropFilterTests::initTestCase()
+43: PASS   : WorkspaceDropFilterTests::orderedCanonicalModelKeysUseCopyAndSynchronousAcknowledgement()
+43: PASS   : WorkspaceDropFilterTests::rejectedMixedRemoteMoveAndLinkBatchesEmitNoImport()
+43: PASS   : WorkspaceDropFilterTests::dragLeaveRestoresOnlyActiveHoverAndPreservesRealError()
+43: PASS   : WorkspaceDropFilterTests::permissionSnapshotBlocksEveryDomainActivityWithoutMutation()
+43: PASS   : WorkspaceDropFilterTests::intentsRequireTheCurrentTokenAndPreserveCancelledDrop()
+43: PASS   : WorkspaceDropFilterTests::previewScopeHandlesRealTypesAndIgnoresOtherSurfacesAndWindows()
+43: PASS   : WorkspaceDropFilterTests::itemModelMimeStaysWithTheNativeList()
+43: PASS   : WorkspaceDropFilterTests::cleanupTestCase()
+43: Totals: 9 passed, 0 failed, 0 skipped, 0 blacklisted, 3ms
+43: ********* Finished testing of WorkspaceDropFilterTests *********
+1/1 Test #43: vision-workspace-drop-filter-tests ...   Passed    0.12 sec
+
+The following tests passed:
+	vision-workspace-drop-filter-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.12 sec

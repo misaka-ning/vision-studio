@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="118"
+	timestamp="2026-10-29T19:57:37"
+	>
+	<testcase name="vision-model-conversion-tests" classname="vision-model-conversion-tests" time="118.888" status="run">
+		<system-out>CONVERSION_EVIDENCE {"source": "/tmp/vision-conversion-actual-ez43_ucg/fixtures/modern-c1.pt", "format": "onnx", "opset": 12, "input_shape": [1, 1, 64, 64], "output_shape": [1, 6, 256], "max_abs_error": 1.52587890625e-05, "reference": "selected-original-model", "system_opencv": {"opencv_version": "4.5.4", "max_abs_error": 1.52587890625e-05, "finite": true, "shape": [1, 6, 256]}, "portable_detection_buffers": [], "traced_convolution_allow_tf32": [], "sha256": "1f87a621857e5b2033ec95f648f53b68b6d3c31e4bc2b28830a6be5f2c74b2e1", "source_sha256": "78f2a219f6adf4dd6439529de9c5b3478f3a246a87bb744b2fd64b18829915e2", "source_unchanged": true, "original_user_state_unchanged": true, "job_removed": true}
+.CONVERSION_EVIDENCE {"source": "/tmp/vision-conversion-actual-ez43_ucg/fixtures/focus-c1.pt", "format": "onnx", "opset": 12, "input_shape": [1, 1, 64, 64], "output_shape": [1, 768, 7], "max_abs_error": 1.1444091796875e-05, "reference": "selected-original-model", "system_opencv": {"opencv_version": "4.5.4", "max_abs_erro...
+The rest of the test output was removed since it exceeds the threshold of 1024 bytes.
+</system-out>
+	</testcase>
+</testsuite>

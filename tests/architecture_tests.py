@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: AGPL-3.0-only
-"""Read-only initial architectural guards; no Qt/model/process/network execution.
+"""Read-only architecture boundary guards; no Qt/model/process/network execution.
 
-These checks intentionally do not freeze MainWindow size, private state, friend
-classes, controller count, file placement within UI, or target decomposition.
+These checks reject execution handles, mutable result maps and test friends in
+MainWindow, without freezing line count or every private presentation field.
 The CLI check is lexical inventory only, not executable smoke acceptance.
 """
 from pathlib import Path
@@ -37,6 +37,27 @@ class ArchitectureTests(unittest.TestCase):
                         name.rsplit('/', 1)[-1] in forbidden):
                     violations.append((path.relative_to(ROOT).as_posix(), name))
         self.assertEqual(violations, [], 'Core must not acquire a UI dependency')
+
+    def test_application_layer_does_not_depend_on_widgets_or_pages(self):
+        forbidden = {'QWidget', 'QMainWindow', 'QApplication', 'QDialog', 'QFileDialog', 'QMessageBox'}
+        violations = []
+        for path in sources(SOURCE / 'app'):
+            for include in INCLUDE.findall(path.read_text(encoding='utf-8')):
+                name = include.replace('\\', '/')
+                if ((path.parent / name).resolve().is_relative_to(SOURCE / 'ui') or
+                    name.startswith(('ui/', 'QtWidgets/', 'QtWebEngine')) or
+                    name.rsplit('/', 1)[-1] in forbidden):
+                    violations.append((path.relative_to(ROOT).as_posix(), name))
+        self.assertEqual(violations, [], 'Application/services must remain compilable without the UI layer')
+
+    def test_window_does_not_own_execution_resources_or_test_friends(self):
+        header = (SOURCE / 'ui' / 'mainwindow.h').read_text(encoding='utf-8')
+        # Services/controllers may be composed by the window. Execution handles
+        # and independently mutable cache maps belong to those owners.
+        declarations = re.findall(r'^\s*([^;{}]+);', header, re.MULTILINE)
+        forbidden = re.compile(r'\b(?:InferenceWorker|EvaluationWorker|QProcess|QThread|QThreadPool)\s*[*&]|QHash<[^;]*(?:Cached|InferenceResult)')
+        self.assertFalse([d for d in declarations if forbidden.search(d)])
+        self.assertNotRegex(header, r'friend\s+class\s+\w*Tests\b')
 
     def test_production_does_not_import_test_only_dependencies(self):
         violations = []

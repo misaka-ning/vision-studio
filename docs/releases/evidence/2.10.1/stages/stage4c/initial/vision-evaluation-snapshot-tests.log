@@ -1,0 +1,59 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 23
+    Start 23: vision-evaluation-snapshot-tests
+
+23: Test command: /opt/VisionStudio/runtime/bin/python "-B" "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/tests/evaluation_snapshot_tests.py"
+23: Environment variables: 
+23:  OMP_NUM_THREADS=1
+23:  OPENBLAS_NUM_THREADS=1
+23: Test timeout computed to be: 300
+23: test_cannot_change_inference_class_or_model (__main__.SnapshotTests) ... Creating new Ultralytics Settings v0.0.8 file ✅ 
+23: View Ultralytics Settings with 'yolo settings' or at '/tmp/vision-evaluation-tests-1ted8r35/ultralytics/Ultralytics/settings.json'
+23: Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/usage/settings.
+23: ok
+23: test_completed_and_planned_counts_must_agree (__main__.SnapshotTests) ... ok
+23: test_copy_preserves_exact_source_bytes_and_detects_destination_mutation (__main__.SnapshotTests) ... ok
+23: test_destination_predictions_changed_after_export_prevent_publication (__main__.SnapshotTests) ... ok
+23: test_duplicate_json_fields_and_unknown_analysis_options_are_rejected (__main__.SnapshotTests) ... ok
+23: test_external_profile_restriction_and_provenance_survive_reanalysis (__main__.SnapshotTests) ... ok
+23: test_future_schema_and_forged_complete_scope_are_rejected (__main__.SnapshotTests) ... ok
+23: test_invalid_gt_rejected_even_with_recomputed_manifest_fingerprint (__main__.SnapshotTests) ... ok
+23: test_mismatched_reserved_directory_is_not_reused (__main__.SnapshotTests) ... ok
+23: test_modified_predictions_rejected (__main__.SnapshotTests) ... ok
+23: test_modified_review_sample_rejected (__main__.SnapshotTests) ... ok
+23: test_mutation_during_render_prevents_final_report_publication (__main__.SnapshotTests) ... ok
+23: test_no_overwrite_and_no_nested_output (__main__.SnapshotTests) ... ok
+23: test_partial_snapshot_stays_partial_and_does_not_publish_full_ap (__main__.SnapshotTests) ... ok
+23: test_preexisting_artifact_or_dangling_link_cannot_be_overwritten (__main__.SnapshotTests) ... ok
+23: test_qt_reserved_directory_matches_exact_options_and_state (__main__.SnapshotTests) ... ok
+23: test_reanalysis_works_after_model_dataset_deleted_and_keeps_source (__main__.SnapshotTests) ... ok
+23: test_relocated_cache_uses_local_copy_not_original_paths (__main__.SnapshotTests) ... ok
+23: test_request_divergence_rejected (__main__.SnapshotTests) ... ok
+23: test_source_subset_with_all_candidates_stays_subset (__main__.SnapshotTests) ... ok
+23: test_source_symlink_file_or_sample_directory_is_rejected (__main__.SnapshotTests) ... ok
+23: test_threshold_below_candidate_floor_rejected (__main__.SnapshotTests) ... ok
+23: test_unknown_source_request_metadata_retained_without_new_semantics (__main__.SnapshotTests) ... ok
+23: 
+23: ----------------------------------------------------------------------
+23: Ran 23 tests in 1.647s
+23: 
+23: OK
+1/1 Test #23: vision-evaluation-snapshot-tests ...   Passed    1.95 sec
+
+The following tests passed:
+	vision-evaluation-snapshot-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   1.95 sec

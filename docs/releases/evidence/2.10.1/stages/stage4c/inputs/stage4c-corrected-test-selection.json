@@ -1,0 +1,20 @@
+{
+  "reason": "Rerun every changed native test executable plus prior failed/fixture-skipped suite. All other tested native executables remain byte-identical; no core/app/algorithm/helper changed. Final release still requires separate single full44 run.",
+  "selected": [
+    "vision-ui-tests",
+    "vision-batch-responsiveness-tests",
+    "vision-scope-filter-ui-tests",
+    "vision-conversion-inference-tests",
+    "vision-input-drop-ui-tests",
+    "vision-dataset-session-ui-tests",
+    "vision-evaluation-integration-tests",
+    "vision-workbench-page-tests",
+    "vision-workspace-pages-tests",
+    "vision-simple-pages-tests",
+    "vision-component-shutdown-tests",
+    "vision-runtime-setup-shutdown-tests",
+    "vision-workspace-drop-filter-tests",
+    "vision-window-shutdown-tests",
+    "vision-model-conversion-tests"
+  ]
+}

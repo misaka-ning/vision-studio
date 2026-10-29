@@ -5,14 +5,180 @@
 #include <QSignalSpy>
 #include <QTemporaryDir>
 #include <QtTest>
+#include <cmath>
+#include <functional>
 
 using namespace vision;
 using namespace vision::app;
+
+namespace
+{
+WorkbenchDraft populatedDraft()
+{
+    WorkbenchDraft draft;
+    draft.confidence = .123456789012345; draft.iou = .234567890123456;
+    auto &p = draft.parameters;
+    p.modelPath = "/authority/model.onnx"; p.labels = {"first", "second"}; p.classFilter = {1};
+    p.modelClassCount = 2; p.task = ModelTask::YoloV5; p.inputSize = 416;
+    p.confidence = .1f; p.iou = .2f; p.maxDetections = 789;
+    p.cpuThreads = 4; p.resolvedCpuThreads = 2; p.swapRB = false;
+    p.colorMode = InputColorMode::Color; p.inputChannels = 3;
+    p.scale = .00392156862745098; p.meanR = 7.125; p.meanG = 8.25; p.meanB = 9.5;
+    p.device = ComputeDevice::CUDA; p.deviceIndex = 3; p.resolvedDevice = ComputeDevice::CPU;
+    p.deviceName = "loaded CPU"; p.deviceNotice = "verified notice";
+    draft.classFilterText = "1，0"; draft.labelsPath = "/authority/classes.names";
+    draft.exportDirectory = "/authority/results"; draft.cameraIndex = 5;
+    draft.stereoView = StereoView::Right; draft.automaticExport = true;
+    return draft;
+}
+
+QVariantMap draftFields(const WorkbenchDraft &draft)
+{
+    const auto &p = draft.parameters;
+    QVariantList filter;
+    for (int id : p.classFilter) filter.append(id);
+    return {{"confidence", draft.confidence}, {"iou", draft.iou},
+        {"modelPath", p.modelPath}, {"labels", p.labels}, {"classFilter", filter},
+        {"modelClassCount", p.modelClassCount}, {"task", int(p.task)}, {"inputSize", p.inputSize},
+        {"backendConfidence", p.confidence}, {"backendIou", p.iou},
+        {"maxDetections", p.maxDetections}, {"cpuThreads", p.cpuThreads}, {"resolvedCpuThreads", p.resolvedCpuThreads},
+        {"swapRB", p.swapRB}, {"colorMode", int(p.colorMode)}, {"inputChannels", p.inputChannels},
+        {"scale", p.scale}, {"meanR", p.meanR}, {"meanG", p.meanG}, {"meanB", p.meanB},
+        {"device", int(p.device)}, {"deviceIndex", p.deviceIndex}, {"resolvedDevice", int(p.resolvedDevice)},
+        {"deviceName", p.deviceName}, {"deviceNotice", p.deviceNotice},
+        {"classFilterText", draft.classFilterText}, {"labelsPath", draft.labelsPath},
+        {"exportDirectory", draft.exportDirectory}, {"cameraIndex", draft.cameraIndex},
+        {"stereoView", int(draft.stereoView)}, {"automaticExport", draft.automaticExport}};
+}
+
+struct FieldCommand
+{
+    const char *name;
+    std::function<void(WorkbenchConfiguration &)> apply;
+    QVariantMap expectedChanges;
+};
+const QVector<FieldCommand> &fieldCommands()
+{
+    static const QVector<FieldCommand> commands{
+        {"task", [](auto &c) { c.setTask(ModelTask::Classification); }, {{"task", int(ModelTask::Classification)}}},
+        {"input-size", [](auto &c) { c.setInputSize(736); }, {{"inputSize", 736}}},
+        {"confidence", [](auto &c) { c.setConfidence(.7000000000000001); }, {{"confidence", .7000000000000001}}},
+        {"iou", [](auto &c) { c.setIou(.6100000000000001); }, {{"iou", .6100000000000001}}},
+        {"scale", [](auto &c) { c.setScale(.0123456789012345); }, {{"scale", .0123456789012345}}},
+        {"mean-r", [](auto &c) { c.setMeanR(.123456789012345); }, {{"meanR", .123456789012345}}},
+        {"mean-g", [](auto &c) { c.setMeanG(.234567890123456); }, {{"meanG", .234567890123456}}},
+        {"mean-b", [](auto &c) { c.setMeanB(.345678901234567); }, {{"meanB", .345678901234567}}},
+        {"input-color-both", [](auto &c) { c.setInputColor(InputColorMode::Grayscale, true); },
+            {{"colorMode", int(InputColorMode::Grayscale)}, {"swapRB", true}}},
+        {"input-color-mode", [](auto &c) { c.setInputColor(InputColorMode::Grayscale, false); },
+            {{"colorMode", int(InputColorMode::Grayscale)}}},
+        {"input-color-swap", [](auto &c) { c.setInputColor(InputColorMode::Color, true); }, {{"swapRB", true}}},
+        {"compute-device", [](auto &c) { c.setComputeDevice(ComputeDevice::Auto); }, {{"device", int(ComputeDevice::Auto)}}},
+        {"device-index", [](auto &c) { c.setDeviceIndex(9); }, {{"deviceIndex", 9}}},
+        {"class-filter", [](auto &c) { c.setClassFilterText("32，0 32"); }, {{"classFilterText", "32，0 32"}}},
+        {"camera-index", [](auto &c) { c.setCameraIndex(12); }, {{"cameraIndex", 12}}},
+        {"stereo-view", [](auto &c) { c.setStereoView(StereoView::Left); }, {{"stereoView", int(StereoView::Left)}}},
+        {"automatic-export", [](auto &c) { c.setAutomaticExport(false); }, {{"automaticExport", false}}}};
+    return commands;
+}
+}
 
 class WorkbenchConfigurationTests final : public QObject
 {
     Q_OBJECT
   private slots:
+    void fieldCommandsPreserveUnrelatedAuthority_data()
+    {
+        QTest::addColumn<int>("commandIndex");
+        const auto &commands = fieldCommands();
+        for (int index = 0; index < commands.size(); ++index)
+            QTest::newRow(commands[index].name) << index;
+    }
+
+    void fieldCommandsPreserveUnrelatedAuthority()
+    {
+        QFETCH(int, commandIndex);
+        WorkbenchConfiguration configuration;
+        configuration.replaceDraft(populatedDraft());
+        const auto &command = fieldCommands()[commandIndex];
+        auto expected = draftFields(configuration.snapshot());
+        for (auto it = command.expectedChanges.cbegin(); it != command.expectedChanges.cend(); ++it)
+            expected.insert(it.key(), it.value());
+        QSignalSpy changed(&configuration, &WorkbenchConfiguration::changed);
+        QVector<QVariantMap> published;
+        connect(&configuration, &WorkbenchConfiguration::changed, this, [&] {
+            published.append(draftFields(configuration.snapshot()));
+        });
+        command.apply(configuration);
+        QCOMPARE(changed.count(), 1);
+        QCOMPARE(draftFields(configuration.snapshot()), expected);
+        QCOMPARE(published.size(), 1);
+        QCOMPARE(published.first(), expected);
+        command.apply(configuration);
+        QCOMPARE(changed.count(), 1);
+        QCOMPARE(published.size(), 1);
+        QCOMPARE(draftFields(configuration.snapshot()), expected);
+    }
+
+    void currentLegalValuesAreNoOps()
+    {
+        WorkbenchConfiguration configuration;
+        const auto draft = populatedDraft();
+        configuration.replaceDraft(draft);
+        QSignalSpy changed(&configuration, &WorkbenchConfiguration::changed);
+        const auto &p = draft.parameters;
+        configuration.setTask(p.task); configuration.setInputSize(p.inputSize);
+        configuration.setConfidence(draft.confidence); configuration.setIou(draft.iou);
+        configuration.setScale(p.scale);
+        configuration.setMeanR(p.meanR); configuration.setMeanG(p.meanG); configuration.setMeanB(p.meanB);
+        configuration.setInputColor(p.colorMode, p.swapRB);
+        configuration.setComputeDevice(p.device); configuration.setDeviceIndex(p.deviceIndex);
+        configuration.setClassFilterText(draft.classFilterText); configuration.setCameraIndex(draft.cameraIndex);
+        configuration.setStereoView(draft.stereoView); configuration.setAutomaticExport(draft.automaticExport);
+        QCOMPARE(changed.count(), 0);
+        QCOMPARE(draftFields(configuration.snapshot()), draftFields(draft));
+    }
+
+    void doubleCommandsRetainAdjacentRepresentableValues()
+    {
+        WorkbenchConfiguration configuration;
+        const auto before = populatedDraft();
+        configuration.replaceDraft(before);
+        const double confidence = std::nextafter(before.confidence, 1.0);
+        const double iou = std::nextafter(before.iou, 1.0);
+        const double scale = std::nextafter(before.parameters.scale, 1.0);
+        const double meanR = std::nextafter(before.parameters.meanR, 10.0);
+        const double meanG = std::nextafter(before.parameters.meanG, 10.0);
+        const double meanB = std::nextafter(before.parameters.meanB, 10.0);
+        QSignalSpy changed(&configuration, &WorkbenchConfiguration::changed);
+        configuration.setConfidence(confidence); configuration.setIou(iou); configuration.setScale(scale);
+        configuration.setMeanR(meanR); configuration.setMeanG(meanG); configuration.setMeanB(meanB);
+        const auto after = configuration.snapshot();
+        QVERIFY(after.confidence == confidence); QVERIFY(after.iou == iou);
+        QVERIFY(after.parameters.scale == scale); QVERIFY(after.parameters.meanR == meanR);
+        QVERIFY(after.parameters.meanG == meanG); QVERIFY(after.parameters.meanB == meanB);
+        QCOMPARE(after.parameters.confidence, before.parameters.confidence);
+        QCOMPARE(after.parameters.iou, before.parameters.iou);
+        QCOMPARE(changed.count(), 6);
+    }
+
+    void labelImportPreservesExistingMappingOnFailureAndKeepsUtf8Names()
+    {
+        QTemporaryDir directory; QVERIFY(directory.isValid());
+        WorkbenchConfiguration configuration; configuration.setLabels({"original"}, "/original.names");
+        QString error;
+        QVERIFY(!configuration.importLabels(directory.filePath("missing"), &error)); QVERIFY(!error.isEmpty());
+        QCOMPARE(configuration.snapshot().parameters.labels, QStringList{"original"});
+        QFile empty(directory.filePath("empty.txt")); QVERIFY(empty.open(QIODevice::WriteOnly)); empty.write(" \r\n"); empty.close();
+        QVERIFY(!configuration.importLabels(empty.fileName(), &error)); QCOMPARE(error, QString("标签文件为空。"));
+        QCOMPARE(configuration.snapshot().labelsPath, QString("/original.names"));
+        QFile valid(directory.filePath("labels.names")); QVERIFY(valid.open(QIODevice::WriteOnly));
+        valid.write(QString(QChar(0xfeff)).toUtf8() + QString(" 足球 \r\n\n 球门 \n").toUtf8()); valid.close();
+        QVERIFY(configuration.importLabels(valid.fileName(), &error));
+        QCOMPARE(configuration.snapshot().parameters.labels, QStringList({"足球", "球门"}));
+        QCOMPARE(configuration.snapshot().labelsPath, valid.fileName());
+    }
+
     void compositionPreservesDraftAndOriginalClassIds()
     {
         WorkbenchConfiguration configuration;

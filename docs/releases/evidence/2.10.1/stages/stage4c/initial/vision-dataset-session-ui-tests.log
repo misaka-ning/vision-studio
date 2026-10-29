@@ -1,0 +1,60 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 18
+    Start 18: vision-dataset-session-ui-tests
+
+18: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-dataset-session-ui-tests
+18: Environment variables: 
+18:  QT_QPA_PLATFORM=offscreen
+18:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+18: Test timeout computed to be: 240
+18: ********* Start testing of DatasetSessionUiTests *********
+18: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+18: PASS   : DatasetSessionUiTests::initTestCase()
+18: PASS   : DatasetSessionUiTests::startupPreferenceDefaultsOnAndPersistsWithoutErasingTheSession()
+18: PASS   : DatasetSessionUiTests::switchingPreferenceOffInvalidatesAlreadyDeferredRestore()
+18: PASS   : DatasetSessionUiTests::guideImmediatelyPrecedesMoreWithoutChangingRouteTargets()
+18: QINFO  : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-train) dataset_session_restore_evidence directory train images 1 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 13
+18: PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-train)
+18: QINFO  : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-val) dataset_session_restore_evidence directory val images 2 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 13
+18: PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-val)
+18: QINFO  : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-test) dataset_session_restore_evidence directory test images 3 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 13
+18: PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-test)
+18: QINFO  : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(yaml-train) dataset_session_restore_evidence yaml train images 1 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 13
+18: PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(yaml-train)
+18: QINFO  : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(yaml-val) dataset_session_restore_evidence yaml val images 2 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 13
+18: PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(yaml-val)
+18: QINFO  : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(yaml-test) dataset_session_restore_evidence yaml test images 3 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 13
+18: PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(yaml-test)
+18: PASS   : DatasetSessionUiTests::failedImportKeepsLastSuccessfulRecord()
+18: QINFO  : DatasetSessionUiTests::cancelledQueuePopulationKeepsLastSuccessfulRecord() dataset_session_cancel_evidence partial_count 96 stop_return_ms 4
+18: PASS   : DatasetSessionUiTests::cancelledQueuePopulationKeepsLastSuccessfulRecord()
+18: PASS   : DatasetSessionUiTests::missingCorruptAndUnavailableSessionsRecoverSafely(missing-json)
+18: PASS   : DatasetSessionUiTests::missingCorruptAndUnavailableSessionsRecoverSafely(corrupt-json)
+18: PASS   : DatasetSessionUiTests::missingCorruptAndUnavailableSessionsRecoverSafely(unknown-schema)
+18: PASS   : DatasetSessionUiTests::missingCorruptAndUnavailableSessionsRecoverSafely(missing-source)
+18: PASS   : DatasetSessionUiTests::explicitManualSelectionWinsBeforeDeferredRestore(manual-then-restore)
+18: PASS   : DatasetSessionUiTests::explicitManualSelectionWinsBeforeDeferredRestore(restore-then-manual-without-event-loop)
+18: QWARN  : DatasetSessionUiTests::openingAndCancellingPickerSuppressesPendingRestore() This plugin does not support propagateSizeHints()
+18: PASS   : DatasetSessionUiTests::openingAndCancellingPickerSuppressesPendingRestore()
+18: PASS   : DatasetSessionUiTests::cleanupTestCase()
+18: Totals: 20 passed, 0 failed, 0 skipped, 0 blacklisted, 9845ms
+18: ********* Finished testing of DatasetSessionUiTests *********
+1/1 Test #18: vision-dataset-session-ui-tests ...   Passed    9.96 sec
+
+The following tests passed:
+	vision-dataset-session-ui-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   9.96 sec

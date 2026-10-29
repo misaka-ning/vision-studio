@@ -1,0 +1,44 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 28
+    Start 28: vision-gpu-environment-service-tests
+
+28: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-gpu-environment-service-tests
+28: Environment variables: 
+28:  QT_QPA_PLATFORM=offscreen
+28: Test timeout computed to be: 90
+28: ********* Start testing of GpuEnvironmentServiceTests *********
+28: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+28: PASS   : GpuEnvironmentServiceTests::initTestCase()
+28: PASS   : GpuEnvironmentServiceTests::probePreservesPayloadArgumentsAndBusyGates()
+28: PASS   : GpuEnvironmentServiceTests::setupParsesChunkedJsonLogsProgressAndAutomaticRecheck()
+28: PASS   : GpuEnvironmentServiceTests::missingToolsRemainRecoverableWithoutProcesses()
+28: PASS   : GpuEnvironmentServiceTests::failedLaunchRetiresOnceAndCompletesShutdown()
+28: PASS   : GpuEnvironmentServiceTests::probeTimeoutKeepsEventLoopResponsive()
+28: PASS   : GpuEnvironmentServiceTests::oversizedProbeOutputIsNotAcceptedAsEnvironment()
+28: PASS   : GpuEnvironmentServiceTests::largePartialSetupOutputStaysBoundedAndFailureDoesNotRecheck()
+28: PASS   : GpuEnvironmentServiceTests::shutdownFromStateSignalDoesNotLaunchAHelperAfterShutdown()
+28: PASS   : GpuEnvironmentServiceTests::cancellationAndShutdownKillOnlyOwnedHelperAsynchronously()
+28: PASS   : GpuEnvironmentServiceTests::probeShutdownAwaitsReapingAndSuppressesNewWork()
+28: PASS   : GpuEnvironmentServiceTests::earlyOwnerDestructionNeverWaitsForStubbornHelper()
+28: PASS   : GpuEnvironmentServiceTests::cleanupTestCase()
+28: Totals: 13 passed, 0 failed, 0 skipped, 0 blacklisted, 950ms
+28: ********* Finished testing of GpuEnvironmentServiceTests *********
+1/1 Test #28: vision-gpu-environment-service-tests ...   Passed    1.01 sec
+
+The following tests passed:
+	vision-gpu-environment-service-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   1.01 sec

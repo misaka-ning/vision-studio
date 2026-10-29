@@ -73,12 +73,16 @@ bool InputSessionController::beginOperation(InputPhase phase)
 {
     if (shuttingDown_) return false;
     cancelOperation(true);
+    // Cancelling an old transaction publishes state synchronously. Its owner
+    // may close while handling that notification, before a new worker exists.
+    if (shuttingDown_) return false;
     previous_ = state_;
     transactionActive_ = true;
     cancellation_ = std::make_shared<std::atomic_bool>(false);
     ++state_.importGeneration;
     updatePhase(phase);
-    return true;
+    // The initial phase notification is another reentrant close boundary.
+    return !shuttingDown_;
 }
 
 bool InputSessionController::loadDataset(const QString &source, const QString &split, const QString &metadata)

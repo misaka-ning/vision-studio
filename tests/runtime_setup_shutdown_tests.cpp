@@ -197,6 +197,28 @@ private slots:
         QTRY_VERIFY(ui::runtimeSetup()->isShutdownReady());
         QCOMPARE(retries, 0);
     }
+    void cancellationSuppressesAlreadyQueuedRetryAndStillAllowsNewPreparation()
+    {
+        QWidget owner;
+        int retries = 0;
+        auto *setup = ui::runtimeSetup();
+        QVERIFY(!ui::ensureCpuRuntime(&owner, [&] { ++retries; }));
+        runtimeReady = true;
+        // Actual success accepts the dialog and extracts its retries into
+        // queued callbacks. Cancel in this same turn before they can execute.
+        dialog()->findChild<QPushButton *>("prepareCpuRuntimeButton")->click();
+        setup->cancelPendingPreparations();
+        QTRY_VERIFY(setup->isShutdownReady());
+        QCOMPARE(retries, 0);
+
+        runtimeReady = false;
+        QVERIFY(!ui::ensureCpuRuntime(&owner, [&] { ++retries; }));
+        QVERIFY(dialog());
+        runtimeReady = true;
+        dialog()->findChild<QPushButton *>("prepareCpuRuntimeButton")->click();
+        QTRY_COMPARE(retries, 1);
+        QTRY_VERIFY(setup->isShutdownReady());
+    }
     void downloadingShutdownReleasesOwnLock()
     {
         QWidget owner;

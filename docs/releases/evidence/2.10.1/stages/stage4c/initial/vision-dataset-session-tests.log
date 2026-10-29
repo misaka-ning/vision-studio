@@ -1,0 +1,49 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 17
+    Start 17: vision-dataset-session-tests
+
+17: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-dataset-session-tests
+17: Test timeout computed to be: 60
+17: ********* Start testing of DatasetSessionTests *********
+17: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+17: PASS   : DatasetSessionTests::initTestCase()
+17: PASS   : DatasetSessionTests::missingFileDoesNotCreateAnything()
+17: PASS   : DatasetSessionTests::roundTripPreservesOriginalSourceAndSplit(train)
+17: PASS   : DatasetSessionTests::roundTripPreservesOriginalSourceAndSplit(val)
+17: PASS   : DatasetSessionTests::roundTripPreservesOriginalSourceAndSplit(test)
+17: PASS   : DatasetSessionTests::optionalMetadataAndUnavailableSourceAreNotFilesystemValidation()
+17: PASS   : DatasetSessionTests::nonFileRecordReportsIoErrorWithoutDeletingIt()
+17: PASS   : DatasetSessionTests::invalidJsonIsPreserved(truncated)
+17: PASS   : DatasetSessionTests::invalidJsonIsPreserved(array)
+17: PASS   : DatasetSessionTests::invalidJsonIsPreserved(unknown-schema)
+17: PASS   : DatasetSessionTests::invalidJsonIsPreserved(wrong-field-type)
+17: PASS   : DatasetSessionTests::invalidJsonIsPreserved(relative-source)
+17: PASS   : DatasetSessionTests::invalidJsonIsPreserved(bad-split)
+17: PASS   : DatasetSessionTests::invalidJsonIsPreserved(relative-metadata)
+17: PASS   : DatasetSessionTests::oversizedInputIsRejectedWithoutChangingIt()
+17: PASS   : DatasetSessionTests::invalidSaveDoesNotReplaceValidRecord()
+17: PASS   : DatasetSessionTests::unwritableParentDoesNotFallBackToTruncatingExistingFile()
+17: QINFO  : DatasetSessionTests::concurrentReadersObserveCompleteOldOrNewRecords() dataset_session_atomic_read_observations 8146 committed_replacements 120
+17: PASS   : DatasetSessionTests::concurrentReadersObserveCompleteOldOrNewRecords()
+17: PASS   : DatasetSessionTests::cleanupTestCase()
+17: Totals: 19 passed, 0 failed, 0 skipped, 0 blacklisted, 58ms
+17: ********* Finished testing of DatasetSessionTests *********
+1/1 Test #17: vision-dataset-session-tests .....   Passed    0.06 sec
+
+The following tests passed:
+	vision-dataset-session-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.06 sec

@@ -2,10 +2,13 @@
 #include "core/datasetsessionstore.h"
 #include "core/evaluationworker.h"
 #include "ui/mainwindow.h"
+#include "ui/pages/workbenchpage.h"
+#include "ui/pages/modelslibrarypage.h"
 #include "ui/evaluationpanel.h"
 #include "ui/imagecanvas.h"
 #include "ui/lazyimagequeue.h"
 #include "ui/modelviewer.h"
+#include "ui_shutdown_helpers.h"
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
@@ -129,6 +132,21 @@ QMap<QString, QByteArray> inputHashes(const QString &root)
 class InputDropUiTests final : public QObject
 {
     Q_OBJECT
+    WorkbenchPage *workbenchPage() const { return window_->findChild<WorkbenchPage *>(); }
+    const WorkbenchPage::Controls &workbenchControls() const { return workbenchPage()->controls(); }
+    vision::app::PreparedResultExport prepareResultExport(const vision::InferenceResult &result,
+        const QString &directory, const vision::ModelConfig &config) const
+    {
+        const auto evaluation = window_->evaluationState();
+        const auto historical = result.evaluationReport == evaluation.directory
+            ? evaluation.report.value("config").toObject() : QJsonObject{};
+        return vision::app::ResultWriter::prepare(result, directory, config, historical);
+    }
+    bool writeResult(const vision::InferenceResult &result, const QString &directory, QString *error) const
+    {
+        return vision::app::ResultWriter::writePrepared(
+            prepareResultExport(result, directory, window_->displayedConfig()), error);
+    }
     std::unique_ptr<QTemporaryDir> area_;
     std::unique_ptr<MainWindow> window_;
     QHash<QByteArray, QByteArray> oldEnvironment_;
@@ -139,8 +157,8 @@ class InputDropUiTests final : public QObject
     bool expectingChoice_ = false;
 
     QString sessionPath() const { return area_->path() + "/data/dataset-session.json"; }
-    QString state() const { return unexpectedDialog_.isEmpty() ? window_->statusLabel_->text() + " | " + window_->lastError_ : unexpectedDialog_; }
-    bool idle() const { return !window_->busy_ && !window_->evaluationWorker_ && !window_->queuePopulating_ && !window_->resultIoPending_; }
+    QString state() const { return unexpectedDialog_.isEmpty() ? window_->findChild<QLabel *>("statusText")->text() + " | " + window_->detectionState().error : unexpectedDialog_; }
+    bool idle() const { return !window_->isWorkbenchBusy() && !window_->isEvaluationBusy() && !window_->inputState().queuePopulating && !window_->pendingResultWrites(); }
     bool waitUntil(const std::function<bool()> &condition, int timeout = 45000)
     {
         QElapsedTimer elapsed; elapsed.start();
@@ -153,15 +171,15 @@ class InputDropUiTests final : public QObject
     bool previewReady(const QString &path, bool processed = false)
     {
         return waitUntil([&, path, processed] {
-            const auto &value = window_->canvas_->result();
+            const auto &value = workbenchControls().canvas->result();
             return idle() && value.source == path && !value.image.isNull() &&
                 (value.inferenceMs > 0) == processed && (!processed ||
-                (window_->lastResult_.source == path && !window_->lastResult_.image.isNull() && window_->exportButton_->isEnabled()));
+                (window_->displayedResult().source == path && !window_->displayedResult().image.isNull() && window_->findChild<QPushButton *>("exportResultButton")->isEnabled()));
         }, 15000);
     }
     void showWindow()
     {
-        window_ = std::make_unique<MainWindow>(); window_->resize(1380, 940); window_->show(); window_->modelViewer_->stop();
+        window_ = std::make_unique<MainWindow>(); window_->resize(1380, 940); window_->show(); window_->findChild<ModelViewer *>()->stop();
     }
     bool drop(QWidget *target, const QList<QUrl> &urls)
     {
@@ -201,7 +219,7 @@ class InputDropUiTests final : public QObject
             }
         });
         chooser.start(10);
-        dropPaths(window_->canvas_, paths);
+        dropPaths(workbenchControls().canvas, paths);
         chooser.stop(); expectingChoice_ = false;
         return observed && unexpectedDialog_.isEmpty();
     }
@@ -237,9 +255,9 @@ class InputDropUiTests final : public QObject
     }
     bool importDataset()
     {
-        return dropPaths(window_->canvas_, {datasetRoot_}) && waitUntil([this] {
-            return idle() && window_->files_ == datasetImages_ && window_->queue_->count() == datasetImages_.size() &&
-                window_->datasetManifest_.value("samples").toArray().size() == datasetImages_.size();
+        return dropPaths(workbenchControls().canvas, {datasetRoot_}) && waitUntil([this] {
+            return idle() && window_->inputState().files == datasetImages_ && workbenchControls().queue->count() == datasetImages_.size() &&
+                window_->inputState().datasetManifest.value("samples").toArray().size() == datasetImages_.size();
         }) && previewReady(datasetImages_.first());
     }
 
@@ -288,11 +306,12 @@ private slots:
         settings.setValue("task", int(vision::ModelTask::YoloV8)); settings.setValue("inputSize", 64);
         settings.setValue("labels", QStringList{"football"}); settings.setValue("confidence", .3); settings.sync();
         unexpectedDialog_.clear(); expectingChoice_ = false; dialogGuard_.start(); showWindow();
-        QVERIFY2(waitUntil([this] { return !window_->modelInspectionPending_ && window_->modelClassCount_ == 1; }, 30000), qPrintable(state()));
+        QVERIFY2(waitUntil([this] { return !window_->modelState().inspectionPending && window_->modelState().classCount == 1; }, 30000), qPrintable(state()));
     }
     void cleanup()
     {
-        if (window_ && window_->busy_) { window_->stopInference(); waitUntil([this] { return idle(); }); }
+        if (window_ && window_->isWorkbenchBusy()) { workbenchPage()->stopRequested(); waitUntil([this] { return idle(); }); }
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out");
         window_.reset(); dialogGuard_.stop(); area_.reset();
         for (auto it = oldEnvironment_.cbegin(); it != oldEnvironment_.cend(); ++it)
             if (hadEnvironment_.value(it.key())) qputenv(it.key().constData(), it.value()); else qunsetenv(it.key().constData());
@@ -320,17 +339,17 @@ private slots:
         }
         const auto original = inputHashes(area_->path() + "/inputs");
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
-        QVERIFY(dropPaths(window_->canvas_, {path}));
+        QVERIFY(dropPaths(workbenchControls().canvas, {path}));
         if (kind == "video") {
-            QTRY_COMPARE_WITH_TIMEOUT(window_->sourceKind_, vision::SourceKind::Video, 10000);
-            QCOMPARE(QFileInfo(window_->streamPath_).canonicalFilePath(), QFileInfo(path).canonicalFilePath());
-            QVERIFY(window_->datasetManifest_.isEmpty());
+            QTRY_COMPARE_WITH_TIMEOUT(window_->inputState().sourceKind, vision::SourceKind::Video, 10000);
+            QCOMPARE(QFileInfo(window_->inputState().streamPath).canonicalFilePath(), QFileInfo(path).canonicalFilePath());
+            QVERIFY(window_->inputState().datasetManifest.isEmpty());
             QVERIFY(!QFileInfo::exists(sessionPath()));
         } else {
-            QVERIFY2(waitUntil([this] { return idle() && window_->files_ == datasetImages_; }), qPrintable(state()));
+            QVERIFY2(waitUntil([this] { return idle() && window_->inputState().files == datasetImages_; }), qPrintable(state()));
             QVERIFY2(previewReady(datasetImages_.first()), qPrintable(state()));
-            QVERIFY(window_->canvas_->result().hasGroundTruth);
-            QCOMPARE(window_->canvas_->result().groundTruth.size(), 1);
+            QVERIFY(workbenchControls().canvas->result().hasGroundTruth);
+            QCOMPARE(workbenchControls().canvas->result().groundTruth.size(), 1);
             QCOMPARE(vision::DatasetSessionStore::load(sessionPath()).session.sourcePath, QFileInfo(path).absoluteFilePath());
         }
         QCOMPARE(starts.count(), 0);
@@ -342,17 +361,17 @@ private slots:
         const QStringList expected{looseImages_[1], looseImages_[0], looseImages_[2]};
         const auto original = inputHashes(area_->path() + "/inputs");
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
-        QVERIFY(dropPaths(window_->canvas_, incoming));
-        QVERIFY2(waitUntil([&] { return idle() && window_->files_ == expected && window_->queue_->count() == expected.size(); }), qPrintable(state()));
+        QVERIFY(dropPaths(workbenchControls().canvas, incoming));
+        QVERIFY2(waitUntil([&] { return idle() && window_->inputState().files == expected && workbenchControls().queue->count() == expected.size(); }), qPrintable(state()));
         QVERIFY2(previewReady(expected.first()), qPrintable(state()));
-        QVERIFY(window_->datasetManifest_.isEmpty());
-        QVERIFY(window_->datasetSamples_.isEmpty());
+        QVERIFY(window_->inputState().datasetManifest.isEmpty());
+        QVERIFY(window_->inputState().datasetSamples.isEmpty());
         for (int row = 0; row < expected.size(); ++row) {
-            QCOMPARE(window_->queue_->item(row)->data(Qt::UserRole).toString(), expected[row]);
-            QVERIFY(window_->queue_->item(row)->data(Qt::UserRole + 11).toBool());
+            QCOMPARE(workbenchControls().queue->item(row)->data(Qt::UserRole).toString(), expected[row]);
+            QVERIFY(workbenchControls().queue->item(row)->data(Qt::UserRole + 11).toBool());
         }
-        QVERIFY(!window_->canvas_->result().hasGroundTruth);
-        QVERIFY(!window_->canvas_->result().hasEvaluationMatches);
+        QVERIFY(!workbenchControls().canvas->result().hasGroundTruth);
+        QVERIFY(!workbenchControls().canvas->result().hasEvaluationMatches);
         QVERIFY(!QFileInfo::exists(sessionPath()));
         QCOMPARE(starts.count(), 0);
         QCOMPARE(inputHashes(area_->path() + "/inputs"), original);
@@ -368,31 +387,31 @@ private slots:
     {
         QFETCH(QString, choice);
         QVERIFY2(importDataset(), qPrintable(state()));
-        const auto manifest = window_->datasetManifest_;
+        const auto manifest = window_->inputState().datasetManifest;
         const QByteArray savedSession = readBytes(sessionPath());
         const auto original = inputHashes(area_->path() + "/inputs");
-        const QString initialSource = window_->canvas_->result().source;
+        const QString initialSource = workbenchControls().canvas->result().source;
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
         QVERIFY2(dropChoosing(looseImages_, choice), qPrintable(state()));
         const bool append = choice == "imageDropAppendButton", cancel = choice == "imageDropCancelButton";
         const QStringList expected = append ? datasetImages_ + looseImages_ : cancel ? datasetImages_ : looseImages_;
-        QVERIFY2(waitUntil([&] { return idle() && window_->files_ == expected && window_->queue_->count() == expected.size(); }), qPrintable(state()));
+        QVERIFY2(waitUntil([&] { return idle() && window_->inputState().files == expected && workbenchControls().queue->count() == expected.size(); }), qPrintable(state()));
         if (cancel) {
-            QCOMPARE(window_->canvas_->result().source, initialSource);
-            QCOMPARE(window_->datasetManifest_, manifest);
+            QCOMPARE(workbenchControls().canvas->result().source, initialSource);
+            QCOMPARE(window_->inputState().datasetManifest, manifest);
         } else if (append) {
-            QCOMPARE(window_->datasetManifest_, manifest);
-            QCOMPARE(window_->datasetSamples_.size(), datasetImages_.size());
+            QCOMPARE(window_->inputState().datasetManifest, manifest);
+            QCOMPARE(window_->inputState().datasetSamples.size(), datasetImages_.size());
             for (int row = 0; row < expected.size(); ++row)
-                QCOMPARE(window_->queue_->item(row)->data(Qt::UserRole + 11).toBool(), row >= datasetImages_.size());
-            window_->queue_->setCurrentRow(expected.size() - 1);
+                QCOMPARE(workbenchControls().queue->item(row)->data(Qt::UserRole + 11).toBool(), row >= datasetImages_.size());
+            workbenchControls().queue->setCurrentRow(expected.size() - 1);
             QVERIFY2(previewReady(expected.last()), qPrintable(state()));
-            QVERIFY(!window_->canvas_->result().hasGroundTruth);
+            QVERIFY(!workbenchControls().canvas->result().hasGroundTruth);
         } else {
-            QVERIFY(window_->datasetManifest_.isEmpty());
-            QVERIFY(window_->datasetSamples_.isEmpty());
+            QVERIFY(window_->inputState().datasetManifest.isEmpty());
+            QVERIFY(window_->inputState().datasetSamples.isEmpty());
             QVERIFY2(previewReady(expected.first()), qPrintable(state()));
-            QVERIFY(!window_->canvas_->result().hasGroundTruth);
+            QVERIFY(!workbenchControls().canvas->result().hasGroundTruth);
         }
         QCOMPARE(readBytes(sessionPath()), savedSession);
         QCOMPARE(inputHashes(area_->path() + "/inputs"), original);
@@ -410,17 +429,19 @@ private slots:
         QFETCH(QString, surface);
         QVERIFY2(importDataset(), qPrintable(state()));
         const QByteArray savedSession = readBytes(sessionPath());
-        window_->close(); window_.reset(); showWindow();
+        window_->close();
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out before restart");
+        window_.reset(); showWindow();
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
         window_->restoreDatasetSession();
         auto *previewPage = window_->findChild<QWidget *>("imagePreviewPage"); QVERIFY(previewPage);
-        QWidget *target = surface == "label" ? window_->canvasTitle_ : surface == "queue" ? window_->queue_->viewport() : previewPage;
+        QWidget *target = surface == "label" ? workbenchControls().canvasTitle : surface == "queue" ? workbenchControls().queue->viewport() : previewPage;
         QVERIFY(target && target->isVisible());
         QVERIFY(dropPaths(target, {looseImages_.last()}));
-        QVERIFY2(waitUntil([this] { return idle() && window_->files_ == QStringList{looseImages_.last()}; }), qPrintable(state()));
+        QVERIFY2(waitUntil([this] { return idle() && window_->inputState().files == QStringList{looseImages_.last()}; }), qPrintable(state()));
         QVERIFY2(previewReady(looseImages_.last()), qPrintable(state()));
         QTest::qWait(80);
-        QVERIFY(window_->datasetManifest_.isEmpty());
+        QVERIFY(window_->inputState().datasetManifest.isEmpty());
         QCOMPARE(readBytes(sessionPath()), savedSession);
         QCOMPARE(starts.count(), 0);
     }
@@ -429,15 +450,15 @@ private slots:
         const QString corrupt = area_->path() + "/inputs/broken.png";
         writeFile(corrupt, "This is not an encoded image.\n");
         const auto inputs = inputHashes(area_->path() + "/inputs");
-        drop(window_->canvas_, {QUrl::fromLocalFile(looseImages_.first()), QUrl("https://example.invalid/remote.png")});
+        drop(workbenchControls().canvas, {QUrl::fromLocalFile(looseImages_.first()), QUrl("https://example.invalid/remote.png")});
         QTest::qWait(50);
-        QVERIFY(window_->files_.isEmpty());
-        QVERIFY(window_->datasetManifest_.isEmpty());
-        dropPaths(window_->canvas_, {looseImages_.first(), corrupt});
+        QVERIFY(window_->inputState().files.isEmpty());
+        QVERIFY(window_->inputState().datasetManifest.isEmpty());
+        dropPaths(workbenchControls().canvas, {looseImages_.first(), corrupt});
         QVERIFY2(waitUntil([this] { return idle(); }), qPrintable(state()));
-        QVERIFY(window_->files_.isEmpty());
-        QCOMPARE(window_->queue_->count(), 0);
-        QVERIFY(window_->canvas_->result().image.isNull());
+        QVERIFY(window_->inputState().files.isEmpty());
+        QCOMPARE(workbenchControls().queue->count(), 0);
+        QVERIFY(workbenchControls().canvas->result().image.isNull());
         QVERIFY(!QFileInfo::exists(sessionPath()));
         QCOMPARE(inputHashes(area_->path() + "/inputs"), inputs);
     }
@@ -447,66 +468,66 @@ private slots:
         const QByteArray savedSession = readBytes(sessionPath());
         const auto inputSnapshot = inputHashes(area_->path() + "/inputs");
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
-        window_->workbenchTabs_->setCurrentIndex(0);
-        window_->runButton_->click();
-        QVERIFY(window_->busy_);
+        workbenchControls().workbenchTabs->setCurrentIndex(0);
+        workbenchControls().runButton->click();
+        QVERIFY(window_->isWorkbenchBusy());
         QCOMPARE(starts.count(), 1);
-        dropPaths(window_->canvas_, {looseImages_.first()});
-        QCOMPARE(window_->files_, datasetImages_);
-        QCOMPARE(window_->queue_->count(), datasetImages_.size());
+        dropPaths(workbenchControls().canvas, {looseImages_.first()});
+        QCOMPARE(window_->inputState().files, datasetImages_);
+        QCOMPARE(workbenchControls().queue->count(), datasetImages_.size());
         QCOMPARE(readBytes(sessionPath()), savedSession);
         QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
-        window_->stopInference();
+        workbenchPage()->stopRequested();
         QVERIFY2(waitUntil([this] { return idle(); }), qPrintable(state()));
-        QCOMPARE(window_->files_, datasetImages_);
+        QCOMPARE(window_->inputState().files, datasetImages_);
         QCOMPARE(inputHashes(area_->path() + "/inputs"), inputSnapshot);
     }
     void appendedTemporaryImagesPreserveDatasetCacheTruthAndSelectedExports()
     {
         QVERIFY2(importDataset(), qPrintable(state()));
-        const auto manifest = window_->datasetManifest_;
+        const auto manifest = window_->inputState().datasetManifest;
         const QByteArray savedSession = readBytes(sessionPath());
         const auto inputs = inputHashes(area_->path() + "/inputs");
-        window_->workbenchTabs_->setCurrentIndex(0);
-        window_->runButton_->click();
-        QVERIFY2(waitUntil([this] { return idle() && window_->completed_ == datasetImages_.size(); }), qPrintable(state()));
-        QCOMPARE(window_->imageResults_.size(), datasetImages_.size());
+        workbenchControls().workbenchTabs->setCurrentIndex(0);
+        workbenchControls().runButton->click();
+        QVERIFY2(waitUntil([this] { return idle() && window_->completedCount() == datasetImages_.size(); }), qPrintable(state()));
+        QCOMPARE(window_->imageResults().entries().size(), datasetImages_.size());
         QVERIFY2(dropChoosing(looseImages_, "imageDropAppendButton"), qPrintable(state()));
-        QVERIFY2(waitUntil([this] { return idle() && window_->files_ == datasetImages_ + looseImages_; }), qPrintable(state()));
-        QCOMPARE(window_->datasetManifest_, manifest);
-        QCOMPARE(window_->imageResults_.size(), datasetImages_.size());
-        window_->queue_->setCurrentRow(0);
+        QVERIFY2(waitUntil([this] { return idle() && window_->inputState().files == datasetImages_ + looseImages_; }), qPrintable(state()));
+        QCOMPARE(window_->inputState().datasetManifest, manifest);
+        QCOMPARE(window_->imageResults().entries().size(), datasetImages_.size());
+        workbenchControls().queue->setCurrentRow(0);
         QVERIFY2(previewReady(datasetImages_.first(), true), qPrintable(state()));
-        QVERIFY(window_->lastResult_.hasGroundTruth);
-        QCOMPARE(window_->lastResult_.groundTruth.size(), 1);
-        QCOMPARE(window_->lastResult_.predictions.size(), 1);
-        QVERIFY(window_->lastResult_.hasEvaluationMatches);
-        QCOMPARE(window_->lastResult_.matchedPredictions.size(), 1);
+        QVERIFY(window_->displayedResult().hasGroundTruth);
+        QCOMPARE(window_->displayedResult().groundTruth.size(), 1);
+        QCOMPARE(window_->displayedResult().predictions.size(), 1);
+        QVERIFY(window_->displayedResult().hasEvaluationMatches);
+        QCOMPARE(window_->displayedResult().matchedPredictions.size(), 1);
         QString error;
         const QString originalExport = area_->path() + "/export-original";
-        QVERIFY2(window_->writeResult(window_->lastResult_, originalExport, &error), qPrintable(error));
+        QVERIFY2(writeResult(window_->displayedResult(), originalExport, &error), qPrintable(error));
         const auto originals = QDir(originalExport).entryList({"*.json"}, QDir::Files);
         QCOMPARE(originals.size(), 1);
         const auto originalJson = readJson(originalExport + "/" + originals.first());
         QCOMPARE(originalJson.value("source").toString(), datasetImages_.first());
         QCOMPARE(originalJson.value("ground_truth").toArray().size(), 1);
         const int temporaryRow = datasetImages_.size();
-        window_->queue_->setCurrentRow(temporaryRow);
+        workbenchControls().queue->setCurrentRow(temporaryRow);
         QVERIFY2(previewReady(looseImages_.first()), qPrintable(state()));
-        QVERIFY(!window_->canvas_->result().hasGroundTruth);
-        window_->detectionRange_->setCurrentIndex(2);
+        QVERIFY(!workbenchControls().canvas->result().hasGroundTruth);
+        workbenchControls().detectionRange->setCurrentIndex(2);
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
-        window_->runButton_->click();
+        workbenchControls().runButton->click();
         QCOMPARE(starts.count(), 1);
         QCOMPARE(starts.first().first().value<vision::JobRequest>().files, QStringList{looseImages_.first()});
-        QVERIFY2(waitUntil([this] { return idle() && window_->completed_ == 1; }), qPrintable(state()));
+        QVERIFY2(waitUntil([this] { return idle() && window_->completedCount() == 1; }), qPrintable(state()));
         QVERIFY2(previewReady(looseImages_.first(), true), qPrintable(state()));
-        QCOMPARE(window_->lastResult_.predictions.size(), 1);
-        QVERIFY(!window_->lastResult_.hasGroundTruth);
-        QVERIFY(!window_->lastResult_.hasEvaluationMatches);
-        QVERIFY(window_->lastResult_.groundTruth.isEmpty());
+        QCOMPARE(window_->displayedResult().predictions.size(), 1);
+        QVERIFY(!window_->displayedResult().hasGroundTruth);
+        QVERIFY(!window_->displayedResult().hasEvaluationMatches);
+        QVERIFY(window_->displayedResult().groundTruth.isEmpty());
         const QString temporaryExport = area_->path() + "/export-temporary";
-        QVERIFY2(window_->writeResult(window_->lastResult_, temporaryExport, &error), qPrintable(error));
+        QVERIFY2(writeResult(window_->displayedResult(), temporaryExport, &error), qPrintable(error));
         const auto temporaries = QDir(temporaryExport).entryList({"*.json"}, QDir::Files);
         QCOMPARE(temporaries.size(), 1);
         const auto temporaryJson = readJson(temporaryExport + "/" + temporaries.first());
@@ -514,8 +535,8 @@ private slots:
         QVERIFY(temporaryJson.value("ground_truth").toArray().isEmpty());
         const QImage exported(temporaryExport + "/" + QFileInfo(temporaries.first()).completeBaseName() + ".png");
         QVERIFY(!exported.isNull());
-        QCOMPARE(exported.convertToFormat(QImage::Format_ARGB32), ImageCanvas::annotatedResultImage(window_->lastResult_).convertToFormat(QImage::Format_ARGB32));
-        QCOMPARE(window_->datasetManifest_, manifest);
+        QCOMPARE(exported.convertToFormat(QImage::Format_ARGB32), ImageCanvas::annotatedResultImage(window_->displayedResult()).convertToFormat(QImage::Format_ARGB32));
+        QCOMPARE(window_->inputState().datasetManifest, manifest);
         QCOMPARE(readBytes(sessionPath()), savedSession);
         QCOMPARE(inputHashes(area_->path() + "/inputs"), inputs);
     }
@@ -531,24 +552,24 @@ private slots:
         QFETCH(int, range); QFETCH(int, selection);
         QVERIFY2(importDataset(), qPrintable(state()));
         QVERIFY2(dropChoosing(looseImages_, "imageDropAppendButton"), qPrintable(state()));
-        QVERIFY2(waitUntil([this] { return idle() && window_->queue_->count() == datasetImages_.size() + looseImages_.size(); }), qPrintable(state()));
+        QVERIFY2(waitUntil([this] { return idle() && workbenchControls().queue->count() == datasetImages_.size() + looseImages_.size(); }), qPrintable(state()));
         const auto inputs = inputHashes(area_->path() + "/inputs");
         const QByteArray savedSession = readBytes(sessionPath());
         const auto expected = range == 0 ? datasetImages_ : range == 1 ? datasetImages_.mid(selection) : QStringList{datasetImages_[selection]};
-        auto *controls = window_->evaluation_->controlsWidget();
+        auto *controls = workbenchControls().evaluation->controlsWidget();
         controls->findChild<QDoubleSpinBox *>("evaluationScanStartSpin")->setValue(.7);
         controls->findChild<QDoubleSpinBox *>("evaluationScanEndSpin")->setValue(.9);
         controls->findChild<QDoubleSpinBox *>("evaluationScanStepSpin")->setValue(.2);
-        window_->workbenchTabs_->setCurrentIndex(1);
-        window_->detectionRange_->setCurrentIndex(range);
-        window_->queue_->setCurrentRow(selection);
+        workbenchControls().workbenchTabs->setCurrentIndex(1);
+        workbenchControls().detectionRange->setCurrentIndex(range);
+        workbenchControls().queue->setCurrentRow(selection);
         auto *start = window_->findChild<QPushButton *>("evaluationStartButton");
         QVERIFY(start && start->isVisible() && start->isEnabled());
         QSignalSpy detections(window_.get(), &MainWindow::startRequested);
         QTest::mouseClick(start, Qt::LeftButton);
-        QVERIFY(window_->busy_ && window_->evaluationWorker_);
-        QVERIFY2(waitUntil([this] { return idle() && !window_->evaluationReport_.isEmpty(); }, 60000), qPrintable(state()));
-        const auto report = window_->evaluationReport_;
+        QVERIFY(window_->isWorkbenchBusy() && window_->isEvaluationBusy());
+        QVERIFY2(waitUntil([this] { return idle() && !window_->evaluationState().report.isEmpty(); }, 60000), qPrintable(state()));
+        const auto report = window_->evaluationState().report;
         QStringList actual;
         for (const auto &path : report.value("request").toObject().value("sample_images").toArray()) actual.append(path.toString());
         QCOMPARE(actual, expected);
@@ -556,8 +577,8 @@ private slots:
         QCOMPARE(report.value("manifest").toObject().value("samples").toArray().size(), datasetImages_.size());
         QCOMPARE(report.value("metrics").toObject().value("no_ball_images").toInt(), 0);
         QCOMPARE(report.value("metrics").toObject().value("TP").toInt(), expected.size());
-        QCOMPARE(window_->evaluationSampleIndices_.size(), expected.size());
-        for (const auto &temporary : looseImages_) QVERIFY(!window_->evaluationSampleIndices_.contains(temporary));
+        QCOMPARE(window_->evaluationState().sampleIndices.size(), expected.size());
+        for (const auto &temporary : looseImages_) QVERIFY(!window_->evaluationState().sampleIndices.contains(temporary));
         QCOMPARE(detections.count(), 0);
         QCOMPARE(readBytes(sessionPath()), savedSession);
         QCOMPARE(inputHashes(area_->path() + "/inputs"), inputs);
@@ -568,19 +589,19 @@ private slots:
     {
         QVERIFY2(importDataset(), qPrintable(state()));
         QVERIFY2(dropChoosing(looseImages_, "imageDropAppendButton"), qPrintable(state()));
-        QVERIFY2(waitUntil([this] { return idle() && window_->queue_->count() == datasetImages_.size() + looseImages_.size(); }), qPrintable(state()));
-        window_->workbenchTabs_->setCurrentIndex(1);
-        window_->queue_->setCurrentRow(datasetImages_.size());
+        QVERIFY2(waitUntil([this] { return idle() && workbenchControls().queue->count() == datasetImages_.size() + looseImages_.size(); }), qPrintable(state()));
+        workbenchControls().workbenchTabs->setCurrentIndex(1);
+        workbenchControls().queue->setCurrentRow(datasetImages_.size());
         auto *start = window_->findChild<QPushButton *>("evaluationStartButton"); QVERIFY(start);
         const QByteArray savedSession = readBytes(sessionPath());
         for (int range : {1, 2}) {
-            window_->detectionRange_->setCurrentIndex(range);
+            workbenchControls().detectionRange->setCurrentIndex(range);
             QVERIFY(!start->isEnabled());
-            QVERIFY(window_->evaluationRangeHint_->isVisible());
-            QVERIFY(window_->evaluationRangeHint_->text().contains("临时") || window_->evaluationRangeHint_->text().contains("标注"));
+            QVERIFY(workbenchControls().evaluationRangeHint->isVisible());
+            QVERIFY(workbenchControls().evaluationRangeHint->text().contains("临时") || workbenchControls().evaluationRangeHint->text().contains("标注"));
             start->click();
             QVERIFY(idle());
-            QVERIFY(window_->evaluationReport_.isEmpty());
+            QVERIFY(window_->evaluationState().report.isEmpty());
         }
         QCOMPARE(readBytes(sessionPath()), savedSession);
     }
@@ -592,27 +613,27 @@ private slots:
         qint64 last = 0, gap = 0; int ticks = 0;
         connect(&heartbeat, &QTimer::timeout, this, [&] { const qint64 now = elapsed.elapsed(); gap = qMax(gap, now - last); last = now; ++ticks; });
         heartbeat.start(10);
-        QVERIFY(dropPaths(window_->canvas_, looseImages_));
-        QVERIFY2(waitUntil([this] { return idle() && window_->files_ == looseImages_ && window_->queue_->count() == looseImages_.size(); }), qPrintable(state()));
+        QVERIFY(dropPaths(workbenchControls().canvas, looseImages_));
+        QVERIFY2(waitUntil([this] { return idle() && window_->inputState().files == looseImages_ && workbenchControls().queue->count() == looseImages_.size(); }), qPrintable(state()));
         heartbeat.stop();
         QVERIFY(ticks > 0);
         QVERIFY2(gap < 1000, qPrintable(QString("Large drop blocked event handling for %1 ms").arg(gap)));
-        auto *queue = static_cast<LazyImageQueue *>(window_->queue_);
+        auto *queue = static_cast<LazyImageQueue *>(workbenchControls().queue);
         QVERIFY(queue->cachedThumbnailCount() <= 128);
-        for (int row : {0, 700, 3, 1499, 2, 1499}) window_->queue_->setCurrentRow(row);
+        for (int row : {0, 700, 3, 1499, 2, 1499}) workbenchControls().queue->setCurrentRow(row);
         QVERIFY2(previewReady(looseImages_.last()), qPrintable(state()));
-        QCOMPARE(window_->canvas_->result().image.size(), QSize(73, 51));
-        QCOMPARE(window_->canvas_->result().image.pixelColor(0, 0), QColor(10, 210, 190));
-        QVERIFY(!window_->canvas_->result().hasGroundTruth);
-        window_->queue_->setCurrentRow(0);
+        QCOMPARE(workbenchControls().canvas->result().image.size(), QSize(73, 51));
+        QCOMPARE(workbenchControls().canvas->result().image.pixelColor(0, 0), QColor(10, 210, 190));
+        QVERIFY(!workbenchControls().canvas->result().hasGroundTruth);
+        workbenchControls().queue->setCurrentRow(0);
         const auto buttons = window_->findChildren<QPushButton *>();
         auto clear = std::find_if(buttons.begin(), buttons.end(), [](auto *button) { return button->text() == "清空"; });
         QVERIFY(clear != buttons.end());
         (*clear)->click();
         QTest::qWait(150);
-        QVERIFY(window_->files_.isEmpty());
-        QCOMPARE(window_->queue_->count(), 0);
-        QVERIFY(window_->canvas_->result().image.isNull());
+        QVERIFY(window_->inputState().files.isEmpty());
+        QCOMPARE(workbenchControls().queue->count(), 0);
+        QVERIFY(workbenchControls().canvas->result().image.isNull());
         QTRY_COMPARE_WITH_TIMEOUT(queue->activeThumbnailJobs(), 0, 10000);
         QVERIFY(!QFileInfo::exists(sessionPath()));
         QCOMPARE(inputHashes(area_->path() + "/inputs"), inputs);
@@ -622,15 +643,15 @@ private slots:
     void stoppingPartialTemporaryAppendRestoresOriginalQueueAndSession()
     {
         QVERIFY2(importDataset(), qPrintable(state()));
-        const auto manifest = window_->datasetManifest_;
+        const auto manifest = window_->inputState().datasetManifest;
         const QByteArray savedSession = readBytes(sessionPath());
         createLoose(1500);
         QTimer stopper; int partial = 0; qint64 duration = -1;
         connect(&stopper, &QTimer::timeout, this, [&] {
-            const int count = window_->queue_->count();
-            if (!window_->queuePopulating_ || count <= datasetImages_.size() || count >= datasetImages_.size() + looseImages_.size()) return;
+            const int count = workbenchControls().queue->count();
+            if (!window_->inputState().queuePopulating || count <= datasetImages_.size() || count >= datasetImages_.size() + looseImages_.size()) return;
             partial = count; stopper.stop();
-            QElapsedTimer elapsed; elapsed.start(); window_->stopInference(); duration = elapsed.elapsed();
+            QElapsedTimer elapsed; elapsed.start(); workbenchPage()->stopRequested(); duration = elapsed.elapsed();
         });
         stopper.start(0);
         QVERIFY2(dropChoosing(looseImages_, "imageDropAppendButton"), qPrintable(state()));
@@ -638,16 +659,16 @@ private slots:
         stopper.stop();
         QVERIFY(partial > datasetImages_.size() && partial < datasetImages_.size() + looseImages_.size());
         QVERIFY(duration < 500);
-        QCOMPARE(window_->files_, datasetImages_);
-        QCOMPARE(window_->queue_->count(), datasetImages_.size());
-        QCOMPARE(window_->datasetManifest_, manifest);
+        QCOMPARE(window_->inputState().files, datasetImages_);
+        QCOMPARE(workbenchControls().queue->count(), datasetImages_.size());
+        QCOMPARE(window_->inputState().datasetManifest, manifest);
         QCOMPARE(readBytes(sessionPath()), savedSession);
         QTest::qWait(100);
-        QCOMPARE(window_->files_, datasetImages_);
+        QCOMPARE(window_->inputState().files, datasetImages_);
         QCOMPARE(readBytes(sessionPath()), savedSession);
-        window_->queue_->setCurrentRow(0);
+        workbenchControls().queue->setCurrentRow(0);
         QVERIFY2(previewReady(datasetImages_.first()), qPrintable(state()));
-        QVERIFY(window_->canvas_->result().hasGroundTruth);
+        QVERIFY(workbenchControls().canvas->result().hasGroundTruth);
         qInfo() << "temporary_append_stop_evidence" << "partial_queue" << partial << "original_count" << datasetImages_.size()
                 << "stop_return_ms" << duration;
     }

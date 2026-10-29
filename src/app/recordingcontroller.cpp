@@ -299,8 +299,17 @@ bool RecordingController::exportRecording(const QString &destination)
     if (shuttingDown_ || playback_.exporting || !QFileInfo(playback_.path).isFile() || destination.isEmpty() ||
         QFileInfo(destination).canonicalFilePath() == QFileInfo(playback_.path).canonicalFilePath()) return false;
     if (QFileInfo(destination).suffix().compare("avi", Qt::CaseInsensitive) != 0) { emit notice("请将录像保存为 .avi 文件。", true); return false; }
-    playback_.exporting = true; emit playbackChanged(playback_);
-    QMetaObject::invokeMethod(worker_, [worker = worker_, source = playback_.path, destination] { worker->exportFile(source, destination); }, Qt::QueuedConnection);
+    playback_.exporting = true;
+    // A status observer may synchronously close the window and pump events.
+    // Accept the copy before publishing that status so shutdown queues its
+    // release/quit after the accepted export, never before it.
+    if (!QMetaObject::invokeMethod(worker_, [worker = worker_, source = playback_.path, destination] {
+            worker->exportFile(source, destination);
+        }, Qt::QueuedConnection)) {
+        playback_.exporting = false;
+        return false;
+    }
+    emit playbackChanged(playback_);
     return true;
 }
 void RecordingController::requestShutdown()

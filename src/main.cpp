@@ -101,15 +101,15 @@ int main(int argc, char **argv)
         const QString directory = QFileInfo(parser.value("smoke-cpu-runtime")).absoluteFilePath();
         QDir().mkpath(directory);
         auto done = std::make_shared<bool>(false);
-        const auto finish = [directory, done](bool success, const QString &error = QString()) {
+        const auto finish = [directory, done, &window](bool success, const QString &error = QString()) {
             if (*done) return;
             *done = true;
             QFile report(directory + "/cpu-runtime-setup-report.json");
-            if (!report.open(QIODevice::WriteOnly)) { QCoreApplication::exit(2); return; }
+            if (!report.open(QIODevice::WriteOnly)) { window.requestExit(2); return; }
             report.write(QJsonDocument(QJsonObject{{"success",success}, {"error",error},
                 {"python",vision::cpuPython()}, {"runtime",vision::cpuRuntimeDescriptor()},
                 {"version",QCoreApplication::applicationVersion()}}).toJson());
-            report.close(); QCoreApplication::exit(success ? 0 : 1);
+            report.close(); window.requestExit(success ? 0 : 1);
         };
         QTimer::singleShot(0, &window, [&window, finish] {
             if (ui::ensureCpuRuntime(&window, [finish] { finish(true); })) { finish(!vision::cpuPython().isEmpty()); return; }
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
                            [&]
                            {
                                window.saveScreenshot(parser.value("screenshot"));
-                               app.quit();
+                               window.requestExit(0);
                            });
     else if (parser.isSet("smoke-model-library-drop"))
         QTimer::singleShot(200, &window, [&] { window.runModelLibraryDropSmoke(parser.value("smoke-model-library-drop")); });
@@ -157,7 +157,7 @@ int main(int argc, char **argv)
                 : QFileInfo(parser.value("conversion-source")).absoluteFilePath();
             const QString format = parser.value("conversion-format");
             if (!QDir().mkpath(directory) || (format != "onnx" && format != "torchscript")) {
-                qCritical("Invalid conversion smoke directory/format"); app.exit(2); return;
+                qCritical("Invalid conversion smoke directory/format"); window.requestExit(2); return;
             }
             window.showModelStructure(source);
             for (auto *button : window.findChildren<QPushButton *>())
@@ -207,18 +207,18 @@ int main(int argc, char **argv)
                     window.saveScreenshot(directory + "/model-conversion.png");
                     QFile file(directory + "/conversion-smoke-report.json");
                     const bool saved = file.open(QIODevice::WriteOnly) && file.write(QJsonDocument(report).toJson()) > 0;
-                    app.exit(saved && report.value("success").toBool() ? 0 : 1);
+                    window.requestExit(saved && report.value("success").toBool() ? 0 : 1);
                 });
             page->findChild<QPushButton *>("conversionStartButton")->click();
-            if (!page->isBusy()) { qCritical("Conversion smoke could not start"); app.exit(1); }
+            if (!page->isBusy()) { qCritical("Conversion smoke could not start"); window.requestExit(1); }
         });
-        QTimer::singleShot(150000, &app, [&] { qCritical("Conversion smoke timed out"); app.exit(3); });
+        QTimer::singleShot(150000, &app, [&] { qCritical("Conversion smoke timed out"); window.requestExit(3); });
     }
     else if (parser.isSet("smoke-model"))
     {
         QTimer::singleShot(200, &window,
                            [&] { window.runModelSmoke(parser.value("smoke-model"), parser.value("display-model")); });
-        QTimer::singleShot(60000, &app, [&] { qCritical("Model display smoke test timed out"); app.exit(3); });
+        QTimer::singleShot(60000, &app, [&] { qCritical("Model display smoke test timed out"); window.requestExit(3); });
     }
     else if (parser.isSet("smoke") || parser.isSet("smoke-pt"))
     {
@@ -234,7 +234,7 @@ int main(int argc, char **argv)
                            [&]
                            {
                                qCritical("Smoke test timed out");
-                               app.exit(3);
+                               window.requestExit(3);
                            });
     }
     else if (parser.isSet("display-model"))

@@ -27,8 +27,24 @@ class WorkbenchConfiguration final : public QObject
     explicit WorkbenchConfiguration(QObject *parent = nullptr) : QObject(parent) {}
     WorkbenchDraft snapshot() const { return draft_; }
     void replaceDraft(const WorkbenchDraft &draft) { draft_ = draft; emit changed(); }
+    void setTask(ModelTask task);
+    void setInputSize(int size);
+    void setConfidence(double confidence);
+    void setIou(double iou);
+    void setScale(double scale);
+    void setMeanR(double mean);
+    void setMeanG(double mean);
+    void setMeanB(double mean);
+    void setInputColor(InputColorMode mode, bool swapRB);
+    void setComputeDevice(ComputeDevice device);
+    void setDeviceIndex(int index);
+    void setClassFilterText(const QString &text);
+    void setCameraIndex(int index);
+    void setStereoView(StereoView view);
+    void setAutomaticExport(bool enabled);
     void setLabels(const QStringList &labels, const QString &path)
     { draft_.parameters.labels = labels; draft_.labelsPath = path; emit changed(); }
+    bool importLabels(const QString &path, QString *error = nullptr);
     void setExportDirectory(const QString &directory)
     { draft_.exportDirectory = directory; emit changed(); }
     ModelConfig compose(const ModelSessionSnapshot &model, bool convertedProfileAvailable) const;

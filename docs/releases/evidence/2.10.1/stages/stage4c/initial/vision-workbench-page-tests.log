@@ -1,0 +1,41 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 38
+    Start 38: vision-workbench-page-tests
+
+38: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-workbench-page-tests
+38: Environment variables: 
+38:  QT_QPA_PLATFORM=offscreen
+38:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+38: Test timeout computed to be: 120
+38: ********* Start testing of WorkbenchPageTests *********
+38: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+38: PASS   : WorkbenchPageTests::initTestCase()
+38: PASS   : WorkbenchPageTests::widgetIdentityAndSubpagesRemainStable()
+38: PASS   : WorkbenchPageTests::rangeChangesRemainSynchronizedWithoutDuplicateIntents()
+38: PASS   : WorkbenchPageTests::spinWheelCannotChangeInferenceParameters()
+38: PASS   : WorkbenchPageTests::actionsAreIntentsAndNeverCreateFiles()
+38: PASS   : WorkbenchPageTests::classAndQueueSignalsCarryUserValues()
+38: PASS   : WorkbenchPageTests::reviewControlsAndNavigationRemainLocal()
+38: PASS   : WorkbenchPageTests::canvasVisibilityAndTableSelectionStayWithinPage()
+38: PASS   : WorkbenchPageTests::cleanupTestCase()
+38: Totals: 9 passed, 0 failed, 0 skipped, 0 blacklisted, 247ms
+38: ********* Finished testing of WorkbenchPageTests *********
+1/1 Test #38: vision-workbench-page-tests ......   Passed    0.37 sec
+
+The following tests passed:
+	vision-workbench-page-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.37 sec

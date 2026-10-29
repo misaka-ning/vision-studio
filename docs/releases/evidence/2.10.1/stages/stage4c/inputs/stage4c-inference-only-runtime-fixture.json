@@ -1,0 +1,8 @@
+{
+  "reason": "Frozen Git source lacks ignored baseline inference-only runtime required by existing TorchScript-without-ONNX test. Initial test skipped; rerun will execute actual existing runtime without altering it.",
+  "runtime": "/home/misaka/.codex/worktrees/ef0b/yolo/build/release-runtime",
+  "interpreter_sha256": "a2f33a6e006989270f4340528eb61f8f97366e00a5d1b602ac8672ea44fc56ae",
+  "link": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/build/release-runtime",
+  "source_inputs_changed": false,
+  "probe_onnx_absent": true
+}

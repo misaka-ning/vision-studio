@@ -406,6 +406,7 @@ void RuntimeSetup::cancelPendingPreparations()
 {
     // A window can close and be recreated in the same QApplication. Cancelling
     // that window's pending preparation must not permanently disable the runtime.
+    ++cancellationGeneration_;
     retries.clear();
     if (active) active->reject();
 }
@@ -424,8 +425,9 @@ bool ensureCpuRuntime(QWidget *parent, std::function<void()> retry)
         active = nullptr; const auto pending = std::exchange(retries, {});
         if (result == QDialog::Accepted) {
             const QPointer<RuntimeSetup> setup(runtimeSetup());
-            for (const auto &retry : pending) QTimer::singleShot(0, qApp, [setup, retry] {
-                if (setup && !setup->shuttingDown_) retry();
+            const auto cancellationGeneration = setup->cancellationGeneration_;
+            for (const auto &retry : pending) QTimer::singleShot(0, qApp, [setup, retry, cancellationGeneration] {
+                if (setup && !setup->shuttingDown_ && setup->cancellationGeneration_ == cancellationGeneration) retry();
             });
         }
     });

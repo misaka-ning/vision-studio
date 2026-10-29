@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="9"
+	timestamp="2026-10-29T19:54:37"
+	>
+	<testcase name="vision-dataset-session-ui-tests" classname="vision-dataset-session-ui-tests" time="9.91297" status="run">
+		<system-out>********* Start testing of DatasetSessionUiTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : DatasetSessionUiTests::initTestCase()
+PASS   : DatasetSessionUiTests::startupPreferenceDefaultsOnAndPersistsWithoutErasingTheSession()
+PASS   : DatasetSessionUiTests::switchingPreferenceOffInvalidatesAlreadyDeferredRestore()
+PASS   : DatasetSessionUiTests::guideImmediatelyPrecedesMoreWithoutChangingRouteTargets()
+QINFO  : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-train) dataset_session_restore_evidence directory train images 1 metadata_excluded 1 inference_requests 0 heartbeat_ticks 12 max_gap_ms 14
+PASS   : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-train)
+QINFO  : DatasetSessionUiTests::successfulImportRestoresOriginalSourceSplitAndMetadata(directory-val) dataset_session_restore_evidence direc...
+The rest of the test output was removed since it exceeds the threshold of 1024 bytes.
+</system-out>
+	</testcase>
+</testsuite>
