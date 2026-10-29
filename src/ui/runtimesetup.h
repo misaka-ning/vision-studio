@@ -28,6 +28,7 @@ private:
     void maybeEmitShutdownReady();
     bool shuttingDown_ = false;
     bool shutdownEmitted_ = false;
+    quint64 cancellationGeneration_ = 0;
     int preparations_ = 0;
     friend class RuntimeResources;
     friend RuntimeSetup *runtimeSetup();

@@ -22,6 +22,7 @@ OperationAvailability OperationCoordinator::availability(const ActivitySnapshot 
         !state.gpuPreparation && !state.saving && !state.modal && !state.closing;
     result.start = !state.workbenchBusy() && !state.conversion && !state.gpuPreparation && !state.saving && !state.closing;
     result.changeDevice = !state.workbenchBusy() && !state.gpuPreparation && !state.closing;
+    result.editParameters = !state.workbenchBusy() && !state.closing;
     return result;
 }
 ActivitySnapshot OperationCoordinator::activity() const

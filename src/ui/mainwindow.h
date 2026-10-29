@@ -2,9 +2,15 @@
 #include "core/visiontypes.h"
 #include "route.h"
 #include "app/resultwriter.h"
+#include "app/imageresultstore.h"
 #include "app/detectioncontroller.h"
+#include "app/evaluationcontroller.h"
+#include "app/operationcoordinator.h"
 #include "app/preferencesrepository.h"
-#include <QElapsedTimer>
+#include "app/historyrepository.h"
+#include "app/modelsessioncontroller.h"
+#include "app/inputsessioncontroller.h"
+#include "app/workbenchconfiguration.h"
 #include <QHash>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -24,38 +30,26 @@ class QListWidget;
 class QTableWidget;
 class QStackedWidget;
 class QProgressBar;
-class QThread;
-class QThreadPool;
-class QSettings;
 class QTimer;
-class QProcess;
 class QPlainTextEdit;
-class QTemporaryDir;
 class ImageCanvas;
 class ModelViewer;
 class ModelConversionPage;
 class EvaluationPanel;
 class QTabWidget;
-class AsyncImagePreview;
+class ModelsLibraryPage;
+class ModelDisplayPage;
+class HistoryPage;
+class RecordingsPage;
+class MorePage;
+class GuidePage;
+namespace vision::app { class RecordingController; }
+class WorkbenchPage;
+class WorkspaceDropFilter;
 namespace vision::app { class GpuEnvironmentService; }
-namespace cv
-{
-class VideoCapture;
-}
-namespace vision
-{
-class InferenceWorker;
-class EvaluationWorker;
-}
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    friend class UiTests;
-    friend class BatchResponsivenessTests;
-    friend class ScopeFilterUiTests;
-    friend class EvaluationIntegrationTests;
-    friend class DatasetSessionUiTests;
-    friend class InputDropUiTests;
   public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
@@ -73,13 +67,55 @@ class MainWindow : public QMainWindow
     void setComputeDevice(vision::ComputeDevice device, int index = 0);
     void restoreDatasetSession();
     QString datasetSessionFilePath() const;
+    QJsonArray historySnapshot() const { return historyRepository_ ? historyRepository_->snapshot() : QJsonArray{}; }
+    vision::app::EvaluationState evaluationState() const { return evaluationController_ ? evaluationController_->snapshot() : vision::app::EvaluationState{}; }
+    const vision::app::ImageResultStore &imageResults() const { return detection_->results()->cache(); }
+    vision::app::EvaluationController *evaluations() const { return evaluationController_; }
+    vision::app::DetectionTaskSnapshot detectionState() const { return detection_->snapshot(); }
+    int pendingResultWrites() const { return detection_ ? detection_->results()->pendingCount() : 0; }
+    void requestExit(int code);
+    void enableDiagnostics() { diagnosticRun_ = true; }
+    vision::app::DetectionController *detections() const { return detection_; }
+    bool isWorkbenchBusy() const;
+    bool isClosing() const { return operationCoordinator_ && operationCoordinator_->isClosing(); }
+    bool isShutdownReady() const { return operationCoordinator_ && operationCoordinator_->isShutdownReady(); }
+    int completedCount() const;
+    QStringList taskFiles() const;
+    int taskFirst() const;
+    int taskLast() const;
+    bool isEvaluationBusy() const { return evaluationController_ && evaluationController_->isBusy(); }
+    vision::app::ModelSessionSnapshot modelState() const { return modelSession_->snapshot(); }
+    void setModelEvaluationProfile(const QString &path, const QVariantMap &profile)
+    { modelSession_->setEvaluationProfile(path, profile); }
+    vision::app::InputSessionSnapshot inputState() const;
+    vision::app::WorkbenchDraft configurationState() const { return configuration_->snapshot(); }
+    QString exportDirectory() const { return configurationState().exportDirectory; }
+    vision::app::ClassFilterStatus classFilterStatus() const;
+    vision::ModelConfig currentConfig() const;
+    vision::ModelConfig displayedConfig() const;
+    vision::InferenceResult displayedResult() const;
+    vision::app::InputSessionController *inputs() const { return inputSession_; }
+    vision::app::WorkbenchConfiguration *configuration() const { return configuration_; }
+    vision::app::ModelSessionController *models() const { return modelSession_; }
+    QString projectRoot() const { return projectRoot_; }
+    QString dataRoot() const { return dataRoot_; }
+    QString preferencesFilePath() const { return settings_->fileName(); }
+    void selectModel(const QString &path) { setModel(path); }
+    void openDataset(const QString &source, const QString &split, const QString &metadata = {})
+    { loadDataset(source, split, metadata); }
+    bool exportDisplayedResult(const QString &directory, QString *base = nullptr, QString *error = nullptr);
+    void persistPreferences() { persist(); }
+    void refreshModelPresentation() { refreshModelLibrary(); }
+    void reviewEvaluationRow(int row) { reviewEvaluationImage(row); }
+    void presentEvaluationReport(const QJsonObject &report, const QString &directory, bool record)
+    { acceptEvaluationReport(report, directory, record); }
+    QString inferenceFingerprint(const QString &modelIdentity = {}) const;
   signals:
     void startRequested(vision::JobRequest request);
 
   protected:
     void closeEvent(QCloseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
-    bool eventFilter(QObject *watched, QEvent *event) override;
 
   private:
     QWidget *buildSidebar();
@@ -96,10 +132,10 @@ class MainWindow : public QMainWindow
     void refreshRecordings();
     void selectRecording();
     void toggleRecordingPlayback();
-    void readRecordingFrame();
     void stopRecordingPlayback();
     void exportRecording();
     void setupStyle();
+    void initializeOperationCoordinator();
     void connectWorker();
     void chooseVideo();
     void loadVideo(const QString &path);
@@ -114,10 +150,15 @@ class MainWindow : public QMainWindow
     void showModelImportHint(const QString &message, bool error = false);
     void importLabels();
     void setModel(const QString &path, bool force = false);
+    void presentSelectedModel(bool convertedBgr = false);
     bool rememberConvertedModel(const QString &path, const QJsonObject &metadata);
     QJsonObject convertedModelProfile(const QString &path) const;
     bool applyConvertedModelProfile(const QString &path);
     void addFiles(const QStringList &files);
+    void connectInputSession();
+    void projectInputQueue(const QStringList &files, int firstRow, quint64 generation);
+    void connectConfiguration();
+    void projectConfigurationToView();
     void startInference();
     void startWorkbenchTask();
     void populateDatasetQueue(const QJsonObject &manifest, const std::function<void()> &completed);
@@ -125,20 +166,13 @@ class MainWindow : public QMainWindow
     void onResult(const vision::InferenceResult &result, quint64 ticket = 0);
     void displayResult(const vision::InferenceResult &result);
     void selectQueueImage(int row);
-    void cacheImageResult(const vision::InferenceResult &result);
     void clearImageResults();
-    void saveImageResultInBackground(const vision::InferenceResult &result, quint64 ticket);
     void onFinished(bool cancelled);
     void setBusy(bool busy);
     void refreshModelLibrary();
-    void showModelContextMenu(const QPoint &position);
-    void openModelLocation(const QString &path);
-    void editModelNote(const QString &path);
-    void renameLibraryModel(const QString &path);
     void removeLibraryModel(const QString &path);
     QString modelDisplayName(const QString &path) const;
     void refreshHistory();
-    void recordResult(const vision::InferenceResult &result, bool writeToDisk = true);
     void exportResult();
     void connectEvaluation();
     void loadDataset(const QString &yaml, const QString &split, const QString &metadata = {});
@@ -178,7 +212,6 @@ class MainWindow : public QMainWindow
     QStringList selectedImageRange(QString *error = nullptr) const;
     QStringList selectedEvaluationRange(QString *error = nullptr) const;
     void inspectSelectedModel();
-    QString inferenceFingerprint(const QString &modelIdentity = {}) const;
     QString modelFileIdentity() const;
     void invalidateConfiguredResults();
     void updateTaskUi();
@@ -189,11 +222,10 @@ class MainWindow : public QMainWindow
     void appendGpuLog(const QString &message);
     void updateModelMeta(const QString &state);
     void displayModelStructure();
-    vision::ModelConfig currentConfig() const;
-    QString projectRoot_, dataRoot_, modelPath_, labelsPath_, streamPath_, exportDir_, smokeDir_;
-    QStringList files_, labels_, models_;
-    QVariantMap modelDisplayNames_, modelNotes_, convertedModelProfiles_;
-    QVariantMap modelEvaluationProfiles_;
+    QString projectRoot_, dataRoot_;
+    vision::app::WorkbenchConfiguration *configuration_ = nullptr;
+    vision::app::ModelSessionController *modelSession_ = nullptr;
+    WorkbenchPage *workbenchPage_ = nullptr;
     EvaluationPanel *evaluation_ = nullptr;
     QTabWidget *workbenchTabs_ = nullptr;
     QComboBox *evaluationRange_ = nullptr;
@@ -204,76 +236,25 @@ class MainWindow : public QMainWindow
     QComboBox *evaluationPreviewFilter_ = nullptr;
     QPushButton *evaluationReviewButton_ = nullptr, *evaluationReviewPreviousButton_ = nullptr,
                 *evaluationReviewNextButton_ = nullptr;
-    QVector<int> evaluationReviewRows_, evaluationErrorRows_;
-    int evaluationEvaluatedCount_ = 0, evaluationFalsePositiveCount_ = 0,
-        evaluationFalseNegativeCount_ = 0, evaluationNegativeFalsePositiveCount_ = 0;
-    bool evaluationReviewPending_ = false, evaluationReviewAvailable_ = false,
-        evaluationReviewSelectFirst_ = false;
-    QString evaluationReviewError_;
-    QTimer *queuePopulationTimer_ = nullptr;
-    bool queuePopulating_ = false;
-    bool droppedImageImportActive_ = false, droppedImageAppend_ = false, droppedImageQueueChanged_ = false;
-    int droppedImageOriginalCount_ = 0, droppedImageOriginalRow_ = -1;
-    quint64 droppedImageImportGeneration_ = 0;
-    std::shared_ptr<std::atomic_bool> droppedImageImportCancellation_;
-    quint64 queuePopulationGeneration_ = 0, imagePreviewGeneration_ = 0;
-    AsyncImagePreview *imagePreviewLoader_ = nullptr;
-    vision::EvaluationWorker *evaluationWorker_ = nullptr;
-    QJsonObject datasetManifest_, evaluationReport_;
-    QString evaluationDirectory_, evaluationRunFingerprint_, evaluationReviewFilter_ = "all";
-    vision::ModelConfig evaluationRunConfig_;
-    QHash<QString, int> evaluationSampleIndices_;
-    QHash<QString, QJsonObject> datasetSamples_;
-    bool loadingDataset_ = false, evaluationReviewActive_ = false;
-    bool datasetSessionRestoreRequested_ = false, datasetSessionUserInteracted_ = false;
-    quint64 datasetSessionRestoreGeneration_ = 0, datasetImportGeneration_ = 0;
-    std::shared_ptr<std::atomic_bool> evaluationPreviewCancellation_, evaluationFilterCancellation_, datasetImportCancellation_;
-    quint64 evaluationPreviewGeneration_ = 0, evaluationFilterGeneration_ = 0;
+    vision::app::InputSessionController *inputSession_ = nullptr;
+    vision::app::EvaluationController *evaluationController_ = nullptr;
     QCheckBox *showGroundTruth_ = nullptr;
-    QStringList nativeLabels_;
-    vision::SourceKind sourceKind_ = vision::SourceKind::Images;
-    vision::InferenceResult lastResult_;
-    vision::ModelConfig lastConfig_;
-    struct CachedImageResult
-    {
-        vision::InferenceResult result;
-        vision::ModelConfig config;
-        QString snapshotPath;
-        QString sourceIdentity;
-    };
-    QHash<QString, CachedImageResult> imageResults_;
-    std::shared_ptr<QTemporaryDir> imageResultDirectory_;
-    quint64 imageResultGeneration_ = 0;
-    int resultIoPending_ = 0;
-    vision::app::ResultWriter *resultWriter_ = nullptr;
-    bool imageResultCacheWarning_ = false;
-    bool modelListReordering_ = false;
-    QString lastError_;
-    QString actualBackend_, actualDeviceName_, actualDeviceNotice_;
-    vision::ComputeDevice actualDevice_ = vision::ComputeDevice::CPU;
-    bool actualDeviceKnown_ = false;
-    int actualDeviceIndex_ = -1;
     vision::app::GpuEnvironmentService *gpuService_ = nullptr;
-    QJsonArray history_;
-    bool busy_ = false, closing_ = false, failed_ = false;
-    bool recordingRequested_ = false, recordingActive_ = false, recordingStopping_ = false;
-    bool inferenceStopping_ = false;
-    QElapsedTimer recordingElapsed_;
-    QTimer *recordingClock_ = nullptr, *playbackTimer_ = nullptr;
-    std::unique_ptr<cv::VideoCapture> playbackCapture_;
-    QString playbackPath_;
-    QSize playbackContentSize_;
-    int completed_ = 0, modelInputChannels_ = 0;
-    int modelClassCount_ = 0, taskRangeFirst_ = 0, taskRangeLast_ = 0;
-    bool initializing_ = true, modelInspectionPending_ = false;
-    QString classFilterError_, modelInspectionError_, inspectedModelIdentity_, imageConfigFingerprint_;
-    QStringList taskRangeFiles_;
-    QString activeModelIdentity_, activeImageFingerprint_;
-    QHash<QString, QString> taskSourceIdentities_;
-    quint64 modelInspectionGeneration_ = 0;
-    std::shared_ptr<std::atomic_bool> modelInspectionCancellation_;
+    std::unique_ptr<vision::app::HistoryRepository> historyRepository_;
+    vision::app::RecordingController *recordingsController_ = nullptr;
+    ModelsLibraryPage *modelsLibraryPage_ = nullptr;
+    ModelDisplayPage *modelDisplayPage_ = nullptr;
+    HistoryPage *historyPage_ = nullptr;
+    RecordingsPage *recordingsPage_ = nullptr;
+    MorePage *morePage_ = nullptr;
+    GuidePage *guidePage_ = nullptr;
+    bool initializing_ = true;
+    bool diagnosticRun_ = false;
+    int requestedExitCode_ = 0;
+    bool exitRequested_ = false;
     vision::app::PreferencesRepository *settings_ = nullptr;
     vision::app::DetectionController *detection_ = nullptr;
+    vision::app::OperationCoordinator *operationCoordinator_ = nullptr;
     QStackedWidget *pages_ = nullptr;
     QWidget *workspaceHeader_ = nullptr;
     QList<QPushButton *> navButtons_;
@@ -293,8 +274,7 @@ class MainWindow : public QMainWindow
     QPushButton *recordButton_ = nullptr, *recordingPlayButton_ = nullptr, *exportRecordingButton_ = nullptr;
     QLabel *recordingStatus_ = nullptr, *recordingsCount_ = nullptr, *recordingDetails_ = nullptr;
     QListWidget *queue_ = nullptr, *modelList_ = nullptr;
-    QLabel *modelLibraryDropHint_ = nullptr;
-    bool modelLibraryExternalDragActive_ = false;
+    WorkspaceDropFilter *previewDropFilter_ = nullptr, *modelLibraryDropFilter_ = nullptr;
     QTableWidget *predictionTable_ = nullptr, *historyTable_ = nullptr;
     QTableWidget *recordingsTable_ = nullptr;
     QComboBox *taskBox_ = nullptr, *inputColorMode_ = nullptr, *stereoView_ = nullptr;

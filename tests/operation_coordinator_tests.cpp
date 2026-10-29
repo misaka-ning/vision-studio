@@ -117,6 +117,7 @@ class OperationCoordinatorTests final : public QObject
         QCOMPARE(available.importModels, flags == 0);
         QCOMPARE(available.start, (flags & ~Modal) == 0);
         QCOMPARE(available.changeDevice, (flags & (Detection | Input | Projection | Evaluation | Preparation | Closing)) == 0);
+        QCOMPARE(available.editParameters, (flags & (Detection | Input | Projection | Evaluation | Closing)) == 0);
     }
 
     void activityProviderIsLiveAndClosingHasOneAuthority()

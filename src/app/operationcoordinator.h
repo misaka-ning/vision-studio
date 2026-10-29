@@ -36,7 +36,7 @@ struct ActivitySnapshot
 };
 struct OperationAvailability
 {
-    bool importInput = false, importModels = false, start = false, changeDevice = false;
+    bool importInput = false, importModels = false, start = false, changeDevice = false, editParameters = false;
 };
 
 class OperationCoordinator final : public QObject

@@ -276,53 +276,48 @@ if(BUILD_TESTING)
     set_tests_properties(vision-detection-controller-tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen" TIMEOUT 60)
 endif()
 
-# Independent page components and their existing-resource lifecycle boundaries.
-target_sources(vision-app PRIVATE src/app/recordingcontroller.cpp)
+# Application state and UI projections are separate build boundaries.
+target_sources(vision-core PRIVATE src/core/previewdrop.cpp)
+target_sources(vision-app PRIVATE
+    src/app/inputsessioncontroller.cpp src/app/evaluationcontroller.cpp
+    src/app/imageresultstore.cpp src/app/workbenchconfiguration.cpp
+    src/app/recordingcontroller.cpp src/app/operationcoordinator.cpp src/app/resultdeliveryservice.cpp)
 target_sources(vision-ui PRIVATE
+    src/ui/mainwindow_input.cpp src/ui/mainwindow_configuration.cpp src/ui/mainwindow_lifecycle.cpp
+    src/ui/pages/workspacedropfilter.cpp
     src/ui/pages/workbenchpage.cpp src/ui/pages/modelslibrarypage.cpp
     src/ui/pages/modeldisplaypage.cpp src/ui/pages/historypage.cpp
-    src/ui/pages/recordingspage.cpp src/ui/pages/morepage.cpp src/ui/pages/guidepage.cpp)
+    src/ui/pages/recordingspage.cpp src/ui/pages/morepage.cpp src/ui/pages/guidepage.cpp
+    src/ui/smoke/previewdropsmoke.cpp src/ui/smoke/modellibrarydropsmoke.cpp
+    src/ui/smoke/evaluationsmoke.cpp src/ui/smoke/datasetsessionsmoke.cpp src/ui/smoke/inferencesmoke.cpp)
 if(BUILD_TESTING)
-    add_executable(vision-recording-controller-tests tests/recording_controller_tests.cpp)
-    target_link_libraries(vision-recording-controller-tests PRIVATE vision-app Qt6::Test)
-    add_test(NAME vision-recording-controller-tests COMMAND vision-recording-controller-tests)
-    set_tests_properties(vision-recording-controller-tests PROPERTIES TIMEOUT 120)
-    foreach(source IN ITEMS workbench_page workspace_pages simple_pages component_shutdown runtime_setup_shutdown)
-        string(REPLACE "_" "-" suffix "${source}")
-        add_executable(vision-${suffix}-tests tests/${source}_tests.cpp)
-        target_compile_definitions(vision-${suffix}-tests PRIVATE VISION_PROJECT_DIR="${CMAKE_SOURCE_DIR}")
-        target_link_libraries(vision-${suffix}-tests PRIVATE vision-ui Qt6::Test)
-        add_test(NAME vision-${suffix}-tests COMMAND vision-${suffix}-tests)
-        set_tests_properties(vision-${suffix}-tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu" TIMEOUT 120)
-    endforeach()
-endif()
-
-# Separate model/input/configuration/evaluation domain state authorities.
-target_sources(vision-app PRIVATE
-    src/app/inputsessioncontroller.cpp src/app/workbenchconfiguration.cpp src/app/evaluationcontroller.cpp)
-if(BUILD_TESTING)
-    foreach(pair IN ITEMS "input-session-controller|input_session_controller_tests" "workbench-configuration|workbench_configuration_tests" "evaluation-controller|evaluation_controller_tests")
+    foreach(pair IN ITEMS
+        "input-session-controller|input_session_controller_tests"
+        "evaluation-controller|evaluation_controller_tests"
+        "operation-coordinator|operation_coordinator_tests"
+        "recording-controller|recording_controller_tests"
+        "workbench-configuration|workbench_configuration_tests"
+        "image-result-store|image_result_store_tests"
+        "result-delivery|result_delivery_tests")
         string(REPLACE "|" ";" parts "${pair}")
         list(GET parts 0 suffix)
         list(GET parts 1 source)
-        add_executable(vision-${suffix}-tests tests/${source}.cpp)
-        target_compile_definitions(vision-${suffix}-tests PRIVATE VISION_PROJECT_DIR="${CMAKE_SOURCE_DIR}")
-        target_link_libraries(vision-${suffix}-tests PRIVATE vision-app Qt6::Test)
-        add_test(NAME vision-${suffix}-tests COMMAND vision-${suffix}-tests)
-        set_tests_properties(vision-${suffix}-tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen" TIMEOUT 120)
+        if(EXISTS "${CMAKE_SOURCE_DIR}/tests/${source}.cpp")
+            add_executable(vision-${suffix}-tests tests/${source}.cpp)
+            target_compile_definitions(vision-${suffix}-tests PRIVATE VISION_PROJECT_DIR="${CMAKE_SOURCE_DIR}")
+            target_link_libraries(vision-${suffix}-tests PRIVATE vision-app Qt6::Test)
+            add_test(NAME vision-${suffix}-tests COMMAND vision-${suffix}-tests)
+            set_tests_properties(vision-${suffix}-tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen" TIMEOUT 120)
+        endif()
     endforeach()
-endif()
-
-# Bounded result persistence and cross-domain coordination own their state.
-target_sources(vision-app PRIVATE src/app/imageresultstore.cpp src/app/resultdeliveryservice.cpp src/app/operationcoordinator.cpp)
-if(BUILD_TESTING)
-    foreach(pair IN ITEMS "image-result-store|image_result_store_tests" "result-delivery|result_delivery_tests" "operation-coordinator|operation_coordinator_tests")
-        string(REPLACE "|" ";" parts "${pair}")
-        list(GET parts 0 suffix)
-        list(GET parts 1 source)
-        add_executable(vision-${suffix}-tests tests/${source}.cpp)
-        target_link_libraries(vision-${suffix}-tests PRIVATE vision-app Qt6::Test)
-        add_test(NAME vision-${suffix}-tests COMMAND vision-${suffix}-tests)
-        set_tests_properties(vision-${suffix}-tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen" TIMEOUT 120)
+    foreach(source IN ITEMS workbench_page workspace_pages simple_pages component_shutdown runtime_setup_shutdown workspace_drop_filter window_shutdown)
+        if(EXISTS "${CMAKE_SOURCE_DIR}/tests/${source}_tests.cpp")
+            string(REPLACE "_" "-" suffix "${source}")
+            add_executable(vision-${suffix}-tests tests/${source}_tests.cpp)
+            target_compile_definitions(vision-${suffix}-tests PRIVATE VISION_PROJECT_DIR="${CMAKE_SOURCE_DIR}")
+            target_link_libraries(vision-${suffix}-tests PRIVATE vision-ui Qt6::Test)
+            add_test(NAME vision-${suffix}-tests COMMAND vision-${suffix}-tests)
+            set_tests_properties(vision-${suffix}-tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu" TIMEOUT 120)
+        endif()
     endforeach()
 endif()

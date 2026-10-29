@@ -1,7 +1,11 @@
 #include "ui/imagecanvas.h"
 #include "ui/lazyimagequeue.h"
 #include "ui/mainwindow.h"
+#include "ui/pages/workbenchpage.h"
+#include "ui/pages/modelslibrarypage.h"
+#include "ui_shutdown_helpers.h"
 #include "ui/modelviewer.h"
+#include "app/gpuenvironmentservice.h"
 
 #include <QAbstractButton>
 #include <QAbstractSpinBox>
@@ -44,6 +48,7 @@
 #include <QScrollArea>
 #include <QScrollBar>
 #include <QSignalSpy>
+#include <QSignalBlocker>
 #include <QSpinBox>
 #include <QStackedWidget>
 #include <QStandardItemModel>
@@ -357,6 +362,8 @@ QJsonObject exportedMetadata(const QString &home)
 class UiTests final : public QObject
 {
     Q_OBJECT
+    WorkbenchPage *workbenchPage() const { return window_->findChild<WorkbenchPage *>(); }
+    const WorkbenchPage::Controls &workbenchControls() const { return workbenchPage()->controls(); }
     // Ordinary image inputs are kept solely as internal fixtures for inference
     // and cache regressions. The product imports still images as YOLO datasets.
     bool importInternalFolder(const QString &path)
@@ -366,14 +373,14 @@ class UiTests final : public QObject
             if (QStringList{"jpg", "jpeg", "png", "bmp", "webp", "tif", "tiff"}.contains(file.suffix().toLower()))
                 files.append(file.absoluteFilePath());
         if (files.isEmpty()) return false;
-        window_->clearImageResults(); window_->files_.clear(); window_->queue_->clear();
-        window_->addFiles(files);
+        window_->inputs()->clear();
+        workbenchPage()->filesDropped(files);
         QElapsedTimer timer; timer.start();
         while (timer.elapsed() < 10000) {
             QApplication::processEvents();
             auto *canvas = workbenchCanvas(window_.get());
-            const int row = window_->queue_->currentRow();
-            if (window_->files_ == files && window_->queue_->count() == files.size() && row >= 0 && row < files.size() &&
+            const int row = workbenchControls().queue->currentRow();
+            if (window_->inputState().files == files && workbenchControls().queue->count() == files.size() && row >= 0 && row < files.size() &&
                 canvas && canvas->result().source == files[row] && !canvas->result().image.isNull()) return true;
             QTest::qWait(5);
         }
@@ -451,6 +458,7 @@ class UiTests final : public QObject
 
     void cleanup()
     {
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out");
         window_.reset();
         dialogGuard_.reset();
         fixture_.reset();
@@ -702,7 +710,7 @@ class UiTests final : public QObject
         QString expected = fixture_->path() + QStringLiteral("/output/results");
         if (customDirectory)
         {
-            window_->close();
+            QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out");
             window_.reset();
             expected = fixture_->path() + QStringLiteral("/保存位置/自定义 结果");
             QSettings settings(fixture_->path() + QStringLiteral("/output/preferences.ini"),
@@ -747,7 +755,7 @@ class UiTests final : public QObject
         auto *active = window_->findChild<QLabel *>(QStringLiteral("activeModelName"));
         auto *conversion = window_->findChild<QLabel *>(QStringLiteral("conversionSourcePath"));
         QVERIFY(page && models && hint && viewer && active && conversion);
-        QTRY_VERIFY_WITH_TIMEOUT(!window_->modelInspectionPending_, 30000);
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->modelState().inspectionPending, 30000);
         QTRY_COMPARE_WITH_TIMEOUT(viewer->state(), ModelViewer::State::Ready, 30000);
         const QString original = fixture_->path() + QStringLiteral("/models/yolov5n.onnx");
         const QString pt = fixture_->path() + QStringLiteral("/dropped.pt");
@@ -767,13 +775,13 @@ class UiTests final : public QObject
         expected << QFileInfo(pt).canonicalFilePath() << QFileInfo(script).canonicalFilePath()
                  << QFileInfo(onnx).canonicalFilePath();
         const QByteArray ptHash = modelFileHash(pt), scriptHash = modelFileHash(script), onnxHash = modelFileHash(onnx);
-        const auto inspection = window_->modelInspectionGeneration_;
+        const auto inspection = window_->modelState().inspectionGeneration;
         QSignalSpy loaded(viewer, &ModelViewer::modelLoaded);
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
         QVERIFY(dropModelUrls(models->viewport(), {QUrl::fromLocalFile(pt), QUrl::fromLocalFile(script),
             QUrl::fromLocalFile(onnx), QUrl::fromLocalFile(pt)}));
         QCOMPARE(modelOrder(models), expected);
-        QCOMPARE(window_->modelInspectionGeneration_, inspection + 1);
+        QCOMPARE(window_->modelState().inspectionGeneration, inspection + 1);
         QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), onnx);
         QCOMPARE(viewer->modelPath(), onnx);
         QCOMPARE(active->text(), QFileInfo(onnx).fileName());
@@ -801,11 +809,11 @@ class UiTests final : public QObject
         QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), original);
         QCOMPARE(active->text(), QStringLiteral("我的基准模型"));
         QCOMPARE(modelItem(models, original)->data(Qt::UserRole + 2).toString(), QStringLiteral("保留这份备注"));
-        const auto beforeReorder = window_->modelInspectionGeneration_;
+        const auto beforeReorder = window_->modelState().inspectionGeneration;
         expected.append(expected.takeFirst());
         QVERIFY(models->model()->moveRows(QModelIndex(), 0, 1, QModelIndex(), models->count()));
         QCOMPARE(modelOrder(models), expected);
-        QCOMPARE(window_->modelInspectionGeneration_, beforeReorder);
+        QCOMPARE(window_->modelState().inspectionGeneration, beforeReorder);
         QCOMPARE(viewer->modelPath(), original);
         QSettings settings(fixture_->path() + QStringLiteral("/output/preferences.ini"), QSettings::IniFormat);
         settings.sync();
@@ -814,7 +822,7 @@ class UiTests final : public QObject
         QCOMPARE(modelFileHash(pt), ptHash);
         QCOMPARE(modelFileHash(script), scriptHash);
         QCOMPARE(modelFileHash(onnx), onnxHash);
-        window_->close(); window_.reset(); showNewWindow();
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out"); window_.reset(); showNewWindow();
         models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
         QCOMPARE(modelOrder(models), expected);
         QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), original);
@@ -832,7 +840,7 @@ class UiTests final : public QObject
         auto *hint = window_->findChild<QLabel *>(QStringLiteral("modelLibraryDropHint"));
         auto *viewer = window_->findChild<ModelViewer *>(QStringLiteral("modelStructureViewer"));
         QVERIFY(page && models && hint && viewer);
-        QTRY_VERIFY_WITH_TIMEOUT(!window_->modelInspectionPending_, 30000);
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->modelState().inspectionPending, 30000);
         const QString candidate = fixture_->path() + QStringLiteral("/not-partially-added.onnx");
         QVERIFY(QFile::copy(fixture_->path() + QStringLiteral("/models/yolov5n.onnx"), candidate));
         const QString bad = fixture_->path() + QStringLiteral("/not-model.txt");
@@ -843,7 +851,7 @@ class UiTests final : public QObject
         }
         const auto original = modelOrder(models);
         const QString selected = models->currentItem()->data(Qt::UserRole).toString();
-        const auto inspection = window_->modelInspectionGeneration_;
+        const auto inspection = window_->modelState().inspectionGeneration;
         const QUrl valid = QUrl::fromLocalFile(candidate);
         const QList<QUrl> invalid = {QUrl::fromLocalFile(bad), QUrl::fromLocalFile(empty),
             QUrl::fromLocalFile(fixture_->path()), QUrl::fromLocalFile(fixture_->path() + "/missing.pt"),
@@ -856,7 +864,7 @@ class UiTests final : public QObject
             QCOMPARE(modelOrder(models), original);
             QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
             QCOMPARE(viewer->modelPath(), selected);
-            QCOMPARE(window_->modelInspectionGeneration_, inspection);
+            QCOMPARE(window_->modelState().inspectionGeneration, inspection);
             QVERIFY(!hint->text().isEmpty());
         }
         QVERIFY(!dropModelUrls(page, {valid}, Qt::LinkAction));
@@ -875,7 +883,7 @@ class UiTests final : public QObject
         QDragLeaveEvent afterInvalid; QApplication::sendEvent(page, &afterInvalid);
         QCOMPARE(hint->text(), invalidHint);
         QCOMPARE(modelOrder(models), original);
-        QCOMPARE(window_->modelInspectionGeneration_, inspection);
+        QCOMPARE(window_->modelState().inspectionGeneration, inspection);
         QSettings settings(fixture_->path() + "/output/preferences.ini", QSettings::IniFormat);
         settings.sync();
         QCOMPARE(settings.value("models").toStringList(), original);
@@ -889,7 +897,8 @@ class UiTests final : public QObject
     {
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
         window_->runPtDemo();
-        QVERIFY(window_->busy_);
+        QTRY_COMPARE_WITH_TIMEOUT(starts.size(), 1, 10000);
+        QVERIFY(window_->isWorkbenchBusy());
         QCOMPARE(starts.size(), 1);
         const auto job = qvariant_cast<vision::JobRequest>(starts.first().first());
         QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型库")), Qt::LeftButton);
@@ -905,11 +914,11 @@ class UiTests final : public QObject
         QVERIFY(!dropModelUrls(models->viewport(), {QUrl::fromLocalFile(candidate)}));
         QCOMPARE(modelOrder(models), before);
         QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
-        QCOMPARE(window_->modelPath_, job.config.modelPath);
+        QCOMPARE(window_->modelState().activeModel, job.config.modelPath);
         QCOMPARE(starts.size(), 1);
         QVERIFY(hint->text().contains(QStringLiteral("当前任务")));
-        window_->stopInference();
-        QTRY_VERIFY_WITH_TIMEOUT(!window_->busy_, 10000);
+        workbenchPage()->stopRequested();
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->isWorkbenchBusy(), 10000);
         QVERIFY(models->dragEnabled() && models->acceptDrops());
         QVERIFY(dropModelUrls(page, {QUrl::fromLocalFile(candidate)}));
         QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), candidate);
@@ -926,7 +935,7 @@ class UiTests final : public QObject
         const QString defaultHint = hint->text();
         const auto original = modelOrder(models);
         const auto selected = models->currentItem()->data(Qt::UserRole).toString();
-        const auto generation = window_->modelInspectionGeneration_;
+        const auto generation = window_->modelState().inspectionGeneration;
         bool dialogCancelled = false;
         QTimer cancel;
         connect(&cancel, &QTimer::timeout, this, [&] {
@@ -940,7 +949,7 @@ class UiTests final : public QObject
         cancel.stop(); QVERIFY(dialogCancelled);
         QCOMPARE(modelOrder(models), original);
         QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
-        QCOMPARE(window_->modelInspectionGeneration_, generation);
+        QCOMPARE(window_->modelState().inspectionGeneration, generation);
         QMimeData mime; mime.setUrls({QUrl::fromLocalFile(selected)});
         QDragEnterEvent enter(page->rect().center(), Qt::CopyAction, &mime, Qt::LeftButton, Qt::NoModifier);
         QApplication::sendEvent(page, &enter); QVERIFY(enter.isAccepted());
@@ -948,7 +957,7 @@ class UiTests final : public QObject
         QDragLeaveEvent leave; QApplication::sendEvent(page, &leave);
         QCOMPARE(hint->text(), defaultHint);
         QCOMPARE(modelOrder(models), original);
-        QCOMPARE(window_->modelInspectionGeneration_, generation);
+        QCOMPARE(window_->modelState().inspectionGeneration, generation);
         QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
     }
 
@@ -999,7 +1008,7 @@ class UiTests final : public QObject
             QCOMPARE(settings.value(QStringLiteral("activeModel")).toString(), selected);
         }
         QCOMPARE(starts.size(), 0);
-        window_->close();
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out");
         window_.reset();
         showNewWindow();
         models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
@@ -1101,7 +1110,7 @@ class UiTests final : public QObject
         QCOMPARE(models->currentItem()->data(Qt::UserRole).toString(), selected);
         QCOMPARE(modelFileHash(target), originalHash);
         QVERIFY(!QFileInfo::exists(QFileInfo(target).absolutePath() + '/' + alias));
-        window_->close();
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out");
         window_.reset();
         showNewWindow();
         QTest::mouseClick(findButton(window_.get(), QStringLiteral("模型库")), Qt::LeftButton);
@@ -1154,7 +1163,7 @@ class UiTests final : public QObject
         QCOMPARE(window_->findChild<ModelViewer *>(QStringLiteral("modelStructureViewer"))->modelPath(),
                  selected);
         QCOMPARE(modelFileHash(target), ptHash);
-        window_->close();
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out");
         window_.reset();
         showNewWindow();
         models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
@@ -1173,7 +1182,7 @@ class UiTests final : public QObject
         settings.sync();
         QVERIFY(settings.value(QStringLiteral("models")).toStringList().isEmpty());
         QVERIFY(settings.value(QStringLiteral("activeModel")).toString().isEmpty());
-        window_->close();
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out");
         window_.reset();
         showNewWindow();
         models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
@@ -1215,7 +1224,9 @@ class UiTests final : public QObject
 
     void busyModelContextMenuAllowsLocationAndPreventsMutations()
     {
+        QSignalSpy starts(window_.get(), &MainWindow::startRequested);
         window_->runPtDemo();
+        QTRY_COMPARE_WITH_TIMEOUT(starts.size(), 1, 10000);
         auto *stop = findButton(window_.get(), QStringLiteral("停止运行"));
         auto *run = findButton(window_.get(), QStringLiteral("开始检测"));
         auto *models = window_->findChild<QListWidget *>(QStringLiteral("globalModelList"));
@@ -1360,6 +1371,129 @@ class UiTests final : public QObject
         QVERIFY(QFileInfo(fixture_->path() + "/models/yolov8n.pt").isFile());
     }
 
+    void configurationDraftIsTheInferenceAndPersistenceAuthority()
+    {
+        auto draft = window_->configurationState();
+        draft.parameters.inputSize = 512;
+        draft.confidence = .42;
+        draft.iou = .61;
+        draft.parameters.labels = {"custom-a", "custom-b"};
+        draft.labelsPath = "/test-labels.txt";
+        draft.classFilterText = "32,0,32";
+        draft.cameraIndex = 3; draft.stereoView = vision::StereoView::Right; draft.automaticExport = true;
+        window_->configuration()->replaceDraft(draft);
+        const auto composed = window_->currentConfig();
+        QCOMPARE(composed.inputSize, 512);
+        QCOMPARE(composed.confidence, .42f);
+        QCOMPARE(composed.iou, .61f);
+        QCOMPARE(composed.classFilter, QVector<int>({0, 32}));
+        QCOMPARE(composed.labels, draft.parameters.labels);
+        // A blocked presentation update cannot silently overwrite the draft.
+        { const QSignalBlocker blocker(workbenchControls().confidence); workbenchControls().confidence->setValue(.11); }
+        QCOMPARE(window_->currentConfig().confidence, .42f);
+        workbenchControls().inputSize->setValue(768);
+        QCOMPARE(window_->currentConfig().inputSize, 768);
+        QCOMPARE(window_->currentConfig().confidence, .42f);
+        QCOMPARE(window_->configurationState().iou, .61);
+        QCOMPARE(window_->configurationState().parameters.labels, draft.parameters.labels);
+        // A real confidence edit still changes only its own authoritative field.
+        workbenchControls().confidence->setValue(.57);
+        QCOMPARE(window_->configurationState().confidence, .57);
+        QCOMPARE(window_->currentConfig().inputSize, 768);
+        QCOMPARE(window_->configurationState().iou, .61);
+        workbenchControls().confidence->setValue(.42);
+        window_->close();
+        QTRY_VERIFY_WITH_TIMEOUT(window_->isShutdownReady() && !window_->isVisible(), 15000);
+        QCOMPARE(window_->findChild<vision::app::PreferencesRepository *>()->value("confidence").toDouble(), .42);
+        QCOMPARE(window_->findChild<vision::app::PreferencesRepository *>()->value("iou").toDouble(), .61);
+        QCOMPARE(window_->findChild<vision::app::PreferencesRepository *>()->value("labels").toStringList(), draft.parameters.labels);
+        QCOMPARE(window_->findChild<vision::app::PreferencesRepository *>()->value("labelsPath").toString(), draft.labelsPath);
+        QCOMPARE(window_->findChild<vision::app::PreferencesRepository *>()->value("cameraIndex").toInt(), 3);
+        QCOMPARE(window_->findChild<vision::app::PreferencesRepository *>()->value("stereoView").toString(), QString("right"));
+        QVERIFY(window_->findChild<vision::app::PreferencesRepository *>()->value("autoExport").toBool());
+    }
+
+    void gpuEnvironmentRefreshDoesNotRewriteConfigurationDraft()
+    {
+        auto draft = window_->configurationState();
+        draft.confidence = .42; draft.iou = .61;
+        draft.parameters.inputSize = 512;
+        draft.parameters.device = vision::ComputeDevice::CPU;
+        draft.parameters.deviceIndex = 3;
+        draft.classFilterText = "32";
+        window_->configuration()->replaceDraft(draft);
+        auto *gpu = window_->findChild<vision::app::GpuEnvironmentService *>();
+        QVERIFY(gpu);
+        // Exercise the actual environmentChanged consumer; this is a UI state
+        // regression, not a GPU hardware or helper-process correctness test.
+        { const QSignalBlocker threshold(workbenchControls().confidence), size(workbenchControls().inputSize);
+          workbenchControls().confidence->setValue(.11); workbenchControls().inputSize->setValue(320); }
+        gpu->environmentChanged(QJsonObject{{"ok", true}, {"prepared", true}, {"cuda_available", true},
+            {"devices", QJsonArray{QJsonObject{{"index", 0}, {"name", "configuration-refresh fixture"}}}}});
+        QCOMPARE(window_->configurationState().confidence, .42);
+        QCOMPARE(window_->configurationState().iou, .61);
+        QCOMPARE(window_->configurationState().parameters.inputSize, 512);
+        QCOMPARE(window_->configurationState().parameters.device, vision::ComputeDevice::CPU);
+        QCOMPARE(window_->configurationState().parameters.deviceIndex, 3);
+        QCOMPARE(window_->configurationState().classFilterText, QString("32"));
+    }
+
+    void configurationEditorIntentsPatchOnlyTheirOwnFields_data()
+    {
+        QTest::addColumn<int>("field");
+        const QStringList names{"input-size", "confidence", "iou", "scale", "mean-r", "mean-g", "mean-b",
+            "task", "input-color", "compute-device", "device-index", "class-filter", "camera-index", "stereo", "automatic-export"};
+        for (int field = 0; field < names.size(); ++field) QTest::newRow(qPrintable(names[field])) << field;
+    }
+
+    void configurationEditorIntentsPatchOnlyTheirOwnFields()
+    {
+        QFETCH(int, field);
+        auto expected = window_->configurationState();
+        expected.parameters.task = vision::ModelTask::YoloV5; expected.parameters.inputSize = 512;
+        expected.confidence = .42; expected.iou = .61;
+        expected.parameters.scale = .004; expected.parameters.meanR = 1; expected.parameters.meanG = 2; expected.parameters.meanB = 3;
+        expected.parameters.colorMode = vision::InputColorMode::Color; expected.parameters.swapRB = true;
+        expected.parameters.device = vision::ComputeDevice::CPU; expected.parameters.deviceIndex = 0;
+        expected.classFilterText.clear(); expected.cameraIndex = 0; expected.stereoView = vision::StereoView::Full; expected.automaticExport = false;
+        window_->configuration()->replaceDraft(expected);
+        QCOMPARE(workbenchControls().confidence->value(), .42);
+        // A display-only stale value must not be sampled by any other editor.
+        { const QSignalBlocker blocker(workbenchControls().confidence); workbenchControls().confidence->setValue(.11); }
+        QSignalSpy changed(window_->configuration(), &vision::app::WorkbenchConfiguration::changed);
+        const auto &controls = workbenchControls();
+        switch (field) {
+        case 0: expected.parameters.inputSize = 768; controls.inputSize->setValue(768); break;
+        case 1: expected.confidence = .57; controls.confidence->setValue(.57); break;
+        case 2: expected.iou = .52; controls.iou->setValue(.52); break;
+        case 3: expected.parameters.scale = .008; controls.scale->setValue(.008); break;
+        case 4: expected.parameters.meanR = 4; controls.meanR->setValue(4); break;
+        case 5: expected.parameters.meanG = 5; controls.meanG->setValue(5); break;
+        case 6: expected.parameters.meanB = 6; controls.meanB->setValue(6); break;
+        case 7: expected.parameters.task = vision::ModelTask::Classification; controls.taskBox->setCurrentIndex(2); break;
+        case 8: expected.parameters.colorMode = vision::InputColorMode::Grayscale; controls.inputColorMode->setCurrentIndex(2); break;
+        case 9: expected.parameters.device = vision::ComputeDevice::Auto; controls.computeDevice->setCurrentIndex(0); break;
+        case 10:
+            expected.parameters.deviceIndex = 2; controls.gpuDeviceIndex->addItem("GPU 2 · field edit fixture", 2);
+            controls.gpuDeviceIndex->setCurrentIndex(controls.gpuDeviceIndex->findData(2)); break;
+        case 11: expected.classFilterText = "32，0"; controls.classFilter->setText(expected.classFilterText); break;
+        case 12: expected.cameraIndex = 4; controls.cameraIndex->setValue(4); break;
+        case 13: expected.stereoView = vision::StereoView::Right; controls.stereoView->setCurrentIndex(2); break;
+        case 14: expected.automaticExport = true; controls.autoExport->setChecked(true); break;
+        }
+        const auto fields = [](const vision::app::WorkbenchDraft &draft) {
+            auto values = vision::EvaluationWorker::modelConfigJson(draft.parameters).toVariantMap();
+            values.insert("editorConfidence", draft.confidence); values.insert("editorIou", draft.iou);
+            values.insert("classFilterText", draft.classFilterText); values.insert("labelsPath", draft.labelsPath);
+            values.insert("exportDirectory", draft.exportDirectory); values.insert("cameraIndex", draft.cameraIndex);
+            values.insert("stereoView", int(draft.stereoView)); values.insert("automaticExport", draft.automaticExport);
+            return values;
+        };
+        QCOMPARE(fields(window_->configurationState()), fields(expected));
+        QCOMPARE(changed.count(), 1); // Rendering the draft must never recurse into another edit.
+        QCOMPARE(controls.confidence->value(), expected.confidence);
+    }
+
     void shortcutsCancelAndRestartFromFocusedControls()
     {
         auto *canvas = workbenchCanvas(window_.get());
@@ -1375,7 +1509,8 @@ class UiTests final : public QObject
         QVERIFY(run);
         QVERIFY(exportButton);
         QVERIFY(inputSize);
-        window_->addFiles({fixture_->path() + QStringLiteral("/assets/bus.jpg")});
+        workbenchPage()->filesDropped({fixture_->path() + QStringLiteral("/assets/bus.jpg")});
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->inputState().importing && !window_->isWorkbenchBusy(), 10000);
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
         canvas->setFocus();
         QTest::keyClick(canvas, Qt::Key_R, Qt::ControlModifier);
@@ -1480,7 +1615,8 @@ class UiTests final : public QObject
         QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
         const QString second = fixture_->path() + QStringLiteral("/assets/second.jpg");
         QVERIFY(QFile::copy(fixture_->path() + QStringLiteral("/assets/bus.jpg"), second));
-        window_->addFiles({second});
+        workbenchPage()->filesDropped({second});
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->inputState().importing && !window_->isWorkbenchBusy(), 10000);
         QCOMPARE(queue->count(), 2);
         QCOMPARE(queue->currentRow(), 1);
         QTRY_COMPARE(canvas->result().source, second);
@@ -1683,7 +1819,8 @@ class UiTests final : public QObject
         QTest::mouseClick(findButton(window_.get(), QStringLiteral("检测工作台")), Qt::LeftButton);
         const QString unprocessed = fixture_->path() + QStringLiteral("/assets/unprocessed.png");
         QVERIFY(original.save(unprocessed));
-        window_->addFiles({unprocessed});
+        workbenchPage()->filesDropped({unprocessed});
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->inputState().importing && !window_->isWorkbenchBusy(), 10000);
         QCOMPARE(queue->count(), 3);
         QTRY_COMPARE(canvas->result().source, unprocessed);
         QTRY_VERIFY(!canvas->result().image.isNull());
@@ -2255,7 +2392,7 @@ class UiTests final : public QObject
     {
         QFETCH(bool, swapRb);
         QFETCH(QString, expectedMode);
-        window_->close();
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out");
         window_.reset();
         const QString preferenceFile = fixture_->path() + QStringLiteral("/output/preferences.ini");
         {
@@ -2268,7 +2405,7 @@ class UiTests final : public QObject
         auto *color = window_->findChild<QComboBox *>(QStringLiteral("inputColorMode"));
         QVERIFY(color);
         QCOMPARE(color->currentData().toString(), expectedMode);
-        window_->close();
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out");
         QSettings migrated(preferenceFile, QSettings::IniFormat);
         QCOMPARE(migrated.value(QStringLiteral("colorMode")).toString(), expectedMode);
     }
@@ -2312,7 +2449,7 @@ class UiTests final : public QObject
         QCOMPARE(QImage(screenshot).size(), window_->size());
         QCOMPARE(starts.size(), 0); // Configuring a camera must not connect to a device.
 
-        window_->close();
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out");
         window_.reset();
         showNewWindow();
         color = window_->findChild<QComboBox *>(QStringLiteral("inputColorMode"));
@@ -2430,7 +2567,8 @@ class UiTests final : public QObject
         stereo->setCurrentIndex(stereo->findData(QStringLiteral("right")));
         QVERIFY(canvas->result().image.isNull());
         QVERIFY(!exportButton->isEnabled()); // Do not export an old result after switching eyes.
-        window_->addFiles({fixture_->path() + QStringLiteral("/assets/bus.jpg")});
+        workbenchPage()->filesDropped({fixture_->path() + QStringLiteral("/assets/bus.jpg")});
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->inputState().importing && !window_->isWorkbenchBusy(), 10000);
         QVERIFY(!stereo->isVisible() && !stereo->isEnabled());
         QCOMPARE(stereo->currentData().toString(), QStringLiteral("right"));
         QTest::mouseClick(run, Qt::LeftButton);
@@ -2560,6 +2698,8 @@ class UiTests final : public QObject
         QVERIFY(QDir().mkpath(exportedDirectory));
         const QString exportedVideo = exportedDirectory + QStringLiteral("/recording-copy.avi");
         QVERIFY(chooseDialogFile(exportRecording, exportedVideo));
+        QTRY_VERIFY_WITH_TIMEOUT(QFileInfo::exists(exportedVideo) &&
+            QFileInfo::exists(exportedDirectory + QStringLiteral("/recording-copy.json")), 10000);
         QFile originalVideo(path);
         QFile copiedVideo(exportedVideo);
         QVERIFY(originalVideo.open(QIODevice::ReadOnly));
@@ -2635,7 +2775,7 @@ class UiTests final : public QObject
 
     void automaticDeviceDefaultAndPreferencesPreserveInputModes()
     {
-        window_->close();
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out");
         window_.reset();
         {
             QSettings settings(fixture_->path() + "/output/preferences.ini", QSettings::IniFormat);
@@ -2664,7 +2804,7 @@ class UiTests final : public QObject
         QVERIFY(window_->rect().contains(QRect(index->mapTo(window_.get(), QPoint()), index->size())));
         window_->saveScreenshot(QStringLiteral(VISION_PROJECT_DIR) +
                                 "/output/test-screenshots/1.6-device-camera.png");
-        window_->close();
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out");
         window_.reset();
         showNewWindow();
         device = window_->findChild<QComboBox *>("computeDevice");

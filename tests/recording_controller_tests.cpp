@@ -2,12 +2,14 @@
 #include "app/recordingcontroller.h"
 #include <QCoreApplication>
 #include <QDir>
+#include <QEventLoop>
 #include <QFile>
 #include <QJsonDocument>
 #include <QPointer>
 #include <QSemaphore>
 #include <QTemporaryDir>
 #include <QThread>
+#include <QTimer>
 #include <QtTest>
 #include <atomic>
 #include <memory>
@@ -373,6 +375,37 @@ private slots:
         controller.detectionFinished();
         QTRY_VERIFY(controller.isShutdownReady());
         QCOMPARE(ready.count(), 1);
+    }
+    void closeFromExportingNotificationDrainsTheAcceptedRealCopy()
+    {
+        const auto path = clip("reentrant-source"), destination = root_ + "/reentrant-accepted.avi";
+        writeClip(path, {64, 48}, {53, 37});
+        RecordingController controller(root_);
+        controller.selectRecording(path);
+        QTRY_VERIFY(controller.playbackState().canExport);
+        QSignalSpy notices(&controller, &RecordingController::notice);
+        bool requested = false, readyInsideNotification = false;
+        connect(&controller, &RecordingController::playbackChanged, &controller,
+            [&](const vision::app::RecordingPlaybackState &state) {
+            if (!state.exporting || requested) return;
+            requested = true;
+            controller.requestShutdown();
+            // The GUI is allowed to keep pumping while a synchronous status
+            // notification closes its owner. Readiness must include this copy.
+            QEventLoop events;
+            connect(&controller, &RecordingController::shutdownReady, &events, &QEventLoop::quit);
+            QTimer::singleShot(3000, &events, &QEventLoop::quit);
+            if (!controller.isShutdownReady()) events.exec();
+            readyInsideNotification = controller.isShutdownReady();
+        }, Qt::DirectConnection);
+        QVERIFY(controller.exportRecording(destination));
+        QVERIFY(requested); QVERIFY(readyInsideNotification); QVERIFY(controller.isShutdownReady());
+        QVERIFY(!bytes(destination).isEmpty());
+        QCOMPARE(bytes(destination), bytes(path));
+        QCOMPARE(bytes(sidecar(destination)), bytes(sidecar(path)));
+        QVERIFY(!controller.playbackState().exporting);
+        QVERIFY(!notices.isEmpty()); QVERIFY(!notices.back().at(1).toBool());
+        QVERIFY(!controller.exportRecording(root_ + "/after-close.avi"));
     }
     void directDestructionIsNonblockingAndReapsThreadAfterAcceptedExport()
     {

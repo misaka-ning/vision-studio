@@ -1,13 +1,22 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "modelslibrarypage.h"
 #include "pagehelpers.h"
+#include "app/modelsessioncontroller.h"
+#include "app/operationcoordinator.h"
+#include <QAction>
+#include <QDesktopServices>
+#include <QFileInfo>
+#include <QInputDialog>
 #include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QLabel>
 #include <QMouseEvent>
+#include <QMenu>
 #include <QPushButton>
 #include <QSignalBlocker>
 #include <QVBoxLayout>
+#include <QUrl>
+#include <functional>
 
 using namespace vision::ui::pages;
 namespace
@@ -66,7 +75,10 @@ ModelsLibraryPage::ModelsLibraryPage(QWidget *parent) : QWidget(parent)
     list->setEditTriggers(QAbstractItemView::NoEditTriggers);
     list->setToolTip("拖入本地模型文件以添加；库内拖动调整顺序；点击全局选用，右键管理模型。");
     list->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(list, &QListWidget::customContextMenuRequested, this, &ModelsLibraryPage::contextMenuRequested);
+    connect(list, &QListWidget::customContextMenuRequested, this, [this](const QPoint &position) {
+        emit contextMenuRequested(position);
+        showContextMenu(position);
+    });
     connect(list->model(), &QAbstractItemModel::rowsAboutToBeMoved, this, [this] { reordering_ = true; });
     connect(list->model(), &QAbstractItemModel::rowsMoved, this, [this] {
         QStringList paths;
@@ -136,4 +148,83 @@ void ModelsLibraryPage::setDropHint(const QString &message, bool error)
 {
     controls_.dropHint->setText(message);
     controls_.dropHint->setStyleSheet(error ? "color:#FFB4BB;" : "color:#B8B8B8;");
+}
+
+void ModelsLibraryPage::setApplicationContext(const vision::app::ModelSessionController *models,
+    const vision::app::OperationCoordinator *operations)
+{
+    models_ = models; operations_ = operations;
+}
+
+bool ModelsLibraryPage::canMutate(const QString &path) const
+{
+    return models_ && operations_ && !busy_ && models_->snapshot().models.contains(path) &&
+        vision::app::OperationCoordinator::availability(operations_->activity()).importModels;
+}
+
+void ModelsLibraryPage::showContextMenu(const QPoint &position)
+{
+    auto *list = controls_.list;
+    auto *item = list->itemAt(position);
+    if (!item && position.x() < 0 && position.y() < 0) item = list->currentItem();
+    if (!item || !models_) return;
+    const QString path = item->data(Qt::UserRole).toString();
+    auto *menu = new QMenu(list);
+    menu->setObjectName("modelContextMenu");
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+    auto addAction = [this, menu, path](const QString &title, const QString &icon,
+        const char *name, std::function<void()> handler, bool mutation) {
+        auto *action = menu->addAction(::ui::icon(icon, QColor("#D2D2D2")), title);
+        action->setObjectName(name); action->setData(path);
+        action->setEnabled(!mutation || canMutate(path));
+        connect(action, &QAction::triggered, this, std::move(handler));
+    };
+    addAction("打开模型位置", "folder", "modelOpenLocationAction", [this, path] { openModelLocation(path); }, false);
+    addAction(models_->snapshot().notes.value(path).toString().isEmpty() ? "添加备注" : "修改备注",
+        "note", "modelNoteAction", [this, path] { editModelNote(path); }, true);
+    addAction("重命名", "edit", "modelRenameAction", [this, path] { renameModel(path); }, true);
+    addAction("从列表移除", "cross", "modelRemoveAction", [this, path] {
+        if (canMutate(path)) emit removeRequested(path);
+    }, true);
+    const QPoint anchor = position.x() < 0 && position.y() < 0 ? list->visualItemRect(item).center() : position;
+    menu->popup(list->viewport()->mapToGlobal(anchor));
+}
+
+void ModelsLibraryPage::openModelLocation(const QString &path)
+{
+    const QString directory = QFileInfo(path).absolutePath();
+    if (!QFileInfo(directory).isDir()) {
+        emit noticeRequested("模型所在文件夹不存在：" + directory, true); return;
+    }
+    if (!QDesktopServices::openUrl(QUrl::fromLocalFile(directory)))
+        emit noticeRequested("无法打开模型文件夹：" + directory, true);
+}
+
+void ModelsLibraryPage::editModelNote(const QString &path)
+{
+    if (!canMutate(path)) return;
+    QInputDialog dialog(this);
+    dialog.setObjectName("modelNoteDialog"); dialog.setWindowTitle("模型备注");
+    dialog.setInputMode(QInputDialog::TextInput);
+    dialog.setOption(QInputDialog::UsePlainTextEditForTextInput);
+    dialog.setLabelText(models_->displayName(path) + "\n添加实验说明、数据集或用途；留空可清除备注。");
+    for (auto *label : dialog.findChildren<QLabel *>()) label->setTextFormat(Qt::PlainText);
+    dialog.setTextValue(models_->snapshot().notes.value(path).toString());
+    dialog.setOkButtonText("保存"); dialog.setCancelButtonText("取消"); dialog.resize(520, 260);
+    if (dialog.exec() != QDialog::Accepted || !canMutate(path)) return;
+    emit noteRequested(path, dialog.textValue().trimmed());
+}
+
+void ModelsLibraryPage::renameModel(const QString &path)
+{
+    if (!canMutate(path)) return;
+    QInputDialog dialog(this);
+    dialog.setObjectName("modelRenameDialog"); dialog.setWindowTitle("重命名模型");
+    dialog.setInputMode(QInputDialog::TextInput);
+    dialog.setLabelText("模型库中的显示名称（原始文件名和路径不变）\n留空可恢复原始文件名：" + QFileInfo(path).fileName());
+    for (auto *label : dialog.findChildren<QLabel *>()) label->setTextFormat(Qt::PlainText);
+    dialog.setTextValue(models_->snapshot().displayNames.value(path).toString());
+    dialog.setOkButtonText("保存"); dialog.setCancelButtonText("取消"); dialog.resize(520, 180);
+    if (dialog.exec() != QDialog::Accepted || !canMutate(path)) return;
+    emit renameRequested(path, dialog.textValue().simplified());
 }

@@ -1,6 +1,10 @@
 #include "ui/imagecanvas.h"
 #include "ui/lazyimagequeue.h"
 #include "ui/mainwindow.h"
+#include "ui/evaluationpanel.h"
+#include "ui/pages/workbenchpage.h"
+#include "ui/pages/modelslibrarypage.h"
+#include "ui_shutdown_helpers.h"
 #include "ui/modelviewer.h"
 
 #include <QApplication>
@@ -65,6 +69,8 @@ QByteArray contents(const QString &path)
 class BatchResponsivenessTests final : public QObject
 {
     Q_OBJECT
+    WorkbenchPage *workbenchPage() const { return window_->findChild<WorkbenchPage *>(); }
+    const WorkbenchPage::Controls &workbenchControls() const { return workbenchPage()->controls(); }
     std::unique_ptr<QTemporaryDir> fixture_;
     std::unique_ptr<MainWindow> window_;
     std::unique_ptr<QTimer> dialogGuard_;
@@ -91,10 +97,12 @@ class BatchResponsivenessTests final : public QObject
                 return {};
             files.append(file);
         }
-        window_->clearImageResults();
-        window_->files_.clear();
-        window_->queue_->clear();
-        window_->addFiles(files);
+        window_->inputs()->clear();
+        workbenchPage()->filesDropped(files);
+        QElapsedTimer timer; timer.start();
+        while ((window_->inputState().importing || window_->isWorkbenchBusy()) && timer.elapsed() < 10000)
+            QTest::qWait(5);
+        if (window_->inputState().importing || window_->isWorkbenchBusy()) return {};
         return files;
     }
 
@@ -172,6 +180,7 @@ class BatchResponsivenessTests final : public QObject
 
     void cleanup()
     {
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out");
         window_.reset();
         dialogGuard_.reset();
         fixture_.reset();
@@ -213,24 +222,24 @@ class BatchResponsivenessTests final : public QObject
         QObject populationObserver; bool probeScheduled = false, sawPartialPopulation = false, controlsLocked = false; int partialCount = -1;
         const auto partialProbe = connect(images->model(), &QAbstractItemModel::rowsInserted, &populationObserver,
             [&](const QModelIndex &, int, int) {
-                if (probeScheduled || !window_->queuePopulating_) return;
+                if (probeScheduled || !window_->inputState().queuePopulating) return;
                 probeScheduled = true;
                 QTimer::singleShot(0, &populationObserver, [&] {
                     partialCount = images->count();
-                    sawPartialPopulation = window_->queuePopulating_ && partialCount > 0 && partialCount < count;
+                    sawPartialPopulation = window_->inputState().queuePopulating && partialCount > 0 && partialCount < count;
                     auto *datasetButton = window_->findChild<QPushButton *>("openYoloDatasetButton");
-                    controlsLocked = window_->busy_ && !clear->isEnabled() && !window_->runButton_->isEnabled() &&
+                    controlsLocked = window_->isWorkbenchBusy() && !clear->isEnabled() && !workbenchControls().runButton->isEnabled() &&
                                      datasetButton && !datasetButton->isEnabled();
                 });
             });
-        window_->loadDataset(yaml, "val");
-        QVERIFY(window_->busy_); QVERIFY(!clear->isEnabled());
-        QTRY_VERIFY_WITH_TIMEOUT(!window_->busy_ && !window_->evaluationWorker_ && !window_->queuePopulating_, 30000);
+        workbenchControls().evaluation->datasetRequested(yaml, "val", {});
+        QVERIFY(window_->isWorkbenchBusy()); QVERIFY(!clear->isEnabled());
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->isWorkbenchBusy() && !window_->isEvaluationBusy() && !window_->inputState().queuePopulating, 30000);
         disconnect(partialProbe);
-        QVERIFY2(images->count() == count, qPrintable(window_->statusLabel_->toolTip() + " | " + window_->lastError_));
-        QCOMPARE(images->count(), count); for (int i = 0; i < files.size(); ++i) QCOMPARE(QDir::fromNativeSeparators(window_->files_[i]), QDir::fromNativeSeparators(files[i]));
+        QVERIFY2(images->count() == count, qPrintable(window_->findChild<QLabel *>("statusText")->toolTip() + " | " + window_->detectionState().error));
+        QCOMPARE(images->count(), count); for (int i = 0; i < files.size(); ++i) QCOMPARE(QDir::fromNativeSeparators(window_->inputState().files[i]), QDir::fromNativeSeparators(files[i]));
         QVERIFY(probeScheduled); QVERIFY(sawPartialPopulation); QVERIFY(controlsLocked);
-        QCOMPARE(window_->datasetManifest_.value("samples").toArray().size(), count);
+        QCOMPARE(window_->inputState().datasetManifest.value("samples").toArray().size(), count);
         for (int row : {0, 1000, 1999}) QCOMPARE(QDir::fromNativeSeparators(images->item(row)->data(Qt::UserRole).toString()), QDir::fromNativeSeparators(files[row]));
         images->setCurrentRow(0); images->scrollToItem(images->item(0));
         QTRY_COMPARE_WITH_TIMEOUT(view->result().source, files[0], 10000);
@@ -264,21 +273,21 @@ class BatchResponsivenessTests final : public QObject
         bool stopScheduled = false, stoppedPopulation = false; int countAtStop = -1; qint64 stopDispatchMs = -1;
         const auto cancelProbe = connect(images->model(), &QAbstractItemModel::rowsInserted, &populationObserver,
             [&](const QModelIndex &, int, int) {
-                if (stopScheduled || !window_->queuePopulating_) return;
+                if (stopScheduled || !window_->inputState().queuePopulating) return;
                 stopScheduled = true;
                 QTimer::singleShot(0, &populationObserver, [&] {
                     countAtStop = images->count();
-                    if (!window_->queuePopulating_ || countAtStop <= 0 || countAtStop >= count) return;
+                    if (!window_->inputState().queuePopulating || countAtStop <= 0 || countAtStop >= count) return;
                     stoppedPopulation = true; QElapsedTimer stopTime; stopTime.start();
-                    QTest::mouseClick(window_->stopButton_, Qt::LeftButton); stopDispatchMs = stopTime.elapsed();
+                    QTest::mouseClick(workbenchControls().stopButton, Qt::LeftButton); stopDispatchMs = stopTime.elapsed();
                 });
             });
-        window_->loadDataset(yaml, "val");
-        QTRY_VERIFY_WITH_TIMEOUT(stoppedPopulation && !window_->busy_ && !window_->evaluationWorker_ && !window_->queuePopulating_, 30000);
+        workbenchControls().evaluation->datasetRequested(yaml, "val", {});
+        QTRY_VERIFY_WITH_TIMEOUT(stoppedPopulation && !window_->isWorkbenchBusy() && !window_->isEvaluationBusy() && !window_->inputState().queuePopulating, 30000);
         disconnect(cancelProbe);
         QVERIFY(stopDispatchMs >= 0 && stopDispatchMs < 250);
-        QCOMPARE(images->count(), 0); QVERIFY(window_->files_.isEmpty()); QVERIFY(view->result().image.isNull());
-        QTest::qWait(120); QCOMPARE(images->count(), 0); QVERIFY(window_->files_.isEmpty());
+        QCOMPARE(images->count(), 0); QVERIFY(window_->inputState().files.isEmpty()); QVERIFY(view->result().image.isNull());
+        QTest::qWait(120); QCOMPARE(images->count(), 0); QVERIFY(window_->inputState().files.isEmpty());
         heartbeat.stop(); QVERIFY(ticks >= 10); QVERIFY2(maximumGap < 500, qPrintable(QString("GUI heartbeat gap: %1 ms").arg(maximumGap)));
         qInfo().noquote() << "lazy_queue_evidence" << "standard_yolo_dataset" << count << "partial_count" << partialCount
                          << "population_controls_locked" << controlsLocked << "stop_at_count" << countAtStop << "stop_dispatch_ms" << stopDispatchMs

@@ -4,7 +4,10 @@
 #include "ui/evaluationpanel.h"
 #include "ui/imagecanvas.h"
 #include "ui/mainwindow.h"
+#include "ui/pages/workbenchpage.h"
+#include "ui/pages/modelslibrarypage.h"
 #include "ui/modelviewer.h"
+#include "ui_shutdown_helpers.h"
 
 #include <QApplication>
 #include <QCheckBox>
@@ -60,6 +63,8 @@ struct DatasetFixture
 class DatasetSessionUiTests final : public QObject
 {
     Q_OBJECT
+    WorkbenchPage *workbenchPage() const { return window_->findChild<WorkbenchPage *>(); }
+    const WorkbenchPage::Controls &workbenchControls() const { return workbenchPage()->controls(); }
     std::unique_ptr<QTemporaryDir> area_;
     std::unique_ptr<MainWindow> window_;
     QHash<QByteArray, QByteArray> previous_;
@@ -79,18 +84,18 @@ class DatasetSessionUiTests final : public QObject
         QApplication::processEvents();
         return condition() && unexpectedDialog_.isEmpty();
     }
-    bool idle() const { return !window_->busy_ && !window_->evaluationWorker_ && !window_->queuePopulating_; }
+    bool idle() const { return !window_->isWorkbenchBusy() && !window_->isEvaluationBusy() && !window_->inputState().queuePopulating; }
     QString state() const
     {
         if (!unexpectedDialog_.isEmpty()) return unexpectedDialog_;
-        return window_->evaluation_->validationMessage() + " | " + window_->lastError_;
+        return workbenchControls().evaluation->validationMessage() + " | " + window_->detectionState().error;
     }
     void showWindow()
     {
         window_ = std::make_unique<MainWindow>();
         window_->resize(1380, 940);
         window_->show();
-        window_->modelViewer_->stop();
+        window_->findChild<ModelViewer *>()->stop();
     }
     DatasetFixture fixture(const QString &name, int largeValCount = 0)
     {
@@ -133,7 +138,7 @@ class DatasetSessionUiTests final : public QObject
     bool importDataset(const DatasetFixture &data, const QString &source, const QString &split, bool metadata = false)
     {
         if (!idle()) return false;
-        window_->evaluation_->datasetRequested(source, split, metadata ? data.metadata : QString());
+        workbenchControls().evaluation->datasetRequested(source, split, metadata ? data.metadata : QString());
         return ready(data, source, split, metadata);
     }
     bool ready(const DatasetFixture &data, const QString &source, const QString &split, bool metadata = false)
@@ -141,16 +146,17 @@ class DatasetSessionUiTests final : public QObject
         QStringList expected = data.images.value(split);
         if (metadata) expected.removeLast();
         return waitUntil([&, expected] {
-            return idle() && window_->files_ == expected && window_->queue_->count() == expected.size() &&
-                   window_->evaluation_->datasetYaml() == source && window_->evaluation_->datasetSplit() == split &&
-                   window_->evaluation_->metadataPath() == (metadata ? data.metadata : QString()) &&
-                   !expected.isEmpty() && window_->canvas_->result().source == expected.first() &&
-                   !window_->canvas_->result().image.isNull() && window_->canvas_->result().hasGroundTruth;
+            return idle() && window_->inputState().files == expected && workbenchControls().queue->count() == expected.size() &&
+                   workbenchControls().evaluation->datasetYaml() == source && workbenchControls().evaluation->datasetSplit() == split &&
+                   workbenchControls().evaluation->metadataPath() == (metadata ? data.metadata : QString()) &&
+                   !expected.isEmpty() && workbenchControls().canvas->result().source == expected.first() &&
+                   !workbenchControls().canvas->result().image.isNull() && workbenchControls().canvas->result().hasGroundTruth;
         });
     }
     void restart()
     {
         window_->close();
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out before restart");
         window_.reset();
         showWindow();
     }
@@ -214,10 +220,11 @@ private slots:
     }
     void cleanup()
     {
-        if (window_ && window_->busy_) {
-            window_->stopInference();
+        if (window_ && window_->isWorkbenchBusy()) {
+            workbenchPage()->stopRequested();
             waitUntil([this] { return idle(); });
         }
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out");
         window_.reset();
         dialogGuard_.stop();
         area_.reset();
@@ -244,20 +251,20 @@ private slots:
         const auto saved = fixture("saved-preference");
         QVERIFY2(importDataset(saved, saved.root, "val"), qPrintable(state()));
         const QByteArray record = contents(sessionPath());
-        const auto activeFiles = window_->files_;
+        const auto activeFiles = window_->inputState().files;
         toggle->setChecked(false);
         QCOMPARE(contents(sessionPath()), record);
-        QCOMPARE(window_->files_, activeFiles);
+        QCOMPARE(window_->inputState().files, activeFiles);
         restart();
         toggle = window_->findChild<QCheckBox *>("restoreDatasetOnStartup");
         QVERIFY(toggle && !toggle->isChecked());
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
-        const quint64 generation = window_->datasetImportGeneration_;
+        const quint64 generation = window_->inputState().importGeneration;
         window_->restoreDatasetSession();
         QTest::qWait(100);
-        QCOMPARE(window_->datasetImportGeneration_, generation);
-        QVERIFY(window_->files_.isEmpty());
-        QVERIFY(window_->datasetManifest_.isEmpty());
+        QCOMPARE(window_->inputState().importGeneration, generation);
+        QVERIFY(window_->inputState().files.isEmpty());
+        QVERIFY(window_->inputState().datasetManifest.isEmpty());
         QCOMPARE(contents(sessionPath()), record);
         QCOMPARE(starts.count(), 0);
 
@@ -269,11 +276,11 @@ private slots:
         restart();
         window_->restoreDatasetSession();
         QTest::qWait(60);
-        QVERIFY(window_->files_.isEmpty());
+        QVERIFY(window_->inputState().files.isEmpty());
         toggle = window_->findChild<QCheckBox *>("restoreDatasetOnStartup");
         toggle->setChecked(true);
         QTest::qWait(60);
-        QVERIFY(window_->files_.isEmpty()); // Turning it on affects the next start only.
+        QVERIFY(window_->inputState().files.isEmpty()); // Turning it on affects the next start only.
         QCOMPARE(contents(sessionPath()), updated);
         restart();
         QVERIFY(window_->findChild<QCheckBox *>("restoreDatasetOnStartup")->isChecked());
@@ -291,14 +298,14 @@ private slots:
         restart();
         auto *toggle = window_->findChild<QCheckBox *>("restoreDatasetOnStartup");
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
-        const quint64 generation = window_->datasetImportGeneration_;
+        const quint64 generation = window_->inputState().importGeneration;
         window_->restoreDatasetSession();
         toggle->setChecked(false);
         toggle->setChecked(true);
         QTest::qWait(100);
         QVERIFY(idle());
-        QCOMPARE(window_->datasetImportGeneration_, generation);
-        QVERIFY(window_->files_.isEmpty());
+        QCOMPARE(window_->inputState().importGeneration, generation);
+        QVERIFY(window_->inputState().files.isEmpty());
         QCOMPARE(contents(sessionPath()), record);
         QCOMPARE(starts.count(), 0);
     }
@@ -306,19 +313,20 @@ private slots:
     void guideImmediatelyPrecedesMoreWithoutChangingRouteTargets()
     {
         const QStringList titles{"检测工作台", "模型库", "模型显示", "运行记录", "录制视频", "模型转换", "使用指南", "更多"};
+        const QVector<int> routes{0, 1, 2, 3, 5, 6, 4, 7};
         int previousBottom = -1;
-        for (const auto &title : titles) {
-            QPushButton *entry = nullptr;
-            for (auto *button : window_->navButtons_)
-                if (button->text() == title) { entry = button; break; }
+        for (int index = 0; index < titles.size(); ++index) {
+            const auto &title = titles.at(index);
+            auto *entry = window_->findChild<QPushButton *>(QString("navigation-%1").arg(routes.at(index)));
             QVERIFY2(entry, qPrintable(title));
+            QCOMPARE(entry->text(), title);
             QVERIFY(entry->isVisible());
             QVERIFY(entry->y() > previousBottom);
             previousBottom = entry->geometry().bottom();
             entry->click();
-            QCOMPARE(window_->pageTitle_->text(), title);
+            QCOMPARE(window_->findChild<QLabel *>("pageTitle")->text(), title);
         }
-        QCOMPARE(window_->pages_->currentWidget()->objectName(), QString("morePage"));
+        QCOMPARE(window_->findChild<QStackedWidget *>("workspacePages")->currentWidget()->objectName(), QString("morePage"));
     }
     void successfulImportRestoresOriginalSourceSplitAndMetadata()
     {
@@ -334,9 +342,9 @@ private slots:
         QCOMPARE(saved.session.split, split);
         QCOMPARE(saved.session.metadataPath, data.metadata);
         QCOMPARE(firstStarts.count(), 0);
-        const auto previousHistory = window_->history_;
+        const auto previousHistory = window_->historySnapshot();
         restart();
-        QVERIFY(window_->datasetManifest_.isEmpty()); // Construction alone is safe for explicit CLI tasks.
+        QVERIFY(window_->inputState().datasetManifest.isEmpty()); // Construction alone is safe for explicit CLI tasks.
         QSignalSpy restoredStarts(window_.get(), &MainWindow::startRequested);
         QTimer heartbeat;
         QElapsedTimer clock;
@@ -354,16 +362,16 @@ private slots:
         QCOMPARE(restoredStarts.count(), 0);
         QVERIFY(ticks > 0);
         QVERIFY2(maxGap < 1000, qPrintable(QString("Dataset restore starved the UI event loop for %1 ms").arg(maxGap)));
-        QCOMPARE(window_->history_, previousHistory);
-        QVERIFY(window_->evaluationReport_.isEmpty());
+        QCOMPARE(window_->historySnapshot(), previousHistory);
+        QVERIFY(window_->evaluationState().report.isEmpty());
         QVERIFY(!QFileInfo::exists(area_->path() + "/data/results"));
-        QCOMPARE(window_->inputSize_->value(), 320);
-        QCOMPARE(window_->confidence_->value(), .37);
-        QCOMPARE(window_->inputColorMode_->currentData().toString(), QString("grayscale"));
-        QVERIFY(window_->modelPath_.isEmpty());
-        QCOMPARE(window_->canvas_->result().groundTruth.size(), 1);
+        QCOMPARE(workbenchControls().inputSize->value(), 320);
+        QCOMPARE(workbenchControls().confidence->value(), .37);
+        QCOMPARE(workbenchControls().inputColorMode->currentData().toString(), QString("grayscale"));
+        QVERIFY(window_->modelState().activeModel.isEmpty());
+        QCOMPARE(workbenchControls().canvas->result().groundTruth.size(), 1);
         qInfo().noquote() << "dataset_session_restore_evidence" << (yamlSource ? "yaml" : "directory") << split
-                         << "images" << window_->files_.size() << "metadata_excluded" << 1
+                         << "images" << window_->inputState().files.size() << "metadata_excluded" << 1
                          << "inference_requests" << restoredStarts.count() << "heartbeat_ticks" << ticks << "max_gap_ms" << maxGap;
     }
 
@@ -372,12 +380,12 @@ private slots:
         const auto first = fixture("valid");
         QVERIFY2(importDataset(first, first.root, "test"), qPrintable(state()));
         const QByteArray original = contents(sessionPath());
-        const auto paths = window_->files_;
-        window_->evaluation_->datasetRequested(area_->path() + "/absent/data.yaml", "train", {});
+        const auto paths = window_->inputState().files;
+        workbenchControls().evaluation->datasetRequested(area_->path() + "/absent/data.yaml", "train", {});
         QVERIFY2(waitUntil([this] { return idle(); }), qPrintable(state()));
         QCOMPARE(contents(sessionPath()), original);
-        QCOMPARE(window_->files_, paths);
-        QCOMPARE(window_->evaluation_->datasetYaml(), first.root);
+        QCOMPARE(window_->inputState().files, paths);
+        QCOMPARE(workbenchControls().evaluation->datasetYaml(), first.root);
         restart();
         window_->restoreDatasetSession();
         QVERIFY2(ready(first, first.root, "test"), qPrintable(state()));
@@ -393,23 +401,23 @@ private slots:
         int partialCount = 0;
         qint64 stopDuration = -1;
         connect(&stopper, &QTimer::timeout, this, [&] {
-            if (!window_->queuePopulating_ || window_->queue_->count() == 0 || window_->queue_->count() >= 1500) return;
-            partialCount = window_->queue_->count();
+            if (!window_->inputState().queuePopulating || workbenchControls().queue->count() == 0 || workbenchControls().queue->count() >= 1500) return;
+            partialCount = workbenchControls().queue->count();
             stopper.stop();
             QElapsedTimer elapsed;
             elapsed.start();
-            window_->stopInference();
+            workbenchPage()->stopRequested();
             stopDuration = elapsed.elapsed();
         });
         stopper.start(0);
-        window_->evaluation_->datasetRequested(pending.root, "val", {});
+        workbenchControls().evaluation->datasetRequested(pending.root, "val", {});
         QVERIFY2(waitUntil([&] { return stopDuration >= 0 && idle(); }), qPrintable(state()));
         stopper.stop();
         QVERIFY(partialCount > 0 && partialCount < 1500);
         QVERIFY(stopDuration < 500);
         QCOMPARE(contents(sessionPath()), original);
         QTest::qWait(50);
-        QVERIFY(window_->files_.isEmpty());
+        QVERIFY(window_->inputState().files.isEmpty());
         QCOMPARE(contents(sessionPath()), original);
         restart();
         window_->restoreDatasetSession();
@@ -439,9 +447,9 @@ private slots:
         window_->restoreDatasetSession();
         QTest::qWait(50); // Process the deferred entry before observing its final idle state.
         QVERIFY2(waitUntil([this] { return idle(); }), qPrintable(state()));
-        QVERIFY(window_->datasetManifest_.isEmpty());
-        QVERIFY(window_->files_.isEmpty());
-        QVERIFY(window_->canvas_->result().image.isNull());
+        QVERIFY(window_->inputState().datasetManifest.isEmpty());
+        QVERIFY(window_->inputState().files.isEmpty());
+        QVERIFY(workbenchControls().canvas->result().image.isNull());
         QCOMPARE(starts.count(), 0);
         QCOMPARE(contents(sessionPath()), original);
         QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
@@ -468,23 +476,23 @@ private slots:
         restart();
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
         if (restoreFirst) window_->restoreDatasetSession();
-        window_->evaluation_->datasetRequested(manual.yaml, "test", manual.metadata);
+        workbenchControls().evaluation->datasetRequested(manual.yaml, "test", manual.metadata);
         if (!restoreFirst) window_->restoreDatasetSession();
         QVERIFY2(ready(manual, manual.yaml, "test", true), qPrintable(state()));
         QTest::qWait(60);
-        QCOMPARE(window_->evaluation_->datasetYaml(), manual.yaml);
+        QCOMPARE(workbenchControls().evaluation->datasetYaml(), manual.yaml);
         const auto saved = vision::DatasetSessionStore::load(sessionPath());
         QCOMPARE(saved.session.sourcePath, manual.yaml);
         QCOMPARE(saved.session.split, QString("test"));
         QCOMPARE(starts.count(), 0);
         // A repeated call must not replace the already selected active context.
-        const quint64 acceptedImport = window_->datasetImportGeneration_;
+        const quint64 acceptedImport = window_->inputState().importGeneration;
         window_->restoreDatasetSession();
         QTest::qWait(60);
         QVERIFY(idle());
-        QCOMPARE(window_->datasetImportGeneration_, acceptedImport);
-        QCOMPARE(window_->evaluation_->datasetYaml(), manual.yaml);
-        QCOMPARE(window_->files_.size(), manual.images.value("test").size() - 1);
+        QCOMPARE(window_->inputState().importGeneration, acceptedImport);
+        QCOMPARE(workbenchControls().evaluation->datasetYaml(), manual.yaml);
+        QCOMPARE(window_->inputState().files.size(), manual.images.value("test").size() - 1);
     }
 
     void openingAndCancellingPickerSuppressesPendingRestore()
@@ -500,21 +508,21 @@ private slots:
             for (auto *widget : QApplication::topLevelWidgets())
                 if (auto *dialog = qobject_cast<QFileDialog *>(widget); dialog && dialog->isVisible()) {
                     sawPicker = dialog->objectName() == "yoloDatasetSourceDialog";
-                    workerStartedInsidePicker = window_->busy_ || window_->evaluationWorker_;
+                    workerStartedInsidePicker = window_->isWorkbenchBusy() || window_->isEvaluationBusy();
                     dialog->reject();
                     closePicker.stop();
                 }
         });
         closePicker.start(20);
         window_->restoreDatasetSession();
-        window_->evaluation_->chooseDataset(); // exec() runs a nested event loop containing the pending restore timer.
+        workbenchControls().evaluation->chooseDataset(); // exec() runs a nested event loop containing the pending restore timer.
         closePicker.stop();
         QVERIFY(sawPicker);
         QVERIFY(!workerStartedInsidePicker);
         QTest::qWait(60);
         QVERIFY(idle());
-        QVERIFY(window_->datasetManifest_.isEmpty());
-        QVERIFY(window_->files_.isEmpty());
+        QVERIFY(window_->inputState().datasetManifest.isEmpty());
+        QVERIFY(window_->inputState().files.isEmpty());
         QCOMPARE(contents(sessionPath()), original);
         QCOMPARE(starts.count(), 0);
     }

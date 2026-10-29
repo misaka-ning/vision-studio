@@ -5,6 +5,7 @@
 #include <QDir>
 #include <QColor>
 #include <QElapsedTimer>
+#include <QEventLoop>
 #include <QFile>
 #include <QFileInfo>
 #include <QImage>
@@ -402,6 +403,60 @@ class InputSessionControllerTests final : public QObject
         input->requestShutdown();
         QCOMPARE(shutdown.size(), 1);
         QCOMPARE(contents(sessionPath_), record);
+    }
+
+    void shutdownDuringStartupNotificationDoesNotLaunchWorker_data()
+    {
+        QTest::addColumn<bool>("dataset");
+        QTest::addColumn<bool>("replaceExisting");
+        QTest::newRow("images-checking-state") << false << false;
+        QTest::newRow("dataset-checking-state") << true << false;
+        QTest::newRow("replacement-cancelling-state") << false << true;
+    }
+
+    void shutdownDuringStartupNotificationDoesNotLaunchWorker()
+    {
+        QFETCH(bool, dataset);
+        QFETCH(bool, replaceExisting);
+        auto input = controller();
+        if (replaceExisting) QVERIFY(input->requestImages({images_.first()}));
+        QSignalSpy ready(input.get(), &InputSessionController::shutdownReady);
+        bool closed = false, readyWhenClosed = false;
+        int workersWhenClosed = -1;
+        connect(input.get(), &InputSessionController::stateChanged, input.get(), [&] {
+            const auto phase = input->snapshot().phase;
+            const auto expected = replaceExisting ? InputPhase::Idle
+                : dataset ? InputPhase::CheckingDataset : InputPhase::CheckingImages;
+            if (closed || phase != expected) return;
+            closed = true;
+            workersWhenClosed = input->activeWorkerCount();
+            input->requestShutdown();
+            readyWhenClosed = input->isShutdownReady();
+        }, Qt::DirectConnection);
+        const bool accepted = dataset ? input->loadDataset(dataset_)
+            : input->requestImages({images_.last()});
+        const int workersAfterReturn = input->activeWorkerCount();
+        const bool readyAfterReturn = input->isShutdownReady();
+        qInfo() << "startup-close" << "accepted" << accepted
+                << "workers-at-close" << workersWhenClosed << "workers-after-return" << workersAfterReturn
+                << "ready-at-close" << readyWhenClosed << "ready-after-return" << readyAfterReturn;
+
+        // Drain even on the old implementation, so a failing assertion cannot
+        // leave its newly launched worker running beyond the fixture lifetime.
+        QEventLoop loop;
+        QTimer::singleShot(1, &loop, &QEventLoop::quit);
+        loop.exec();
+        QTRY_COMPARE_WITH_TIMEOUT(input->activeWorkerCount(), 0, 30000);
+        QTRY_VERIFY_WITH_TIMEOUT(input->isShutdownReady(), 30000);
+        QCOMPARE(ready.count(), 1);
+        QVERIFY(closed);
+        QVERIFY2(!accepted, "The startup command continued after its state notification closed the controller.");
+        QVERIFY2(workersAfterReturn <= workersWhenClosed, "A new worker was registered after shutdown.");
+        QVERIFY2(!readyWhenClosed || readyAfterReturn, "Readiness became false again after shutdown had been ready.");
+        QCOMPARE(input->snapshot().phase, InputPhase::Idle);
+        QVERIFY(!input->requestImages({images_.first()}));
+        QVERIFY(!input->loadDataset(dataset_));
+        QVERIFY(!QFileInfo::exists(sessionPath_));
     }
 };
 QTEST_GUILESS_MAIN(InputSessionControllerTests)

@@ -4,7 +4,14 @@
 #include "ui/evaluationpanel.h"
 #include "ui/imagecanvas.h"
 #include "ui/lazyimagequeue.h"
+#include "ui/asyncimagepreview.h"
 
+#include <QFileInfo>
+#include <QElapsedTimer>
+#include <QJsonArray>
+#include <QSignalBlocker>
+#include <QRegularExpression>
+#include <QSet>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDoubleSpinBox>
@@ -19,6 +26,7 @@
 #include <QTimer>
 #include <QVBoxLayout>
 #include <QWheelEvent>
+#include <memory>
 
 using namespace vision::ui::pages;
 namespace
@@ -148,8 +156,15 @@ WorkbenchPage::WorkbenchPage(const QString &exportDirectory, QWidget *parent) : 
     cl->addWidget(text("检测配置", "sectionTitle"));
     controls_.lockedControls.append(controls_.computeDevice);
     controls_.lockedControls.append(controls_.gpuDeviceIndex);
-    connect(controls_.computeDevice, &QComboBox::currentIndexChanged, this, &WorkbenchPage::deviceChanged);
-    connect(controls_.gpuDeviceIndex, &QComboBox::currentIndexChanged, this, &WorkbenchPage::deviceChanged);
+    connect(controls_.computeDevice, &QComboBox::currentIndexChanged, this, [this] {
+        const auto device = controls_.computeDevice->currentData().toString();
+        emit computeDeviceEdited(device == "cuda" ? vision::ComputeDevice::CUDA :
+            device == "cpu" ? vision::ComputeDevice::CPU : vision::ComputeDevice::Auto);
+        emit deviceChanged();
+    });
+    connect(controls_.gpuDeviceIndex, &QComboBox::currentIndexChanged, this, [this] {
+        emit deviceIndexEdited(controls_.gpuDeviceIndex->currentData().toInt()); emit deviceChanged();
+    });
     auto *scroll = new QScrollArea;
     scroll->setObjectName("configurationScrollArea");
     scroll->setWidgetResizable(true);
@@ -243,7 +258,9 @@ WorkbenchPage::WorkbenchPage(const QString &exportDirectory, QWidget *parent) : 
     controls_.classFilterHint->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
     fields->addWidget(controls_.classFilterHint);
     controls_.lockedControls.append(controls_.classFilter);
-    connect(controls_.classFilter, &QLineEdit::textChanged, this, &WorkbenchPage::classFilterChanged);
+    connect(controls_.classFilter, &QLineEdit::textChanged, this, [this](const QString &value) {
+        emit classFilterEdited(value); emit classFilterChanged(value);
+    });
     fields->addSpacing(7);
     fields->addWidget(section("推理参数", "03"));
     auto *form = new QFormLayout;
@@ -310,6 +327,7 @@ WorkbenchPage::WorkbenchPage(const QString &exportDirectory, QWidget *parent) : 
             });
     controls_.lockedControls.append(controls_.scale);
     controls_.autoExport = new QCheckBox("自动保存每张图片的结果");
+    connect(controls_.autoExport, &QCheckBox::toggled, this, &WorkbenchPage::automaticExportEdited);
     controls_.autoExport->setToolTip("保存标注 PNG、JSON 和 CSV；视频与摄像头在停止后保存最后一帧");
     fields->addWidget(controls_.autoExport);
     auto *openExportDirectory = button("打开保存文件夹", "folder", "ghost");
@@ -505,13 +523,36 @@ WorkbenchPage::WorkbenchPage(const QString &exportDirectory, QWidget *parent) : 
                 else
                     controls_.predictionTable->clearSelection();
             });
-    connect(controls_.taskBox, &QComboBox::currentIndexChanged, this, &WorkbenchPage::taskChanged);
-    connect(controls_.inputSize, &QSpinBox::valueChanged, this, &WorkbenchPage::parametersChanged);
-    for (auto *control : {controls_.confidence, controls_.iou, controls_.scale, controls_.meanR, controls_.meanG, controls_.meanB})
-        connect(control, &QDoubleSpinBox::valueChanged, this, &WorkbenchPage::parametersChanged);
-    connect(controls_.inputColorMode, &QComboBox::currentIndexChanged, this, &WorkbenchPage::inputColorChanged);
-    connect(controls_.stereoView, &QComboBox::currentIndexChanged, this, &WorkbenchPage::stereoChanged);
-    connect(controls_.cameraIndex, &QSpinBox::valueChanged, this, &WorkbenchPage::cameraIndexChanged);
+    connect(controls_.taskBox, &QComboBox::currentIndexChanged, this, [this](int index) {
+        emit taskEdited(static_cast<vision::ModelTask>(index)); emit taskChanged(index);
+    });
+    connect(controls_.inputSize, &QSpinBox::valueChanged, this, [this](int value) {
+        emit inputSizeEdited(value); emit parametersChanged();
+    });
+    const auto parameterEdit = [this](QDoubleSpinBox *control, void (WorkbenchPage::*signal)(double)) {
+        connect(control, &QDoubleSpinBox::valueChanged, this, [this, signal](double value) {
+            emit (this->*signal)(value); emit parametersChanged();
+        });
+    };
+    parameterEdit(controls_.confidence, &WorkbenchPage::confidenceEdited);
+    parameterEdit(controls_.iou, &WorkbenchPage::iouEdited);
+    parameterEdit(controls_.scale, &WorkbenchPage::scaleEdited);
+    parameterEdit(controls_.meanR, &WorkbenchPage::meanREdited);
+    parameterEdit(controls_.meanG, &WorkbenchPage::meanGEdited);
+    parameterEdit(controls_.meanB, &WorkbenchPage::meanBEdited);
+    connect(controls_.inputColorMode, &QComboBox::currentIndexChanged, this, [this] {
+        const auto color = controls_.inputColorMode->currentData().toString();
+        emit inputColorEdited(color == "grayscale" ? vision::InputColorMode::Grayscale : vision::InputColorMode::Color, color != "bgr");
+        emit inputColorChanged();
+    });
+    connect(controls_.stereoView, &QComboBox::currentIndexChanged, this, [this] {
+        const auto view = controls_.stereoView->currentData().toString();
+        emit stereoViewEdited(view == "left" ? vision::StereoView::Left : view == "right" ? vision::StereoView::Right : vision::StereoView::Full);
+        emit stereoChanged();
+    });
+    connect(controls_.cameraIndex, &QSpinBox::valueChanged, this, [this](int value) {
+        emit cameraIndexEdited(value); emit cameraIndexChanged();
+    });
     columns->setStretchFactor(0, 0);
     columns->setStretchFactor(1, 1);
     columns->setStretchFactor(2, 0);
@@ -617,7 +658,253 @@ WorkbenchPage::WorkbenchPage(const QString &exportDirectory, QWidget *parent) : 
     connect(controls_.workbenchTabs, &QTabWidget::currentChanged, this, &WorkbenchPage::workbenchTabChanged);
 }
 
+void WorkbenchPage::showConfiguration(const ConfigurationProjection &draft)
+{
+    const QSignalBlocker task(controls_.taskBox), size(controls_.inputSize), confidence(controls_.confidence),
+        iou(controls_.iou), scale(controls_.scale), meanR(controls_.meanR), meanG(controls_.meanG), meanB(controls_.meanB),
+        color(controls_.inputColorMode), device(controls_.computeDevice), deviceIndex(controls_.gpuDeviceIndex),
+        filter(controls_.classFilter), camera(controls_.cameraIndex), stereo(controls_.stereoView), automatic(controls_.autoExport);
+    const auto &parameters = draft.parameters;
+    controls_.taskBox->setCurrentIndex(int(parameters.task));
+    controls_.inputSize->setValue(parameters.inputSize);
+    controls_.confidence->setValue(draft.confidence); controls_.iou->setValue(draft.iou);
+    controls_.scale->setValue(parameters.scale);
+    controls_.meanR->setValue(parameters.meanR); controls_.meanG->setValue(parameters.meanG); controls_.meanB->setValue(parameters.meanB);
+    const auto colorKey = parameters.colorMode == vision::InputColorMode::Grayscale ? "grayscale" : parameters.swapRB ? "rgb" : "bgr";
+    controls_.inputColorMode->setCurrentIndex(controls_.inputColorMode->findData(colorKey));
+    const auto deviceKey = parameters.device == vision::ComputeDevice::CUDA ? "cuda" : parameters.device == vision::ComputeDevice::CPU ? "cpu" : "auto";
+    controls_.computeDevice->setCurrentIndex(controls_.computeDevice->findData(deviceKey));
+    if (controls_.gpuDeviceIndex->findData(parameters.deviceIndex) < 0)
+        controls_.gpuDeviceIndex->addItem(QString("GPU %1 · 待检查").arg(parameters.deviceIndex), parameters.deviceIndex);
+    controls_.gpuDeviceIndex->setCurrentIndex(controls_.gpuDeviceIndex->findData(parameters.deviceIndex));
+    controls_.classFilter->setText(draft.classFilterText);
+    controls_.cameraIndex->setValue(draft.cameraIndex);
+    const auto stereoKey = draft.stereoView == vision::StereoView::Left ? "left" : draft.stereoView == vision::StereoView::Right ? "right" : "full";
+    controls_.stereoView->setCurrentIndex(controls_.stereoView->findData(stereoKey));
+    controls_.autoExport->setChecked(draft.automaticExport);
+}
+
+void WorkbenchPage::cancelQueueProjection()
+{
+    if (queueProjectionTimer_) {
+        queueProjectionTimer_->stop(); queueProjectionTimer_->deleteLater(); queueProjectionTimer_ = nullptr;
+    }
+    if (!queueProjectionActive_) return;
+    queueProjectionActive_ = false;
+    emit projectionChanged();
+}
+
+void WorkbenchPage::projectQueue(const QStringList &paths, int firstRow, quint64 generation,
+    const QHash<QString, QJsonObject> &samples, vision::InputColorMode colorMode, bool datasetContext)
+{
+    if (inputViewShuttingDown_) return;
+    cancelQueueProjection();
+    queueProjectionActive_ = true;
+    emit projectionChanged();
+    auto *timer = queueProjectionTimer_ = new QTimer(this);
+    timer->setInterval(0);
+    auto offset = std::make_shared<int>(0);
+    static_cast<LazyImageQueue *>(controls_.queue)->setColorMode(colorMode);
+    connect(timer, &QTimer::timeout, this,
+        [this, paths, firstRow, generation, samples, datasetContext, timer, offset] {
+        if (inputViewShuttingDown_ || queueProjectionTimer_ != timer) return;
+        QElapsedTimer budget; budget.start();
+        {
+            const QSignalBlocker blocker(controls_.queue);
+            controls_.queue->setUpdatesEnabled(false);
+            int added = 0;
+            while (*offset < paths.size() && added < 96 && (added == 0 || budget.elapsed() < 5)) {
+                const auto &path = paths.at((*offset)++);
+                auto *item = new QListWidgetItem(ui::icon("image"), QFileInfo(path).fileName());
+                item->setData(Qt::UserRole, path);
+                const bool temporary = !samples.contains(path);
+                item->setData(Qt::UserRole + 11, temporary);
+                item->setToolTip(!datasetContext ? path : path + (temporary
+                    ? QStringLiteral("\n临时图片 · 无 GT，仅参与检测，不计入评估；下次启动不恢复")
+                    : QString("\nGT · %1 个标注").arg(samples.value(path).value("gt").toArray().size())));
+                controls_.queue->addItem(item); ++added;
+            }
+            controls_.queue->setUpdatesEnabled(true);
+        }
+        if (*offset < paths.size()) return;
+        timer->stop(); timer->deleteLater(); queueProjectionTimer_ = nullptr;
+        queueProjectionActive_ = false;
+        emit projectionChanged();
+        emit queueProjectionFinished(generation, firstRow + paths.size());
+        if (!inputViewShuttingDown_)
+            static_cast<LazyImageQueue *>(controls_.queue)->scheduleVisibleThumbnails();
+    });
+    timer->start();
+}
+
+void WorkbenchPage::cancelImagePreview()
+{
+    ++previewGeneration_;
+    if (previewLoader_) previewLoader_->cancel();
+}
+
+void WorkbenchPage::requestImagePreview(const QString &primary, const QString &fallback,
+                                      vision::InputColorMode colorMode)
+{
+    if (inputViewShuttingDown_) return;
+    if (!previewLoader_) {
+        previewLoader_ = new AsyncImagePreview(this);
+        connect(previewLoader_, &AsyncImagePreview::ready, this,
+            [this](quint64 generation, const QString &path, const QImage &original, const QImage &preview,
+                   bool primaryUsed, const QString &error) {
+            if (!inputViewShuttingDown_ && generation == previewGeneration_)
+                emit previewReady(generation, path, original, preview, primaryUsed, error);
+        });
+    }
+    previewLoader_->request(++previewGeneration_, primary, fallback, colorMode);
+}
+
+void WorkbenchPage::requestPreviewShutdown()
+{
+    inputViewShuttingDown_ = true;
+    cancelQueueProjection(); cancelImagePreview();
+    if (previewLoader_) previewLoader_->requestShutdown();
+}
+
+bool WorkbenchPage::isPreviewShutdownReady() const
+{
+    return inputViewShuttingDown_ && !queueProjectionActive_ &&
+        (!previewLoader_ || previewLoader_->isShutdownReady());
+}
+
 void WorkbenchPage::setExportDirectory(const QString &directory)
 {
     controls_.openExportDirectory->setToolTip(directory);
+}
+
+
+namespace {
+QString stereoName(vision::StereoView view)
+{
+    return view == vision::StereoView::Left ? QStringLiteral("双目左目") :
+        view == vision::StereoView::Right ? QStringLiteral("双目右目") : QStringLiteral("完整画面");
+}
+QString taskName(vision::ModelTask task)
+{
+    return task == vision::ModelTask::YoloV5 ? QStringLiteral("YOLOv5") :
+        task == vision::ModelTask::YoloV8 ? QStringLiteral("YOLOv8 / 11") : QStringLiteral("图像分类");
+}
+}
+void WorkbenchPage::showResolvedDevice(const QString &backend, const vision::ModelConfig &config)
+{
+    device_ = {true, config.resolvedDevice,
+        config.resolvedDevice == vision::ComputeDevice::CUDA ? config.deviceIndex : -1,
+        config.deviceName, config.deviceNotice, backend};
+}
+void WorkbenchPage::showResult(const vision::InferenceResult &r, vision::SourceKind sourceKind,
+                                const QString &streamPath, bool taskActive)
+{
+    Q_UNUSED(taskActive);
+    displayedResult_ = r;
+    if (r.evaluationReport.isEmpty())
+        device_ = {true, r.device, r.deviceIndex, r.deviceName, r.deviceNotice, r.backend};
+    controls_.canvas->setResult(r);
+    controls_.canvasTitle->setText(sourceKind == vision::SourceKind::Images
+                              ? QFileInfo(r.source).fileName()
+                              : QString("%1 · 第 %2 帧")
+                                    .arg(sourceKind == vision::SourceKind::Camera
+                                             ? "摄像头"
+                                             : QFileInfo(streamPath).fileName())
+                                    .arg(r.frameNumber));
+    if (r.stereoView != vision::StereoView::Full)
+        controls_.canvasTitle->setText(controls_.canvasTitle->text() + " · " + stereoName(r.stereoView));
+    controls_.countMetric->setText(QString::number(r.predictions.size()));
+    controls_.latencyMetric->setText(r.hasInferenceTiming ? QString::number(r.inferenceMs, 'f', 1) : QStringLiteral("未记录"));
+    QSet<int> cls;
+    for (const auto &p : r.predictions)
+        cls.insert(p.classId);
+    controls_.classMetric->setText(QString::number(cls.size()));
+    controls_.sizeMetric->setText(QString("%1 × %2").arg(r.image.width()).arg(r.image.height()));
+    controls_.sizeMetric->setToolTip(r.sourceFrameSize.isEmpty() ? "预览与导出图像尺寸"
+                                                        : QString("原始输入 %1 × %2 · %3")
+                                                              .arg(r.sourceFrameSize.width())
+                                                              .arg(r.sourceFrameSize.height())
+                                                              .arg(stereoName(r.stereoView)));
+    controls_.resultInfo->setText(QString("%1 · %2 个%3\n总处理 %4 ms")
+                             .arg(r.hasCompleteInferenceConfig ? taskName(r.task) : QStringLiteral("目标检测 · 历史预测"))
+                             .arg(r.predictions.size())
+                             .arg(r.task == vision::ModelTask::Classification ? "分类结果" : "目标")
+                             .arg(r.totalMs, 0, 'f', 1));
+    QString deviceDescription;
+    if (!r.hasInferenceTiming)
+        controls_.resultInfo->setText(QString("目标检测 · %1 个目标\n逐图耗时未记录").arg(r.predictions.size()));
+    if (!r.hasVerifiedDevice)
+        deviceDescription = "来源设备（未验证）· " + (r.sourceRuntimeDevice.isEmpty() ? QStringLiteral("未记录") : r.sourceRuntimeDevice);
+    else if (r.device == vision::ComputeDevice::CPU)
+    {
+        QString backend = r.backend;
+        backend.remove(QRegularExpression("\\s*/\\s*CPU\\b", QRegularExpression::CaseInsensitiveOption));
+        deviceDescription = "CPU · " + backend;
+    }
+    else
+    {
+        QString name = r.deviceName;
+        name.remove(
+            QRegularExpression("^(NVIDIA\\s+)?(GeForce\\s+)?", QRegularExpression::CaseInsensitiveOption));
+        deviceDescription = "GPU · " + (name.isEmpty() ? r.backend : name);
+    }
+    controls_.resultInfo->setText(controls_.resultInfo->text() + "\n" + deviceDescription);
+    if (!r.deviceNotice.isEmpty())
+        controls_.resultInfo->setText(controls_.resultInfo->text() + "\n" + r.deviceNotice.left(400));
+    controls_.emptyResults->setVisible(r.predictions.isEmpty());
+    controls_.emptyResults->setText("未发现符合阈值的目标\n\n可尝试降低置信度或检查模型配置。");
+    if (r.hasGroundTruth) {
+        controls_.resultInfo->setText(controls_.resultInfo->text() + (r.hasEvaluationMatches
+            ? QString("\nGT 匹配 · TP %1 / FP %2 / FN %3\nGT 虚线 · 预测实线 · 原始类别 ID 保留")
+                .arg(r.matchedPredictions.size())
+                .arg(r.predictions.size() - r.ignoredPredictions.size() - r.matchedPredictions.size())
+                .arg(r.groundTruth.size() - r.matchedGroundTruth.size())
+            : QString("\nGT 标注预览 · 尚未完成该图的匹配评估")));
+    }
+    controls_.predictionTable->setColumnCount(r.hasGroundTruth ? 4 : 3);
+    controls_.predictionTable->setHorizontalHeaderLabels(r.hasGroundTruth
+        ? QStringList{"类别", "置信度", "类别 ID", "匹配"}
+        : QStringList{"类别", "置信度", "类别 ID"});
+    controls_.predictionTable->setRowCount(r.predictions.size());
+    controls_.predictionTable->clearSelection();
+    for (int i = 0; i < r.predictions.size(); ++i)
+    {
+        const auto &p = r.predictions[i];
+        auto *name = new QTableWidgetItem(p.label);
+        name->setForeground(QColor::fromHsv((p.classId * 53 + 156) % 360, 130, 225));
+        name->setToolTip(QString("x: %1  y: %2\nw: %3  h: %4")
+                             .arg(p.box.x(), 0, 'f', 1)
+                             .arg(p.box.y(), 0, 'f', 1)
+                             .arg(p.box.width(), 0, 'f', 1)
+                             .arg(p.box.height(), 0, 'f', 1));
+        controls_.predictionTable->setItem(i, 0, name);
+        auto *conf = new QTableWidgetItem(QString::number(p.confidence * 100, 'f', 1) + "%");
+        conf->setTextAlignment(Qt::AlignCenter);
+        controls_.predictionTable->setItem(i, 1, conf);
+        auto *id = new QTableWidgetItem(QString::number(p.classId));
+        id->setTextAlignment(Qt::AlignCenter);
+        id->setForeground(QColor("#A5A5A5"));
+        id->setToolTip("模型原始 class_id，从 0 开始");
+        controls_.predictionTable->setItem(i, 2, id);
+        if (r.hasGroundTruth) {
+            const QString state = !r.hasEvaluationMatches ? "待评估" : r.ignoredPredictions.contains(i) ? "忽略" : r.matchedPredictions.contains(i) ? "TP" : "FP";
+            auto *match = new QTableWidgetItem(state);
+            match->setTextAlignment(Qt::AlignCenter);
+            match->setForeground(QColor(state == "TP" ? "#6FE7B6" : state == "FP" ? "#FFB08F" : "#D2D2D2"));
+            controls_.predictionTable->setItem(i, 3, match);
+        }
+    }
+    if (r.hasEvaluationMatches) {
+        for (int g = 0; g < r.groundTruth.size(); ++g) if (!r.matchedGroundTruth.contains(g)) {
+            const int row = controls_.predictionTable->rowCount(); controls_.predictionTable->insertRow(row);
+            const auto &gt = r.groundTruth[g];
+            const QStringList values = {"GT · " + gt.label, "—", QString::number(gt.classId), "FN"};
+            for (int c = 0; c < values.size(); ++c) {
+                auto *item = new QTableWidgetItem(values[c]); item->setForeground(QColor("#E6AAFF"));
+                item->setToolTip("数据集原始类别 ID；此标注没有匹配的目标预测。");
+                controls_.predictionTable->setItem(row, c, item);
+            }
+        }
+    }
+
 }

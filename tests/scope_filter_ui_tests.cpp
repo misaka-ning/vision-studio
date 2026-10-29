@@ -1,4 +1,7 @@
 #include "ui/mainwindow.h"
+#include "ui/pages/workbenchpage.h"
+#include "ui/pages/modelslibrarypage.h"
+#include "ui_shutdown_helpers.h"
 #include "core/gpuruntime.h"
 #include "ui/imagecanvas.h"
 #include "ui/modelviewer.h"
@@ -32,6 +35,21 @@
 class ScopeFilterUiTests final : public QObject
 {
     Q_OBJECT
+    WorkbenchPage *workbenchPage() const { return window_->findChild<WorkbenchPage *>(); }
+    const WorkbenchPage::Controls &workbenchControls() const { return workbenchPage()->controls(); }
+    vision::app::PreparedResultExport prepareResultExport(const vision::InferenceResult &result,
+        const QString &directory, const vision::ModelConfig &config) const
+    {
+        const auto evaluation = window_->evaluationState();
+        const auto historical = result.evaluationReport == evaluation.directory
+            ? evaluation.report.value("config").toObject() : QJsonObject{};
+        return vision::app::ResultWriter::prepare(result, directory, config, historical);
+    }
+    bool writeResult(const vision::InferenceResult &result, const QString &directory, QString *error) const
+    {
+        return vision::app::ResultWriter::writePrepared(
+            prepareResultExport(result, directory, window_->displayedConfig()), error);
+    }
     std::unique_ptr<QTemporaryDir> area_;
     std::unique_ptr<MainWindow> window_;
     QHash<QByteArray, QByteArray> originalEnvironment_;
@@ -42,9 +60,7 @@ class ScopeFilterUiTests final : public QObject
 
     QStringList createQueue(int count)
     {
-        window_->clearImageResults();
-        window_->files_.clear();
-        window_->queue_->clear();
+        window_->inputs()->clear();
         const QString folder = area_->path() + "/images";
         if (!QDir().mkpath(folder)) return {};
         QImage image(QStringLiteral(VISION_PROJECT_DIR) + "/assets/bus.jpg");
@@ -56,7 +72,11 @@ class ScopeFilterUiTests final : public QObject
             if (!image.save(path)) return {};
             paths.append(path);
         }
-        window_->addFiles(paths);
+        workbenchPage()->filesDropped(paths);
+        QElapsedTimer timer; timer.start();
+        while ((window_->inputState().importing || window_->isWorkbenchBusy()) && timer.elapsed() < 10000)
+            QTest::qWait(5);
+        if (window_->inputState().importing || window_->isWorkbenchBusy()) return {};
         files_ = paths;
         return paths;
     }
@@ -67,7 +87,7 @@ class ScopeFilterUiTests final : public QObject
         timer.start();
         while (timer.elapsed() < timeout && unexpectedDialog_.isEmpty()) {
             QApplication::processEvents();
-            if (!window_->busy_ && window_->completed_ == expected && !window_->resultIoPending_)
+            if (!window_->isWorkbenchBusy() && window_->completedCount() == expected && !window_->pendingResultWrites())
                 return true;
             QTest::qWait(10);
         }
@@ -79,16 +99,16 @@ class ScopeFilterUiTests final : public QObject
         QElapsedTimer timer; timer.start();
         while (timer.elapsed() < timeout && unexpectedDialog_.isEmpty()) {
             QApplication::processEvents();
-            const auto &result = window_->canvas_->result();
+            const auto &result = workbenchControls().canvas->result();
             if (result.source == source && !result.image.isNull() &&
-                (result.inferenceMs > 0) == processed && window_->exportButton_->isEnabled() == processed)
+                (result.inferenceMs > 0) == processed && window_->findChild<QPushButton *>("exportResultButton")->isEnabled() == processed)
                 return true;
             QTest::qWait(5);
         }
-        const auto &result = window_->canvas_->result();
+        const auto &result = workbenchControls().canvas->result();
         qWarning().noquote() << "async_review_wait_failure" << "expected_source" << source << "processed" << processed
                             << "actual_source" << result.source << "image_null" << result.image.isNull()
-                            << "inference_ms" << result.inferenceMs << "export_enabled" << window_->exportButton_->isEnabled();
+                            << "inference_ms" << result.inferenceMs << "export_enabled" << window_->findChild<QPushButton *>("exportResultButton")->isEnabled();
         return false;
     }
 
@@ -96,8 +116,8 @@ class ScopeFilterUiTests final : public QObject
     {
         QJsonObject record = details;
         record.insert("kind", kind);
-        record.insert("backend", window_->lastResult_.backend);
-        record.insert("actual_device", vision::computeDeviceKey(window_->lastResult_.device));
+        record.insert("backend", window_->displayedResult().backend);
+        record.insert("actual_device", vision::computeDeviceKey(window_->displayedResult().device));
         qInfo().noquote() << "detection_scope_evidence:" << QJsonDocument(record).toJson(QJsonDocument::Compact);
     }
 
@@ -139,13 +159,14 @@ class ScopeFilterUiTests final : public QObject
         window_ = std::make_unique<MainWindow>();
         window_->resize(1260, 820);
         window_->show();
-        window_->modelViewer_->stop();
-        QCOMPARE(window_->detectionRange_->currentIndex(), 0);
-        QVERIFY(window_->classFilter_->text().isEmpty());
+        window_->findChild<ModelViewer *>()->stop();
+        QCOMPARE(workbenchControls().detectionRange->currentIndex(), 0);
+        QVERIFY(workbenchControls().classFilter->text().isEmpty());
     }
 
     void cleanup()
     {
+        QVERIFY2(vision::test::shutdownWindow(window_.get()), "MainWindow asynchronous shutdown timed out");
         window_.reset();
         dialogGuard_.stop();
         area_.reset();
@@ -174,35 +195,35 @@ class ScopeFilterUiTests final : public QObject
     {
         QFETCH(int, count); QFETCH(int, mode); QFETCH(int, selection);
         QCOMPARE(createQueue(count).size(), count);
-        window_->queue_->setCurrentRow(selection);
-        window_->detectionRange_->setCurrentIndex(mode);
+        workbenchControls().queue->setCurrentRow(selection);
+        workbenchControls().detectionRange->setCurrentIndex(mode);
         const auto expected = mode == 0 ? files_ : mode == 1 ? files_.mid(selection) : QStringList{files_[selection]};
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
-        QVERIFY(window_->runButton_->isEnabled());
-        QTest::mouseClick(window_->runButton_, Qt::LeftButton);
+        QVERIFY(workbenchControls().runButton->isEnabled());
+        QTest::mouseClick(workbenchControls().runButton, Qt::LeftButton);
         QCOMPARE(starts.size(), 1);
         const auto request = qvariant_cast<vision::JobRequest>(starts[0][0]);
         QCOMPARE(request.files, expected);
-        QVERIFY(!window_->detectionRange_->isEnabled());
-        QVERIFY(!window_->queue_->isEnabled());
+        QVERIFY(!workbenchControls().detectionRange->isEnabled());
+        QVERIFY(!workbenchControls().queue->isEnabled());
         // A non-UI caller must not mutate the submitted input either.
-        window_->addFiles({QStringLiteral(VISION_PROJECT_DIR) + "/assets/bus.jpg"});
-        QCOMPARE(window_->files_, files_);
+        workbenchPage()->filesDropped({QStringLiteral(VISION_PROJECT_DIR) + "/assets/bus.jpg"});
+        QCOMPARE(window_->inputState().files, files_);
         QVERIFY2(waitForCompleted(expected.size()), qPrintable(unexpectedDialog_));
-        QCOMPARE(window_->progress_->maximum(), expected.size());
-        QCOMPARE(window_->progress_->value(), expected.size());
-        QCOMPARE(window_->imageResults_.size(), expected.size());
+        QCOMPARE(window_->findChild<QProgressBar *>("detectionProgress")->maximum(), expected.size());
+        QCOMPARE(window_->findChild<QProgressBar *>("detectionProgress")->value(), expected.size());
+        QCOMPARE(window_->imageResults().entries().size(), expected.size());
         for (int row = 0; row < count; ++row) {
-            window_->queue_->setCurrentRow(row);
+            workbenchControls().queue->setCurrentRow(row);
             const bool processed = expected.contains(files_[row]);
             QVERIFY2(waitForReview(files_[row], processed), qPrintable(unexpectedDialog_));
-            QCOMPARE(window_->canvas_->result().source, files_[row]);
-            QCOMPARE(window_->canvas_->result().inferenceMs > 0, processed);
-            QCOMPARE(window_->exportButton_->isEnabled(), processed);
-            QCOMPARE(window_->imageResults_.contains(files_[row]), processed);
+            QCOMPARE(workbenchControls().canvas->result().source, files_[row]);
+            QCOMPARE(workbenchControls().canvas->result().inferenceMs > 0, processed);
+            QCOMPARE(window_->findChild<QPushButton *>("exportResultButton")->isEnabled(), processed);
+            QCOMPARE(window_->imageResults().entries().contains(files_[row]), processed);
         }
         evidence("range", {{"queue_count", count}, {"mode", mode}, {"selected_row", selection},
-                             {"submitted_count", expected.size()}, {"completed", window_->completed_},
+                             {"submitted_count", expected.size()}, {"completed", window_->completedCount()},
                              {"first_queue_row", files_.indexOf(expected.first())},
                              {"last_queue_row", files_.indexOf(expected.last())},
                              {"range_outside_unprocessed", true}, {"review_matches_selection", true}});
@@ -220,29 +241,29 @@ class ScopeFilterUiTests final : public QObject
     {
         QFETCH(int, mode); QFETCH(QString, filter);
         QCOMPARE(createQueue(3).size(), 3);
-        window_->queue_->setCurrentRow(1);
-        window_->detectionRange_->setCurrentIndex(mode);
-        window_->classFilter_->setText(filter);
-        QTRY_VERIFY_WITH_TIMEOUT(window_->runButton_->isEnabled(), 15000);
+        workbenchControls().queue->setCurrentRow(1);
+        workbenchControls().detectionRange->setCurrentIndex(mode);
+        workbenchControls().classFilter->setText(filter);
+        QTRY_VERIFY_WITH_TIMEOUT(workbenchControls().runButton->isEnabled(), 15000);
         QVector<int> ids; QVERIFY(vision::parseClassFilter(filter, &ids));
-        QTest::mouseClick(window_->runButton_, Qt::LeftButton);
+        QTest::mouseClick(workbenchControls().runButton, Qt::LeftButton);
         const int expected = mode == 0 ? 3 : mode == 1 ? 2 : 1;
         QVERIFY2(waitForCompleted(expected), qPrintable(unexpectedDialog_));
-        QCOMPARE(window_->lastConfig_.classFilter, ids);
-        QCOMPARE(window_->lastConfig_.modelClassCount, 80);
-        QCOMPARE(window_->imageResults_.size(), expected);
-        for (const QString &path : window_->taskRangeFiles_) {
-            window_->queue_->setCurrentRow(files_.indexOf(path));
+        QCOMPARE(window_->displayedConfig().classFilter, ids);
+        QCOMPARE(window_->displayedConfig().modelClassCount, 80);
+        QCOMPARE(window_->imageResults().entries().size(), expected);
+        for (const QString &path : window_->taskFiles()) {
+            workbenchControls().queue->setCurrentRow(files_.indexOf(path));
             QVERIFY2(waitForReview(path, true), qPrintable(unexpectedDialog_));
-            const auto result = window_->canvas_->result();
+            const auto result = workbenchControls().canvas->result();
             for (const auto &prediction : result.predictions)
                 QVERIFY(ids.isEmpty() || ids.contains(prediction.classId));
             if (ids == QVector<int>{32}) QVERIFY(result.predictions.isEmpty());
             else QVERIFY(!result.predictions.isEmpty());
-            QCOMPARE(window_->predictionTable_->rowCount(), result.predictions.size());
+            QCOMPARE(workbenchControls().predictionTable->rowCount(), result.predictions.size());
             const QString target = area_->path() + "/manual";
             QVERIFY(QDir().mkpath(target));
-            QString error; QVERIFY2(window_->writeResult(result, target, &error), qPrintable(error));
+            QString error; QVERIFY2(writeResult(result, target, &error), qPrintable(error));
             const auto jsonFiles = QDir(target).entryList({"*.json"}, QDir::Files);
             QVERIFY(!jsonFiles.isEmpty());
             QFile file(target + '/' + jsonFiles.last()); QVERIFY(file.open(QIODevice::ReadOnly));
@@ -261,26 +282,23 @@ class ScopeFilterUiTests final : public QObject
     void selectionRequiredAndStreamingVisibility()
     {
         QCOMPARE(createQueue(3).size(), 3);
-        window_->queue_->setCurrentRow(-1);
+        workbenchControls().queue->setCurrentRow(-1);
         for (int mode : {1, 2}) {
-            window_->detectionRange_->setCurrentIndex(mode);
-            QVERIFY(!window_->runButton_->isEnabled());
-            QVERIFY(window_->rangeHint_->text().contains("选中"));
+            workbenchControls().detectionRange->setCurrentIndex(mode);
+            QVERIFY(!workbenchControls().runButton->isEnabled());
+            QVERIFY(workbenchControls().rangeHint->text().contains("选中"));
             QSignalSpy starts(window_.get(), &MainWindow::startRequested);
-            window_->startInference();
+            workbenchPage()->startRequested();
             QCOMPARE(starts.size(), 0);
         }
-        window_->detectionRange_->setCurrentIndex(0);
-        QVERIFY(window_->runButton_->isEnabled());
-        window_->sourceKind_ = vision::SourceKind::Video;
-        window_->updateSourceUi();
-        QVERIFY(window_->detectionRangePanel_->isHidden());
-        window_->sourceKind_ = vision::SourceKind::Camera;
-        window_->updateSourceUi();
-        QVERIFY(window_->detectionRangePanel_->isHidden());
-        window_->sourceKind_ = vision::SourceKind::Images;
-        window_->updateSourceUi();
-        QVERIFY(!window_->detectionRangePanel_->isHidden());
+        workbenchControls().detectionRange->setCurrentIndex(0);
+        QVERIFY(workbenchControls().runButton->isEnabled());
+        QVERIFY(window_->inputs()->selectVideo(files_.first()));
+        QVERIFY(workbenchControls().detectionRangePanel->isHidden());
+        QVERIFY(window_->inputs()->selectCamera());
+        QVERIFY(workbenchControls().detectionRangePanel->isHidden());
+        window_->inputs()->clear();
+        QVERIFY(!workbenchControls().detectionRangePanel->isHidden());
         evidence("selection-and-stream", {{"missing_selection_blocks_tail_and_current", true},
                                          {"whole_queue_works_without_selection", true}, {"stream_range_hidden", true}});
     }
@@ -288,18 +306,19 @@ class ScopeFilterUiTests final : public QObject
     void invalidFilterAndModelChange()
     {
         QCOMPARE(createQueue(1).size(), 1);
-        QTRY_VERIFY_WITH_TIMEOUT(!window_->modelInspectionPending_, 15000);
-        QCOMPARE(window_->modelClassCount_, 80);
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->modelState().inspectionPending, 15000);
+        QCOMPARE(window_->modelState().classCount, 80);
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
         for (const QString &invalid : {QString("-1"), QString("1.2"), QString("person"), QString("80"), QString("99999999999999")}) {
-            window_->classFilter_->setText(invalid);
-            QVERIFY(!window_->runButton_->isEnabled());
-            QVERIFY(!window_->classFilterError_.isEmpty());
-            window_->startInference();
+            workbenchControls().classFilter->setText(invalid);
+            QVERIFY(!workbenchControls().runButton->isEnabled());
+            QVERIFY(!workbenchControls().classFilterHint->text().isEmpty());
+            QVERIFY(workbenchControls().classFilterHint->text().contains(invalid));
+            workbenchPage()->startRequested();
             QCOMPARE(starts.size(), 0);
         }
-        window_->classFilter_->setText("32");
-        QVERIFY(window_->runButton_->isEnabled());
+        workbenchControls().classFilter->setText("32");
+        QVERIFY(workbenchControls().runButton->isEnabled());
         const QString tiny = area_->path() + "/one-class.onnx";
         QProcess create;
         const QString python = qEnvironmentVariable("VISION_STUDIO_PYTHON", "/opt/VisionStudio/runtime/bin/python");
@@ -313,18 +332,18 @@ onnx.save(m,sys.argv[1])
 )PY", tiny});
         QVERIFY2(create.waitForFinished(15000), qPrintable(create.errorString()));
         QVERIFY2(create.exitCode() == 0, create.readAllStandardError().constData());
-        window_->setModel(tiny);
-        window_->modelViewer_->stop();
-        window_->taskBox_->setCurrentIndex(int(vision::ModelTask::YoloV8));
-        QTRY_VERIFY_WITH_TIMEOUT(!window_->modelInspectionPending_, 15000);
-        QCOMPARE(window_->modelClassCount_, 1);
-        QVERIFY(!window_->runButton_->isEnabled());
-        QVERIFY(window_->classFilterHint_->text().contains("0～0"));
-        window_->classFilter_->setText("0");
-        QVERIFY(window_->runButton_->isEnabled());
-        window_->taskBox_->setCurrentIndex(int(vision::ModelTask::Classification));
-        QVERIFY(!window_->classFilter_->isEnabled());
-        QVERIFY(window_->classFilterHint_->text().contains("分类"));
+        window_->findChild<ModelsLibraryPage *>()->selectionRequested(tiny);
+        window_->findChild<ModelViewer *>()->stop();
+        workbenchControls().taskBox->setCurrentIndex(int(vision::ModelTask::YoloV8));
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->modelState().inspectionPending, 15000);
+        QCOMPARE(window_->modelState().classCount, 1);
+        QVERIFY(!workbenchControls().runButton->isEnabled());
+        QVERIFY(workbenchControls().classFilterHint->text().contains("0～0"));
+        workbenchControls().classFilter->setText("0");
+        QVERIFY(workbenchControls().runButton->isEnabled());
+        workbenchControls().taskBox->setCurrentIndex(int(vision::ModelTask::Classification));
+        QVERIFY(!workbenchControls().classFilter->isEnabled());
+        QVERIFY(workbenchControls().classFilterHint->text().contains("分类"));
         QVERIFY(window_->currentConfig().classFilter.isEmpty());
         QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
         evidence("validation", {{"invalid_inputs_block_start", true}, {"coco_classes", 80},
@@ -334,35 +353,35 @@ onnx.save(m,sys.argv[1])
     void validCacheOutsideRangeAndChangedParameters()
     {
         QCOMPARE(createQueue(3).size(), 3);
-        QTest::mouseClick(window_->runButton_, Qt::LeftButton);
+        QTest::mouseClick(workbenchControls().runButton, Qt::LeftButton);
         QVERIFY2(waitForCompleted(3), qPrintable(unexpectedDialog_));
-        const auto original = window_->imageResults_[files_[0]].result;
-        window_->queue_->setCurrentRow(1);
-        window_->detectionRange_->setCurrentIndex(2);
+        const auto original = window_->imageResults().entries()[files_[0]].result;
+        workbenchControls().queue->setCurrentRow(1);
+        workbenchControls().detectionRange->setCurrentIndex(2);
         const auto stopBeforeFirst = connect(window_.get(), &MainWindow::startRequested, this,
-                                             [this] { window_->stopInference(); });
-        QTest::mouseClick(window_->runButton_, Qt::LeftButton);
+                                             [this] { workbenchPage()->stopRequested(); });
+        QTest::mouseClick(workbenchControls().runButton, Qt::LeftButton);
         QVERIFY2(waitForCompleted(0), qPrintable(unexpectedDialog_));
         disconnect(stopBeforeFirst);
-        QCOMPARE(window_->imageResults_.size(), 3);
-        window_->queue_->setCurrentRow(0);
+        QCOMPARE(window_->imageResults().entries().size(), 3);
+        workbenchControls().queue->setCurrentRow(0);
         QVERIFY2(waitForReview(files_[0], true), qPrintable(unexpectedDialog_));
-        QCOMPARE(window_->canvas_->result().inferenceMs, original.inferenceMs);
-        QVERIFY(window_->exportButton_->isEnabled());
-        window_->queue_->setCurrentRow(1);
+        QCOMPARE(workbenchControls().canvas->result().inferenceMs, original.inferenceMs);
+        QVERIFY(window_->findChild<QPushButton *>("exportResultButton")->isEnabled());
+        workbenchControls().queue->setCurrentRow(1);
         QVERIFY2(waitForReview(files_[1], true), qPrintable(unexpectedDialog_));
-        QVERIFY(window_->canvas_->result().inferenceMs > 0);
-        QVERIFY(window_->exportButton_->isEnabled());
-        window_->queue_->setCurrentRow(2);
+        QVERIFY(workbenchControls().canvas->result().inferenceMs > 0);
+        QVERIFY(window_->findChild<QPushButton *>("exportResultButton")->isEnabled());
+        workbenchControls().queue->setCurrentRow(2);
         QVERIFY2(waitForReview(files_[2], true), qPrintable(unexpectedDialog_));
-        QVERIFY(window_->canvas_->result().inferenceMs > 0);
-        window_->confidence_->setValue(.65);
-        QVERIFY(window_->imageResults_.isEmpty());
+        QVERIFY(workbenchControls().canvas->result().inferenceMs > 0);
+        workbenchControls().confidence->setValue(.65);
+        QVERIFY(window_->imageResults().entries().isEmpty());
         for (int row : {0, 2}) {
-            window_->queue_->setCurrentRow(row);
+            workbenchControls().queue->setCurrentRow(row);
             QVERIFY2(waitForReview(files_[row], false), qPrintable(unexpectedDialog_));
-            QCOMPARE(window_->canvas_->result().inferenceMs, 0.0);
-            QVERIFY(!window_->exportButton_->isEnabled());
+            QCOMPARE(workbenchControls().canvas->result().inferenceMs, 0.0);
+            QVERIFY(!window_->findChild<QPushButton *>("exportResultButton")->isEnabled());
         }
         evidence("cache-range", {{"outside_range_kept_after_cancel", true}, {"same_configuration_cancel_keeps_accepted_results", true},
                                   {"changed_parameters_invalidate", true}});
@@ -371,44 +390,44 @@ onnx.save(m,sys.argv[1])
     void stoppedRangePreservesCompletedResultsAndExport()
     {
         QCOMPARE(createQueue(61).size(), 61);
-        window_->queue_->setCurrentRow(50);
-        window_->detectionRange_->setCurrentIndex(1);
-        window_->classFilter_->setText("0,5");
-        QTRY_VERIFY_WITH_TIMEOUT(window_->runButton_->isEnabled(), 15000);
-        window_->autoExport_->setChecked(true);
+        workbenchControls().queue->setCurrentRow(50);
+        workbenchControls().detectionRange->setCurrentIndex(1);
+        workbenchControls().classFilter->setText("0,5");
+        QTRY_VERIFY_WITH_TIMEOUT(workbenchControls().runButton->isEnabled(), 15000);
+        workbenchControls().autoExport->setChecked(true);
         int observed = 0;
-        const auto stopAfterFirst = connect(window_->queue_, &QListWidget::currentRowChanged, this, [this, &observed](int row) {
-            if (window_->busy_ && window_->lastResult_.inferenceMs > 0 && row >= 50) {
+        const auto stopAfterFirst = connect(workbenchControls().queue, &QListWidget::currentRowChanged, this, [this, &observed](int row) {
+            if (window_->isWorkbenchBusy() && window_->displayedResult().inferenceMs > 0 && row >= 50) {
                 ++observed;
-                QTimer::singleShot(0, window_.get(), [this] { window_->stopInference(); });
+                QTimer::singleShot(0, window_.get(), [this] { workbenchPage()->stopRequested(); });
             }
         });
         // Select a different row before running so the first accepted result emits a row change.
         // The selected range must still start at row 50 at click time.
-        window_->queue_->setCurrentRow(49);
-        window_->queue_->setCurrentRow(50);
+        workbenchControls().queue->setCurrentRow(49);
+        workbenchControls().queue->setCurrentRow(50);
         QElapsedTimer elapsed;
         elapsed.start();
-        QTest::mouseClick(window_->runButton_, Qt::LeftButton);
-        QTRY_VERIFY_WITH_TIMEOUT(window_->completed_ > 0, 45000);
-        if (window_->busy_) window_->stopInference();
-        QTRY_VERIFY_WITH_TIMEOUT(!window_->busy_, 2000);
+        QTest::mouseClick(workbenchControls().runButton, Qt::LeftButton);
+        QTRY_VERIFY_WITH_TIMEOUT(window_->completedCount() > 0, 45000);
+        if (window_->isWorkbenchBusy()) workbenchPage()->stopRequested();
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->isWorkbenchBusy(), 2000);
         disconnect(stopAfterFirst);
-        QVERIFY(window_->completed_ > 0 && window_->completed_ < 11);
-        const int done = window_->completed_;
-        QTRY_VERIFY_WITH_TIMEOUT(!window_->resultIoPending_, 15000);
+        QVERIFY(window_->completedCount() > 0 && window_->completedCount() < 11);
+        const int done = window_->completedCount();
+        QTRY_VERIFY_WITH_TIMEOUT(!window_->pendingResultWrites(), 15000);
         QTest::qWait(150);
-        QCOMPARE(window_->completed_, done);
-        QCOMPARE(window_->progress_->maximum(), 11);
-        QCOMPARE(window_->progress_->value(), done);
+        QCOMPARE(window_->completedCount(), done);
+        QCOMPARE(window_->findChild<QProgressBar *>("detectionProgress")->maximum(), 11);
+        QCOMPARE(window_->findChild<QProgressBar *>("detectionProgress")->value(), done);
         const QDir exported(area_->path() + "/results");
         QCOMPARE(exported.entryList({"*.json"}, QDir::Files).size(), done);
         for (int row = 0; row < 61; ++row) {
-            window_->queue_->setCurrentRow(row);
+            workbenchControls().queue->setCurrentRow(row);
             const bool processed = row >= 50 && row < 50 + done;
             QVERIFY2(waitForReview(files_[row], processed), qPrintable(unexpectedDialog_));
-            QCOMPARE(window_->canvas_->result().inferenceMs > 0, processed);
-            QCOMPARE(window_->exportButton_->isEnabled(), processed);
+            QCOMPARE(workbenchControls().canvas->result().inferenceMs > 0, processed);
+            QCOMPARE(window_->findChild<QPushButton *>("exportResultButton")->isEnabled(), processed);
         }
         QVERIFY2(unexpectedDialog_.isEmpty(), qPrintable(unexpectedDialog_));
         evidence("stopped-range", {{"queue_count", 61}, {"range_count", 11}, {"completed", done},
@@ -431,23 +450,23 @@ onnx.save(h.make_model(g,opset_imports=[h.make_opsetid('',12)],ir_version=7),sys
 )PY", model});
         QVERIFY(create.waitForFinished(15000));
         QVERIFY2(create.exitCode() == 0, create.readAllStandardError().constData());
-        window_->setModel(model);
-        window_->modelViewer_->stop();
-        window_->inputSize_->setValue(32);
+        window_->findChild<ModelsLibraryPage *>()->selectionRequested(model);
+        window_->findChild<ModelViewer *>()->stop();
+        workbenchControls().inputSize->setValue(32);
         QSignalSpy starts(window_.get(), &MainWindow::startRequested);
         // Intentionally start before the queued metadata completion is handled.
         // Empty filtering remains valid while the output's class axis is unknown.
-        window_->startInference();
+        workbenchPage()->startRequested();
         QCOMPARE(starts.size(), 1);
         QCOMPARE(qvariant_cast<vision::JobRequest>(starts[0][0]).config.modelClassCount, 0);
         QVERIFY2(waitForCompleted(1), qPrintable(unexpectedDialog_));
-        QCOMPARE(window_->lastResult_.modelClassCount, 1);
-        QCOMPARE(window_->modelClassCount_, 1);
-        QCOMPARE(window_->lastConfig_.modelClassCount, 1);
-        window_->classFilter_->setText("0");
-        QVERIFY(window_->runButton_->isEnabled());
-        window_->classFilter_->setText("1");
-        QVERIFY(!window_->runButton_->isEnabled());
+        QCOMPARE(window_->displayedResult().modelClassCount, 1);
+        QCOMPARE(window_->modelState().classCount, 1);
+        QCOMPARE(window_->displayedConfig().modelClassCount, 1);
+        workbenchControls().classFilter->setText("0");
+        QVERIFY(workbenchControls().runButton->isEnabled());
+        workbenchControls().classFilter->setText("1");
+        QVERIFY(!workbenchControls().runButton->isEnabled());
         evidence("dynamic-class-metadata", {{"submitted_class_count", 0}, {"actual_class_count", 1},
                                             {"ui_and_export_configuration_synchronized", true}});
     }
@@ -456,14 +475,14 @@ onnx.save(h.make_model(g,opset_imports=[h.make_opsetid('',12)],ir_version=7),sys
     {
         window_->resize(1580, 960);
         QCOMPARE(createQueue(64).size(), 64);
-        window_->queue_->setCurrentRow(50);
-        window_->detectionRange_->setCurrentIndex(2);
-        window_->classFilter_->setText("0,5");
-        QTRY_VERIFY_WITH_TIMEOUT(window_->runButton_->isEnabled(), 15000);
-        QTest::mouseClick(window_->runButton_, Qt::LeftButton);
+        workbenchControls().queue->setCurrentRow(50);
+        workbenchControls().detectionRange->setCurrentIndex(2);
+        workbenchControls().classFilter->setText("0,5");
+        QTRY_VERIFY_WITH_TIMEOUT(workbenchControls().runButton->isEnabled(), 15000);
+        QTest::mouseClick(workbenchControls().runButton, Qt::LeftButton);
         QVERIFY2(waitForCompleted(1), qPrintable(unexpectedDialog_));
-        QCOMPARE(window_->canvas_->result().source, files_[50]);
-        QVERIFY(!window_->canvas_->result().predictions.isEmpty());
+        QCOMPARE(workbenchControls().canvas->result().source, files_[50]);
+        QVERIFY(!workbenchControls().canvas->result().predictions.isEmpty());
         const QString artifactDirectory = qEnvironmentVariable("VISION_STUDIO_QA_ARTIFACTS");
         QString screenshot;
         if (!artifactDirectory.isEmpty()) {
@@ -472,7 +491,7 @@ onnx.save(h.make_model(g,opset_imports=[h.make_opsetid('',12)],ir_version=7),sys
             screenshot = QDir(artifactDirectory).filePath("scope-filter-workbench.png");
             QVERIFY2(!QFileInfo::exists(screenshot), "Refusing to overwrite an existing QA screenshot.");
             if (auto *scroll = window_->findChild<QScrollArea *>("configurationScrollArea"))
-                scroll->ensureWidgetVisible(window_->classFilter_);
+                scroll->ensureWidgetVisible(workbenchControls().classFilter);
             QApplication::processEvents();
             QTest::qWait(150);
             window_->saveScreenshot(screenshot);
@@ -488,39 +507,39 @@ onnx.save(h.make_model(g,opset_imports=[h.make_opsetid('',12)],ir_version=7),sys
         QCOMPARE(createQueue(3).size(), 3);
         const QString mutableModel = area_->path() + "/mutable-yolov5n.onnx";
         QVERIFY(QFile::copy(QStringLiteral(VISION_PROJECT_DIR) + "/models/yolov5n.onnx", mutableModel));
-        window_->setModel(mutableModel);
-        window_->modelViewer_->stop();
-        window_->queue_->setCurrentRow(2);
-        const QString originalIdentity = window_->modelFileIdentity();
+        window_->findChild<ModelsLibraryPage *>()->selectionRequested(mutableModel);
+        window_->findChild<ModelViewer *>()->stop();
+        workbenchControls().queue->setCurrentRow(2);
+        const QString originalIdentity = vision::app::ModelSessionController::fileIdentity(window_->modelState().activeModel);
         QString pinnedFingerprint;
         bool replaced = false, verifiedLaterFrame = false;
-        const auto replacement = connect(window_->queue_, &QListWidget::currentRowChanged, this,
+        const auto replacement = connect(workbenchControls().queue, &QListWidget::currentRowChanged, this,
             [this, &replaced, &verifiedLaterFrame, &pinnedFingerprint, mutableModel](int row) {
-                if (!window_->busy_ || window_->lastResult_.inferenceMs <= 0) return;
+                if (!window_->isWorkbenchBusy() || window_->displayedResult().inferenceMs <= 0) return;
                 if (!replaced && row == 0) {
-                    pinnedFingerprint = window_->imageConfigFingerprint_;
+                    pinnedFingerprint = window_->imageResults().fingerprint();
                     QFile file(mutableModel);
                     if (!file.open(QIODevice::ReadWrite)) return;
                     replaced = file.setFileTime(QDateTime::currentDateTime().addSecs(17), QFileDevice::FileModificationTime);
                 } else if (replaced && row > 0) {
-                    verifiedLaterFrame = window_->imageConfigFingerprint_ == pinnedFingerprint;
+                    verifiedLaterFrame = window_->imageResults().fingerprint() == pinnedFingerprint;
                 }
             });
-        QTest::mouseClick(window_->runButton_, Qt::LeftButton);
+        QTest::mouseClick(workbenchControls().runButton, Qt::LeftButton);
         QVERIFY2(waitForCompleted(3), qPrintable(unexpectedDialog_));
         disconnect(replacement);
         QVERIFY(replaced);
         QVERIFY(verifiedLaterFrame);
-        QVERIFY(originalIdentity != window_->modelFileIdentity());
-        QCOMPARE(window_->activeModelIdentity_, originalIdentity);
+        QVERIFY(originalIdentity != vision::app::ModelSessionController::fileIdentity(window_->modelState().activeModel));
+        QCOMPARE(window_->detectionState().modelIdentity, originalIdentity);
         // The current file now represents another model identity. Accepted
         // in-memory results from the previous identity must not be reused.
-        QVERIFY(window_->imageResults_.isEmpty());
+        QVERIFY(window_->imageResults().entries().isEmpty());
         for (int row : {0, 1, 2}) {
-            window_->queue_->setCurrentRow(row);
+            workbenchControls().queue->setCurrentRow(row);
             QVERIFY2(waitForReview(files_[row], false), qPrintable(unexpectedDialog_));
-            QCOMPARE(window_->canvas_->result().inferenceMs, 0.0);
-            QVERIFY(!window_->exportButton_->isEnabled());
+            QCOMPARE(workbenchControls().canvas->result().inferenceMs, 0.0);
+            QVERIFY(!window_->findChild<QPushButton *>("exportResultButton")->isEnabled());
         }
         evidence("model-identity-during-task", {{"identity_changed", true}, {"job_identity_frozen", true},
                                               {"later_results_not_relabelled", true}, {"stale_cache_unavailable", true}});
@@ -531,24 +550,24 @@ onnx.save(h.make_model(g,opset_imports=[h.make_opsetid('',12)],ir_version=7),sys
         QCOMPARE(createQueue(2).size(), 2);
         QString submittedIdentity;
         const auto replacement = connect(window_.get(), &MainWindow::startRequested, this, [this, &submittedIdentity] {
-            submittedIdentity = window_->taskSourceIdentities_.value(files_[0]);
+            submittedIdentity = window_->detectionState().sourceIdentities.value(files_[0]);
             QImage replacement(79, 61, QImage::Format_RGB888); replacement.fill(Qt::magenta);
             QVERIFY(replacement.save(files_[0]));
         });
-        QTest::mouseClick(window_->runButton_, Qt::LeftButton);
+        QTest::mouseClick(workbenchControls().runButton, Qt::LeftButton);
         QVERIFY2(waitForCompleted(2), qPrintable(unexpectedDialog_));
         disconnect(replacement);
         QVERIFY(!submittedIdentity.isEmpty());
-        QCOMPARE(window_->imageResults_[files_[0]].sourceIdentity, submittedIdentity);
-        window_->queue_->setCurrentRow(0);
+        QCOMPARE(window_->imageResults().entries()[files_[0]].sourceIdentity, submittedIdentity);
+        workbenchControls().queue->setCurrentRow(0);
         QVERIFY2(waitForReview(files_[0], false), qPrintable(unexpectedDialog_));
-        QCOMPARE(window_->canvas_->result().image.size(), QSize(79, 61));
-        QCOMPARE(window_->canvas_->result().image.pixelColor(0, 0), QColor(Qt::magenta));
-        QCOMPARE(window_->canvas_->result().inferenceMs, 0.0);
-        QVERIFY(!window_->exportButton_->isEnabled());
-        window_->queue_->setCurrentRow(1);
+        QCOMPARE(workbenchControls().canvas->result().image.size(), QSize(79, 61));
+        QCOMPARE(workbenchControls().canvas->result().image.pixelColor(0, 0), QColor(Qt::magenta));
+        QCOMPARE(workbenchControls().canvas->result().inferenceMs, 0.0);
+        QVERIFY(!window_->findChild<QPushButton *>("exportResultButton")->isEnabled());
+        workbenchControls().queue->setCurrentRow(1);
         QVERIFY2(waitForReview(files_[1], true), qPrintable(unexpectedDialog_));
-        QVERIFY(window_->canvas_->result().inferenceMs > 0);
+        QVERIFY(workbenchControls().canvas->result().inferenceMs > 0);
         evidence("source-identity-during-task", {{"submitted_identity_frozen", true},
                                                {"changed_source_cache_unavailable", true},
                                                {"unchanged_source_review_available", true}});
@@ -557,29 +576,29 @@ onnx.save(h.make_model(g,opset_imports=[h.make_opsetid('',12)],ir_version=7),sys
     void equivalentFiltersAndChangedSourceFile()
     {
         QCOMPARE(createQueue(2).size(), 2);
-        window_->classFilter_->setText("0,5");
-        QTRY_VERIFY_WITH_TIMEOUT(window_->runButton_->isEnabled(), 15000);
-        QTest::mouseClick(window_->runButton_, Qt::LeftButton);
+        workbenchControls().classFilter->setText("0,5");
+        QTRY_VERIFY_WITH_TIMEOUT(workbenchControls().runButton->isEnabled(), 15000);
+        QTest::mouseClick(workbenchControls().runButton, Qt::LeftButton);
         QVERIFY2(waitForCompleted(2), qPrintable(unexpectedDialog_));
-        window_->classFilter_->setText("5，0 5");
-        QCOMPARE(window_->imageResults_.size(), 2);
-        window_->queue_->setCurrentRow(0);
+        workbenchControls().classFilter->setText("5，0 5");
+        QCOMPARE(window_->imageResults().entries().size(), 2);
+        workbenchControls().queue->setCurrentRow(0);
         QVERIFY2(waitForReview(files_[0], true), qPrintable(unexpectedDialog_));
-        QVERIFY(window_->canvas_->result().inferenceMs > 0);
+        QVERIFY(workbenchControls().canvas->result().inferenceMs > 0);
         QImage replacement(61, 79, QImage::Format_RGB888); replacement.fill(Qt::cyan);
         QVERIFY(replacement.save(files_[0]));
-        window_->queue_->setCurrentRow(1);
-        window_->queue_->setCurrentRow(0);
+        workbenchControls().queue->setCurrentRow(1);
+        workbenchControls().queue->setCurrentRow(0);
         QVERIFY2(waitForReview(files_[0], false), qPrintable(unexpectedDialog_));
-        QCOMPARE(window_->canvas_->result().image.size(), replacement.size());
-        QCOMPARE(window_->canvas_->result().image.convertToFormat(QImage::Format_RGB888), replacement);
-        QCOMPARE(window_->canvas_->result().inferenceMs, 0.0);
-        QVERIFY(!window_->exportButton_->isEnabled());
-        window_->queue_->setCurrentRow(1);
+        QCOMPARE(workbenchControls().canvas->result().image.size(), replacement.size());
+        QCOMPARE(workbenchControls().canvas->result().image.convertToFormat(QImage::Format_RGB888), replacement);
+        QCOMPARE(workbenchControls().canvas->result().inferenceMs, 0.0);
+        QVERIFY(!window_->findChild<QPushButton *>("exportResultButton")->isEnabled());
+        workbenchControls().queue->setCurrentRow(1);
         QVERIFY2(waitForReview(files_[1], true), qPrintable(unexpectedDialog_));
-        QVERIFY(window_->canvas_->result().inferenceMs > 0);
-        window_->classFilter_->setText("32");
-        QVERIFY(window_->imageResults_.isEmpty());
+        QVERIFY(workbenchControls().canvas->result().inferenceMs > 0);
+        workbenchControls().classFilter->setText("32");
+        QVERIFY(window_->imageResults().entries().isEmpty());
         evidence("cache-identity", {{"equivalent_filter_keeps_cache", true},
                                     {"changed_source_rejects_old_result", true}, {"changed_filter_invalidates", true}});
     }

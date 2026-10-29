@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "workbenchconfiguration.h"
+#include <QFile>
 #include <QFileInfo>
 #include <QDateTime>
 #include <QCryptographicHash>
@@ -8,6 +9,116 @@
 
 namespace vision::app
 {
+void WorkbenchConfiguration::setTask(ModelTask task)
+{
+    if (draft_.parameters.task == task) return;
+    draft_.parameters.task = task;
+    emit changed();
+}
+void WorkbenchConfiguration::setInputSize(int size)
+{
+    if (draft_.parameters.inputSize == size) return;
+    draft_.parameters.inputSize = size;
+    emit changed();
+}
+void WorkbenchConfiguration::setConfidence(double confidence)
+{
+    if (draft_.confidence == confidence) return;
+    draft_.confidence = confidence;
+    emit changed();
+}
+void WorkbenchConfiguration::setIou(double iou)
+{
+    if (draft_.iou == iou) return;
+    draft_.iou = iou;
+    emit changed();
+}
+void WorkbenchConfiguration::setScale(double scale)
+{
+    if (draft_.parameters.scale == scale) return;
+    draft_.parameters.scale = scale;
+    emit changed();
+}
+void WorkbenchConfiguration::setMeanR(double mean)
+{
+    if (draft_.parameters.meanR == mean) return;
+    draft_.parameters.meanR = mean;
+    emit changed();
+}
+void WorkbenchConfiguration::setMeanG(double mean)
+{
+    if (draft_.parameters.meanG == mean) return;
+    draft_.parameters.meanG = mean;
+    emit changed();
+}
+void WorkbenchConfiguration::setMeanB(double mean)
+{
+    if (draft_.parameters.meanB == mean) return;
+    draft_.parameters.meanB = mean;
+    emit changed();
+}
+void WorkbenchConfiguration::setInputColor(InputColorMode mode, bool swapRB)
+{
+    if (draft_.parameters.colorMode == mode && draft_.parameters.swapRB == swapRB) return;
+    draft_.parameters.colorMode = mode;
+    draft_.parameters.swapRB = swapRB;
+    emit changed();
+}
+void WorkbenchConfiguration::setComputeDevice(ComputeDevice device)
+{
+    if (draft_.parameters.device == device) return;
+    draft_.parameters.device = device;
+    emit changed();
+}
+void WorkbenchConfiguration::setDeviceIndex(int index)
+{
+    if (draft_.parameters.deviceIndex == index) return;
+    draft_.parameters.deviceIndex = index;
+    emit changed();
+}
+void WorkbenchConfiguration::setClassFilterText(const QString &text)
+{
+    if (draft_.classFilterText == text) return;
+    draft_.classFilterText = text;
+    emit changed();
+}
+void WorkbenchConfiguration::setCameraIndex(int index)
+{
+    if (draft_.cameraIndex == index) return;
+    draft_.cameraIndex = index;
+    emit changed();
+}
+void WorkbenchConfiguration::setStereoView(StereoView view)
+{
+    if (draft_.stereoView == view) return;
+    draft_.stereoView = view;
+    emit changed();
+}
+void WorkbenchConfiguration::setAutomaticExport(bool enabled)
+{
+    if (draft_.automaticExport == enabled) return;
+    draft_.automaticExport = enabled;
+    emit changed();
+}
+
+bool WorkbenchConfiguration::importLabels(const QString &path, QString *error)
+{
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly)) {
+        if (error) *error = "标签读取失败：" + file.errorString();
+        return false;
+    }
+    QString text = QString::fromUtf8(file.readAll());
+    if (text.startsWith(QChar(0xfeff))) text.remove(0, 1);
+    QStringList labels;
+    for (const auto &line : text.split('\n')) {
+        const auto value = line.trimmed();
+        if (!value.isEmpty()) labels.append(value);
+    }
+    if (labels.isEmpty()) { if (error) *error = "标签文件为空。"; return false; }
+    setLabels(labels, path);
+    return true;
+}
 QString WorkbenchConfiguration::configurationFingerprint(ModelConfig config, const QString &modelIdentity)
 {
     std::sort(config.classFilter.begin(), config.classFilter.end());
