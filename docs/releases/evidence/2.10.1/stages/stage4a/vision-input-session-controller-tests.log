@@ -1,0 +1,45 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 37
+    Start 37: vision-input-session-controller-tests
+
+37: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a/vision-input-session-controller-tests
+37: Environment variables: 
+37:  QT_QPA_PLATFORM=offscreen
+37: Test timeout computed to be: 120
+37: ********* Start testing of InputSessionControllerTests *********
+37: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+37: PASS   : InputSessionControllerTests::initTestCase()
+37: PASS   : InputSessionControllerTests::orderedImagesAreAsynchronousBatchedAndDeduplicated()
+37: PASS   : InputSessionControllerTests::allTailCurrentAndUnselectedRanges()
+37: PASS   : InputSessionControllerTests::invalidMixedBatchKeepsOldQueueAndSelection()
+37: PASS   : InputSessionControllerTests::datasetPersistsOnlyAfterLastExactProjectionAcknowledgement()
+37: PASS   : InputSessionControllerTests::datasetTemporaryImagesAreExcludedFromEvaluationAndCancelRollsBack()
+37: PASS   : InputSessionControllerTests::datasetFailurePreservesLastValidSession()
+37: PASS   : InputSessionControllerTests::datasetProjectionCancellationKeepsOriginalRecord()
+37: PASS   : InputSessionControllerTests::datasetValidationCancellationPreservesPreviousInput()
+37: PASS   : InputSessionControllerTests::historicalManifestProjectionDoesNotOverwriteStartupSource()
+37: PASS   : InputSessionControllerTests::deferredRestoreNeverOverridesManualInputOrDisabledPreference()
+37: PASS   : InputSessionControllerTests::inFlightRestoreCanBeSupersededAndNormalRestoreIsPersistent()
+37: PASS   : InputSessionControllerTests::clearVideoCameraAndShutdownDoNotEraseRememberedDataset()
+37: PASS   : InputSessionControllerTests::cleanupTestCase()
+37: Totals: 14 passed, 0 failed, 0 skipped, 0 blacklisted, 1682ms
+37: ********* Finished testing of InputSessionControllerTests *********
+1/1 Test #37: vision-input-session-controller-tests ...   Passed    1.74 sec
+
+The following tests passed:
+	vision-input-session-controller-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   1.74 sec

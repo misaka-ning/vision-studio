@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="0"
+	timestamp="2026-10-29T18:37:55"
+	>
+	<testcase name="vision-model-session-controller-tests" classname="vision-model-session-controller-tests" time="0.352786" status="run">
+		<system-out>********* Start testing of ModelSessionControllerTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : ModelSessionControllerTests::initTestCase()
+PASS   : ModelSessionControllerTests::canonicalOrderedImportAndSingleSelection()
+PASS   : ModelSessionControllerTests::invalidBatchHasNoPartialChanges()
+PASS   : ModelSessionControllerTests::libraryEditsPreservePathsAndProfiles()
+PASS   : ModelSessionControllerTests::convertedProfileUsesExactFileIdentity()
+PASS   : ModelSessionControllerTests::oldInspectionCannotOverwriteNewSelection()
+PASS   : ModelSessionControllerTests::fileReplacementRejectsInspectionAndRequestsFreshConfig()
+PASS   : ModelSessionControllerTests::shutdownCancelsAllOutstandingInspectionsWithoutWaiting()
+PASS   : ModelSessionControllerTests::loadedMetadataPreservesCapturedIdentity()
+PASS   : ModelSessionControllerTests::inspectionErrorDoesNotBecomeEmptySuccessfulModel...
+The rest of the test output was removed since it exceeds the threshold of 1024 bytes.
+</system-out>
+	</testcase>
+</testsuite>

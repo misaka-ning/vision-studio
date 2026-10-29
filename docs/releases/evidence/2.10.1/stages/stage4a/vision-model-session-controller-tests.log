@@ -1,0 +1,43 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 29
+    Start 29: vision-model-session-controller-tests
+
+29: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4a/vision-model-session-controller-tests
+29: Environment variables: 
+29:  QT_QPA_PLATFORM=offscreen
+29: Test timeout computed to be: 90
+29: ********* Start testing of ModelSessionControllerTests *********
+29: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+29: PASS   : ModelSessionControllerTests::initTestCase()
+29: PASS   : ModelSessionControllerTests::canonicalOrderedImportAndSingleSelection()
+29: PASS   : ModelSessionControllerTests::invalidBatchHasNoPartialChanges()
+29: PASS   : ModelSessionControllerTests::libraryEditsPreservePathsAndProfiles()
+29: PASS   : ModelSessionControllerTests::convertedProfileUsesExactFileIdentity()
+29: PASS   : ModelSessionControllerTests::oldInspectionCannotOverwriteNewSelection()
+29: PASS   : ModelSessionControllerTests::fileReplacementRejectsInspectionAndRequestsFreshConfig()
+29: PASS   : ModelSessionControllerTests::shutdownCancelsAllOutstandingInspectionsWithoutWaiting()
+29: PASS   : ModelSessionControllerTests::loadedMetadataPreservesCapturedIdentity()
+29: PASS   : ModelSessionControllerTests::inspectionErrorDoesNotBecomeEmptySuccessfulModel()
+29: PASS   : ModelSessionControllerTests::realOnnxDeclaredMetadata()
+29: PASS   : ModelSessionControllerTests::cleanupTestCase()
+29: Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 305ms
+29: ********* Finished testing of ModelSessionControllerTests *********
+1/1 Test #29: vision-model-session-controller-tests ...   Passed    0.35 sec
+
+The following tests passed:
+	vision-model-session-controller-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.35 sec

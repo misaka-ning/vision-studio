@@ -298,9 +298,9 @@ endif()
 
 # Separate model/input/configuration/evaluation domain state authorities.
 target_sources(vision-app PRIVATE
-    src/app/inputsessioncontroller.cpp src/app/workbenchconfiguration.cpp)
+    src/app/inputsessioncontroller.cpp src/app/workbenchconfiguration.cpp src/app/evaluationcontroller.cpp)
 if(BUILD_TESTING)
-    foreach(pair IN ITEMS "input-session-controller|input_session_controller_tests" "workbench-configuration|workbench_configuration_tests")
+    foreach(pair IN ITEMS "input-session-controller|input_session_controller_tests" "workbench-configuration|workbench_configuration_tests" "evaluation-controller|evaluation_controller_tests")
         string(REPLACE "|" ";" parts "${pair}")
         list(GET parts 0 suffix)
         list(GET parts 1 source)
