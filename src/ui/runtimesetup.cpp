@@ -22,6 +22,7 @@
 #include <QPushButton>
 #include <QSaveFile>
 #include <QStorageInfo>
+#include <QThread>
 #include <QNetworkProxyFactory>
 #include <QNetworkProxyQuery>
 #include <QTimer>
@@ -37,77 +38,172 @@ namespace {
 class RuntimeDialog;
 QPointer<QDialog> active;
 QList<std::function<void()>> retries;
+quint64 dialogGeneration = 0;
+}
+
+// The dialog may disappear while QProcess still owns a live child. This object
+// remains alive until Qt has reaped it and the private staging cleanup has ended.
+class RuntimeResources final : public QObject
+{
+    bool stopping_ = false;
+    bool retiring_ = false;
+    bool cleanupRequested_ = false;
+    QThread *cleanup_ = nullptr;
+    QList<std::function<void()>> stopped_;
+    QTimer childPoll_;
+
+    bool childrenExited()
+    {
+#ifdef Q_OS_WIN
+        if (childJob) {
+            JOBOBJECT_BASIC_ACCOUNTING_INFORMATION accounting{};
+            if (!QueryInformationJobObject(childJob, JobObjectBasicAccountingInformation,
+                    &accounting, sizeof(accounting), nullptr) || accounting.ActiveProcesses != 0) {
+                childPoll_.start();
+                return false;
+            }
+            CloseHandle(childJob);
+            childJob = nullptr;
+        }
+#endif
+        childPoll_.stop();
+        return true;
+    }
+
+    void finishStop()
+    {
+        if (!stopping_ || process.state() != QProcess::NotRunning || cleanup_ || !childrenExited()) return;
+        if (cleanupRequested_ && !stage.isEmpty()) {
+            const auto directory = std::exchange(stage, {});
+            const auto cacheRoot = vision::cpuRuntimeCacheRoot();
+            auto ownedLock = std::move(lock);
+            cleanup_ = QThread::create([directory, cacheRoot, ownedLock = std::move(ownedLock)] {
+                const QFileInfo root(cacheRoot), info(directory);
+                // Remove only this operation's randomly named staging folder.
+                if (!root.isSymLink() && !root.isJunction()
+                    && info.absolutePath() == QDir(cacheRoot).absolutePath()
+                    && info.fileName().startsWith(".staging-")
+                    && !info.isSymLink() && !info.isJunction())
+                    QDir(directory).removeRecursively();
+            });
+            QObject::connect(cleanup_, &QThread::finished, cleanup_, &QObject::deleteLater);
+            QObject::connect(cleanup_, &QObject::destroyed, this, [this] {
+                cleanup_ = nullptr;
+                finishStop();
+            });
+            cleanup_->start();
+            return;
+        }
+        if (cleanupRequested_) lock.reset();
+        cleanupRequested_ = false;
+        stopping_ = false;
+        const auto callbacks = std::exchange(stopped_, {});
+        for (const auto &callback : callbacks) callback();
+        if (retiring_) deleteLater();
+    }
+
+public:
+    QProcess process{this};
+    QString stage;
+    std::unique_ptr<QLockFile> lock;
+#ifdef Q_OS_WIN
+    HANDLE childJob = nullptr;
+#endif
+
+    RuntimeResources()
+    {
+        setObjectName("cpuRuntimePreparation");
+        runtimeSetup()->trackPreparation(this);
+        childPoll_.setInterval(25);
+        QObject::connect(&childPoll_, &QTimer::timeout, this, [this] { finishStop(); });
+        QObject::connect(&process, &QProcess::started, this, [this] {
+            if (stopping_) process.kill();
+        });
+        QObject::connect(&process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this,
+            [this] { finishStop(); });
+        QObject::connect(&process, &QProcess::errorOccurred, this, [this](QProcess::ProcessError error) {
+            if (error == QProcess::FailedToStart) finishStop();
+        });
+    }
+
+    void afterChildrenExit(std::function<void()> stopped)
+    {
+        if (stopped) stopped_.append(std::move(stopped));
+        stopping_ = true;
+#ifdef Q_OS_WIN
+        if (childJob) TerminateJobObject(childJob, 1);
+#endif
+        if (process.state() != QProcess::NotRunning) process.kill();
+        finishStop();
+    }
+
+    void stopChildren(std::function<void()> stopped = {})
+    {
+        cleanupRequested_ = true;
+        afterChildrenExit(std::move(stopped));
+    }
+
+    void retire()
+    {
+        retiring_ = true;
+        stopChildren();
+    }
+};
+
+namespace {
 
 class RuntimeDialog final : public QDialog
 {
     QJsonObject descriptor = vision::cpuRuntimeDescriptor();
     QString destination = vision::cpuRuntimeDirectory(descriptor);
-    QString archivePath, stage;
+    QString archivePath;
     QLabel *message;
     QProgressBar *progress;
     QPushButton *prepare;
     QNetworkAccessManager network{this};
     QPointer<QNetworkReply> reply;
-    QProcess process{this};
+    RuntimeResources *resources = new RuntimeResources;
     QFile archive;
     QCryptographicHash hash{QCryptographicHash::Sha256};
-    std::unique_ptr<QLockFile> lock;
     qint64 received = 0;
     bool busy = false, cancelled = false, waiting = false;
     QTimer poll;
-#ifdef Q_OS_WIN
-    HANDLE childJob = nullptr;
-#endif
-
-    void stopChildren()
-    {
-#ifdef Q_OS_WIN
-        if (childJob) { CloseHandle(childJob); childJob = nullptr; }
-#endif
-        if (process.state() != QProcess::NotRunning) { process.kill(); process.waitForFinished(2000); }
-    }
-    void removeStage()
-    {
-        if (!stage.isEmpty() && QFileInfo(stage).absolutePath() == QDir(vision::cpuRuntimeCacheRoot()).absolutePath()
-            && QFileInfo(stage).fileName().startsWith(".staging-") && !QFileInfo(stage).isSymLink() && !QFileInfo(stage).isJunction())
-            QDir(stage).removeRecursively();
-        stage.clear();
-    }
 
     void fail(const QString &error)
     {
         busy = false; waiting = false; poll.stop();
         if (reply) { reply->disconnect(this); reply->abort(); reply->deleteLater(); reply = nullptr; }
         archive.close();
-        stopChildren(); removeStage();
-        lock.reset();
         message->setText(error + "\n现有运行环境和个人文件保持保留，可点击重试。");
         progress->setRange(0, 100); progress->setValue(0);
-        prepare->setEnabled(true); prepare->setText("重试");
+        prepare->setEnabled(false); prepare->setText("重试");
+        const QPointer<RuntimeDialog> self(this);
+        resources->stopChildren([self] { if (self && !self->cancelled) self->prepare->setEnabled(true); });
     }
     void succeed()
     {
-        busy = false; poll.stop(); archive.close(); lock.reset();
-        QFile::remove(archivePath);
+        busy = false; poll.stop(); archive.close(); resources->lock.reset();
+        if (!archivePath.isEmpty()) QFile::remove(archivePath);
         accept();
     }
     void extract()
     {
         message->setText("下载校验通过，正在解压并验证运行组件…");
         progress->setRange(0, 0);
-        stage = QDir(vision::cpuRuntimeCacheRoot()).filePath(".staging-" + QUuid::createUuid().toString(QUuid::WithoutBraces));
+        resources->stage = QDir(vision::cpuRuntimeCacheRoot()).filePath(".staging-" + QUuid::createUuid().toString(QUuid::WithoutBraces));
 #ifdef Q_OS_WIN
-        childJob = CreateJobObjectW(nullptr, nullptr);
+        resources->childJob = CreateJobObjectW(nullptr, nullptr);
         JOBOBJECT_EXTENDED_LIMIT_INFORMATION limits{};
         limits.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
-        if (!childJob || !SetInformationJobObject(childJob, JobObjectExtendedLimitInformation, &limits, sizeof(limits))) {
+        if (!resources->childJob || !SetInformationJobObject(resources->childJob, JobObjectExtendedLimitInformation, &limits, sizeof(limits))) {
             fail("无法建立解压子进程保护，已停止准备。"); return;
         }
 #endif
+        auto &process = resources->process;
         process.setProgram(qEnvironmentVariable("SystemRoot", "C:/Windows") + "/System32/WindowsPowerShell/v1.0/powershell.exe");
         process.setArguments({"-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-File",
             vision::packageRoot() + "/scripts/prepare_cpu_runtime.ps1", "-Archive", archivePath,
-            "-Destination", stage, "-ExpectedSha256", descriptor.value("sha256").toString(),
+            "-Destination", resources->stage, "-ExpectedSha256", descriptor.value("sha256").toString(),
             "-ExpectedBytes", QString::number(qint64(descriptor.value("bytes").toDouble()))});
         process.start();
     }
@@ -120,6 +216,22 @@ class RuntimeDialog final : public QDialog
             fail("下载文件超出清单大小或磁盘写入失败。"); return;
         }
         hash.addData(data);
+    }
+    void finishExtraction(int code, QProcess::ExitStatus status)
+    {
+        if (cancelled || !busy) return;
+        if (code || status != QProcess::NormalExit) {
+            fail("运行环境验证失败：" + QString::fromUtf8(resources->process.readAllStandardError()).right(1600)); return;
+        }
+        QSaveFile ready(resources->stage + "/ready.json");
+        if (!ready.open(QIODevice::WriteOnly) || ready.write(QJsonDocument(descriptor).toJson()) < 0 || !ready.commit()) {
+            fail("无法写入运行环境完成标记。"); return;
+        }
+        // Never replace an existing cache directory, including unknown or modified files.
+        if (QFileInfo::exists(destination) || !QDir().rename(resources->stage, destination)) {
+            fail("运行环境缓存目录已存在或无法发布；请检查目录权限，现有文件已保留。"); return;
+        }
+        resources->stage.clear(); succeed();
     }
 public:
     explicit RuntimeDialog(QWidget *parent) : QDialog(parent)
@@ -137,10 +249,12 @@ public:
         auto *cancel = new QPushButton("取消"); cancel->setObjectName("cancelCpuRuntimeButton"); layout->addWidget(cancel);
         connect(prepare, &QPushButton::clicked, this, [this] { start(); });
         connect(cancel, &QPushButton::clicked, this, &QDialog::reject);
+        auto &process = resources->process;
 #ifdef Q_OS_WIN
         connect(&process, &QProcess::started, this, [this] {
-            const HANDLE child = OpenProcess(PROCESS_SET_QUOTA | PROCESS_TERMINATE, FALSE, DWORD(process.processId()));
-            const bool attached = child && childJob && AssignProcessToJobObject(childJob, child);
+            if (cancelled || !busy) return;
+            const HANDLE child = OpenProcess(PROCESS_SET_QUOTA | PROCESS_TERMINATE, FALSE, DWORD(resources->process.processId()));
+            const bool attached = child && resources->childJob && AssignProcessToJobObject(resources->childJob, child);
             if (child) CloseHandle(child);
             if (!attached) fail("无法保护运行环境解压任务，已停止准备。");
         });
@@ -148,7 +262,7 @@ public:
         poll.setInterval(500);
         connect(&poll, &QTimer::timeout, this, [this] {
             if (!vision::cpuPython().isEmpty()) { succeed(); return; }
-            if (waiting && lock && lock->tryLock(0)) { waiting = false; poll.stop(); download(); }
+            if (waiting && resources->lock && resources->lock->tryLock(0)) { waiting = false; poll.stop(); download(); }
         });
         connect(&process, &QProcess::errorOccurred, this, [this](QProcess::ProcessError e) {
             if (!cancelled && busy && e == QProcess::FailedToStart) fail("无法启动 Windows 运行环境解压工具。");
@@ -156,34 +270,31 @@ public:
         connect(&process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), this,
             [this](int code, QProcess::ExitStatus status) {
             if (cancelled || !busy) return;
-            stopChildren();
-            if (code || status != QProcess::NormalExit) {
-                fail("运行环境验证失败：" + QString::fromUtf8(process.readAllStandardError()).right(1600)); return;
-            }
-            QSaveFile ready(stage + "/ready.json");
-            if (!ready.open(QIODevice::WriteOnly) || ready.write(QJsonDocument(descriptor).toJson()) < 0 || !ready.commit()) {
-                fail("无法写入运行环境完成标记。"); return;
-            }
-            // Never replace an existing cache directory, including unknown or modified files.
-            if (QFileInfo::exists(destination) || !QDir().rename(stage, destination)) {
-                fail("运行环境缓存目录已存在或无法发布；请检查目录权限，现有文件已保留。"); return;
-            }
-            stage.clear(); succeed();
+            const QPointer<RuntimeDialog> self(this);
+            resources->afterChildrenExit([self, code, status] { if (self) self->finishExtraction(code, status); });
         });
     }
     ~RuntimeDialog() override
     {
         cancelled = true; busy = false;
         if (reply) { reply->disconnect(this); reply->abort(); }
-        process.disconnect(this);
-        stopChildren();
+        resources->process.disconnect(this);
         archive.close();
-        // Only the randomly named staging folder created by this operation is removable.
-        removeStage();
+        resources->retire();
+    }
+    void done(int result) override
+    {
+        if (result != QDialog::Accepted) {
+            cancelled = true; busy = false; waiting = false; poll.stop();
+            if (reply) { reply->disconnect(this); reply->abort(); reply->deleteLater(); reply = nullptr; }
+            archive.close();
+            resources->stopChildren();
+        }
+        QDialog::done(result);
     }
     void start()
     {
-        if (busy) return;
+        if (busy || cancelled) return;
         if (!vision::cpuPython().isEmpty()) { succeed(); return; }
         const QUrl url(descriptor.value("url").toString());
         if (destination.isEmpty() || descriptor.value("schema_version").toInt() != 1 ||
@@ -202,8 +313,8 @@ public:
             fail("用户数据盘空间不足，请释放空间后重试。"); return;
         }
         busy = true; prepare->setEnabled(false);
-        lock = std::make_unique<QLockFile>(destination + ".lock"); lock->setStaleLockTime(0);
-        if (!lock->tryLock(0)) {
+        resources->lock = std::make_unique<QLockFile>(destination + ".lock"); resources->lock->setStaleLockTime(0);
+        if (!resources->lock->tryLock(0)) {
             waiting = true; message->setText("另一个窗口正在准备同一运行环境，正在等待…");
             progress->setRange(0, 0); poll.start(); return;
         }
@@ -244,16 +355,82 @@ public:
     }
 };
 }
+
+RuntimeSetup::RuntimeSetup(QObject *parent) : QObject(parent)
+{
+    setObjectName("cpuRuntimeSetup");
+}
+
+RuntimeSetup::~RuntimeSetup()
+{
+    requestShutdown();
+}
+
+RuntimeSetup *runtimeSetup()
+{
+    static QPointer<RuntimeSetup> instance;
+    if (!instance) instance = new RuntimeSetup(qApp);
+    return instance;
+}
+
+bool RuntimeSetup::isShutdownReady() const
+{
+    return preparations_ == 0;
+}
+
+void RuntimeSetup::trackPreparation(QObject *preparation)
+{
+    ++preparations_;
+    connect(preparation, &QObject::destroyed, this, [this] {
+        --preparations_;
+        maybeEmitShutdownReady();
+    });
+}
+
+void RuntimeSetup::maybeEmitShutdownReady()
+{
+    if (!shuttingDown_ || shutdownEmitted_ || !isShutdownReady()) return;
+    shutdownEmitted_ = true;
+    emit shutdownReady();
+}
+
+void RuntimeSetup::requestShutdown()
+{
+    if (shuttingDown_) return;
+    shuttingDown_ = true;
+    cancelPendingPreparations();
+    QTimer::singleShot(0, this, [this] { maybeEmitShutdownReady(); });
+}
+
+void RuntimeSetup::cancelPendingPreparations()
+{
+    // A window can close and be recreated in the same QApplication. Cancelling
+    // that window's pending preparation must not permanently disable the runtime.
+    retries.clear();
+    if (active) active->reject();
+}
+
 bool ensureCpuRuntime(QWidget *parent, std::function<void()> retry)
 {
+    auto *setup = runtimeSetup();
+    if (setup->shuttingDown_) return false;
     if (!vision::cpuRuntimeDownloadNeeded()) return true;
     const QPointer<QWidget> owner(parent);
     retries.append([owner, retry = std::move(retry)] { if (owner) retry(); });
     if (active) { active->raise(); active->activateWindow(); return false; }
     auto *dialog = new RuntimeDialog(parent); active = dialog;
+    const auto generation = ++dialogGeneration;
     QObject::connect(dialog, &QDialog::finished, dialog, [](int result) {
         active = nullptr; const auto pending = std::exchange(retries, {});
-        if (result == QDialog::Accepted) for (const auto &retry : pending) QTimer::singleShot(0, qApp, retry);
+        if (result == QDialog::Accepted) {
+            const QPointer<RuntimeSetup> setup(runtimeSetup());
+            for (const auto &retry : pending) QTimer::singleShot(0, qApp, [setup, retry] {
+                if (setup && !setup->shuttingDown_) retry();
+            });
+        }
+    });
+    QObject::connect(dialog, &QObject::destroyed, setup, [generation] {
+        if (dialogGeneration == generation) { active = nullptr; retries.clear(); }
     });
     dialog->open(); return false;
 }

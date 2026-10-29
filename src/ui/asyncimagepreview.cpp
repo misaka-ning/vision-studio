@@ -15,21 +15,6 @@ namespace
 {
 constexpr int MaximumPreviewWorkers = 2;
 
-QThreadPool *previewPool()
-{
-    // The application owns the pool so closing a widget never waits for an
-    // in-progress disk read. tryStart() never adds work to the pool's queue.
-    static auto *pool = []
-    {
-        auto *result = new QThreadPool(QCoreApplication::instance());
-        result->setObjectName("visionImagePreviewPool");
-        result->setMaxThreadCount(MaximumPreviewWorkers);
-        result->setExpiryTimeout(15000);
-        return result;
-    }();
-    return pool;
-}
-
 struct PreviewCompletion
 {
     quint64 sequence = 0;
@@ -63,6 +48,49 @@ QImage readPreviewSource(const QString &path, QString &error)
 }
 } // namespace
 
+AsyncImagePreviewPool::AsyncImagePreviewPool(QObject *parent) : QObject(parent)
+{
+    pool_ = new QThreadPool(this);
+    pool_->setObjectName("visionImagePreviewPool");
+    pool_->setMaxThreadCount(MaximumPreviewWorkers);
+    pool_->setExpiryTimeout(15000);
+    poll_ = new QTimer(this);
+    poll_->setInterval(16);
+    connect(poll_, &QTimer::timeout, this, &AsyncImagePreviewPool::checkShutdown);
+}
+
+AsyncImagePreviewPool *AsyncImagePreview::applicationPool()
+{
+    static auto *pool = new AsyncImagePreviewPool(QCoreApplication::instance());
+    return pool;
+}
+
+bool AsyncImagePreviewPool::tryStart(std::function<void()> task)
+{
+    return !shuttingDown_ && pool_->tryStart(std::move(task));
+}
+
+int AsyncImagePreviewPool::activeRequestCount() const { return pool_->activeThreadCount(); }
+bool AsyncImagePreviewPool::isShutdownReady() const { return shuttingDown_ && activeRequestCount() == 0; }
+
+void AsyncImagePreviewPool::requestShutdown()
+{
+    if (shuttingDown_) return;
+    shuttingDown_ = true;
+    emit shutdownStarted();
+    poll_->start();
+    QTimer::singleShot(0, this, &AsyncImagePreviewPool::checkShutdown);
+}
+
+void AsyncImagePreviewPool::checkShutdown()
+{
+    if (isShutdownReady() && !shutdownSignalled_) {
+        shutdownSignalled_ = true;
+        poll_->stop();
+        emit shutdownReady();
+    }
+}
+
 struct AsyncImagePreview::Private
 {
     struct Request
@@ -78,6 +106,7 @@ struct AsyncImagePreview::Private
     QTimer *poll = nullptr;
     quint64 sequence = 0;
     std::optional<Request> pending;
+    bool shuttingDown = false, shutdownSignalled = false;
 };
 
 AsyncImagePreview::AsyncImagePreview(QObject *parent) : QObject(parent), d_(std::make_unique<Private>())
@@ -89,9 +118,12 @@ AsyncImagePreview::AsyncImagePreview(QObject *parent) : QObject(parent), d_(std:
     connect(d_->dispatch, &QTimer::timeout, this, &AsyncImagePreview::startLatestRequest);
     connect(d_->poll, &QTimer::timeout, this, [this]
     {
+        if (d_->shuttingDown) { checkShutdown(); return; }
         if (deliverCompletedRequest())
             startLatestRequest();
     });
+    connect(applicationPool(), &AsyncImagePreviewPool::shutdownStarted, this, &AsyncImagePreview::requestShutdown);
+    if (applicationPool()->shutdownRequested()) requestShutdown();
 }
 
 AsyncImagePreview::~AsyncImagePreview()
@@ -106,6 +138,7 @@ AsyncImagePreview::~AsyncImagePreview()
 void AsyncImagePreview::request(quint64 generation, const QString &primaryPath, const QString &fallbackPath,
                                 vision::InputColorMode colorMode)
 {
+    if (d_->shuttingDown || applicationPool()->shutdownRequested()) return;
     const quint64 sequence = ++d_->sequence;
     d_->mailbox->latest.store(sequence, std::memory_order_release);
     {
@@ -126,6 +159,29 @@ void AsyncImagePreview::cancel()
     d_->poll->stop();
     const std::lock_guard<std::mutex> lock(d_->mailbox->mutex);
     d_->mailbox->completed.reset();
+    if (d_->shuttingDown) d_->poll->start();
+}
+
+void AsyncImagePreview::requestShutdown()
+{
+    if (d_->shuttingDown) return;
+    d_->shuttingDown = true;
+    cancel();
+    QTimer::singleShot(0, this, &AsyncImagePreview::checkShutdown);
+}
+
+bool AsyncImagePreview::isShutdownReady() const
+{
+    return d_->shuttingDown && !d_->pending && activeRequestCount() == 0;
+}
+
+void AsyncImagePreview::checkShutdown()
+{
+    if (isShutdownReady() && !d_->shutdownSignalled) {
+        d_->shutdownSignalled = true;
+        d_->poll->stop();
+        emit shutdownReady();
+    }
 }
 
 int AsyncImagePreview::activeRequestCount() const
@@ -140,13 +196,14 @@ bool AsyncImagePreview::hasPendingRequest() const
 
 void AsyncImagePreview::startLatestRequest()
 {
+    if (d_->shuttingDown || applicationPool()->shutdownRequested()) { requestShutdown(); return; }
     const auto mailbox = d_->mailbox;
     bool started = false;
     if (d_->pending && mailbox->active.load(std::memory_order_acquire) < MaximumPreviewWorkers)
     {
         const auto request = *d_->pending;
         mailbox->active.fetch_add(1, std::memory_order_acq_rel);
-        started = previewPool()->tryStart([mailbox, request]
+        started = applicationPool()->tryStart([mailbox, request]
         {
             struct ActiveGuard
             {

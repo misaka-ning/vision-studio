@@ -6,6 +6,7 @@
 #include <QJsonObject>
 #include <QMetaType>
 #include <QPointer>
+#include <QSet>
 #include <QString>
 #include <QUrl>
 #include <QWidget>
@@ -52,6 +53,8 @@ class ModelViewer : public QWidget
 
     void openModel(const QString &path);
     void stop();
+    void requestShutdown();
+    bool isShutdownReady() const;
     QString modelPath() const;
     bool matchesModelFile(const QString &path) const;
     State state() const;
@@ -71,11 +74,14 @@ class ModelViewer : public QWidget
     void loadFailed(QString error);
     void stateChanged(ModelViewer::State state);
     void displayModeChanged(ModelViewer::DisplayMode mode);
+    void shutdownReady();
 
   private:
     void setState(State state, const QString &message);
     void fail(const QString &message);
     void releaseResources();
+    void trackProcess(QProcess *process);
+    void maybeFinishShutdown();
     void collectOutput(quint64 generation);
     void startBrowser(const QUrl &url, quint64 generation);
     void keepBrowserRendering();
@@ -106,6 +112,8 @@ class ModelViewer : public QWidget
     QByteArray m_stdout;
     QByteArray m_stderr;
     QPointer<QProcess> m_process;
+    QSet<QProcess *> m_processes;
+    bool m_shutdownRequested = false, m_shutdownSignalled = false;
     QStackedWidget *m_stack = nullptr;
     QWidget *m_statusPage = nullptr;
     QLabel *m_title = nullptr;

@@ -274,3 +274,24 @@ if(BUILD_TESTING)
     add_test(NAME vision-detection-controller-tests COMMAND vision-detection-controller-tests)
     set_tests_properties(vision-detection-controller-tests PROPERTIES TIMEOUT 30)
 endif()
+
+# Independent page components and their existing-resource lifecycle boundaries.
+target_sources(vision-app PRIVATE src/app/recordingcontroller.cpp)
+target_sources(vision-ui PRIVATE
+    src/ui/pages/workbenchpage.cpp src/ui/pages/modelslibrarypage.cpp
+    src/ui/pages/modeldisplaypage.cpp src/ui/pages/historypage.cpp
+    src/ui/pages/recordingspage.cpp src/ui/pages/morepage.cpp src/ui/pages/guidepage.cpp)
+if(BUILD_TESTING)
+    add_executable(vision-recording-controller-tests tests/recording_controller_tests.cpp)
+    target_link_libraries(vision-recording-controller-tests PRIVATE vision-app Qt6::Test)
+    add_test(NAME vision-recording-controller-tests COMMAND vision-recording-controller-tests)
+    set_tests_properties(vision-recording-controller-tests PROPERTIES TIMEOUT 120)
+    foreach(source IN ITEMS workbench_page workspace_pages simple_pages component_shutdown runtime_setup_shutdown)
+        string(REPLACE "_" "-" suffix "${source}")
+        add_executable(vision-${suffix}-tests tests/${source}_tests.cpp)
+        target_compile_definitions(vision-${suffix}-tests PRIVATE VISION_PROJECT_DIR="${CMAKE_SOURCE_DIR}")
+        target_link_libraries(vision-${suffix}-tests PRIVATE vision-ui Qt6::Test)
+        add_test(NAME vision-${suffix}-tests COMMAND vision-${suffix}-tests)
+        set_tests_properties(vision-${suffix}-tests PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu" TIMEOUT 120)
+    endforeach()
+endif()
