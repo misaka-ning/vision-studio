@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "stage": 2,
+  "success": true,
+  "scope": "Service and execution-resource extraction only; not final architecture, DEB or release acceptance",
+  "application_version": "2.10.0",
+  "runs": [
+    {
+      "name": "vision-app-services-tests",
+      "success": true,
+      "elapsed_seconds": 0.204,
+      "qt_totals": [
+        {
+          "passed": 10,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-gpu-environment-service-tests",
+      "success": true,
+      "elapsed_seconds": 1.089,
+      "qt_totals": [
+        {
+          "passed": 13,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-model-session-controller-tests",
+      "success": true,
+      "elapsed_seconds": 0.401,
+      "qt_totals": [
+        {
+          "passed": 12,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-detection-controller-tests",
+      "success": true,
+      "elapsed_seconds": 0.696,
+      "qt_totals": [
+        {
+          "passed": 5,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-ui-tests",
+      "success": true,
+      "elapsed_seconds": 54.193,
+      "qt_totals": [
+        {
+          "passed": 43,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-batch-responsiveness-tests",
+      "success": true,
+      "elapsed_seconds": 10.514,
+      "qt_totals": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-scope-filter-ui-tests",
+      "success": true,
+      "elapsed_seconds": 33.602,
+      "qt_totals": [
+        {
+          "passed": 38,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-input-drop-ui-tests",
+      "success": true,
+      "elapsed_seconds": 23.888,
+      "qt_totals": [
+        {
+          "passed": 22,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-dataset-session-ui-tests",
+      "success": true,
+      "elapsed_seconds": 9.336,
+      "qt_totals": [
+        {
+          "passed": 20,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-evaluation-integration-tests",
+      "success": true,
+      "elapsed_seconds": 154.655,
+      "qt_totals": [
+        {
+          "passed": 41,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    }
+  ],
+  "raw_logs": [
+    {
+      "name": "vision-ui-tests.log",
+      "sha256": "7284d2133fb2fe4762a1908ee301a8ff5d469c8bbb123c5f6f494f198a36fe37",
+      "bytes": 13055
+    },
+    {
+      "name": "vision-dataset-session-ui-tests.log",
+      "sha256": "113240872e98787d6faf1afcb83eacbee69c1f6336eddd1a35245694878e1cca",
+      "bytes": 5338
+    },
+    {
+      "name": "vision-scope-filter-ui-tests.log",
+      "sha256": "3bd87330dedfb307b33a45f8bf8360fb0e43e6c3391748c728776be2109a443e",
+      "bytes": 16033
+    },
+    {
+      "name": "vision-gpu-environment-service-tests.log",
+      "sha256": "cee33ac0f883d29425126b105a52f53cfbc50dd0a12a2c14861f49c3cc46e704",
+      "bytes": 2850
+    },
+    {
+      "name": "vision-evaluation-integration-tests.log",
+      "sha256": "d93cf6fb63d1b4a618e4773a240110ea9301c7486f0daf57696e5562be58ff3c",
+      "bytes": 45001
+    },
+    {
+      "name": "vision-model-session-controller-tests.log",
+      "sha256": "74624eacfccd6462d20b4b7de0346d11b2d33698d83fb6fe94824b28367e1a2d",
+      "bytes": 2696
+    },
+    {
+      "name": "vision-app-services-tests.log",
+      "sha256": "427c173dacee0a8a71a434c49445ef6539c4bf948d3a7322daedde4b452963c0",
+      "bytes": 2300
+    },
+    {
+      "name": "vision-detection-controller-tests.log",
+      "sha256": "eff65046573372758570da34731db28668b3053a5dfb97382e7a2bf7ebc50469",
+      "bytes": 2021
+    },
+    {
+      "name": "vision-batch-responsiveness-tests.log",
+      "sha256": "0b9e49aecabdbf4c7f60b913103b6a2b4f303db9bc81f61669d98105efa4df9d",
+      "bytes": 3823
+    },
+    {
+      "name": "vision-input-drop-ui-tests.log",
+      "sha256": "b8acc545231870ded369a32080446fb893013360daef8260c60bdb8ecc0841cb",
+      "bytes": 5838
+    }
+  ],
+  "notes": [
+    "Initial sandbox baseline failed because local model server networking was denied.",
+    "Initial execution extraction regression exposed a repeated-stop use-after-free; fixed before this frozen-source rebuild.",
+    "These results belong only to the isolated stage-2 source snapshot and build.",
+    "Model session controller is implemented and tested; global UI state migration is a later stage."
+  ]
+}

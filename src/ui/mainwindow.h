@@ -1,6 +1,9 @@
 #pragma once
 #include "core/visiontypes.h"
 #include "route.h"
+#include "app/resultwriter.h"
+#include "app/detectioncontroller.h"
+#include "app/preferencesrepository.h"
 #include <QElapsedTimer>
 #include <QHash>
 #include <QJsonArray>
@@ -34,6 +37,7 @@ class ModelConversionPage;
 class EvaluationPanel;
 class QTabWidget;
 class AsyncImagePreview;
+namespace vision::app { class GpuEnvironmentService; }
 namespace cv
 {
 class VideoCapture;
@@ -157,12 +161,7 @@ class MainWindow : public QMainWindow
     void updateEvaluationModel();
     QString evaluationFingerprint() const;
     void attachGroundTruth(vision::InferenceResult &result) const;
-    struct ResultExport
-    {
-        QString base;
-        vision::InferenceResult result;
-        QByteArray json, csv;
-    };
+    using ResultExport = vision::app::PreparedResultExport;
     ResultExport prepareResultExport(const vision::InferenceResult &result, const QString &directory,
                                     const vision::ModelConfig &config);
     static bool writePreparedResult(const ResultExport &result, QString *error = nullptr);
@@ -187,9 +186,7 @@ class MainWindow : public QMainWindow
     void checkGpuEnvironment();
     void prepareGpuEnvironment();
     void cancelGpuPreparation();
-    void readGpuSetupOutput();
     void appendGpuLog(const QString &message);
-    QString gpuLauncherPython() const;
     void updateModelMeta(const QString &state);
     void displayModelStructure();
     vision::ModelConfig currentConfig() const;
@@ -248,7 +245,7 @@ class MainWindow : public QMainWindow
     std::shared_ptr<QTemporaryDir> imageResultDirectory_;
     quint64 imageResultGeneration_ = 0;
     int resultIoPending_ = 0;
-    QThreadPool *resultIoPool_ = nullptr;
+    vision::app::ResultWriter *resultWriter_ = nullptr;
     bool imageResultCacheWarning_ = false;
     bool modelListReordering_ = false;
     QString lastError_;
@@ -256,10 +253,7 @@ class MainWindow : public QMainWindow
     vision::ComputeDevice actualDevice_ = vision::ComputeDevice::CPU;
     bool actualDeviceKnown_ = false;
     int actualDeviceIndex_ = -1;
-    QJsonObject gpuEnvironment_;
-    QByteArray gpuProbeOutput_, gpuProbeErrors_, gpuSetupOutput_;
-    bool gpuProbeKnown_ = false, gpuSetupCancelling_ = false;
-    QProcess *gpuProbeProcess_ = nullptr, *gpuSetupProcess_ = nullptr;
+    vision::app::GpuEnvironmentService *gpuService_ = nullptr;
     QJsonArray history_;
     bool busy_ = false, closing_ = false, failed_ = false;
     bool recordingRequested_ = false, recordingActive_ = false, recordingStopping_ = false;
@@ -278,9 +272,8 @@ class MainWindow : public QMainWindow
     QHash<QString, QString> taskSourceIdentities_;
     quint64 modelInspectionGeneration_ = 0;
     std::shared_ptr<std::atomic_bool> modelInspectionCancellation_;
-    QSettings *settings_ = nullptr;
-    QThread *workerThread_ = nullptr;
-    vision::InferenceWorker *worker_ = nullptr;
+    vision::app::PreferencesRepository *settings_ = nullptr;
+    vision::app::DetectionController *detection_ = nullptr;
     QStackedWidget *pages_ = nullptr;
     QWidget *workspaceHeader_ = nullptr;
     QList<QPushButton *> navButtons_;

@@ -65,10 +65,6 @@ class ImageCanvas final : public QWidget
     void zoomAt(const QPointF &point, double factor);
     int predictionAt(const QPointF &point) const;
     void paintAnnotations(QPainter &painter, qreal scale, bool exporting) const;
-    static void paintResultAnnotations(QPainter &painter, const vision::InferenceResult &result,
-                                       bool boxesVisible, bool labelsVisible, int selected,
-                                       qreal scale, bool exporting);
-    static QColor classColor(int classId);
     static QStringList localFilesFromDrop(const QMimeData *mime);
 
     vision::InferenceResult m_result;

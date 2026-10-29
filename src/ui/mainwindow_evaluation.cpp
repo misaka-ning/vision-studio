@@ -2,6 +2,7 @@
 #include "core/cpuruntime.h"
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "mainwindow.h"
+#include "app/gpuenvironmentservice.h"
 #include "evaluationpanel.h"
 #include "imagecanvas.h"
 #include "lazyimagequeue.h"
@@ -276,7 +277,7 @@ void MainWindow::restoreDatasetSession()
         // begin while a native/modal chooser owns a nested event loop.
         if (!settings_->value("restoreDatasetOnStartup", true).toBool() ||
             generation != datasetSessionRestoreGeneration_ || datasetSessionUserInteracted_ ||
-            closing_ || busy_ || queuePopulating_ || evaluationWorker_ || gpuSetupProcess_ ||
+            closing_ || busy_ || queuePopulating_ || evaluationWorker_ || gpuService_->isPreparing() ||
             (modelConversion_ && modelConversion_->isBusy()) || QApplication::activeModalWidget() ||
             sourceKind_ != vision::SourceKind::Images || !files_.isEmpty() || !datasetManifest_.isEmpty()) return;
         const auto result = vision::DatasetSessionStore::load(datasetSessionFilePath());
@@ -291,7 +292,7 @@ void MainWindow::restoreDatasetSession()
 
 void MainWindow::beginDatasetImport(const QString &yaml, const QString &split, const QString &metadata)
 {
-    if (busy_ || evaluationWorker_ || gpuSetupProcess_ || (modelConversion_ && modelConversion_->isBusy())) return;
+    if (busy_ || evaluationWorker_ || gpuService_->isPreparing() || (modelConversion_ && modelConversion_->isBusy())) return;
     if (closing_) return;
     if (!ui::ensureCpuRuntime(this, [this, yaml, split, metadata] { beginDatasetImport(yaml, split, metadata); })) return;
     const quint64 generation = ++datasetImportGeneration_;
