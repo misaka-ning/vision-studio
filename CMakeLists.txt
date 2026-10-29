@@ -314,9 +314,9 @@ if(BUILD_TESTING)
 endif()
 
 # Bounded result persistence and cross-domain coordination own their state.
-target_sources(vision-app PRIVATE src/app/imageresultstore.cpp src/app/resultdeliveryservice.cpp)
+target_sources(vision-app PRIVATE src/app/imageresultstore.cpp src/app/resultdeliveryservice.cpp src/app/operationcoordinator.cpp)
 if(BUILD_TESTING)
-    foreach(pair IN ITEMS "image-result-store|image_result_store_tests" "result-delivery|result_delivery_tests")
+    foreach(pair IN ITEMS "image-result-store|image_result_store_tests" "result-delivery|result_delivery_tests" "operation-coordinator|operation_coordinator_tests")
         string(REPLACE "|" ";" parts "${pair}")
         list(GET parts 0 suffix)
         list(GET parts 1 source)
