@@ -8,9 +8,9 @@
 
 [下载发行版](https://github.com/misaka-ning/vision-studio/releases) · [更新日志](CHANGELOG.md) · [使用指南](docs/使用指南.md) · [报告问题](https://github.com/misaka-ning/vision-studio/issues)
 
-当前工程版本：**2.10.0**。模型库支持从文件管理器拖入单个或多个 ONNX／PT／TorchScript 文件，与导入按钮共用校验，按拖入顺序添加并去重；保留内部排序、名称与备注、全局模型及后台结构缓存。沿用 C++17／Qt 6.8.3、Fluent 深色界面和既有 CPU／NVIDIA GPU 后端，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。
+当前工程版本：**2.10.1（发行验收进行中）**。本次将模型、输入、检测、评估、结果保存、录像与 GPU 环境的状态和生命周期从 MainWindow 分离到独立控制器与服务，页面负责界面展示和操作意图。沿用 C++17／Qt 6.8.3、Fluent 深色界面、既有操作流程和 CPU／NVIDIA GPU 后端，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。代码边界与关闭流程见[应用架构](docs/architecture/应用架构.md)。
 
-本版实际验收范围及限制以[Linux 发行说明](docs/releases/2.10.0.md)、[Linux 验收状态](docs/releases/evidence/2.10.0/README.md)和 [Windows 2.9.1 双安装包说明](docs/releases/2.9.1-windows.md)为准，未执行的检查不计为通过。本次发行交付 Ubuntu 22.04 amd64；Windows 已发布版本为 2.9.1，未发布 Windows 2.10.0 安装包。下方历史截图标明来源版本。
+2.10.1 的最终构建、安装包、完整对应源码和远端发行核验仍待完成，状态见[本版发行说明](docs/releases/2.10.1.md)；开发回归不替代最终包验收，未执行的检查不计为通过。当前已发布的 Linux 版本仍为 **2.10.0**，见[发行说明](docs/releases/2.10.0.md)和[验收证据](docs/releases/evidence/2.10.0/README.md)。Windows 已发布版本为 **2.9.1**，见[双安装包说明](docs/releases/2.9.1-windows.md)；本次不据此声明 Windows 2.10.1 已验收或已发布。下方历史截图标明来源版本。
 
 ![Vision Studio 2.5.0 图像预览：真实 ONNX CPU 检测与 GT 对照](docs/screenshots/workbench-2.5.0.png)
 
