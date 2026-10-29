@@ -127,6 +127,119 @@ class WorkbenchConfigurationTests final : public QObject
         QCOMPARE(configuration.compose(model, false).maxDetections, 300);
         QCOMPARE(configuration.compose(model, false).cpuThreads, 0);
     }
+
+    void exportDirectoryHasOneEditableAuthorityAndSurvivesViewDraftUpdates()
+    {
+        WorkbenchConfiguration configuration;
+        QSignalSpy changed(&configuration, &WorkbenchConfiguration::changed);
+        configuration.setExportDirectory("results/选择的目录");
+        QCOMPARE(changed.count(), 1);
+        auto draft = configuration.snapshot();
+        draft.confidence = .7;
+        configuration.replaceDraft(draft);
+        QCOMPARE(configuration.snapshot().exportDirectory, QStringLiteral("results/选择的目录"));
+        auto detached = configuration.snapshot();
+        detached.exportDirectory = "unaccepted-directory";
+        QCOMPARE(configuration.snapshot().exportDirectory, QStringLiteral("results/选择的目录"));
+    }
+
+    void fingerprintPreservesLegacyBytesAndCanonicalClassOrder()
+    {
+        ModelConfig config;
+        config.labels = {"person", "sports ball"};
+        config.classFilter = {32, 0};
+        // Captured from the pre-extraction MainWindow QDataStream field sequence.
+        const QString legacy = "f23ab25e6d97c51d270885b0d47e76e5c608b73dbda0fb727c5c504bfdcbe3f0";
+        QCOMPARE(WorkbenchConfiguration::configurationFingerprint(config, "frozen-model-identity"), legacy);
+        QCOMPARE(config.classFilter, QVector<int>({32, 0}));
+        config.classFilter = {0, 32};
+        QCOMPARE(WorkbenchConfiguration::configurationFingerprint(config, "frozen-model-identity"), legacy);
+        config.modelClassCount = 80;
+        config.inputChannels = 3;
+        config.resolvedDevice = ComputeDevice::CUDA;
+        config.deviceName = "verified runtime information";
+        // Inspection/runtime metadata was not part of the legacy editable-configuration identity.
+        QCOMPARE(WorkbenchConfiguration::configurationFingerprint(config, "frozen-model-identity"), legacy);
+        QVERIFY(WorkbenchConfiguration::configurationFingerprint(config, "replacement-model-identity") != legacy);
+        const QVector<std::function<void(ModelConfig &)>> changes{
+            [](ModelConfig &c) { c.task = ModelTask::YoloV5; },
+            [](ModelConfig &c) { c.inputSize = 512; },
+            [](ModelConfig &c) { c.confidence = .5f; },
+            [](ModelConfig &c) { c.iou = .6f; },
+            [](ModelConfig &c) { c.colorMode = InputColorMode::Grayscale; },
+            [](ModelConfig &c) { c.swapRB = false; },
+            [](ModelConfig &c) { c.scale = 1; },
+            [](ModelConfig &c) { c.meanR = 1; },
+            [](ModelConfig &c) { c.meanG = 1; },
+            [](ModelConfig &c) { c.meanB = 1; },
+            [](ModelConfig &c) { c.device = ComputeDevice::CUDA; },
+            [](ModelConfig &c) { c.deviceIndex = 2; },
+            [](ModelConfig &c) { c.labels = {"custom name"}; },
+            [](ModelConfig &c) { c.classFilter = {32}; },
+            [](ModelConfig &c) { c.maxDetections = 500; },
+            [](ModelConfig &c) { c.cpuThreads = 2; }};
+        for (qsizetype index = 0; index < changes.size(); ++index) {
+            auto changedConfig = config;
+            changes.at(index)(changedConfig);
+            QVERIFY2(WorkbenchConfiguration::configurationFingerprint(changedConfig, "frozen-model-identity") != legacy,
+                     qPrintable(QString("configuration dependency %1 did not invalidate the fingerprint").arg(index)));
+        }
+    }
+
+    void filterValidationUsesCurrentModelMetadata_data()
+    {
+        QTest::addColumn<QString>("text");
+        QTest::addColumn<int>("classCount");
+        QTest::addColumn<QString>("inspectedIdentity");
+        QTest::addColumn<bool>("pending");
+        QTest::addColumn<bool>("classification");
+        QTest::addColumn<bool>("valid");
+        QTest::newRow("all-without-inspection") << QString() << 0 << QString() << false << false << true;
+        QTest::newRow("raw-coco-class-32") << QString("32") << 80 << QString("current-model") << false << false << true;
+        QTest::newRow("normalized-multiple-ids") << QString("32， 0,32") << 80 << QString("current-model") << false << false << true;
+        QTest::newRow("negative-id") << QString("-1") << 80 << QString("current-model") << false << false << false;
+        QTest::newRow("non-integer") << QString("1.2") << 80 << QString("current-model") << false << false << false;
+        QTest::newRow("past-model-range") << QString("32") << 1 << QString("current-model") << false << false << false;
+        QTest::newRow("unknown-class-count") << QString("0") << 0 << QString("current-model") << false << false << false;
+        QTest::newRow("stale-model-inspection") << QString("32") << 80 << QString("previous-model") << false << false << false;
+        QTest::newRow("inspection-pending") << QString("32") << 80 << QString("current-model") << true << false << false;
+        QTest::newRow("classification-ignores-detection-filter") << QString("bad-filter") << 80 << QString() << false << true << true;
+    }
+
+    void filterValidationUsesCurrentModelMetadata()
+    {
+        QFETCH(QString, text);
+        QFETCH(int, classCount);
+        QFETCH(QString, inspectedIdentity);
+        QFETCH(bool, pending);
+        QFETCH(bool, classification);
+        QFETCH(bool, valid);
+        WorkbenchConfiguration configuration;
+        WorkbenchDraft draft;
+        draft.classFilterText = text;
+        if (classification) draft.parameters.task = ModelTask::Classification;
+        configuration.replaceDraft(draft);
+        ModelSessionSnapshot model;
+        model.classCount = classCount;
+        model.inspectedIdentity = inspectedIdentity;
+        model.inspectionPending = pending;
+        const auto status = configuration.classFilterStatus(model, "current-model");
+        QCOMPARE(status.error.isEmpty(), valid);
+        QVERIFY(!status.hint.isEmpty());
+        if (!valid) QCOMPARE(status.hint, status.error);
+        if (classification) {
+            QVERIFY(status.ids.isEmpty());
+            QVERIFY(status.hint.contains("图像分类"));
+        } else if (valid && !text.isEmpty()) {
+            QVERIFY(status.ids.contains(32));
+            QVERIFY(!status.hint.contains("ID 0 ·"));
+            QVERIFY(status.hint.contains("sports ball"));
+            QVERIFY(status.hint.contains("并非只识别足球"));
+            if (text.contains("，")) QCOMPARE(status.ids, QVector<int>({0, 32}));
+            else QCOMPARE(status.ids, QVector<int>{32});
+        }
+        QCOMPARE(configuration.snapshot().classFilterText, text);
+    }
 };
 QTEST_GUILESS_MAIN(WorkbenchConfigurationTests)
 #include "workbench_configuration_tests.moc"

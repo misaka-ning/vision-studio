@@ -239,6 +239,7 @@ ResultWriteOutcome ResultWriter::write(const ResultWriteRequest &request)
     outcome.directory = request.directory;
     outcome.snapshotPath = request.snapshotPath;
     outcome.automaticExport = request.automaticExport;
+    outcome.streamFinalization = request.streamFinalization;
     if (!request.snapshotPath.isEmpty())
     {
         QSaveFile file(request.snapshotPath);

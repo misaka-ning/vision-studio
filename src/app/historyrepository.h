@@ -6,12 +6,20 @@
 
 namespace vision::app
 {
-// The caller owns the in-memory history. This repository owns only its file path,
-// so there cannot be a second independently mutable copy of the same history.
+// Owns the in-memory history and its existing JSON file. UI consumers receive
+// value snapshots; all production mutations go through append commands.
 class HistoryRepository final
 {
   public:
     explicit HistoryRepository(QString filePath);
+    QJsonArray snapshot() const { return entries_; }
+    void reload(QString *error = nullptr);
+    void appendResult(const InferenceResult &result);
+    void appendEvaluation(const QJsonObject &entry);
+    QByteArray serialize() const;
+    bool save(QString *error = nullptr) const;
+    bool exportTo(const QString &destination, QString *error = nullptr) const;
+    // Compatibility helpers for frozen snapshot tests and independent readers.
     QJsonArray load(QString *error = nullptr) const;
     bool save(const QJsonArray &entries, QString *error = nullptr) const;
     QString filePath() const { return filePath_; }
@@ -21,5 +29,6 @@ class HistoryRepository final
 
   private:
     QString filePath_;
+    QJsonArray entries_;
 };
 } // namespace vision::app

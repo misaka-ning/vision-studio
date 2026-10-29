@@ -1,0 +1,829 @@
+{
+  "schema_version": 1,
+  "version": "2.10.0",
+  "success": true,
+  "errors": [],
+  "generated_at_utc": "2026-10-29T10:51:51.044934+00:00",
+  "scope": "Actual selected CTest regression execution; not DEB, install, source or release acceptance",
+  "selected_tests": [
+    "vision-app-services-tests",
+    "vision-detection-controller-tests",
+    "vision-image-result-store-tests",
+    "vision-result-delivery-tests",
+    "vision-operation-coordinator-tests",
+    "vision-workbench-configuration-tests",
+    "vision-ui-tests",
+    "vision-scope-filter-ui-tests",
+    "vision-batch-responsiveness-tests"
+  ],
+  "real_cuda_requested": false,
+  "binary": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b/bin/vision-studio",
+  "binary_sha256": "1719682dc3ca634f34f0d0f096bccf73e83103f0e88111a11fd43c7c82e9b1f0",
+  "build_directory": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b",
+  "runs": [
+    {
+      "name": "vision-app-services-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-app\\-services\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4b-regression/vision-app-services-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.221,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 14,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-app-services-tests.log",
+      "log_sha256": "a1d710c4e2d73ab8df6b6af87652385595bf40e60500ef51a29136e7c0357721",
+      "junit": "vision-app-services-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-detection-controller-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-detection\\-controller\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4b-regression/vision-detection-controller-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.159,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 10,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-detection-controller-tests.log",
+      "log_sha256": "599cdcc0cbe0baf1e5edf53e3767ccef469a682a220bf654cb3aa6bb27b4ffe0",
+      "junit": "vision-detection-controller-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-image-result-store-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-image\\-result\\-store\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4b-regression/vision-image-result-store-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.353,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 15,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-image-result-store-tests.log",
+      "log_sha256": "258a6e9f9ee58a9cda25cff875bc562d87ebe91acea03da563088436a3ebed65",
+      "junit": "vision-image-result-store-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-result-delivery-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-result\\-delivery\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4b-regression/vision-result-delivery-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.616,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 11,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-result-delivery-tests.log",
+      "log_sha256": "644e1b34b9674e503ebe1ebb5e1ff6f8382a9635645899f2ebf228e112f37f94",
+      "junit": "vision-result-delivery-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-operation-coordinator-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-operation\\-coordinator\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4b-regression/vision-operation-coordinator-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.04,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 533,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-operation-coordinator-tests.log",
+      "log_sha256": "bc9f534ca30098586a355eb0409201e05a7e95837e268a9148145d88059451df",
+      "junit": "vision-operation-coordinator-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-workbench-configuration-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-workbench\\-configuration\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4b-regression/vision-workbench-configuration-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.052,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 20,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-workbench-configuration-tests.log",
+      "log_sha256": "a21fa3fe53e324164a0aa4cac85b954d6cee6d1b521971eee3e9f28e91bf0c18",
+      "junit": "vision-workbench-configuration-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-ui-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-ui\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4b-regression/vision-ui-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 43.861,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 43,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-ui-tests.log",
+      "log_sha256": "a98ccdef3d41286ce9ad5ea703e5574b606a61877dde03579aa35f29f9e9af9e",
+      "junit": "vision-ui-tests.xml",
+      "feature_evidence": []
+    },
+    {
+      "name": "vision-scope-filter-ui-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-scope\\-filter\\-ui\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4b-regression/vision-scope-filter-ui-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 32.233,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 38,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-scope-filter-ui-tests.log",
+      "log_sha256": "3711f987e8eea4e5ad3647c90de3ea477d407c68b170bcb5df371935178050d0",
+      "junit": "vision-scope-filter-ui-tests.xml",
+      "feature_evidence": [
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 3,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 2,
+            "mode": 0,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 0,
+            "submitted_count": 3
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 3,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 2,
+            "mode": 0,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 1,
+            "submitted_count": 3
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 3,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 2,
+            "mode": 0,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 2,
+            "submitted_count": 3
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 3,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 2,
+            "mode": 1,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 0,
+            "submitted_count": 3
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 2,
+            "first_queue_row": 1,
+            "kind": "range",
+            "last_queue_row": 2,
+            "mode": 1,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 1,
+            "submitted_count": 2
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "first_queue_row": 2,
+            "kind": "range",
+            "last_queue_row": 2,
+            "mode": 1,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 2,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "completed": 1,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 0,
+            "mode": 2,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 0,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "completed": 1,
+            "first_queue_row": 1,
+            "kind": "range",
+            "last_queue_row": 1,
+            "mode": 2,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 1,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "first_queue_row": 2,
+            "kind": "range",
+            "last_queue_row": 2,
+            "mode": 2,
+            "queue_count": 3,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 2,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 0,
+            "mode": 0,
+            "queue_count": 1,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 0,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 61,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 60,
+            "mode": 0,
+            "queue_count": 61,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 50,
+            "submitted_count": 61
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 0,
+            "mode": 1,
+            "queue_count": 1,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 0,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 11,
+            "first_queue_row": 50,
+            "kind": "range",
+            "last_queue_row": 60,
+            "mode": 1,
+            "queue_count": 61,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 50,
+            "submitted_count": 11
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "first_queue_row": 0,
+            "kind": "range",
+            "last_queue_row": 0,
+            "mode": 2,
+            "queue_count": 1,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 0,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "completed": 1,
+            "first_queue_row": 50,
+            "kind": "range",
+            "last_queue_row": 50,
+            "mode": 2,
+            "queue_count": 61,
+            "range_outside_unprocessed": true,
+            "review_matches_selection": true,
+            "selected_row": 50,
+            "submitted_count": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 3,
+            "export_matches_preview": true,
+            "filter_text": "",
+            "kind": "scope-and-filter",
+            "mode": 0,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 3,
+            "export_matches_preview": true,
+            "filter_text": "32",
+            "kind": "scope-and-filter",
+            "mode": 0,
+            "original_ids_retained": true,
+            "zero_match_is_completed": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 3,
+            "export_matches_preview": true,
+            "filter_text": "0,5,32",
+            "kind": "scope-and-filter",
+            "mode": 0,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 3,
+            "export_matches_preview": true,
+            "filter_text": "5，0 5，32",
+            "kind": "scope-and-filter",
+            "mode": 0,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 2,
+            "export_matches_preview": true,
+            "filter_text": "",
+            "kind": "scope-and-filter",
+            "mode": 1,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 2,
+            "export_matches_preview": true,
+            "filter_text": "32",
+            "kind": "scope-and-filter",
+            "mode": 1,
+            "original_ids_retained": true,
+            "zero_match_is_completed": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 2,
+            "export_matches_preview": true,
+            "filter_text": "0,5,32",
+            "kind": "scope-and-filter",
+            "mode": 1,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 2,
+            "export_matches_preview": true,
+            "filter_text": "5，0 5，32",
+            "kind": "scope-and-filter",
+            "mode": 1,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "export_matches_preview": true,
+            "filter_text": "",
+            "kind": "scope-and-filter",
+            "mode": 2,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "export_matches_preview": true,
+            "filter_text": "32",
+            "kind": "scope-and-filter",
+            "mode": 2,
+            "original_ids_retained": true,
+            "zero_match_is_completed": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "export_matches_preview": true,
+            "filter_text": "0,5,32",
+            "kind": "scope-and-filter",
+            "mode": 2,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "completed": 1,
+            "export_matches_preview": true,
+            "filter_text": "5，0 5，32",
+            "kind": "scope-and-filter",
+            "mode": 2,
+            "original_ids_retained": true,
+            "zero_match_is_completed": false
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "kind": "selection-and-stream",
+            "missing_selection_blocks_tail_and_current": true,
+            "stream_range_hidden": true,
+            "whole_queue_works_without_selection": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "classification_filter_disabled": true,
+            "coco_classes": 80,
+            "invalid_inputs_block_start": true,
+            "kind": "validation",
+            "replacement_model_classes": 1
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "changed_parameters_invalidate": true,
+            "kind": "cache-range",
+            "outside_range_kept_after_cancel": true,
+            "same_configuration_cancel_keeps_accepted_results": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "auto_export_count": 1,
+            "backend": "OpenCV DNN",
+            "completed": 1,
+            "kind": "stopped-range",
+            "no_followup_after_stop": true,
+            "queue_count": 61,
+            "range_count": 11,
+            "review_correct": true,
+            "total_observed_ms": 1668
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_class_count": 1,
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "kind": "dynamic-class-metadata",
+            "submitted_class_count": 0,
+            "ui_and_export_configuration_synchronized": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "actual_inference": true,
+            "backend": "OpenCV DNN / CPU",
+            "filter": "0,5",
+            "kind": "workbench-visual",
+            "mode": 2,
+            "optional_screenshot": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4b-regression/artifacts/scope-filter-workbench.png",
+            "queue_count": 64,
+            "selected_row": 50
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "identity_changed": true,
+            "job_identity_frozen": true,
+            "kind": "model-identity-during-task",
+            "later_results_not_relabelled": true,
+            "stale_cache_unavailable": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN / CPU",
+            "changed_source_cache_unavailable": true,
+            "kind": "source-identity-during-task",
+            "submitted_identity_frozen": true,
+            "unchanged_source_review_available": true
+          }
+        },
+        {
+          "kind": "detection_scope_evidence",
+          "value": {
+            "actual_device": "cpu",
+            "backend": "OpenCV DNN",
+            "changed_filter_invalidates": true,
+            "changed_source_rejects_old_result": true,
+            "equivalent_filter_keeps_cache": true,
+            "kind": "cache-identity"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vision-batch-responsiveness-tests",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-batch\\-responsiveness\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4b-regression/vision-batch-responsiveness-tests.xml"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 9.492,
+      "success": true,
+      "skipped": false,
+      "qt_totals": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "log": "vision-batch-responsiveness-tests.log",
+      "log_sha256": "ad12e50a3e6c52b4549786c2a993ae40ad40acbb0991d0ee2044362c2bbf6e15",
+      "junit": "vision-batch-responsiveness-tests.xml",
+      "feature_evidence": []
+    }
+  ],
+  "artifacts_directory": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4b-regression/artifacts",
+  "coverage_note": "Feature coverage is defined by the actual assertions in the selected suites. A successful suite is not a measurement of performance or proof of unexecuted cases."
+}

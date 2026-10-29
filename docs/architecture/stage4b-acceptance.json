@@ -1,0 +1,106 @@
+{
+  "stage": "4b",
+  "scope": "Image result identities/cache, bounded serial delivery, immutable detection task/final stream frame, preferences/history authority and operation coordination. Legacy UI compatibility also executed.",
+  "source_tree": "8726527d7bda37ee247a709d22a2c592b178d4a9",
+  "build_success": true,
+  "regression_success": true,
+  "suites": [
+    "vision-app-services-tests",
+    "vision-detection-controller-tests",
+    "vision-image-result-store-tests",
+    "vision-result-delivery-tests",
+    "vision-operation-coordinator-tests",
+    "vision-workbench-configuration-tests",
+    "vision-ui-tests",
+    "vision-scope-filter-ui-tests",
+    "vision-batch-responsiveness-tests"
+  ],
+  "raw_evidence": "../releases/evidence/2.10.1/stages/stage4b",
+  "not_final_release_acceptance": true,
+  "files": {
+    "detection-regression-qa.json": {
+      "size": 26281,
+      "sha256": "4397d6f9a886788ebbb555a2d745d4948c89f788664ca22ec0a2843446840f1d"
+    },
+    "stage4b-build.log": {
+      "size": 20136,
+      "sha256": "2fb24ef06dbe49d1bf08f9cc4dadc61552f81fc635267d106be5a3e563816f09"
+    },
+    "stage4b-configure.log": {
+      "size": 1347,
+      "sha256": "a3159b2df7cb0816d933939521ce46d84cf1b78a0e977152f76b0c9aa1a7903f"
+    },
+    "vision-app-services-tests.log": {
+      "size": 2659,
+      "sha256": "a1d710c4e2d73ab8df6b6af87652385595bf40e60500ef51a29136e7c0357721"
+    },
+    "vision-app-services-tests.xml": {
+      "size": 1484,
+      "sha256": "1290fb38722f4b081ce9f920afe4ac8ae4ed3623084c7e41efa55201af335e41"
+    },
+    "vision-batch-responsiveness-tests.log": {
+      "size": 3829,
+      "sha256": "ad12e50a3e6c52b4549786c2a993ae40ad40acbb0991d0ee2044362c2bbf6e15"
+    },
+    "vision-batch-responsiveness-tests.xml": {
+      "size": 1499,
+      "sha256": "5285f20783cfc7186af742bc38f24913d706719ac19b6a7d07819323738d83ca"
+    },
+    "vision-detection-controller-tests.log": {
+      "size": 2538,
+      "sha256": "599cdcc0cbe0baf1e5edf53e3767ccef469a682a220bf654cb3aa6bb27b4ffe0"
+    },
+    "vision-detection-controller-tests.xml": {
+      "size": 1498,
+      "sha256": "0a3dee87c26f9519c3f43d3fd3cb5ea6be66d854a9dc7b8aa8f5b7d302241d65"
+    },
+    "vision-image-result-store-tests.log": {
+      "size": 3073,
+      "sha256": "258a6e9f9ee58a9cda25cff875bc562d87ebe91acea03da563088436a3ebed65"
+    },
+    "vision-image-result-store-tests.xml": {
+      "size": 1496,
+      "sha256": "b73fac3f8f747f21ae85670fdb2a8e35f6e4d9953e9d0dc46822fe69433ba61c"
+    },
+    "vision-operation-coordinator-tests.log": {
+      "size": 42617,
+      "sha256": "bc9f534ca30098586a355eb0409201e05a7e95837e268a9148145d88059451df"
+    },
+    "vision-operation-coordinator-tests.xml": {
+      "size": 1501,
+      "sha256": "3e9a7298c331c516d511e709986badba863429459baece553b713a3c9b5d743d"
+    },
+    "vision-result-delivery-tests.log": {
+      "size": 2733,
+      "sha256": "644e1b34b9674e503ebe1ebb5e1ff6f8382a9635645899f2ebf228e112f37f94"
+    },
+    "vision-result-delivery-tests.xml": {
+      "size": 1490,
+      "sha256": "565b472ddfa9a07476d7fb5185d1adbafc493c1ca090398ea5816b02b7bff918"
+    },
+    "vision-scope-filter-ui-tests.log": {
+      "size": 16032,
+      "sha256": "3711f987e8eea4e5ad3647c90de3ea477d407c68b170bcb5df371935178050d0"
+    },
+    "vision-scope-filter-ui-tests.xml": {
+      "size": 1490,
+      "sha256": "cb8bd6ca604e41ca8e531f496993123a52174b08122794471d63ba79b8ea3f9e"
+    },
+    "vision-ui-tests.log": {
+      "size": 13062,
+      "sha256": "a98ccdef3d41286ce9ad5ea703e5574b606a61877dde03579aa35f29f9e9af9e"
+    },
+    "vision-ui-tests.xml": {
+      "size": 1463,
+      "sha256": "5cb51f7e3234c4af6c2278554b2891bb22a6f6785556cf0f118fab32138a34ca"
+    },
+    "vision-workbench-configuration-tests.log": {
+      "size": 3666,
+      "sha256": "a21fa3fe53e324164a0aa4cac85b954d6cee6d1b521971eee3e9f28e91bf0c18"
+    },
+    "vision-workbench-configuration-tests.xml": {
+      "size": 1506,
+      "sha256": "a046ca31ecea05e38659348178467837d0c3d05c3f886502cd191924620ab970"
+    }
+  }
+}

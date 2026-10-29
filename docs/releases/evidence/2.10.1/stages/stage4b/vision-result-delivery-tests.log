@@ -1,0 +1,42 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 41
+    Start 41: vision-result-delivery-tests
+
+41: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4b/vision-result-delivery-tests
+41: Environment variables: 
+41:  QT_QPA_PLATFORM=offscreen
+41: Test timeout computed to be: 120
+41: ********* Start testing of ResultDeliveryServiceTests *********
+41: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+41: PASS   : ResultDeliveryServiceTests::initTestCase()
+41: PASS   : ResultDeliveryServiceTests::serialDeliveryFreezesConfigurationAndOutputAndAcknowledgesEveryTicket()
+41: PASS   : ResultDeliveryServiceTests::loadedBackendMetadataKeepsFrozenSourceAndModelFingerprint()
+41: PASS   : ResultDeliveryServiceTests::zeroMatchesStayEmptyInCacheHistoryAndExport()
+41: PASS   : ResultDeliveryServiceTests::exportFailureReportsFatalAndStillAcknowledgesAfterHistorySave()
+41: PASS   : ResultDeliveryServiceTests::historyWriteFailureRetainsMemoryAndDoesNotPreventAcknowledgement()
+41: PASS   : ResultDeliveryServiceTests::staleCompletionAcknowledgesWithoutFailingNewConfiguration()
+41: PASS   : ResultDeliveryServiceTests::shutdownIsAsynchronousIdempotentAndDrainsAcceptedResults()
+41: PASS   : ResultDeliveryServiceTests::sameConfigurationRerunPreservesResultsOutsideNewRange()
+41: PASS   : ResultDeliveryServiceTests::streamFinalizationPreservesHistoryAndSignalsOnlyAfterSerialWrite()
+41: PASS   : ResultDeliveryServiceTests::cleanupTestCase()
+41: Totals: 11 passed, 0 failed, 0 skipped, 0 blacklisted, 533ms
+41: ********* Finished testing of ResultDeliveryServiceTests *********
+1/1 Test #41: vision-result-delivery-tests .....   Passed    0.60 sec
+
+The following tests passed:
+	vision-result-delivery-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.60 sec
