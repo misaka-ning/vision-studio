@@ -1,0 +1,46 @@
+{
+  "stage": "5",
+  "scope": "Version, architecture/deployment documentation and corresponding-source inventory freeze only; business production code identical to accepted stage4c.",
+  "source_commit": "2bb9eea9bb607dbad3cb374b5d40f6888b7c3491",
+  "source_tree": "f3a5b1fc340182430520d6e087c729f0af0a5873",
+  "application_version": "2.10.1",
+  "debian_version": "2.10.1-1",
+  "standalone_release_application_build_success": true,
+  "architecture_static_tests_passed": 6,
+  "github_release_tool_tests_passed": 48,
+  "prior_attempt_preserved": "stage5-build.log records attempted build before configure completed; actual successful build in stage5-build-configured.log.",
+  "binary_sha256": "c22e4a2e55f84f83bd1d814883ea5dce6ffb1b73b35826a2e17933879b1e47a5",
+  "raw_evidence": "../releases/evidence/2.10.1/stages/stage5",
+  "files": {
+    "stage5-configure.log": {
+      "bytes": 1254,
+      "sha256": "2b6250031a69cd7e48ce2368aca4b10460e3e9129dbf70be465e56fc33dc2822"
+    },
+    "stage5-build.log": {
+      "bytes": 28,
+      "sha256": "229f90d3c919e8949959f349733dba7c5a2ef9c240c87663fe61e20ac363e36e"
+    },
+    "stage5-build-configured.log": {
+      "bytes": 5647,
+      "sha256": "88f15e470118983f7c3401ac99ba60657db01f3f4662053d2eedb7709e6d174c"
+    },
+    "stage5-version.log": {
+      "bytes": 21,
+      "sha256": "3c794640d3e41bd3a09d928592665e67f573e5bcce084f6dc6af4c248b582676"
+    },
+    "stage5-inventory-verification.log": {
+      "bytes": 62,
+      "sha256": "3b026411096f119ff3e61c3bf02120f86ce9d0edba3e905f8edc01f09a0220dc"
+    },
+    "stage5-architecture-check.log": {
+      "bytes": 1006,
+      "sha256": "1c81d499caea42d469ac6640aca6e7c12711a368466a6082846ec34a487ab1cb"
+    },
+    "github-release-tool-tests.log": {
+      "bytes": 7391,
+      "sha256": "7e7ecc7c5eea0016db48844fe1583a6abaf24660bc7c32dbd3c9f8ba673d3123"
+    }
+  },
+  "not_final_release_acceptance": true,
+  "pending": "Fresh production full44 run, final DEB/package/independent complete-source application rebuild and remote verification."
+}
