@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "app/detectioncontroller.h"
 #include "app/historyrepository.h"
+#include "app/asyncthreadretirement.h"
+#include "thread_retirement_fixtures.h"
 #include <QFile>
 #include <QFileInfo>
 #include <QJsonDocument>
@@ -17,6 +19,57 @@ class DetectionControllerTests : public QObject
 {
     Q_OBJECT
   private slots:
+    void fullNativeTailGatesReadinessAndEarlyDestruction_data()
+    {
+        QTest::addColumn<bool>("earlyOwnerDestruction");
+        QTest::newRow("normal-shutdown-barrier") << false;
+        QTest::newRow("early-owner-destruction") << true;
+    }
+    void fullNativeTailGatesReadinessAndEarlyDestruction()
+    {
+        QFETCH(bool, earlyOwnerDestruction);
+        const int originalCount = vision::app::AsyncThreadRetirement::activeCount();
+        auto controller = std::make_unique<vision::app::DetectionController>();
+        const auto threads = vision::app::AsyncThreadRetirement::watchedThreads(controller.get());
+        QCOMPARE(threads.size(), 1);
+        auto *thread = threads.first(); QPointer<QThread> guardedThread(thread);
+        bool destroyedReenteredShutdown = false;
+        connect(thread, &QObject::destroyed, this, [&] {
+            if (!controller) return;
+            controller->requestShutdown();
+            destroyedReenteredShutdown = true;
+        }, Qt::DirectConnection);
+        const auto state = std::make_shared<vision::test::ThreadTailState>();
+        vision::test::ThreadTailRelease release{state};
+        auto *marker = new QObject; marker->moveToThread(thread);
+        connect(thread, &QThread::finished, marker, &QObject::deleteLater);
+        std::atomic_bool prepared{false};
+        QMetaObject::invokeMethod(marker, [state, &prepared] {
+            vision::test::establishThreadLocalTail(state); prepared.store(true);
+        }, Qt::QueuedConnection);
+        QTRY_VERIFY_WITH_TIMEOUT(prepared.load(), 3000);
+        int beats = 0;
+        QTimer heartbeat; heartbeat.setInterval(0);
+        connect(&heartbeat, &QTimer::timeout, this, [&] { ++beats; }); heartbeat.start();
+        QElapsedTimer elapsed; elapsed.start(); controller->requestShutdown();
+        QVERIFY(elapsed.elapsed() < 100);
+        QTRY_VERIFY_WITH_TIMEOUT(state->entered.load(), 3000);
+        QVERIFY(thread->isFinished()); QVERIFY(!controller->isShutdownReady());
+        const int before = beats; QTest::qWait(30); QVERIFY(beats > before);
+        if (earlyOwnerDestruction) {
+            elapsed.restart(); controller.reset(); QVERIFY(elapsed.elapsed() < 100);
+            QVERIFY(guardedThread); QCOMPARE(vision::app::AsyncThreadRetirement::activeCount(), originalCount + 1);
+        }
+        state->resume();
+        if (controller) {
+            QTRY_VERIFY_WITH_TIMEOUT(controller->isShutdownReady(), 3000);
+            QVERIFY(destroyedReenteredShutdown);
+            elapsed.restart(); controller.reset(); QVERIFY(elapsed.elapsed() < 100);
+        }
+        QTRY_VERIFY_WITH_TIMEOUT(guardedThread.isNull(), 3000);
+        QVERIFY(state->completed.load());
+        QCOMPARE(vision::app::AsyncThreadRetirement::activeCount(), originalCount);
+    }
     void asynchronousShutdownCanBeRequestedRepeatedly()
     {
         vision::app::DetectionController controller;
@@ -29,6 +82,7 @@ class DetectionControllerTests : public QObject
     {
         // Reproduce the shutdown race: the worker can already be destroyed
         // while its queued GUI-thread finished notification is still pending.
+        const int originalCount = vision::app::AsyncThreadRetirement::activeCount();
         for (int iteration = 0; iteration < 25; ++iteration) {
             auto controller = std::make_unique<vision::app::DetectionController>();
             controller->requestShutdown();
@@ -36,6 +90,7 @@ class DetectionControllerTests : public QObject
             controller.reset();
             QCoreApplication::processEvents();
         }
+        QTRY_COMPARE_WITH_TIMEOUT(vision::app::AsyncThreadRetirement::activeCount(), originalCount, 3000);
     }
     void preparationThenImmediateStopIsPreserved()
     {

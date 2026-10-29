@@ -1,0 +1,77 @@
+{
+  "scope": "Actual local Qt6.8.3 QCoreApplication event-loop reproduction of finished/isFinished vs deferred-delete/thread_local cleanup and GUI-thread deletion; no application inference or final package acceptance",
+  "binary_sha256": "9f88ff44833090849868ae596f4ea19d883418995fc44eafd113592f4ec7a589",
+  "libQt6Core_sha256": "57ca362897ec9fe2b899ec5fec5e9d26677cdda8730df7299162d92bca4a8ac1",
+  "mini_source_sha256": "7c6dc4a03c019850c6d7b07d7e8d07707037cf4fd49da13f08e6a173321ec52e",
+  "results": [
+    {
+      "mode": "plain-tls",
+      "exit_code": 0,
+      "observation": {
+        "delete_milliseconds": 1200,
+        "finished_did_not_imply_completed_cleanup": true,
+        "finished_signal_delivered": true,
+        "heartbeat_events_during_delete": 0,
+        "isFinished_before_delete": true,
+        "isRunning_before_delete": false,
+        "mode": "plain-tls",
+        "qt_version": "6.8.3",
+        "tls_destructor_done_after_delete": true,
+        "tls_destructor_done_before_delete": false,
+        "tls_destructor_entered_before_delete": false,
+        "wait_zero_before_delete": false,
+        "worker_destructor_done_after_delete": true,
+        "worker_destructor_done_before_delete": false,
+        "worker_destructor_entered_before_delete": true
+      },
+      "stdout_sha256": "5f73209e79f59f7a8c1eacf298f8bb5d34fc32d479c234f181bbd82a5076e510",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": "plain-deferred-delete",
+      "exit_code": 0,
+      "observation": {
+        "delete_milliseconds": 1200,
+        "finished_did_not_imply_completed_cleanup": true,
+        "finished_signal_delivered": true,
+        "heartbeat_events_during_delete": 0,
+        "isFinished_before_delete": true,
+        "isRunning_before_delete": false,
+        "mode": "plain-deferred-delete",
+        "qt_version": "6.8.3",
+        "tls_destructor_done_after_delete": true,
+        "tls_destructor_done_before_delete": false,
+        "tls_destructor_entered_before_delete": false,
+        "wait_zero_before_delete": false,
+        "worker_destructor_done_after_delete": true,
+        "worker_destructor_done_before_delete": false,
+        "worker_destructor_entered_before_delete": true
+      },
+      "stdout_sha256": "f812d3727fec9d8ece21447c1a3f88e8090916e86a76cee0962ad28f46001873",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": "create-tls",
+      "exit_code": 0,
+      "observation": {
+        "delete_milliseconds": 1200,
+        "finished_did_not_imply_completed_cleanup": true,
+        "finished_signal_delivered": true,
+        "heartbeat_events_during_delete": 0,
+        "isFinished_before_delete": true,
+        "isRunning_before_delete": false,
+        "mode": "create-tls",
+        "qt_version": "6.8.3",
+        "tls_destructor_done_after_delete": true,
+        "tls_destructor_done_before_delete": false,
+        "tls_destructor_entered_before_delete": true,
+        "wait_zero_before_delete": false,
+        "worker_destructor_done_after_delete": false,
+        "worker_destructor_done_before_delete": false,
+        "worker_destructor_entered_before_delete": false
+      },
+      "stdout_sha256": "b5db9c0bacb67fbc865ad738a3154a791811aaf9e60c702398325773f435f1d3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

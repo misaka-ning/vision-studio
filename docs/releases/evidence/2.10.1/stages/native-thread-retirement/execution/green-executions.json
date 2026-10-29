@@ -1,0 +1,29 @@
+[
+  {
+    "name": "app-services",
+    "command": [
+      "output/v2.10.1/thread-retirement-proof/build/retirement-app-services"
+    ],
+    "exit_code": 0,
+    "binary_sha256": "f3aa5f16ebc896d809a16d89b3555b3e0f89e546bc1413ba7587fb95110cd947",
+    "log_sha256": "c175b8ed93d663bfea8f9a3c65a81a5c75eaeb137d72e436e364a3d197c6b610"
+  },
+  {
+    "name": "detection",
+    "command": [
+      "output/v2.10.1/thread-retirement-proof/build/retirement-detection"
+    ],
+    "exit_code": 0,
+    "binary_sha256": "e804d55a2d29e0f2eaa9e907344a1ac42596e92b485cd07bd8319e5330a6ffb7",
+    "log_sha256": "f5ab420478e070b988909879a4f72cc91f4e0c5203eb11e24e7f256de10c419e"
+  },
+  {
+    "name": "recording",
+    "command": [
+      "output/v2.10.1/thread-retirement-proof/build/retirement-recording"
+    ],
+    "exit_code": 0,
+    "binary_sha256": "567fdc06cbe6b773f1ed61eb16a5df4616da27dc72b80f8ebe4e93844453d454",
+    "log_sha256": "5baa0bfd79166450388715caf081733c69a96b69d6dabc3c70cd0f8ea7a8f3c0"
+  }
+]

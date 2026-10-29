@@ -1,0 +1,11 @@
+[1/13] Building CXX object CMakeFiles/vision-controller-development.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/inputsessioncontroller.cpp.o
+[2/13] Building CXX object CMakeFiles/vision-controller-development.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/modelsessioncontroller.cpp.o
+[3/13] Building CXX object CMakeFiles/vision-controller-development.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/src/app/evaluationcontroller.cpp.o
+[4/13] Linking CXX static library libvision-controller-development.a
+[5/13] Linking CXX executable vision-model-session-controller-tests
+[6/13] Automatic MOC for target vision-input-session-controller-tests
+[7/12] Automatic MOC for target vision-evaluation-controller-tests
+[8/11] Building CXX object CMakeFiles/vision-input-session-controller-tests.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/input_session_controller_tests.cpp.o
+[9/11] Linking CXX executable vision-input-session-controller-tests
+[10/11] Building CXX object CMakeFiles/vision-evaluation-controller-tests.dir/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/evaluation_controller_tests.cpp.o
+[11/11] Linking CXX executable vision-evaluation-controller-tests

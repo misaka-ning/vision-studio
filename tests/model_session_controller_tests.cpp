@@ -7,6 +7,7 @@
 #include <QSignalSpy>
 #include <QTemporaryDir>
 #include <QThread>
+#include <QTimer>
 #include <QtTest>
 #include <stdexcept>
 
@@ -33,6 +34,26 @@ QJsonObject convertedMetadata(const QString &path)
             {"input_channels", 1}, {"ch", 1}, {"names", QJsonObject{{"0", "football"}}},
             {"precision", "fp32"}, {"nms", false}, {"dynamic", false},
             {"shape", QJsonArray{1, 1, 640, 640}}, {"bytes", double(QFileInfo(path).size())}};
+}
+struct InspectionThreadExit
+{
+    std::atomic_bool tlsCleanupDone{false};
+    bool finishedObserved = false, cleanupDoneAtFinished = true, shutdownReadyAtFinished = true;
+    int inspectionsAtFinished = -1;
+};
+struct SlowInspectionTls
+{
+    std::shared_ptr<InspectionThreadExit> state;
+    ~SlowInspectionTls()
+    {
+        QThread::msleep(1200);
+        state->tlsCleanupDone.store(true);
+    }
+};
+void establishSlowInspectionTls(const std::shared_ptr<InspectionThreadExit> &state)
+{
+    thread_local SlowInspectionTls cleanup{state};
+    (void)cleanup.state;
 }
 }
 
@@ -252,6 +273,48 @@ class ModelSessionControllerTests final : public QObject
         QVERIFY(controller.isShutdownReady());
         controller.requestShutdown(); QCoreApplication::processEvents();
         QCOMPARE(shutdown.count(), 1);
+    }
+
+    void shutdownWaitsForTlsCleanupWithoutBlockingGui()
+    {
+        QTemporaryDir directory;
+        const auto path = model(directory, "slow-thread-exit.onnx");
+        const auto exit = std::make_shared<InspectionThreadExit>();
+        ModelSessionController *owner = nullptr;
+        ModelSessionController controller([this, exit, &owner](const vision::ModelConfig &config, std::function<bool()>) {
+            establishSlowInspectionTls(exit);
+            connect(QThread::currentThread(), &QThread::finished, this, [exit, &owner] {
+                exit->finishedObserved = true;
+                exit->cleanupDoneAtFinished = exit->tlsCleanupDone.load();
+                exit->inspectionsAtFinished = owner->activeInspectionCount();
+                exit->shutdownReadyAtFinished = owner->isShutdownReady();
+            }, Qt::QueuedConnection);
+            return inspected(config, 2);
+        });
+        owner = &controller;
+        QTimer heartbeat; heartbeat.setInterval(1);
+        QElapsedTimer gap; gap.start(); qint64 maximumGap = 0; int ticks = 0;
+        connect(&heartbeat, &QTimer::timeout, this, [&] {
+            maximumGap = qMax(maximumGap, gap.restart()); ++ticks;
+        });
+        heartbeat.start();
+        QVERIFY(controller.select(path)); controller.inspect({});
+        QSignalSpy ready(&controller, &ModelSessionController::shutdownReady);
+        QElapsedTimer shutdownCall; shutdownCall.start(); controller.requestShutdown();
+        QVERIFY(shutdownCall.elapsed() < 100);
+        QTRY_COMPARE_WITH_TIMEOUT(ready.count(), 1, 5000);
+        QTest::qWait(5); heartbeat.stop();
+        QVERIFY(exit->finishedObserved);
+        QVERIFY(!exit->cleanupDoneAtFinished);
+        QCOMPARE(exit->inspectionsAtFinished, 1);
+        QVERIFY(!exit->shutdownReadyAtFinished);
+        QVERIFY(exit->tlsCleanupDone.load());
+        QCOMPARE(controller.activeInspectionCount(), 0);
+        QVERIFY(controller.isShutdownReady());
+        QVERIFY(ticks > 5);
+        QVERIFY2(maximumGap < 300, qPrintable(QString("GUI heartbeat blocked for %1 ms").arg(maximumGap)));
+        qInfo() << "model_inspection_thread_exit_evidence" << "tls_delay_ms" << 1200
+                << "heartbeat_ticks" << ticks << "maximum_gap_ms" << maximumGap;
     }
 
     void loadedMetadataPreservesCapturedIdentity()

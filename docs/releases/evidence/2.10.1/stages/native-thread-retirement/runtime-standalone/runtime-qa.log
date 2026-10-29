@@ -1,0 +1,38 @@
+********* Start testing of RuntimeSetupShutdownTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+INFO   : RuntimeSetupShutdownTests::initTestCase() entering
+PASS   : RuntimeSetupShutdownTests::initTestCase()
+INFO   : RuntimeSetupShutdownTests::idleShutdownIsQueuedIdempotentAndClosesAdmission() entering
+FAIL!  : RuntimeSetupShutdownTests::idleShutdownIsQueuedIdempotentAndClosesAdmission() 'server.listen(QHostAddress::LocalHost)' returned FALSE. ()
+   Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/runtime_setup_shutdown_tests.cpp(142)]
+INFO   : RuntimeSetupShutdownTests::promptShutdownDoesNotDownloadOrRetry() entering
+FAIL!  : RuntimeSetupShutdownTests::promptShutdownDoesNotDownloadOrRetry() 'server.listen(QHostAddress::LocalHost)' returned FALSE. ()
+   Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/runtime_setup_shutdown_tests.cpp(142)]
+INFO   : RuntimeSetupShutdownTests::shutdownSuppressesAlreadyQueuedSuccessfulRetry() entering
+FAIL!  : RuntimeSetupShutdownTests::shutdownSuppressesAlreadyQueuedSuccessfulRetry() 'server.listen(QHostAddress::LocalHost)' returned FALSE. ()
+   Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/runtime_setup_shutdown_tests.cpp(142)]
+INFO   : RuntimeSetupShutdownTests::cancellationSuppressesAlreadyQueuedRetryAndStillAllowsNewPreparation() entering
+FAIL!  : RuntimeSetupShutdownTests::cancellationSuppressesAlreadyQueuedRetryAndStillAllowsNewPreparation() 'server.listen(QHostAddress::LocalHost)' returned FALSE. ()
+   Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/runtime_setup_shutdown_tests.cpp(142)]
+INFO   : RuntimeSetupShutdownTests::downloadingShutdownReleasesOwnLock() entering
+FAIL!  : RuntimeSetupShutdownTests::downloadingShutdownReleasesOwnLock() 'server.listen(QHostAddress::LocalHost)' returned FALSE. ()
+   Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/runtime_setup_shutdown_tests.cpp(142)]
+INFO   : RuntimeSetupShutdownTests::waitingShutdownKeepsAnotherPreparationsLock() entering
+FAIL!  : RuntimeSetupShutdownTests::waitingShutdownKeepsAnotherPreparationsLock() 'server.listen(QHostAddress::LocalHost)' returned FALSE. ()
+   Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/runtime_setup_shutdown_tests.cpp(142)]
+INFO   : RuntimeSetupShutdownTests::extractingShutdownReapsChildBeforeReadyAndCleansOnlyOwnStage() entering
+FAIL!  : RuntimeSetupShutdownTests::extractingShutdownReapsChildBeforeReadyAndCleansOnlyOwnStage() 'server.listen(QHostAddress::LocalHost)' returned FALSE. ()
+   Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/runtime_setup_shutdown_tests.cpp(142)]
+INFO   : RuntimeSetupShutdownTests::directDialogDeletionStillDrainsResources() entering
+FAIL!  : RuntimeSetupShutdownTests::directDialogDeletionStillDrainsResources() 'server.listen(QHostAddress::LocalHost)' returned FALSE. ()
+   Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/runtime_setup_shutdown_tests.cpp(142)]
+INFO   : RuntimeSetupShutdownTests::failedExtractorCanRetryAfterCleanupThenPublish() entering
+FAIL!  : RuntimeSetupShutdownTests::failedExtractorCanRetryAfterCleanupThenPublish() 'server.listen(QHostAddress::LocalHost)' returned FALSE. ()
+   Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/runtime_setup_shutdown_tests.cpp(142)]
+INFO   : RuntimeSetupShutdownTests::failedToStartExtractorStillCleansAndCanShutdown() entering
+FAIL!  : RuntimeSetupShutdownTests::failedToStartExtractorStillCleansAndCanShutdown() 'server.listen(QHostAddress::LocalHost)' returned FALSE. ()
+   Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-proposal/tests/runtime_setup_shutdown_tests.cpp(142)]
+INFO   : RuntimeSetupShutdownTests::cleanupTestCase() entering
+PASS   : RuntimeSetupShutdownTests::cleanupTestCase()
+Totals: 2 passed, 10 failed, 0 skipped, 0 blacklisted, 9ms
+********* Finished testing of RuntimeSetupShutdownTests *********

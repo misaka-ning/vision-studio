@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite name="RuntimeSetupShutdownTests" timestamp="2026&#x002D;10&#x002D;29T20:28:17" hostname="misaka&#x002D;System&#x002D;Product&#x002D;Name" tests="12" failures="10" errors="0" skipped="0" time="0.009">
+  <properties>
+    <property name="QTestVersion" value="6.8.3"/>
+    <property name="QtVersion" value="6.8.3"/>
+    <property name="QtBuild" value="Qt 6.8.3 (x86_64&#x002D;little_endian&#x002D;lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1&#x002D;1))"/>
+  </properties>
+  <testcase name="initTestCase" classname="RuntimeSetupShutdownTests" time="0.000"/>
+  <testcase name="idleShutdownIsQueuedIdempotentAndClosesAdmission" classname="RuntimeSetupShutdownTests" time="0.001">
+    <failure type="fail" message="&apos;server.listen(QHostAddress::LocalHost)&apos; returned FALSE. ()"/>
+  </testcase>
+  <testcase name="promptShutdownDoesNotDownloadOrRetry" classname="RuntimeSetupShutdownTests" time="0.001">
+    <failure type="fail" message="&apos;server.listen(QHostAddress::LocalHost)&apos; returned FALSE. ()"/>
+  </testcase>
+  <testcase name="shutdownSuppressesAlreadyQueuedSuccessfulRetry" classname="RuntimeSetupShutdownTests" time="0.001">
+    <failure type="fail" message="&apos;server.listen(QHostAddress::LocalHost)&apos; returned FALSE. ()"/>
+  </testcase>
+  <testcase name="cancellationSuppressesAlreadyQueuedRetryAndStillAllowsNewPreparation" classname="RuntimeSetupShutdownTests" time="0.001">
+    <failure type="fail" message="&apos;server.listen(QHostAddress::LocalHost)&apos; returned FALSE. ()"/>
+  </testcase>
+  <testcase name="downloadingShutdownReleasesOwnLock" classname="RuntimeSetupShutdownTests" time="0.001">
+    <failure type="fail" message="&apos;server.listen(QHostAddress::LocalHost)&apos; returned FALSE. ()"/>
+  </testcase>
+  <testcase name="waitingShutdownKeepsAnotherPreparationsLock" classname="RuntimeSetupShutdownTests" time="0.001">
+    <failure type="fail" message="&apos;server.listen(QHostAddress::LocalHost)&apos; returned FALSE. ()"/>
+  </testcase>
+  <testcase name="extractingShutdownReapsChildBeforeReadyAndCleansOnlyOwnStage" classname="RuntimeSetupShutdownTests" time="0.001">
+    <failure type="fail" message="&apos;server.listen(QHostAddress::LocalHost)&apos; returned FALSE. ()"/>
+  </testcase>
+  <testcase name="directDialogDeletionStillDrainsResources" classname="RuntimeSetupShutdownTests" time="0.001">
+    <failure type="fail" message="&apos;server.listen(QHostAddress::LocalHost)&apos; returned FALSE. ()"/>
+  </testcase>
+  <testcase name="failedExtractorCanRetryAfterCleanupThenPublish" classname="RuntimeSetupShutdownTests" time="0.001">
+    <failure type="fail" message="&apos;server.listen(QHostAddress::LocalHost)&apos; returned FALSE. ()"/>
+  </testcase>
+  <testcase name="failedToStartExtractorStillCleansAndCanShutdown" classname="RuntimeSetupShutdownTests" time="0.001">
+    <failure type="fail" message="&apos;server.listen(QHostAddress::LocalHost)&apos; returned FALSE. ()"/>
+  </testcase>
+  <testcase name="cleanupTestCase" classname="RuntimeSetupShutdownTests" time="0.000"/>
+</testsuite>

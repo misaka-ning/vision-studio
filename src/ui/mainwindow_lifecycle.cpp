@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "mainwindow.h"
+#include "app/asyncthreadretirement.h"
 #include "pages/workbenchpage.h"
 #include "app/gpuenvironmentservice.h"
 #include "app/recordingcontroller.h"
@@ -85,6 +86,9 @@ void MainWindow::initializeOperationCoordinator()
         [runtime] { runtime->cancelPendingPreparations(); }, [runtime] { return runtime->isShutdownReady(); });
     operationCoordinator_->addShutdownParticipant("shared-background-jobs", qApp, [] {}, [] {
         return QThreadPool::globalInstance()->activeThreadCount() == 0;
+    });
+    operationCoordinator_->addShutdownParticipant("thread-retirement", qApp, [] {}, [] {
+        return vision::app::AsyncThreadRetirement::activeCount() == 0;
     });
     connect(operationCoordinator_, &vision::app::OperationCoordinator::shutdownReady, this,
         [this] {

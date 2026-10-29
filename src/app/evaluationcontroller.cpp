@@ -1,4 +1,5 @@
 #include "evaluationcontroller.h"
+#include "asyncthreadretirement.h"
 #include "core/evaluationmatch.h"
 
 #include <QCryptographicHash>
@@ -108,8 +109,8 @@ EvaluationController::~EvaluationController()
 {
     if (worker_) worker_->requestStop();
     for (const auto &cancelled : reviewThreads_) cancelled->store(true);
-    // No QObject parent can destroy a running QThread. Each finishes and deletes
-    // itself; normal window shutdown waits for this controller's readiness gate.
+    // Retirement tickets outlive an early controller deletion and reap their
+    // threads only after native exit. Normal closure waits for this owner's gate.
 }
 
 bool EvaluationController::mayStart(QString *error) const
@@ -189,7 +190,7 @@ void EvaluationController::startWorker(EvaluationWorker *worker, EvaluationOpera
         acceptReport(report, directory);
         emit reportReady(report, directory);
     });
-    connect(worker, &QThread::finished, this, [this, worker, imported, operation]
+    AsyncThreadRetirement::watch(worker, this, [this, worker, imported, operation]
     {
         if (worker_ == worker) worker_ = nullptr;
         state_.operation = EvaluationOperation::Idle;
@@ -199,7 +200,6 @@ void EvaluationController::startWorker(EvaluationWorker *worker, EvaluationOpera
         emit finished();
         notifyShutdownIfReady();
     });
-    connect(worker, &QThread::finished, worker, &QObject::deleteLater);
     worker->start();
     emit busyChanged(true);
 }
@@ -341,7 +341,7 @@ bool EvaluationController::applyFilter(const QString &filter, double threshold, 
             parameters.value("match_iou").toDouble(.5), filter, [cancelled] { return cancelled->load(); }, sceneImages);
     });
     reviewThreads_.insert(thread, cancelled);
-    connect(thread, &QThread::finished, this,
+    AsyncThreadRetirement::watch(thread, this,
         [this, thread, cancelled, generation, files, directory, output, selectFirst, currentRow]
     {
         reviewThreads_.remove(thread);
@@ -381,7 +381,6 @@ bool EvaluationController::applyFilter(const QString &filter, double threshold, 
         outcome.valid = true;
         emit reviewChanged(); emit filterReady(outcome);
     });
-    connect(thread, &QThread::finished, thread, &QObject::deleteLater);
     thread->start(); emit reviewChanged();
     return true;
 }
@@ -408,7 +407,7 @@ bool EvaluationController::requestPreview(int row)
     auto *thread = QThread::create([request, cancelled, output]
     { *output = loadEvaluationPreview(request, [cancelled] { return cancelled->load(); }); });
     reviewThreads_.insert(thread, cancelled);
-    connect(thread, &QThread::finished, this, [this, thread, cancelled, generation, path, row, request, output]
+    AsyncThreadRetirement::watch(thread, this, [this, thread, cancelled, generation, path, row, request, output]
     {
         reviewThreads_.remove(thread);
         if (shuttingDown_) { notifyShutdownIfReady(); return; }
@@ -421,7 +420,6 @@ bool EvaluationController::requestPreview(int row)
         outcome.config.confidence = float(request.confidence); outcome.config.classFilter = {request.modelClassId};
         emit reviewChanged(); emit previewReady(outcome);
     });
-    connect(thread, &QThread::finished, thread, &QObject::deleteLater);
     thread->start(); emit reviewChanged();
     return true;
 }

@@ -1,0 +1,11 @@
+********* Start testing of EvaluationControllerTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+INFO   : EvaluationControllerTests::initTestCase() entering
+PASS   : EvaluationControllerTests::initTestCase()
+INFO   : EvaluationControllerTests::shutdownWaitsForWorkerDeferredCleanupWithoutBlockingGui() entering
+QINFO  : EvaluationControllerTests::shutdownWaitsForWorkerDeferredCleanupWithoutBlockingGui() evaluation_thread_exit_evidence deferred_cleanup_ms 1200 heartbeat_ticks 125 maximum_gap_ms 10
+PASS   : EvaluationControllerTests::shutdownWaitsForWorkerDeferredCleanupWithoutBlockingGui()
+INFO   : EvaluationControllerTests::cleanupTestCase() entering
+PASS   : EvaluationControllerTests::cleanupTestCase()
+Totals: 3 passed, 0 failed, 0 skipped, 0 blacklisted, 1273ms
+********* Finished testing of EvaluationControllerTests *********

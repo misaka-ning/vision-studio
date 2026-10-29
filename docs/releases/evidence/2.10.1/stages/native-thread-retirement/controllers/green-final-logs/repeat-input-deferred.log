@@ -1,0 +1,13 @@
+********* Start testing of InputSessionControllerTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+INFO   : InputSessionControllerTests::initTestCase() entering
+PASS   : InputSessionControllerTests::initTestCase()
+INFO   : InputSessionControllerTests::shutdownWaitsForDeferredCleanupWithoutBlockingGui() entering
+QINFO  : InputSessionControllerTests::shutdownWaitsForDeferredCleanupWithoutBlockingGui(image-validation) input_thread_exit_evidence dataset false deferred_cleanup_ms 1200 heartbeat_ticks 120 maximum_gap_ms 10
+PASS   : InputSessionControllerTests::shutdownWaitsForDeferredCleanupWithoutBlockingGui(image-validation)
+QINFO  : InputSessionControllerTests::shutdownWaitsForDeferredCleanupWithoutBlockingGui(dataset-worker) input_thread_exit_evidence dataset true deferred_cleanup_ms 1200 heartbeat_ticks 125 maximum_gap_ms 10
+PASS   : InputSessionControllerTests::shutdownWaitsForDeferredCleanupWithoutBlockingGui(dataset-worker)
+INFO   : InputSessionControllerTests::cleanupTestCase() entering
+PASS   : InputSessionControllerTests::cleanupTestCase()
+Totals: 4 passed, 0 failed, 0 skipped, 0 blacklisted, 2493ms
+********* Finished testing of InputSessionControllerTests *********

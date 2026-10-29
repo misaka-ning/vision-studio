@@ -1,4 +1,5 @@
 #include "app/evaluationcontroller.h"
+#include "app/asyncthreadretirement.h"
 
 #include <QCryptographicHash>
 #include <QDateTime>
@@ -95,6 +96,18 @@ struct Fixture
         controller.setReviewContext(files, samples, manifest);
         controller.acceptReport(report, directory.path(), true);
     }
+};
+struct EvaluationThreadExit
+{
+    std::atomic_bool cleanupDone{false};
+    bool attached = false, finishedObserved = false, cleanupDoneAtFinished = true, busyAtFinished = false, readyAtFinished = true;
+};
+class SlowEvaluationDeferredCleanup final : public QObject
+{
+    std::shared_ptr<EvaluationThreadExit> state_;
+  public:
+    explicit SlowEvaluationDeferredCleanup(std::shared_ptr<EvaluationThreadExit> state) : state_(std::move(state)) {}
+    ~SlowEvaluationDeferredCleanup() override { QThread::msleep(1200); state_->cleanupDone.store(true); }
 };
 }
 
@@ -319,6 +332,50 @@ class EvaluationControllerTests final : public QObject
         QCOMPARE(controller.activeReviewThreadCount(), 2);
         drain(controller);
         QCOMPARE(controller.activeReviewThreadCount(), 0);
+        QVERIFY(AsyncThreadRetirement::watchedThreads(&controller).isEmpty());
+    }
+
+    void shutdownWaitsForWorkerDeferredCleanupWithoutBlockingGui()
+    {
+        Fixture fixture;
+        EvaluationController controller;
+        const auto exit = std::make_shared<EvaluationThreadExit>();
+        connect(&controller, &EvaluationController::busyChanged, &controller, [&](bool busy) {
+            if (!busy || exit->attached) return;
+            const auto watched = AsyncThreadRetirement::watchedThreads(&controller);
+            if (watched.size() != 1 || watched.front()->isFinished()) return;
+            auto *thread = watched.front();
+            auto *cleanup = new SlowEvaluationDeferredCleanup(exit);
+            cleanup->moveToThread(thread);
+            connect(thread, &QThread::finished, cleanup, &QObject::deleteLater, Qt::DirectConnection);
+            connect(thread, &QThread::finished, this, [&, exit] {
+                exit->finishedObserved = true;
+                exit->cleanupDoneAtFinished = exit->cleanupDone.load();
+                exit->busyAtFinished = controller.isBusy();
+                exit->readyAtFinished = controller.isShutdownReady();
+            }, Qt::QueuedConnection);
+            exit->attached = true;
+        });
+        QTimer heartbeat; heartbeat.setInterval(1);
+        QElapsedTimer gap; gap.start(); qint64 maximumGap = 0; int ticks = 0;
+        connect(&heartbeat, &QTimer::timeout, this, [&] { maximumGap = qMax(maximumGap, gap.restart()); ++ticks; });
+        heartbeat.start();
+        QSignalSpy ready(&controller, &EvaluationController::shutdownReady), finished(&controller, &EvaluationController::finished);
+        const bool started = controller.importExternal(fixture.directory.path(), {},
+            fixture.directory.filePath("cancelled-thread-exit"), QString(VISION_PROJECT_DIR));
+        QElapsedTimer shutdownCall; shutdownCall.start(); controller.requestShutdown();
+        QVERIFY(shutdownCall.elapsed() < 100);
+        QTRY_COMPARE_WITH_TIMEOUT(ready.count(), 1, 5000);
+        QTest::qWait(5); heartbeat.stop();
+        QVERIFY(started); QVERIFY(exit->attached); QVERIFY(exit->finishedObserved);
+        QVERIFY(!exit->cleanupDoneAtFinished); QVERIFY(exit->busyAtFinished); QVERIFY(!exit->readyAtFinished);
+        QVERIFY(exit->cleanupDone.load()); QCOMPARE(finished.count(), 1);
+        QVERIFY(!controller.isBusy()); QVERIFY(controller.isShutdownReady());
+        QVERIFY(AsyncThreadRetirement::watchedThreads(&controller).isEmpty());
+        QVERIFY(ticks > 5);
+        QVERIFY2(maximumGap < 300, qPrintable(QString("GUI heartbeat blocked for %1 ms").arg(maximumGap)));
+        qInfo() << "evaluation_thread_exit_evidence" << "deferred_cleanup_ms" << 1200
+                << "heartbeat_ticks" << ticks << "maximum_gap_ms" << maximumGap;
     }
 
     void shutdownDuringStartupNotificationDoesNotLaunchWorker_data()

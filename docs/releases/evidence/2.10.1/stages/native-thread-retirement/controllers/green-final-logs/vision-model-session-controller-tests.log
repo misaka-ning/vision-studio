@@ -1,0 +1,34 @@
+********* Start testing of ModelSessionControllerTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+INFO   : ModelSessionControllerTests::initTestCase() entering
+PASS   : ModelSessionControllerTests::initTestCase()
+INFO   : ModelSessionControllerTests::canonicalOrderedImportAndSingleSelection() entering
+PASS   : ModelSessionControllerTests::canonicalOrderedImportAndSingleSelection()
+INFO   : ModelSessionControllerTests::invalidBatchHasNoPartialChanges() entering
+PASS   : ModelSessionControllerTests::invalidBatchHasNoPartialChanges()
+INFO   : ModelSessionControllerTests::libraryEditsPreservePathsAndProfiles() entering
+PASS   : ModelSessionControllerTests::libraryEditsPreservePathsAndProfiles()
+INFO   : ModelSessionControllerTests::convertedProfileUsesExactFileIdentity() entering
+PASS   : ModelSessionControllerTests::convertedProfileUsesExactFileIdentity()
+INFO   : ModelSessionControllerTests::oldInspectionCannotOverwriteNewSelection() entering
+PASS   : ModelSessionControllerTests::oldInspectionCannotOverwriteNewSelection()
+INFO   : ModelSessionControllerTests::fileReplacementRejectsInspectionAndRequestsFreshConfig() entering
+PASS   : ModelSessionControllerTests::fileReplacementRejectsInspectionAndRequestsFreshConfig()
+INFO   : ModelSessionControllerTests::replacementDetectionDoesNotRetainClassificationSuggestion() entering
+PASS   : ModelSessionControllerTests::replacementDetectionDoesNotRetainClassificationSuggestion(explicit-yolov5)
+PASS   : ModelSessionControllerTests::replacementDetectionDoesNotRetainClassificationSuggestion(explicit-yolov8)
+INFO   : ModelSessionControllerTests::shutdownCancelsAllOutstandingInspectionsWithoutWaiting() entering
+PASS   : ModelSessionControllerTests::shutdownCancelsAllOutstandingInspectionsWithoutWaiting()
+INFO   : ModelSessionControllerTests::shutdownWaitsForTlsCleanupWithoutBlockingGui() entering
+QINFO  : ModelSessionControllerTests::shutdownWaitsForTlsCleanupWithoutBlockingGui() model_inspection_thread_exit_evidence tls_delay_ms 1200 heartbeat_ticks 120 maximum_gap_ms 10
+PASS   : ModelSessionControllerTests::shutdownWaitsForTlsCleanupWithoutBlockingGui()
+INFO   : ModelSessionControllerTests::loadedMetadataPreservesCapturedIdentity() entering
+PASS   : ModelSessionControllerTests::loadedMetadataPreservesCapturedIdentity()
+INFO   : ModelSessionControllerTests::inspectionErrorDoesNotBecomeEmptySuccessfulModel() entering
+PASS   : ModelSessionControllerTests::inspectionErrorDoesNotBecomeEmptySuccessfulModel()
+INFO   : ModelSessionControllerTests::realOnnxDeclaredMetadata() entering
+PASS   : ModelSessionControllerTests::realOnnxDeclaredMetadata()
+INFO   : ModelSessionControllerTests::cleanupTestCase() entering
+PASS   : ModelSessionControllerTests::cleanupTestCase()
+Totals: 15 passed, 0 failed, 0 skipped, 0 blacklisted, 1729ms
+********* Finished testing of ModelSessionControllerTests *********

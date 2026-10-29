@@ -1,0 +1,54 @@
+{
+  "build.log": {
+    "bytes": 123,
+    "sha256": "d6881cf0bbb34dd6883760b8675c1b63c38542c29f47bf4e79d43eb5846ae760"
+  },
+  "CMakeLists.txt": {
+    "bytes": 257,
+    "sha256": "2e101abb4f23ece66d63a61b6f467371999423d1403f6ca070063aebfbb8e1b3"
+  },
+  "findings.md": {
+    "bytes": 3986,
+    "sha256": "4a62e98d98ded0ff152270a2bfe7e1ef230216f561647da3dc5b32618c74e47f"
+  },
+  "create-tls.stderr.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "execution.json": {
+    "bytes": 3431,
+    "sha256": "1ef4a079bd7e6941fefaf0d120051f14486c779ee7456fef792af6f9d2f205c8"
+  },
+  "qt-source-provenance.json": {
+    "bytes": 1030,
+    "sha256": "b745331274b49ef7c7acd10e2b7693a8dd10df98f4f15fdd6da83f14603bc155"
+  },
+  "plain-deferred-delete.stderr.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "plain-tls.stderr.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "plain-tls.stdout.log": {
+    "bytes": 543,
+    "sha256": "5f73209e79f59f7a8c1eacf298f8bb5d34fc32d479c234f181bbd82a5076e510"
+  },
+  "plain-deferred-delete.stdout.log": {
+    "bytes": 555,
+    "sha256": "f812d3727fec9d8ece21447c1a3f88e8090916e86a76cee0962ad28f46001873"
+  },
+  "main.cpp": {
+    "bytes": 3487,
+    "sha256": "7c6dc4a03c019850c6d7b07d7e8d07707037cf4fd49da13f08e6a173321ec52e"
+  },
+  "create-tls.stdout.log": {
+    "bytes": 545,
+    "sha256": "b5db9c0bacb67fbc865ad738a3154a791811aaf9e60c702398325773f435f1d3"
+  },
+  "configure.log": {
+    "bytes": 733,
+    "sha256": "83fe54ed975e040cad012d6c8b0ab9b4d3af66fb898265b4a80d44b23115cc84"
+  }
+}

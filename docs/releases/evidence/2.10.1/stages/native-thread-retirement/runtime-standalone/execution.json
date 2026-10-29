@@ -1,0 +1,50 @@
+{
+  "scope": "Development-only standalone RuntimeSetup lifecycle test on Linux with local HTTP and fake extraction child; not native Windows acceptance.",
+  "production_source": "../thread-retirement-proposal/src/ui/runtimesetup.cpp",
+  "source_sha256": "53ed98005fca705a6d37b4fb2f754361f64326f86d00fa26535d721c65527313",
+  "attempts": [
+    {
+      "command": "QT_QPA_PLATFORM=offscreen build/runtime-qa -v1 -o runtime-qa.xml,junitxml -o runtime-qa.log,txt",
+      "sandbox": "restricted",
+      "exit_code": 10,
+      "qt_passed": 2,
+      "qt_failed": 10,
+      "reason": "All ten cases failed at localhost listen because sandbox disallows listening."
+    },
+    {
+      "command": "QT_QPA_PLATFORM=offscreen build/runtime-qa -v1 -o runtime-qa-host.xml,junitxml -o runtime-qa-host.log,txt",
+      "sandbox": "host escalation for loopback fixture",
+      "exit_code": 0,
+      "qt_passed": 12,
+      "qt_failed": 0,
+      "qt_skipped": 0
+    }
+  ],
+  "files": [
+    {
+      "file": "CMakeLists.txt",
+      "bytes": 820,
+      "sha256": "faad73d552e9242f217c6e8b63a6213b4c56ea6808470f5d0e999024e619fd7d"
+    },
+    {
+      "file": "runtime-qa.log",
+      "bytes": 4343,
+      "sha256": "8afb41df0fd5f14771e75c6fc121ad95d89809a0d6fe885639f92b7b39d44bc4"
+    },
+    {
+      "file": "runtime-qa.xml",
+      "bytes": 3134,
+      "sha256": "0256e9614327cccec7c859678cab106548df32d36b7fce2d705064de4b21393a"
+    },
+    {
+      "file": "runtime-qa-host.log",
+      "bytes": 4718,
+      "sha256": "748bf251435c8f6e2b66b75340591ad5c109ca33951a86016b791ecc881f02fe"
+    },
+    {
+      "file": "runtime-qa-host.xml",
+      "bytes": 3521,
+      "sha256": "d430a865bf80f171babeea18e8b5f502aba069c328a4cd1306c69e00a2c18dae"
+    }
+  ]
+}

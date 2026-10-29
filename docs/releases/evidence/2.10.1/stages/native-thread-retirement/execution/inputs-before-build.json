@@ -1,0 +1,43 @@
+{
+  "core_archive": "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-release/libvision-core.a",
+  "core_archive_sha256": "3fe069664e86732b1fb8990b4dfd6f04fdddd3ba21a2cf8746e5f439533330a9",
+  "shadow_application_inputs": {
+    "src/app/annotationrenderer.cpp": "530b7c8fdcef43885e683b49ee998c17c5503206bfae74505c1620d7de87e84c",
+    "src/app/detectioncontroller.cpp": "50ee4b97b9b21cd0d40e8173784e4e318e77b4b485ad4f7c27daf4a27e037cc1",
+    "src/app/evaluationcontroller.cpp": "cf0747200c3366857b1b9edf86fdb636d050d6153be3fbba7882c7dc7597d3ca",
+    "src/app/gpuenvironmentservice.cpp": "ea0be18c0c70fd70ed22b24f960765c1d5abb9ca403b0ac4e5dcd500ad711d6b",
+    "src/app/historyrepository.cpp": "6d011542ad52cdea57947c69b7d77a69f0864eed7787323ff1ed59fbaac8a08f",
+    "src/app/imageresultstore.cpp": "ffbabe11a6bc312e5951ce78382b0948229b981a8556a82b5e6913db29a90084",
+    "src/app/inputsessioncontroller.cpp": "ea9ace153e0faaca5b7115f67678b68160788fa85f151b4397fe81cb11eebf65",
+    "src/app/modelsessioncontroller.cpp": "1feb50ca3033245e1f88958b96e5c14fb0c0fbbe0b3487a279ada14b980144de",
+    "src/app/operationcoordinator.cpp": "e177f2ffd75e9d7806c2988fc336b8054cfcea1ad3028c37a4f0f401094f8787",
+    "src/app/preferencesrepository.cpp": "5c07e7fd7f0a56fd25332de77d0a8a6873c3ac569a88dc0857ab789ef78f96bf",
+    "src/app/recordingcontroller.cpp": "d2f7406ad3decf69f9d7a27303c91befbf87806146401871cbc4267df0fedabf",
+    "src/app/resultdeliveryservice.cpp": "bab6656eb7347e051f073a71d6b463bbeb3888c55b57555a3813ade8eb447187",
+    "src/app/resultwriter.cpp": "2f05c317f9c81490c849a6ae1281fef384280283412a1e31ca57ff8851a1e9c3",
+    "src/app/workbenchconfiguration.cpp": "b03cde2c8005145eef9cae4fdeb54e3955931602daad1a3ba85bcbe2be5c495e",
+    "src/app/annotationrenderer.h": "ceb8760033dedad5a68326cbcf5524c1d8a411b161302e6f7dca857999ad04ae",
+    "src/app/asyncthreadretirement.h": "d4294e7ea705a91978ce48c4d29f79fdd54b20737ad8cdeae8177aa209f91430",
+    "src/app/detectioncontroller.h": "a98f3da1a46e83de16870644092a0cb45468bbcf86a413caacf60b24fa1ea145",
+    "src/app/evaluationcontroller.h": "918ae73a43dd0087f095ad21239861cdb31beeec659baff526feda77b9c7fb8a",
+    "src/app/gpuenvironmentservice.h": "6f4783db9b20dc04fd060d90b2c008790df97e9883668f4cfa96a4d745f3bdbb",
+    "src/app/historyrepository.h": "53f981b7e3af95207ee477b390f31b164c0c872bd016207b15abad5fd6303f9f",
+    "src/app/imageresultstore.h": "6074b419b58c560cbfe3c8c99b1a6f804df8f9c05aab264cdc4aa4d638175366",
+    "src/app/inputsessioncontroller.h": "88ff75249c99526569bdd77c5190116c32cae43c8250d8ea7bf3c1f7d3be0633",
+    "src/app/modelsessioncontroller.h": "807d20b966084c6891ecb73b6df07162e3ec6a92ca6d1383a54682a6c2d493a8",
+    "src/app/operationcoordinator.h": "232349464fb02fbfaab23b6bef0242139a26138ed92a70aacc5ccf7283ec35a3",
+    "src/app/preferencesrepository.h": "0d56a3074b5a382a85ff298afe9fb3e4d319e2b4cce01044f51c4eb0bcb9a903",
+    "src/app/recordingcontroller.h": "d2f6b62179bba199834b867dcd5e108de929a5a51452db7a17b4818cff23783c",
+    "src/app/resultdeliveryservice.h": "9246fc7bb4510cb09f708e50a5bb64c18138c908ea9b3ae1f1cb3f47b49605f6",
+    "src/app/resultwriter.h": "517bb2ae4af5b661b6ecfb522525512ecb229c08f1cf9c3dde3fedd53834da85",
+    "src/app/workbenchconfiguration.h": "cbe13d11e77ddc4ceb4318600ebdae0173f9af8f619c705ad4705c928ff18495"
+  },
+  "tests": {
+    "app_services_tests.cpp": "e18e76c013e4dd0dbb0a89658f59b681a35ebf66ef5ab96229ec31e0ebba3f16",
+    "detection_controller_tests.cpp": "168bcf10b92574474c84612d1fb38b15a113244f80c7a3391c4d1ae085acb6d6",
+    "recording_controller_tests.cpp": "b08c9fea18688288a543ca48a66742500990496f4d7e0dcfa42ab07b3d401566",
+    "thread_retirement_fixtures.h": "b3220676b7ba3bf47fcc79f48455b62eff629a3b0260e3904754c137b0545360"
+  },
+  "baseline_recording_source_sha256": "6c802934d46db82d1eec0b2b75eaf750e94246a28777f4f940a1dc5e7b9ec6f0",
+  "scope": "isolated development app-only build; reused core archive from final candidate1; no GPU or package acceptance"
+}

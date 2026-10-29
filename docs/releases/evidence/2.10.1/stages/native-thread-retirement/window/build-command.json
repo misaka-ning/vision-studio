@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "cmake",
+    "--build",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/thread-retirement-window-qa/build",
+    "--target",
+    "vision-window-shutdown-tests",
+    "vision-runtime-setup-shutdown-tests",
+    "--parallel",
+    "2"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 59.44805446220562
+}

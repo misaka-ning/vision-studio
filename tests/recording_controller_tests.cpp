@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "app/recordingcontroller.h"
+#include "app/asyncthreadretirement.h"
+#include "thread_retirement_fixtures.h"
 #include <QCoreApplication>
 #include <QDir>
 #include <QEventLoop>
@@ -104,7 +106,12 @@ class RecordingControllerTests final : public QObject
     }
     QThread *workerThread(RecordingController &controller) const
     {
-        return controller.findChild<QThread *>("recordingLibraryWorker");
+        // Supports the retained pre-fix reproduction as well as retirement
+        // ownership, which deliberately detaches native threads from owners.
+        if (auto *legacy = controller.findChild<QThread *>("recordingLibraryWorker")) return legacy;
+        for (auto *thread : vision::app::AsyncThreadRetirement::watchedThreads(&controller))
+            if (thread->objectName() == "recordingLibraryWorker") return thread;
+        return nullptr;
     }
     void flushWorker(RecordingController &controller)
     {
@@ -133,6 +140,32 @@ private slots:
         QVERIFY(temp_.isValid());
         root_ = temp_.path() + "/case-" + QString::number(++serial_);
         QVERIFY(QDir().mkpath(root_));
+    }
+    void shutdownReadinessWaitsForNativeThreadLocalCleanup()
+    {
+        auto controller = std::make_unique<RecordingController>(root_);
+        auto *thread = workerThread(*controller); QVERIFY(thread);
+        QPointer<QThread> guardedThread(thread);
+        const auto state = std::make_shared<vision::test::ThreadTailState>();
+        vision::test::ThreadTailRelease release{state};
+        auto *marker = new QObject; marker->moveToThread(thread);
+        connect(thread, &QThread::finished, marker, &QObject::deleteLater);
+        std::atomic_bool prepared{false};
+        QMetaObject::invokeMethod(marker, [state, &prepared] {
+            vision::test::establishThreadLocalTail(state); prepared.store(true);
+        }, Qt::QueuedConnection);
+        QTRY_VERIFY_WITH_TIMEOUT(prepared.load(), 3000);
+        int beats = 0;
+        QTimer heartbeat; heartbeat.setInterval(0);
+        connect(&heartbeat, &QTimer::timeout, this, [&] { ++beats; }); heartbeat.start();
+        controller->requestShutdown();
+        QTRY_VERIFY_WITH_TIMEOUT(state->entered.load(), 3000);
+        QVERIFY(thread->isFinished()); QVERIFY(!controller->isShutdownReady());
+        const int before = beats; QTest::qWait(30); QVERIFY(beats > before);
+        state->resume();
+        QTRY_VERIFY_WITH_TIMEOUT(controller->isShutdownReady(), 3000);
+        QVERIFY(guardedThread.isNull()); QVERIFY(state->completed.load());
+        QElapsedTimer elapsed; elapsed.start(); controller.reset(); QVERIFY(elapsed.elapsed() < 100);
     }
     void recordingIntentCancelsBeforeStartAndRejectsImages()
     {
@@ -364,7 +397,7 @@ private slots:
         QCOMPARE(starts.count(), 0);
         QCOMPARE(controller.playbackState().path, path);
         pause.resume();
-        QTRY_VERIFY(thread->isFinished());
+        QTRY_VERIFY(vision::app::AsyncThreadRetirement::watchedThreads(&controller).isEmpty());
         QTRY_VERIFY(!controller.playbackState().exporting);
         QCOMPARE(bytes(destination), bytes(path));
         QCOMPARE(bytes(sidecar(destination)), bytes(sidecar(path)));

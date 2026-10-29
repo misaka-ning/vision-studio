@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 #include "runtimesetup.h"
+#include "app/asyncthreadretirement.h"
 #include "core/cpuruntime.h"
 #include <QApplication>
 #include <QNetworkRequest>
@@ -86,8 +87,7 @@ class RuntimeResources final : public QObject
                     && !info.isSymLink() && !info.isJunction())
                     QDir(directory).removeRecursively();
             });
-            QObject::connect(cleanup_, &QThread::finished, cleanup_, &QObject::deleteLater);
-            QObject::connect(cleanup_, &QObject::destroyed, this, [this] {
+            vision::app::AsyncThreadRetirement::watch(cleanup_, this, [this] {
                 cleanup_ = nullptr;
                 finishStop();
             });

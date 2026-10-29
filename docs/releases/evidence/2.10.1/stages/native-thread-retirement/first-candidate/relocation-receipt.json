@@ -1,0 +1,1027 @@
+{
+  "schema_version": 1,
+  "scope": "Preserved first complete production regression candidate; not final release acceptance.",
+  "source_commit": "677083cd6bae3f9d3477fa333f15d11bc66311b0",
+  "actual_results": {
+    "suites": 44,
+    "qt_passed": 1223,
+    "python_passed": 163,
+    "failed": 0,
+    "skipped": 0
+  },
+  "rejection_reason": "New controlled Qt native-tail regression reproduced readiness before actual thread cleanup completes; accepted candidate requires additional AsyncThreadRetirement repair and entirely new production QA.",
+  "raw_bytes_unchanged": true,
+  "relocated": [
+    {
+      "original": "output/v2.10.1/qa-full-final",
+      "preserved_at": "output/v2.10.1/rejected-candidate1/qa-full-final",
+      "files": [
+        {
+          "file": "qa-full-final/artifacts/onnx-cuda-0_2026-10-29_20-16-06.json",
+          "bytes": 287887,
+          "sha256": "3673e769048fec309d6b1f7cc92077bd4dd4ac75e6a5d3db30ab840e286392eb"
+        },
+        {
+          "file": "qa-full-final/artifacts/onnx-cuda-1_2026-10-29_20-16-06.json",
+          "bytes": 287887,
+          "sha256": "502e53698d6ff002ad0a6ee544361117ed1ecd56a2534bcdb13daf87e07ae391"
+        },
+        {
+          "file": "qa-full-final/artifacts/scope-filter-workbench.png",
+          "bytes": 399764,
+          "sha256": "3eb00d6196af03f7e78e2c478bdf0da1cb2bc9606ef99c4db7fb365c6d755018"
+        },
+        {
+          "file": "qa-full-final/ctest-discovery.json",
+          "bytes": 34815,
+          "sha256": "3055bb55c680aff4296f0555d252e49bb07b59e874897d44727c352cb32bbaad"
+        },
+        {
+          "file": "qa-full-final/detection-regression-qa.json",
+          "bytes": 68025,
+          "sha256": "3960fbc5525cad5ed1392d23bb532d6545d6ed36fffde1fb54456551dff0d397"
+        },
+        {
+          "file": "qa-full-final/isolated/config/QtProject.conf",
+          "bytes": 686,
+          "sha256": "0a35ac5f186a715e21c8215aab17cff7e5a00868200bc99d69fd252377c4012b"
+        },
+        {
+          "file": "qa-full-final/isolated/matplotlib/fontlist-v390.json",
+          "bytes": 115885,
+          "sha256": "d2f75b957ba7a1a7feb02e6edb530b78d7164a3132f0d525f70b2d25d428a627"
+        },
+        {
+          "file": "qa-full-final/isolated/ultralytics/Ultralytics/settings.json",
+          "bytes": 492,
+          "sha256": "3697bb10bbb80362fe302b08dadce7890e0f6bb4aab8ff341176907019a5510c"
+        },
+        {
+          "file": "qa-full-final/vision-app-services-tests.log",
+          "bytes": 2659,
+          "sha256": "83feff750f908b247d3c9a31fd1afde9f9dc4d0956f5b0bc655868bd29b32bb9"
+        },
+        {
+          "file": "qa-full-final/vision-app-services-tests.xml",
+          "bytes": 1484,
+          "sha256": "7ffbd943c0a8fdac3ff340e4c145443c11ee1a0a9d710708790a1d6416a95eb6"
+        },
+        {
+          "file": "qa-full-final/vision-batch-responsiveness-tests.log",
+          "bytes": 3830,
+          "sha256": "bdda2e73ed3e5bb4f62f3899a50bd7e4ffb22e8689b6d82a31b7d61fe095dfa2"
+        },
+        {
+          "file": "qa-full-final/vision-batch-responsiveness-tests.xml",
+          "bytes": 1500,
+          "sha256": "e1f56758cca9fe50f4fa86437753ccd9d2b1ffdd4d12c22a80a037b20b40ec16"
+        },
+        {
+          "file": "qa-full-final/vision-component-shutdown-tests.log",
+          "bytes": 2577,
+          "sha256": "05d39e26ba83766c978a8c3db62319fadc032f6ec351f36c1305fe4e679f1ada"
+        },
+        {
+          "file": "qa-full-final/vision-component-shutdown-tests.xml",
+          "bytes": 1495,
+          "sha256": "c2b8ff8054c96c87174a02573c848d34eaa98056cc6f513037112c593e7cd0c9"
+        },
+        {
+          "file": "qa-full-final/vision-conversion-inference-tests.log",
+          "bytes": 3372,
+          "sha256": "98a372c2fc7b631ab55ae48d4d4aa006cf9142059eaa1c9bb693a4d1aa583cde"
+        },
+        {
+          "file": "qa-full-final/vision-conversion-inference-tests.xml",
+          "bytes": 1501,
+          "sha256": "aa913ac71f53c671a307ea189d03462e0d47bf6a93ee345d7294b714a9811035"
+        },
+        {
+          "file": "qa-full-final/vision-conversion-ui-tests.log",
+          "bytes": 2973,
+          "sha256": "a0bec7b09792554d7aefd3af6d8d996c6120ff17b3e8b6f1afc640de8e25b7ed"
+        },
+        {
+          "file": "qa-full-final/vision-conversion-ui-tests.xml",
+          "bytes": 1486,
+          "sha256": "80d2a3c1da3c027e45f2f57d50cbc48fb16bf4bbdd772e4eef71bda834783d54"
+        },
+        {
+          "file": "qa-full-final/vision-core-tests.log",
+          "bytes": 4169,
+          "sha256": "14decd3560d1fbe0059aed8538eb347f8c171073d5df06a6845bf7a4c8a72e87"
+        },
+        {
+          "file": "qa-full-final/vision-core-tests.xml",
+          "bytes": 1468,
+          "sha256": "8ed5ee48f7f29b55ff02dabfb3fe6d8b839e108ab60f1f053ccd09b0ba2f5fc6"
+        },
+        {
+          "file": "qa-full-final/vision-dataset-session-tests.log",
+          "bytes": 3199,
+          "sha256": "43351490c7efbdf341f305c27f7c07628d351e07f6d322d5ea6c220109a8f85e"
+        },
+        {
+          "file": "qa-full-final/vision-dataset-session-tests.xml",
+          "bytes": 1491,
+          "sha256": "813a2d007d9f2c51dbe07a43e847e40b0fc0ab8c9e8d4dc1677bffc10cbc59e3"
+        },
+        {
+          "file": "qa-full-final/vision-dataset-session-ui-tests.log",
+          "bytes": 5345,
+          "sha256": "e8be7ed231df9094f1c70befb6607478f968423961cb72daf0a13b93bfe1107a"
+        },
+        {
+          "file": "qa-full-final/vision-dataset-session-ui-tests.xml",
+          "bytes": 1496,
+          "sha256": "4d7f219c909439f9417042221faa9e66eafd22447f57df3d145feec80ff987f6"
+        },
+        {
+          "file": "qa-full-final/vision-detection-controller-tests.log",
+          "bytes": 2538,
+          "sha256": "ba019496e95022107fc6351b6654efefd68e00ab1550705fbf09cad777a43625"
+        },
+        {
+          "file": "qa-full-final/vision-detection-controller-tests.xml",
+          "bytes": 1499,
+          "sha256": "5fd34e0004b4a548af6a0f6d2cb1639ffd691fb273200730e6c6ec1387868c0f"
+        },
+        {
+          "file": "qa-full-final/vision-evaluation-controller-tests.log",
+          "bytes": 3810,
+          "sha256": "7aef2cacc40b3fcd23387f81c1a4436a9d3934d258515af00f85c32f1bfa271f"
+        },
+        {
+          "file": "qa-full-final/vision-evaluation-controller-tests.xml",
+          "bytes": 1502,
+          "sha256": "9ab0571a88f64a8a0de9ccaeae05cf0e89642f2b91622c2569632cd311ee3854"
+        },
+        {
+          "file": "qa-full-final/vision-evaluation-import-tests.log",
+          "bytes": 2856,
+          "sha256": "d4d104d71dd266a39e118ade04c3e5bb9c3e36891f5887517564cfc574b10d5d"
+        },
+        {
+          "file": "qa-full-final/vision-evaluation-import-tests.xml",
+          "bytes": 1493,
+          "sha256": "be6bbb7d2a0cb653847e6879adf1be474aef507a3922206ff9bee58f2c93cbbc"
+        },
+        {
+          "file": "qa-full-final/vision-evaluation-integration-tests.log",
+          "bytes": 45008,
+          "sha256": "996bc357ebae9f7949059f1b95dc33e39392c3c68ee4e7ad805a265c11efe47e"
+        },
+        {
+          "file": "qa-full-final/vision-evaluation-integration-tests.xml",
+          "bytes": 1505,
+          "sha256": "7e46c8369f96bd3937d25830cb06da0b6a4d4ee8e5c12c85838ee39fee78affd"
+        },
+        {
+          "file": "qa-full-final/vision-evaluation-panel-tests.log",
+          "bytes": 22870,
+          "sha256": "26469d7965708caf69ff1713ed0b62a2266bc1d2608f39dd1c37f29ba66ad965"
+        },
+        {
+          "file": "qa-full-final/vision-evaluation-panel-tests.xml",
+          "bytes": 1491,
+          "sha256": "89b79290516407ce9a7f3c4b8e29a432efb73fa330e5be4c591636780e569cc2"
+        },
+        {
+          "file": "qa-full-final/vision-evaluation-python-tests.log",
+          "bytes": 1878,
+          "sha256": "c35513a963cf27fcbc75b43f9293d56b8a542c695d1f583c09c6924d866fa553"
+        },
+        {
+          "file": "qa-full-final/vision-evaluation-python-tests.xml",
+          "bytes": 860,
+          "sha256": "f0777eea673259104dab055706299e1dc54df83c83f2cc1365b54a47663a66e6"
+        },
+        {
+          "file": "qa-full-final/vision-evaluation-reporting-tests.log",
+          "bytes": 1858,
+          "sha256": "b7164184c3ce9dc57a39d69664dd967d5259d244a841f56b3b35abeb5a87bcf4"
+        },
+        {
+          "file": "qa-full-final/vision-evaluation-reporting-tests.xml",
+          "bytes": 826,
+          "sha256": "1c5aec7dd1106ba09190dbdd000bbcc943e415b6120790c5d31786365913e949"
+        },
+        {
+          "file": "qa-full-final/vision-evaluation-snapshot-tests.log",
+          "bytes": 3954,
+          "sha256": "5e7d99561c3a57c20ccc641370c92647f15503350f14b3e56ac83cde8c5dce4a"
+        },
+        {
+          "file": "qa-full-final/vision-evaluation-snapshot-tests.xml",
+          "bytes": 1497,
+          "sha256": "8004f689a97e225c56209de3bdcabb33e6823d2f6a8eebf1502b1930381e1491"
+        },
+        {
+          "file": "qa-full-final/vision-evaluation-worker-tests.log",
+          "bytes": 3308,
+          "sha256": "d7ed4a0e9f86c2798d63363e87ed6b4def5f37250d55245f86c671dd6cd9b878"
+        },
+        {
+          "file": "qa-full-final/vision-evaluation-worker-tests.xml",
+          "bytes": 1494,
+          "sha256": "b6ae8bbdf1b4f8af269da06503080171fd10ade08916f3028676147d9dbeab54"
+        },
+        {
+          "file": "qa-full-final/vision-gpu-environment-service-tests.log",
+          "bytes": 2857,
+          "sha256": "a47bf3b1422ef9c5c193a5fa3cb4614c3e447cf6ab66677af86f5e0d79ba69c6"
+        },
+        {
+          "file": "qa-full-final/vision-gpu-environment-service-tests.xml",
+          "bytes": 1504,
+          "sha256": "455ee02362fc254c7d6cce5256f720535bc907fdd13f16af57867a51da54dcb9"
+        },
+        {
+          "file": "qa-full-final/vision-gpu-runtime-tests.log",
+          "bytes": 1411,
+          "sha256": "2af7d2c54dd9cdaac85c60616ddc826ff2a8b93510b72678e8ab4a378cef85f5"
+        },
+        {
+          "file": "qa-full-final/vision-gpu-runtime-tests.xml",
+          "bytes": 487,
+          "sha256": "b4d0b2d7ffb2d8a72178df2248dea270759ea57a343ba088db880994a423cea6"
+        },
+        {
+          "file": "qa-full-final/vision-gpu-tests.log",
+          "bytes": 8461,
+          "sha256": "53d30ebb4fb0be2023a81e840016f22a63f908417d6a0c1415f9babaf1c3a423"
+        },
+        {
+          "file": "qa-full-final/vision-gpu-tests.xml",
+          "bytes": 1467,
+          "sha256": "a40175f6ece94fa405cd58ab728bb5a28472ad0ead0104c3c095179c3064daa1"
+        },
+        {
+          "file": "qa-full-final/vision-image-result-store-tests.log",
+          "bytes": 3073,
+          "sha256": "79f9821b45a983217c70eb2f5e1d4740e23f60b8f17a3dc8f007d034c618afb9"
+        },
+        {
+          "file": "qa-full-final/vision-image-result-store-tests.xml",
+          "bytes": 1496,
+          "sha256": "859ff28dfa9572cd158c0c8d8abdf5a27f715a433bb0d66d998396e6ae5170a6"
+        },
+        {
+          "file": "qa-full-final/vision-inference-delivery-tests.log",
+          "bytes": 2368,
+          "sha256": "84f3c6d5025e69c25b8030f8c3def8b201f02b58e054ee0884518b13d45dba57"
+        },
+        {
+          "file": "qa-full-final/vision-inference-delivery-tests.xml",
+          "bytes": 1385,
+          "sha256": "ee9fdf7458f8c4575b69691c8de9b5c7ca12893c326d6e2e45db8be3fd882b80"
+        },
+        {
+          "file": "qa-full-final/vision-input-drop-ui-tests.log",
+          "bytes": 5846,
+          "sha256": "19bd3e9869b29072c908f25a2891ab0c7dcdfdc04a53ea826acbaf4c619b9107"
+        },
+        {
+          "file": "qa-full-final/vision-input-drop-ui-tests.xml",
+          "bytes": 1486,
+          "sha256": "d10d9dd7596912cbe403914f4715dfa45d7658527ce6fd2adaac2265e92699b3"
+        },
+        {
+          "file": "qa-full-final/vision-input-session-controller-tests.log",
+          "bytes": 4078,
+          "sha256": "059c78cd8d9070032416d3d2c3a4e0dbe5614c90f4b9f593b3cb217764570d9e"
+        },
+        {
+          "file": "qa-full-final/vision-input-session-controller-tests.xml",
+          "bytes": 1507,
+          "sha256": "931ec7a18ec61a6d0326ccd80dfbcf1faa4403835d5eacf05157df4e36c5827a"
+        },
+        {
+          "file": "qa-full-final/vision-model-conversion-tests.log",
+          "bytes": 21907,
+          "sha256": "d74a484d3ff7851f39d79f4670c7698b0ce72c36fa7348a8ec02d95e5ec9ce9b"
+        },
+        {
+          "file": "qa-full-final/vision-model-conversion-tests.xml",
+          "bytes": 1493,
+          "sha256": "2833bf6c44dacfe40d26caf766bfff278df229d15016824ff47f5d73d54d5ce9"
+        },
+        {
+          "file": "qa-full-final/vision-model-session-controller-tests.log",
+          "bytes": 2937,
+          "sha256": "31c12d3c08283c6b6d13292992f903e672540e406ee981c297bf74e6bcd40c71"
+        },
+        {
+          "file": "qa-full-final/vision-model-session-controller-tests.xml",
+          "bytes": 1508,
+          "sha256": "84135f76eea18bd798e6a110eb63b5da27c445c2c5cecaf8464afe1e88b33bf7"
+        },
+        {
+          "file": "qa-full-final/vision-model-yaml-tests.log",
+          "bytes": 3515,
+          "sha256": "e6b8c22ed408278e58e46e8fbf1aa4a61d0a6be678a3794b477cae6e4592476b"
+        },
+        {
+          "file": "qa-full-final/vision-model-yaml-tests.xml",
+          "bytes": 1481,
+          "sha256": "4b6a3b568ed9d3734cd9bf907dde639b1dd1ddd3ac3fa1a369b96db09c5361cd"
+        },
+        {
+          "file": "qa-full-final/vision-modelviewer-tests.log",
+          "bytes": 31912,
+          "sha256": "d0eef71934b780f0848dad88f08bab199ec41f96128d3034a5830996ef21fea6"
+        },
+        {
+          "file": "qa-full-final/vision-modelviewer-tests.xml",
+          "bytes": 1482,
+          "sha256": "b080d7f2ef01bffb257f0563cf93b3ebe2ebc57e3f17a19a80d685ec2837aafd"
+        },
+        {
+          "file": "qa-full-final/vision-netron-server-tests.log",
+          "bytes": 3116,
+          "sha256": "a7aa542990dfb80831f67ebc8c272a754e64feb82d4b05dfdc105832adcbdd2f"
+        },
+        {
+          "file": "qa-full-final/vision-netron-server-tests.xml",
+          "bytes": 1491,
+          "sha256": "f7a73063fdb9e80295026544efe7e4e83ce321a82e8723da2f8a7b869a201e83"
+        },
+        {
+          "file": "qa-full-final/vision-operation-coordinator-tests.log",
+          "bytes": 42618,
+          "sha256": "a7bbb7ed351067825f0308f114f96c316770de0e7955a449adf5e903dda70583"
+        },
+        {
+          "file": "qa-full-final/vision-operation-coordinator-tests.xml",
+          "bytes": 1501,
+          "sha256": "d12f2757010ce4115fa79c5ff2cd7b0802fe0e6acc063266d8ad10e2c6d485cd"
+        },
+        {
+          "file": "qa-full-final/vision-pt-batch-python-tests.log",
+          "bytes": 2535,
+          "sha256": "c53f3690634ac117a597f964e2b597cdec5863b6a597ccad6cea32527c30ef26"
+        },
+        {
+          "file": "qa-full-final/vision-pt-batch-python-tests.xml",
+          "bytes": 1490,
+          "sha256": "7571102ad277827e089f6abe23b16d9e59f0bd0a471776989fd1a76d40353f2c"
+        },
+        {
+          "file": "qa-full-final/vision-pt-tests.log",
+          "bytes": 5846,
+          "sha256": "def4c7a00dacb4a4c48e0f64d6073d1c1d360579a372069ca25cd681abd28d1a"
+        },
+        {
+          "file": "qa-full-final/vision-pt-tests.xml",
+          "bytes": 1465,
+          "sha256": "e25b7c4ed8f4b60d8afb63d416df44019627dd70d5d07906ea146885732487cf"
+        },
+        {
+          "file": "qa-full-final/vision-recording-controller-tests.log",
+          "bytes": 2754,
+          "sha256": "0f9afaa7ecf52ecffd6653dc7045bcb6fe2fe583bb93cf1ff4e60cafc7b1a311"
+        },
+        {
+          "file": "qa-full-final/vision-recording-controller-tests.xml",
+          "bytes": 1499,
+          "sha256": "2caab63139e57ff0f994dab05f03ff5f3c2a207e0a3c00be7e6cd2951331643c"
+        },
+        {
+          "file": "qa-full-final/vision-recording-tests.log",
+          "bytes": 2799,
+          "sha256": "03ec391af7c767c703a5d4a394c9100f65ad802ddb40250969b0d35394cb57f9"
+        },
+        {
+          "file": "qa-full-final/vision-recording-tests.xml",
+          "bytes": 1477,
+          "sha256": "43a16ab0c0939215f2acdd9ea6dd273c8043804d7d2d1ada8948b9a3c1751d85"
+        },
+        {
+          "file": "qa-full-final/vision-result-delivery-tests.log",
+          "bytes": 2733,
+          "sha256": "4d5d403521a3e07c93f0261fabb71898d708903b2c2a2f5b948fc942c2e03031"
+        },
+        {
+          "file": "qa-full-final/vision-result-delivery-tests.xml",
+          "bytes": 1489,
+          "sha256": "a34f304743b53dd395496ad24c2bb94b99c385f52b28328f755cb0412ae1d97f"
+        },
+        {
+          "file": "qa-full-final/vision-runtime-setup-shutdown-tests.log",
+          "bytes": 5180,
+          "sha256": "a51f506648e6a6b7c96cad3e70f341cebb407d348ef065320449f790097da648"
+        },
+        {
+          "file": "qa-full-final/vision-runtime-setup-shutdown-tests.xml",
+          "bytes": 1504,
+          "sha256": "d8c9e47b58f74ea11e2b7a33d2b48ab929d5cdd2622d895dfc39d9bf904f86f7"
+        },
+        {
+          "file": "qa-full-final/vision-scope-filter-ui-tests.log",
+          "bytes": 16027,
+          "sha256": "b7d860cda8e241e872570f1fcc592d342898215b253fd30ce86c51301dd5389d"
+        },
+        {
+          "file": "qa-full-final/vision-scope-filter-ui-tests.xml",
+          "bytes": 1490,
+          "sha256": "d62c7bc97ddab234861e9f6bd5f7fa8f4e97d02c7bb1622891c8bd9da014d3e3"
+        },
+        {
+          "file": "qa-full-final/vision-simple-pages-tests.log",
+          "bytes": 2143,
+          "sha256": "f1199655c82ef527ad53f662d927598f5cba457db066a841311332d16289f963"
+        },
+        {
+          "file": "qa-full-final/vision-simple-pages-tests.xml",
+          "bytes": 1107,
+          "sha256": "b59a455c88e830708a34c4c7bd70f0e8dd39121edf19c0420a83ce972e8f23b5"
+        },
+        {
+          "file": "qa-full-final/vision-ui-tests.log",
+          "bytes": 14446,
+          "sha256": "4703bf7040f5a71b84133cd3b76a4b6d511ccfa55b4d7062f035d6b7025f41ea"
+        },
+        {
+          "file": "qa-full-final/vision-ui-tests.xml",
+          "bytes": 1464,
+          "sha256": "8de160154ef7cb41e9d6ae4fedaf5ee026bcc49131aa8c6458fe5c2efce8f860"
+        },
+        {
+          "file": "qa-full-final/vision-window-shutdown-tests.log",
+          "bytes": 2604,
+          "sha256": "3a4a841771452957c61b7abc7d892aa729926049f4accbe10defbb6b7ffaacc4"
+        },
+        {
+          "file": "qa-full-final/vision-window-shutdown-tests.xml",
+          "bytes": 1489,
+          "sha256": "74304567787fb3773322c42bd9b7bc391f379b079eddaeae294af7f71071e285"
+        },
+        {
+          "file": "qa-full-final/vision-workbench-configuration-tests.log",
+          "bytes": 5538,
+          "sha256": "1e37382bc0c4d0f7435b49c8d39c4c16d8eeda1edd6a127766bbb056d26466f7"
+        },
+        {
+          "file": "qa-full-final/vision-workbench-configuration-tests.xml",
+          "bytes": 1507,
+          "sha256": "09366c5571b7f0434bf19838253bab1a8f3840298a60e4161391fde54aff7cfc"
+        },
+        {
+          "file": "qa-full-final/vision-workbench-page-tests.log",
+          "bytes": 2361,
+          "sha256": "b5d9aedf1efbd2f0884981e0f073faf9ea17a46619513c6663268b13aefc1def"
+        },
+        {
+          "file": "qa-full-final/vision-workbench-page-tests.xml",
+          "bytes": 1311,
+          "sha256": "07e7a4f077074e6372ea9f07d3a2614ac72b1b3093f5442be0d6e7663067f815"
+        },
+        {
+          "file": "qa-full-final/vision-workspace-drop-filter-tests.log",
+          "bytes": 2534,
+          "sha256": "8abe2679868dceab259f7bcb4798e5e0d529bace92d174edb84f1ac33cef3905"
+        },
+        {
+          "file": "qa-full-final/vision-workspace-drop-filter-tests.xml",
+          "bytes": 1502,
+          "sha256": "ca02decc11195d3106a7ba2b1c296ca21b6a1ba8f8a4ed39da0102ad0bb6f783"
+        },
+        {
+          "file": "qa-full-final/vision-workspace-pages-tests.log",
+          "bytes": 11654,
+          "sha256": "d0f0cd6239aa3bea66a7b680ac2e18e20a781407befd3ac0780e933b13097385"
+        },
+        {
+          "file": "qa-full-final/vision-workspace-pages-tests.xml",
+          "bytes": 1490,
+          "sha256": "d00d779118f11f1b09695cfa8f8873a2a8d4ac01fbbda68f3b44ce5dfcb26267"
+        }
+      ]
+    },
+    {
+      "original": "output/v2.10.1/qa-final",
+      "preserved_at": "output/v2.10.1/rejected-candidate1/qa-final",
+      "files": [
+        {
+          "file": "qa-final/ctest-qa.json",
+          "bytes": 686859,
+          "sha256": "b86ed58b6a50984d8b91ecdb0f5d9df443f12cdc19557112d57c303c968da00a"
+        },
+        {
+          "file": "qa-final/production-inputs-before.json",
+          "bytes": 594427,
+          "sha256": "cd4833deef9df617e37ec790550cf88fa28c11b1976378e9b1f4d988a6014f9d"
+        },
+        {
+          "file": "qa-final/qa-full-final/artifacts/onnx-cuda-0_2026-10-29_20-16-06.json",
+          "bytes": 287887,
+          "sha256": "3673e769048fec309d6b1f7cc92077bd4dd4ac75e6a5d3db30ab840e286392eb"
+        },
+        {
+          "file": "qa-final/qa-full-final/artifacts/onnx-cuda-1_2026-10-29_20-16-06.json",
+          "bytes": 287887,
+          "sha256": "502e53698d6ff002ad0a6ee544361117ed1ecd56a2534bcdb13daf87e07ae391"
+        },
+        {
+          "file": "qa-final/qa-full-final/ctest-discovery.json",
+          "bytes": 34815,
+          "sha256": "3055bb55c680aff4296f0555d252e49bb07b59e874897d44727c352cb32bbaad"
+        },
+        {
+          "file": "qa-final/qa-full-final/detection-regression-qa.json",
+          "bytes": 68025,
+          "sha256": "3960fbc5525cad5ed1392d23bb532d6545d6ed36fffde1fb54456551dff0d397"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-app-services-tests.log",
+          "bytes": 2659,
+          "sha256": "83feff750f908b247d3c9a31fd1afde9f9dc4d0956f5b0bc655868bd29b32bb9"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-app-services-tests.xml",
+          "bytes": 1484,
+          "sha256": "7ffbd943c0a8fdac3ff340e4c145443c11ee1a0a9d710708790a1d6416a95eb6"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-batch-responsiveness-tests.log",
+          "bytes": 3830,
+          "sha256": "bdda2e73ed3e5bb4f62f3899a50bd7e4ffb22e8689b6d82a31b7d61fe095dfa2"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-batch-responsiveness-tests.xml",
+          "bytes": 1500,
+          "sha256": "e1f56758cca9fe50f4fa86437753ccd9d2b1ffdd4d12c22a80a037b20b40ec16"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-component-shutdown-tests.log",
+          "bytes": 2577,
+          "sha256": "05d39e26ba83766c978a8c3db62319fadc032f6ec351f36c1305fe4e679f1ada"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-component-shutdown-tests.xml",
+          "bytes": 1495,
+          "sha256": "c2b8ff8054c96c87174a02573c848d34eaa98056cc6f513037112c593e7cd0c9"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-conversion-inference-tests.log",
+          "bytes": 3372,
+          "sha256": "98a372c2fc7b631ab55ae48d4d4aa006cf9142059eaa1c9bb693a4d1aa583cde"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-conversion-inference-tests.xml",
+          "bytes": 1501,
+          "sha256": "aa913ac71f53c671a307ea189d03462e0d47bf6a93ee345d7294b714a9811035"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-conversion-ui-tests.log",
+          "bytes": 2973,
+          "sha256": "a0bec7b09792554d7aefd3af6d8d996c6120ff17b3e8b6f1afc640de8e25b7ed"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-conversion-ui-tests.xml",
+          "bytes": 1486,
+          "sha256": "80d2a3c1da3c027e45f2f57d50cbc48fb16bf4bbdd772e4eef71bda834783d54"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-core-tests.log",
+          "bytes": 4169,
+          "sha256": "14decd3560d1fbe0059aed8538eb347f8c171073d5df06a6845bf7a4c8a72e87"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-core-tests.xml",
+          "bytes": 1468,
+          "sha256": "8ed5ee48f7f29b55ff02dabfb3fe6d8b839e108ab60f1f053ccd09b0ba2f5fc6"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-dataset-session-tests.log",
+          "bytes": 3199,
+          "sha256": "43351490c7efbdf341f305c27f7c07628d351e07f6d322d5ea6c220109a8f85e"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-dataset-session-tests.xml",
+          "bytes": 1491,
+          "sha256": "813a2d007d9f2c51dbe07a43e847e40b0fc0ab8c9e8d4dc1677bffc10cbc59e3"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-dataset-session-ui-tests.log",
+          "bytes": 5345,
+          "sha256": "e8be7ed231df9094f1c70befb6607478f968423961cb72daf0a13b93bfe1107a"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-dataset-session-ui-tests.xml",
+          "bytes": 1496,
+          "sha256": "4d7f219c909439f9417042221faa9e66eafd22447f57df3d145feec80ff987f6"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-detection-controller-tests.log",
+          "bytes": 2538,
+          "sha256": "ba019496e95022107fc6351b6654efefd68e00ab1550705fbf09cad777a43625"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-detection-controller-tests.xml",
+          "bytes": 1499,
+          "sha256": "5fd34e0004b4a548af6a0f6d2cb1639ffd691fb273200730e6c6ec1387868c0f"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-evaluation-controller-tests.log",
+          "bytes": 3810,
+          "sha256": "7aef2cacc40b3fcd23387f81c1a4436a9d3934d258515af00f85c32f1bfa271f"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-evaluation-controller-tests.xml",
+          "bytes": 1502,
+          "sha256": "9ab0571a88f64a8a0de9ccaeae05cf0e89642f2b91622c2569632cd311ee3854"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-evaluation-import-tests.log",
+          "bytes": 2856,
+          "sha256": "d4d104d71dd266a39e118ade04c3e5bb9c3e36891f5887517564cfc574b10d5d"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-evaluation-import-tests.xml",
+          "bytes": 1493,
+          "sha256": "be6bbb7d2a0cb653847e6879adf1be474aef507a3922206ff9bee58f2c93cbbc"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-evaluation-integration-tests.log",
+          "bytes": 45008,
+          "sha256": "996bc357ebae9f7949059f1b95dc33e39392c3c68ee4e7ad805a265c11efe47e"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-evaluation-integration-tests.xml",
+          "bytes": 1505,
+          "sha256": "7e46c8369f96bd3937d25830cb06da0b6a4d4ee8e5c12c85838ee39fee78affd"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-evaluation-panel-tests.log",
+          "bytes": 22870,
+          "sha256": "26469d7965708caf69ff1713ed0b62a2266bc1d2608f39dd1c37f29ba66ad965"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-evaluation-panel-tests.xml",
+          "bytes": 1491,
+          "sha256": "89b79290516407ce9a7f3c4b8e29a432efb73fa330e5be4c591636780e569cc2"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-evaluation-python-tests.log",
+          "bytes": 1878,
+          "sha256": "c35513a963cf27fcbc75b43f9293d56b8a542c695d1f583c09c6924d866fa553"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-evaluation-python-tests.xml",
+          "bytes": 860,
+          "sha256": "f0777eea673259104dab055706299e1dc54df83c83f2cc1365b54a47663a66e6"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-evaluation-reporting-tests.log",
+          "bytes": 1858,
+          "sha256": "b7164184c3ce9dc57a39d69664dd967d5259d244a841f56b3b35abeb5a87bcf4"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-evaluation-reporting-tests.xml",
+          "bytes": 826,
+          "sha256": "1c5aec7dd1106ba09190dbdd000bbcc943e415b6120790c5d31786365913e949"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-evaluation-snapshot-tests.log",
+          "bytes": 3954,
+          "sha256": "5e7d99561c3a57c20ccc641370c92647f15503350f14b3e56ac83cde8c5dce4a"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-evaluation-snapshot-tests.xml",
+          "bytes": 1497,
+          "sha256": "8004f689a97e225c56209de3bdcabb33e6823d2f6a8eebf1502b1930381e1491"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-evaluation-worker-tests.log",
+          "bytes": 3308,
+          "sha256": "d7ed4a0e9f86c2798d63363e87ed6b4def5f37250d55245f86c671dd6cd9b878"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-evaluation-worker-tests.xml",
+          "bytes": 1494,
+          "sha256": "b6ae8bbdf1b4f8af269da06503080171fd10ade08916f3028676147d9dbeab54"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-gpu-environment-service-tests.log",
+          "bytes": 2857,
+          "sha256": "a47bf3b1422ef9c5c193a5fa3cb4614c3e447cf6ab66677af86f5e0d79ba69c6"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-gpu-environment-service-tests.xml",
+          "bytes": 1504,
+          "sha256": "455ee02362fc254c7d6cce5256f720535bc907fdd13f16af57867a51da54dcb9"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-gpu-runtime-tests.log",
+          "bytes": 1411,
+          "sha256": "2af7d2c54dd9cdaac85c60616ddc826ff2a8b93510b72678e8ab4a378cef85f5"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-gpu-runtime-tests.xml",
+          "bytes": 487,
+          "sha256": "b4d0b2d7ffb2d8a72178df2248dea270759ea57a343ba088db880994a423cea6"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-gpu-tests.log",
+          "bytes": 8461,
+          "sha256": "53d30ebb4fb0be2023a81e840016f22a63f908417d6a0c1415f9babaf1c3a423"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-gpu-tests.xml",
+          "bytes": 1467,
+          "sha256": "a40175f6ece94fa405cd58ab728bb5a28472ad0ead0104c3c095179c3064daa1"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-image-result-store-tests.log",
+          "bytes": 3073,
+          "sha256": "79f9821b45a983217c70eb2f5e1d4740e23f60b8f17a3dc8f007d034c618afb9"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-image-result-store-tests.xml",
+          "bytes": 1496,
+          "sha256": "859ff28dfa9572cd158c0c8d8abdf5a27f715a433bb0d66d998396e6ae5170a6"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-inference-delivery-tests.log",
+          "bytes": 2368,
+          "sha256": "84f3c6d5025e69c25b8030f8c3def8b201f02b58e054ee0884518b13d45dba57"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-inference-delivery-tests.xml",
+          "bytes": 1385,
+          "sha256": "ee9fdf7458f8c4575b69691c8de9b5c7ca12893c326d6e2e45db8be3fd882b80"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-input-drop-ui-tests.log",
+          "bytes": 5846,
+          "sha256": "19bd3e9869b29072c908f25a2891ab0c7dcdfdc04a53ea826acbaf4c619b9107"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-input-drop-ui-tests.xml",
+          "bytes": 1486,
+          "sha256": "d10d9dd7596912cbe403914f4715dfa45d7658527ce6fd2adaac2265e92699b3"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-input-session-controller-tests.log",
+          "bytes": 4078,
+          "sha256": "059c78cd8d9070032416d3d2c3a4e0dbe5614c90f4b9f593b3cb217764570d9e"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-input-session-controller-tests.xml",
+          "bytes": 1507,
+          "sha256": "931ec7a18ec61a6d0326ccd80dfbcf1faa4403835d5eacf05157df4e36c5827a"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-model-conversion-tests.log",
+          "bytes": 21907,
+          "sha256": "d74a484d3ff7851f39d79f4670c7698b0ce72c36fa7348a8ec02d95e5ec9ce9b"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-model-conversion-tests.xml",
+          "bytes": 1493,
+          "sha256": "2833bf6c44dacfe40d26caf766bfff278df229d15016824ff47f5d73d54d5ce9"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-model-session-controller-tests.log",
+          "bytes": 2937,
+          "sha256": "31c12d3c08283c6b6d13292992f903e672540e406ee981c297bf74e6bcd40c71"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-model-session-controller-tests.xml",
+          "bytes": 1508,
+          "sha256": "84135f76eea18bd798e6a110eb63b5da27c445c2c5cecaf8464afe1e88b33bf7"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-model-yaml-tests.log",
+          "bytes": 3515,
+          "sha256": "e6b8c22ed408278e58e46e8fbf1aa4a61d0a6be678a3794b477cae6e4592476b"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-model-yaml-tests.xml",
+          "bytes": 1481,
+          "sha256": "4b6a3b568ed9d3734cd9bf907dde639b1dd1ddd3ac3fa1a369b96db09c5361cd"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-modelviewer-tests.log",
+          "bytes": 31912,
+          "sha256": "d0eef71934b780f0848dad88f08bab199ec41f96128d3034a5830996ef21fea6"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-modelviewer-tests.xml",
+          "bytes": 1482,
+          "sha256": "b080d7f2ef01bffb257f0563cf93b3ebe2ebc57e3f17a19a80d685ec2837aafd"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-netron-server-tests.log",
+          "bytes": 3116,
+          "sha256": "a7aa542990dfb80831f67ebc8c272a754e64feb82d4b05dfdc105832adcbdd2f"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-netron-server-tests.xml",
+          "bytes": 1491,
+          "sha256": "f7a73063fdb9e80295026544efe7e4e83ce321a82e8723da2f8a7b869a201e83"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-operation-coordinator-tests.log",
+          "bytes": 42618,
+          "sha256": "a7bbb7ed351067825f0308f114f96c316770de0e7955a449adf5e903dda70583"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-operation-coordinator-tests.xml",
+          "bytes": 1501,
+          "sha256": "d12f2757010ce4115fa79c5ff2cd7b0802fe0e6acc063266d8ad10e2c6d485cd"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-pt-batch-python-tests.log",
+          "bytes": 2535,
+          "sha256": "c53f3690634ac117a597f964e2b597cdec5863b6a597ccad6cea32527c30ef26"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-pt-batch-python-tests.xml",
+          "bytes": 1490,
+          "sha256": "7571102ad277827e089f6abe23b16d9e59f0bd0a471776989fd1a76d40353f2c"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-pt-tests.log",
+          "bytes": 5846,
+          "sha256": "def4c7a00dacb4a4c48e0f64d6073d1c1d360579a372069ca25cd681abd28d1a"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-pt-tests.xml",
+          "bytes": 1465,
+          "sha256": "e25b7c4ed8f4b60d8afb63d416df44019627dd70d5d07906ea146885732487cf"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-recording-controller-tests.log",
+          "bytes": 2754,
+          "sha256": "0f9afaa7ecf52ecffd6653dc7045bcb6fe2fe583bb93cf1ff4e60cafc7b1a311"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-recording-controller-tests.xml",
+          "bytes": 1499,
+          "sha256": "2caab63139e57ff0f994dab05f03ff5f3c2a207e0a3c00be7e6cd2951331643c"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-recording-tests.log",
+          "bytes": 2799,
+          "sha256": "03ec391af7c767c703a5d4a394c9100f65ad802ddb40250969b0d35394cb57f9"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-recording-tests.xml",
+          "bytes": 1477,
+          "sha256": "43a16ab0c0939215f2acdd9ea6dd273c8043804d7d2d1ada8948b9a3c1751d85"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-result-delivery-tests.log",
+          "bytes": 2733,
+          "sha256": "4d5d403521a3e07c93f0261fabb71898d708903b2c2a2f5b948fc942c2e03031"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-result-delivery-tests.xml",
+          "bytes": 1489,
+          "sha256": "a34f304743b53dd395496ad24c2bb94b99c385f52b28328f755cb0412ae1d97f"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-runtime-setup-shutdown-tests.log",
+          "bytes": 5180,
+          "sha256": "a51f506648e6a6b7c96cad3e70f341cebb407d348ef065320449f790097da648"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-runtime-setup-shutdown-tests.xml",
+          "bytes": 1504,
+          "sha256": "d8c9e47b58f74ea11e2b7a33d2b48ab929d5cdd2622d895dfc39d9bf904f86f7"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-scope-filter-ui-tests.log",
+          "bytes": 16027,
+          "sha256": "b7d860cda8e241e872570f1fcc592d342898215b253fd30ce86c51301dd5389d"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-scope-filter-ui-tests.xml",
+          "bytes": 1490,
+          "sha256": "d62c7bc97ddab234861e9f6bd5f7fa8f4e97d02c7bb1622891c8bd9da014d3e3"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-simple-pages-tests.log",
+          "bytes": 2143,
+          "sha256": "f1199655c82ef527ad53f662d927598f5cba457db066a841311332d16289f963"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-simple-pages-tests.xml",
+          "bytes": 1107,
+          "sha256": "b59a455c88e830708a34c4c7bd70f0e8dd39121edf19c0420a83ce972e8f23b5"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-ui-tests.log",
+          "bytes": 14446,
+          "sha256": "4703bf7040f5a71b84133cd3b76a4b6d511ccfa55b4d7062f035d6b7025f41ea"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-ui-tests.xml",
+          "bytes": 1464,
+          "sha256": "8de160154ef7cb41e9d6ae4fedaf5ee026bcc49131aa8c6458fe5c2efce8f860"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-window-shutdown-tests.log",
+          "bytes": 2604,
+          "sha256": "3a4a841771452957c61b7abc7d892aa729926049f4accbe10defbb6b7ffaacc4"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-window-shutdown-tests.xml",
+          "bytes": 1489,
+          "sha256": "74304567787fb3773322c42bd9b7bc391f379b079eddaeae294af7f71071e285"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-workbench-configuration-tests.log",
+          "bytes": 5538,
+          "sha256": "1e37382bc0c4d0f7435b49c8d39c4c16d8eeda1edd6a127766bbb056d26466f7"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-workbench-configuration-tests.xml",
+          "bytes": 1507,
+          "sha256": "09366c5571b7f0434bf19838253bab1a8f3840298a60e4161391fde54aff7cfc"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-workbench-page-tests.log",
+          "bytes": 2361,
+          "sha256": "b5d9aedf1efbd2f0884981e0f073faf9ea17a46619513c6663268b13aefc1def"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-workbench-page-tests.xml",
+          "bytes": 1311,
+          "sha256": "07e7a4f077074e6372ea9f07d3a2614ac72b1b3093f5442be0d6e7663067f815"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-workspace-drop-filter-tests.log",
+          "bytes": 2534,
+          "sha256": "8abe2679868dceab259f7bcb4798e5e0d529bace92d174edb84f1ac33cef3905"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-workspace-drop-filter-tests.xml",
+          "bytes": 1502,
+          "sha256": "ca02decc11195d3106a7ba2b1c296ca21b6a1ba8f8a4ed39da0102ad0bb6f783"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-workspace-pages-tests.log",
+          "bytes": 11654,
+          "sha256": "d0f0cd6239aa3bea66a7b680ac2e18e20a781407befd3ac0780e933b13097385"
+        },
+        {
+          "file": "qa-final/qa-full-final/vision-workspace-pages-tests.xml",
+          "bytes": 1490,
+          "sha256": "d00d779118f11f1b09695cfa8f8873a2a8d4ac01fbbda68f3b44ce5dfcb26267"
+        }
+      ]
+    },
+    {
+      "original": "output/v2.10.1/final-delivery-logs",
+      "preserved_at": "output/v2.10.1/rejected-candidate1/final-delivery-logs",
+      "files": [
+        {
+          "file": "final-delivery-logs/build-production.log",
+          "bytes": 21167,
+          "sha256": "f869212d3b3c80fa25c678d109b21966d25967cf26ffcba668a669af6039e1bb"
+        },
+        {
+          "file": "final-delivery-logs/configure-production.log",
+          "bytes": 1367,
+          "sha256": "fab781b514f19e9bf17054f050745fad7bc7f2e5314f3e7343ae066d8ec70d80"
+        },
+        {
+          "file": "final-delivery-logs/native-full-runner.log",
+          "bytes": 5550,
+          "sha256": "2fa279c98457a329da7527aaa3efd69ecda745105d0b41b2254d6b17f4a25add"
+        },
+        {
+          "file": "final-delivery-logs/regression-aggregate.log",
+          "bytes": 178,
+          "sha256": "231b008c7cbd95087b48cd0e75e164446380ea9e08d94bf73b64785955b0cc0a"
+        },
+        {
+          "file": "final-delivery-logs/regression-input-snapshot.log",
+          "bytes": 197,
+          "sha256": "bc6a025a317bac04c9bfee82c9d92aed3b7a9711f26817bfb6a9fc0868611f3a"
+        }
+      ]
+    },
+    {
+      "original": "output/v2.10.1/production-inputs-before-delivery.json",
+      "preserved_at": "output/v2.10.1/rejected-candidate1/production-inputs-before-delivery.json",
+      "files": [
+        {
+          "file": "production-inputs-before-delivery.json",
+          "bytes": 594427,
+          "sha256": "cd4833deef9df617e37ec790550cf88fa28c11b1976378e9b1f4d988a6014f9d"
+        }
+      ]
+    }
+  ],
+  "build_relocation_pending": false,
+  "build_relocated": {
+    "original": "output/build/2.10.1-release",
+    "preserved_at": "output/build/2.10.1-release-candidate1",
+    "production_binary_sha256": "452dc9e458dbce4fa85a83c9bc8ddb0b271be1a71fc626aa151eaf38d6052c2e",
+    "note": "Read-only QA core consumers finished before this relocation. Raw historic CMake caches and reports retain original paths; do not rerun this moved candidate as a fresh build."
+  }
+}

@@ -5,11 +5,14 @@
 #include "ui/pages/workbenchpage.h"
 #include "ui/pages/morepage.h"
 #include "app/gpuenvironmentservice.h"
+#include "app/asyncthreadretirement.h"
+#include "app/recordingcontroller.h"
 #include "ui/modelviewer.h"
 #include "ui/modelconversionpage.h"
 #include "ui/asyncimagepreview.h"
 #include "ui/runtimesetup.h"
 #include "ui_shutdown_helpers.h"
+#include "thread_retirement_fixtures.h"
 
 #include <QApplication>
 #include <QCheckBox>
@@ -34,6 +37,8 @@
 #include <QSignalSpy>
 #include <QSpinBox>
 #include <QTemporaryDir>
+#include <QThread>
+#include <QThreadPool>
 #include <QTimer>
 #include <QtTest>
 #include <algorithm>
@@ -257,6 +262,64 @@ class WindowShutdownTests final : public QObject
         if (ready) area_.reset(); else area_.release();
         QVERIFY2(ready, "Lifecycle test cleanup did not reach the explicit barrier; owners and fixture retained rather than blocking in destructors.");
         QVERIFY2(failure_.isEmpty(), qPrintable(failure_));
+    }
+
+    void orphanNativeThreadTailRemainsInApplicationCloseBarrier()
+    {
+        // An accidentally destroyed resource owner must not hide its still
+        // finishing native thread from the application's shutdown barrier.
+        const auto tail = std::make_shared<vision::test::ThreadTailState>();
+        vision::test::ThreadTailRelease release{tail};
+        int callbacks = 0;
+        auto owner = std::make_unique<QObject>();
+        auto *thread = QThread::create([tail] { vision::test::establishThreadLocalTail(tail); });
+        QPointer<QThread> guardedThread(thread);
+        vision::app::AsyncThreadRetirement::watch(thread, owner.get(), [&callbacks] { ++callbacks; });
+        thread->start();
+        QVERIFY2(waitUntil([tail] { return tail->entered.load(); }), qPrintable(failure_));
+        QVERIFY(thread->isFinished());
+        QVERIFY(!tail->completed.load());
+        QElapsedTimer elapsed; elapsed.start(); owner.reset();
+        QVERIFY2(elapsed.elapsed() < 100, "Losing an owner must not join its thread on the GUI loop.");
+        QVERIFY(guardedThread);
+        QCOMPARE(callbacks, 0);
+
+        beginClose();
+        QVERIFY(closeMilliseconds_ < 500);
+        QVERIFY(window_->isClosing());
+        QVERIFY(!window_->isShutdownReady());
+        // First settle every ordinary participant. Otherwise a slow model
+        // helper could make the missing orphan-ticket gate appear to pass.
+        auto *recordings = window_->findChild<vision::app::RecordingController *>(); QVERIFY(recordings);
+        auto *gpu = window_->findChild<vision::app::GpuEnvironmentService *>(); QVERIFY(gpu);
+        auto *viewer = window_->findChild<ModelViewer *>("modelStructureViewer"); QVERIFY(viewer);
+        auto *conversion = window_->findChild<ModelConversionPage *>("modelConversionPage"); QVERIFY(conversion);
+        QVERIFY2(waitUntil([this, thread, recordings, gpu, viewer, conversion] {
+            const auto threads = vision::app::AsyncThreadRetirement::watchedThreads();
+            const auto *thumbnails = qApp->findChild<QThreadPool *>("visionThumbnailPool");
+            return window_->inputs()->isShutdownReady() && window_->models()->isShutdownReady() &&
+                window_->evaluations()->isShutdownReady() && window_->detections()->isShutdownReady() &&
+                recordings->isShutdownReady() && gpu->isShutdownReady() && viewer->isShutdownReady() &&
+                conversion->isShutdownReady() && page()->isPreviewShutdownReady() &&
+                ui::runtimeSetup()->isShutdownReady() &&
+                AsyncImagePreview::applicationPool()->activeRequestCount() == 0 &&
+                (!thumbnails || thumbnails->activeThreadCount() == 0) &&
+                QThreadPool::globalInstance()->activeThreadCount() == 0 &&
+                threads.size() == 1 && threads.first() == thread;
+        }), qPrintable(failure_));
+        const int before = beats_;
+        QTest::qWait(60);
+        QVERIFY2(beats_ > before, "The GUI loop must keep advancing while native TLS cleanup is pending.");
+        QVERIFY2(!window_->isShutdownReady(), "An orphaned retirement ticket must still hold the application close barrier.");
+        QVERIFY(guardedThread);
+        QCOMPARE(callbacks, 0);
+
+        tail->resume();
+        QVERIFY2(readyToDestroy(), qPrintable(failure_));
+        QTRY_VERIFY_WITH_TIMEOUT(guardedThread.isNull(), 3000);
+        QVERIFY(tail->completed.load());
+        QCOMPARE(callbacks, 0);
+        destroyReadyWindow();
     }
 
     void runningRealOnnxTaskClosesWithoutBlockingGui()
