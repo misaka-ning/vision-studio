@@ -1,0 +1,38 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 34
+    Start 34: vision-simple-pages-tests
+
+34: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3/vision-simple-pages-tests
+34: Environment variables: 
+34:  QT_QPA_PLATFORM=offscreen
+34:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+34: Test timeout computed to be: 120
+34: ********* Start testing of SimplePagesTests *********
+34: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+34: PASS   : SimplePagesTests::initTestCase()
+34: PASS   : SimplePagesTests::moreForwardsActionsAndMirrorsPreferenceWithoutWritingBack()
+34: PASS   : SimplePagesTests::moreRetainsInitialVisibilityAndStableWidgetNames()
+34: PASS   : SimplePagesTests::historyRendersOldAndCurrentRecordsAndForwardsActions()
+34: PASS   : SimplePagesTests::guideLoadsBundledResourceWithExternalLinks()
+34: PASS   : SimplePagesTests::cleanupTestCase()
+34: Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 14ms
+34: ********* Finished testing of SimplePagesTests *********
+1/1 Test #34: vision-simple-pages-tests ........   Passed    0.12 sec
+
+The following tests passed:
+	vision-simple-pages-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.12 sec

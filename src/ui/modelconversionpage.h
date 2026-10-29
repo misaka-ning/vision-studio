@@ -2,6 +2,7 @@
 
 #include <QWidget>
 #include <QJsonObject>
+#include <QSet>
 
 class QComboBox;
 class QLabel;
@@ -11,6 +12,7 @@ class QProcess;
 class QProgressBar;
 class QPushButton;
 class QSpinBox;
+class QTimer;
 
 class ModelConversionPage final : public QWidget
 {
@@ -22,11 +24,14 @@ class ModelConversionPage final : public QWidget
     bool isBusy() const;
     QJsonObject completedMetadata() const { return completedMetadata_; }
     void cancel();
+    void requestShutdown();
+    bool isShutdownReady() const;
 
   signals:
     void chooseLibraryRequested();
     void convertedModelReady(const QString &path);
     void busyChanged(bool busy);
+    void shutdownReady();
 
   private:
     void updateSource();
@@ -37,12 +42,17 @@ class ModelConversionPage final : public QWidget
     void appendLog(const QString &message);
     void complete(int exitCode, bool normalExit);
     void cleanupJob();
+    void trackProcess(QProcess *process);
+    void maybeFinishShutdown();
     bool openFolder(const QString &path);
 
     QString source_, displayName_, dataRoot_, output_, completedOutput_, runningSource_, jobTemp_;
     QByteArray pendingOutput_, stderrOutput_;
     QJsonObject completedMetadata_;
     QProcess *process_ = nullptr;
+    QSet<QProcess *> processes_;
+    QTimer *shutdownPoll_ = nullptr;
+    bool shuttingDown_ = false, shutdownSignalled_ = false;
     bool cancelling_ = false, receivedResult_ = false, protocolError_ = false;
     quint64 jobTempInode_ = 0, jobTempDevice_ = 0;
     QLabel *sourceName_ = nullptr, *sourcePath_ = nullptr, *supportHint_ = nullptr,

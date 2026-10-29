@@ -34,6 +34,9 @@
 #include <QTimer>
 #include <QUrl>
 #include <QVBoxLayout>
+#include <atomic>
+#include <memory>
+#include <utility>
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
 #else
@@ -67,6 +70,53 @@ bool directoryIdentity(const QString &path, quint64 &inode, quint64 &device)
     device = info.st_dev;
 #endif
     return true;
+}
+
+struct ConversionWork
+{
+    std::atomic<int> processes{0};
+    std::atomic<int> cleanups{0};
+};
+std::shared_ptr<ConversionWork> conversionWork()
+{
+    static const auto work = std::make_shared<ConversionWork>();
+    return work;
+}
+void scheduleConversionCleanup(const QString &path, quint64 inode, quint64 device)
+{
+    if (path.isEmpty()) return;
+    const auto work = conversionWork();
+    work->cleanups.fetch_add(1, std::memory_order_acq_rel);
+    QThreadPool::globalInstance()->start(QRunnable::create([path, inode, device, work] {
+        quint64 currentInode = 0, currentDevice = 0;
+        if (directoryIdentity(path, currentInode, currentDevice) &&
+            currentInode == inode && currentDevice == device)
+            QDir(path).removeRecursively();
+        work->cleanups.fetch_sub(1, std::memory_order_acq_rel);
+    }));
+}
+void retireConversionProcess(QProcess *process, const QString &path, quint64 inode, quint64 device)
+{
+    const auto cleaned = std::make_shared<bool>(false);
+    const auto finish = [process, path, inode, device, cleaned] {
+        if (!*cleaned) {
+            *cleaned = true;
+            scheduleConversionCleanup(path, inode, device);
+        }
+        process->deleteLater();
+    };
+    QObject::connect(process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), process,
+                     [finish](int, QProcess::ExitStatus) { finish(); });
+    QObject::connect(process, &QProcess::errorOccurred, process, [finish](QProcess::ProcessError error) {
+        if (error == QProcess::FailedToStart) finish();
+    });
+    if (process->state() == QProcess::NotRunning) finish();
+    else {
+        process->terminate();
+        QTimer::singleShot(1000, process, [process] {
+            if (process->state() != QProcess::NotRunning) process->kill();
+        });
+    }
 }
 QLabel *label(const QString &value, const char *role)
 {
@@ -272,16 +322,61 @@ ModelConversionPage::ModelConversionPage(const QString &dataRoot, QWidget *paren
 
 ModelConversionPage::~ModelConversionPage()
 {
-    if (process_) {
-        process_->disconnect(this);
-        process_->kill();
-        process_->waitForFinished(500);
+    for (QProcess *process : std::as_const(processes_)) {
+        process->disconnect(this);
+        process->setParent(nullptr);
+        if (process == process_) {
+            retireConversionProcess(process, jobTemp_, jobTempInode_, jobTempDevice_);
+            jobTemp_.clear();
+        } else retireConversionProcess(process, {}, 0, 0);
     }
+    process_ = nullptr;
     cleanupJob();
+}
+
+void ModelConversionPage::trackProcess(QProcess *process)
+{
+    processes_.insert(process);
+    connect(process, &QObject::destroyed, this, [this, process] {
+        processes_.remove(process);
+        maybeFinishShutdown();
+    });
+}
+
+bool ModelConversionPage::isShutdownReady() const
+{
+    const auto work = conversionWork();
+    return shuttingDown_ && !process_ && processes_.isEmpty() && jobTemp_.isEmpty() &&
+           work->processes.load(std::memory_order_acquire) == 0 &&
+           work->cleanups.load(std::memory_order_acquire) == 0;
+}
+
+void ModelConversionPage::requestShutdown()
+{
+    if (shuttingDown_) return;
+    shuttingDown_ = true;
+    cancel();
+    if (!process_) cleanupJob();
+    updateControls();
+    shutdownPoll_ = new QTimer(this);
+    shutdownPoll_->setInterval(16);
+    connect(shutdownPoll_, &QTimer::timeout, this, &ModelConversionPage::maybeFinishShutdown);
+    shutdownPoll_->start();
+    QTimer::singleShot(0, this, &ModelConversionPage::maybeFinishShutdown);
+}
+
+void ModelConversionPage::maybeFinishShutdown()
+{
+    if (isShutdownReady() && !shutdownSignalled_) {
+        shutdownSignalled_ = true;
+        if (shutdownPoll_) shutdownPoll_->stop();
+        emit shutdownReady();
+    }
 }
 
 void ModelConversionPage::setSourceModel(const QString &path, const QString &displayName)
 {
+    if (shuttingDown_) return;
     source_ = path;
     displayName_ = displayName;
     if (!isBusy()) { updateSource(); updateDestination(true); updateControls(); }
@@ -316,19 +411,19 @@ void ModelConversionPage::updateControls()
 {
     const bool active = isBusy();
     for (QWidget *widget : QList<QWidget *>{format_, imageSize_, directory_, filename_, chooseDirectory_, chooseSource_})
-        widget->setEnabled(!active);
-    opset_->setEnabled(!active && format_->currentData().toString() == "onnx");
-    start_->setEnabled(!active && QFileInfo(source_).isFile() && supportedSource(source_));
+        widget->setEnabled(!active && !shuttingDown_);
+    opset_->setEnabled(!active && !shuttingDown_ && format_->currentData().toString() == "onnx");
+    start_->setEnabled(!active && !shuttingDown_ && QFileInfo(source_).isFile() && supportedSource(source_));
     cancel_->setEnabled(active && !cancelling_);
-    openOutput_->setEnabled(!active);
-    addModel_->setEnabled(!active && QFileInfo(completedOutput_).isFile());
+    openOutput_->setEnabled(!active && !shuttingDown_);
+    addModel_->setEnabled(!active && !shuttingDown_ && QFileInfo(completedOutput_).isFile());
 }
 
 void ModelConversionPage::appendLog(const QString &message) { log_->appendPlainText(message.left(4000)); }
 
 void ModelConversionPage::start()
 {
-    if (isBusy()) return;
+    if (isBusy() || shuttingDown_) return;
     if (!ui::ensureCpuRuntime(this, [this] { start(); })) return;
     const QString name = filename_->text().trimmed();
     const QString selectedFormat = format_->currentData().toString();
@@ -366,6 +461,10 @@ void ModelConversionPage::start()
     summary_->setText("转换模型：" + QFileInfo(runningSource_).fileName() + "\n输出：" + output_);
     progress_->setRange(0, 0);
     process_ = new QProcess(this);
+    trackProcess(process_);
+    const auto workState = conversionWork();
+    workState->processes.fetch_add(1, std::memory_order_acq_rel);
+    connect(process_, &QObject::destroyed, [workState] { workState->processes.fetch_sub(1, std::memory_order_acq_rel); });
     auto environment = QProcessEnvironment::systemEnvironment();
     environment.insert("PYTHONUNBUFFERED", "1");
     environment.insert("PYTHONDONTWRITEBYTECODE", "1");
@@ -465,7 +564,7 @@ void ModelConversionPage::cancel()
     status_->setText("正在取消…");
     process_->terminate();
     QPointer<QProcess> process(process_);
-    QTimer::singleShot(1000, this, [process] {
+    QTimer::singleShot(1000, process_, [process] {
         if (process && process->state() != QProcess::NotRunning) process->kill();
     });
     updateControls();
@@ -477,12 +576,7 @@ void ModelConversionPage::cleanupJob()
     const QString path = jobTemp_;
     const quint64 inode = jobTempInode_, device = jobTempDevice_;
     jobTemp_.clear();
-    QThreadPool::globalInstance()->start(QRunnable::create([path, inode, device] {
-        quint64 currentInode = 0, currentDevice = 0;
-        if (directoryIdentity(path, currentInode, currentDevice) &&
-            currentInode == inode && currentDevice == device)
-            QDir(path).removeRecursively();
-    }));
+    scheduleConversionCleanup(path, inode, device);
 }
 
 void ModelConversionPage::complete(int exitCode, bool normalExit)
@@ -499,6 +593,7 @@ void ModelConversionPage::complete(int exitCode, bool normalExit)
     const bool success = normalExit && exitCode == 0 && receivedResult_ && !protocolError_ && QFileInfo(output_).isFile();
     const bool cancelled = cancelling_;
     process_->disconnect(this);
+    trackProcess(process_);
     process_->deleteLater(); process_ = nullptr;
     cleanupJob();
     progress_->setRange(0, 100); progress_->setValue(success ? 100 : 0);

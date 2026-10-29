@@ -1,0 +1,130 @@
+{
+  "stage": 3,
+  "scope": "Independent page components and existing component resource-lifecycle boundaries. Production window wiring remains scheduled for stage 4. This is not final refactor or package acceptance.",
+  "source_tree": "953ad04fe8a80fbf3989fc5dcbc35c2386426384",
+  "build_success": true,
+  "regression_success": true,
+  "suites": [
+    "vision-recording-controller-tests",
+    "vision-workbench-page-tests",
+    "vision-workspace-pages-tests",
+    "vision-simple-pages-tests",
+    "vision-component-shutdown-tests",
+    "vision-runtime-setup-shutdown-tests",
+    "vision-ui-tests",
+    "vision-scope-filter-ui-tests",
+    "vision-batch-responsiveness-tests",
+    "vision-modelviewer-tests",
+    "vision-conversion-ui-tests"
+  ],
+  "raw_evidence": "../releases/evidence/2.10.1/stages/stage3",
+  "unverified": [
+    "Final controller wiring",
+    "Unified MainWindow shutdown barrier",
+    "DEB installation",
+    "Complete source rebuild",
+    "Windows runtime"
+  ],
+  "files": {
+    "detection-regression-qa.json": {
+      "size": 28108,
+      "sha256": "93a1cc04a6bb8eadab4848b00e6725d825c547ba7b72fd451bf2528a1fa8dcee"
+    },
+    "stage3-build.log": {
+      "size": 17185,
+      "sha256": "9fec5d3ecf2dbc3e948dc4ea320bedee206faf7ca5e833ac0f756d83546d0e8b"
+    },
+    "stage3-configure.log": {
+      "size": 1346,
+      "sha256": "bde181f6b2d27ed653d8faf6cf63eb39b714ba4b3803b4f1643291f2a86e2afe"
+    },
+    "vision-batch-responsiveness-tests.log": {
+      "size": 3822,
+      "sha256": "2fb65c8e07f7d62099b62313c5dc0ffe7afeb182d50e52fa25db6b238cf24517"
+    },
+    "vision-batch-responsiveness-tests.xml": {
+      "size": 1499,
+      "sha256": "d44838bba6ca49efef5329c9daf1d2e157f3a166c30e0bcbc402c46029664145"
+    },
+    "vision-component-shutdown-tests.log": {
+      "size": 2570,
+      "sha256": "711a0599cbd9d047b8df33329c0308a5c4fce9804c715de61f043995b82e4349"
+    },
+    "vision-component-shutdown-tests.xml": {
+      "size": 1495,
+      "sha256": "cdad587a4a4d8b414db240bf584b9d1a8ed977c66e2280e681996fe19047b4c6"
+    },
+    "vision-conversion-ui-tests.log": {
+      "size": 2966,
+      "sha256": "a2440291865bf4db77311cfdb49cfad1903b5844ec758e0b6727850ac670a7c9"
+    },
+    "vision-conversion-ui-tests.xml": {
+      "size": 1486,
+      "sha256": "9891887259420e5c6cc304c0300c0e0321e7ef870399f50c82b9655faff71d77"
+    },
+    "vision-modelviewer-tests.log": {
+      "size": 31337,
+      "sha256": "295bb657b55dbdd0740604ff98753379dd0cbe15fc0b5627d230749d0de7cb8e"
+    },
+    "vision-modelviewer-tests.xml": {
+      "size": 1482,
+      "sha256": "541072322a4a512c103131403ea4091c1bef70e6330d43dcc401e36f92d59231"
+    },
+    "vision-recording-controller-tests.log": {
+      "size": 2591,
+      "sha256": "b4a78302bec8eb4df98ebaea24ddfffbe8aa6ed5786ec51065d2f0dd08272be0"
+    },
+    "vision-recording-controller-tests.xml": {
+      "size": 1499,
+      "sha256": "e8b41bcd9533ca6e30246fac35e96b1f8f7dd9551412f5a1dd7e48d4b507e456"
+    },
+    "vision-runtime-setup-shutdown-tests.log": {
+      "size": 4740,
+      "sha256": "78f69e867be7fd0300893a95da28e26dae9f7e31842504d228a06cc40c84c6e8"
+    },
+    "vision-runtime-setup-shutdown-tests.xml": {
+      "size": 1504,
+      "sha256": "cc0ac26c40e1ce5b360e9ec7533461cf59980809b61c5e2672f6ed5f399168e8"
+    },
+    "vision-scope-filter-ui-tests.log": {
+      "size": 16024,
+      "sha256": "87d66059230db44876e0dc7f6141246f2fb8835c60b933d58cb96812a4173bab"
+    },
+    "vision-scope-filter-ui-tests.xml": {
+      "size": 1490,
+      "sha256": "3f1f60703dbee97f3800653dbc2f5c5ca3d5a74124ebe49b22d418fd0489db92"
+    },
+    "vision-simple-pages-tests.log": {
+      "size": 2136,
+      "sha256": "b5ef903c19303d69cf8d32e525a367a703019441fd9ce3610a955408d4cd5eb5"
+    },
+    "vision-simple-pages-tests.xml": {
+      "size": 1107,
+      "sha256": "06406452cf5340dbaa19c17ae03b88cdbadfb18c1936b2230ac699d94ccbf0cb"
+    },
+    "vision-ui-tests.log": {
+      "size": 13055,
+      "sha256": "2b16e85e9fd4e4894a31454aff0f6fc4f5d69324290844504dec7219f5807d5f"
+    },
+    "vision-ui-tests.xml": {
+      "size": 1464,
+      "sha256": "691ec7ec67878338b03a028d9fdf8af6e31a5f678c62fb506f14b59dc7f087bc"
+    },
+    "vision-workbench-page-tests.log": {
+      "size": 2354,
+      "sha256": "859a54927065348a61426abf128e78d057b8f46b698b5d300b21efab67069d02"
+    },
+    "vision-workbench-page-tests.xml": {
+      "size": 1310,
+      "sha256": "86bfbad21de40e7e7037ea5120382ccb0200bd2879ade3f1a8021b8c20159455"
+    },
+    "vision-workspace-pages-tests.log": {
+      "size": 3014,
+      "sha256": "54516a29bc65e565731a9777ea3ce65d0b86ff99f3c62638bbb6554a912779da"
+    },
+    "vision-workspace-pages-tests.xml": {
+      "size": 1490,
+      "sha256": "22183c0f437bcfc7c5ce1bcbed4e698d4f2248a438564f5431f6b7a5d2e89afb"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 35
+    Start 35: vision-component-shutdown-tests
+
+35: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3/vision-component-shutdown-tests
+35: Environment variables: 
+35:  QT_QPA_PLATFORM=offscreen
+35:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+35: Test timeout computed to be: 120
+35: ********* Start testing of ComponentShutdownTests *********
+35: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+35: PASS   : ComponentShutdownTests::initTestCase()
+35: PASS   : ComponentShutdownTests::viewerShutdownIncludesRetiredAndActiveHelpers()
+35: PASS   : ComponentShutdownTests::viewerDirectDestructionLeavesAnAsynchronousReaper()
+35: PASS   : ComponentShutdownTests::conversionShutdownRetainsAcceptedOutputAndAwaitsCleanup()
+35: PASS   : ComponentShutdownTests::conversionShutdownDoesNotOutrunQueuedGlobalCleanup()
+35: PASS   : ComponentShutdownTests::conversionOrphanIsReapedBeforeAnotherPageCanReportReady()
+35: PASS   : ComponentShutdownTests::previewShutdownRejectsPendingAndFutureRequests()
+35: PASS   : ComponentShutdownTests::previewShutdownWaitsForRealDiskReadWithoutBlocking()
+35: PASS   : ComponentShutdownTests::finalApplicationPreviewGateIncludesDestroyedInstances()
+35: PASS   : ComponentShutdownTests::cleanupTestCase()
+35: Totals: 10 passed, 0 failed, 0 skipped, 0 blacklisted, 5377ms
+35: ********* Finished testing of ComponentShutdownTests *********
+1/1 Test #35: vision-component-shutdown-tests ...   Passed    5.49 sec
+
+The following tests passed:
+	vision-component-shutdown-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   5.49 sec

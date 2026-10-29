@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="9"
+	timestamp="2026-10-29T18:30:19"
+	>
+	<testcase name="vision-batch-responsiveness-tests" classname="vision-batch-responsiveness-tests" time="9.68409" status="run">
+		<system-out>********* Start testing of BatchResponsivenessTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : BatchResponsivenessTests::initTestCase()
+QINFO  : BatchResponsivenessTests::largeQueueLoadsOnlyVisibleThumbnailsAndCancelsStalePreviews() lazy_queue_evidence standard_yolo_dataset 2000 partial_count 96 population_controls_locked true stop_at_count 96 stop_dispatch_ms 4 initial_loaded_thumbnails 6 heartbeat_ticks 141 maximum_gap_ms 31 rapid_selection_final_index 1998 clear_cancelled_jobs 0
+PASS   : BatchResponsivenessTests::largeQueueLoadsOnlyVisibleThumbnailsAndCancelsStalePreviews()
+QINFO  : BatchResponsivenessTests::highResolutionAutomaticExportCanStopWithoutBlockingUi(1920x1080-rgb-random) batch_responsiveness_evidence: {"accepted_after_stop":1,"accepted_at_stop":1,"automatic_export":true,"backend":"OpenCV DNN / CPU","cache_survives_removed_sources":true,"complete_exports":true,...
+The rest of the test output was removed since it exceeds the threshold of 1024 bytes.
+</system-out>
+	</testcase>
+</testsuite>

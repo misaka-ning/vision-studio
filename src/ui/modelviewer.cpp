@@ -50,11 +50,36 @@
 #include <QWebEngineUrlRequestInfo>
 #include <QWebEngineUrlRequestInterceptor>
 #include <QWebEngineView>
+#include <utility>
 
 namespace
 {
 constexpr qsizetype outputLimit = 64 * 1024;
 constexpr auto netronVersion = "9.3.1";
+
+void retireViewerProcess(QProcess *process)
+{
+    if (process->property("visionViewerRetiring").toBool()) return;
+    process->setProperty("visionViewerRetiring", true);
+    QObject::connect(process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), process,
+                     &QObject::deleteLater);
+    QObject::connect(process, &QProcess::errorOccurred, process, [process](QProcess::ProcessError error) {
+        if (error == QProcess::FailedToStart) process->deleteLater();
+    });
+    if (process->state() == QProcess::NotRunning) process->deleteLater();
+    else {
+        process->write("{\"type\":\"quit\"}\n");
+        process->closeWriteChannel();
+        QTimer::singleShot(800, process, [process] {
+            if (process->state() != QProcess::NotRunning) {
+                process->terminate();
+                QTimer::singleShot(400, process, [process] {
+                    if (process->state() != QProcess::NotRunning) process->kill();
+                });
+            }
+        });
+    }
+}
 
 // A small native code viewer keeps the existing read-only/search behaviour,
 // while painting the gutter independently of document text and horizontal scroll.
@@ -1023,23 +1048,42 @@ ModelViewer::ModelViewer(QWidget *parent) : QWidget(parent)
 ModelViewer::~ModelViewer()
 {
     stop();
-    // Retiring processes may still be waiting for their graceful quit timer. Bound shutdown and reap all of
-    // them.
-    for (QProcess *process : findChildren<QProcess *>(QString(), Qt::FindDirectChildrenOnly))
-    {
-        if (process->state() != QProcess::NotRunning)
-        {
-            process->closeWriteChannel();
-            if (!process->waitForFinished(150))
-            {
-                process->terminate();
-                if (!process->waitForFinished(150))
-                {
-                    process->kill();
-                    process->waitForFinished(150);
-                }
-            }
-        }
+    // Normal ownership lasts until shutdownReady. Direct widget destruction
+    // still leaves each retiring helper with its own asynchronous reap path.
+    for (QProcess *process : std::as_const(m_processes)) {
+        process->disconnect(this);
+        process->setParent(nullptr);
+        retireViewerProcess(process);
+    }
+}
+
+void ModelViewer::trackProcess(QProcess *process)
+{
+    m_processes.insert(process);
+    connect(process, &QObject::destroyed, this, [this, process] {
+        m_processes.remove(process);
+        maybeFinishShutdown();
+    });
+}
+
+bool ModelViewer::isShutdownReady() const
+{
+    return m_shutdownRequested && m_processes.isEmpty() && !m_webView && !m_profile;
+}
+
+void ModelViewer::requestShutdown()
+{
+    if (m_shutdownRequested) return;
+    m_shutdownRequested = true;
+    stop();
+    QTimer::singleShot(0, this, &ModelViewer::maybeFinishShutdown);
+}
+
+void ModelViewer::maybeFinishShutdown()
+{
+    if (isShutdownReady() && !m_shutdownSignalled) {
+        m_shutdownSignalled = true;
+        emit shutdownReady();
     }
 }
 
@@ -1461,29 +1505,8 @@ void ModelViewer::releaseResources()
         QProcess *process = m_process;
         m_process = nullptr;
         process->disconnect(this);
-        connect(process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished), process,
-                &QObject::deleteLater);
-        if (process->state() == QProcess::NotRunning)
-            process->deleteLater();
-        else
-        {
-            process->write("{\"type\":\"quit\"}\n");
-            process->closeWriteChannel();
-            QTimer::singleShot(800, process,
-                               [process]
-                               {
-                                   if (process->state() != QProcess::NotRunning)
-                                   {
-                                       process->terminate();
-                                       QTimer::singleShot(400, process,
-                                                          [process]
-                                                          {
-                                                              if (process->state() != QProcess::NotRunning)
-                                                                  process->kill();
-                                                          });
-                                   }
-                               });
-        }
+        trackProcess(process); // disconnect above also removed its lifecycle observer.
+        retireViewerProcess(process);
     }
     m_stdout.clear();
     m_stderr.clear();
@@ -1510,6 +1533,7 @@ void ModelViewer::fail(const QString &message)
 
 void ModelViewer::openModel(const QString &path)
 {
+    if (m_shutdownRequested) return;
     ++m_generation;
     releaseResources();
     m_error.clear();
@@ -1554,6 +1578,7 @@ void ModelViewer::openModel(const QString &path)
     if (generation != m_generation)
         return;
     m_process = new QProcess(this);
+    trackProcess(m_process);
     m_process->setProcessChannelMode(QProcess::SeparateChannels);
     auto environment = QProcessEnvironment::systemEnvironment();
     environment.insert("PYTHONUNBUFFERED", "1");

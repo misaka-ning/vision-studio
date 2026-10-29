@@ -1,0 +1,40 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 31
+    Start 31: vision-recording-controller-tests
+
+31: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage3/vision-recording-controller-tests
+31: Test timeout computed to be: 120
+31: ********* Start testing of RecordingControllerTests *********
+31: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+31: PASS   : RecordingControllerTests::initTestCase()
+31: PASS   : RecordingControllerTests::recordingIntentCancelsBeforeStartAndRejectsImages()
+31: PASS   : RecordingControllerTests::activeClockAndStopKeepCaptureActiveUntilFinished()
+31: PASS   : RecordingControllerTests::recordingFailureResetsIntentAndReportsError()
+31: PASS   : RecordingControllerTests::scansRealRecordingsPreservesSelectionAndCropsPreview()
+31: PASS   : RecordingControllerTests::selectionGenerationDropsQueuedFramesAndEmptySelection()
+31: PASS   : RecordingControllerTests::playbackPausesAndReachesEofThenRestarts()
+31: PASS   : RecordingControllerTests::exportsAviAndSidecarExactlyAndRejectsInvalidRequests()
+31: PASS   : RecordingControllerTests::shutdownDrainsAcceptedExportAndWaitsForDetectionFinished()
+31: PASS   : RecordingControllerTests::directDestructionIsNonblockingAndReapsThreadAfterAcceptedExport()
+31: PASS   : RecordingControllerTests::cleanupTestCase()
+31: Totals: 11 passed, 0 failed, 0 skipped, 0 blacklisted, 2526ms
+31: ********* Finished testing of RecordingControllerTests *********
+1/1 Test #31: vision-recording-controller-tests ...   Passed    2.58 sec
+
+The following tests passed:
+	vision-recording-controller-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   2.58 sec
