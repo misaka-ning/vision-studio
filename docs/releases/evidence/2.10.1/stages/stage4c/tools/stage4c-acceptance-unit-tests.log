@@ -1,0 +1,14 @@
+test_changed_native_must_be_rerun (__main__.SelectionGuards.test_changed_native_must_be_rerun) ... ok
+test_corrected_result_is_preferred_and_unchanged_initial_can_be_reused (__main__.SelectionGuards.test_corrected_result_is_preferred_and_unchanged_initial_can_be_reused) ... ok
+test_duplicate_runs_are_rejected (__main__.SelectionGuards.test_duplicate_runs_are_rejected) ... ok
+test_failed_correction_cannot_fall_back_to_initial_success (__main__.SelectionGuards.test_failed_correction_cannot_fall_back_to_initial_success) ... ok
+test_missing_binary_inventory_is_rejected (__main__.SelectionGuards.test_missing_binary_inventory_is_rejected) ... ok
+test_new_unregistered_corrected_suite_is_rejected (__main__.SelectionGuards.test_new_unregistered_corrected_suite_is_rejected) ... ok
+test_original_parser_rejects_hidden_python_skip (__main__.SelectionGuards.test_original_parser_rejects_hidden_python_skip) ... ok
+test_skipped_correction_is_not_success (__main__.SelectionGuards.test_skipped_correction_is_not_success) ... ok
+test_zero_exit_unrerun_skip_cannot_be_reused (__main__.SelectionGuards.test_zero_exit_unrerun_skip_cannot_be_reused) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.001s
+
+OK

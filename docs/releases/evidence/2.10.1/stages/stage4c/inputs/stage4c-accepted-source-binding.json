@@ -1,0 +1,10 @@
+{
+  "source_tree": "fbb9933dcd0b6fad57b12deef5ed4098e998b698",
+  "regular_files_verified": 5321,
+  "matches_git_tree": true,
+  "binary_sha256": "cb5aa8d8156acfb75369ec0fc5f790c7b218b6149a91a017bfeae4dcff8820c7",
+  "build_attempts": [
+    "stage4c-accepted-build.log",
+    "stage4c-accepted-build-retry.log"
+  ]
+}

@@ -1,0 +1,89 @@
+Running vision-core-tests
+{"name": "vision-core-tests", "success": true, "elapsed_seconds": 0.763}
+Running vision-inference-delivery-tests
+{"name": "vision-inference-delivery-tests", "success": true, "elapsed_seconds": 1.479}
+Running vision-recording-tests
+{"name": "vision-recording-tests", "success": true, "elapsed_seconds": 3.45}
+Running vision-pt-tests
+{"name": "vision-pt-tests", "success": true, "elapsed_seconds": 245.128}
+Running vision-gpu-tests
+{"name": "vision-gpu-tests", "success": true, "elapsed_seconds": 132.661}
+Running vision-ui-tests
+{"name": "vision-ui-tests", "success": false, "elapsed_seconds": 67.274}
+Running vision-batch-responsiveness-tests
+{"name": "vision-batch-responsiveness-tests", "success": true, "elapsed_seconds": 10.319}
+Running vision-scope-filter-ui-tests
+{"name": "vision-scope-filter-ui-tests", "success": true, "elapsed_seconds": 34.951}
+Running vision-modelviewer-tests
+{"name": "vision-modelviewer-tests", "success": true, "elapsed_seconds": 21.008}
+Running vision-conversion-ui-tests
+{"name": "vision-conversion-ui-tests", "success": true, "elapsed_seconds": 0.707}
+Running vision-conversion-inference-tests
+{"name": "vision-conversion-inference-tests", "success": false, "elapsed_seconds": 11.442}
+Running vision-model-conversion-tests
+{"name": "vision-model-conversion-tests", "success": false, "elapsed_seconds": 116.025}
+Running vision-netron-server-tests
+{"name": "vision-netron-server-tests", "success": true, "elapsed_seconds": 4.942}
+Running vision-gpu-runtime-tests
+{"name": "vision-gpu-runtime-tests", "success": true, "elapsed_seconds": 1.256}
+Running vision-evaluation-worker-tests
+{"name": "vision-evaluation-worker-tests", "success": true, "elapsed_seconds": 66.405}
+Running vision-evaluation-panel-tests
+{"name": "vision-evaluation-panel-tests", "success": true, "elapsed_seconds": 1.938}
+Running vision-evaluation-python-tests
+{"name": "vision-evaluation-python-tests", "success": true, "elapsed_seconds": 9.945}
+Running vision-evaluation-integration-tests
+{"name": "vision-evaluation-integration-tests", "success": true, "elapsed_seconds": 154.388}
+Running vision-dataset-session-tests
+{"name": "vision-dataset-session-tests", "success": true, "elapsed_seconds": 0.069}
+Running vision-dataset-session-ui-tests
+{"name": "vision-dataset-session-ui-tests", "success": true, "elapsed_seconds": 9.966}
+Running vision-model-yaml-tests
+{"name": "vision-model-yaml-tests", "success": true, "elapsed_seconds": 0.015}
+Running vision-input-drop-ui-tests
+{"name": "vision-input-drop-ui-tests", "success": true, "elapsed_seconds": 24.199}
+Running vision-evaluation-reporting-tests
+{"name": "vision-evaluation-reporting-tests", "success": true, "elapsed_seconds": 5.771}
+Running vision-evaluation-snapshot-tests
+{"name": "vision-evaluation-snapshot-tests", "success": true, "elapsed_seconds": 1.959}
+Running vision-pt-batch-python-tests
+{"name": "vision-pt-batch-python-tests", "success": true, "elapsed_seconds": 25.539}
+Running vision-evaluation-import-tests
+{"name": "vision-evaluation-import-tests", "success": true, "elapsed_seconds": 9.251}
+Running vision-app-services-tests
+{"name": "vision-app-services-tests", "success": true, "elapsed_seconds": 0.201}
+Running vision-gpu-environment-service-tests
+{"name": "vision-gpu-environment-service-tests", "success": true, "elapsed_seconds": 1.015}
+Running vision-model-session-controller-tests
+{"name": "vision-model-session-controller-tests", "success": true, "elapsed_seconds": 0.582}
+Running vision-detection-controller-tests
+{"name": "vision-detection-controller-tests", "success": true, "elapsed_seconds": 2.17}
+Running vision-input-session-controller-tests
+{"name": "vision-input-session-controller-tests", "success": true, "elapsed_seconds": 1.766}
+Running vision-evaluation-controller-tests
+{"name": "vision-evaluation-controller-tests", "success": true, "elapsed_seconds": 0.689}
+Running vision-operation-coordinator-tests
+{"name": "vision-operation-coordinator-tests", "success": true, "elapsed_seconds": 1.102}
+Running vision-recording-controller-tests
+{"name": "vision-recording-controller-tests", "success": true, "elapsed_seconds": 2.679}
+Running vision-workbench-configuration-tests
+{"name": "vision-workbench-configuration-tests", "success": true, "elapsed_seconds": 0.077}
+Running vision-image-result-store-tests
+{"name": "vision-image-result-store-tests", "success": true, "elapsed_seconds": 0.321}
+Running vision-result-delivery-tests
+{"name": "vision-result-delivery-tests", "success": true, "elapsed_seconds": 0.609}
+Running vision-workbench-page-tests
+{"name": "vision-workbench-page-tests", "success": true, "elapsed_seconds": 0.38}
+Running vision-workspace-pages-tests
+{"name": "vision-workspace-pages-tests", "success": true, "elapsed_seconds": 0.18}
+Running vision-simple-pages-tests
+{"name": "vision-simple-pages-tests", "success": true, "elapsed_seconds": 0.121}
+Running vision-component-shutdown-tests
+{"name": "vision-component-shutdown-tests", "success": true, "elapsed_seconds": 5.574}
+Running vision-runtime-setup-shutdown-tests
+{"name": "vision-runtime-setup-shutdown-tests", "success": true, "elapsed_seconds": 0.809}
+Running vision-workspace-drop-filter-tests
+{"name": "vision-workspace-drop-filter-tests", "success": true, "elapsed_seconds": 0.127}
+Running vision-window-shutdown-tests
+{"name": "vision-window-shutdown-tests", "success": true, "elapsed_seconds": 9.457}
+{"success": false, "errors": ["vision-ui-tests: command failure, skip, timeout, or missing JUnit test result", "vision-conversion-inference-tests: command failure, skip, timeout, or missing JUnit test result", "vision-model-conversion-tests: command failure, skip, timeout, or missing JUnit test result"], "report": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/detection-regression-qa.json"}

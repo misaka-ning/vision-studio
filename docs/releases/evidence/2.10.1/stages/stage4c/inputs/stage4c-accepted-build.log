@@ -1,0 +1,72 @@
+[1/229] Automatic MOC for target vision-opencv-target-probe
+[2/229] Automatic MOC for target vision-core
+[3/229] Automatic MOC for target vision-model-yaml-tests
+[4/229] Automatic MOC for target vision-dataset-session-tests
+[5/229] Automatic MOC for target vision-evaluation-panel-tests
+[6/229] Building CXX object CMakeFiles/vision-core.dir/vision-core_autogen/mocs_compilation.cpp.o
+[7/229] Building CXX object CMakeFiles/vision-core.dir/src/core/evaluationmatch.cpp.o
+[8/229] Building CXX object CMakeFiles/vision-core.dir/src/core/evaluationreview.cpp.o
+[9/229] Building CXX object CMakeFiles/vision-core.dir/src/core/evaluationworker.cpp.o
+[10/229] Building CXX object CMakeFiles/vision-core.dir/src/core/inferenceworker.cpp.o
+[11/229] Building CXX object CMakeFiles/vision-core.dir/src/core/visionengine.cpp.o
+[12/229] Building CXX object CMakeFiles/vision-core.dir/src/core/gpuruntime.cpp.o
+[13/229] Building CXX object CMakeFiles/vision-core.dir/src/core/ptbackend.cpp.o
+[14/229] Building CXX object CMakeFiles/vision-core.dir/src/core/videorecorder.cpp.o
+[15/229] Building CXX object CMakeFiles/vision-core.dir/src/core/datasetsessionstore.cpp.o
+[16/229] Building CXX object CMakeFiles/vision-opencv-target-probe.dir/vision-opencv-target-probe_autogen/mocs_compilation.cpp.o
+[17/229] Building CXX object CMakeFiles/vision-core.dir/src/core/cpuruntime.cpp.o
+[18/229] Building CXX object CMakeFiles/vision-model-yaml-tests.dir/vision-model-yaml-tests_autogen/mocs_compilation.cpp.o
+[19/229] Building CXX object CMakeFiles/vision-core.dir/src/core/onnxcudabackend.cpp.o
+[20/229] Building CXX object CMakeFiles/vision-core.dir/src/core/previewdrop.cpp.o
+[21/229] Linking CXX static library libvision-core.a
+[22/229] Building CXX object CMakeFiles/vision-opencv-target-probe.dir/tests/opencv_target_probe.cpp.o
+[23/229] Automatic MOC for target vision-app
+[24/229] Linking CXX executable vision-opencv-target-probe
+[25/229] Building CXX object CMakeFiles/vision-model-yaml-tests.dir/tests/model_yaml_tests.cpp.o
+[26/229] Building CXX object CMakeFiles/vision-model-yaml-tests.dir/src/ui/modelyaml.cpp.o
+[27/229] Building CXX object CMakeFiles/vision-app.dir/src/app/annotationrenderer.cpp.o
+[28/229] Building CXX object CMakeFiles/vision-app.dir/src/app/preferencesrepository.cpp.o
+[29/229] Building CXX object CMakeFiles/vision-app.dir/vision-app_autogen/mocs_compilation.cpp.o
+[30/229] Building CXX object CMakeFiles/vision-app.dir/src/app/historyrepository.cpp.o
+[31/229] Building CXX object CMakeFiles/vision-app.dir/src/app/resultwriter.cpp.o
+[32/229] Building CXX object CMakeFiles/vision-app.dir/src/app/detectioncontroller.cpp.o
+[33/229] Building CXX object CMakeFiles/vision-app.dir/src/app/gpuenvironmentservice.cpp.o
+[34/229] Building CXX object CMakeFiles/vision-app.dir/src/app/modelsessioncontroller.cpp.o
+[35/229] Building CXX object CMakeFiles/vision-app.dir/src/app/imageresultstore.cpp.o
+[36/229] Building CXX object CMakeFiles/vision-app.dir/src/app/inputsessioncontroller.cpp.o
+[37/229] Building CXX object CMakeFiles/vision-app.dir/src/app/workbenchconfiguration.cpp.o
+[38/229] Building CXX object CMakeFiles/vision-app.dir/src/app/evaluationcontroller.cpp.o
+[39/229] Linking CXX executable vision-model-yaml-tests
+[40/229] Building CXX object CMakeFiles/vision-app.dir/src/app/operationcoordinator.cpp.o
+[41/229] Automatic MOC for target vision-core-tests
+[42/229] Building CXX object CMakeFiles/vision-core-tests.dir/vision-core-tests_autogen/mocs_compilation.cpp.o
+[43/229] Building CXX object CMakeFiles/vision-app.dir/src/app/recordingcontroller.cpp.o
+[44/229] Automatic MOC for target vision-inference-delivery-tests
+[45/229] Building CXX object CMakeFiles/vision-inference-delivery-tests.dir/vision-inference-delivery-tests_autogen/mocs_compilation.cpp.o
+[46/229] Building CXX object CMakeFiles/vision-app.dir/src/app/resultdeliveryservice.cpp.o
+[47/229] Linking CXX static library libvision-app.a
+[48/229] Automatic MOC for target vision-recording-tests
+[49/229] Building CXX object CMakeFiles/vision-recording-tests.dir/vision-recording-tests_autogen/mocs_compilation.cpp.o
+[50/229] Automatic MOC for target vision-ui
+[51/229] Automatic RCC for resources.qrc
+[52/229] Building CXX object CMakeFiles/vision-inference-delivery-tests.dir/tests/inference_delivery_tests.cpp.o
+[53/229] Building CXX object CMakeFiles/vision-ui.dir/vision-ui_autogen/mocs_compilation.cpp.o
+[54/229] Building CXX object CMakeFiles/vision-core-tests.dir/tests/core_tests.cpp.o
+[55/229] Building CXX object CMakeFiles/vision-recording-tests.dir/tests/recording_tests.cpp.o
+[56/229] Building CXX object CMakeFiles/vision-ui.dir/src/ui/mainwindow.cpp.o
+FAILED: CMakeFiles/vision-ui.dir/src/ui/mainwindow.cpp.o 
+/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_POSITIONING_LIB -DQT_PRINTSUPPORT_LIB -DQT_QMLINTEGRATION_LIB -DQT_QMLMETA_LIB -DQT_QMLMODELS_LIB -DQT_QMLWORKERSCRIPT_LIB -DQT_QML_LIB -DQT_QUICK_LIB -DQT_SVG_LIB -DQT_WEBCHANNEL_LIB -DQT_WEBENGINECORE_LIB -DQT_WEBENGINEWIDGETS_LIB -DQT_WIDGETS_LIB -DVISION_PROJECT_DIR=\"/opt/VisionStudio\" -I/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-ui_autogen/include -I/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/src -isystem /usr/include/opencv4 -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtCore -isystem /home/misaka/Qt/6.8.3/gcc_64/include -isystem /home/misaka/Qt/6.8.3/gcc_64/mkspecs/linux-g++ -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtGui -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtWidgets -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtSvg -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtNetwork -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtWebChannel -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtQml -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtQmlIntegration -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtWebEngineWidgets -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtWebEngineCore -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtQuick -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtQmlMeta -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtQmlModels -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtQmlWorkerScript -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtOpenGL -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtPositioning -isystem /home/misaka/Qt/6.8.3/gcc_64/include/QtPrintSupport -O3 -DNDEBUG -Wall -Wextra -Wpedantic -fPIC -std=gnu++17 -MD -MT CMakeFiles/vision-ui.dir/src/ui/mainwindow.cpp.o -MF CMakeFiles/vision-ui.dir/src/ui/mainwindow.cpp.o.d -o CMakeFiles/vision-ui.dir/src/ui/mainwindow.cpp.o -c /home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/src/ui/mainwindow.cpp
+/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/src/ui/mainwindow.cpp: In lambda function:
+/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/src/ui/mainwindow.cpp:836:49: error: no matching function for call to ‘vision::app::OperationCoordinator::availability()’
+  836 |         if (!operationCoordinator_->availability().changeDevice) return;
+      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+In file included from /home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/src/ui/mainwindow.h:8,
+                 from /home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/src/ui/mainwindow.cpp:12:
+/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/src/app/operationcoordinator.h:47:34: note: candidate: ‘static vision::app::OperationAvailability vision::app::OperationCoordinator::availability(const vision::app::ActivitySnapshot&)’
+   47 |     static OperationAvailability availability(const ActivitySnapshot &activity);
+      |                                  ^~~~~~~~~~~~
+/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/src/app/operationcoordinator.h:47:34: note:   candidate expects 1 argument, 0 provided
+[57/229] Building CXX object CMakeFiles/vision-ui.dir/src/ui/mainwindow_evaluation.cpp.o
+[58/229] Building CXX object CMakeFiles/vision-ui.dir/src/ui/lazyimagequeue.cpp.o
+[59/229] Building CXX object CMakeFiles/vision-ui.dir/src/ui/evaluationpanel.cpp.o
+ninja: build stopped: subcommand failed.

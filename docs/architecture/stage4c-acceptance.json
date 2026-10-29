@@ -1,0 +1,2476 @@
+{
+  "schema_version": 1,
+  "stage": "4c",
+  "version": "2.10.1",
+  "tested_application_version": "2.10.0",
+  "generated_at_utc": "2026-10-29T12:02:18.346432+00:00",
+  "success": true,
+  "errors": [],
+  "build_success": true,
+  "regression_success": true,
+  "not_final_release_acceptance": true,
+  "scope": "Production page/controller wiring, configuration authority, lifecycle, drop and independent smoke boundaries. Effective 44-suite coverage combines the initial execution with corrected reruns; it is not one single all-green 44-suite invocation.",
+  "initial_execution": {
+    "suite_count": 44,
+    "successful_suites": 41,
+    "success": false,
+    "failed_or_fixture_skipped": [
+      {
+        "name": "vision-conversion-inference-tests",
+        "exit_code": 8,
+        "skipped": false,
+        "raw_log": "initial/vision-conversion-inference-tests.log"
+      },
+      {
+        "name": "vision-model-conversion-tests",
+        "exit_code": 0,
+        "skipped": true,
+        "raw_log": "initial/vision-model-conversion-tests.log"
+      },
+      {
+        "name": "vision-ui-tests",
+        "exit_code": 8,
+        "skipped": false,
+        "raw_log": "initial/vision-ui-tests.log"
+      }
+    ]
+  },
+  "corrected_execution": {
+    "suite_count": 16,
+    "success": true,
+    "suites": [
+      "vision-ui-tests",
+      "vision-batch-responsiveness-tests",
+      "vision-scope-filter-ui-tests",
+      "vision-conversion-inference-tests",
+      "vision-input-drop-ui-tests",
+      "vision-dataset-session-ui-tests",
+      "vision-evaluation-integration-tests",
+      "vision-workbench-page-tests",
+      "vision-workspace-pages-tests",
+      "vision-simple-pages-tests",
+      "vision-component-shutdown-tests",
+      "vision-runtime-setup-shutdown-tests",
+      "vision-workspace-drop-filter-tests",
+      "vision-window-shutdown-tests",
+      "vision-model-conversion-tests",
+      "vision-gpu-tests"
+    ]
+  },
+  "effective_suite_count": 44,
+  "qt_tests_passed": 1223,
+  "python_tests_passed": 163,
+  "failed": 0,
+  "skipped": 0,
+  "blacklisted": 0,
+  "suites": [
+    {
+      "name": "vision-core-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-core\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-core-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-core-tests"
+      ],
+      "native_binary_sha256": "8223c9a492b3bef07c0b9680f7f0d70dd358544de44f34e5463b4325d26a828f",
+      "native_initial_sha256": "8223c9a492b3bef07c0b9680f7f0d70dd358544de44f34e5463b4325d26a828f",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-core-tests.log",
+      "log_sha256": "da19271caa279eb511d89a37eaad4fe14b220be17851177c4ad19ce61bffce8f",
+      "junit": "initial/vision-core-tests.xml",
+      "junit_sha256": "b0c36ceebbd842a8d1721e62918b3070607e56089a4bee65926fe24ed9584612",
+      "qt_totals": [
+        {
+          "passed": 39,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "CoreTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.688
+    },
+    {
+      "name": "vision-inference-delivery-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-inference\\-delivery\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-inference-delivery-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-inference-delivery-tests"
+      ],
+      "native_binary_sha256": "ecca87206f12c29ed1c5dc0f039b1ad899b980aa6724e03ef19c0648a3aed6b9",
+      "native_initial_sha256": "ecca87206f12c29ed1c5dc0f039b1ad899b980aa6724e03ef19c0648a3aed6b9",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-inference-delivery-tests.log",
+      "log_sha256": "6ec5a31c3e2a68b855af13963f4c8f700ae016abc56461219147d2124a23a717",
+      "junit": "initial/vision-inference-delivery-tests.xml",
+      "junit_sha256": "33c2f80f020e5b6c0be73daa6771708a5c8c0f79388f686b56202b428bc382c7",
+      "qt_totals": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "InferenceDeliveryTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 1.393
+    },
+    {
+      "name": "vision-recording-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-recording\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-recording-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-recording-tests"
+      ],
+      "native_binary_sha256": "b438f99c3f4bdda454deeda506a0c467bd2d241c31f00fd68505b9b95f150891",
+      "native_initial_sha256": "b438f99c3f4bdda454deeda506a0c467bd2d241c31f00fd68505b9b95f150891",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-recording-tests.log",
+      "log_sha256": "683eb3a7a41c7b71931a8ba945f2fd90eeff7e49df33fc48f9965901663e452e",
+      "junit": "initial/vision-recording-tests.xml",
+      "junit_sha256": "2e26ae1d59b0ca9fb39da2d38f4a07bb42d97766ab038dfba59e1828cec186e0",
+      "qt_totals": [
+        {
+          "passed": 15,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "RecordingTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 3.051
+    },
+    {
+      "name": "vision-pt-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-pt\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-pt-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-pt-tests"
+      ],
+      "native_binary_sha256": "688bcb8f3ca73e2c2cc0ddd10da253375fa69139e67292737f1b50c301449c71",
+      "native_initial_sha256": "688bcb8f3ca73e2c2cc0ddd10da253375fa69139e67292737f1b50c301449c71",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-pt-tests.log",
+      "log_sha256": "e173b891f51c1e170c0ab78e6d103ba90bc35060ddd7f1a3ff1fc05873a6ed52",
+      "junit": "initial/vision-pt-tests.xml",
+      "junit_sha256": "ac9ff8b3de5ab43380a4efe75a200eb5fb25aeae0ae4ad163039119f46b1212a",
+      "qt_totals": [
+        {
+          "passed": 51,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "PtBackendTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 245.099
+    },
+    {
+      "name": "vision-gpu-tests",
+      "success": true,
+      "source_run": "corrected",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-gpu\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/vision-gpu-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-gpu-tests"
+      ],
+      "native_binary_sha256": "58460cae87b43e8d81d8d9e6bcb040cc5d95b41b1d4ef682995dce9be652d786",
+      "native_initial_sha256": "58460cae87b43e8d81d8d9e6bcb040cc5d95b41b1d4ef682995dce9be652d786",
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": null,
+      "log": "corrected/vision-gpu-tests.log",
+      "log_sha256": "326c388cdfd8f045af3a3cca901a845f15009ed33ac0a134bb3173b2429ff9c2",
+      "junit": "corrected/vision-gpu-tests.xml",
+      "junit_sha256": "3a908e055716bc6fbb254b0099536e2c7bfcead716027ec85f3bcf17bdc8eca9",
+      "qt_totals": [
+        {
+          "passed": 11,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "GpuBackendTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 131.59
+    },
+    {
+      "name": "vision-ui-tests",
+      "success": true,
+      "source_run": "corrected",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-ui\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/vision-ui-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-ui-tests"
+      ],
+      "native_binary_sha256": "15a83c850e4b87613585a00e6b3f1dd63753714c2bc39cd77920c2e6c7956b9e",
+      "native_initial_sha256": "21792f194da99263eb69d2cad57fafb07cd96380f2f6ec840ed81cc3738dea19",
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": null,
+      "log": "corrected/vision-ui-tests.log",
+      "log_sha256": "f8d2c44647f895e47bd8a8672f8651519d4346b971d00188bcbff7f6ed933595",
+      "junit": "corrected/vision-ui-tests.xml",
+      "junit_sha256": "73402cddbb37a2f77ab939ea065b2a2d66c4b5a820068ebd0d1b871ccbaecfce",
+      "qt_totals": [
+        {
+          "passed": 60,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "UiTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 68.356
+    },
+    {
+      "name": "vision-batch-responsiveness-tests",
+      "success": true,
+      "source_run": "corrected",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-batch\\-responsiveness\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/vision-batch-responsiveness-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-batch-responsiveness-tests"
+      ],
+      "native_binary_sha256": "40f6cb1288458995cf9e481e5033f5097309d7b61e9139ab920cdb273383e317",
+      "native_initial_sha256": "c57b4a5282daab4c63298bfee800426b411765f83530ed678d46263644bf1774",
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": null,
+      "log": "corrected/vision-batch-responsiveness-tests.log",
+      "log_sha256": "af8af766b4c4d862132443cd0db6a8ee17a6a6bed3a85f4a3fc2e36e676970fd",
+      "junit": "corrected/vision-batch-responsiveness-tests.xml",
+      "junit_sha256": "37ec3c55f6251ef4e1ee5281ca73f64ce7924ebe01f148f2481565fe8a0bf978",
+      "qt_totals": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "BatchResponsivenessTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 10.248
+    },
+    {
+      "name": "vision-scope-filter-ui-tests",
+      "success": true,
+      "source_run": "corrected",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-scope\\-filter\\-ui\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/vision-scope-filter-ui-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-scope-filter-ui-tests"
+      ],
+      "native_binary_sha256": "45f7379609717012938a4415f3e8bad9cb8049bbc25eaaf65807181e0f8fc083",
+      "native_initial_sha256": "0a2aac427c8ddbf46aff28d262acb2bcd57a0e3539d91194a625c8c64d09a5c1",
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": null,
+      "log": "corrected/vision-scope-filter-ui-tests.log",
+      "log_sha256": "c42fce016ed84f24ff19a5d27135686cde695f6ef8d8dbd53c0c0602f5e8ffe0",
+      "junit": "corrected/vision-scope-filter-ui-tests.xml",
+      "junit_sha256": "6d4b776bd1a8cf327bb33fa16439fbd57d333489c14135701cfa8ed6a59d7f2a",
+      "qt_totals": [
+        {
+          "passed": 38,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "ScopeFilterUiTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 35.041
+    },
+    {
+      "name": "vision-modelviewer-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-modelviewer\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-modelviewer-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-modelviewer-tests"
+      ],
+      "native_binary_sha256": "88869607ec8df7e447a0948c3d46e534757a4d6688d914d961de2e902258060b",
+      "native_initial_sha256": "88869607ec8df7e447a0948c3d46e534757a4d6688d914d961de2e902258060b",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-modelviewer-tests.log",
+      "log_sha256": "be1dbcb10bdb6b527cd0736489d7ce369d114569fa74ea4dcfb328d00ce7e4d8",
+      "junit": "initial/vision-modelviewer-tests.xml",
+      "junit_sha256": "d67d11be99e513da85ac68a84bc1ef26e87f5ef5969b3e75d9db3310c86cddd6",
+      "qt_totals": [
+        {
+          "passed": 27,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "ModelViewerTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 20.898
+    },
+    {
+      "name": "vision-conversion-ui-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-conversion\\-ui\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-conversion-ui-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-conversion-ui-tests"
+      ],
+      "native_binary_sha256": "98ad323a9bf9ec3002e3e2c23136687547ace20181de8c7a0e17a3ede7a463be",
+      "native_initial_sha256": "98ad323a9bf9ec3002e3e2c23136687547ace20181de8c7a0e17a3ede7a463be",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-conversion-ui-tests.log",
+      "log_sha256": "dad2c81a1d9eaf1130e60c57efd02b3894aaab875a7be38a42186cd70e153554",
+      "junit": "initial/vision-conversion-ui-tests.xml",
+      "junit_sha256": "5f2908213a90eab3ebf4b724e5e9819fd4974bf9da1950b959ed87780ae76c96",
+      "qt_totals": [
+        {
+          "passed": 8,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "ConversionUiTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.678
+    },
+    {
+      "name": "vision-conversion-inference-tests",
+      "success": true,
+      "source_run": "corrected",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-conversion\\-inference\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/vision-conversion-inference-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-conversion-inference-tests"
+      ],
+      "native_binary_sha256": "c36d7554cfbc43eab1a5d42c66d0c985646b7642078db1ba00d3f1c0cfede34c",
+      "native_initial_sha256": "914307649c69ca1a8a26873b18b8f047d2e1e18589c3140430d7ed4eac5f1120",
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": null,
+      "log": "corrected/vision-conversion-inference-tests.log",
+      "log_sha256": "55857e57e75e09a9dd19d7d8a82c3015c9a714947b343f623497858526ed4582",
+      "junit": "corrected/vision-conversion-inference-tests.xml",
+      "junit_sha256": "b02aba92fb0788ece0b76b50364488c37cd3060acb258a4d923ea38d9414b707",
+      "qt_totals": [
+        {
+          "passed": 14,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "ConversionInferenceTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 117.487
+    },
+    {
+      "name": "vision-model-conversion-tests",
+      "success": true,
+      "source_run": "corrected",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-model\\-conversion\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/vision-model-conversion-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/miniconda3/bin/python3.1",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/tests/model_conversion_tests.py"
+      ],
+      "native_binary_sha256": null,
+      "native_initial_sha256": null,
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": "f6b8c8ea9e30a89ffe6ce24c6990049cb936dbf6d12613791a4ba4ee618ee289",
+      "log": "corrected/vision-model-conversion-tests.log",
+      "log_sha256": "a4bfb78a012d91787aeec2c81a2d0c78014a9953468b3c731a49b8cdeb8a77db",
+      "junit": "corrected/vision-model-conversion-tests.xml",
+      "junit_sha256": "31c32178b9dac14b0c0a0c5e5218190f6ebfe117496ce0a4fbd2141e86d8cb4b",
+      "qt_totals": [],
+      "python_tests": 24,
+      "result_elapsed_seconds": 118.823
+    },
+    {
+      "name": "vision-netron-server-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-netron\\-server\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-netron-server-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/miniconda3/bin/python3.1",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/tests/netron_server_tests.py"
+      ],
+      "native_binary_sha256": null,
+      "native_initial_sha256": null,
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": "f6b8c8ea9e30a89ffe6ce24c6990049cb936dbf6d12613791a4ba4ee618ee289",
+      "log": "initial/vision-netron-server-tests.log",
+      "log_sha256": "4961eb556e1782e749932a9a421b582abddd327e5c92634fc379f2a85f505133",
+      "junit": "initial/vision-netron-server-tests.xml",
+      "junit_sha256": "d2ab512ca567f61eca5a7c130ca88ec1ea292e72b7be59212af2f4688bb53d9c",
+      "qt_totals": [],
+      "python_tests": 11,
+      "result_elapsed_seconds": 4.853
+    },
+    {
+      "name": "vision-gpu-runtime-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-gpu\\-runtime\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-gpu-runtime-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/miniconda3/bin/python3.1",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/tests/gpu_runtime_tests.py"
+      ],
+      "native_binary_sha256": null,
+      "native_initial_sha256": null,
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": "f6b8c8ea9e30a89ffe6ce24c6990049cb936dbf6d12613791a4ba4ee618ee289",
+      "log": "initial/vision-gpu-runtime-tests.log",
+      "log_sha256": "fdcad8feea0af7f6d453c91475382b9fb3638a0a63fd2ecbcd99667d587b5cde",
+      "junit": "initial/vision-gpu-runtime-tests.xml",
+      "junit_sha256": "b4c10d97711c28cebcac88bd19b36ad70b154a3f8a137bde052f6a49045b7b6d",
+      "qt_totals": [],
+      "python_tests": 21,
+      "result_elapsed_seconds": 1.175
+    },
+    {
+      "name": "vision-evaluation-worker-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-evaluation\\-worker\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-evaluation-worker-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-evaluation-worker-tests"
+      ],
+      "native_binary_sha256": "c46dc41eb5b5511771c31a099fa6476ff8cc7073fdcab0a1c33f98c7623560c8",
+      "native_initial_sha256": "c46dc41eb5b5511771c31a099fa6476ff8cc7073fdcab0a1c33f98c7623560c8",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-evaluation-worker-tests.log",
+      "log_sha256": "7c2dc01e0851dfb04bed9bfe58b616ebf10dbaf8f7768287fcb7eef14a420b87",
+      "junit": "initial/vision-evaluation-worker-tests.xml",
+      "junit_sha256": "8870215e8731db6923591fd8b4641885b25575cecf7d35baeae271b19b5704c1",
+      "qt_totals": [
+        {
+          "passed": 21,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "EvaluationWorkerTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 66.33
+    },
+    {
+      "name": "vision-evaluation-panel-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-evaluation\\-panel\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-evaluation-panel-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-evaluation-panel-tests"
+      ],
+      "native_binary_sha256": "9ebf930ee619866021e60429358e0055c7bed1b5215cb1107ea627fa62f544a3",
+      "native_initial_sha256": "9ebf930ee619866021e60429358e0055c7bed1b5215cb1107ea627fa62f544a3",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-evaluation-panel-tests.log",
+      "log_sha256": "0339c105b502eabb18aca41ad49e1779b4c67c27d986de88dcb432f80ad069ee",
+      "junit": "initial/vision-evaluation-panel-tests.xml",
+      "junit_sha256": "55e254c4b25bdb3c054c0ff73377cb456332f7ffadb78fc524735ece0cf4fa72",
+      "qt_totals": [
+        {
+          "passed": 34,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "EvaluationPanelTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 1.921
+    },
+    {
+      "name": "vision-evaluation-python-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-evaluation\\-python\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-evaluation-python-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/opt/VisionStudio/runtime/bin/python",
+        "-B",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/tests/evaluation_tests.py"
+      ],
+      "native_binary_sha256": null,
+      "native_initial_sha256": null,
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": "a2f33a6e006989270f4340528eb61f8f97366e00a5d1b602ac8672ea44fc56ae",
+      "log": "initial/vision-evaluation-python-tests.log",
+      "log_sha256": "31545dfbbdb55dfd9cec2454cefb6ec2735a1025db212d01fda1659cc1e2668b",
+      "junit": "initial/vision-evaluation-python-tests.xml",
+      "junit_sha256": "423138461a0d670b7ef1979e79a044f28af2c1961bf29dbba4cba92dc06720e1",
+      "qt_totals": [],
+      "python_tests": 50,
+      "result_elapsed_seconds": 9.586
+    },
+    {
+      "name": "vision-evaluation-integration-tests",
+      "success": true,
+      "source_run": "corrected",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-evaluation\\-integration\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/vision-evaluation-integration-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-evaluation-integration-tests"
+      ],
+      "native_binary_sha256": "0404dc4516b061ce04dc5dc7e259a0b53accde6c51fb8a21332523ca8c11c7e0",
+      "native_initial_sha256": "d3834b1e62f2d68d1a3a407dfad4e183d10a12087b8cc77a1864f5a87760191b",
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": null,
+      "log": "corrected/vision-evaluation-integration-tests.log",
+      "log_sha256": "09e729b1d3403f824efb45a09ae8e3110a2d09560e3b5db4ca3a3f31e0b428b3",
+      "junit": "corrected/vision-evaluation-integration-tests.xml",
+      "junit_sha256": "cf1d1f8edf89d8622042ffbc5ed394a33120d589279c30f63a96276d7d2a738a",
+      "qt_totals": [
+        {
+          "passed": 41,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "EvaluationIntegrationTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 153.587
+    },
+    {
+      "name": "vision-dataset-session-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-dataset\\-session\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-dataset-session-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-dataset-session-tests"
+      ],
+      "native_binary_sha256": "7133e75052e20eb1c89d4262c2b0fcac12faee5fbee066451e945de006015200",
+      "native_initial_sha256": "7133e75052e20eb1c89d4262c2b0fcac12faee5fbee066451e945de006015200",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-dataset-session-tests.log",
+      "log_sha256": "cd16a1b1453e85ec82d79c149e55a5bc529abece6dc5cb6f6118f50fe56964af",
+      "junit": "initial/vision-dataset-session-tests.xml",
+      "junit_sha256": "0d4cc3fec23d3a05b87ea7d28bed983cffd37b07693a18b51876aee5d253d7f6",
+      "qt_totals": [
+        {
+          "passed": 19,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "DatasetSessionTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.058
+    },
+    {
+      "name": "vision-dataset-session-ui-tests",
+      "success": true,
+      "source_run": "corrected",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-dataset\\-session\\-ui\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/vision-dataset-session-ui-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-dataset-session-ui-tests"
+      ],
+      "native_binary_sha256": "6edf815dc362c0e02696be9744f367b063601f4ad72422baa7a5cb12914d8f9c",
+      "native_initial_sha256": "32af5268c0750ec8917edfb692dbceda639eb2e13b9ff3eb663aa9c309a0edae",
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": null,
+      "log": "corrected/vision-dataset-session-ui-tests.log",
+      "log_sha256": "e0dbdc147b8eed142ad8ac9aa25c21204832422e917edbc4ec8213b2ff32e684",
+      "junit": "corrected/vision-dataset-session-ui-tests.xml",
+      "junit_sha256": "7e7376ecd80078d747f493f94396afdd06b89f21f3d0190733e769afb2736bc4",
+      "qt_totals": [
+        {
+          "passed": 20,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "DatasetSessionUiTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 9.808
+    },
+    {
+      "name": "vision-model-yaml-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-model\\-yaml\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-model-yaml-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-model-yaml-tests"
+      ],
+      "native_binary_sha256": "64a22f4c566fbfb68de8a092d68d18217d04cff78335917e09b086803951e824",
+      "native_initial_sha256": "64a22f4c566fbfb68de8a092d68d18217d04cff78335917e09b086803951e824",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-model-yaml-tests.log",
+      "log_sha256": "4865903721b19bccb87814f6a73bbffca617b073c542656cfdb5711ab7299d44",
+      "junit": "initial/vision-model-yaml-tests.xml",
+      "junit_sha256": "3d32a6350cd7dc94c0ff7c8c8998b8971903e78021ce5aa8a224823ddf9f819f",
+      "qt_totals": [
+        {
+          "passed": 21,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "ModelYamlTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.005
+    },
+    {
+      "name": "vision-input-drop-ui-tests",
+      "success": true,
+      "source_run": "corrected",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-input\\-drop\\-ui\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/vision-input-drop-ui-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-input-drop-ui-tests"
+      ],
+      "native_binary_sha256": "c657fc2bbecc37a4074b75efb8d19e21c058fd8301e5b77e03bbd5ea82985a39",
+      "native_initial_sha256": "639bf6524a52e26394c030f2716aa6ce9233591c4d6ad055b2f66b1d46950113",
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": null,
+      "log": "corrected/vision-input-drop-ui-tests.log",
+      "log_sha256": "917b25a0d0c8d039ff589e6d09debafa8ecd4191fc5f5b39ff3bf2c0c8523716",
+      "junit": "corrected/vision-input-drop-ui-tests.xml",
+      "junit_sha256": "b5281ed7f9217bfbb80aa59636c378d83644ebf50d4df3c632def0028e362f93",
+      "qt_totals": [
+        {
+          "passed": 22,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "InputDropUiTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 24.027
+    },
+    {
+      "name": "vision-evaluation-reporting-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-evaluation\\-reporting\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-evaluation-reporting-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/opt/VisionStudio/runtime/bin/python",
+        "-B",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/tests/evaluation_reporting_tests.py"
+      ],
+      "native_binary_sha256": null,
+      "native_initial_sha256": null,
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": "a2f33a6e006989270f4340528eb61f8f97366e00a5d1b602ac8672ea44fc56ae",
+      "log": "initial/vision-evaluation-reporting-tests.log",
+      "log_sha256": "a25b5245b60ed0ec2d9e701ce7e482b91d31ca0cdb52cfbc1ec06df363777082",
+      "junit": "initial/vision-evaluation-reporting-tests.xml",
+      "junit_sha256": "9fcf90a015409ea5660e462a9e1be6fd347edfd601603f6ee774d98779e4a889",
+      "qt_totals": [],
+      "python_tests": 11,
+      "result_elapsed_seconds": 5.384
+    },
+    {
+      "name": "vision-evaluation-snapshot-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-evaluation\\-snapshot\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-evaluation-snapshot-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/opt/VisionStudio/runtime/bin/python",
+        "-B",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/tests/evaluation_snapshot_tests.py"
+      ],
+      "native_binary_sha256": null,
+      "native_initial_sha256": null,
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": "a2f33a6e006989270f4340528eb61f8f97366e00a5d1b602ac8672ea44fc56ae",
+      "log": "initial/vision-evaluation-snapshot-tests.log",
+      "log_sha256": "0ef2fab876842402e5b17ce2933bfd2e3bc9664a355da4aff71c8a8a19771dbc",
+      "junit": "initial/vision-evaluation-snapshot-tests.xml",
+      "junit_sha256": "2ad040582d11ecc404e269222761de7219376a66b9b28140925cef4523596340",
+      "qt_totals": [],
+      "python_tests": 23,
+      "result_elapsed_seconds": 1.647
+    },
+    {
+      "name": "vision-pt-batch-python-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-pt\\-batch\\-python\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-pt-batch-python-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/opt/VisionStudio/runtime/bin/python",
+        "-B",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/tests/pt_batch_tests.py"
+      ],
+      "native_binary_sha256": null,
+      "native_initial_sha256": null,
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": "a2f33a6e006989270f4340528eb61f8f97366e00a5d1b602ac8672ea44fc56ae",
+      "log": "initial/vision-pt-batch-python-tests.log",
+      "log_sha256": "942e6c6baf631a3144d3f94f80da048d63cf6bb89097fbd6da4045e60ca9419f",
+      "junit": "initial/vision-pt-batch-python-tests.xml",
+      "junit_sha256": "7ab108a454240968b7b2c5b4120ab66fc625b193226901d5d379ae7f3f7add99",
+      "qt_totals": [],
+      "python_tests": 10,
+      "result_elapsed_seconds": 22.586
+    },
+    {
+      "name": "vision-evaluation-import-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-evaluation\\-import\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-evaluation-import-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/opt/VisionStudio/runtime/bin/python",
+        "-B",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/tests/evaluation_import_tests.py"
+      ],
+      "native_binary_sha256": null,
+      "native_initial_sha256": null,
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": "a2f33a6e006989270f4340528eb61f8f97366e00a5d1b602ac8672ea44fc56ae",
+      "log": "initial/vision-evaluation-import-tests.log",
+      "log_sha256": "6d79e80bb50e059710fc5ae667ca250219d51f704cbaa6388cb08b1ed6f55e73",
+      "junit": "initial/vision-evaluation-import-tests.xml",
+      "junit_sha256": "6563eee6bbf6fb7623885b8a483cd9faaedf7ccb7887c8e7f3d0606e271c7b4e",
+      "qt_totals": [],
+      "python_tests": 13,
+      "result_elapsed_seconds": 9.016
+    },
+    {
+      "name": "vision-app-services-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-app\\-services\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-app-services-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-app-services-tests"
+      ],
+      "native_binary_sha256": "8c7306f7d2e6142ac92c4c9842796fc23c14d0681960d896b8b5a6513f58dd65",
+      "native_initial_sha256": "8c7306f7d2e6142ac92c4c9842796fc23c14d0681960d896b8b5a6513f58dd65",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-app-services-tests.log",
+      "log_sha256": "d88f342ef2c0fdbd87e08ace85f6d8762889e1390f9dccd7a829bd33c731fb32",
+      "junit": "initial/vision-app-services-tests.xml",
+      "junit_sha256": "27468c1ad0b8b92bd8e4426ad44c456d5c767feb656a0d92a27e7aaf9233950d",
+      "qt_totals": [
+        {
+          "passed": 14,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "AppServicesTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.136
+    },
+    {
+      "name": "vision-gpu-environment-service-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-gpu\\-environment\\-service\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-gpu-environment-service-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-gpu-environment-service-tests"
+      ],
+      "native_binary_sha256": "da05d4d3faad14635ed731c8a0f1efd99f3648b810e1a5a8d8d375f59b310722",
+      "native_initial_sha256": "da05d4d3faad14635ed731c8a0f1efd99f3648b810e1a5a8d8d375f59b310722",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-gpu-environment-service-tests.log",
+      "log_sha256": "21168235683c25100d0376535b904bf661a49c12f481987f8a89cfab3b9ac478",
+      "junit": "initial/vision-gpu-environment-service-tests.xml",
+      "junit_sha256": "9e9721206983f55629e2bf952616f88c29e232028404e8da89b6c1ede7bc029e",
+      "qt_totals": [
+        {
+          "passed": 13,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "GpuEnvironmentServiceTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.95
+    },
+    {
+      "name": "vision-model-session-controller-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-model\\-session\\-controller\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-model-session-controller-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-model-session-controller-tests"
+      ],
+      "native_binary_sha256": "b445042fd0dd18e70966106ca9b3389b1372c42b68c00dcf3430eee8342d6bd8",
+      "native_initial_sha256": "b445042fd0dd18e70966106ca9b3389b1372c42b68c00dcf3430eee8342d6bd8",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-model-session-controller-tests.log",
+      "log_sha256": "085107ca03db0c02bfabf3f1f17dcd9ce0884f7fec354bc8943085b5e2f41d98",
+      "junit": "initial/vision-model-session-controller-tests.xml",
+      "junit_sha256": "3aea9688c36d79ead6645bcbd08de9cebb20b52254557313a6ccb384fffbbf18",
+      "qt_totals": [
+        {
+          "passed": 14,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "ModelSessionControllerTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.513
+    },
+    {
+      "name": "vision-detection-controller-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-detection\\-controller\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-detection-controller-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-detection-controller-tests"
+      ],
+      "native_binary_sha256": "b8d88b21ac23b9c8b895bf70b39afbd7a487879fb84bf4e1df7d0b0b2adc0518",
+      "native_initial_sha256": "b8d88b21ac23b9c8b895bf70b39afbd7a487879fb84bf4e1df7d0b0b2adc0518",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-detection-controller-tests.log",
+      "log_sha256": "e05a438639381088ffcc50a3c360a64d0fc09dbb03488457e67b05c8443d2120",
+      "junit": "initial/vision-detection-controller-tests.xml",
+      "junit_sha256": "f33b8dc55a093836d644fd00b27242ddf52719dedc53d239dd80ffc7489b14dd",
+      "qt_totals": [
+        {
+          "passed": 10,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "DetectionControllerTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 2.075
+    },
+    {
+      "name": "vision-input-session-controller-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-input\\-session\\-controller\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-input-session-controller-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-input-session-controller-tests"
+      ],
+      "native_binary_sha256": "c2a2006464eadfe16d96d0ad0d62a9c4a66ca7602b7c168f77030c961bed2ba4",
+      "native_initial_sha256": "c2a2006464eadfe16d96d0ad0d62a9c4a66ca7602b7c168f77030c961bed2ba4",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-input-session-controller-tests.log",
+      "log_sha256": "2ae7a1eb5e2a508c5c066c7ccd7214c15f71ac007e0ca8be37aa4c21b6f5c563",
+      "junit": "initial/vision-input-session-controller-tests.xml",
+      "junit_sha256": "6a295e806aa782fd945a4acf2dba98bd24176921657850c42846562ab91aca76",
+      "qt_totals": [
+        {
+          "passed": 17,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "InputSessionControllerTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 1.687
+    },
+    {
+      "name": "vision-evaluation-controller-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-evaluation\\-controller\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-evaluation-controller-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-evaluation-controller-tests"
+      ],
+      "native_binary_sha256": "12b8a6fcc677bd2fefd701ea50a85f107aa78cb3a834112d3d6c6b0052a0c756",
+      "native_initial_sha256": "12b8a6fcc677bd2fefd701ea50a85f107aa78cb3a834112d3d6c6b0052a0c756",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-evaluation-controller-tests.log",
+      "log_sha256": "35129561ea4186589e3204160c1cb2804179dc522916e9e574f9c4a4f52661ab",
+      "junit": "initial/vision-evaluation-controller-tests.xml",
+      "junit_sha256": "52509bfc82373ba46cf336ec1bc375ad2efa38a8125879a1bd2dfb6861ce4d86",
+      "qt_totals": [
+        {
+          "passed": 17,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "EvaluationControllerTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.609
+    },
+    {
+      "name": "vision-operation-coordinator-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-operation\\-coordinator\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-operation-coordinator-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-operation-coordinator-tests"
+      ],
+      "native_binary_sha256": "a686cfc70f5adebab993140813fdbc6a5f8cdd270c5702df99086e89449e8ce7",
+      "native_initial_sha256": "a686cfc70f5adebab993140813fdbc6a5f8cdd270c5702df99086e89449e8ce7",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-operation-coordinator-tests.log",
+      "log_sha256": "893f2dbf2c69905499c1b9c4b25706758a4bb202e811c195dbdf908a54bd096b",
+      "junit": "initial/vision-operation-coordinator-tests.xml",
+      "junit_sha256": "47c4f3000f808f85538cdd541ed0bc401a2846b734b2ab39fe660702cf66d7f7",
+      "qt_totals": [
+        {
+          "passed": 533,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "OperationCoordinatorTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 1.034
+    },
+    {
+      "name": "vision-recording-controller-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-recording\\-controller\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-recording-controller-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-recording-controller-tests"
+      ],
+      "native_binary_sha256": "0223c62c89b880a220b374ceeaa9bb4e3c5a168247489b4058798c5c5c6c6303",
+      "native_initial_sha256": "0223c62c89b880a220b374ceeaa9bb4e3c5a168247489b4058798c5c5c6c6303",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-recording-controller-tests.log",
+      "log_sha256": "24ddf5687b3d6465b1fb6c341cf5e1ae19bf7f9d70353458b2532f970b6317ee",
+      "junit": "initial/vision-recording-controller-tests.xml",
+      "junit_sha256": "525006a9bd1a63559a7b5a5f10a698500d23bae8b9db915228c3fd1886aa852d",
+      "qt_totals": [
+        {
+          "passed": 12,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "RecordingControllerTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 2.601
+    },
+    {
+      "name": "vision-workbench-configuration-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-workbench\\-configuration\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-workbench-configuration-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-workbench-configuration-tests"
+      ],
+      "native_binary_sha256": "ba0100c05cb20770a0d98a88fcaf0816b6b4abc5dd06333d292c3e6aaca199cf",
+      "native_initial_sha256": "ba0100c05cb20770a0d98a88fcaf0816b6b4abc5dd06333d292c3e6aaca199cf",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-workbench-configuration-tests.log",
+      "log_sha256": "ede80f85c99cf386e62e49ffc6d1162d0039b94f3cdc3cc833cbab26f7218e98",
+      "junit": "initial/vision-workbench-configuration-tests.xml",
+      "junit_sha256": "ae8a4510e4a02bf0721f018130ade79ccde2388b7358efe29d42415ddbb4c049",
+      "qt_totals": [
+        {
+          "passed": 40,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "WorkbenchConfigurationTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.001
+    },
+    {
+      "name": "vision-image-result-store-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-image\\-result\\-store\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-image-result-store-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-image-result-store-tests"
+      ],
+      "native_binary_sha256": "00da88934086db9da56af6839b986cad328a117e06815c9039a12dac823995cd",
+      "native_initial_sha256": "00da88934086db9da56af6839b986cad328a117e06815c9039a12dac823995cd",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-image-result-store-tests.log",
+      "log_sha256": "3040f8f989eb208d6b259f4c1860105f43c73f1db33b523a8e58836c8d0d1c0c",
+      "junit": "initial/vision-image-result-store-tests.xml",
+      "junit_sha256": "3ff7043fa36de0944e496c4c9355f53f6e21f0228cbcf3443f3661b78a2957c6",
+      "qt_totals": [
+        {
+          "passed": 15,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "ImageResultStoreTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.256
+    },
+    {
+      "name": "vision-result-delivery-tests",
+      "success": true,
+      "source_run": "initial",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-result\\-delivery\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-regression/vision-result-delivery-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-result-delivery-tests"
+      ],
+      "native_binary_sha256": "209b342e5a378e2e83209f290170e4a9bf63b5392c4e0644dc7d387196ad782f",
+      "native_initial_sha256": "209b342e5a378e2e83209f290170e4a9bf63b5392c4e0644dc7d387196ad782f",
+      "unrerun_native_binary_identical": true,
+      "current_interpreter_sha256": null,
+      "log": "initial/vision-result-delivery-tests.log",
+      "log_sha256": "90abdf3234361cbf520640a95715dca08dbd81b476652c0608c47c062b35f2b3",
+      "junit": "initial/vision-result-delivery-tests.xml",
+      "junit_sha256": "7980c612d48a1e7fc0a324b6abcaaf2e3d558a2db446436b38cace6efd36712c",
+      "qt_totals": [
+        {
+          "passed": 11,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "ResultDeliveryServiceTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.531
+    },
+    {
+      "name": "vision-workbench-page-tests",
+      "success": true,
+      "source_run": "corrected",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-workbench\\-page\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/vision-workbench-page-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-workbench-page-tests"
+      ],
+      "native_binary_sha256": "5b509e8cd0452335e45d4d7c6187bcc46ea5835feed84ad932275dce1d93299c",
+      "native_initial_sha256": "9edf2515c4beb940b6b25cf8006567f4013137e467a89db2b6ea1b67b0cab386",
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": null,
+      "log": "corrected/vision-workbench-page-tests.log",
+      "log_sha256": "dc8410af78f054603df327595c920d0ef85e41ad9adc2253655b231a1168a899",
+      "junit": "corrected/vision-workbench-page-tests.xml",
+      "junit_sha256": "d7793fbaea2e6ba6b16087b9811de2a50e747c22662a2302225dd10bd935e11f",
+      "qt_totals": [
+        {
+          "passed": 9,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "WorkbenchPageTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.241
+    },
+    {
+      "name": "vision-workspace-pages-tests",
+      "success": true,
+      "source_run": "corrected",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-workspace\\-pages\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/vision-workspace-pages-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-workspace-pages-tests"
+      ],
+      "native_binary_sha256": "11a5a41195541e724f82552bb764561dd133a17bd2404902f3fea0edfbbd2bf6",
+      "native_initial_sha256": "10bb3b65f7dbf292480948f94d28050cdd164275b184d453835f1da0572e3d86",
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": null,
+      "log": "corrected/vision-workspace-pages-tests.log",
+      "log_sha256": "ea0275d0c49d656cc900ffa839773c04446a98d49ba8288209701bb04dc92ade",
+      "junit": "corrected/vision-workspace-pages-tests.xml",
+      "junit_sha256": "4eb75ef6d0d1b38a28969ede3a668014d45ebfca07f1b8ea34c1db37587e2fba",
+      "qt_totals": [
+        {
+          "passed": 18,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "WorkspacePagesTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.155
+    },
+    {
+      "name": "vision-simple-pages-tests",
+      "success": true,
+      "source_run": "corrected",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-simple\\-pages\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/vision-simple-pages-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-simple-pages-tests"
+      ],
+      "native_binary_sha256": "fe80e252ab7392e2587ab95564da6ae719135c3cbc8302b1641360dc1e2f5693",
+      "native_initial_sha256": "e9c944b5c56a554bfd3c9e054052f671b2f0ff369be3d48551891a433b3ab2af",
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": null,
+      "log": "corrected/vision-simple-pages-tests.log",
+      "log_sha256": "0706c696b538b67587a937d856aa01cd8c323884cd8bd7d53443799520336c7f",
+      "junit": "corrected/vision-simple-pages-tests.xml",
+      "junit_sha256": "8d724634a740693ddff405931ebd7939199f050bab53e70d7ef121941e33c454",
+      "qt_totals": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "SimplePagesTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.014
+    },
+    {
+      "name": "vision-component-shutdown-tests",
+      "success": true,
+      "source_run": "corrected",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-component\\-shutdown\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/vision-component-shutdown-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-component-shutdown-tests"
+      ],
+      "native_binary_sha256": "059d722d6089ea931ba49c4da6b6771134324e1f239d5d0e5a759091583ec95c",
+      "native_initial_sha256": "ad6b6abcbf4a09fe4bb08bded91835670522e4c55dd06d1849451fcb80fe261e",
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": null,
+      "log": "corrected/vision-component-shutdown-tests.log",
+      "log_sha256": "1ce231befc57a2e7771cbf4c7e8c74cf9ce600f98617694ed7ee312da9e3e9a6",
+      "junit": "corrected/vision-component-shutdown-tests.xml",
+      "junit_sha256": "ee1d433dda0536a71d10290060cf41f79ca32194586fa8f55c6bbe8a9250dfc4",
+      "qt_totals": [
+        {
+          "passed": 10,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "ComponentShutdownTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 5.44
+    },
+    {
+      "name": "vision-runtime-setup-shutdown-tests",
+      "success": true,
+      "source_run": "corrected",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-runtime\\-setup\\-shutdown\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/vision-runtime-setup-shutdown-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-runtime-setup-shutdown-tests"
+      ],
+      "native_binary_sha256": "aa5494e5bb99979c65c5a9f3baf4e593c8b6e4f8f96eff35488f0d38e632689b",
+      "native_initial_sha256": "45e319631c689e191ae089ae649c721fd573d3a7e0a18e6ea63a80eaac956eb3",
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": null,
+      "log": "corrected/vision-runtime-setup-shutdown-tests.log",
+      "log_sha256": "43d211525eda5d970bf5e7a832ae43826a397d5f8e1db90bfd6bba390bb9c44b",
+      "junit": "corrected/vision-runtime-setup-shutdown-tests.xml",
+      "junit_sha256": "b9ea439baf0ffd34340dfe1a40f476b492fe70af26f770259387dc2baba7701f",
+      "qt_totals": [
+        {
+          "passed": 12,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "RuntimeSetupShutdownTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.697
+    },
+    {
+      "name": "vision-workspace-drop-filter-tests",
+      "success": true,
+      "source_run": "corrected",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-workspace\\-drop\\-filter\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/vision-workspace-drop-filter-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-workspace-drop-filter-tests"
+      ],
+      "native_binary_sha256": "c79b4fc37864f17afe3e9a70a0157a4c2eb4c42b88e0aa28091b440b7c980929",
+      "native_initial_sha256": "ee2601926b92b85547112037a295443e4ef0cfe95cc8d13bc98f50c0abf77559",
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": null,
+      "log": "corrected/vision-workspace-drop-filter-tests.log",
+      "log_sha256": "6d2dddd7ee8af51b27558b69077b935604197735113b24821b24b011aaed8670",
+      "junit": "corrected/vision-workspace-drop-filter-tests.xml",
+      "junit_sha256": "957b50d86df9cc3adbeb42b855e9197a3e788c2ea61c72dffef166c3f438266c",
+      "qt_totals": [
+        {
+          "passed": 9,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "WorkspaceDropFilterTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 0.003
+    },
+    {
+      "name": "vision-window-shutdown-tests",
+      "success": true,
+      "source_run": "corrected",
+      "actual_ctest_command": [
+        "ctest",
+        "--test-dir",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted",
+        "--verbose",
+        "--no-tests=error",
+        "--tests-regex",
+        "^vision\\-window\\-shutdown\\-tests$",
+        "--output-junit",
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/vision-window-shutdown-tests.xml"
+      ],
+      "discovered_test_command": [
+        "/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-window-shutdown-tests"
+      ],
+      "native_binary_sha256": "a921d48d56c6db40d8ded550cb753d35e971ce858ace544bf910a8e8948c79e6",
+      "native_initial_sha256": "1d17a15fff2f7cf38100416090f71511c40c688de3bf002e11456c8756de9fb0",
+      "unrerun_native_binary_identical": false,
+      "current_interpreter_sha256": null,
+      "log": "corrected/vision-window-shutdown-tests.log",
+      "log_sha256": "9e9ef566c8fd2f8b01171317a406921fb8e7ec6d66d289e7132bb3001c70282c",
+      "junit": "corrected/vision-window-shutdown-tests.xml",
+      "junit_sha256": "e4305d724c1016569b65fb093afd6dba79a0ea9ea2aad19569ff849fdb39b30d",
+      "qt_totals": [
+        {
+          "passed": 10,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "qt_suite": "WindowShutdownTests",
+      "python_tests": 0,
+      "result_elapsed_seconds": 9.326
+    }
+  ],
+  "source_tree": "e5bcaadae5aa28cd1d06df803a851f0172d2c827",
+  "source_binding": {
+    "initial_commit": "f24e1aa2f311290cf3a28c3a40f40b45d4343c5b",
+    "initial_tree": "fbb9933dcd0b6fad57b12deef5ed4098e998b698",
+    "corrected_commit": "168abdf503c490eaa693735f6e55104a70841ce2",
+    "corrected_tree": "e5bcaadae5aa28cd1d06df803a851f0172d2c827",
+    "changed_paths": [
+      "src/ui/pages/modeldisplaypage.cpp",
+      "src/ui/pages/modeldisplaypage.h",
+      "tests/conversion_inference_tests.cpp",
+      "tests/ui_tests.cpp",
+      "tests/workspace_pages_tests.cpp"
+    ],
+    "file_changes": {
+      "src/ui/pages/modeldisplaypage.cpp": {
+        "before": {
+          "git_blob": "eae94de01ceae43100dd4978b4c64b0504666fc6",
+          "sha256": "f5e7c437726ef7461cc615175f1d3fd1916c17c3cc28738aceda03337d80f361",
+          "bytes": 3394
+        },
+        "after": {
+          "git_blob": "463febb410e262ecddf4b20c69c937faa18bd6b9",
+          "sha256": "eb3a9c0626fa4da96540ff63e3c9d5a0c52b19acdda451406295e7bc64f70e1a",
+          "bytes": 3799
+        }
+      },
+      "src/ui/pages/modeldisplaypage.h": {
+        "before": {
+          "git_blob": "7f5ca24cb0bb8d450bb0892f2d558e406c80074f",
+          "sha256": "32be9aa7210b65d4a855b1085d5f8e7a53e49066fce2d255914d6b6e30f113a1",
+          "bytes": 681
+        },
+        "after": {
+          "git_blob": "7848a2b3d32bf51b653e4cdffe351fa7a0382392",
+          "sha256": "b0d1b4bea2ee70c6838f1be3093fdde26cb85ca16d04d550d20f9e6bc59b049b",
+          "bytes": 715
+        }
+      },
+      "tests/conversion_inference_tests.cpp": {
+        "before": {
+          "git_blob": "d8c453bc6074e6ac9d8d9c77522768fba6bc82d8",
+          "sha256": "7dacfe5de35f4566b7036ff9aff6036d7330f181ebe04ad0d7966b73bbe7b381",
+          "bytes": 24979
+        },
+        "after": {
+          "git_blob": "d20ee7027a0deed9720b7bb2c7196a37fa3d55d2",
+          "sha256": "4446eaa8d89d961575a827831b18648240f4866c866ba7830a4f7a26f9843787",
+          "bytes": 25388
+        }
+      },
+      "tests/ui_tests.cpp": {
+        "before": {
+          "git_blob": "a6e3e095d2e35e0f0a71a6748b6a1ec79a995545",
+          "sha256": "d6b2a218514d11e0f0dc023b24140c3a9846aa57e333bd8c662810938ca24d27",
+          "bytes": 164381
+        },
+        "after": {
+          "git_blob": "d87056038c7e83caad1055f7ee08af4886cfa363",
+          "sha256": "e03df824f68145178aa508b585f7077be30b39aa5fa84832f01d9411b5056844",
+          "bytes": 164483
+        }
+      },
+      "tests/workspace_pages_tests.cpp": {
+        "before": {
+          "git_blob": "4d62f28a5fa58db38599f605ef6752d96b9d4ecb",
+          "sha256": "a1fad6f3a13158b75f1ce8697e39c899ccbb27cd473b97eda7ee9657f3049363",
+          "bytes": 19245
+        },
+        "after": {
+          "git_blob": "ae6e0d44446d8612962a6b8327872eaea149b1c5",
+          "sha256": "a1d41c41c18f25f0b5155351a456b294b2902290f552f4b41ba421e6cbe2f63f",
+          "bytes": 20753
+        }
+      }
+    },
+    "initial_tracked_members_verified": 5321,
+    "corrected_tracked_members_verified": 5321,
+    "manifest": "inputs/source-input-manifests.json",
+    "diff": "inputs/source-correction.diff"
+  },
+  "binary_binding": {
+    "initial_application_sha256": "cb5aa8d8156acfb75369ec0fc5f790c7b218b6149a91a017bfeae4dcff8820c7",
+    "corrected_application_sha256": "1db557bf4366c2fff8fa3006ab04d7ef10acedd2524404e840a30c7bf28ed9ad",
+    "native_binaries_before": {
+      "vision-model-yaml-tests": "64a22f4c566fbfb68de8a092d68d18217d04cff78335917e09b086803951e824",
+      "vision-workbench-configuration-tests": "ba0100c05cb20770a0d98a88fcaf0816b6b4abc5dd06333d292c3e6aaca199cf",
+      "vision-conversion-inference-tests": "914307649c69ca1a8a26873b18b8f047d2e1e18589c3140430d7ed4eac5f1120",
+      "vision-operation-coordinator-tests": "a686cfc70f5adebab993140813fdbc6a5f8cdd270c5702df99086e89449e8ce7",
+      "vision-core-tests": "8223c9a492b3bef07c0b9680f7f0d70dd358544de44f34e5463b4325d26a828f",
+      "vision-input-session-controller-tests": "c2a2006464eadfe16d96d0ad0d62a9c4a66ca7602b7c168f77030c961bed2ba4",
+      "vision-app-services-tests": "8c7306f7d2e6142ac92c4c9842796fc23c14d0681960d896b8b5a6513f58dd65",
+      "vision-model-session-controller-tests": "b445042fd0dd18e70966106ca9b3389b1372c42b68c00dcf3430eee8342d6bd8",
+      "vision-dataset-session-ui-tests": "32af5268c0750ec8917edfb692dbceda639eb2e13b9ff3eb663aa9c309a0edae",
+      "vision-modelviewer-tests": "88869607ec8df7e447a0948c3d46e534757a4d6688d914d961de2e902258060b",
+      "vision-evaluation-worker-tests": "c46dc41eb5b5511771c31a099fa6476ff8cc7073fdcab0a1c33f98c7623560c8",
+      "vision-scope-filter-ui-tests": "0a2aac427c8ddbf46aff28d262acb2bcd57a0e3539d91194a625c8c64d09a5c1",
+      "vision-evaluation-integration-tests": "d3834b1e62f2d68d1a3a407dfad4e183d10a12087b8cc77a1864f5a87760191b",
+      "vision-workbench-page-tests": "9edf2515c4beb940b6b25cf8006567f4013137e467a89db2b6ea1b67b0cab386",
+      "vision-image-result-store-tests": "00da88934086db9da56af6839b986cad328a117e06815c9039a12dac823995cd",
+      "vision-result-delivery-tests": "209b342e5a378e2e83209f290170e4a9bf63b5392c4e0644dc7d387196ad782f",
+      "vision-evaluation-panel-tests": "9ebf930ee619866021e60429358e0055c7bed1b5215cb1107ea627fa62f544a3",
+      "vision-conversion-ui-tests": "98ad323a9bf9ec3002e3e2c23136687547ace20181de8c7a0e17a3ede7a463be",
+      "vision-component-shutdown-tests": "ad6b6abcbf4a09fe4bb08bded91835670522e4c55dd06d1849451fcb80fe261e",
+      "vision-gpu-environment-service-tests": "da05d4d3faad14635ed731c8a0f1efd99f3648b810e1a5a8d8d375f59b310722",
+      "vision-workspace-pages-tests": "10bb3b65f7dbf292480948f94d28050cdd164275b184d453835f1da0572e3d86",
+      "vision-simple-pages-tests": "e9c944b5c56a554bfd3c9e054052f671b2f0ff369be3d48551891a433b3ab2af",
+      "vision-recording-controller-tests": "0223c62c89b880a220b374ceeaa9bb4e3c5a168247489b4058798c5c5c6c6303",
+      "vision-inference-delivery-tests": "ecca87206f12c29ed1c5dc0f039b1ad899b980aa6724e03ef19c0648a3aed6b9",
+      "vision-recording-tests": "b438f99c3f4bdda454deeda506a0c467bd2d241c31f00fd68505b9b95f150891",
+      "vision-dataset-session-tests": "7133e75052e20eb1c89d4262c2b0fcac12faee5fbee066451e945de006015200",
+      "vision-ui-tests": "21792f194da99263eb69d2cad57fafb07cd96380f2f6ec840ed81cc3738dea19",
+      "vision-pt-tests": "688bcb8f3ca73e2c2cc0ddd10da253375fa69139e67292737f1b50c301449c71",
+      "vision-workspace-drop-filter-tests": "ee2601926b92b85547112037a295443e4ef0cfe95cc8d13bc98f50c0abf77559",
+      "vision-input-drop-ui-tests": "639bf6524a52e26394c030f2716aa6ce9233591c4d6ad055b2f66b1d46950113",
+      "vision-batch-responsiveness-tests": "c57b4a5282daab4c63298bfee800426b411765f83530ed678d46263644bf1774",
+      "vision-evaluation-controller-tests": "12b8a6fcc677bd2fefd701ea50a85f107aa78cb3a834112d3d6c6b0052a0c756",
+      "vision-runtime-setup-shutdown-tests": "45e319631c689e191ae089ae649c721fd573d3a7e0a18e6ea63a80eaac956eb3",
+      "vision-window-shutdown-tests": "1d17a15fff2f7cf38100416090f71511c40c688de3bf002e11456c8756de9fb0",
+      "vision-detection-controller-tests": "b8d88b21ac23b9c8b895bf70b39afbd7a487879fb84bf4e1df7d0b0b2adc0518",
+      "vision-gpu-tests": "58460cae87b43e8d81d8d9e6bcb040cc5d95b41b1d4ef682995dce9be652d786"
+    },
+    "native_binaries_current": {
+      "vision-core-tests": "8223c9a492b3bef07c0b9680f7f0d70dd358544de44f34e5463b4325d26a828f",
+      "vision-inference-delivery-tests": "ecca87206f12c29ed1c5dc0f039b1ad899b980aa6724e03ef19c0648a3aed6b9",
+      "vision-recording-tests": "b438f99c3f4bdda454deeda506a0c467bd2d241c31f00fd68505b9b95f150891",
+      "vision-pt-tests": "688bcb8f3ca73e2c2cc0ddd10da253375fa69139e67292737f1b50c301449c71",
+      "vision-gpu-tests": "58460cae87b43e8d81d8d9e6bcb040cc5d95b41b1d4ef682995dce9be652d786",
+      "vision-ui-tests": "15a83c850e4b87613585a00e6b3f1dd63753714c2bc39cd77920c2e6c7956b9e",
+      "vision-batch-responsiveness-tests": "40f6cb1288458995cf9e481e5033f5097309d7b61e9139ab920cdb273383e317",
+      "vision-scope-filter-ui-tests": "45f7379609717012938a4415f3e8bad9cb8049bbc25eaaf65807181e0f8fc083",
+      "vision-modelviewer-tests": "88869607ec8df7e447a0948c3d46e534757a4d6688d914d961de2e902258060b",
+      "vision-conversion-ui-tests": "98ad323a9bf9ec3002e3e2c23136687547ace20181de8c7a0e17a3ede7a463be",
+      "vision-conversion-inference-tests": "c36d7554cfbc43eab1a5d42c66d0c985646b7642078db1ba00d3f1c0cfede34c",
+      "vision-model-yaml-tests": "64a22f4c566fbfb68de8a092d68d18217d04cff78335917e09b086803951e824",
+      "vision-input-drop-ui-tests": "c657fc2bbecc37a4074b75efb8d19e21c058fd8301e5b77e03bbd5ea82985a39",
+      "vision-dataset-session-tests": "7133e75052e20eb1c89d4262c2b0fcac12faee5fbee066451e945de006015200",
+      "vision-dataset-session-ui-tests": "6edf815dc362c0e02696be9744f367b063601f4ad72422baa7a5cb12914d8f9c",
+      "vision-evaluation-worker-tests": "c46dc41eb5b5511771c31a099fa6476ff8cc7073fdcab0a1c33f98c7623560c8",
+      "vision-evaluation-panel-tests": "9ebf930ee619866021e60429358e0055c7bed1b5215cb1107ea627fa62f544a3",
+      "vision-evaluation-integration-tests": "0404dc4516b061ce04dc5dc7e259a0b53accde6c51fb8a21332523ca8c11c7e0",
+      "vision-app-services-tests": "8c7306f7d2e6142ac92c4c9842796fc23c14d0681960d896b8b5a6513f58dd65",
+      "vision-gpu-environment-service-tests": "da05d4d3faad14635ed731c8a0f1efd99f3648b810e1a5a8d8d375f59b310722",
+      "vision-model-session-controller-tests": "b445042fd0dd18e70966106ca9b3389b1372c42b68c00dcf3430eee8342d6bd8",
+      "vision-detection-controller-tests": "b8d88b21ac23b9c8b895bf70b39afbd7a487879fb84bf4e1df7d0b0b2adc0518",
+      "vision-input-session-controller-tests": "c2a2006464eadfe16d96d0ad0d62a9c4a66ca7602b7c168f77030c961bed2ba4",
+      "vision-evaluation-controller-tests": "12b8a6fcc677bd2fefd701ea50a85f107aa78cb3a834112d3d6c6b0052a0c756",
+      "vision-operation-coordinator-tests": "a686cfc70f5adebab993140813fdbc6a5f8cdd270c5702df99086e89449e8ce7",
+      "vision-recording-controller-tests": "0223c62c89b880a220b374ceeaa9bb4e3c5a168247489b4058798c5c5c6c6303",
+      "vision-workbench-configuration-tests": "ba0100c05cb20770a0d98a88fcaf0816b6b4abc5dd06333d292c3e6aaca199cf",
+      "vision-image-result-store-tests": "00da88934086db9da56af6839b986cad328a117e06815c9039a12dac823995cd",
+      "vision-result-delivery-tests": "209b342e5a378e2e83209f290170e4a9bf63b5392c4e0644dc7d387196ad782f",
+      "vision-workbench-page-tests": "5b509e8cd0452335e45d4d7c6187bcc46ea5835feed84ad932275dce1d93299c",
+      "vision-workspace-pages-tests": "11a5a41195541e724f82552bb764561dd133a17bd2404902f3fea0edfbbd2bf6",
+      "vision-simple-pages-tests": "fe80e252ab7392e2587ab95564da6ae719135c3cbc8302b1641360dc1e2f5693",
+      "vision-component-shutdown-tests": "059d722d6089ea931ba49c4da6b6771134324e1f239d5d0e5a759091583ec95c",
+      "vision-runtime-setup-shutdown-tests": "aa5494e5bb99979c65c5a9f3baf4e593c8b6e4f8f96eff35488f0d38e632689b",
+      "vision-workspace-drop-filter-tests": "c79b4fc37864f17afe3e9a70a0157a4c2eb4c42b88e0aa28091b440b7c980929",
+      "vision-window-shutdown-tests": "a921d48d56c6db40d8ded550cb753d35e971ce858ace544bf910a8e8948c79e6"
+    },
+    "changed_native_suites": [
+      "vision-batch-responsiveness-tests",
+      "vision-component-shutdown-tests",
+      "vision-conversion-inference-tests",
+      "vision-dataset-session-ui-tests",
+      "vision-evaluation-integration-tests",
+      "vision-input-drop-ui-tests",
+      "vision-runtime-setup-shutdown-tests",
+      "vision-scope-filter-ui-tests",
+      "vision-simple-pages-tests",
+      "vision-ui-tests",
+      "vision-window-shutdown-tests",
+      "vision-workbench-page-tests",
+      "vision-workspace-drop-filter-tests",
+      "vision-workspace-pages-tests"
+    ],
+    "unrerun_native_suite_count": 21
+  },
+  "production_input_manifests": "inputs/production-input-manifests.json",
+  "cuda_profiles": [
+    {
+      "path": "corrected/artifacts/onnx-cuda-0_2026-10-29_20-01-43.json",
+      "sha256": "3b95064454e3328e1b7dd553c57b24887a88c66a0c861e6d0c35f84a074f5dfc",
+      "cuda_node_events": 364
+    },
+    {
+      "path": "corrected/artifacts/onnx-cuda-1_2026-10-29_20-01-43.json",
+      "sha256": "a4679e6b53a126dc1c01bd1aae3834cbc3a8d4cb5d9dfc35de894ca2e8ac9da3",
+      "cuda_node_events": 364
+    }
+  ],
+  "hardware": [
+    "NVIDIA GeForce RTX 4060"
+  ],
+  "raw_evidence": "../releases/evidence/2.10.1/stages/stage4c",
+  "initial_failure_explanations": [
+    "UI recording list publication preceded asynchronous decoder readiness; the original immediate assertion failed. Corrected test waits for the same Play-enabled condition and retains playback, dimensions, grayscale and byte-exact export assertions.",
+    "Conversion/inference test crashed during page teardown. ModelDisplayPage now deletes its owned viewer while presentation members still exist; real converted-output identity checks are retained.",
+    "Python conversion process exited zero with one skipped TorchScript-without-ONNX check because the ignored inference-only runtime fixture was absent from the Git export. The actual existing runtime is linked read-only for corrected execution; tracked source and dependencies are unchanged by the fixture link."
+  ],
+  "limitations": [
+    "This is staged effective coverage, not a claim that the failed initial invocation passed or that one corrected invocation ran all 44 suites.",
+    "Final 2.10.1 requires its own fresh complete 44-suite execution, final DEB/install/source rebuild and remote publication verification.",
+    "Python commands and unchanged tracked inputs are bound across runs; interpreter digests are observed at aggregation, not falsely represented as a historic before-run interpreter snapshot.",
+    "No Windows native build/install, physical camera, accuracy improvement or performance guarantee is established by this record."
+  ],
+  "files": {
+    "initial/ctest-discovery.json": {
+      "bytes": 35886,
+      "sha256": "8037528cc714e6fe8e54e602cdc19fc2d9933a9061d60f7aef095f3b676f6e1a"
+    },
+    "initial/detection-regression-qa.json": {
+      "bytes": 69247,
+      "sha256": "b22609093a17e6f97cb0b5dc9ee6cd5522b6fab0d0cb588f429bce751ddd2378"
+    },
+    "initial/vision-app-services-tests.log": {
+      "bytes": 2722,
+      "sha256": "d88f342ef2c0fdbd87e08ace85f6d8762889e1390f9dccd7a829bd33c731fb32"
+    },
+    "initial/vision-app-services-tests.xml": {
+      "bytes": 1484,
+      "sha256": "27468c1ad0b8b92bd8e4426ad44c456d5c767feb656a0d92a27e7aaf9233950d"
+    },
+    "initial/vision-batch-responsiveness-tests.log": {
+      "bytes": 3893,
+      "sha256": "a5c3deed4c553219674345f8748afdfe956c0d325c84bae7ca31cbb10f453fa5"
+    },
+    "initial/vision-batch-responsiveness-tests.xml": {
+      "bytes": 1500,
+      "sha256": "5a698ca48aa78c91013c336c63a39a80a1da07cbbb3b615949d7a82a58707dd2"
+    },
+    "initial/vision-component-shutdown-tests.log": {
+      "bytes": 2640,
+      "sha256": "a52f28ce8baeea08c5abeec91622a6d51b20a70f05715858d73b1832f2155d4f"
+    },
+    "initial/vision-component-shutdown-tests.xml": {
+      "bytes": 1495,
+      "sha256": "a7cfa8c47e35fdf204bc5aababde414c6b7249a942f659ad7bf41e77c49a9f4d"
+    },
+    "initial/vision-conversion-inference-tests.log": {
+      "bytes": 56707,
+      "sha256": "277023e2cd8359fd21e854ad9a87e3ce7be8099eca44fbe94fd72477cccafea1"
+    },
+    "initial/vision-conversion-inference-tests.xml": {
+      "bytes": 52970,
+      "sha256": "9a2648bed863cc8ab2d405505cb25cca2b6d46be706715e96d71f86728719273"
+    },
+    "initial/vision-conversion-ui-tests.log": {
+      "bytes": 3036,
+      "sha256": "dad2c81a1d9eaf1130e60c57efd02b3894aaab875a7be38a42186cd70e153554"
+    },
+    "initial/vision-conversion-ui-tests.xml": {
+      "bytes": 1486,
+      "sha256": "5f2908213a90eab3ebf4b724e5e9819fd4974bf9da1950b959ed87780ae76c96"
+    },
+    "initial/vision-core-tests.log": {
+      "bytes": 4232,
+      "sha256": "da19271caa279eb511d89a37eaad4fe14b220be17851177c4ad19ce61bffce8f"
+    },
+    "initial/vision-core-tests.xml": {
+      "bytes": 1468,
+      "sha256": "b0c36ceebbd842a8d1721e62918b3070607e56089a4bee65926fe24ed9584612"
+    },
+    "initial/vision-dataset-session-tests.log": {
+      "bytes": 3261,
+      "sha256": "cd16a1b1453e85ec82d79c149e55a5bc529abece6dc5cb6f6118f50fe56964af"
+    },
+    "initial/vision-dataset-session-tests.xml": {
+      "bytes": 1491,
+      "sha256": "0d4cc3fec23d3a05b87ea7d28bed983cffd37b07693a18b51876aee5d253d7f6"
+    },
+    "initial/vision-dataset-session-ui-tests.log": {
+      "bytes": 5408,
+      "sha256": "c4f74da4aa09451584a61fd7306122badf8058c23560765587254252b1a25727"
+    },
+    "initial/vision-dataset-session-ui-tests.xml": {
+      "bytes": 1495,
+      "sha256": "9faf0705b9e9ae53e4723d519d41101c4747c4c71220052fb77490149522ada6"
+    },
+    "initial/vision-detection-controller-tests.log": {
+      "bytes": 2601,
+      "sha256": "e05a438639381088ffcc50a3c360a64d0fc09dbb03488457e67b05c8443d2120"
+    },
+    "initial/vision-detection-controller-tests.xml": {
+      "bytes": 1499,
+      "sha256": "f33b8dc55a093836d644fd00b27242ddf52719dedc53d239dd80ffc7489b14dd"
+    },
+    "initial/vision-evaluation-controller-tests.log": {
+      "bytes": 3873,
+      "sha256": "35129561ea4186589e3204160c1cb2804179dc522916e9e574f9c4a4f52661ab"
+    },
+    "initial/vision-evaluation-controller-tests.xml": {
+      "bytes": 1502,
+      "sha256": "52509bfc82373ba46cf336ec1bc375ad2efa38a8125879a1bd2dfb6861ce4d86"
+    },
+    "initial/vision-evaluation-import-tests.log": {
+      "bytes": 2949,
+      "sha256": "6d79e80bb50e059710fc5ae667ca250219d51f704cbaa6388cb08b1ed6f55e73"
+    },
+    "initial/vision-evaluation-import-tests.xml": {
+      "bytes": 1493,
+      "sha256": "6563eee6bbf6fb7623885b8a483cd9faaedf7ccb7887c8e7f3d0606e271c7b4e"
+    },
+    "initial/vision-evaluation-integration-tests.log": {
+      "bytes": 45071,
+      "sha256": "2eba8bf3e1d9016fd9263bda2148b95c7dca2d6dc69f33a1beb3d0440ff82aa9"
+    },
+    "initial/vision-evaluation-integration-tests.xml": {
+      "bytes": 1505,
+      "sha256": "60f3971aa9b2103909c2fde065564b1cb9ff875646bc534292346dae2f16e2e3"
+    },
+    "initial/vision-evaluation-panel-tests.log": {
+      "bytes": 22933,
+      "sha256": "0339c105b502eabb18aca41ad49e1779b4c67c27d986de88dcb432f80ad069ee"
+    },
+    "initial/vision-evaluation-panel-tests.xml": {
+      "bytes": 1491,
+      "sha256": "55e254c4b25bdb3c054c0ff73377cb456332f7ffadb78fc524735ece0cf4fa72"
+    },
+    "initial/vision-evaluation-python-tests.log": {
+      "bytes": 1971,
+      "sha256": "31545dfbbdb55dfd9cec2454cefb6ec2735a1025db212d01fda1659cc1e2668b"
+    },
+    "initial/vision-evaluation-python-tests.xml": {
+      "bytes": 859,
+      "sha256": "423138461a0d670b7ef1979e79a044f28af2c1961bf29dbba4cba92dc06720e1"
+    },
+    "initial/vision-evaluation-reporting-tests.log": {
+      "bytes": 1951,
+      "sha256": "a25b5245b60ed0ec2d9e701ce7e482b91d31ca0cdb52cfbc1ec06df363777082"
+    },
+    "initial/vision-evaluation-reporting-tests.xml": {
+      "bytes": 826,
+      "sha256": "9fcf90a015409ea5660e462a9e1be6fd347edfd601603f6ee774d98779e4a889"
+    },
+    "initial/vision-evaluation-snapshot-tests.log": {
+      "bytes": 4047,
+      "sha256": "0ef2fab876842402e5b17ce2933bfd2e3bc9664a355da4aff71c8a8a19771dbc"
+    },
+    "initial/vision-evaluation-snapshot-tests.xml": {
+      "bytes": 1497,
+      "sha256": "2ad040582d11ecc404e269222761de7219376a66b9b28140925cef4523596340"
+    },
+    "initial/vision-evaluation-worker-tests.log": {
+      "bytes": 3371,
+      "sha256": "7c2dc01e0851dfb04bed9bfe58b616ebf10dbaf8f7768287fcb7eef14a420b87"
+    },
+    "initial/vision-evaluation-worker-tests.xml": {
+      "bytes": 1493,
+      "sha256": "8870215e8731db6923591fd8b4641885b25575cecf7d35baeae271b19b5704c1"
+    },
+    "initial/vision-gpu-environment-service-tests.log": {
+      "bytes": 2919,
+      "sha256": "21168235683c25100d0376535b904bf661a49c12f481987f8a89cfab3b9ac478"
+    },
+    "initial/vision-gpu-environment-service-tests.xml": {
+      "bytes": 1505,
+      "sha256": "9e9721206983f55629e2bf952616f88c29e232028404e8da89b6c1ede7bc029e"
+    },
+    "initial/vision-gpu-runtime-tests.log": {
+      "bytes": 1504,
+      "sha256": "fdcad8feea0af7f6d453c91475382b9fb3638a0a63fd2ecbcd99667d587b5cde"
+    },
+    "initial/vision-gpu-runtime-tests.xml": {
+      "bytes": 487,
+      "sha256": "b4c10d97711c28cebcac88bd19b36ad70b154a3f8a137bde052f6a49045b7b6d"
+    },
+    "initial/vision-gpu-tests.log": {
+      "bytes": 8552,
+      "sha256": "1c0f597f9620415a47835642f28ec74cc042c588427eb0ca345e0d443f565042"
+    },
+    "initial/vision-gpu-tests.xml": {
+      "bytes": 1467,
+      "sha256": "e6e3fc2db4cd158b66664d5ad6601f9691dc1b5daee709b9ea5265cefa5e0dfe"
+    },
+    "initial/vision-image-result-store-tests.log": {
+      "bytes": 3136,
+      "sha256": "3040f8f989eb208d6b259f4c1860105f43c73f1db33b523a8e58836c8d0d1c0c"
+    },
+    "initial/vision-image-result-store-tests.xml": {
+      "bytes": 1496,
+      "sha256": "3ff7043fa36de0944e496c4c9355f53f6e21f0228cbcf3443f3661b78a2957c6"
+    },
+    "initial/vision-inference-delivery-tests.log": {
+      "bytes": 2431,
+      "sha256": "6ec5a31c3e2a68b855af13963f4c8f700ae016abc56461219147d2124a23a717"
+    },
+    "initial/vision-inference-delivery-tests.xml": {
+      "bytes": 1385,
+      "sha256": "33c2f80f020e5b6c0be73daa6771708a5c8c0f79388f686b56202b428bc382c7"
+    },
+    "initial/vision-input-drop-ui-tests.log": {
+      "bytes": 5909,
+      "sha256": "28652c6561af67934a8918f48d214515823b5e2ca1971c50c0d6b060f25f4eb6"
+    },
+    "initial/vision-input-drop-ui-tests.xml": {
+      "bytes": 1486,
+      "sha256": "47422f3ec7dc0e38c892612a74f6029f50af69bc82be39522ae4b7f9262f9cf3"
+    },
+    "initial/vision-input-session-controller-tests.log": {
+      "bytes": 4141,
+      "sha256": "2ae7a1eb5e2a508c5c066c7ccd7214c15f71ac007e0ca8be37aa4c21b6f5c563"
+    },
+    "initial/vision-input-session-controller-tests.xml": {
+      "bytes": 1507,
+      "sha256": "6a295e806aa782fd945a4acf2dba98bd24176921657850c42846562ab91aca76"
+    },
+    "initial/vision-model-conversion-tests.log": {
+      "bytes": 21555,
+      "sha256": "ab2b1556d8eff3587064e7f420f60b68b46c007f012740fe601af09dd16464ab"
+    },
+    "initial/vision-model-conversion-tests.xml": {
+      "bytes": 1493,
+      "sha256": "61d07f89436406cebf400561aeea601efae7d3b104bcb1bc33d4f25665ca3d56"
+    },
+    "initial/vision-model-session-controller-tests.log": {
+      "bytes": 3000,
+      "sha256": "085107ca03db0c02bfabf3f1f17dcd9ce0884f7fec354bc8943085b5e2f41d98"
+    },
+    "initial/vision-model-session-controller-tests.xml": {
+      "bytes": 1508,
+      "sha256": "3aea9688c36d79ead6645bcbd08de9cebb20b52254557313a6ccb384fffbbf18"
+    },
+    "initial/vision-model-yaml-tests.log": {
+      "bytes": 3578,
+      "sha256": "4865903721b19bccb87814f6a73bbffca617b073c542656cfdb5711ab7299d44"
+    },
+    "initial/vision-model-yaml-tests.xml": {
+      "bytes": 1482,
+      "sha256": "3d32a6350cd7dc94c0ff7c8c8998b8971903e78021ce5aa8a224823ddf9f819f"
+    },
+    "initial/vision-modelviewer-tests.log": {
+      "bytes": 31853,
+      "sha256": "be1dbcb10bdb6b527cd0736489d7ce369d114569fa74ea4dcfb328d00ce7e4d8"
+    },
+    "initial/vision-modelviewer-tests.xml": {
+      "bytes": 1482,
+      "sha256": "d67d11be99e513da85ac68a84bc1ef26e87f5ef5969b3e75d9db3310c86cddd6"
+    },
+    "initial/vision-netron-server-tests.log": {
+      "bytes": 3209,
+      "sha256": "4961eb556e1782e749932a9a421b582abddd327e5c92634fc379f2a85f505133"
+    },
+    "initial/vision-netron-server-tests.xml": {
+      "bytes": 1491,
+      "sha256": "d2ab512ca567f61eca5a7c130ca88ec1ea292e72b7be59212af2f4688bb53d9c"
+    },
+    "initial/vision-operation-coordinator-tests.log": {
+      "bytes": 42681,
+      "sha256": "893f2dbf2c69905499c1b9c4b25706758a4bb202e811c195dbdf908a54bd096b"
+    },
+    "initial/vision-operation-coordinator-tests.xml": {
+      "bytes": 1501,
+      "sha256": "47c4f3000f808f85538cdd541ed0bc401a2846b734b2ab39fe660702cf66d7f7"
+    },
+    "initial/vision-pt-batch-python-tests.log": {
+      "bytes": 2628,
+      "sha256": "942e6c6baf631a3144d3f94f80da048d63cf6bb89097fbd6da4045e60ca9419f"
+    },
+    "initial/vision-pt-batch-python-tests.xml": {
+      "bytes": 1490,
+      "sha256": "7ab108a454240968b7b2c5b4120ab66fc625b193226901d5d379ae7f3f7add99"
+    },
+    "initial/vision-pt-tests.log": {
+      "bytes": 5909,
+      "sha256": "e173b891f51c1e170c0ab78e6d103ba90bc35060ddd7f1a3ff1fc05873a6ed52"
+    },
+    "initial/vision-pt-tests.xml": {
+      "bytes": 1465,
+      "sha256": "ac9ff8b3de5ab43380a4efe75a200eb5fb25aeae0ae4ad163039119f46b1212a"
+    },
+    "initial/vision-recording-controller-tests.log": {
+      "bytes": 2817,
+      "sha256": "24ddf5687b3d6465b1fb6c341cf5e1ae19bf7f9d70353458b2532f970b6317ee"
+    },
+    "initial/vision-recording-controller-tests.xml": {
+      "bytes": 1499,
+      "sha256": "525006a9bd1a63559a7b5a5f10a698500d23bae8b9db915228c3fd1886aa852d"
+    },
+    "initial/vision-recording-tests.log": {
+      "bytes": 2862,
+      "sha256": "683eb3a7a41c7b71931a8ba945f2fd90eeff7e49df33fc48f9965901663e452e"
+    },
+    "initial/vision-recording-tests.xml": {
+      "bytes": 1477,
+      "sha256": "2e26ae1d59b0ca9fb39da2d38f4a07bb42d97766ab038dfba59e1828cec186e0"
+    },
+    "initial/vision-result-delivery-tests.log": {
+      "bytes": 2796,
+      "sha256": "90abdf3234361cbf520640a95715dca08dbd81b476652c0608c47c062b35f2b3"
+    },
+    "initial/vision-result-delivery-tests.xml": {
+      "bytes": 1490,
+      "sha256": "7980c612d48a1e7fc0a324b6abcaaf2e3d558a2db446436b38cace6efd36712c"
+    },
+    "initial/vision-runtime-setup-shutdown-tests.log": {
+      "bytes": 5243,
+      "sha256": "3a591abfb05378c6a3bc683647728787b2fb6f61b8d306ae97c3b473b280a220"
+    },
+    "initial/vision-runtime-setup-shutdown-tests.xml": {
+      "bytes": 1504,
+      "sha256": "1a6b445e8c11da841ef16031a575d17256c92fa955f108cf137fd661ab8c7cba"
+    },
+    "initial/vision-scope-filter-ui-tests.log": {
+      "bytes": 16104,
+      "sha256": "68aec40329ab59fbe10cab837d5c997d8f5d0d34b144b91366e246dc650cef22"
+    },
+    "initial/vision-scope-filter-ui-tests.xml": {
+      "bytes": 1490,
+      "sha256": "dfed0889d34cd326e52e0bb79ee9a4dd1533a5de72d730a7a6b7d499a953cc9f"
+    },
+    "initial/vision-simple-pages-tests.log": {
+      "bytes": 2206,
+      "sha256": "0706c696b538b67587a937d856aa01cd8c323884cd8bd7d53443799520336c7f"
+    },
+    "initial/vision-simple-pages-tests.xml": {
+      "bytes": 1107,
+      "sha256": "e0f827ae2ad2a74aeed2c2c32de1e506457f84a61117f89f221c766d95a6eda9"
+    },
+    "initial/vision-ui-tests.log": {
+      "bytes": 14670,
+      "sha256": "7ab9c5fda260a08c8b77866285885027956840fb2ce8468e538372cdeacf041c"
+    },
+    "initial/vision-ui-tests.xml": {
+      "bytes": 13080,
+      "sha256": "0f6a195d2a3059a3aa3e32309a9d75574d3dd9a42f8896668463a00c31a17ce1"
+    },
+    "initial/vision-window-shutdown-tests.log": {
+      "bytes": 2667,
+      "sha256": "fed6aab08cc1bb70c2350b9a3d8fe45dcd7f5f28ad462e34415bcbcf22acd94e"
+    },
+    "initial/vision-window-shutdown-tests.xml": {
+      "bytes": 1489,
+      "sha256": "a699c2c6dcbd83d2ff1d8f89be0d12a0dc9ee56200940cc29a1979e9074dede7"
+    },
+    "initial/vision-workbench-configuration-tests.log": {
+      "bytes": 5601,
+      "sha256": "ede80f85c99cf386e62e49ffc6d1162d0039b94f3cdc3cc833cbab26f7218e98"
+    },
+    "initial/vision-workbench-configuration-tests.xml": {
+      "bytes": 1506,
+      "sha256": "ae8a4510e4a02bf0721f018130ade79ccde2388b7358efe29d42415ddbb4c049"
+    },
+    "initial/vision-workbench-page-tests.log": {
+      "bytes": 2424,
+      "sha256": "ef769733f4983057a3d766582e5cf54eb1cfe6eadc5dd9a74462141e7bfb23da"
+    },
+    "initial/vision-workbench-page-tests.xml": {
+      "bytes": 1311,
+      "sha256": "a32c654564d57e24881ef54ce9da16ef427de885edabe324448f6081fc5a2711"
+    },
+    "initial/vision-workspace-drop-filter-tests.log": {
+      "bytes": 2597,
+      "sha256": "aac054ec3e6d8e8810f8c89efce0804836a7c8d409dfdc3c37a90fae25f96546"
+    },
+    "initial/vision-workspace-drop-filter-tests.xml": {
+      "bytes": 1502,
+      "sha256": "f33cd8a49252a0044a3847738b7d80dc7c55f330d396daa53fb8eb226cf6b631"
+    },
+    "initial/vision-workspace-pages-tests.log": {
+      "bytes": 11619,
+      "sha256": "33438c4ad6468966c987906394f9cf913424840f561c26395682656e52d0d045"
+    },
+    "initial/vision-workspace-pages-tests.xml": {
+      "bytes": 1490,
+      "sha256": "3c3e371586f946bbae0c504620107e569b43bac4c078e4329f6f79920c4bbf01"
+    },
+    "initial/artifacts/onnx-cuda-0_2026-10-29_19-38-46.json": {
+      "bytes": 287888,
+      "sha256": "a7425804f221c86b1d7b51adf45b967f5206d2248233b202b7f6e5ee05cd1701"
+    },
+    "initial/artifacts/onnx-cuda-1_2026-10-29_19-38-46.json": {
+      "bytes": 287886,
+      "sha256": "220881e71380a50096ae406872b2969287424c5bb0f05a1aee84ba18350f2caf"
+    },
+    "corrected/ctest-discovery.json": {
+      "bytes": 35886,
+      "sha256": "8037528cc714e6fe8e54e602cdc19fc2d9933a9061d60f7aef095f3b676f6e1a"
+    },
+    "corrected/detection-regression-qa.json": {
+      "bytes": 42082,
+      "sha256": "ecbf1a24a612f80cc7fb47ae5e8be47844e27c17a54b26a9f8d9ad71844067f1"
+    },
+    "corrected/vision-batch-responsiveness-tests.log": {
+      "bytes": 3893,
+      "sha256": "af8af766b4c4d862132443cd0db6a8ee17a6a6bed3a85f4a3fc2e36e676970fd"
+    },
+    "corrected/vision-batch-responsiveness-tests.xml": {
+      "bytes": 1500,
+      "sha256": "37ec3c55f6251ef4e1ee5281ca73f64ce7924ebe01f148f2481565fe8a0bf978"
+    },
+    "corrected/vision-component-shutdown-tests.log": {
+      "bytes": 2640,
+      "sha256": "1ce231befc57a2e7771cbf4c7e8c74cf9ce600f98617694ed7ee312da9e3e9a6"
+    },
+    "corrected/vision-component-shutdown-tests.xml": {
+      "bytes": 1495,
+      "sha256": "ee1d433dda0536a71d10290060cf41f79ca32194586fa8f55c6bbe8a9250dfc4"
+    },
+    "corrected/vision-conversion-inference-tests.log": {
+      "bytes": 3435,
+      "sha256": "55857e57e75e09a9dd19d7d8a82c3015c9a714947b343f623497858526ed4582"
+    },
+    "corrected/vision-conversion-inference-tests.xml": {
+      "bytes": 1501,
+      "sha256": "b02aba92fb0788ece0b76b50364488c37cd3060acb258a4d923ea38d9414b707"
+    },
+    "corrected/vision-dataset-session-ui-tests.log": {
+      "bytes": 5408,
+      "sha256": "e0dbdc147b8eed142ad8ac9aa25c21204832422e917edbc4ec8213b2ff32e684"
+    },
+    "corrected/vision-dataset-session-ui-tests.xml": {
+      "bytes": 1495,
+      "sha256": "7e7376ecd80078d747f493f94396afdd06b89f21f3d0190733e769afb2736bc4"
+    },
+    "corrected/vision-evaluation-integration-tests.log": {
+      "bytes": 45071,
+      "sha256": "09e729b1d3403f824efb45a09ae8e3110a2d09560e3b5db4ca3a3f31e0b428b3"
+    },
+    "corrected/vision-evaluation-integration-tests.xml": {
+      "bytes": 1505,
+      "sha256": "cf1d1f8edf89d8622042ffbc5ed394a33120d589279c30f63a96276d7d2a738a"
+    },
+    "corrected/vision-gpu-tests.log": {
+      "bytes": 8554,
+      "sha256": "326c388cdfd8f045af3a3cca901a845f15009ed33ac0a134bb3173b2429ff9c2"
+    },
+    "corrected/vision-gpu-tests.xml": {
+      "bytes": 1467,
+      "sha256": "3a908e055716bc6fbb254b0099536e2c7bfcead716027ec85f3bcf17bdc8eca9"
+    },
+    "corrected/vision-input-drop-ui-tests.log": {
+      "bytes": 5909,
+      "sha256": "917b25a0d0c8d039ff589e6d09debafa8ecd4191fc5f5b39ff3bf2c0c8523716"
+    },
+    "corrected/vision-input-drop-ui-tests.xml": {
+      "bytes": 1486,
+      "sha256": "b5281ed7f9217bfbb80aa59636c378d83644ebf50d4df3c632def0028e362f93"
+    },
+    "corrected/vision-model-conversion-tests.log": {
+      "bytes": 22156,
+      "sha256": "a4bfb78a012d91787aeec2c81a2d0c78014a9953468b3c731a49b8cdeb8a77db"
+    },
+    "corrected/vision-model-conversion-tests.xml": {
+      "bytes": 1493,
+      "sha256": "31c32178b9dac14b0c0a0c5e5218190f6ebfe117496ce0a4fbd2141e86d8cb4b"
+    },
+    "corrected/vision-runtime-setup-shutdown-tests.log": {
+      "bytes": 5243,
+      "sha256": "43d211525eda5d970bf5e7a832ae43826a397d5f8e1db90bfd6bba390bb9c44b"
+    },
+    "corrected/vision-runtime-setup-shutdown-tests.xml": {
+      "bytes": 1503,
+      "sha256": "b9ea439baf0ffd34340dfe1a40f476b492fe70af26f770259387dc2baba7701f"
+    },
+    "corrected/vision-scope-filter-ui-tests.log": {
+      "bytes": 16105,
+      "sha256": "c42fce016ed84f24ff19a5d27135686cde695f6ef8d8dbd53c0c0602f5e8ffe0"
+    },
+    "corrected/vision-scope-filter-ui-tests.xml": {
+      "bytes": 1490,
+      "sha256": "6d4b776bd1a8cf327bb33fa16439fbd57d333489c14135701cfa8ed6a59d7f2a"
+    },
+    "corrected/vision-simple-pages-tests.log": {
+      "bytes": 2206,
+      "sha256": "0706c696b538b67587a937d856aa01cd8c323884cd8bd7d53443799520336c7f"
+    },
+    "corrected/vision-simple-pages-tests.xml": {
+      "bytes": 1107,
+      "sha256": "8d724634a740693ddff405931ebd7939199f050bab53e70d7ef121941e33c454"
+    },
+    "corrected/vision-ui-tests.log": {
+      "bytes": 14509,
+      "sha256": "f8d2c44647f895e47bd8a8672f8651519d4346b971d00188bcbff7f6ed933595"
+    },
+    "corrected/vision-ui-tests.xml": {
+      "bytes": 1464,
+      "sha256": "73402cddbb37a2f77ab939ea065b2a2d66c4b5a820068ebd0d1b871ccbaecfce"
+    },
+    "corrected/vision-window-shutdown-tests.log": {
+      "bytes": 2667,
+      "sha256": "9e9ef566c8fd2f8b01171317a406921fb8e7ec6d66d289e7132bb3001c70282c"
+    },
+    "corrected/vision-window-shutdown-tests.xml": {
+      "bytes": 1489,
+      "sha256": "e4305d724c1016569b65fb093afd6dba79a0ea9ea2aad19569ff849fdb39b30d"
+    },
+    "corrected/vision-workbench-page-tests.log": {
+      "bytes": 2424,
+      "sha256": "dc8410af78f054603df327595c920d0ef85e41ad9adc2253655b231a1168a899"
+    },
+    "corrected/vision-workbench-page-tests.xml": {
+      "bytes": 1311,
+      "sha256": "d7793fbaea2e6ba6b16087b9811de2a50e747c22662a2302225dd10bd935e11f"
+    },
+    "corrected/vision-workspace-drop-filter-tests.log": {
+      "bytes": 2597,
+      "sha256": "6d2dddd7ee8af51b27558b69077b935604197735113b24821b24b011aaed8670"
+    },
+    "corrected/vision-workspace-drop-filter-tests.xml": {
+      "bytes": 1501,
+      "sha256": "957b50d86df9cc3adbeb42b855e9197a3e788c2ea61c72dffef166c3f438266c"
+    },
+    "corrected/vision-workspace-pages-tests.log": {
+      "bytes": 11717,
+      "sha256": "ea0275d0c49d656cc900ffa839773c04446a98d49ba8288209701bb04dc92ade"
+    },
+    "corrected/vision-workspace-pages-tests.xml": {
+      "bytes": 1490,
+      "sha256": "4eb75ef6d0d1b38a28969ede3a668014d45ebfca07f1b8ea34c1db37587e2fba"
+    },
+    "corrected/artifacts/onnx-cuda-0_2026-10-29_20-01-43.json": {
+      "bytes": 287892,
+      "sha256": "3b95064454e3328e1b7dd553c57b24887a88c66a0c861e6d0c35f84a074f5dfc"
+    },
+    "corrected/artifacts/onnx-cuda-1_2026-10-29_20-01-43.json": {
+      "bytes": 287890,
+      "sha256": "a4679e6b53a126dc1c01bd1aae3834cbc3a8d4cb5d9dfc35de894ca2e8ac9da3"
+    },
+    "inputs/stage4c-accepted-configure.log": {
+      "bytes": 1376,
+      "sha256": "6840b9a869c7904cc74da4353690b2ccd2a5c8dd0f984bbef8c2c2aa96746fcb"
+    },
+    "inputs/stage4c-accepted-build.log": {
+      "bytes": 8317,
+      "sha256": "f3427bffade7a06404914c592b04279e57b7bb62199e97fdef6047daabf7142b"
+    },
+    "inputs/stage4c-accepted-build-retry.log": {
+      "bytes": 16388,
+      "sha256": "2cc24c9e73fe7aaae58b5b365bc769b24aa004ddc322790e0b5daa8bbdc5e39f"
+    },
+    "inputs/stage4c-corrected-build.log": {
+      "bytes": 1861,
+      "sha256": "359ab73fb0c9f49f460725083d8b2b71e71df77d3901b700c8320ecd17a44480"
+    },
+    "inputs/stage4c-before-final-fixes-binaries.json": {
+      "bytes": 3792,
+      "sha256": "624793747777e389cad2411be92c866783eb11ac2a6882f17f91d05045da6cd8"
+    },
+    "inputs/stage4c-accepted-source-binding.json": {
+      "bytes": 313,
+      "sha256": "c43ed18565d082324defdaf6cec3024fd08ebd756911e15c3625cb4eb5d3dd15"
+    },
+    "inputs/stage4c-corrected-test-selection.json": {
+      "bytes": 834,
+      "sha256": "97c68c0190ba7deaf35410dba6e18c1f245f29b44f35460fb8a682d94e269c55"
+    },
+    "inputs/stage4c-inference-only-runtime-fixture.json": {
+      "bytes": 567,
+      "sha256": "15b3f10d2a67a62bbd4456cc5c4db2e2008d3eae556f4076ade31883413fc9a6"
+    },
+    "inputs/stage4c-accepted-runner.log": {
+      "bytes": 5838,
+      "sha256": "f850fae20f596c4e559c9e49e60ae2bf6a3efe5178d7c1175bb85f6eb990efd1"
+    },
+    "inputs/stage4c-corrected-runner.log": {
+      "bytes": 2116,
+      "sha256": "c05152818ac4e67484c547f5bba94c3c93111fe08d20e5e057f8b6cc15e0022a"
+    },
+    "tools/stage4c_acceptance.py": {
+      "bytes": 25848,
+      "sha256": "f1e39c31b4d14a2b3d527ec224868849fa2aeefb90fb2b4cfe038f2385798455"
+    },
+    "tools/summarize_regressions.py": {
+      "bytes": 21900,
+      "sha256": "8e5e3d0b43f5b6eae3b6cf246a3f06b927b303e5fb7c9c84470afbc1b2e4ddf3"
+    },
+    "tools/test_stage4c_acceptance.py": {
+      "bytes": 2956,
+      "sha256": "fb99e7f539b2321639304e27f49081b17148adc77796129de4456299fae9056a"
+    },
+    "tools/stage4c-acceptance-unit-tests.log": {
+      "bytes": 1246,
+      "sha256": "3ebdebd5d8f2fbc7b177908a23c2d39b5088fca811e454995484f5b30040d7b2"
+    },
+    "inputs/source-input-manifests.json": {
+      "bytes": 2984475,
+      "sha256": "3bd03c56ec13235f432634cdc98a0788970ab89fb8a13007dab6ae797088c1ac"
+    },
+    "inputs/production-input-manifests.json": {
+      "bytes": 1168457,
+      "sha256": "88af473fda2273503fe2af4070f73abc9f15d648dcc40e9f7d9d7a9bfcf876e8"
+    },
+    "inputs/source-correction.diff": {
+      "bytes": 7687,
+      "sha256": "58a04a7a4055ea6f2fda37b8c045eae9144413594988534b59e45998a011b8ef"
+    }
+  }
+}

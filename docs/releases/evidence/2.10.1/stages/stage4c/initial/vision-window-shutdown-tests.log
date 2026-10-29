@@ -1,0 +1,42 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 44
+    Start 44: vision-window-shutdown-tests
+
+44: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-window-shutdown-tests
+44: Environment variables: 
+44:  QT_QPA_PLATFORM=offscreen
+44:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+44: Test timeout computed to be: 120
+44: ********* Start testing of WindowShutdownTests *********
+44: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+44: PASS   : WindowShutdownTests::initTestCase()
+44: PASS   : WindowShutdownTests::runningRealOnnxTaskClosesWithoutBlockingGui()
+44: PASS   : WindowShutdownTests::morePagePreparationIntentsAreRejectedAfterCloseStarts()
+44: PASS   : WindowShutdownTests::highResolutionAcceptedAutomaticSaveDrainsBeforeDestruction()
+44: PASS   : WindowShutdownTests::importAndQueueProjectionCanCloseImmediately(background-file-validation)
+44: PASS   : WindowShutdownTests::importAndQueueProjectionCanCloseImmediately(partially-projected-large-queue)
+44: PASS   : WindowShutdownTests::modelViewerLoadingCloseReapsHelperBeforeDestroyingWindow()
+44: PASS   : WindowShutdownTests::conversionOutputSurvivesCloseWhileHelperCleanupFinishes()
+44: PASS   : WindowShutdownTests::sameApplicationCanRebuildWindowAndUsePreviewModelRuntimeAndInference()
+44: PASS   : WindowShutdownTests::cleanupTestCase()
+44: Totals: 10 passed, 0 failed, 0 skipped, 0 blacklisted, 9308ms
+44: ********* Finished testing of WindowShutdownTests *********
+1/1 Test #44: vision-window-shutdown-tests .....   Passed    9.45 sec
+
+The following tests passed:
+	vision-window-shutdown-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   9.45 sec

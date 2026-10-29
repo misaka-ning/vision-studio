@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="1"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="67"
+	timestamp="2026-10-29T19:38:50"
+	>
+	<testcase name="vision-ui-tests" classname="vision-ui-tests" time="67.2657" status="fail">
+		<failure message=""/>
+		<system-out>********* Start testing of UiTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : UiTests::initTestCase()
+PASS   : UiTests::professionalWorkbenchStartsEmptyAndAcceptsTemporaryImageDrops()
+PASS   : UiTests::realInferenceSelectionAndNavigation()
+QINFO  : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(input-size-unfocused) wheel_routing_evidence: inputSize focus= false scroll= 149 / 558 point= QPoint(402,558) target= QLineEdit qt_spinbox_lineedit
+PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(input-size-unfocused)
+QINFO  : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(input-size-focused) wheel_routing_evidence: inputSize focus= true scroll= 149 / 558 point= QPoint(402,558) target= QLineEdit qt_spinbox_lineedit
+PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(input-size-focused)
+QINFO  : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(confidence-unfocused) wheel_routing_evidence: confidence focus= false scroll= 173 / 558 point= QPoint(402,582) target= QLineEdit qt_spinbox_lineedit
+PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(confidence-unfocused)
+QINFO  : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(confidence-focused) wheel_routing_evidence: confidence focus= true scroll= 173 / 558 point= QPoint(402,582) target= QLineEdit qt_spinbox_lineedit
+PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(confidence-focused)
+QINFO  : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(nms-iou-unfocused) wheel_routing_evidence: nmsIou focus= false scroll= 198 / 558 point= QPoint(402,605) target= QLineEdit qt_spinbox_lineedit
+PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(nms-iou-unfocused)
+QINFO  : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(nms-iou-focused) wheel_routing_evidence: nmsIou focus= true scroll= 198 / 558 point= QPoint(402,605) target= QLineEdit qt_spinbox_lineedit
+PASS   : UiTests::inferenceParameterWheelScrollsPanelWithoutChangingValues(nms-iou-focused)
+PASS   : UiTests::automaticSaveDirectoryButtonOpensConfiguredLocalFolder(default-results-directory)
+PASS   : UiTests::automaticSaveDirectoryButtonOpensConfiguredLocalFolder(configured-directory-with-spaces)
+QWARN  : UiTests::modelLibraryExternalDropsAppendAtomicallyAndSelectOnce() This plugin does not support raise()
+QWARN  : UiTests::modelLibraryExternalDropsAppendAtomicallyAndSelectOnce() This plugin does not support grabbing the keyboard
+QWARN  : UiTests::modelLibraryExternalDropsAppendAtomicallyAndSelectOnce() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelLibraryExternalDropsAppendAtomicallyAndSelectOnce() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelLibraryExternalDropsAppendAtomicallyAndSelectOnce() This plugin does not support raise()
+QWARN  : UiTests::modelLibraryExternalDropsAppendAtomicallyAndSelectOnce() This plugin does not support grabbing the keyboard
+QWARN  : UiTests::modelLibraryExternalDropsAppendAtomicallyAndSelectOnce() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelLibraryExternalDropsAppendAtomicallyAndSelectOnce() This plugin does not support propagateSizeHints()
+PASS   : UiTests::modelLibraryExternalDropsAppendAtomicallyAndSelectOnce()
+PASS   : UiTests::modelLibraryDropsRejectInvalidBatchesWithoutMutations()
+PASS   : UiTests::busyModelLibraryDropsCannotReplaceCurrentTask()
+QWARN  : UiTests::modelLibraryDialogCancelKeepsLibraryAndSelection() This plugin does not support propagateSizeHints()
+PASS   : UiTests::modelLibraryDialogCancelKeepsLibraryAndSelection()
+QWARN  : UiTests::modelLibraryInternalMovesPreserveGlobalSelectionAndPersistAfterRestart() This plugin does not support propagateSizeHints()
+PASS   : UiTests::modelLibraryInternalMovesPreserveGlobalSelectionAndPersistAfterRestart()
+QWARN  : UiTests::modelContextMenuTargetsPointerWithoutChangingGlobalSelection() This plugin does not support raise()
+QWARN  : UiTests::modelContextMenuTargetsPointerWithoutChangingGlobalSelection() This plugin does not support grabbing the keyboard
+PASS   : UiTests::modelContextMenuTargetsPointerWithoutChangingGlobalSelection()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support raise()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support grabbing the keyboard
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support raise()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support grabbing the keyboard
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support raise()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support grabbing the keyboard
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support raise()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support grabbing the keyboard
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support raise()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support grabbing the keyboard
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart() This plugin does not support propagateSizeHints()
+PASS   : UiTests::modelNotesAndDisplayNamesPersistByPathThroughReorderAndRestart()
+QWARN  : UiTests::modelRemovalPreservesFilesAndDoesNotReAddBundledModelsOnRestart() This plugin does not support raise()
+QWARN  : UiTests::modelRemovalPreservesFilesAndDoesNotReAddBundledModelsOnRestart() This plugin does not support grabbing the keyboard
+PASS   : UiTests::modelRemovalPreservesFilesAndDoesNotReAddBundledModelsOnRestart()
+QWARN  : UiTests::missingModelContextActionsKeepTheValidGlobalModel() This plugin does not support raise()
+QWARN  : UiTests::missingModelContextActionsKeepTheValidGlobalModel() This plugin does not support grabbing the keyboard
+QWARN  : UiTests::missingModelContextActionsKeepTheValidGlobalModel() This plugin does not support raise()
+QWARN  : UiTests::missingModelContextActionsKeepTheValidGlobalModel() This plugin does not support grabbing the keyboard
+QWARN  : UiTests::missingModelContextActionsKeepTheValidGlobalModel() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::missingModelContextActionsKeepTheValidGlobalModel() This plugin does not support propagateSizeHints()
+QWARN  : UiTests::missingModelContextActionsKeepTheValidGlobalModel() This plugin does not support raise()
+QWARN  : UiTests::missingModelContextActionsKeepTheValidGlobalModel() This plugin does not support grabbing the keyboard
+PASS   : UiTests::missingModelContextActionsKeepTheValidGlobalModel()
+QWARN  : UiTests::busyModelContextMenuAllowsLocationAndPreventsMutations() This plugin does not support raise()
+QWARN  : UiTests::busyModelContextMenuAllowsLocationAndPreventsMutations() This plugin does not support grabbing the keyboard
+PASS   : UiTests::busyModelContextMenuAllowsLocationAndPreventsMutations()
+PASS   : UiTests::globalModelSelectionPreloadsAndCachesStructure()
+PASS   : UiTests::configurationDraftIsTheInferenceAndPersistenceAuthority()
+PASS   : UiTests::gpuEnvironmentRefreshDoesNotRewriteConfigurationDraft()
+PASS   : UiTests::configurationEditorIntentsPatchOnlyTheirOwnFields(input-size)
+PASS   : UiTests::configurationEditorIntentsPatchOnlyTheirOwnFields(confidence)
+PASS   : UiTests::configurationEditorIntentsPatchOnlyTheirOwnFields(iou)
+PASS   : UiTests::configurationEditorIntentsPatchOnlyTheirOwnFields(scale)
+PASS   : UiTests::configurationEditorIntentsPatchOnlyTheirOwnFields(mean-r)
+PASS   : UiTests::configurationEditorIntentsPatchOnlyTheirOwnFields(mean-g)
+PASS   : UiTests::configurationEditorIntentsPatchOnlyTheirOwnFields(mean-b)
+PASS   : UiTests::configurationEditorIntentsPatchOnlyTheirOwnFields(task)
+PASS   : UiTests::configurationEditorIntentsPatchOnlyTheirOwnFields(input-color)
+PASS   : UiTests::configurationEditorIntentsPatchOnlyTheirOwnFields(compute-device)
+PASS   : UiTests::configurationEditorIntentsPatchOnlyTheirOwnFields(device-index)
+PASS   : UiTests::configurationEditorIntentsPatchOnlyTheirOwnFields(class-filter)
+PASS   : UiTests::configurationEditorIntentsPatchOnlyTheirOwnFields(camera-index)
+PASS   : UiTests::configurationEditorIntentsPatchOnlyTheirOwnFields(stereo)
+PASS   : UiTests::configurationEditorIntentsPatchOnlyTheirOwnFields(automatic-export)
+PASS   : UiTests::shortcutsCancelAndRestartFromFocusedControls()
+PASS   : UiTests::directPtInferenceReadsNamesAndExportsNativeBackend()
+PASS   : UiTests::queueChangeAndClearInvalidateOldResults()
+QWARN  : UiTests::completedFolderResultsCanBeReviewedAndExported(rgb) This plugin does not support propagateSizeHints()
+PASS   : UiTests::completedFolderResultsCanBeReviewedAndExported(rgb)
+QWARN  : UiTests::completedFolderResultsCanBeReviewedAndExported(grayscale) This plugin does not support propagateSizeHints()
+PASS   : UiTests::completedFolderResultsCanBeReviewedAndExported(grayscale)
+PASS   : UiTests::importedFolderLargerThanFiftyImagesIsFullyProcessedAndReviewable()
+PASS   : UiTests::partiallyCompletedFolderResultsRemainReviewableAfterStopping()
+QWARN  : UiTests::completedFolderResultsRemainReviewableAfterLaterImageReadFails() This plugin does not support propagateSizeHints()
+PASS   : UiTests::completedFolderResultsRemainReviewableAfterLaterImageReadFails()
+PASS   : UiTests::completedFolderResultsAreInvalidatedWhenModelOrDeviceChanges(global-model)
+PASS   : UiTests::completedFolderResultsAreInvalidatedWhenModelOrDeviceChanges(compute-device)
+QWARN  : UiTests::zeroDetectionFolderResultsSurviveReviewAndCancelledRerunPreservesThem() This plugin does not support propagateSizeHints()
+PASS   : UiTests::zeroDetectionFolderResultsSurviveReviewAndCancelledRerunPreservesThem()
+PASS   : UiTests::grayscalePreviewAndColorSwitchInvalidatePredictions()
+PASS   : UiTests::legacyColorPreferenceMigration(legacy-rgb)
+PASS   : UiTests::legacyColorPreferenceMigration(legacy-bgr)
+PASS   : UiTests::grayscaleAndStereoPreferencesSurviveRestartAndPtSwitch()
+QWARN  : UiTests::stereoVideoRequestExportAndImageIsolation() This plugin does not support propagateSizeHints()
+PASS   : UiTests::stereoVideoRequestExportAndImageIsolation()
+QWARN  : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() This plugin does not support propagateSizeHints()
+FAIL!  : UiTests::recordingStartStopListsAndPlaysSelectedGrayscaleVideo() 'play-&gt;isEnabled()' returned FALSE. ()
+   Loc: [/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/tests/ui_tests.cpp(2676)]
+PASS   : UiTests::explicitCudaSmokeFailureDoesNotClaimCpuInference()
+PASS   : UiTests::automaticDeviceDefaultAndPreferencesPreserveInputModes()
+PASS   : UiTests::gpuPreparationReportsProgressCancelsAndRefreshesWithoutBlocking()
+PASS   : UiTests::cleanupTestCase()
+Totals: 59 passed, 1 failed, 0 skipped, 0 blacklisted, 67105ms
+********* Finished testing of UiTests *********
+</system-out>
+	</testcase>
+</testsuite>

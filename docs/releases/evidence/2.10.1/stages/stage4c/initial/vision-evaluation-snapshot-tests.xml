@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="1"
+	timestamp="2026-10-29T19:47:51"
+	>
+	<testcase name="vision-evaluation-snapshot-tests" classname="vision-evaluation-snapshot-tests" time="1.95108" status="run">
+		<system-out>test_cannot_change_inference_class_or_model (__main__.SnapshotTests) ... Creating new Ultralytics Settings v0.0.8 file ✅ 
+View Ultralytics Settings with 'yolo settings' or at '/tmp/vision-evaluation-tests-1ted8r35/ultralytics/Ultralytics/settings.json'
+Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/usage/settings.
+ok
+test_completed_and_planned_counts_must_agree (__main__.SnapshotTests) ... ok
+test_copy_preserves_exact_source_bytes_and_detects_destination_mutation (__main__.SnapshotTests) ... ok
+test_destination_predictions_changed_after_export_prevent_publication (__main__.SnapshotTests) ... ok
+test_duplicate_json_fields_and_unknown_analysis_options_are_rejected (__main__.SnapshotTests) ... ok
+test_external_profile_restriction_and_provenance_survive_reanalysis (__main__.SnapshotTests) ... ok
+test_future_schema_and_forged_complete_scope_are_rejected (__main__.SnapshotTests) ... ok
+test_invalid_gt_rejected_even_with_recomput...
+The rest of the test output was removed since it exceeds the threshold of 1024 bytes.
+</system-out>
+	</testcase>
+</testsuite>

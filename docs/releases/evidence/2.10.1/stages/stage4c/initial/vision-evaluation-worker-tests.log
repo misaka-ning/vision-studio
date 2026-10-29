@@ -1,0 +1,52 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 19
+    Start 19: vision-evaluation-worker-tests
+
+19: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-evaluation-worker-tests
+19: Environment variables: 
+19:  QT_QPA_PLATFORM=offscreen
+19: Test timeout computed to be: 600
+19: ********* Start testing of EvaluationWorkerTests *********
+19: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+19: PASS   : EvaluationWorkerTests::initTestCase()
+19: PASS   : EvaluationWorkerTests::prepareUsesRealDimensionsAndFlagsMissingLabels()
+19: PASS   : EvaluationWorkerTests::actualOnnxAllAndSubsets(all-three)
+19: PASS   : EvaluationWorkerTests::actualOnnxAllAndSubsets(from-second)
+19: PASS   : EvaluationWorkerTests::actualOnnxAllAndSubsets(only-last)
+19: PASS   : EvaluationWorkerTests::actualOnnxAllAndSubsets(more-than-fifty-all)
+19: PASS   : EvaluationWorkerTests::actualOnnxAllAndSubsets(more-than-fifty-tail)
+19: PASS   : EvaluationWorkerTests::stopRetainsOnlyCompletedPrefix()
+19: PASS   : EvaluationWorkerTests::onnxRequestedBatchUsesExplicitSingleImageFallback()
+19: PASS   : EvaluationWorkerTests::reanalysisRunsOfflineOnWorkerAndKeepsOriginalReport()
+19: PASS   : EvaluationWorkerTests::sceneErrorsKeepOnlyGroupCompletedIndices()
+19: PASS   : EvaluationWorkerTests::stopBeforeLoadProducesEmptyCancelledReport()
+19: PASS   : EvaluationWorkerTests::staleDatasetRejectedBeforePrediction()
+19: PASS   : EvaluationWorkerTests::duplicateAndForeignRangesRejected()
+19: PASS   : EvaluationWorkerTests::invalidMappingAndScanPreventInference()
+19: PASS   : EvaluationWorkerTests::backgroundReviewKeepsSnapshotAndGrayscale()
+19: PASS   : EvaluationWorkerTests::unprocessedPreviewCannotBecomeCompletedResult()
+19: PASS   : EvaluationWorkerTests::reviewRejectsWrongRowAndChangedPixels()
+19: PASS   : EvaluationWorkerTests::modifiedPredictionCacheCannotDisagreeWithSavedMetrics()
+19: PASS   : EvaluationWorkerTests::filtersReadCompactCacheWithoutOpeningImages()
+19: PASS   : EvaluationWorkerTests::cleanupTestCase()
+19: Totals: 21 passed, 0 failed, 0 skipped, 0 blacklisted, 66330ms
+19: ********* Finished testing of EvaluationWorkerTests *********
+1/1 Test #19: vision-evaluation-worker-tests ...   Passed   66.40 sec
+
+The following tests passed:
+	vision-evaluation-worker-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =  66.40 sec

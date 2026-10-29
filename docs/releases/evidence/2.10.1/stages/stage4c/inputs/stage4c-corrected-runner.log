@@ -1,0 +1,33 @@
+Running vision-ui-tests
+{"name": "vision-ui-tests", "success": true, "elapsed_seconds": 68.512}
+Running vision-batch-responsiveness-tests
+{"name": "vision-batch-responsiveness-tests", "success": true, "elapsed_seconds": 10.401}
+Running vision-scope-filter-ui-tests
+{"name": "vision-scope-filter-ui-tests", "success": true, "elapsed_seconds": 35.18}
+Running vision-conversion-inference-tests
+{"name": "vision-conversion-inference-tests", "success": true, "elapsed_seconds": 117.751}
+Running vision-input-drop-ui-tests
+{"name": "vision-input-drop-ui-tests", "success": true, "elapsed_seconds": 24.156}
+Running vision-dataset-session-ui-tests
+{"name": "vision-dataset-session-ui-tests", "success": true, "elapsed_seconds": 9.919}
+Running vision-evaluation-integration-tests
+{"name": "vision-evaluation-integration-tests", "success": true, "elapsed_seconds": 153.73}
+Running vision-workbench-page-tests
+{"name": "vision-workbench-page-tests", "success": true, "elapsed_seconds": 0.352}
+Running vision-workspace-pages-tests
+{"name": "vision-workspace-pages-tests", "success": true, "elapsed_seconds": 0.263}
+Running vision-simple-pages-tests
+{"name": "vision-simple-pages-tests", "success": true, "elapsed_seconds": 0.122}
+Running vision-component-shutdown-tests
+{"name": "vision-component-shutdown-tests", "success": true, "elapsed_seconds": 5.566}
+Running vision-runtime-setup-shutdown-tests
+{"name": "vision-runtime-setup-shutdown-tests", "success": true, "elapsed_seconds": 0.833}
+Running vision-workspace-drop-filter-tests
+{"name": "vision-workspace-drop-filter-tests", "success": true, "elapsed_seconds": 0.123}
+Running vision-window-shutdown-tests
+{"name": "vision-window-shutdown-tests", "success": true, "elapsed_seconds": 9.465}
+Running vision-model-conversion-tests
+{"name": "vision-model-conversion-tests", "success": true, "elapsed_seconds": 118.898}
+Running vision-gpu-tests
+{"name": "vision-gpu-tests", "success": true, "elapsed_seconds": 131.727}
+{"success": true, "errors": [], "report": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-corrected-regression/detection-regression-qa.json"}

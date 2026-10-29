@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Linux-c++"
+	tests="1"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="misaka-System-Product-Name"
+	time="5"
+	timestamp="2026-10-29T19:48:39"
+	>
+	<testcase name="vision-component-shutdown-tests" classname="vision-component-shutdown-tests" time="5.56872" status="run">
+		<system-out>********* Start testing of ComponentShutdownTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : ComponentShutdownTests::initTestCase()
+PASS   : ComponentShutdownTests::viewerShutdownIncludesRetiredAndActiveHelpers()
+PASS   : ComponentShutdownTests::viewerDirectDestructionLeavesAnAsynchronousReaper()
+PASS   : ComponentShutdownTests::conversionShutdownRetainsAcceptedOutputAndAwaitsCleanup()
+PASS   : ComponentShutdownTests::conversionShutdownDoesNotOutrunQueuedGlobalCleanup()
+PASS   : ComponentShutdownTests::conversionOrphanIsReapedBeforeAnotherPageCanReportReady()
+PASS   : ComponentShutdownTests::previewShutdownRejectsPendingAndFutureRequests()
+PASS   : ComponentShutdownTests::previewShutdownWaitsForRealDiskReadWithoutBlocking()
+PASS   : ComponentShutdownTests::finalApplicationPreviewGateIncludesDestroyedInstances()
+PASS   : ComponentShutdownTests::cleanupTestCase()
+Totals: 10 pa...
+The rest of the test output was removed since it exceeds the threshold of 1024 bytes.
+</system-out>
+	</testcase>
+</testsuite>

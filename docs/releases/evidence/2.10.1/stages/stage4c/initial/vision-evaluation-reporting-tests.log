@@ -1,0 +1,36 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 22
+    Start 22: vision-evaluation-reporting-tests
+
+22: Test command: /opt/VisionStudio/runtime/bin/python "-B" "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/tests/evaluation_reporting_tests.py"
+22: Environment variables: 
+22:  OMP_NUM_THREADS=1
+22:  OPENBLAS_NUM_THREADS=1
+22: Test timeout computed to be: 300
+22: Creating new Ultralytics Settings v0.0.8 file ✅ 
+22: View Ultralytics Settings with 'yolo settings' or at '/tmp/vision-evaluation-tests-v8dg7o8u/ultralytics/Ultralytics/settings.json'
+22: Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/usage/settings.
+22: ...........
+22: ----------------------------------------------------------------------
+22: Ran 11 tests in 5.384s
+22: 
+22: OK
+1/1 Test #22: vision-evaluation-reporting-tests ...   Passed    5.76 sec
+
+The following tests passed:
+	vision-evaluation-reporting-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   5.77 sec

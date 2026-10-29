@@ -1,0 +1,700 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 11
+    Start 11: vision-conversion-inference-tests
+
+11: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-conversion-inference-tests
+11: Environment variables: 
+11:  QT_QPA_PLATFORM=offscreen
+11:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+11: Test timeout computed to be: 300
+11: ********* Start testing of ConversionInferenceTests *********
+11: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+11: PASS   : ConversionInferenceTests::initTestCase()
+11: QWARN  : ConversionInferenceTests::convertedModelsUseTheirOwnTaskClassesChannelsAndPixels(modern-gray-onnx) Window destroyed before shutdown barrier completed
+11: Received signal 11 (SIGSEGV), code 128, for address 0x0000000000000000
+11:          convertedModelsUseTheirOwnTaskClassesChannelsAndPixels function time: 5367ms, total time: 10273ms
+11: 
+11: === Stack trace ===
+11: [New LWP 2378876]
+11: [New LWP 2378901]
+11: [New LWP 2378909]
+11: [New LWP 2378915]
+11: [New LWP 2378916]
+11: [New LWP 2378917]
+11: [New LWP 2378918]
+11: [New LWP 2378919]
+11: [New LWP 2378920]
+11: [New LWP 2378921]
+11: [New LWP 2378922]
+11: [New LWP 2378923]
+11: [New LWP 2378924]
+11: [New LWP 2378925]
+11: [New LWP 2378926]
+11: [New LWP 2378927]
+11: [New LWP 2378928]
+11: [New LWP 2378929]
+11: [New LWP 2378930]
+11: [New LWP 2378931]
+11: [New LWP 2378932]
+11: [New LWP 2378942]
+11: [New LWP 2378943]
+11: [New LWP 2378946]
+11: [New LWP 2378947]
+11: [New LWP 2379013]
+11: [New LWP 2379025]
+11: [New LWP 2379026]
+11: [New LWP 2379027]
+11: [New LWP 2379028]
+11: [New LWP 2379029]
+11: [New LWP 2379038]
+11: [New LWP 2379039]
+11: [New LWP 2379040]
+11: [New LWP 2379041]
+11: [New LWP 2379042]
+11: [New LWP 2379043]
+11: [New LWP 2379044]
+11: [New LWP 2379045]
+11: [New LWP 2379046]
+11: [New LWP 2379047]
+11: [New LWP 2379048]
+11: [New LWP 2379049]
+11: [New LWP 2379050]
+11: [New LWP 2379051]
+11: [New LWP 2379052]
+11: [New LWP 2379053]
+11: [New LWP 2379054]
+11: [New LWP 2379055]
+11: [New LWP 2379056]
+11: [New LWP 2379057]
+11: [New LWP 2379058]
+11: [New LWP 2379059]
+11: [New LWP 2379060]
+11: [New LWP 2379061]
+11: [New LWP 2379070]
+11: [Thread debugging using libthread_db enabled]
+11: Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+11: 0x000072b8f4aea3ef in __GI___wait4 (pid=2379094, stat_loc=0x0, options=0, usage=0x0) at ../sysdeps/unix/sysv/linux/wait4.c:30
+11: 30	../sysdeps/unix/sysv/linux/wait4.c: 没有那个文件或目录.
+11: 
+11: Thread 57 (Thread 0x72b81b5fe640 (LWP 2379070) "Thread (pooled)"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x72b81b5fb690, op=137, expected=0, futex_word=0x5c836431cdb0) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x72b81b5fb690, clockid=80, expected=0, futex_word=0x5c836431cdb0) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x5c836431cdb0, expected=expected@entry=0, clockid=clockid@entry=1, abstime=abstime@entry=0x72b81b5fb690, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93e5b in __pthread_cond_wait_common (abstime=0x72b81b5fb690, clockid=1, mutex=0x5c836431cd60, cond=0x5c836431cd88) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_timedwait64 (cond=0x5c836431cd88, mutex=0x5c836431cd60, abstime=0x72b81b5fb690) at ./nptl/pthread_cond_wait.c:652
+11: #5  0x000072b8f5539af6 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #6  0x000072b8f55367a3 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #7  0x000072b8f552c7e8 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #8  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #9  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 56 (Thread 0x72b820bf2640 (LWP 2379061) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 55 (Thread 0x72b820ff3640 (LWP 2379060) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 54 (Thread 0x72b8217f5640 (LWP 2379059) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 53 (Thread 0x72b821bf6640 (LWP 2379058) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 52 (Thread 0x72b8213f4640 (LWP 2379057) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 51 (Thread 0x72b822bfa640 (LWP 2379056) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 50 (Thread 0x72b821ff7640 (LWP 2379055) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 49 (Thread 0x72b8223f8640 (LWP 2379054) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 48 (Thread 0x72b8227f9640 (LWP 2379053) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 47 (Thread 0x72b823bfe640 (LWP 2379052) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 46 (Thread 0x72b8233fc640 (LWP 2379051) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 45 (Thread 0x72b8237fd640 (LWP 2379050) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 44 (Thread 0x72b822ffb640 (LWP 2379049) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 43 (Thread 0x72b8133ff640 (LWP 2379048) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 42 (Thread 0x72b81b9ff640 (LWP 2379047) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 41 (Thread 0x72b823fff640 (LWP 2379046) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 40 (Thread 0x72b8487f6640 (LWP 2379045) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 39 (Thread 0x72b848bf7640 (LWP 2379044) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 38 (Thread 0x72b848ff8640 (LWP 2379043) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 37 (Thread 0x72b8493f9640 (LWP 2379042) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 36 (Thread 0x72b8497fa640 (LWP 2379041) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 35 (Thread 0x72b8807f8640 (LWP 2379040) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 34 (Thread 0x72b8907f8640 (LWP 2379039) "QThread"):
+11: #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+11: #1  0x000072b8f304564d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #2  0x000072b8f304568d in  () at /lib/x86_64-linux-gnu/libtbb.so.2
+11: #3  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #4  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 33 (Thread 0x72b849ffb640 (LWP 2379038) "Thread (pooled)"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x72b849ff8690, op=137, expected=0, futex_word=0x72b8bc0cf7f4) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x72b849ff8690, clockid=80, expected=0, futex_word=0x72b8bc0cf7f4) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x72b8bc0cf7f4, expected=expected@entry=0, clockid=clockid@entry=1, abstime=abstime@entry=0x72b849ff8690, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93e5b in __pthread_cond_wait_common (abstime=0x72b849ff8690, clockid=1, mutex=0x72b8bc0cf7a0, cond=0x72b8bc0cf7c8) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_timedwait64 (cond=0x72b8bc0cf7c8, mutex=0x72b8bc0cf7a0, abstime=0x72b849ff8690) at ./nptl/pthread_cond_wait.c:652
+11: #5  0x000072b8f5539af6 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #6  0x000072b8f55367a3 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #7  0x000072b8f552c7e8 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #8  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #9  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 32 (Thread 0x72b84a7fc640 (LWP 2379029) "Thread (pooled)"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x72b84a7f9690, op=137, expected=0, futex_word=0x5c8364787a94) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x72b84a7f9690, clockid=80, expected=0, futex_word=0x5c8364787a94) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x5c8364787a94, expected=expected@entry=0, clockid=clockid@entry=1, abstime=abstime@entry=0x72b84a7f9690, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93e5b in __pthread_cond_wait_common (abstime=0x72b84a7f9690, clockid=1, mutex=0x5c8364787a40, cond=0x5c8364787a68) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_timedwait64 (cond=0x5c8364787a68, mutex=0x5c8364787a40, abstime=0x72b84a7f9690) at ./nptl/pthread_cond_wait.c:652
+11: #5  0x000072b8f5539af6 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #6  0x000072b8f55367a3 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #7  0x000072b8f552c7e8 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #8  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #9  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 31 (Thread 0x72b84affd640 (LWP 2379028) "Thread (pooled)"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x72b84affa690, op=137, expected=0, futex_word=0x5c83642a2ad4) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x72b84affa690, clockid=1056, expected=0, futex_word=0x5c83642a2ad4) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x5c83642a2ad4, expected=expected@entry=0, clockid=clockid@entry=1, abstime=abstime@entry=0x72b84affa690, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93e5b in __pthread_cond_wait_common (abstime=0x72b84affa690, clockid=1, mutex=0x5c83642a2a80, cond=0x5c83642a2aa8) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_timedwait64 (cond=0x5c83642a2aa8, mutex=0x5c83642a2a80, abstime=0x72b84affa690) at ./nptl/pthread_cond_wait.c:652
+11: #5  0x000072b8f5539af6 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #6  0x000072b8f55367a3 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #7  0x000072b8f552c7e8 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #8  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #9  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 30 (Thread 0x72b84b7fe640 (LWP 2379027) "Thread (pooled)"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x72b84b7fb690, op=137, expected=0, futex_word=0x5c836477f5d0) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x72b84b7fb690, clockid=80, expected=0, futex_word=0x5c836477f5d0) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x5c836477f5d0, expected=expected@entry=0, clockid=clockid@entry=1, abstime=abstime@entry=0x72b84b7fb690, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93e5b in __pthread_cond_wait_common (abstime=0x72b84b7fb690, clockid=1, mutex=0x5c836477f580, cond=0x5c836477f5a8) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_timedwait64 (cond=0x5c836477f5a8, mutex=0x5c836477f580, abstime=0x72b84b7fb690) at ./nptl/pthread_cond_wait.c:652
+11: #5  0x000072b8f5539af6 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #6  0x000072b8f55367a3 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #7  0x000072b8f552c7e8 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #8  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #9  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 29 (Thread 0x72b84bfff640 (LWP 2379026) "Thread (pooled)"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x72b84bffc690, op=137, expected=0, futex_word=0x5c836445bb80) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x72b84bffc690, clockid=32, expected=0, futex_word=0x5c836445bb80) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x5c836445bb80, expected=expected@entry=0, clockid=clockid@entry=1, abstime=abstime@entry=0x72b84bffc690, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93e5b in __pthread_cond_wait_common (abstime=0x72b84bffc690, clockid=1, mutex=0x5c836445bb30, cond=0x5c836445bb58) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_timedwait64 (cond=0x5c836445bb58, mutex=0x5c836445bb30, abstime=0x72b84bffc690) at ./nptl/pthread_cond_wait.c:652
+11: #5  0x000072b8f5539af6 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #6  0x000072b8f55367a3 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #7  0x000072b8f552c7e8 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #8  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #9  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 28 (Thread 0x72b880ff9640 (LWP 2379025) "Thread (pooled)"):
+11: #0  __futex_abstimed_wait_common64 (private=-190167573, cancel=true, abstime=0x72b880ff6690, op=137, expected=0, futex_word=0x5c83647bbd84) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=-190167573, abstime=0x72b880ff6690, clockid=1342177424, expected=0, futex_word=0x5c83647bbd84) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x5c83647bbd84, expected=expected@entry=0, clockid=clockid@entry=1, abstime=abstime@entry=0x72b880ff6690, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93e5b in __pthread_cond_wait_common (abstime=0x72b880ff6690, clockid=1, mutex=0x5c83647bbd30, cond=0x5c83647bbd58) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_timedwait64 (cond=0x5c83647bbd58, mutex=0x5c83647bbd30, abstime=0x72b880ff6690) at ./nptl/pthread_cond_wait.c:652
+11: #5  0x000072b8f5539af6 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #6  0x000072b8f55367a3 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #7  0x000072b8f552c7e8 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #8  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #9  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 27 (Thread 0x72b8817fa640 (LWP 2379013) "Thread (pooled)"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x72b8817f7690, op=137, expected=0, futex_word=0x72b8a4034394) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x72b8817f7690, clockid=1275068416, expected=0, futex_word=0x72b8a4034394) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x72b8a4034394, expected=expected@entry=0, clockid=clockid@entry=1, abstime=abstime@entry=0x72b8817f7690, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93e5b in __pthread_cond_wait_common (abstime=0x72b8817f7690, clockid=1, mutex=0x72b8a4034340, cond=0x72b8a4034368) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_timedwait64 (cond=0x72b8a4034368, mutex=0x72b8a4034340, abstime=0x72b8817f7690) at ./nptl/pthread_cond_wait.c:652
+11: #5  0x000072b8f5539af6 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #6  0x000072b8f55367a3 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #7  0x000072b8f552c7e8 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #8  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #9  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 26 (Thread 0x72b8827fc640 (LWP 2378947) "visionImagePrev"):
+11: #0  __futex_abstimed_wait_common64 (private=-2105568048, cancel=true, abstime=0x72b8827f9690, op=137, expected=0, futex_word=0x5c8364772dc0) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=-2105568048, abstime=0x72b8827f9690, clockid=1681368512, expected=0, futex_word=0x5c8364772dc0) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x5c8364772dc0, expected=expected@entry=0, clockid=clockid@entry=1, abstime=abstime@entry=0x72b8827f9690, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93e5b in __pthread_cond_wait_common (abstime=0x72b8827f9690, clockid=1, mutex=0x5c8364772d70, cond=0x5c8364772d98) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_timedwait64 (cond=0x5c8364772d98, mutex=0x5c8364772d70, abstime=0x72b8827f9690) at ./nptl/pthread_cond_wait.c:652
+11: #5  0x000072b8f5539af6 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #6  0x000072b8f55367a3 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #7  0x000072b8f552c7e8 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #8  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #9  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 25 (Thread 0x72b882ffd640 (LWP 2378946) "visionThumbnail"):
+11: #0  __futex_abstimed_wait_common64 (private=-1180379648, cancel=true, abstime=0x72b882ffa690, op=137, expected=0, futex_word=0x5c8364770e60) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=-1180379648, abstime=0x72b882ffa690, clockid=-1264, expected=0, futex_word=0x5c8364770e60) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x5c8364770e60, expected=expected@entry=0, clockid=clockid@entry=1, abstime=abstime@entry=0x72b882ffa690, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93e5b in __pthread_cond_wait_common (abstime=0x72b882ffa690, clockid=1, mutex=0x5c8364770e10, cond=0x5c8364770e38) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_timedwait64 (cond=0x5c8364770e38, mutex=0x5c8364770e10, abstime=0x72b882ffa690) at ./nptl/pthread_cond_wait.c:652
+11: #5  0x000072b8f5539af6 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #6  0x000072b8f55367a3 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #7  0x000072b8f552c7e8 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #8  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #9  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 24 (Thread 0x72b8837fe640 (LWP 2378943) "ThreadPoolSingl"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x72b8837fb468) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x72b8837fb468) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x72b8837fb468, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93a01 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x72b8837fb418, cond=0x72b8837fb440) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_wait (cond=0x72b8837fb440, mutex=0x72b8837fb418) at ./nptl/pthread_cond_wait.c:627
+11: #5  0x000072b8fcf1abf0 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #6  0x0000000000000000 in  ()
+11: 
+11: Thread 23 (Thread 0x72b890ff9640 (LWP 2378942) "MemoryInfra"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x72b890ff6378) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x72b890ff6378) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x72b890ff6378, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93a01 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x72b890ff6328, cond=0x72b890ff6350) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_wait (cond=0x72b890ff6350, mutex=0x72b890ff6328) at ./nptl/pthread_cond_wait.c:627
+11: #5  0x000072b8fcf1abf0 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #6  0x000072b890ff6350 in  ()
+11: #7  0x0000007700000000 in  ()
+11: #8  0x0000005b0000006e in  ()
+11: #9  0x0000000000000000 in  ()
+11: 
+11: Thread 22 (Thread 0x72b8917fa640 (LWP 2378932) "ThreadPoolSingl"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x72b8917f7468) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x72b8917f7468) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x72b8917f7468, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93a01 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x72b8917f7418, cond=0x72b8917f7440) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_wait (cond=0x72b8917f7440, mutex=0x72b8917f7418) at ./nptl/pthread_cond_wait.c:627
+11: #5  0x000072b8fcf1abf0 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #6  0x0000000000000000 in  ()
+11: 
+11: Thread 21 (Thread 0x72b8c3fff640 (LWP 2378931) "NetworkService"):
+11: #0  0x000072b8f4b25ebe in epoll_wait (epfd=25, events=0x72b8c3ffc410, maxevents=16, timeout=24871) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+11: #1  0x000072b8fcf3ff5a in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #2  0x0000000000000000 in  ()
+11: 
+11: Thread 20 (Thread 0x72b891ffb640 (LWP 2378930) "VizCompositorTh"):
+11: #0  __futex_abstimed_wait_common64 (private=1946202320, cancel=true, abstime=0x72b891ff8240, op=137, expected=0, futex_word=0x72b891ff8378) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=1946202320, abstime=0x72b891ff8240, clockid=-2091119324, expected=0, futex_word=0x72b891ff8378) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x72b891ff8378, expected=expected@entry=0, clockid=clockid@entry=1, abstime=abstime@entry=0x72b891ff8240, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93e5b in __pthread_cond_wait_common (abstime=0x72b891ff8240, clockid=1, mutex=0x72b891ff8328, cond=0x72b891ff8350) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_timedwait64 (cond=0x72b891ff8350, mutex=0x72b891ff8328, abstime=0x72b891ff8240) at ./nptl/pthread_cond_wait.c:652
+11: #5  0x000072b8fcf1ad63 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #6  0x00000000001155cb in  ()
+11: #7  0x000000000cc3288e in  ()
+11: #8  0x00000000001155c6 in  ()
+11: #9  0x000000000b640206 in  ()
+11: #10 0x000072b870000d18 in  ()
+11: #11 0x000072b8f4aa5413 in __GI___libc_free (mem=<optimized out>) at ./malloc/malloc.c:3391
+11: #12 0x0000000000000000 in  ()
+11: 
+11: Thread 19 (Thread 0x72b8927fc640 (LWP 2378929) "VideoCaptureThr"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x72b8927f9378) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x72b8927f9378) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x72b8927f9378, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93a01 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x72b8927f9328, cond=0x72b8927f9350) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_wait (cond=0x72b8927f9350, mutex=0x72b8927f9328) at ./nptl/pthread_cond_wait.c:627
+11: #5  0x000072b8fcf1abf0 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #6  0x0000000000000000 in  ()
+11: 
+11: Thread 18 (Thread 0x72b892ffd640 (LWP 2378928) "Chrome_ChildIOT"):
+11: #0  0x000072b8f4b25ebe in epoll_wait (epfd=67, events=0x72b892ffa390, maxevents=16, timeout=-1) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+11: #1  0x000072b8fcf3ff5a in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #2  0x0000000000000000 in  ()
+11: 
+11: Thread 17 (Thread 0x72b8937fe640 (LWP 2378927) "Chrome_InProcGp"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x72b8937fb378) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x72b8937fb378) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x72b8937fb378, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93a01 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x72b8937fb328, cond=0x72b8937fb350) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_wait (cond=0x72b8937fb350, mutex=0x72b8937fb328) at ./nptl/pthread_cond_wait.c:627
+11: #5  0x000072b8fcf1abf0 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #6  0x000072b8937fb350 in  ()
+11: #7  0x000072b8fcf05500 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #8  0x000072b8937fb3f0 in  ()
+11: #9  0x000072b8740042d0 in  ()
+11: #10 0x0000000000000000 in  ()
+11: 
+11: Thread 16 (Thread 0x72b893fff640 (LWP 2378926) "CompositorTileW"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x5c8362d4cccc) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x5c8362d4cccc) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x5c8362d4cccc, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93a01 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x5c8362d4cc08, cond=0x5c8362d4cca0) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_wait (cond=0x5c8362d4cca0, mutex=0x5c8362d4cc08) at ./nptl/pthread_cond_wait.c:627
+11: #5  0x000072b8fcf1abf0 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #6  0x000072b893ffc7a0 in  ()
+11: #7  0x000072b8fcf0bd64 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #8  0x000072b893ffc790 in  ()
+11: #9  0x00005c8364484470 in  ()
+11: #10 0x0000000000000000 in  ()
+11: 
+11: Thread 15 (Thread 0x72b883fff640 (LWP 2378925) "inotify_reader"):
+11: #0  0x000072b8f4b18d1f in __GI___poll (fds=0x72b883ffc758, nfds=1, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:29
+11: #1  0x000072b8fcf215f6 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #2  0x0000000000000030 in  ()
+11: #3  0x000072b883ffc74c in  ()
+11: #4  0x000072b883ffc758 in  ()
+11: #5  0x000072b883ffc778 in  ()
+11: #6  0x000072b90319a930 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #7  0x000072b883ffc790 in  ()
+11: #8  0x000072b883ffc700 in  ()
+11: #9  0x000072b883ffc780 in  ()
+11: #10 0x000072b8b4000cb8 in  ()
+11: #11 0x000072b888000c30 in  ()
+11: #12 0x000072b88c000c30 in  ()
+11: #13 0x000072b883fff640 in  ()
+11: #14 0x000072b883ffc750 in  ()
+11: #15 0x000072b8fcf0b933 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #16 0x000072b883ffc790 in  ()
+11: #17 0x000072b8b4000b70 in  ()
+11: #18 0x000072b8b4000c30 in  ()
+11: #19 0x000072b883fff640 in  ()
+11: #20 0x000072b883ffc7e0 in  ()
+11: #21 0x000000010000003a in  ()
+11: #22 0x000072b8b4000c90 in  ()
+11: #23 0x000072b883fff640 in  ()
+11: #24 0x0000000000244cad in  ()
+11: #25 0x000072b883ffc768 in  ()
+11: #26 0x000072b883ffc790 in  ()
+11: #27 0x000000000000000e in  ()
+11: #28 0x5f796669746f6e69 in  ()
+11: #29 0x0000726564616572 in  ()
+11: #30 0x0000000000000002 in  ()
+11: #31 0x417eec81b9a4d600 in  ()
+11: #32 0x000072b8ab7fa650 in  ()
+11: #33 0x000072b883fff640 in  ()
+11: #34 0x000072b883fff640 in  ()
+11: #35 0x000072b8b4000c30 in  ()
+11: #36 0x000072b90319a930 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #37 0x0000000000244cad in  ()
+11: #38 0x000072b883ffc810 in  ()
+11: #39 0x000072b8fcf1afdf in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #40 0x000072b883fff640 in  ()
+11: #41 0x0000000000000002 in  ()
+11: #42 0x000072b8f4a94790 in start_thread () at ./nptl/pthread_create.c:321
+11: #43 0x000072b8ab7fa650 in  ()
+11: #44 0x0000000000000000 in  ()
+11: 
+11: Thread 14 (Thread 0x72b8a8ff9640 (LWP 2378924) "ThreadPoolForeg"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x72b8a8ff6468) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x72b8a8ff6468) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x72b8a8ff6468, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93a01 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x72b8a8ff6418, cond=0x72b8a8ff6440) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_wait (cond=0x72b8a8ff6440, mutex=0x72b8a8ff6418) at ./nptl/pthread_cond_wait.c:627
+11: #5  0x000072b8fcf1abf0 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #6  0x0000000000000000 in  ()
+11: 
+11: Thread 13 (Thread 0x72b8a97fa640 (LWP 2378923) "ThreadPoolForeg"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x72b8a97f7468) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x72b8a97f7468) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x72b8a97f7468, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93a01 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x72b8a97f7418, cond=0x72b8a97f7440) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_wait (cond=0x72b8a97f7440, mutex=0x72b8a97f7418) at ./nptl/pthread_cond_wait.c:627
+11: #5  0x000072b8fcf1abf0 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #6  0x000072b8a97f74a0 in  ()
+11: #7  0x000072b8fcf05acf in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #8  0x000072b8a97f7380 in  ()
+11: #9  0x000072b8a97f7568 in  ()
+11: #10 0x0000000000000000 in  ()
+11: 
+11: Thread 12 (Thread 0x72b8aa7fc640 (LWP 2378922) "ThreadPoolForeg"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x72b8aa7f9468) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x72b8aa7f9468) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x72b8aa7f9468, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93a01 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x72b8aa7f9418, cond=0x72b8aa7f9440) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_wait (cond=0x72b8aa7f9440, mutex=0x72b8aa7f9418) at ./nptl/pthread_cond_wait.c:627
+11: #5  0x000072b8fcf1abf0 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #6  0x000072b8aa7f9420 in  ()
+11: #7  0x000000000000002f in  ()
+11: #8  0x000072b8aa7f9410 in  ()
+11: #9  0x000072b8fd5a365d in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #10 0x0000000000000000 in  ()
+11: 
+11: Thread 11 (Thread 0x72b8a9ffb640 (LWP 2378921) "ThreadPoolForeg"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x72b8a9ff8468) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x72b8a9ff8468) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x72b8a9ff8468, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93a01 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x72b8a9ff8418, cond=0x72b8a9ff8440) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_wait (cond=0x72b8a9ff8440, mutex=0x72b8a9ff8418) at ./nptl/pthread_cond_wait.c:627
+11: #5  0x000072b8fcf1abf0 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #6  0x000072b8a9ff8420 in  ()
+11: #7  0x000000000000002f in  ()
+11: #8  0x000072b8a9ff8410 in  ()
+11: #9  0x000072b8fd5a365d in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #10 0x0000000000000000 in  ()
+11: 
+11: Thread 10 (Thread 0x72b8aaffd640 (LWP 2378920) "ThreadPoolForeg"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x72b8aaffa468) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x72b8aaffa468) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x72b8aaffa468, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93a01 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x72b8aaffa418, cond=0x72b8aaffa440) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_wait (cond=0x72b8aaffa440, mutex=0x72b8aaffa418) at ./nptl/pthread_cond_wait.c:627
+11: #5  0x000072b8fcf1abf0 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #6  0x0000000000000000 in  ()
+11: 
+11: Thread 9 (Thread 0x72b8ab7fe640 (LWP 2378919) "ThreadPoolForeg"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x72b8ab7fb468) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x72b8ab7fb468) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x72b8ab7fb468, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93a01 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x72b8ab7fb418, cond=0x72b8ab7fb440) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_wait (cond=0x72b8ab7fb440, mutex=0x72b8ab7fb418) at ./nptl/pthread_cond_wait.c:627
+11: #5  0x000072b8fcf1abf0 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #6  0x000072b8ab7fb420 in  ()
+11: #7  0x000000000000002f in  ()
+11: #8  0x000072b8ab7fb410 in  ()
+11: #9  0x000072b8fd5a365d in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #10 0x0000000000000000 in  ()
+11: 
+11: Thread 8 (Thread 0x72b8abfff640 (LWP 2378918) "Chrome_IOThread"):
+11: #0  0x000072b8f4b25ebe in epoll_wait (epfd=55, events=0x72b8abffc390, maxevents=16, timeout=26923) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+11: #1  0x000072b8fcf3ff5a in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #2  0x0000000000000000 in  ()
+11: 
+11: Thread 7 (Thread 0x72b8c09fc640 (LWP 2378917) "ThreadPoolForeg"):
+11: #0  __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x72b8c09f9468) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x72b8c09f9468) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x72b8c09f9468, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93a01 in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x72b8c09f9418, cond=0x72b8c09f9440) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_wait (cond=0x72b8c09f9440, mutex=0x72b8c09f9418) at ./nptl/pthread_cond_wait.c:627
+11: #5  0x000072b8fcf1abf0 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #6  0x000072b8b0030610 in  ()
+11: #7  0x000072b8f4aa2879 in _int_free (av=0x72b8c09f9440, p=0x72b8c09f93d0, have_lock=<optimized out>) at ./malloc/malloc.c:4607
+11: #8  0x00005c8364733140 in  ()
+11: #9  0x7fffffffffffffff in  ()
+11: #10 0x000072b8c09f9440 in  ()
+11: #11 0x000072b8c09f94c0 in  ()
+11: #12 0x000072b8fcf43ed8 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #13 0x000072b8c09f9450 in  ()
+11: #14 0x000072b8c09f9400 in  ()
+11: #15 0x00000000001155c6 in  ()
+11: #16 0x7fffffffffffffff in  ()
+11: #17 0x000072b902cbb638 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #18 0x000072b8fcef9a00 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #19 0x0000000000000000 in  ()
+11: 
+11: Thread 6 (Thread 0x72b8c11fd640 (LWP 2378916) "ThreadPoolServi"):
+11: #0  0x000072b8f4b25ebe in epoll_wait (epfd=50, events=0x72b8c11fa3b0, maxevents=16, timeout=44986) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+11: #1  0x000072b8fcf3ff5a in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #2  0x0000000000000000 in  ()
+11: 
+11: Thread 5 (Thread 0x72b8c19fe640 (LWP 2378915) "vision-conversi"):
+11: #0  0x000072b8f4aea3ef in __GI___wait4 (pid=2378912, stat_loc=0x72b8c19fb73c, options=0, usage=0x0) at ../sysdeps/unix/sysv/linux/wait4.c:30
+11: #1  0x000072b8fcf3599e in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #2  0x000072b8b4000d70 in  ()
+11: #3  0x000072b8c19fb7ac in  ()
+11: #4  0x00000000c19fb750 in  ()
+11: #5  0x0000000000000000 in  ()
+11: 
+11: Thread 4 (Thread 0x72b8c21ff640 (LWP 2378909) "sandbox_ipc_thr"):
+11: #0  0x000072b8f4b18d1f in __GI___poll (fds=0x72b8c21fc600, nfds=2, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:29
+11: #1  0x000072b8fbfd5842 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6WebEngineCore.so.6
+11: #2  0x000000010000002b in  ()
+11: #3  0x000000010000002a in  ()
+11: #4  0x000072b8c21fc710 in  ()
+11: #5  0x0000000000000003 in  ()
+11: #6  0x0000000000000000 in  ()
+11: 
+11: Thread 3 (Thread 0x72b8d4bfe640 (LWP 2378901) "QThread"):
+11: #0  0x000072b8f4b18d1f in __GI___poll (fds=0x5c8363d95550, nfds=1, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:29
+11: #1  0x000072b8f321f596 in  () at /lib/x86_64-linux-gnu/libglib-2.0.so.0
+11: #2  0x000072b8f31c7433 in g_main_context_iteration () at /lib/x86_64-linux-gnu/libglib-2.0.so.0
+11: #3  0x000072b8f565a60e in QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #4  0x000072b8f53890bb in QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #5  0x000072b8f549152e in QThread::exec() () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #6  0x000072b8f552c7e8 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #7  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #8  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 2 (Thread 0x72b8d83ba640 (LWP 2378876) "QtTest Watchdog"):
+11: #0  __futex_abstimed_wait_common64 (private=5, cancel=true, abstime=0x72b8d83b7720, op=393, expected=0, futex_word=0x7ffd3ad9ff64) at ./nptl/futex-internal.c:57
+11: #1  __futex_abstimed_wait_common (cancel=true, private=5, abstime=0x72b8d83b7720, clockid=-805286928, expected=0, futex_word=0x7ffd3ad9ff64) at ./nptl/futex-internal.c:87
+11: #2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x7ffd3ad9ff64, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x72b8d83b7720, private=private@entry=0) at ./nptl/futex-internal.c:139
+11: #3  0x000072b8f4a93e5b in __pthread_cond_wait_common (abstime=0x72b8d83b7720, clockid=0, mutex=0x7ffd3ad9ff10, cond=0x7ffd3ad9ff38) at ./nptl/pthread_cond_wait.c:503
+11: #4  ___pthread_cond_timedwait64 (cond=0x7ffd3ad9ff38, mutex=0x7ffd3ad9ff10, abstime=0x72b8d83b7720) at ./nptl/pthread_cond_wait.c:652
+11: #5  0x000072b9037dc654 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Test.so.6
+11: #6  0x000072b8f552c7e8 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #7  0x000072b8f4a94a83 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+11: #8  0x000072b8f4b268e0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+11: 
+11: Thread 1 (Thread 0x72b8e17f7d80 (LWP 2378875) "vision-conversi"):
+11: #0  0x000072b8f4aea3ef in __GI___wait4 (pid=2379094, stat_loc=0x0, options=0, usage=0x0) at ../sysdeps/unix/sysv/linux/wait4.c:30
+11: #1  0x000072b9037de4d5 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Test.so.6
+11: #2  0x000072b9037deb47 in QTest::CrashHandler::FatalSignalHandler::actionHandler(int, siginfo_t*, void*) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Test.so.6
+11: #3  0x000072b8f4a42520 in <signal handler called> () at /lib/x86_64-linux-gnu/libc.so.6
+11: #4  0x000072b8f5bad378 in QPicture::~QPicture() () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Gui.so.6
+11: #5  0x000072b8f7b1b063 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Widgets.so.6
+11: #6  0x000072b8f7b1b197 in QLabel::setText(QString const&) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Widgets.so.6
+11: #7  0x00005c835036fd80 in QtPrivate::QCallableObject<ModelDisplayPage::ModelDisplayPage(QWidget*)::{lambda(ModelViewer::State)#1}, QtPrivate::List<ModelViewer::State>, void>::impl(int, QtPrivate::QSlotObjectBase*, QObject*, void**, bool*) ()
+11: #8  0x000072b8f53de228 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #9  0x00005c835028f325 in ModelViewer::stateChanged(ModelViewer::State) ()
+11: #10 0x00005c835031d725 in ModelViewer::stop() ()
+11: #11 0x00005c835031d7ae in ModelViewer::~ModelViewer() ()
+11: #12 0x00005c835031db1d in ModelViewer::~ModelViewer() ()
+11: #13 0x000072b8f53d72da in QObjectPrivate::deleteChildren() () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #14 0x000072b8f79ebbd8 in QWidget::~QWidget() () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Widgets.so.6
+11: #15 0x00005c8350293035 in ModelDisplayPage::~ModelDisplayPage() ()
+11: #16 0x000072b8f53d72da in QObjectPrivate::deleteChildren() () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #17 0x000072b8f79ebbd8 in QWidget::~QWidget() () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Widgets.so.6
+11: #18 0x000072b8f7ba4d4d in QStackedWidget::~QStackedWidget() () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Widgets.so.6
+11: #19 0x000072b8f53d72da in QObjectPrivate::deleteChildren() () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #20 0x000072b8f79ebbd8 in QWidget::~QWidget() () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Widgets.so.6
+11: #21 0x000072b8f79ebd4d in QWidget::~QWidget() () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Widgets.so.6
+11: #22 0x000072b8f53d72da in QObjectPrivate::deleteChildren() () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #23 0x000072b8f79ebbd8 in QWidget::~QWidget() () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Widgets.so.6
+11: #24 0x000072b8f79ebd4d in QWidget::~QWidget() () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Widgets.so.6
+11: #25 0x000072b8f53d72da in QObjectPrivate::deleteChildren() () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #26 0x000072b8f79ebbd8 in QWidget::~QWidget() () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Widgets.so.6
+11: #27 0x00005c83502987ad in MainWindow::~MainWindow() ()
+11: #28 0x00005c83503b547e in ConversionInferenceTests::qt_static_metacall(QObject*, QMetaObject::Call, int, void**) [clone .part.0] ()
+11: #29 0x000072b8f5391fcc in QMetaMethodInvoker::invokeImpl(QMetaMethod, void*, Qt::ConnectionType, long long, void const* const*, char const* const*, QtPrivate::QMetaTypeInterface const* const*) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #30 0x000072b8f5393050 in QMetaMethod::invokeImpl(QMetaMethod, void*, Qt::ConnectionType, long long, void const* const*, char const* const*, QtPrivate::QMetaTypeInterface const* const*) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Core.so.6
+11: #31 0x000072b9037d0d22 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Test.so.6
+11: #32 0x000072b9037d8c30 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Test.so.6
+11: #33 0x000072b9037d9a0c in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Test.so.6
+11: #34 0x000072b9037da118 in  () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Test.so.6
+11: #35 0x000072b9037dadf2 in QTest::qRun() () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Test.so.6
+11: #36 0x000072b9037db050 in QTest::qExec(QObject*, int, char**) () at /home/misaka/Qt/6.8.3/gcc_64/lib/libQt6Test.so.6
+11: #37 0x00005c835028cfd1 in main ()
+11: [Inferior 1 (process 2378875) detached]
+11: === End of stack trace ===
+1/1 Test #11: vision-conversion-inference-tests ...***Exception: SegFault 11.43 sec
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =  11.44 sec
+
+The following tests FAILED:
+	 11 - vision-conversion-inference-tests (SEGFAULT)
+Errors while running CTest
+Output from these tests are in: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/Testing/Temporary/LastTest.log
+Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.

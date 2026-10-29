@@ -1,0 +1,61 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 42
+    Start 42: vision-runtime-setup-shutdown-tests
+
+42: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-runtime-setup-shutdown-tests
+42: Environment variables: 
+42:  QT_QPA_PLATFORM=offscreen
+42:  QTWEBENGINE_CHROMIUM_FLAGS=--disable-gpu
+42: Test timeout computed to be: 120
+42: ********* Start testing of RuntimeSetupShutdownTests *********
+42: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+42: PASS   : RuntimeSetupShutdownTests::initTestCase()
+42: PASS   : RuntimeSetupShutdownTests::idleShutdownIsQueuedIdempotentAndClosesAdmission()
+42: QWARN  : RuntimeSetupShutdownTests::promptShutdownDoesNotDownloadOrRetry() This plugin does not support propagateSizeHints()
+42: PASS   : RuntimeSetupShutdownTests::promptShutdownDoesNotDownloadOrRetry()
+42: QWARN  : RuntimeSetupShutdownTests::shutdownSuppressesAlreadyQueuedSuccessfulRetry() This plugin does not support propagateSizeHints()
+42: PASS   : RuntimeSetupShutdownTests::shutdownSuppressesAlreadyQueuedSuccessfulRetry()
+42: QWARN  : RuntimeSetupShutdownTests::cancellationSuppressesAlreadyQueuedRetryAndStillAllowsNewPreparation() This plugin does not support propagateSizeHints()
+42: QWARN  : RuntimeSetupShutdownTests::cancellationSuppressesAlreadyQueuedRetryAndStillAllowsNewPreparation() This plugin does not support propagateSizeHints()
+42: PASS   : RuntimeSetupShutdownTests::cancellationSuppressesAlreadyQueuedRetryAndStillAllowsNewPreparation()
+42: QWARN  : RuntimeSetupShutdownTests::downloadingShutdownReleasesOwnLock() This plugin does not support propagateSizeHints()
+42: PASS   : RuntimeSetupShutdownTests::downloadingShutdownReleasesOwnLock()
+42: QWARN  : RuntimeSetupShutdownTests::waitingShutdownKeepsAnotherPreparationsLock() This plugin does not support propagateSizeHints()
+42: PASS   : RuntimeSetupShutdownTests::waitingShutdownKeepsAnotherPreparationsLock()
+42: QWARN  : RuntimeSetupShutdownTests::extractingShutdownReapsChildBeforeReadyAndCleansOnlyOwnStage() This plugin does not support propagateSizeHints()
+42: QWARN  : RuntimeSetupShutdownTests::extractingShutdownReapsChildBeforeReadyAndCleansOnlyOwnStage() This plugin does not support propagateSizeHints()
+42: PASS   : RuntimeSetupShutdownTests::extractingShutdownReapsChildBeforeReadyAndCleansOnlyOwnStage()
+42: QWARN  : RuntimeSetupShutdownTests::directDialogDeletionStillDrainsResources() This plugin does not support propagateSizeHints()
+42: QWARN  : RuntimeSetupShutdownTests::directDialogDeletionStillDrainsResources() This plugin does not support propagateSizeHints()
+42: PASS   : RuntimeSetupShutdownTests::directDialogDeletionStillDrainsResources()
+42: QWARN  : RuntimeSetupShutdownTests::failedExtractorCanRetryAfterCleanupThenPublish() This plugin does not support propagateSizeHints()
+42: QWARN  : RuntimeSetupShutdownTests::failedExtractorCanRetryAfterCleanupThenPublish() This plugin does not support propagateSizeHints()
+42: QWARN  : RuntimeSetupShutdownTests::failedExtractorCanRetryAfterCleanupThenPublish() This plugin does not support propagateSizeHints()
+42: QWARN  : RuntimeSetupShutdownTests::failedExtractorCanRetryAfterCleanupThenPublish() This plugin does not support propagateSizeHints()
+42: PASS   : RuntimeSetupShutdownTests::failedExtractorCanRetryAfterCleanupThenPublish()
+42: QWARN  : RuntimeSetupShutdownTests::failedToStartExtractorStillCleansAndCanShutdown() This plugin does not support propagateSizeHints()
+42: QWARN  : RuntimeSetupShutdownTests::failedToStartExtractorStillCleansAndCanShutdown() This plugin does not support propagateSizeHints()
+42: QWARN  : RuntimeSetupShutdownTests::failedToStartExtractorStillCleansAndCanShutdown() This plugin does not support propagateSizeHints()
+42: PASS   : RuntimeSetupShutdownTests::failedToStartExtractorStillCleansAndCanShutdown()
+42: PASS   : RuntimeSetupShutdownTests::cleanupTestCase()
+42: Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 697ms
+42: ********* Finished testing of RuntimeSetupShutdownTests *********
+1/1 Test #42: vision-runtime-setup-shutdown-tests ...   Passed    0.82 sec
+
+The following tests passed:
+	vision-runtime-setup-shutdown-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.82 sec

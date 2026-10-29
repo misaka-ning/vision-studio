@@ -1,0 +1,43 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 24
+    Start 24: vision-pt-batch-python-tests
+
+24: Test command: /opt/VisionStudio/runtime/bin/python "-B" "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/stage4c-accepted-source/tests/pt_batch_tests.py"
+24: Environment variables: 
+24:  OMP_NUM_THREADS=1
+24:  OPENBLAS_NUM_THREADS=1
+24: Test timeout computed to be: 300
+24: test_fp32_option_uses_runtime_capability_and_clears_inherited_precision (__main__.BatchTensorTests) ... ok
+24: test_legacy_batch_uses_one_forward_and_preserves_original_class_id (__main__.BatchTensorTests) ... ok
+24: test_native_color_batch_discards_edge_collapsed_boxes_and_keeps_valid_predictions (__main__.BatchTensorTests) ... ok
+24: test_native_color_batch_preserves_image_list_order_and_zero_result (__main__.BatchTensorTests) ... ok
+24: test_native_gray_batch_is_one_predict_call_and_restores_each_geometry (__main__.BatchTensorTests) ... ok
+24: test_native_nonfinite_coordinates_still_fail_in_color_and_gray (__main__.BatchTensorTests) ... ok
+24: test_raw_decoder_honors_max_detections (__main__.BatchTensorTests) ... ok
+24: test_invalid_batch_and_maxdet_return_bound_error_then_allow_next_request (__main__.ResidentProtocolTests) ... ok
+24: test_real_modern_and_legacy_batch_color_gray_and_single_parity (__main__.ResidentProtocolTests) ... ok
+24: test_real_one_channel_native_model_accepts_gray_batch (__main__.ResidentProtocolTests) ... ok
+24: 
+24: ----------------------------------------------------------------------
+24: Ran 10 tests in 22.586s
+24: 
+24: OK
+1/1 Test #24: vision-pt-batch-python-tests .....   Passed   25.53 sec
+
+The following tests passed:
+	vision-pt-batch-python-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =  25.53 sec

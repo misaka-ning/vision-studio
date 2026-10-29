@@ -1,0 +1,71 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 35
+    Start 35: vision-workbench-configuration-tests
+
+35: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-workbench-configuration-tests
+35: Environment variables: 
+35:  QT_QPA_PLATFORM=offscreen
+35: Test timeout computed to be: 120
+35: ********* Start testing of WorkbenchConfigurationTests *********
+35: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+35: PASS   : WorkbenchConfigurationTests::initTestCase()
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(task)
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(input-size)
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(confidence)
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(iou)
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(scale)
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(mean-r)
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(mean-g)
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(mean-b)
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(input-color-both)
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(input-color-mode)
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(input-color-swap)
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(compute-device)
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(device-index)
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(class-filter)
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(camera-index)
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(stereo-view)
+35: PASS   : WorkbenchConfigurationTests::fieldCommandsPreserveUnrelatedAuthority(automatic-export)
+35: PASS   : WorkbenchConfigurationTests::currentLegalValuesAreNoOps()
+35: PASS   : WorkbenchConfigurationTests::doubleCommandsRetainAdjacentRepresentableValues()
+35: PASS   : WorkbenchConfigurationTests::labelImportPreservesExistingMappingOnFailureAndKeepsUtf8Names()
+35: PASS   : WorkbenchConfigurationTests::compositionPreservesDraftAndOriginalClassIds()
+35: PASS   : WorkbenchConfigurationTests::editorThresholdsRetainDoublePrecisionUntilBackendComposition()
+35: PASS   : WorkbenchConfigurationTests::labelsOnlyFallBackForKnownConvertedOnnx()
+35: PASS   : WorkbenchConfigurationTests::pytorchUsesNativeNormalizationWithoutMutatingEditableValues()
+35: PASS   : WorkbenchConfigurationTests::classificationDoesNotApplyDetectionFilter()
+35: PASS   : WorkbenchConfigurationTests::adoptedBackendOptionsRequireExactCurrentFileIdentity()
+35: PASS   : WorkbenchConfigurationTests::exportDirectoryHasOneEditableAuthorityAndSurvivesViewDraftUpdates()
+35: PASS   : WorkbenchConfigurationTests::fingerprintPreservesLegacyBytesAndCanonicalClassOrder()
+35: PASS   : WorkbenchConfigurationTests::filterValidationUsesCurrentModelMetadata(all-without-inspection)
+35: PASS   : WorkbenchConfigurationTests::filterValidationUsesCurrentModelMetadata(raw-coco-class-32)
+35: PASS   : WorkbenchConfigurationTests::filterValidationUsesCurrentModelMetadata(normalized-multiple-ids)
+35: PASS   : WorkbenchConfigurationTests::filterValidationUsesCurrentModelMetadata(negative-id)
+35: PASS   : WorkbenchConfigurationTests::filterValidationUsesCurrentModelMetadata(non-integer)
+35: PASS   : WorkbenchConfigurationTests::filterValidationUsesCurrentModelMetadata(past-model-range)
+35: PASS   : WorkbenchConfigurationTests::filterValidationUsesCurrentModelMetadata(unknown-class-count)
+35: PASS   : WorkbenchConfigurationTests::filterValidationUsesCurrentModelMetadata(stale-model-inspection)
+35: PASS   : WorkbenchConfigurationTests::filterValidationUsesCurrentModelMetadata(inspection-pending)
+35: PASS   : WorkbenchConfigurationTests::filterValidationUsesCurrentModelMetadata(classification-ignores-detection-filter)
+35: PASS   : WorkbenchConfigurationTests::cleanupTestCase()
+35: Totals: 40 passed, 0 failed, 0 skipped, 0 blacklisted, 1ms
+35: ********* Finished testing of WorkbenchConfigurationTests *********
+1/1 Test #35: vision-workbench-configuration-tests ...   Passed    0.06 sec
+
+The following tests passed:
+	vision-workbench-configuration-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.06 sec

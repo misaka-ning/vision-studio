@@ -1,0 +1,46 @@
+Internal ctest changing into directory: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Parse Config file:/home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/DartConfiguration.tcl
+Test project /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 3
+    Start 3: vision-recording-tests
+
+3: Test command: /home/misaka/.codex/worktrees/ef0b/yolo/output/build/2.10.1-stage4c-accepted/vision-recording-tests
+3: Environment variables: 
+3:  QT_QPA_PLATFORM=offscreen
+3: Test timeout computed to be: 90
+3: ********* Start testing of RecordingTests *********
+3: Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+3: PASS   : RecordingTests::initTestCase()
+3: PASS   : RecordingTests::realClassFilteredResultIsRecordedWithOriginalIdMetadata()
+3: PASS   : RecordingTests::videoIsAnnotatedPlayableAndPublishedOnlyAtFinish()
+3: PASS   : RecordingTests::grayscaleOddEyePreservesContentAndAddsOnlyEdgePadding()
+3: PASS   : RecordingTests::cameraTimingUsesMeasuredDurationAndDecodesAllFrames()
+3: PASS   : RecordingTests::emptyDiscardAndInvalidDirectoryNeverPublishBrokenClips()
+3: PASS   : RecordingTests::changedResolutionEndsClipWithoutLosingItsPreviousFrames()
+3: PASS   : RecordingTests::workerRecordsEveryFrameAndFinishesAtEof()
+3: PASS   : RecordingTests::gpuRightEyeGrayscaleRecordingPreservesActualDevice()
+3: PASS   : RecordingTests::workerStartAfterFirstPreviewAndCancelClosesOnlyRecordedFrames()
+3: PASS   : RecordingTests::recordingFailureDoesNotInterruptInference()
+3: PASS   : RecordingTests::manualStopKeepsInferenceRunningAndRestartCreatesANewClip()
+3: PASS   : RecordingTests::stoppingDuringOnnxForwardRecordsTheLastCompletedFrame()
+3: PASS   : RecordingTests::stoppingWithPendingRecordingNeverOpensANewClip()
+3: PASS   : RecordingTests::cleanupTestCase()
+3: Totals: 15 passed, 0 failed, 0 skipped, 0 blacklisted, 3051ms
+3: ********* Finished testing of RecordingTests *********
+1/1 Test #3: vision-recording-tests ...........   Passed    3.44 sec
+
+The following tests passed:
+	vision-recording-tests
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   3.44 sec
