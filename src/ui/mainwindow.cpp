@@ -420,7 +420,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     pages_->addWidget(buildRecordings());
     modelConversion_ = new ModelConversionPage(dataRoot_);
     pages_->addWidget(modelConversion_);
-    connect(modelConversion_, &ModelConversionPage::chooseLibraryRequested, this, [this] { selectRoute(1); });
+    connect(modelConversion_, &ModelConversionPage::chooseLibraryRequested, this, [this] { selectRoute(ui::Route::Models); });
     connect(modelConversion_, &ModelConversionPage::convertedModelReady, this, [this](const QString &path) {
         if (busy_) {
             showNotice("请先结束检测，再将转换结果加入模型库。", true);
@@ -429,7 +429,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
         if (!rememberConvertedModel(path, modelConversion_->completedMetadata()))
             return;
         setModel(path, true);
-        selectRoute(1);
+        selectRoute(ui::Route::Models);
     });
     connect(modelConversion_, &ModelConversionPage::busyChanged, this, [this](bool active) {
         updateStartEligibility();
@@ -548,7 +548,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     refreshModelLibrary();
     refreshHistory();
     refreshRecordings();
-    selectRoute(0);
+    selectRoute(ui::Route::Workbench);
     updateTaskUi();
     updateDeviceUi();
     initializing_ = false;
@@ -585,7 +585,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     shortcut(QKeySequence(Qt::Key_Escape),
              [this]
              {
-                 if (modelConversion_ && modelConversion_->isBusy() && pages_->currentIndex() == 6)
+                 if (modelConversion_ && modelConversion_->isBusy() && pages_->currentIndex() == ui::routeIndex(ui::Route::ModelConversion))
                      modelConversion_->cancel();
                  else if (busy_)
                      stopInference();
@@ -1448,20 +1448,20 @@ QWidget *MainWindow::buildModels()
     actions->addWidget(evaluationReport);
     connect(evaluationReport, &QPushButton::clicked, this, [this] {
         const auto profile = modelEvaluationProfiles_.value(modelPath_).toMap();
-        if (profile.value("report_directory").toString().isEmpty()) { selectRoute(0); evaluation_->chooseDataset(); }
+        if (profile.value("report_directory").toString().isEmpty()) { selectRoute(ui::Route::Workbench); evaluation_->chooseDataset(); }
         else loadEvaluationReport(profile.value("report_directory").toString());
     });
     actions->addStretch();
     fl->addLayout(actions);
-    connect(structure, &QPushButton::clicked, this, [this] { selectRoute(2); });
-    connect(activate, &QPushButton::clicked, this, [this] { selectRoute(0); });
+    connect(structure, &QPushButton::clicked, this, [this] { selectRoute(ui::Route::ModelDisplay); });
+    connect(activate, &QPushButton::clicked, this, [this] { selectRoute(ui::Route::Workbench); });
     connect(modelList_, &QListWidget::currentItemChanged, this,
             [this](QListWidgetItem *item)
             {
                 if (item && !busy_ && !modelListReordering_)
                     setModel(item->data(Qt::UserRole).toString());
             });
-    connect(modelList_, &QListWidget::itemDoubleClicked, this, [this](QListWidgetItem *) { selectRoute(0); });
+    connect(modelList_, &QListWidget::itemDoubleClicked, this, [this](QListWidgetItem *) { selectRoute(ui::Route::Workbench); });
     connect(remove, &QPushButton::clicked, this,
             [this]
             {
@@ -1527,14 +1527,14 @@ QWidget *MainWindow::buildModelDisplay()
     connect(modelViewer_, &ModelViewer::modelLoaded, this,
             [this](const QString &path)
             {
-                if (!busy_ && (pages_->currentIndex() == 1 || pages_->currentIndex() == 2))
+                if (!busy_ && (pages_->currentIndex() == ui::routeIndex(ui::Route::Models) || pages_->currentIndex() == ui::routeIndex(ui::Route::ModelDisplay)))
                     showNotice(
                         QString("模型结构、层级树与参数表已缓存 · %1").arg(QFileInfo(path).fileName()));
             });
     connect(modelViewer_, &ModelViewer::loadFailed, this,
             [this](const QString &error)
             {
-                if (pages_->currentIndex() == 2)
+                if (pages_->currentIndex() == ui::routeIndex(ui::Route::ModelDisplay))
                     showNotice(error, true);
             });
     auto *note = text("使用模型库中全局选中的模型，各视图共用后台解析缓存。结构图可缩放与平移；层级树和参数"
@@ -1559,7 +1559,7 @@ void MainWindow::displayModelStructure()
     if (!path.isEmpty() && vision::cpuRuntimeDownloadNeeded()) {
         modelViewer_->stop();
         structureModelMeta_->setText("首次查看模型结构需要准备运行环境，可打开模型显示页或在更多页点击“准备 CPU 运行环境”。");
-        if (!initializing_ && pages_->currentIndex() == 2)
+        if (!initializing_ && pages_->currentIndex() == ui::routeIndex(ui::Route::ModelDisplay))
             ui::ensureCpuRuntime(this, [this] { displayModelStructure(); });
         return;
     }
@@ -2668,7 +2668,7 @@ void MainWindow::chooseCamera()
 }
 void MainWindow::updateSourceUi()
 {
-    const bool analysisWorkspace = pages_ && pages_->currentIndex() == 0 &&
+    const bool analysisWorkspace = pages_ && pages_->currentIndex() == ui::routeIndex(ui::Route::Workbench) &&
         workbenchTabs_ && workbenchTabs_->currentIndex() == 1;
     if (workspaceHeader_) workspaceHeader_->setVisible(!analysisWorkspace);
     cameraIndex_->setVisible(sourceKind_ == vision::SourceKind::Camera);
@@ -4096,7 +4096,7 @@ void MainWindow::runDemo()
     queue_->clear();
     sourceKind_ = vision::SourceKind::Images;
     addFiles({image});
-    selectRoute(0);
+    selectRoute(ui::Route::Workbench);
     startInference();
 }
 void MainWindow::runSmoke(const QString &dir)
@@ -4130,7 +4130,7 @@ void MainWindow::runPtDemo()
     queue_->clear();
     sourceKind_ = vision::SourceKind::Images;
     addFiles({image});
-    selectRoute(0);
+    selectRoute(ui::Route::Workbench);
     updateTaskUi();
     startInference();
 }
@@ -4144,7 +4144,7 @@ void MainWindow::showModelStructure(const QString &model)
 {
     if (!model.isEmpty())
         setModel(model);
-    selectRoute(2);
+    selectRoute(ui::Route::ModelDisplay);
 }
 
 void MainWindow::runModelSmoke(const QString &dir, const QString &model)
@@ -4470,7 +4470,7 @@ void MainWindow::recordResult(const vision::InferenceResult &r, bool writeToDisk
         if (!atomicWrite(dataRoot_ + "/history.json", QJsonDocument(history_).toJson(), &error))
             showNotice("运行记录保存失败：" + error, true);
     }
-    if (!busy_ || (pages_ && pages_->currentIndex() == 3))
+    if (!busy_ || (pages_ && pages_->currentIndex() == ui::routeIndex(ui::Route::History)))
         refreshHistory();
 }
 void MainWindow::refreshHistory()
@@ -4784,7 +4784,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
 {
     if (e->key() == Qt::Key_Escape)
     {
-        if (modelConversion_ && modelConversion_->isBusy() && pages_->currentIndex() == 6)
+        if (modelConversion_ && modelConversion_->isBusy() && pages_->currentIndex() == ui::routeIndex(ui::Route::ModelConversion))
         {
             modelConversion_->cancel();
             e->accept();
