@@ -164,14 +164,14 @@ bool ModelSessionController::importOrdered(const QStringList &input, int *added,
     // Runtime availability and operation permissions are checked by the caller
     // before this atomic state change. Only the final path is globally selected.
     const QString previousSelection = state_.activeModel;
-    const auto previousGeneration = state_.inspectionGeneration;
+    const bool invalidProfile = state_.convertedProfiles.contains(paths.last()) && convertedProfile(paths.last()).isEmpty();
     QSignalBlocker blocker(this);
     if (!select(paths.last(), false, error)) return false;
     state_.models = next;
     if (added) *added = count;
     blocker.unblock();
     emit changed();
-    if (previousSelection != state_.activeModel || previousGeneration != state_.inspectionGeneration)
+    if (previousSelection != state_.activeModel || invalidProfile)
     {
         emit selectionChanged(state_.activeModel);
         emit metadataChanged();
@@ -237,9 +237,14 @@ bool ModelSessionController::remove(const QString &path, QString *error)
     return true;
 }
 
-void ModelSessionController::resetMetadata()
+void ModelSessionController::resetMetadata(bool advanceGeneration)
 {
-    cancelInspection();
+    if (advanceGeneration) cancelInspection();
+    else
+    {
+        if (currentCancellation_) currentCancellation_->store(true);
+        state_.inspectionPending = false;
+    }
     state_.nativeLabels.clear();
     state_.inputChannels = 0;
     state_.classCount = 0;
@@ -254,7 +259,7 @@ bool ModelSessionController::select(const QString &path, bool force, QString *er
     if (path.isEmpty())
     {
         state_.activeModel.clear();
-        resetMetadata();
+        resetMetadata(true);
         emit changed(); emit selectionChanged({}); emit metadataChanged();
         return true;
     }
@@ -333,6 +338,27 @@ void ModelSessionController::setEvaluationProfile(const QString &path, const QVa
     emit changed();
 }
 
+void ModelSessionController::setConvertedProfileRecord(const QString &path, const QVariantMap &profile)
+{
+    if (shuttingDown_) return;
+    state_.convertedProfiles.insert(path, profile);
+    emit changed();
+}
+
+void ModelSessionController::addKnownModel(const QString &path)
+{
+    if (shuttingDown_ || state_.models.contains(path)) return;
+    state_.models.append(path);
+    emit changed();
+}
+
+void ModelSessionController::acceptInferenceClassCount(int count)
+{
+    if (count <= 0 || shuttingDown_) return;
+    state_.classCount = count;
+    emit metadataChanged();
+}
+
 void ModelSessionController::cancelInspection()
 {
     if (currentCancellation_) currentCancellation_->store(true);
@@ -400,7 +426,8 @@ void ModelSessionController::inspect(const ModelConfig &requested)
 bool ModelSessionController::acceptLoadedMetadata(const ModelConfig &config, const QString &capturedIdentity)
 {
     if (shuttingDown_ || QFileInfo(config.modelPath).absoluteFilePath() != state_.activeModel) return false;
-    cancelInspection();
+    if (state_.inspectionPending) cancelInspection();
+    else if (currentCancellation_) currentCancellation_->store(true);
     state_.classCount = config.modelClassCount;
     state_.inputChannels = config.inputChannels;
     state_.inspectedIdentity = capturedIdentity.isEmpty() ? fileIdentity(state_.activeModel) : capturedIdentity;
