@@ -3,6 +3,7 @@
 #include "ui/evaluationpanel.h"
 #include "ui/mainwindow.h"
 #include "ui/modelconversionpage.h"
+#include "ui_shutdown_helpers.h"
 
 #include <QApplication>
 #include <QComboBox>
@@ -162,7 +163,7 @@ class ConversionInferenceTests final : public QObject
     }
     void cleanup()
     {
-        window_.reset();
+        QVERIFY2(closeWindow(), "MainWindow must complete asynchronous shutdown before destruction.");
         guard_.reset();
         area_.reset();
     }
@@ -387,14 +388,12 @@ class ConversionInferenceTests final : public QObject
     }
     void verifyPersistenceAndManualLabels(const QString &output, const QJsonObject &metadata)
     {
-        window_->close();
-        window_.reset();
+        QVERIFY(closeWindow());
         showWindow();
         QCOMPARE(window_->findChild<QSpinBox *>("inputSize")->value(), 64);
         QCOMPARE(window_->findChild<QComboBox *>("inputColorMode")->currentData().toString(), QString("grayscale"));
         QVERIFY(namedButton(window_.get(), QString("类别标签 · 转换模型 %1 类").arg(names(metadata).size())));
-        window_->close();
-        window_.reset();
+        QVERIFY(closeWindow());
         QSettings settings(area_->path() + "/output/preferences.ini", QSettings::IniFormat);
         const QStringList manual = {"自定义 球", "自定义 其他"};
         settings.setValue("labels", manual);
@@ -409,8 +408,7 @@ class ConversionInferenceTests final : public QObject
         auto *run = namedButton(window_.get(), "开始检测");
         QTRY_VERIFY_WITH_TIMEOUT(run->isVisible() && run->isEnabled(), 30000);
         QVERIFY2(unexpected_.isEmpty(), qPrintable(unexpected_));
-        window_->close();
-        window_.reset();
+        QVERIFY(closeWindow());
         settings.setValue("labels", QStringList{});
         settings.setValue("labelsPath", QString());
         settings.sync();
@@ -422,8 +420,7 @@ class ConversionInferenceTests final : public QObject
         // Same bytes with a different mtime must not receive the old class preset.
         // Actual model metadata still resolves two classes; never assume COCO 80.
         QTRY_VERIFY_WITH_TIMEOUT(namedButton(window_.get(), "类别标签 · 数字 2 类"), 15000);
-        window_->close();
-        window_.reset();
+        QVERIFY(closeWindow());
         QVERIFY(file.open(QIODevice::Append));
         QCOMPARE(file.write("changed"), qint64(7));
         file.close();
@@ -443,6 +440,15 @@ class ConversionInferenceTests final : public QObject
         window_->resize(1260, 820);
         window_->show();
         QTest::qWait(20);
+    }
+    bool closeWindow()
+    {
+        if (!vision::test::shutdownWindow(window_.get())) return false;
+        // The helper keeps processing GUI events until every resource owner
+        // reports ready. Do not let destruction perform or hide the waiting.
+        if (window_ && !window_->isShutdownReady()) return false;
+        window_.reset();
+        return true;
     }
     QString project_, runtime_, configuredGpuRuntime_, unexpected_, datasetImage_, datasetError_;
     QImage image_;

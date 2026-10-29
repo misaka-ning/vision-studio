@@ -9,6 +9,7 @@ class ModelDisplayPage final : public QWidget
   public:
     struct Controls { QLabel *modelName = nullptr, *metadata = nullptr, *hint = nullptr, *status = nullptr; ModelViewer *viewer = nullptr; };
     explicit ModelDisplayPage(QWidget *parent = nullptr);
+    ~ModelDisplayPage() override;
     const Controls &controls() const { return controls_; }
     void setSelectedModelHeader(const QString &path, const QString &displayName, bool needsRuntime = false);
   signals:

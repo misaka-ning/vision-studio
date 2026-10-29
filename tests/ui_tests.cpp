@@ -2673,7 +2673,8 @@ class UiTests final : public QObject
         QVERIFY(listed);
         recordings->setCurrentCell(0, 0);
         recordings->selectRow(0);
-        QVERIFY(play->isEnabled());
+        // List publication precedes the selected recording's background open.
+        QTRY_VERIFY_WITH_TIMEOUT(play->isEnabled(), 5000);
         QTest::mouseClick(play, Qt::LeftButton);
         QTRY_VERIFY_WITH_TIMEOUT(!recordingCanvas->result().image.isNull(), 5000);
         const QImage preview = recordingCanvas->result().image;

@@ -304,6 +304,33 @@ class WorkspacePagesTests final : public QObject
         QTRY_COMPARE_WITH_TIMEOUT(shutdown.size(), 1, 1000);
     }
 
+    void modelDisplayDestructionDisconnectsViewerBeforeHeaderChildren()
+    {
+        // An invalid path reaches Error without creating a helper. The viewer
+        // destructor still calls stop(), which changes Error to Empty after
+        // the earlier-created header widgets have already been deleted.
+        // Exercise that actual destruction order, not a prior stop() that
+        // would leave Empty and hide a stale page callback.
+        for (int iteration = 0; iteration < 32; ++iteration) {
+            QObject observer;
+            auto *page = new ModelDisplayPage;
+            const QPointer<QLabel> status(page->controls().status);
+            const QPointer<ModelViewer> viewer(page->controls().viewer);
+            bool headerDestroyed = false;
+            int finalStateAfterHeader = 0;
+            connect(status.data(), &QObject::destroyed, &observer, [&] { headerDestroyed = true; });
+            connect(viewer.data(), &ModelViewer::stateChanged, &observer, [&](ModelViewer::State state) {
+                if (headerDestroyed && state == ModelViewer::State::Empty) ++finalStateAfterHeader;
+            });
+            viewer->openModel("/path/that/does/not/exist.pt");
+            QCOMPARE(viewer->state(), ModelViewer::State::Error);
+            QVERIFY(viewer->findChildren<QProcess *>().isEmpty());
+            delete page;
+            QVERIFY(headerDestroyed); QVERIFY(status.isNull()); QVERIFY(viewer.isNull());
+            QCOMPARE(finalStateAfterHeader, 1);
+        }
+    }
+
     void recordingPageRendersValuesWithoutTouchingFiles()
     {
         RecordingsPage page("/no/real/recordings"); page.resize(1100, 800); page.show();
