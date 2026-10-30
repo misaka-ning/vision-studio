@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/opt/VisionStudio/runtime/bin/python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "release_metadata_tests.py",
+    "-v"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.09099192009307444,
+  "log_sha256": "9409466e34ab03417d6bee804d1bc4f8be24ba592737c2553eb2554526cdf801",
+  "builder_sha256": "6fb6155b236d2774d1b4ad3c888db7a87e132850bb014a93f2e98dd6594878bc",
+  "tests_sha256": "be6fbead733d16a1fb1b1f84e2daa43320d1c705eea3b0045ea3071ea116e79b"
+}

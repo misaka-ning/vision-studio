@@ -1,0 +1,25 @@
+{
+  "purpose": "Real pre-fix application archive must fail new independent source completeness gate; not a successful release acceptance",
+  "command": [
+    "/home/misaka/miniconda3/bin/python3",
+    "-B",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/qa-tools/verify_source_bundle.py",
+    "--project",
+    "/home/misaka/.codex/worktrees/ef0b/yolo",
+    "--clean-source",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/clean-source",
+    "--release-dir",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.10.1",
+    "--stage",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.10.1-1",
+    "--ctest-report",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/qa-final/ctest-qa.json",
+    "--report",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/source-bundle-coverage-fix/actual-bad-archive-rejected.json"
+  ],
+  "exit_code": 1,
+  "expected_missing_lock_failure_observed": true,
+  "elapsed_seconds": 4.237,
+  "report_sha256": "78bd6245ab86f666e52f57b1cd1842911ad76d92d34265deb45d9439d7e5d5fe",
+  "log_sha256": "31506dbb36db80f40d8d3249d7aed754d54a3cc9f9c52675c55483799a3e7e83"
+}

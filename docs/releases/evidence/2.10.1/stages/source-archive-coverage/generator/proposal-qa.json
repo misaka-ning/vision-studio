@@ -1,0 +1,1327 @@
+{
+  "schema_version": 1,
+  "version": "2.10.1",
+  "scope": "Shadow source-generator proposal and actual small archive unit tests only; not final release/archive/rebuild acceptance",
+  "base_archive_input_commit": "3718d9cdb388b485ac5f716db712b19d173ccc50",
+  "proposal_root": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/archive-coverage-proposal",
+  "changed_paths": [
+    "docs/release/build_source_archive.py",
+    "tests/release_metadata_tests.py"
+  ],
+  "root_generator_and_test_unchanged": true,
+  "root_input_sha256": {
+    "docs/release/build_source_archive.py": "a2ed58ab830cab6169dcd7b2eaa2f30bd3c694519cc8bc727a5692298866fa91",
+    "tests/release_metadata_tests.py": "228284e68573f6074b98983197c308898327ed5f5d89594a2b7ff7e2897ae3ba"
+  },
+  "proposal_input_sha256": {
+    "docs/release/build_source_archive.py": "6fb6155b236d2774d1b4ad3c888db7a87e132850bb014a93f2e98dd6594878bc",
+    "tests/release_metadata_tests.py": "be6fbead733d16a1fb1b1f84e2daa43320d1c705eea3b0045ea3071ea116e79b"
+  },
+  "unchanged_existing_ast_definitions": [
+    "SOURCE_ITEMS",
+    "SKIP",
+    "QT_MODULES",
+    "REQUIRED_OTHER",
+    "sha256",
+    "write_json",
+    "inventory",
+    "file_list",
+    "make_archive"
+  ],
+  "actual_before_regression": {
+    "tests": 2,
+    "failures": 2,
+    "exit_code": 1,
+    "reason": "Real old make_archive/file_list(SOURCE_ITEMS) tar lacks current Windows lock and injected future lock; helper lookup uses fallback and does not cause failure",
+    "log": "generator-before-final-regression.log"
+  },
+  "actual_after_full_suite": {
+    "tests": 24,
+    "passed": 24,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "command": [
+      "/opt/VisionStudio/runtime/bin/python",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "release_metadata_tests.py",
+      "-v"
+    ],
+    "cwd": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/archive-coverage-proposal",
+    "log": "generator-after-final-release-metadata.log"
+  },
+  "retained_small_archive_observations": {
+    "current": {
+      "before": {
+        "file": "before-current.tar.xz",
+        "bytes": 7776,
+        "sha256": "82ecceb7c448394727fbf90f8b0c65cbe53ab6e2e7e0fe6930419d5318c2b6c5",
+        "members": [
+          {
+            "file": "src/source-archive-fixture.txt",
+            "bytes": 30,
+            "sha256": "0d12fa928d772a71306b0350174375ad6d91cf002f50f80c0d36ed5962eaa074",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "tests/source-archive-fixture.txt",
+            "bytes": 32,
+            "sha256": "3f3e767907742d045f901bc4baaf76c3856366f1db21957f24adbdda2e184a7f",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "scripts/source-archive-fixture.txt",
+            "bytes": 34,
+            "sha256": "65d4a6e9a8b45b126815b87b033ab915772a929746553b76d7381d8a9d49eb66",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "packaging/source-archive-fixture.txt",
+            "bytes": 36,
+            "sha256": "9dda94244825f0185055416e9e527a6e85863afe4a1ac817b52649eaf59d026f",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "docs/source-archive-fixture.txt",
+            "bytes": 31,
+            "sha256": "b0ec403ececb592e16d717d159374543742f372c66151cac992a218b90c0b60f",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "assets/source-archive-fixture.txt",
+            "bytes": 33,
+            "sha256": "c30630f8abfe77b684ba5e6a963e6f0954dbd36a3e65029f9e0edb635365fdd2",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "models/source-archive-fixture.txt",
+            "bytes": 33,
+            "sha256": "f7ad534708bc5b58be45444a9d630f9fbd615e2688cda23190981e3426cc8dc4",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "vendor/source-archive-fixture.txt",
+            "bytes": 33,
+            "sha256": "7f304b4eb35107391f3c041c2a4408281ab1410d05114ab94625ea09fba67de9",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "CMakeLists.txt",
+            "bytes": 41,
+            "sha256": "b715f95d2471b75aea47a11d5e1b3fbb03fc21b0c66ad8196604215a90d5b333",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "resources.qrc",
+            "bytes": 40,
+            "sha256": "8ce5cf1c2f807480d34d44a79391d9cc31e28bdd83e255105558807427173221",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "run.sh",
+            "bytes": 33,
+            "sha256": "1a50a43fd8da593af08afc75c9f8fc181e137175d90b5e9932e9e35b884c7303",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "VisionStudio.desktop",
+            "bytes": 47,
+            "sha256": "0030854667abde3e642bcc7e9c0119f22f6e81f45b6ff8b2a2e48474b84c444d",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "README.md",
+            "bytes": 36,
+            "sha256": "b5cf30eb0c0630a820028b89a0111b1de72eb0b56f798dbd391a52164b3a1e1b",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "LICENSE",
+            "bytes": 34,
+            "sha256": "0e89db3516abf701e9d18a84ddc17e047cf5a89ad09c19c93d284c05d8f5056a",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-pt.txt",
+            "bytes": 816,
+            "sha256": "66dd8d3453017b71bc5835a6614154292ef7d7c9ebf29c47482d38fda664cb96",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-pt.lock.txt",
+            "bytes": 1012,
+            "sha256": "07e49260cf1f15ac6f3d6aea6af0e32ec75261923d87e5a2a7827f06b9bad896",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-gpu.txt",
+            "bytes": 279,
+            "sha256": "b94dd9e8d3aa11b4bad97e69db47d3a9f9a4781a601c2c9f4c33915eabe09ca4",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-gpu.lock.txt",
+            "bytes": 12685,
+            "sha256": "42e7b6aa6de177210e5bc66801f3f9fb4758ec0c2f1a3ef1ce7b1c543aabe5c4",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "runtime-info.json",
+            "bytes": 44,
+            "sha256": "c1f37aef65f1d4cb8695719fbe2c2457fcfef5781b2240a98960d7d6eb1851ae",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": ".clang-format",
+            "bytes": 40,
+            "sha256": "40f5db243d45303215db2f202192396a6f6e52020f48f275740d991dc7c9eca4",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": ".gitignore",
+            "bytes": 37,
+            "sha256": "4effbbf5efa78607b85eca6e91e17142daa1f2e4e1c051f332e75f012c5b20c7",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": ".gitattributes",
+            "bytes": 41,
+            "sha256": "d0e28c3a27a107bccc7302f503e00bc2012651376f306c76883f8a92c1c2ee81",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": ".github/source-archive-fixture.txt",
+            "bytes": 34,
+            "sha256": "5fca023dfcf47c394181cd6086628f445a455aa6b1236338095f1f6b220f5b42",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "AGENTS.md",
+            "bytes": 36,
+            "sha256": "e8fa009b9552d0a5f5013523d571fd21c0bc10a66e9d1ed946cee0a488bb5f05",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "CHANGELOG.md",
+            "bytes": 39,
+            "sha256": "cf27b7e7a2a7d9b76bf7740e050129d9ecfa891b3f09ad8212f79a73c9365b64",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "CONTRIBUTING.md",
+            "bytes": 42,
+            "sha256": "b957b7952dacf4b47d4327340e55d0cea3908575aec090b8d0449aee59e0d370",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          }
+        ]
+      },
+      "after": {
+        "file": "after-current.tar.xz",
+        "bytes": 8056,
+        "sha256": "a0272670302a6610ee92fdc0876046ce799c043a27be6b1a1543404b5627b10b",
+        "members": [
+          {
+            "file": "src/source-archive-fixture.txt",
+            "bytes": 30,
+            "sha256": "0d12fa928d772a71306b0350174375ad6d91cf002f50f80c0d36ed5962eaa074",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "tests/source-archive-fixture.txt",
+            "bytes": 32,
+            "sha256": "3f3e767907742d045f901bc4baaf76c3856366f1db21957f24adbdda2e184a7f",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "scripts/source-archive-fixture.txt",
+            "bytes": 34,
+            "sha256": "65d4a6e9a8b45b126815b87b033ab915772a929746553b76d7381d8a9d49eb66",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "packaging/source-archive-fixture.txt",
+            "bytes": 36,
+            "sha256": "9dda94244825f0185055416e9e527a6e85863afe4a1ac817b52649eaf59d026f",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "docs/source-archive-fixture.txt",
+            "bytes": 31,
+            "sha256": "b0ec403ececb592e16d717d159374543742f372c66151cac992a218b90c0b60f",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "assets/source-archive-fixture.txt",
+            "bytes": 33,
+            "sha256": "c30630f8abfe77b684ba5e6a963e6f0954dbd36a3e65029f9e0edb635365fdd2",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "models/source-archive-fixture.txt",
+            "bytes": 33,
+            "sha256": "f7ad534708bc5b58be45444a9d630f9fbd615e2688cda23190981e3426cc8dc4",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "vendor/source-archive-fixture.txt",
+            "bytes": 33,
+            "sha256": "7f304b4eb35107391f3c041c2a4408281ab1410d05114ab94625ea09fba67de9",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "CMakeLists.txt",
+            "bytes": 41,
+            "sha256": "b715f95d2471b75aea47a11d5e1b3fbb03fc21b0c66ad8196604215a90d5b333",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "resources.qrc",
+            "bytes": 40,
+            "sha256": "8ce5cf1c2f807480d34d44a79391d9cc31e28bdd83e255105558807427173221",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "run.sh",
+            "bytes": 33,
+            "sha256": "1a50a43fd8da593af08afc75c9f8fc181e137175d90b5e9932e9e35b884c7303",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "VisionStudio.desktop",
+            "bytes": 47,
+            "sha256": "0030854667abde3e642bcc7e9c0119f22f6e81f45b6ff8b2a2e48474b84c444d",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "README.md",
+            "bytes": 36,
+            "sha256": "b5cf30eb0c0630a820028b89a0111b1de72eb0b56f798dbd391a52164b3a1e1b",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "LICENSE",
+            "bytes": 34,
+            "sha256": "0e89db3516abf701e9d18a84ddc17e047cf5a89ad09c19c93d284c05d8f5056a",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-pt.txt",
+            "bytes": 816,
+            "sha256": "66dd8d3453017b71bc5835a6614154292ef7d7c9ebf29c47482d38fda664cb96",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-pt.lock.txt",
+            "bytes": 1012,
+            "sha256": "07e49260cf1f15ac6f3d6aea6af0e32ec75261923d87e5a2a7827f06b9bad896",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-gpu.txt",
+            "bytes": 279,
+            "sha256": "b94dd9e8d3aa11b4bad97e69db47d3a9f9a4781a601c2c9f4c33915eabe09ca4",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-gpu.lock.txt",
+            "bytes": 12685,
+            "sha256": "42e7b6aa6de177210e5bc66801f3f9fb4758ec0c2f1a3ef1ce7b1c543aabe5c4",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "runtime-info.json",
+            "bytes": 44,
+            "sha256": "c1f37aef65f1d4cb8695719fbe2c2457fcfef5781b2240a98960d7d6eb1851ae",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": ".clang-format",
+            "bytes": 40,
+            "sha256": "40f5db243d45303215db2f202192396a6f6e52020f48f275740d991dc7c9eca4",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": ".gitignore",
+            "bytes": 37,
+            "sha256": "4effbbf5efa78607b85eca6e91e17142daa1f2e4e1c051f332e75f012c5b20c7",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": ".gitattributes",
+            "bytes": 41,
+            "sha256": "d0e28c3a27a107bccc7302f503e00bc2012651376f306c76883f8a92c1c2ee81",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": ".github/source-archive-fixture.txt",
+            "bytes": 34,
+            "sha256": "5fca023dfcf47c394181cd6086628f445a455aa6b1236338095f1f6b220f5b42",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "AGENTS.md",
+            "bytes": 36,
+            "sha256": "e8fa009b9552d0a5f5013523d571fd21c0bc10a66e9d1ed946cee0a488bb5f05",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "CHANGELOG.md",
+            "bytes": 39,
+            "sha256": "cf27b7e7a2a7d9b76bf7740e050129d9ecfa891b3f09ad8212f79a73c9365b64",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "CONTRIBUTING.md",
+            "bytes": 42,
+            "sha256": "b957b7952dacf4b47d4327340e55d0cea3908575aec090b8d0449aee59e0d370",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-gpu-windows.lock.txt",
+            "bytes": 727,
+            "sha256": "460a7e2604f3fa24853982ad9e79286dacfbf1ae88de20d03c8aca04f9ba396c",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          }
+        ]
+      },
+      "before_missing_requirement_members": [
+        "requirements-gpu-windows.lock.txt"
+      ],
+      "after_root_requirement_sha256": {
+        "requirements-pt.txt": "66dd8d3453017b71bc5835a6614154292ef7d7c9ebf29c47482d38fda664cb96",
+        "requirements-gpu-windows.lock.txt": "460a7e2604f3fa24853982ad9e79286dacfbf1ae88de20d03c8aca04f9ba396c",
+        "requirements-pt.lock.txt": "07e49260cf1f15ac6f3d6aea6af0e32ec75261923d87e5a2a7827f06b9bad896",
+        "requirements-gpu.lock.txt": "42e7b6aa6de177210e5bc66801f3f9fb4758ec0c2f1a3ef1ce7b1c543aabe5c4",
+        "requirements-gpu.txt": "b94dd9e8d3aa11b4bad97e69db47d3a9f9a4781a601c2c9f4c33915eabe09ca4"
+      },
+      "existing_member_order_content_and_metadata_identical": true,
+      "missing_root_requirements_appended_in_sorted_order": true
+    },
+    "future": {
+      "before": {
+        "file": "before-future.tar.xz",
+        "bytes": 7776,
+        "sha256": "82ecceb7c448394727fbf90f8b0c65cbe53ab6e2e7e0fe6930419d5318c2b6c5",
+        "members": [
+          {
+            "file": "src/source-archive-fixture.txt",
+            "bytes": 30,
+            "sha256": "0d12fa928d772a71306b0350174375ad6d91cf002f50f80c0d36ed5962eaa074",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "tests/source-archive-fixture.txt",
+            "bytes": 32,
+            "sha256": "3f3e767907742d045f901bc4baaf76c3856366f1db21957f24adbdda2e184a7f",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "scripts/source-archive-fixture.txt",
+            "bytes": 34,
+            "sha256": "65d4a6e9a8b45b126815b87b033ab915772a929746553b76d7381d8a9d49eb66",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "packaging/source-archive-fixture.txt",
+            "bytes": 36,
+            "sha256": "9dda94244825f0185055416e9e527a6e85863afe4a1ac817b52649eaf59d026f",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "docs/source-archive-fixture.txt",
+            "bytes": 31,
+            "sha256": "b0ec403ececb592e16d717d159374543742f372c66151cac992a218b90c0b60f",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "assets/source-archive-fixture.txt",
+            "bytes": 33,
+            "sha256": "c30630f8abfe77b684ba5e6a963e6f0954dbd36a3e65029f9e0edb635365fdd2",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "models/source-archive-fixture.txt",
+            "bytes": 33,
+            "sha256": "f7ad534708bc5b58be45444a9d630f9fbd615e2688cda23190981e3426cc8dc4",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "vendor/source-archive-fixture.txt",
+            "bytes": 33,
+            "sha256": "7f304b4eb35107391f3c041c2a4408281ab1410d05114ab94625ea09fba67de9",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "CMakeLists.txt",
+            "bytes": 41,
+            "sha256": "b715f95d2471b75aea47a11d5e1b3fbb03fc21b0c66ad8196604215a90d5b333",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "resources.qrc",
+            "bytes": 40,
+            "sha256": "8ce5cf1c2f807480d34d44a79391d9cc31e28bdd83e255105558807427173221",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "run.sh",
+            "bytes": 33,
+            "sha256": "1a50a43fd8da593af08afc75c9f8fc181e137175d90b5e9932e9e35b884c7303",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "VisionStudio.desktop",
+            "bytes": 47,
+            "sha256": "0030854667abde3e642bcc7e9c0119f22f6e81f45b6ff8b2a2e48474b84c444d",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "README.md",
+            "bytes": 36,
+            "sha256": "b5cf30eb0c0630a820028b89a0111b1de72eb0b56f798dbd391a52164b3a1e1b",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "LICENSE",
+            "bytes": 34,
+            "sha256": "0e89db3516abf701e9d18a84ddc17e047cf5a89ad09c19c93d284c05d8f5056a",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-pt.txt",
+            "bytes": 816,
+            "sha256": "66dd8d3453017b71bc5835a6614154292ef7d7c9ebf29c47482d38fda664cb96",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-pt.lock.txt",
+            "bytes": 1012,
+            "sha256": "07e49260cf1f15ac6f3d6aea6af0e32ec75261923d87e5a2a7827f06b9bad896",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-gpu.txt",
+            "bytes": 279,
+            "sha256": "b94dd9e8d3aa11b4bad97e69db47d3a9f9a4781a601c2c9f4c33915eabe09ca4",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-gpu.lock.txt",
+            "bytes": 12685,
+            "sha256": "42e7b6aa6de177210e5bc66801f3f9fb4758ec0c2f1a3ef1ce7b1c543aabe5c4",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "runtime-info.json",
+            "bytes": 44,
+            "sha256": "c1f37aef65f1d4cb8695719fbe2c2457fcfef5781b2240a98960d7d6eb1851ae",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": ".clang-format",
+            "bytes": 40,
+            "sha256": "40f5db243d45303215db2f202192396a6f6e52020f48f275740d991dc7c9eca4",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": ".gitignore",
+            "bytes": 37,
+            "sha256": "4effbbf5efa78607b85eca6e91e17142daa1f2e4e1c051f332e75f012c5b20c7",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": ".gitattributes",
+            "bytes": 41,
+            "sha256": "d0e28c3a27a107bccc7302f503e00bc2012651376f306c76883f8a92c1c2ee81",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": ".github/source-archive-fixture.txt",
+            "bytes": 34,
+            "sha256": "5fca023dfcf47c394181cd6086628f445a455aa6b1236338095f1f6b220f5b42",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "AGENTS.md",
+            "bytes": 36,
+            "sha256": "e8fa009b9552d0a5f5013523d571fd21c0bc10a66e9d1ed946cee0a488bb5f05",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "CHANGELOG.md",
+            "bytes": 39,
+            "sha256": "cf27b7e7a2a7d9b76bf7740e050129d9ecfa891b3f09ad8212f79a73c9365b64",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "CONTRIBUTING.md",
+            "bytes": 42,
+            "sha256": "b957b7952dacf4b47d4327340e55d0cea3908575aec090b8d0449aee59e0d370",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          }
+        ]
+      },
+      "after": {
+        "file": "after-future.tar.xz",
+        "bytes": 8140,
+        "sha256": "387b7683e4236740c5a921fb27896ef535899b09ca034aedda2edfcdee30b053",
+        "members": [
+          {
+            "file": "src/source-archive-fixture.txt",
+            "bytes": 30,
+            "sha256": "0d12fa928d772a71306b0350174375ad6d91cf002f50f80c0d36ed5962eaa074",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "tests/source-archive-fixture.txt",
+            "bytes": 32,
+            "sha256": "3f3e767907742d045f901bc4baaf76c3856366f1db21957f24adbdda2e184a7f",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "scripts/source-archive-fixture.txt",
+            "bytes": 34,
+            "sha256": "65d4a6e9a8b45b126815b87b033ab915772a929746553b76d7381d8a9d49eb66",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "packaging/source-archive-fixture.txt",
+            "bytes": 36,
+            "sha256": "9dda94244825f0185055416e9e527a6e85863afe4a1ac817b52649eaf59d026f",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "docs/source-archive-fixture.txt",
+            "bytes": 31,
+            "sha256": "b0ec403ececb592e16d717d159374543742f372c66151cac992a218b90c0b60f",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "assets/source-archive-fixture.txt",
+            "bytes": 33,
+            "sha256": "c30630f8abfe77b684ba5e6a963e6f0954dbd36a3e65029f9e0edb635365fdd2",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "models/source-archive-fixture.txt",
+            "bytes": 33,
+            "sha256": "f7ad534708bc5b58be45444a9d630f9fbd615e2688cda23190981e3426cc8dc4",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "vendor/source-archive-fixture.txt",
+            "bytes": 33,
+            "sha256": "7f304b4eb35107391f3c041c2a4408281ab1410d05114ab94625ea09fba67de9",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "CMakeLists.txt",
+            "bytes": 41,
+            "sha256": "b715f95d2471b75aea47a11d5e1b3fbb03fc21b0c66ad8196604215a90d5b333",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "resources.qrc",
+            "bytes": 40,
+            "sha256": "8ce5cf1c2f807480d34d44a79391d9cc31e28bdd83e255105558807427173221",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "run.sh",
+            "bytes": 33,
+            "sha256": "1a50a43fd8da593af08afc75c9f8fc181e137175d90b5e9932e9e35b884c7303",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "VisionStudio.desktop",
+            "bytes": 47,
+            "sha256": "0030854667abde3e642bcc7e9c0119f22f6e81f45b6ff8b2a2e48474b84c444d",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "README.md",
+            "bytes": 36,
+            "sha256": "b5cf30eb0c0630a820028b89a0111b1de72eb0b56f798dbd391a52164b3a1e1b",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "LICENSE",
+            "bytes": 34,
+            "sha256": "0e89db3516abf701e9d18a84ddc17e047cf5a89ad09c19c93d284c05d8f5056a",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-pt.txt",
+            "bytes": 816,
+            "sha256": "66dd8d3453017b71bc5835a6614154292ef7d7c9ebf29c47482d38fda664cb96",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-pt.lock.txt",
+            "bytes": 1012,
+            "sha256": "07e49260cf1f15ac6f3d6aea6af0e32ec75261923d87e5a2a7827f06b9bad896",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-gpu.txt",
+            "bytes": 279,
+            "sha256": "b94dd9e8d3aa11b4bad97e69db47d3a9f9a4781a601c2c9f4c33915eabe09ca4",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-gpu.lock.txt",
+            "bytes": 12685,
+            "sha256": "42e7b6aa6de177210e5bc66801f3f9fb4758ec0c2f1a3ef1ce7b1c543aabe5c4",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "runtime-info.json",
+            "bytes": 44,
+            "sha256": "c1f37aef65f1d4cb8695719fbe2c2457fcfef5781b2240a98960d7d6eb1851ae",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": ".clang-format",
+            "bytes": 40,
+            "sha256": "40f5db243d45303215db2f202192396a6f6e52020f48f275740d991dc7c9eca4",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": ".gitignore",
+            "bytes": 37,
+            "sha256": "4effbbf5efa78607b85eca6e91e17142daa1f2e4e1c051f332e75f012c5b20c7",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": ".gitattributes",
+            "bytes": 41,
+            "sha256": "d0e28c3a27a107bccc7302f503e00bc2012651376f306c76883f8a92c1c2ee81",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": ".github/source-archive-fixture.txt",
+            "bytes": 34,
+            "sha256": "5fca023dfcf47c394181cd6086628f445a455aa6b1236338095f1f6b220f5b42",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "AGENTS.md",
+            "bytes": 36,
+            "sha256": "e8fa009b9552d0a5f5013523d571fd21c0bc10a66e9d1ed946cee0a488bb5f05",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "CHANGELOG.md",
+            "bytes": 39,
+            "sha256": "cf27b7e7a2a7d9b76bf7740e050129d9ecfa891b3f09ad8212f79a73c9365b64",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "CONTRIBUTING.md",
+            "bytes": 42,
+            "sha256": "b957b7952dacf4b47d4327340e55d0cea3908575aec090b8d0449aee59e0d370",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-future-backend.lock.txt",
+            "bytes": 57,
+            "sha256": "3a71e4e23e66f966ba6f3e50aae63a9c9c182c82130aae9e3a145d2fe1bf5d6e",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements-gpu-windows.lock.txt",
+            "bytes": 727,
+            "sha256": "460a7e2604f3fa24853982ad9e79286dacfbf1ae88de20d03c8aca04f9ba396c",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          },
+          {
+            "file": "requirements.txt",
+            "bytes": 36,
+            "sha256": "3deb7c3e80cad2e21783d5afcc5b359289d9450c30dffed49a88fa778e766eae",
+            "mode": 420,
+            "mtime": 1791331200,
+            "uid": 0,
+            "gid": 0,
+            "uname": "root",
+            "gname": "root"
+          }
+        ]
+      },
+      "before_missing_requirement_members": [
+        "requirements-future-backend.lock.txt",
+        "requirements-gpu-windows.lock.txt",
+        "requirements.txt"
+      ],
+      "after_root_requirement_sha256": {
+        "requirements-pt.txt": "66dd8d3453017b71bc5835a6614154292ef7d7c9ebf29c47482d38fda664cb96",
+        "requirements-future-backend.lock.txt": "3a71e4e23e66f966ba6f3e50aae63a9c9c182c82130aae9e3a145d2fe1bf5d6e",
+        "requirements-gpu-windows.lock.txt": "460a7e2604f3fa24853982ad9e79286dacfbf1ae88de20d03c8aca04f9ba396c",
+        "requirements.txt": "3deb7c3e80cad2e21783d5afcc5b359289d9450c30dffed49a88fa778e766eae",
+        "requirements-pt.lock.txt": "07e49260cf1f15ac6f3d6aea6af0e32ec75261923d87e5a2a7827f06b9bad896",
+        "requirements-gpu.lock.txt": "42e7b6aa6de177210e5bc66801f3f9fb4758ec0c2f1a3ef1ce7b1c543aabe5c4",
+        "requirements-gpu.txt": "b94dd9e8d3aa11b4bad97e69db47d3a9f9a4781a601c2c9f4c33915eabe09ca4"
+      },
+      "existing_member_order_content_and_metadata_identical": true,
+      "missing_root_requirements_appended_in_sorted_order": true
+    }
+  },
+  "patch": {
+    "file": "archive-root-requirements.patch",
+    "sha256": "bafb35ceed91bfb7f03067f57602f78c708b68b1d5af1b545d523ca4137ff792"
+  },
+  "raw_log_sha256": {
+    "generator-before-regression.log": "1451db40931e59b51034a3ba1cabc77caf7ef4f4e5a5d29d4d48ab0b30874646",
+    "generator-after-release-metadata.log": "2007ab2b83d506dd022f3aa6d69ead71e49f3d36d5a32c3891056bb8423d00c6",
+    "generator-before-final-regression.log": "e17dde39d8dec9d69d76757cb755d943cc7f36286255d706fdff2407562d6cdb",
+    "generator-after-final-release-metadata.log": "2007ab2b83d506dd022f3aa6d69ead71e49f3d36d5a32c3891056bb8423d00c6"
+  },
+  "not_executed": [
+    "18 upstream full archive generation",
+    "formal CMake or rebuild",
+    "GPU inference",
+    "formal package generation/acceptance",
+    "Git/root changes or publication"
+  ],
+  "required_followup": "Root integrates new source input and independent verifier hardening, freezes A3 and reruns applicable real production/source/rebuild/package acceptance; do not reuse A2 source-bundle pass as proof of archive coverage."
+}
