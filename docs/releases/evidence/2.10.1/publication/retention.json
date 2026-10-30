@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "version": "2.10.1",
+  "success": true,
+  "completion_utc": "2026-10-30T03:12:09.227122+00:00",
+  "executed_after_remote_verification": true,
+  "release_roots": [
+    {
+      "role": "current",
+      "retained_formal_versions": [
+        "2.10.1",
+        "2.10.0"
+      ],
+      "removed_formal_version": "2.9.2",
+      "remote_verification_before_removal": true
+    },
+    {
+      "role": "primary",
+      "retained_formal_versions": [
+        "2.10.1",
+        "2.10.0"
+      ],
+      "removed_formal_version": "2.9.2",
+      "remote_verification_before_removal": true
+    }
+  ],
+  "primary_copy": {
+    "all_files_byte_equal": true,
+    "complete_file_count": 55,
+    "tree_sha256": "fa4cfad32525927b8f146176c16b6549e2be9b8fc78495d0d8cfb330f2f2494b",
+    "hardlinks_created": false
+  },
+  "exact_removed_old_version_copies": {
+    "version": "2.9.2",
+    "formal_release_directories": 2,
+    "build_tree": 1,
+    "deb_staging_tree": 1,
+    "source_rebuild_tree": 1,
+    "total": 5
+  },
+  "preserved_QA": {
+    "old_release_original_files": 76,
+    "additional_build_source_original_files": 2400,
+    "additional_archive_bytes": 120075868,
+    "additional_archive_sha256": "03bf95398c57f514fa09ae88c67a1a9ee6413a6b3d459c631e0a0a60a36180d3",
+    "archive_members_byte_verified_before_removal": true
+  },
+  "protected_scope": {
+    "worktrees_and_git_preserved": true,
+    "user_files_and_outputs_not_cleanup_targets": true,
+    "shared_sdk_and_runtimes_not_cleanup_targets": true,
+    "rejected_candidates_and_existing_QA_preserved": true,
+    "existing_protected_paths_present_after_execution": 56
+  },
+  "limits": {
+    "host_wide_activity_proven": false,
+    "process_inspection_scope": "Current execution PID namespace only; known completed QA jobs reviewed separately",
+    "physical_freed_space_measured": false,
+    "host_application_installation_performed": false
+  },
+  "original_receipts": [
+    {
+      "role": "copy.json",
+      "bytes": 2452,
+      "sha256": "6c535e7277c70bbcbd7f3b951ed259877a9bcc7a81c4f2211fd055c71352891f"
+    },
+    {
+      "role": "prune-current-preview.json",
+      "bytes": 5933,
+      "sha256": "39a3a6a60166b53f3e9c0856be051856215e42df632e1d459fe38a2ec24c75bb"
+    },
+    {
+      "role": "prune-primary-preview.json",
+      "bytes": 5891,
+      "sha256": "2487881fec31eb2522b04c7abcc857b2e6d4ed8b451e2d4f115c99c1eaada66a"
+    },
+    {
+      "role": "prune-current.json",
+      "bytes": 6154,
+      "sha256": "32c68c60bad1531e844b02ddddee52a4de15f231a394c9b016e32b89ffcbb1cb"
+    },
+    {
+      "role": "prune-primary.json",
+      "bytes": 6105,
+      "sha256": "3a074f91c1baef9154411a692cb6a5d9994da44d74deaa11f291329156c26670"
+    },
+    {
+      "role": "exactbuildcleanup.json",
+      "bytes": 20538,
+      "sha256": "f76e2fc9265ce8066d121283c695f4e965d0ea138160b0e4a229a7156b18730a"
+    }
+  ]
+}

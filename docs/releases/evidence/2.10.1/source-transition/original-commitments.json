@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "version": "2.10.1",
+  "archive_input_commit": "0f874c9b4028c29f11d76dda581e6532db77ec10",
+  "evidence_commit": "530a4a4bbcd908a102f085b29b819fd2d72d1b82",
+  "scope": "Whole original files are committed by semantic role; their host locations and local original names are omitted",
+  "originals": {
+    "completed_transition_audit": {
+      "bytes": 6518,
+      "sha256": "ff7366dd367fa8ab4e73f99056854867e917a3cfee0027d9df4f9299f78a0d1b"
+    },
+    "literal_git_transition": {
+      "bytes": 18583,
+      "sha256": "6c9ec85e10f45496681667aeb111912179e575ed10c8732530b04d7af2b6bd44"
+    },
+    "reviewed_blob_identities": {
+      "bytes": 40076,
+      "sha256": "45711b5462d1c34bcd189b530b02b22b9add94846ca31ebf49ea1c840395d3a5"
+    },
+    "declared_precommit_review": {
+      "bytes": 32303,
+      "sha256": "f819eda3d98c3fa776f0e19de7f4cb8a5d924d20d6f8b80dbff55dc94e1dca5b"
+    },
+    "full_frozen_production_map": {
+      "bytes": 578606,
+      "sha256": "e6ec95c3ca07409e4bd1b3729f9171cf27f797145a3c25530117f05b4749bcb9"
+    },
+    "six_complete_comparison_maps": {
+      "bytes": 3507291,
+      "sha256": "557a711ece392a746c976042c47d30ac12062dd58ef3703759256425fc5efbea"
+    },
+    "private_QA_commitment_index": {
+      "bytes": 24652,
+      "sha256": "fe8f938931ab1647d0791dfb6101434371dba48e91b357eda898d7874325bcd7"
+    },
+    "three_asset_identity_record": {
+      "bytes": 436,
+      "sha256": "62524a13d5fb6e70c1f2cfe140a4342d04d4cb347a86fbc592f3e2fe254070fc"
+    },
+    "git_binary_transition_patch": {
+      "bytes": 923448,
+      "sha256": "3fbb79cec2352623de2265e6dddb5a56ee9024f51cd49e9dc11dbf982c3f60b4"
+    },
+    "B_git_export_archive": {
+      "bytes": 260741120,
+      "sha256": "35cccc167cbdbd445cfb2eba47f54c1a05df656a2ae047d318d0b6bb21cea30e"
+    },
+    "B_git_export_member_map": {
+      "bytes": 1270207,
+      "sha256": "c7dd62f22f0fa5c6bd3312ecbec70e3d64be934345173ee5659c3eacf668214c"
+    }
+  }
+}
