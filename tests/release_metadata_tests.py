@@ -10,6 +10,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import tarfile
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -37,6 +38,74 @@ source_builder = load_tool("metadata_source_builder", "docs/release/build_source
 
 
 class ReleaseMetadataTests(unittest.TestCase):
+    def minimal_source_archive_fixture(self, project):
+        directories = {"src", "tests", "scripts", "packaging", "docs", "assets", "models", "vendor", ".github"}
+        for item in source_builder.SOURCE_ITEMS:
+            path = project / item
+            if item in directories:
+                path = path / "source-archive-fixture.txt"
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(("synthetic source fixture: " + item + "\n").encode())
+        requirements = {}
+        for source in sorted(PROJECT.glob("requirements*.txt")):
+            if source.is_file() and not source.is_symlink():
+                requirements[source.name] = source.read_bytes()
+                (project / source.name).write_bytes(requirements[source.name])
+        return requirements
+
+    def write_minimal_source_archive(self, project, archive):
+        # The fallback deliberately runs the old generator's real static path
+        # in the before/after regression; missing-helper AttributeError must
+        # never stand in for proving that its actual tar omitted a lock.
+        items = (source_builder.application_source_items(project)
+                 if hasattr(source_builder, "application_source_items") else source_builder.SOURCE_ITEMS)
+        source_builder.make_archive(archive, source_builder.file_list(project, items), "vision-studio-fixture", False)
+        with tarfile.open(archive, "r:xz") as stream:
+            return [(member.name.removeprefix("vision-studio-fixture/"), stream.extractfile(member).read())
+                    for member in stream if member.isfile()]
+
+    def test_application_archive_covers_all_current_root_requirements_byte_for_byte(self):
+        with tempfile.TemporaryDirectory(prefix="vision-source-lock-coverage-") as directory:
+            project = Path(directory)
+            expected = self.minimal_source_archive_fixture(project)
+            self.assertIn("requirements-gpu-windows.lock.txt", expected)
+            archived = dict(self.write_minimal_source_archive(project, project / "application.tar.xz"))
+            actual = {name: data for name, data in archived.items()
+                      if Path(name).parent == Path(".") and name.startswith("requirements") and name.endswith(".txt")}
+            self.assertEqual(set(actual), set(expected))
+            for name, data in expected.items():
+                self.assertEqual(actual[name], data, name)
+
+    def test_application_archive_appends_future_root_locks_without_reordering_existing_members(self):
+        with tempfile.TemporaryDirectory(prefix="vision-source-future-lock-") as directory:
+            project = Path(directory)
+            self.minimal_source_archive_fixture(project)
+            future = "requirements-future-backend.lock.txt"
+            (project / future).write_bytes(b"future-backend==1.0 --hash=sha256:synthetic-unit-fixture\n")
+            (project / "requirements.txt").write_bytes(b"synthetic-future-base-manifest==1.0\n")
+            original = list(source_builder.file_list(project, source_builder.SOURCE_ITEMS))
+            expected_names = [name for _, name in original]
+            additional = sorted(path.name for path in project.glob("requirements*.txt")
+                                if path.is_file() and not path.is_symlink() and path.name not in source_builder.SOURCE_ITEMS)
+            archived = self.write_minimal_source_archive(project, project / "application.tar.xz")
+            self.assertIn(future, [name for name, _ in archived])
+            self.assertEqual([name for name, _ in archived], expected_names + additional)
+            self.assertEqual(len(archived), len({name for name, _ in archived}))
+            for name, data in archived:
+                self.assertEqual(data, (project / name).read_bytes())
+
+    def test_discovered_requirements_exclude_directories_symlinks_and_other_names(self):
+        with tempfile.TemporaryDirectory(prefix="vision-source-lock-selection-") as directory:
+            project = Path(directory)
+            self.minimal_source_archive_fixture(project)
+            (project / "requirements-directory.lock.txt").mkdir()
+            (project / "requirements-link.lock.txt").symlink_to(project / "requirements-pt.lock.txt")
+            (project / "not-requirements.lock.txt").write_bytes(b"outside root-manifest pattern\n")
+            archived = dict(self.write_minimal_source_archive(project, project / "application.tar.xz"))
+            self.assertNotIn("requirements-directory.lock.txt", archived)
+            self.assertNotIn("requirements-link.lock.txt", archived)
+            self.assertNotIn("not-requirements.lock.txt", archived)
+
     def test_numeric_beta_precedence_before_final_and_stable_order_unchanged(self):
         values = ["2.0.0", "2.0.0-beta.10", "1.9.9", "2.0.0-beta.2", "2.0.0-beta.1"]
         self.assertEqual(sorted(values, key=metadata.version_key), [

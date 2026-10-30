@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "version": "2.10.1",
+  "success": false,
+  "errors": [
+    "VerificationError: Application archive omits CTest frozen production inputs: requirements-gpu-windows.lock.txt"
+  ],
+  "scope": "Read-only full source member hashing, original upstream provenance, embedded source and final DEB/staging ELF identity; no application inference executed",
+  "clean_export": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/clean-source",
+  "release_directory": "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.10.1",
+  "stage_directory": "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.10.1-1",
+  "generated_at_utc": "2026-10-29T13:20:44.991843+00:00",
+  "command": [
+    "/home/misaka/miniconda3/bin/python3",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/qa-tools/verify_source_bundle.py",
+    "--project",
+    "/home/misaka/.codex/worktrees/ef0b/yolo",
+    "--clean-source",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/clean-source",
+    "--release-dir",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/releases/2.10.1",
+    "--stage",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/deb-stage/2.10.1-1",
+    "--ctest-report",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/qa-final/ctest-qa.json",
+    "--report",
+    "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/source-bundle-coverage-fix/actual-bad-archive-rejected.json"
+  ],
+  "verifier_sha256": "f5e1728e01c5fbd24417d41993394d0e0b7b18eb3365caa9c222f75ade2157f0",
+  "commands": [],
+  "details": {},
+  "ctest_frozen_input_evidence": {
+    "report": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/qa-final/ctest-qa.json",
+    "sha256": "6ebd9a0505352bb6b5bb09be487820385b8386e8bf7e2da40cbd6f2326b96a90",
+    "before_run_snapshot": "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/qa-final/production-inputs-before.json",
+    "before_run_snapshot_sha256": "e8a179d09e4d3b9a32e240466505a13bcfc8c1082049c99719a3bb2b13e0c192"
+  },
+  "elapsed_seconds": 4.182
+}

@@ -96,6 +96,15 @@ def inventory(project, release, version):
     return names
 
 
+def application_source_items(root):
+    # Keep every established item in its original position. Root dependency
+    # manifests are production inputs too; append new regular manifests so a
+    # platform/backend lock cannot silently be left out of corresponding source.
+    additional = sorted(path.name for path in root.glob("requirements*.txt")
+                        if path.is_file() and not path.is_symlink() and path.name not in SOURCE_ITEMS)
+    return SOURCE_ITEMS + tuple(additional)
+
+
 def file_list(root, items):
     for item in items:
         path = root / item
@@ -159,7 +168,7 @@ def main():
         print("Verified source inventory and release dependency lock written")
         return
     application = release / f"vision-studio-{version}-sources.tar.xz"
-    make_archive(application, file_list(project, SOURCE_ITEMS), f"vision-studio-{version}", args.overwrite)
+    make_archive(application, file_list(project, application_source_items(project)), f"vision-studio-{version}", args.overwrite)
     split_files = [application, release / "SOURCE-INVENTORY.json",
                    release / "sources/DOWNLOAD-PROVENANCE.json"]
     split_files += [release / "sources" / name for name in names]

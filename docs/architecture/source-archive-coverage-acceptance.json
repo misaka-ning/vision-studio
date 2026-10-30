@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "stage": "corresponding-source-completeness-supplement",
+  "application_version": "2.10.1",
+  "base_source_commit": "3718d9cdb388b485ac5f716db712b19d173ccc50",
+  "scope": "Generator repair and actual rejected source artifact; new A3 production/package acceptance pending.",
+  "actual_current_tree_metadata_tests": {
+    "passed": 24,
+    "failed": 0,
+    "skipped": 0
+  },
+  "actual_old_generator_regression": {
+    "tests": 2,
+    "failed_as_expected": 2,
+    "reason": "Actual small tar omitted current Windows lock and additional future root manifests."
+  },
+  "actual_independent_source_failure": {
+    "execution_completed": false,
+    "cmake_build_or_smoke_executed": false,
+    "missing": [
+      "requirements-gpu-windows.lock.txt"
+    ],
+    "changed_production_inputs": []
+  },
+  "actual_replacement_verifier_on_rejected_archive": {
+    "exit_code": 1,
+    "error": "Application archive omits CTest frozen production inputs: requirements-gpu-windows.lock.txt"
+  },
+  "prior_candidate_results_not_final_acceptance": {
+    "source": "A2",
+    "suites": 44,
+    "qt_passed": 1235,
+    "python_passed": 163,
+    "failed": 0,
+    "skipped": 0,
+    "deb_smoke_and_isolated_install_passed": true,
+    "cpu_cuda_dataset_matrix_passed": true,
+    "source_completeness_passed": false,
+    "released": false
+  },
+  "change_scope": "Append missing regular non-symlink root requirements*.txt in deterministic order. Existing source members, upstream/license/inventory rules and C++ application unchanged.",
+  "production_changed_files": [
+    "docs/release/build_source_archive.py",
+    "tests/release_metadata_tests.py"
+  ],
+  "raw_evidence": "../releases/evidence/2.10.1/stages/source-archive-coverage",
+  "public_raw_files": {
+    "generator/proposal-qa.json": {
+      "bytes": 43108,
+      "sha256": "bfc3ac7fd59e5dbbd3374ea1dd67cfac7e124b623c1880ba1ee6a0211dc20c21"
+    },
+    "generator/before-execution.json": {
+      "bytes": 563,
+      "sha256": "1f18a4db678989e91dfd254fe8464e0714a1219d97fda2b59097007e3e8cd2be"
+    },
+    "generator/generator-before-regression.log": {
+      "bytes": 18649,
+      "sha256": "1451db40931e59b51034a3ba1cabc77caf7ef4f4e5a5d29d4d48ab0b30874646"
+    },
+    "generator/generator-before-final-regression.log": {
+      "bytes": 2362,
+      "sha256": "e17dde39d8dec9d69d76757cb755d943cc7f36286255d706fdff2407562d6cdb"
+    },
+    "generator/generator-after-release-metadata.log": {
+      "bytes": 2855,
+      "sha256": "2007ab2b83d506dd022f3aa6d69ead71e49f3d36d5a32c3891056bb8423d00c6"
+    },
+    "generator/generator-after-final-release-metadata.log": {
+      "bytes": 2855,
+      "sha256": "2007ab2b83d506dd022f3aa6d69ead71e49f3d36d5a32c3891056bb8423d00c6"
+    },
+    "generator/root-applied-tests.log": {
+      "bytes": 2855,
+      "sha256": "9409466e34ab03417d6bee804d1bc4f8be24ba592737c2553eb2554526cdf801"
+    },
+    "generator/root-applied-tests.json": {
+      "bytes": 509,
+      "sha256": "349d5d6da4c69d0c19eea17a70fccdce885217ebc0a9811c7a2ac947243cc93a"
+    },
+    "generator/build_source_archive-before.py": {
+      "bytes": 10379,
+      "sha256": "a2ed58ab830cab6169dcd7b2eaa2f30bd3c694519cc8bc727a5692298866fa91"
+    },
+    "verifier/actual-bad-archive-rejected.json": {
+      "bytes": 2035,
+      "sha256": "78bd6245ab86f666e52f57b1cd1842911ad76d92d34265deb45d9439d7e5d5fe"
+    },
+    "verifier/actual-bad-archive-rejected.log": {
+      "bytes": 426,
+      "sha256": "31506dbb36db80f40d8d3249d7aed754d54a3cc9f9c52675c55483799a3e7e83"
+    },
+    "verifier/failure-execution-receipt.json": {
+      "bytes": 1159,
+      "sha256": "c69c7d97b4f59a8daf2314c1ce8f35d2963f4b625f63566a58f94442689e7eab"
+    }
+  },
+  "retained_local_original_commitments": {
+    "relocation-receipt.json": {
+      "bytes": 12584548,
+      "sha256": "523dc2297dfba760c2e71f82c5c26115eea6ccc959a3712ac71d81208caa61da"
+    },
+    "source-rebuild/execution-receipt.json": {
+      "bytes": 1170605,
+      "sha256": "99e35b8c0b101a2f5578d9eea5edf3e27b0e8759d62c72eb3ed15768b7232e4a"
+    },
+    "release-originals/source-bundle-qa.json": {
+      "bytes": 3041189,
+      "sha256": "80f8c18b8020ccc49f17fe93b5ab1c3296b3cb2e2756b360f6d811db0a0e90ad"
+    },
+    "qa-final/ctest-qa.json": {
+      "bytes": 687078,
+      "sha256": "6ebd9a0505352bb6b5bb09be487820385b8386e8bf7e2da40cbd6f2326b96a90"
+    }
+  },
+  "required_followup": "Freeze A3, fresh production/full44/package gates and actual complete-source independent rebuild; do not reuse A2 original source-bundle success as completeness proof."
+}

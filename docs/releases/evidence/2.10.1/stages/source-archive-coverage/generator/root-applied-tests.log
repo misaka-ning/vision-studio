@@ -1,0 +1,29 @@
+test_270_keeps_legacy_fourth_empty_view_contract (model_display_audit_tests.ModelDisplayAuditTests) ... ok
+test_missing_availability_visibility_or_original_identity_is_rejected (model_display_audit_tests.ModelDisplayAuditTests) ... ok
+test_onnx_without_architecture_has_three_actual_views (model_display_audit_tests.ModelDisplayAuditTests) ... ok
+test_pre_yaml_version_keeps_three_view_contract (model_display_audit_tests.ModelDisplayAuditTests) ... ok
+test_process_failure_and_stale_source_hash_rejected (model_display_audit_tests.ModelDisplayAuditTests) ... ok
+test_supported_pt_requires_visible_mode_and_real_export_bytes (model_display_audit_tests.ModelDisplayAuditTests) ... ok
+test_unavailable_generic_checkpoint_is_allowed_but_bundled_pt_is_not (model_display_audit_tests.ModelDisplayAuditTests) ... ok
+test_unavailable_mode_cannot_be_counted_as_success_or_failure (model_display_audit_tests.ModelDisplayAuditTests) ... ok
+test_unavailable_mode_must_be_hidden (model_display_audit_tests.ModelDisplayAuditTests) ... ok
+test_unavailable_yaml_screenshot_is_rejected (model_display_audit_tests.ModelDisplayAuditTests) ... ok
+test_application_archive_appends_future_root_locks_without_reordering_existing_members (release_metadata_tests.ReleaseMetadataTests) ... ok
+test_application_archive_covers_all_current_root_requirements_byte_for_byte (release_metadata_tests.ReleaseMetadataTests) ... ok
+test_build_default_maps_source_beta_and_retains_semver_directory (release_metadata_tests.ReleaseMetadataTests) ... ok
+test_build_refuses_debian_and_source_version_mismatch_before_staging (release_metadata_tests.ReleaseMetadataTests) ... ok
+test_cmake_full_version_and_frozen_stable_tags (release_metadata_tests.ReleaseMetadataTests) ... ok
+test_cmake_refuses_mismatch_duplicate_or_malformed_full_version (release_metadata_tests.ReleaseMetadataTests) ... ok
+test_debian_roundtrip_and_revision (release_metadata_tests.ReleaseMetadataTests) ... ok
+test_discovered_requirements_exclude_directories_symlinks_and_other_names (release_metadata_tests.ReleaseMetadataTests) ... ok
+test_gpu_package_metadata_preserves_full_beta_version (release_metadata_tests.ReleaseMetadataTests) ... ok
+test_numeric_beta_precedence_before_final_and_stable_order_unchanged (release_metadata_tests.ReleaseMetadataTests) ... ok
+test_real_dpkg_orders_beta_numerically_and_before_final (release_metadata_tests.ReleaseMetadataTests) ... ok
+test_rejects_debian_format_that_could_sort_beta_after_final (release_metadata_tests.ReleaseMetadataTests) ... ok
+test_rejects_noncanonical_and_unsupported_application_versions (release_metadata_tests.ReleaseMetadataTests) ... ok
+test_source_inventory_records_beta_application_and_debian_versions (release_metadata_tests.ReleaseMetadataTests) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.035s
+
+OK

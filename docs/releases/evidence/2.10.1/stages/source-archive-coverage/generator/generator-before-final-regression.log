@@ -1,0 +1,24 @@
+test_application_archive_covers_all_current_root_requirements_byte_for_byte (release_metadata_tests.ReleaseMetadataTests) ... FAIL
+test_application_archive_appends_future_root_locks_without_reordering_existing_members (release_metadata_tests.ReleaseMetadataTests) ... FAIL
+
+======================================================================
+FAIL: test_application_archive_covers_all_current_root_requirements_byte_for_byte (release_metadata_tests.ReleaseMetadataTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/archive-coverage-proposal/tests/release_metadata_tests.py", line 75, in test_application_archive_covers_all_current_root_requirements_byte_for_byte
+    self.assertEqual(set(actual), set(expected))
+AssertionError: Items in the second set but not the first:
+'requirements-gpu-windows.lock.txt'
+
+======================================================================
+FAIL: test_application_archive_appends_future_root_locks_without_reordering_existing_members (release_metadata_tests.ReleaseMetadataTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/misaka/.codex/worktrees/ef0b/yolo/output/v2.10.1/archive-coverage-proposal/tests/release_metadata_tests.py", line 91, in test_application_archive_appends_future_root_locks_without_reordering_existing_members
+    self.assertIn(future, [name for name, _ in archived])
+AssertionError: 'requirements-future-backend.lock.txt' not found in ['src/source-archive-fixture.txt', 'tests/source-archive-fixture.txt', 'scripts/source-archive-fixture.txt', 'packaging/source-archive-fixture.txt', 'docs/source-archive-fixture.txt', 'assets/source-archive-fixture.txt', 'models/source-archive-fixture.txt', 'vendor/source-archive-fixture.txt', 'CMakeLists.txt', 'resources.qrc', 'run.sh', 'VisionStudio.desktop', 'README.md', 'LICENSE', 'requirements-pt.txt', 'requirements-pt.lock.txt', 'requirements-gpu.txt', 'requirements-gpu.lock.txt', 'runtime-info.json', '.clang-format', '.gitignore', '.gitattributes', '.github/source-archive-fixture.txt', 'AGENTS.md', 'CHANGELOG.md', 'CONTRIBUTING.md']
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.017s
+
+FAILED (failures=2)

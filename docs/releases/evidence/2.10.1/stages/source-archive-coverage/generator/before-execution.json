@@ -1,0 +1,14 @@
+{
+  "base_commit": "3718d9cdb388b485ac5f716db712b19d173ccc50",
+  "baseline_generator_sha256": "a2ed58ab830cab6169dcd7b2eaa2f30bd3c694519cc8bc727a5692298866fa91",
+  "root_inputs_before": {
+    "docs/release/build_source_archive.py": "a2ed58ab830cab6169dcd7b2eaa2f30bd3c694519cc8bc727a5692298866fa91",
+    "tests/release_metadata_tests.py": "228284e68573f6074b98983197c308898327ed5f5d89594a2b7ff7e2897ae3ba"
+  },
+  "baseline_execution": {
+    "exit_code": 1,
+    "expected_failure": true,
+    "tests_selected": 2,
+    "log": "generator-before-regression.log"
+  }
+}
