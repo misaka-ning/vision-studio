@@ -1,0 +1,581 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.10.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "failed": 0,
+  "blacklisted": 0,
+  "qt_tests_passed": 1235,
+  "effective_suite_count": 44,
+  "python_tests_passed": 163,
+  "skipped": 0,
+  "suite_outcomes": [
+    {
+      "name": "vision-core-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 39,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-inference-delivery-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-recording-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 15,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-pt-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 51,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-gpu-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 11,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-ui-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 60,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-batch-responsiveness-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-scope-filter-ui-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 38,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-modelviewer-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 27,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-conversion-ui-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 8,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-conversion-inference-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 14,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-model-conversion-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 24,
+      "qt_totals": []
+    },
+    {
+      "name": "vision-netron-server-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 11,
+      "qt_totals": []
+    },
+    {
+      "name": "vision-gpu-runtime-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 21,
+      "qt_totals": []
+    },
+    {
+      "name": "vision-evaluation-worker-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 21,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-evaluation-panel-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 34,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-evaluation-python-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 50,
+      "qt_totals": []
+    },
+    {
+      "name": "vision-evaluation-integration-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 41,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-dataset-session-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 19,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-dataset-session-ui-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 20,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-model-yaml-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 21,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-input-drop-ui-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 22,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-evaluation-reporting-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 11,
+      "qt_totals": []
+    },
+    {
+      "name": "vision-evaluation-snapshot-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 23,
+      "qt_totals": []
+    },
+    {
+      "name": "vision-pt-batch-python-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 10,
+      "qt_totals": []
+    },
+    {
+      "name": "vision-evaluation-import-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 13,
+      "qt_totals": []
+    },
+    {
+      "name": "vision-app-services-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 18,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-gpu-environment-service-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 13,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-model-session-controller-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 15,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-detection-controller-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 12,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-input-session-controller-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 19,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-evaluation-controller-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 18,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-operation-coordinator-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 533,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-recording-controller-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 13,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-workbench-configuration-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 40,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-image-result-store-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 15,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-result-delivery-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 11,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-workbench-page-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 9,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-workspace-pages-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 18,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-simple-pages-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 6,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-component-shutdown-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 10,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-runtime-setup-shutdown-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 12,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-workspace-drop-filter-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 9,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    },
+    {
+      "name": "vision-window-shutdown-tests",
+      "success": true,
+      "skipped": false,
+      "python_tests": 0,
+      "qt_totals": [
+        {
+          "passed": 11,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ]
+    }
+  ],
+  "original_source_fingerprint_canonical_sha256": "50b156d15d4481d6c65e7750d910d6e97ad0c804b4459107d5dd3c3678497192",
+  "original_report": {
+    "bytes": 687077,
+    "sha256": "0850ec49c955a985724d3e673b972eafee0cbc4a829f161d74180a4a8ec75cd5"
+  }
+}

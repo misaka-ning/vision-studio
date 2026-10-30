@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "version": "2.10.1",
+  "archive_input_commit": "0f874c9b4028c29f11d76dda581e6532db77ec10",
+  "source_role": "Actual independent complete-source application rebuild CPU smoke screenshot",
+  "screenshot": {
+    "file": "rebuilt-workbench.png",
+    "bytes": 430145,
+    "sha256": "80e89ec15e68ab33442cc05b4f0feb4a324c4c0e7216714c422d643880eec1c3"
+  },
+  "original_smoke_report_sha256": "633575a7c5844909b88ce9dbaeb026e89a8a676263958233fa49ee9e55220f76",
+  "human_visual_review_completed": true,
+  "observations": {
+    "fluent_dark_layout_preserved": true,
+    "annotation_and_target_table_visible": true,
+    "cpu_opencv_dnn_result_label_visible": true,
+    "no_unintended_overlap_in_this_view": true
+  },
+  "scope_limits": [
+    "One actual public bus-image view, not exhaustive visual or physical-camera testing",
+    "Displayed timing is one observation, not a performance claim",
+    "No screenshot editing or synthetic application rendering"
+  ],
+  "final_deb_evaluation_layout": {
+    "file": "packaged-evaluation-layout.png",
+    "bytes": 192112,
+    "sha256": "a97235cb42b7c2ea1bd0a82d5453c0cce540931220d1d792ed0f478413502a89",
+    "source_role": "Actual final read-only DEB public COCO8 Val CUDA evaluation layout",
+    "original_package_layout_report_sha256": "6af371a0984399bb5b1fffc3ec759fbe8b262f6eb7a5d386d90cb886a2c2ff80",
+    "human_visual_review_completed": true,
+    "chart_table_recommendation_and_controls_readable": true,
+    "metrics_are_workflow_example_not_model_accuracy_claim": true
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.10.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "disabled_actual_process_matches_preference_without_inference_or_data_writes": true,
+      "original_genuine_session_case_unchanged": true,
+      "default_missing_key_actual_process_matches_preference_without_inference_or_data_writes": true,
+      "original_public_inputs_unchanged": true,
+      "enabled_actual_process_matches_preference_without_inference_or_data_writes": true,
+      "actual_same_version_prerequisites_final_deb_elf_code_and_readonly": true
+    }
+  },
+  "original_report": {
+    "bytes": 29374,
+    "sha256": "afc7724bc722fada0670332a820204ee6a86e559b24ef15868ce6dc88c25ab0c"
+  }
+}

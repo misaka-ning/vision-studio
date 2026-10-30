@@ -1,0 +1,28 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.10.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "nativeDropAcceptsDatasetAndVideoSources": true,
+      "currentAndTailOfTemporaryItemDoNotStartEvaluation": true,
+      "runningDetectionRejectsDropWithoutReplacingItsQueue": true,
+      "final_readonly_deb_twelve_stage_actual_drop_workflow": true,
+      "looseImagesKeepMimeOrderAndOnlyLiveInTheQueue": true,
+      "largeTemporaryDropStaysResponsiveAndDiscardsStaleImageReplies": true,
+      "datasetConflictHonorsReplaceAppendAndCancel": true,
+      "evaluationRangesOnlyIncludeOriginalLabeledSamples": true,
+      "appendedTemporaryImagesPreserveDatasetCacheTruthAndSelectedExports": true,
+      "nativePreviewChildDropCancelsPendingAutomaticSessionRestore": true,
+      "stoppingPartialTemporaryAppendRestoresOriginalQueueAndSession": true,
+      "invalidMixedDropDoesNotPartiallyReplaceValidInput": true
+    }
+  },
+  "original_report": {
+    "bytes": 5817,
+    "sha256": "c39a0030b7313a8e7786bdce1dfd2d932c0cb8dcd254163f19a3cf245bff6c13"
+  }
+}

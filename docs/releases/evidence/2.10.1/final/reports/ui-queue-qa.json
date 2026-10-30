@@ -1,0 +1,23 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.10.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "unified_directory_and_yaml_picker": true,
+      "full_workbench_pages_preserve_configuration": true,
+      "invalid_source_inline": true,
+      "complete_long_error_accessible": true,
+      "popup_dismissal_geometry_busy_lock": true,
+      "lazy_queue_heartbeat_pixels_stale_cancel": true,
+      "popup_workbench_geometry_all_four_layout_rows": true
+    }
+  },
+  "original_report": {
+    "bytes": 3419,
+    "sha256": "92a5610583d7efdb8aac708f92210b10a4b9e8872679a8b6c3f6efadeaf8b0bc"
+  }
+}

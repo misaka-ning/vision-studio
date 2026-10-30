@@ -1,0 +1,22 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.10.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "exact_rebuilt_application_version": true,
+      "actual_complete_attachment_application_source": true,
+      "extracted_source_members_unchanged": true,
+      "actual_rebuilt_png_json_csv": true,
+      "real_rebuilt_onnx_cpu_inference": true,
+      "fresh_independent_release_build": true
+    }
+  },
+  "original_report": {
+    "bytes": 590837,
+    "sha256": "01e03d98f2979d033a301f8b7234efb028fe82ab90b983ba9fd1990704614bf8"
+  }
+}

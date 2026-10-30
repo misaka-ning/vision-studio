@@ -1,0 +1,55 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.10.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "python_metrics_reporting_snapshot_and_batch_all_passed": true,
+      "offline_migrated_snapshots_match_all_91_fresh_points": true,
+      "native_batch_one_three_and_tail_equivalent": true,
+      "nine_charts_three_formats_reopened_and_hashed": true,
+      "cpu_cuda_four_actual_cases_each": true,
+      "native_pt_batch_tail_stop_and_adoption": true,
+      "advanced_csv_latex_match_saved_metrics": true,
+      "final_deb_elf_helpers_readonly_and_frozen": true,
+      "source_reports_and_review_bytes_unchanged": true,
+      "native_qt_diagnostics_scene_report_and_reanalysis": true,
+      "snapshot_three_qt_reserved_files_with_helper_log": true,
+      "reviewed_and_unknown_scene_scopes_preserved": true
+    },
+    "packaged_external_import_checks": {
+      "frozen_clean_source_helpers_match": true,
+      "final_package_application_unchanged": true,
+      "rebuilt_metrics_match_source_snapshot": true,
+      "source_runtime_arguments_nms_floor_maxdet_preserved": true,
+      "source_snapshot_matches_prior_verified_import": true,
+      "unknown_inference_fields_not_invented": true,
+      "qt_reserved_three_files_accepted": true,
+      "source_scope_counts_preserved": true,
+      "model_dataset_original_ids_preserved": true,
+      "packaged_python_helper_actual_process": true,
+      "apply_profile_blocked_at_report_and_request": true,
+      "expected_artifacts_valid": true,
+      "source_four_files_unchanged": true,
+      "final_deb_elf_helpers_runtime_readonly_binding": true,
+      "all_sample_json_sha_and_manifest_image_hashes": true,
+      "source_raw_copies_match": true
+    },
+    "external_import_checks": {
+      "qt_unknown_metadata_and_export_remain_unknown": true,
+      "qt_model_identity_preserves_adopted_profile": true,
+      "qt_import_without_model_blocks_unknown_profile_adoption": true,
+      "qt_failed_import_restores_review_and_preview": true,
+      "private_historical_readonly_receipt": true,
+      "qt_original_report_export_immutable": true,
+      "original_thirteen_python_regressions_visible": true
+    }
+  },
+  "original_report": {
+    "bytes": 44329,
+    "sha256": "dcdb0d90ac823bec476c7e87e34b41056f2ba4b6acc91d5fb5226ce8b589c416"
+  }
+}

@@ -8,9 +8,9 @@
 
 [下载发行版](https://github.com/misaka-ning/vision-studio/releases) · [更新日志](CHANGELOG.md) · [使用指南](docs/使用指南.md) · [报告问题](https://github.com/misaka-ning/vision-studio/issues)
 
-当前工程版本：**2.10.1（发行验收进行中）**。本次将模型、输入、检测、评估、结果保存、录像与 GPU 环境的状态和生命周期从 MainWindow 分离到独立控制器与服务，页面负责界面展示和操作意图。沿用 C++17／Qt 6.8.3、Fluent 深色界面、既有操作流程和 CPU／NVIDIA GPU 后端，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。代码边界与关闭流程见[应用架构](docs/architecture/应用架构.md)。
+当前工程版本：**2.10.1（本地最终验收完成，待发布）**。本次将模型、输入、检测、评估、结果保存、录像与 GPU 环境的状态和生命周期从 MainWindow 分离到独立控制器与服务，页面负责界面展示和操作意图。沿用 C++17／Qt 6.8.3、Fluent 深色界面、既有操作流程和 CPU／NVIDIA GPU 后端，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。代码边界与关闭流程见[应用架构](docs/architecture/应用架构.md)。
 
-2.10.1 的最终构建、安装包、完整对应源码和远端发行核验仍待完成，状态见[本版发行说明](docs/releases/2.10.1.md)；开发回归不替代最终包验收，未执行的检查不计为通过。当前已发布的 Linux 版本仍为 **2.10.0**，见[发行说明](docs/releases/2.10.0.md)和[验收证据](docs/releases/evidence/2.10.0/README.md)。Windows 已发布版本为 **2.9.1**，见[双安装包说明](docs/releases/2.9.1-windows.md)；本次不据此声明 Windows 2.10.1 已验收或已发布。下方历史截图标明来源版本。
+2.10.1 已完成 A3 本地最终验收：44 套实际回归、1235 项 Qt 和 163 项 Python，零失败／跳过／blacklist，最终安装包、完整对应源码及独立应用重建的 17 项门禁通过；另有 4 套直接执行的 54 项 Qt 补充原始日志，单独记录、不累加正式回归。发行标签、附件发布与远端核验尚待完成，见[本版发行说明](docs/releases/2.10.1.md)和[实际证据](docs/releases/evidence/2.10.1/README.md)。当前已发布的 Linux 版本仍为 **2.10.0**，见[发行说明](docs/releases/2.10.0.md)和[验收证据](docs/releases/evidence/2.10.0/README.md)。Windows 已发布版本为 **2.9.1**，见[双安装包说明](docs/releases/2.9.1-windows.md)；本次不据此声明 Windows 2.10.1 已验收或已发布。下方历史截图标明来源版本。
 
 ![Vision Studio 2.5.0 图像预览：真实 ONNX CPU 检测与 GT 对照](docs/screenshots/workbench-2.5.0.png)
 
