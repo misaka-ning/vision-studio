@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "version": "2.10.1",
+  "observed_at_utc": "2026-10-30T03:06:34.679080+00:00",
+  "tag_name": "v2.10.1",
+  "draft": false,
+  "prerelease": false,
+  "published_at": "2026-10-30T03:06:23Z",
+  "html_url": "https://github.com/misaka-ning/vision-studio/releases/tag/v2.10.1",
+  "manual_asset_count": 3,
+  "assets": [
+    {
+      "id": 690742970,
+      "name": "SHA256SUMS",
+      "state": "uploaded",
+      "size": 209,
+      "digest": "sha256:19524f4d4efcab8f9a183be09fbb74d7523ebba29db037b6fa82266abf241618"
+    },
+    {
+      "id": 690731561,
+      "name": "vision-studio-2.10.1-complete-source.tar.xz",
+      "state": "uploaded",
+      "size": 929398024,
+      "digest": "sha256:9c2d10fd1563bb7029922c52a6e89365870cae5de8f10c0ee893f076ad8df491"
+    },
+    {
+      "id": 690710700,
+      "name": "vision-studio_2.10.1-1_amd64.deb",
+      "state": "uploaded",
+      "size": 387178888,
+      "digest": "sha256:ad6bbcf79ae4a059c64cd4d89fea0d54f663781029d2e8199691f6ca7c8d894c"
+    }
+  ],
+  "original_api_response": {
+    "bytes": 12114,
+    "sha256": "c1f8fe2ffff2f5d6c70755bf31ed53d575598cfcb57f991bd3efabbd09c55dae"
+  }
+}

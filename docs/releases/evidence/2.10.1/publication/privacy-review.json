@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "scope": "Actual publication receipt privacy review",
+  "raw_reports_modified": false,
+  "exact_public_url_exception": "https://github.com/misaka-ning/vision-studio/releases/tag/v2.10.1",
+  "reason": "Generic drive-path detector also matches the scheme text in a public HTTPS URL; only this exact owned release URL verified against actual publish, verify and Latest receipts is exempted",
+  "files_containing_exact_url": [
+    "github-publish.json",
+    "github-verify.json",
+    "latest.json"
+  ],
+  "all_other_strings_pass_original_privacy_rule": true,
+  "credentials_or_private_host_paths_published": false
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "version": "2.10.1",
+  "scope": "Strict allowlist projection and exact public relative-path review; no privacy regex changed",
+  "host_or_secret_pattern_sha256": "5daf6bfcf4ec96e72fd1bcbf0377a41c455e5a028f220b771afc2c8891d3c2b5",
+  "non_map_public_files_pattern_matches": 0,
+  "full_map_pattern_matches": 1,
+  "exact_public_relative_path_exception_count": 1,
+  "exception_path_utf8_sha256": "3b5b0af6eb24e5aa94a4db2a48b8d01dbd7946a1e9e836fff58443306d0ede15",
+  "exception_is_same_regular_Git_blob_in_A3_and_B": true,
+  "exception_blob_sha256": "162413c61e0982abe89a06bf7a02ec760dc49a7364d838bd9f01daebb5b95954",
+  "exception_reason": "One already-published third-party license relative path contains a package directory named tmp; this is not an absolute host temporary directory",
+  "all_full_map_paths_are_safe_relative": true,
+  "no_private_original_names_projected": true
+}

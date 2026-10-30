@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "version": "2.10.1",
+  "original_large_upload_attempts": [
+    {
+      "role": "github-publish.stderr.log",
+      "outcome": "GitHub HTTP408 before publication",
+      "bytes": 256,
+      "sha256": "c3d984f05903e0c47da5cabcb87e087356280bd32920fa519f2d9263643d4f2a"
+    },
+    {
+      "role": "github-publish-attempt3.stderr.log",
+      "outcome": "GitHub HTTP408 before publication",
+      "bytes": 256,
+      "sha256": "c3d984f05903e0c47da5cabcb87e087356280bd32920fa519f2d9263643d4f2a"
+    }
+  ],
+  "successful_source_upload": {
+    "official_https_host": "uploads.github.com",
+    "http_status": 201,
+    "name": "vision-studio-2.10.1-complete-source.tar.xz",
+    "state": "uploaded",
+    "bytes": 929398024,
+    "digest": "sha256:9c2d10fd1563bb7029922c52a6e89365870cae5de8f10c0ee893f076ad8df491",
+    "response_original": {
+      "bytes": 1928,
+      "sha256": "410e818adf9484d34320e300fec8c0fd67ca92e465baafa83849afc3278bfe3f"
+    }
+  },
+  "official_repository_tool_finalized_release": true,
+  "failed_starter_placeholders_removed_only_while_draft": true,
+  "verified_deb_preserved": true,
+  "published_assets_overwritten": false,
+  "frozen_local_asset_bytes_changed": false,
+  "credentials_published_or_saved_in_evidence": false
+}

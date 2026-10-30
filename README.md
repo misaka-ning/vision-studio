@@ -8,9 +8,9 @@
 
 [下载发行版](https://github.com/misaka-ning/vision-studio/releases) · [更新日志](CHANGELOG.md) · [使用指南](docs/使用指南.md) · [报告问题](https://github.com/misaka-ning/vision-studio/issues)
 
-当前工程版本：**2.10.1（本地最终验收完成，待发布）**。本次将模型、输入、检测、评估、结果保存、录像与 GPU 环境的状态和生命周期从 MainWindow 分离到独立控制器与服务，页面负责界面展示和操作意图。沿用 C++17／Qt 6.8.3、Fluent 深色界面、既有操作流程和 CPU／NVIDIA GPU 后端，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。代码边界与关闭流程见[应用架构](docs/architecture/应用架构.md)。
+当前 Linux 正式版：**2.10.1**。本次将模型、输入、检测、评估、结果保存、录像与 GPU 环境的状态和生命周期从 MainWindow 分离到独立控制器与服务，页面负责界面展示和操作意图。沿用 C++17／Qt 6.8.3、Fluent 深色界面、既有操作流程和 CPU／NVIDIA GPU 后端，无新增运行依赖。应用代码采用 **AGPL-3.0-only**。代码边界与关闭流程见[应用架构](docs/architecture/应用架构.md)。
 
-2.10.1 已完成 A3 本地最终验收：44 套实际回归、1235 项 Qt 和 163 项 Python，零失败／跳过／blacklist，最终安装包、完整对应源码及独立应用重建的 17 项门禁通过；另有 4 套直接执行的 54 项 Qt 补充原始日志，单独记录、不累加正式回归。发行标签、附件发布与远端核验尚待完成，见[本版发行说明](docs/releases/2.10.1.md)和[实际证据](docs/releases/evidence/2.10.1/README.md)。当前已发布的 Linux 版本仍为 **2.10.0**，见[发行说明](docs/releases/2.10.0.md)和[验收证据](docs/releases/evidence/2.10.0/README.md)。Windows 已发布版本为 **2.9.1**，见[双安装包说明](docs/releases/2.9.1-windows.md)；本次不据此声明 Windows 2.10.1 已验收或已发布。下方历史截图标明来源版本。
+2.10.1 已正式发布并完成远端标签、三个附件 SHA256 与 Latest 核验。单次完整回归 44 套，1235 项 Qt、163 项 Python，零失败／跳过；最终包 17 项门禁及完整对应源码独立重建通过。详情见[发行说明](docs/releases/2.10.1.md)和[实际验收与发布证据](docs/releases/evidence/2.10.1/README.md)。Windows 已发布版本仍为 **2.9.1**，见[双安装包说明](docs/releases/2.9.1-windows.md)；Windows 2.10.1 和物理摄像头未验收。下方历史截图保留来源版本标注。
 
 ![Vision Studio 2.5.0 图像预览：真实 ONNX CPU 检测与 GT 对照](docs/screenshots/workbench-2.5.0.png)
 
@@ -70,17 +70,17 @@ YAML 图来自 2.8.0 最终生产 UI 对象的真实 Qt 渲染，使用公开 YO
 
 ### Ubuntu 22.04 amd64
 
-从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下为 2.10.0 的安装命令。Linux 每版上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
+从 [GitHub Releases](https://github.com/misaka-ning/vision-studio/releases) 选择已发布版本，以下为 2.10.1 的安装命令。Linux 每版上传 **3 个手动附件**：安装包 `.deb`、`vision-studio-X.Y.Z-complete-source.tar.xz`、`SHA256SUMS`。
 
 页面另外显示 GitHub 自动提供的 **Source code (zip)** 和 **Source code (tar.gz)** 两个源码入口，它们由平台生成，不能从 Release 中移除。下载三个手动附件后，先校验，再安装：
 
 ```bash
 sha256sum -c SHA256SUMS
-sudo apt install ./vision-studio_2.10.0-1_amd64.deb
+sudo apt install ./vision-studio_2.10.1-1_amd64.deb
 vision-studio
 ```
 
-2.10.0 的 Debian 版本为 `2.10.0-1`，高于 `2.9.2-1` 及此前版本，可用以上 APT 命令直接升级。先结束检测、评估、录像与模型转换，导出需要永久保存的结果，退出旧程序再安装；升级保留个人设置、模型、运行记录、导出、录像、评估报告与已准备的 GPU 环境。普通检测临时缓存不会跨程序重启保留，评估报告及其预测快照独立持久保存。
+2.10.1 的 Debian 版本为 `2.10.1-1`，高于 `2.10.0-1` 及此前版本，可用以上 APT 命令直接升级。先结束检测、评估、录像与模型转换，导出需要永久保存的结果，退出旧程序再安装；升级保留个人设置、模型、运行记录、导出、录像、评估报告与已准备的 GPU 环境。普通检测临时缓存不会跨程序重启保留，评估报告及其预测快照独立持久保存。
 
 也可从应用菜单启动 **Vision Studio**。先在模型库选用模型，再导入数据集或拖入图片／视频，也可选择摄像头。Ctrl+O 打开文件夹与 YAML 共用的数据集选择器；普通图片仅通过预览区拖入，不增加图片／普通图片文件夹按钮，也不提供更多页示例及 `--demo`／`--pt-demo` 启动选项。临时替换或追加图片不会改写最后成功数据集记录，下次普通启动仍可恢复该数据集。
 
