@@ -1,0 +1,9 @@
+{
+  "file": "local-originals.tar.xz",
+  "bytes": 409636,
+  "sha256": "66faace34e7adcd3b0051ba2da8be8697a0d6eb1783ddc9b4865d7456738398b",
+  "local_only": true,
+  "git_ignored": true,
+  "qa_document_count": 156,
+  "user_images_models_and_artifact_directories_included": false
+}

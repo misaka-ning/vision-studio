@@ -1,0 +1,11 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_success": true,
+  "original_error_count": 0,
+  "version": "2.10.1",
+  "original_report": {
+    "bytes": 19499,
+    "sha256": "507450acd5bee14e8f7f185b3449b156953fb54e9ee5c96f936f38f95fd0293f"
+  }
+}

@@ -1,0 +1,16 @@
+********* Start testing of DetectionControllerTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : DetectionControllerTests::initTestCase()
+PASS   : DetectionControllerTests::fullNativeTailGatesReadinessAndEarlyDestruction(normal-shutdown-barrier)
+PASS   : DetectionControllerTests::fullNativeTailGatesReadinessAndEarlyDestruction(early-owner-destruction)
+PASS   : DetectionControllerTests::asynchronousShutdownCanBeRequestedRepeatedly()
+PASS   : DetectionControllerTests::destructionAfterWorkerExitBeforeQueuedFinishedIsDelivered()
+PASS   : DetectionControllerTests::preparationThenImmediateStopIsPreserved()
+PASS   : DetectionControllerTests::shutdownWaitsForAcceptedSnapshotAndHistoryWithoutBlockingEventLoop()
+PASS   : DetectionControllerTests::realVideoFinalization(natural-eof)
+PASS   : DetectionControllerTests::realVideoFinalization(stop-after-first-frame)
+PASS   : DetectionControllerTests::realVideoFinalization(shutdown-after-first-frame)
+PASS   : DetectionControllerTests::realVideoFinalization(export-failure-before-finished)
+PASS   : DetectionControllerTests::cleanupTestCase()
+Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 2466ms
+********* Finished testing of DetectionControllerTests *********

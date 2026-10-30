@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "version": "2.10.1",
+  "scope": "Actual startup-preference QA original-archive collision and successful fresh-destination repeat",
+  "first_attempt": {
+    "success": false,
+    "error_role": "Prior candidate originals archive already exists; overwrite correctly refused",
+    "application_checks_passed": 6,
+    "original_report": {
+      "bytes": 29420,
+      "sha256": "d8723b30516706c4829d6b94321e0ab154ed11b90bc7f9155068b09f2406b3f5"
+    }
+  },
+  "repeat": {
+    "success": true,
+    "application_checks_all_true": true,
+    "original_report": {
+      "bytes": 29374,
+      "sha256": "afc7724bc722fada0670332a820204ee6a86e559b24ef15868ce6dc88c25ab0c"
+    },
+    "used_new_originals_directory": true,
+    "source_and_deb_unchanged": true
+  },
+  "prior_candidate_original_archive_untouched": true,
+  "failed_report_and_stdout_retained_byte_for_byte": true,
+  "production_inputs_equal_formal44": true,
+  "not_an_application_bug_or_a_test_assertion_relaxation": true
+}

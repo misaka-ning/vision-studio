@@ -1,0 +1,16 @@
+********* Start testing of WindowShutdownTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : WindowShutdownTests::initTestCase()
+PASS   : WindowShutdownTests::orphanNativeThreadTailRemainsInApplicationCloseBarrier()
+QINFO  : WindowShutdownTests::runningRealOnnxTaskClosesWithoutBlockingGui() Sandboxing disabled by user.
+PASS   : WindowShutdownTests::runningRealOnnxTaskClosesWithoutBlockingGui()
+PASS   : WindowShutdownTests::morePagePreparationIntentsAreRejectedAfterCloseStarts()
+PASS   : WindowShutdownTests::highResolutionAcceptedAutomaticSaveDrainsBeforeDestruction()
+PASS   : WindowShutdownTests::importAndQueueProjectionCanCloseImmediately(background-file-validation)
+PASS   : WindowShutdownTests::importAndQueueProjectionCanCloseImmediately(partially-projected-large-queue)
+PASS   : WindowShutdownTests::modelViewerLoadingCloseReapsHelperBeforeDestroyingWindow()
+PASS   : WindowShutdownTests::conversionOutputSurvivesCloseWhileHelperCleanupFinishes()
+PASS   : WindowShutdownTests::sameApplicationCanRebuildWindowAndUsePreviewModelRuntimeAndInference()
+PASS   : WindowShutdownTests::cleanupTestCase()
+Totals: 11 passed, 0 failed, 0 skipped, 0 blacklisted, 9110ms
+********* Finished testing of WindowShutdownTests *********

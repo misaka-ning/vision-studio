@@ -1,0 +1,42 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.10.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "remote_urls_rejected": true,
+      "mixed_invalid_batch_is_atomic": true,
+      "native_modelLibraryDropsRejectInvalidBatchesWithoutMutations": true,
+      "external_files_referenced_without_copy_or_move": true,
+      "native_busyModelLibraryDropsCannotReplaceCurrentTask": true,
+      "viewport_copy_drop_accepted": true,
+      "real_onnx_metadata_loaded": true,
+      "actual_busy_drop_preserves_library_and_active_model": true,
+      "preferences_persist_actual_state": true,
+      "move_and_link_only_rejected": true,
+      "internal_reorder_preserves_selection_and_metadata": true,
+      "duplicate_preserves_structure_and_inspection_cache": true,
+      "context_menu_four_actions_preserved": true,
+      "native_window_recreation_preserves_model_order_and_selection": true,
+      "real_torchscript_drop_and_metadata_loaded": true,
+      "canonical_duplicates_preserve_order_and_metadata": true,
+      "native_modelLibraryExternalDropsAppendAtomicallyAndSelectOnce": true,
+      "single_page_drop_selects_global_model": true,
+      "multi_child_drop_preserves_url_order_and_last_selection": true,
+      "directory_empty_and_missing_files_rejected": true,
+      "original_and_external_files_unchanged": true,
+      "selected_onnx_real_cpu_inference": true,
+      "real_pt_metadata_and_structure_loaded": true,
+      "native_modelLibraryDialogCancelKeepsLibraryAndSelection": true,
+      "non_url_drag_ignored": true,
+      "selected_result_export_matches_global_model": true
+    }
+  },
+  "original_report": {
+    "bytes": 2531,
+    "sha256": "ec281a3f47d42e668941a7572a34bca1f4d50c3c77dddebee677aa03a3cf1758"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.10.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "actual_stream_eof_stop_shutdown_failure": true,
+      "all_refactor_suites_executed_without_skips": true,
+      "retained_required_assertions": true,
+      "tested_source_matches_frozen_package": true,
+      "all_512_permission_combinations": true,
+      "production_binary_unchanged": true,
+      "dependency_and_ownership_boundary": true,
+      "actual_window_shutdown_assertions": true
+    }
+  },
+  "original_source_fingerprint_canonical_sha256": "50b156d15d4481d6c65e7750d910d6e97ad0c804b4459107d5dd3c3678497192",
+  "original_report": {
+    "bytes": 602994,
+    "sha256": "be2623cbc71259c661f5cbd31ec7afa473a82eaf599bf48824992b04fa17c6c9"
+  }
+}

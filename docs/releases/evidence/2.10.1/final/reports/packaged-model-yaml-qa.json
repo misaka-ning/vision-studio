@@ -1,0 +1,24 @@
+{
+  "public_projection": true,
+  "not_a_finalizer_input": true,
+  "original_schema_version": 1,
+  "version": "2.10.1",
+  "original_success": true,
+  "original_error_count": 0,
+  "boolean_checks": {
+    "checks": {
+      "yolov5n.onnx_available_views_cache_export_and_original_bytes": true,
+      "original_public_models_unchanged": true,
+      "onnx_unavailable_yaml_mode_hidden": true,
+      "pt_architecture_values_and_types_equal_static_original": true,
+      "yolov5n.pt_available_views_cache_export_and_original_bytes": true,
+      "final_deb_binding_and_readonly": true,
+      "all_eleven_available_view_pngs_fully_decoded": true,
+      "yolov8n.pt_available_views_cache_export_and_original_bytes": true
+    }
+  },
+  "original_report": {
+    "bytes": 42385,
+    "sha256": "a343cfab23040592f8a79732c68122dd1752cc43a966d89712b2063f42da0741"
+  }
+}

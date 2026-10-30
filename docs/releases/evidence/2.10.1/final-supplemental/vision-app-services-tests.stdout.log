@@ -1,0 +1,22 @@
+********* Start testing of AppServicesTests *********
+Config: Using QtTest library 6.8.3, Qt 6.8.3 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 10.3.1 20210422 (Red Hat 10.3.1-1)), ubuntu 22.04
+PASS   : AppServicesTests::initTestCase()
+PASS   : AppServicesTests::retirementWaitsForFullThreadTailWithoutBlockingMainLoop(native-thread-local-destructor)
+PASS   : AppServicesTests::retirementWaitsForFullThreadTailWithoutBlockingMainLoop(finished-deferred-delete-destructor)
+PASS   : AppServicesTests::retirementSurvivesOwnerDestructionAndSuppressesItsCallback()
+PASS   : AppServicesTests::retirementClearsOwnerStateBeforeDestroyedObserversReenter()
+PASS   : AppServicesTests::preferencesPreserveLegacyEncoding()
+PASS   : AppServicesTests::typedWorkspaceSavePreservesAllExistingKeysAndUnknownPreferences()
+PASS   : AppServicesTests::typedWorkspaceSaveRetainsPartialConstructionParameterGuard()
+PASS   : AppServicesTests::exportContractAndCsvEscaping()
+PASS   : AppServicesTests::historicalMetadataRemainsUnknown()
+PASS   : AppServicesTests::groundTruthAndMatchingKeepOriginalIds()
+PASS   : AppServicesTests::demonstrationCannotBeExported()
+PASS   : AppServicesTests::historyPreservesCapacityAndUnknownDevice()
+PASS   : AppServicesTests::historyRepositoryIsTheOnlyMutableAuthority()
+PASS   : AppServicesTests::mixedHistoryCapacityAndSaveFailureKeepAcceptedEntries()
+PASS   : AppServicesTests::serialWritesDrainBeforeShutdown()
+PASS   : AppServicesTests::failedExportStillCompletesTicketAndHistory()
+PASS   : AppServicesTests::cleanupTestCase()
+Totals: 18 passed, 0 failed, 0 skipped, 0 blacklisted, 571ms
+********* Finished testing of AppServicesTests *********

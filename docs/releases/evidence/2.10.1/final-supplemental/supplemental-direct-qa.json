@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "version": "2.10.1",
+  "source_commit": "0f874c9b4028c29f11d76dda581e6532db77ec10",
+  "scope": "Four additional repeated direct QTest suites using the formal full44 binaries; not a replacement for full44 or package acceptance",
+  "formal_full44_report_sha256": "0850ec49c955a985724d3e673b972eafee0cbc4a829f161d74180a4a8ec75cd5",
+  "private_execution_receipt_original": {
+    "bytes": 601643,
+    "sha256": "e74847564c2fbb90c44914bbf8038820a7b2355a75d49521233f8a0b1a8e2431"
+  },
+  "suite_count": 4,
+  "actual_qt_passed": 54,
+  "gpu_disabled": true,
+  "isolated_xdg_and_runtime": true,
+  "raw_streams_copied_byte_for_byte": true,
+  "redaction_performed": false,
+  "command_shape": [
+    "<same-final-test-binary>",
+    "-o",
+    "-,txt"
+  ],
+  "suites": [
+    {
+      "name": "vision-app-services-tests",
+      "binary_sha256": "427f6b5e01d307b92145291a8f5cdf0350144dc73ae37ff516c20d0a93b6c60e",
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 18,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "started_at_utc": "2026-10-30T02:17:02.799824+00:00",
+      "finished_at_utc": "2026-10-30T02:17:03.465215+00:00",
+      "originals": {
+        "stdout": {
+          "file": "vision-app-services-tests.stdout.log",
+          "bytes": 1678,
+          "sha256": "f3fb9c9d0a455ee1c764db079e1b733a9ee4705a99780aeaea37a83bce467341"
+        },
+        "stderr": {
+          "file": "vision-app-services-tests.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "human_original_review_completed": true
+    },
+    {
+      "name": "vision-detection-controller-tests",
+      "binary_sha256": "0eba36b432d998079cf1715a05191ab962a3f67f047ab99d84ec1c5b99590214",
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 12,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "started_at_utc": "2026-10-30T02:17:03.467518+00:00",
+      "finished_at_utc": "2026-10-30T02:17:06.036081+00:00",
+      "originals": {
+        "stdout": {
+          "file": "vision-detection-controller-tests.stdout.log",
+          "bytes": 1352,
+          "sha256": "56e327f413986310468b154c2f8794bc44c3f5ef7a6f63e38efa19fee081ae27"
+        },
+        "stderr": {
+          "file": "vision-detection-controller-tests.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "human_original_review_completed": true
+    },
+    {
+      "name": "vision-recording-controller-tests",
+      "binary_sha256": "e958891d198c99123ce5ed35c365c3fd15e752876eb8ab9356da91901ad245d5",
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 13,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "started_at_utc": "2026-10-30T02:17:06.037779+00:00",
+      "finished_at_utc": "2026-10-30T02:17:08.755880+00:00",
+      "originals": {
+        "stdout": {
+          "file": "vision-recording-controller-tests.stdout.log",
+          "bytes": 1430,
+          "sha256": "8c9da4d6932e933a675b415c80f8c5cf7fef49c20ae4f6a4b9b8aed724411f67"
+        },
+        "stderr": {
+          "file": "vision-recording-controller-tests.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "human_original_review_completed": true
+    },
+    {
+      "name": "vision-window-shutdown-tests",
+      "binary_sha256": "5aed83ee0fb644d87bb2d064b68d2e69641d4a7a9bb0bee585960f290378c304",
+      "exit_code": 0,
+      "qt_totals": [
+        {
+          "passed": 11,
+          "failed": 0,
+          "skipped": 0,
+          "blacklisted": 0
+        }
+      ],
+      "started_at_utc": "2026-10-30T02:17:08.757365+00:00",
+      "finished_at_utc": "2026-10-30T02:17:18.037082+00:00",
+      "originals": {
+        "stdout": {
+          "file": "vision-window-shutdown-tests.stdout.log",
+          "bytes": 1365,
+          "sha256": "dec054def2f7ab286cf80d36efadc4f63055305d705641f75c839c2c351e26d7"
+        },
+        "stderr": {
+          "file": "vision-window-shutdown-tests.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "human_original_review_completed": true
+    }
+  ]
+}
