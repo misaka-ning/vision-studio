@@ -9,12 +9,29 @@
 ## 开发流程
 
 1. 从最新 `main` 创建功能分支，例如 `feature/model-viewer` 或 `fix/grayscale-preview`；分支只处理一个清晰问题。
-2. 按 [README](README.md#从源码构建) 准备 Qt、OpenCV 和 PT／Netron 环境。不要把构建目录、Python runtime、个人模型、录像、设置或凭据提交到 Git。
+2. 按 [README](README.md#从源码构建) 准备 Qt、OpenCV 和 PT／Netron 环境。仅运行 PR 核心检查时，使用下方的精简依赖。不要把构建目录、Python runtime、个人模型、录像、设置或凭据提交到 Git。
 3. 修改相关代码和必要文档。新增功能写入 `CHANGELOG.md` 的「未发布」段；修复推理、录制或模型解析行为时，增加能够复现问题的测试。
 4. 执行与修改有关的检查，行为或依赖变化需要运行完整 CTest；真实模型测试要准备对应 runtime 和示例文件。报告实际执行命令和结果，不能把跳过测试当作通过。
 5. 提交 Pull Request，说明问题、变更后的行为、验证方法及兼容性影响。较大的功能先在 Issue 中明确预期行为。
 
 提交说明应简洁具体，例如 `fix: preserve grayscale recording frames`。可使用 `feat`、`fix`、`docs`、`test`、`build`、`chore` 前缀；这些前缀用于阅读，不替代版本号与更新日志。
+
+## PR 的 Linux 构建与核心回归
+
+PR 保留 `source-checks`，并新增 `qt-core`：Ubuntu 22.04、固定 Qt 6.8.3、OpenCV，Debug 编译主程序和 21 套完整核心 CTest，覆盖模型会话、任务协调、结果交付与关闭流程。缺失、失败或跳过都不能通过；无 GPU 或物理摄像头要求。
+
+[Linux CI 说明](docs/ci/linux-core.md)列出依赖核查、逐套执行/排除原因、缓存/超时/日志规则和完整本地等价命令。准备好文档中的 SDK、系统包及独立 `build-ci-tools` 环境后：
+
+```bash
+cmake -S . -B build-ci -G Ninja -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON \
+  -DVISION_STUDIO_PR_CORE_CHECKS=ON -DCMAKE_PREFIX_PATH="$QT_PREFIX" \
+  -DPython3_EXECUTABLE="$PWD/build-ci-tools/bin/python" \
+  -DVISION_STUDIO_TEST_PYTHON="$PWD/build-ci-tools/bin/python"
+cmake --build build-ci --target vision-pr-core --parallel 2
+build-ci-tools/bin/python scripts/ci/run_core_tests.py build-ci
+```
+
+PR 记录实际执行环境、结果和未运行部分；失败诊断从工作流 artifact 下载。本集合的绿灯只代表此范围的构建/回归通过，完整模型、GPU、平台、安装及发行验收仍按原要求执行。
 
 ## 代码与测试
 
