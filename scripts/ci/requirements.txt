@@ -1,0 +1,6 @@
+# Qt SDK installer; CI only, not application runtime dependencies.
+aqtinstall==3.3.0
+py7zr==1.0.0
+# Window shutdown reopens a real ONNX graph through the local Netron server.
+# Keep aligned with scripts/netron_server.py; no PyTorch/Ultralytics is needed.
+netron==9.3.1

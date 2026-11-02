@@ -1,0 +1,128 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+name: Qt build and core regression
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qt-core-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qt-core:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
+    env:
+      PIP_CACHE_DIR: ${{ github.workspace }}/.cache/pip
+      CCACHE_DIR: ${{ github.workspace }}/.cache/ccache
+      CCACHE_MAXSIZE: 400M
+      QT_PREFIX: ${{ github.workspace }}/.cache/Qt/6.8.3/gcc_64
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Install build and Qt runtime dependencies
+        timeout-minutes: 10
+        run: |
+          mkdir -p build-ci/logs
+          sudo apt-get update 2>&1 | tee build-ci/logs/apt-update.log
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake ninja-build ccache python3-venv python3-pip \
+            libopencv-dev libgl1-mesa-dev libegl1-mesa libopengl0 libxkbcommon-dev \
+            libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4 libxcb-image0 \
+            libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-shape0 \
+            libxcb-randr0 libxcb-xfixes0 libxcb-sync1 libxcb-xkb1 libxcb-glx0 \
+            libnss3 libnspr4 libasound2 libdbus-1-3 libxcomposite1 libxdamage1 \
+            libxrandr2 libxtst6 libxi6 libxshmfence1 libgbm1 fonts-noto-cjk \
+            2>&1 | tee build-ci/logs/apt-install.log
+      - name: Cache Python downloads
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: .cache/pip
+          key: pip-${{ runner.os }}-22.04-${{ runner.arch }}-${{ hashFiles('scripts/ci/requirements.txt') }}
+      - name: Prepare isolated CI Python
+        timeout-minutes: 5
+        run: |
+          /usr/bin/python3 -m venv build-ci-tools
+          build-ci-tools/bin/python -m pip install -r scripts/ci/requirements.txt \
+            2>&1 | tee build-ci/logs/python-install.log
+          build-ci-tools/bin/python -m pip freeze > build-ci/logs/python-packages.txt
+      - name: Cache Qt SDK
+        id: qt-cache
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: .cache/Qt
+          key: qt-${{ runner.os }}-22.04-${{ runner.arch }}-6.8.3-${{ hashFiles('scripts/ci/requirements.txt', '.github/workflows/qt-core-checks.yml') }}
+      - name: Install Qt 6.8.3 and WebEngine dependencies
+        if: steps.qt-cache.outputs.cache-hit != 'true'
+        timeout-minutes: 15
+        run: |
+          build-ci-tools/bin/python -m aqt install-qt linux desktop 6.8.3 linux_gcc_64 \
+            --outputdir .cache/Qt --modules qtwebengine qtwebchannel qtpositioning qtshadertools \
+            2>&1 | tee build-ci/logs/qt-install.log
+      - name: Cache compiler outputs
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: .cache/ccache
+          key: ccache-${{ runner.os }}-22.04-qt6.8.3-debug-${{ github.sha }}
+          restore-keys: ccache-${{ runner.os }}-22.04-qt6.8.3-debug-
+      - name: Configure with assertions enabled
+        timeout-minutes: 5
+        run: |
+          test "$("$QT_PREFIX/bin/qmake" -query QT_VERSION)" = 6.8.3
+          cmake -S . -B build-ci -G Ninja -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON \
+            -DVISION_STUDIO_PR_CORE_CHECKS=ON \
+            -DCMAKE_PREFIX_PATH="$QT_PREFIX" -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DPython3_EXECUTABLE="$PWD/build-ci-tools/bin/python" \
+            -DVISION_STUDIO_TEST_PYTHON="$PWD/build-ci-tools/bin/python" \
+            2>&1 | tee build-ci/logs/configure.log
+      - name: Build application and audited test suites
+        timeout-minutes: 20
+        run: |
+          cmake --build build-ci --target vision-pr-core --parallel 2 \
+            2>&1 | tee build-ci/logs/build.log
+          test -x build-ci/bin/vision-studio
+          ccache --show-stats > build-ci/logs/ccache.txt
+      - name: Run every audited suite and reject skips
+        timeout-minutes: 10
+        run: build-ci-tools/bin/python scripts/ci/run_core_tests.py build-ci
+      - name: Record scope and actual results
+        if: always()
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'SUMMARY'
+          Linux Qt 6.8.3 Debug application build and the explicit `pr-core` CTest set.
+          Suite dependencies and exclusions: `docs/ci/linux-core.md`.
+          GPU, physical cameras, full PT/evaluation/conversion and package acceptance are outside this check.
+          This workflow never publishes releases and is not full release acceptance.
+          SUMMARY
+          if test -f build-ci/logs/summary.txt; then
+            cat build-ci/logs/summary.txt >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'Core acceptance did not complete successfully; inspect the job and logs.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload build and test diagnostics (including failures)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: qt-core-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            build-ci/logs/
+            build-ci/CMakeCache.txt
+            build-ci/CMakeFiles/CMakeConfigureLog.yaml
+            build-ci/CMakeFiles/CMakeOutput.log
+            build-ci/CMakeFiles/CMakeError.log
+            build-ci/Testing/Temporary/
+            build-ci/pr-core-tests.txt
+            aqtinstall.log
