@@ -6,6 +6,10 @@ Vision Studio 是基于 C++17 / Qt 6.8 的视觉模型工作台，面向需要�
 
 [下载](#下载与快速开始) · [首次使用](docs/使用指南.md#1-选模型完成第一次检测) · [文档](docs/README.md) · [反馈问题](https://github.com/misaka-ning/vision-studio/issues) · [视频介绍](https://www.bilibili.com/video/BV1s8pe6cEXb/)
 
+## 技术阅读入口
+
+[两个工程案例：异步关闭与线程回收、结果背压与配置隔离](docs/architecture/技术阅读入口.md) —— 从触发条件和取舍追到源码、测试及历史 PR；[完整架构](docs/architecture/应用架构.md)列出状态与依赖边界。
+
 ## 核心能力
 
 | 能力 | 可以完成什么 |
